@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require d3
 //= require vega
-//= require_tree .
+
+//= require index.js
