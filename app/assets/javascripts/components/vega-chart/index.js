@@ -28,7 +28,6 @@ class VegaChart extends React.Component {
 
   parseVega() {
     const dataObj = this.getData();
-
     vg.parse.spec(dataObj, chart => {
       const chartVis = chart({
         el: this.refs.vegaChart
