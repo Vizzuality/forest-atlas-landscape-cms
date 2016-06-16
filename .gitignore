@@ -19,3 +19,16 @@
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# Generated assets
+/vendor/bundle
+/public/assets
+/public/uploads
+/public/system
+
+# NPM modules
+/node_modules
+
+# Ignore environment variables
+/.env
+
