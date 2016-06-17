@@ -16,6 +16,8 @@ gem 'dotenv'
 gem 'react-rails'
 gem 'browserify-rails'
 
+gem 'devise'
+
 # Assets Pipeline
 
 source 'https://rails-assets.org' do
