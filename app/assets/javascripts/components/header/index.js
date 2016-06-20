@@ -1,5 +1,5 @@
 import React from 'react';
-import { NAV_PUSH } from '../../actions/navigation';
+import { browserHistory, Link } from 'react-router'
 
 class Header extends React.Component {
 
@@ -8,26 +8,17 @@ class Header extends React.Component {
     this.state = {};
   }
 
-  onClick(page) {
-    this.props.dispatch({
-      type: NAV_PUSH,
-      page: page
-    });
-  }
-
   render() {
     return (
       <div className="l-header">
-        <a onClick={() => this.onClick('/')}>Home</a>
-        <a onClick={() => this.onClick('/page')}>Page</a>
+        <ul>
+          <li><Link to="/" >Home </Link></li>
+          <li><Link to="/page" >Page</Link></li>
+        </ul>
       </div>
     );
   }
 
 }
-
-Header.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-};
 
 export default Header;

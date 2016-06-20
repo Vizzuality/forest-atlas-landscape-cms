@@ -13,7 +13,7 @@ class PageView extends React.Component {
   render() {
     return (
       <div>
-        <Header dispatch={this.props.dispatch} />
+        <Header />
         <div>Page</div>
       </div>
     );
