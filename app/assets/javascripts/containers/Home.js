@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { navigatePush, navigatePop } from '../actions/navigation';
+import { browserHistory } from 'react-router';
 import Home from '../views/HomeView';
 
 
@@ -7,13 +7,13 @@ function mapStateToProps(state) {
   return { state };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
   return {
     dispatch: (action) => {
       if (action.type === 'back') {
-        dispatch(navigatePop(action));
+        browserHistory.goBack();
       } else {
-        dispatch(navigatePush(action));
+        browserHistory.push(action.page);
       }
     }
   };

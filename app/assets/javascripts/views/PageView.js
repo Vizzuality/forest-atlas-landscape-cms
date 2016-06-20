@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/header';
 
-class HomeView extends React.Component {
+class PageView extends React.Component {
 
   constructor(props) {
     super(props);
@@ -14,15 +14,15 @@ class HomeView extends React.Component {
     return (
       <div>
         <Header dispatch={this.props.dispatch} />
-        <div>Home</div>
+        <div>Page</div>
       </div>
     );
   }
 
 }
 
-HomeView.propTypes = {
+PageView.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
 };
 
-export default HomeView;
+export default PageView;
