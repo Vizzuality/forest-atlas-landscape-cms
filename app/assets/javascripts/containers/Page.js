@@ -1,23 +1,51 @@
+import React from 'react';
+import PageView from '../views/PageView';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-import Page from '../views/PageView';
+import { init } from '../actions/widgets-list';
 
+class Page extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      loading: props.loading
+    };
+  }
 
-function mapStateToProps(state) {
-  return { state };
+  componentWillMount() {
+    this.props.init();
+  }
+
+  render() {
+    return (
+      <PageView
+        data={this.props.widgets}
+        loading={this.props.loading}
+      />
+    );
+  }
 }
 
-function mapDispatchToProps() {
+function mapStateToProps(state) {
   return {
-    dispatch: (action) => {
-      if (action.type === 'back') {
-        browserHistory.goBack();
-      } else {
-        browserHistory.push(action.page);
-      }
+    loading: state.widgetsList.loading,
+    widgets: state.widgetsList.widgets
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    init: () => {
+      dispatch(init());
     }
   };
 }
+
+Page.propTypes = {
+  widgets: React.PropTypes.array,
+  loading: React.PropTypes.bool,
+  init: React.PropTypes.func,
+};
 
 export default connect(
   mapStateToProps,
