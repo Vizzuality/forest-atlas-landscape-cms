@@ -1,9 +1,9 @@
 import React from 'react';
-import PageView from '../views/PageView';
+import WidgetsView from '../views/WidgetsView';
 import { connect } from 'react-redux';
 import { init } from '../actions/widgets-list';
 
-class Page extends React.Component {
+class Widgets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,12 +13,14 @@ class Page extends React.Component {
   }
 
   componentWillMount() {
-    this.props.init();
+    if (!this.props.widgets.length) {
+      this.props.init();
+    }
   }
 
   render() {
     return (
-      <PageView
+      <WidgetsView
         data={this.props.widgets}
         loading={this.props.loading}
       />
@@ -41,7 +43,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-Page.propTypes = {
+Widgets.propTypes = {
   widgets: React.PropTypes.array,
   loading: React.PropTypes.bool,
   init: React.PropTypes.func
@@ -50,4 +52,4 @@ Page.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Page);
+)(Widgets);

@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../components/header';
 import WidgetsList from '../components/widgets-list';
 
-class PageView extends React.Component {
+class WidgetsView extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,20 +12,22 @@ class PageView extends React.Component {
 
   render() {
     return !this.props.loading
-      ? <div>
+      ? <div className="wrapper">
         <Header />
-        <WidgetsList data={this.props.data} />
+        <div className="l-content">
+          <WidgetsList data={this.props.data} />
+        </div>
       </div>
-      : <div>
+      : <div className="wrapper">
         <Header />
-        <div>Loading</div>
+        <div className="l-content">Loading</div>
       </div>;
   }
 }
 
-PageView.propTypes = {
+WidgetsView.propTypes = {
   data: React.PropTypes.array.isRequired,
   loading: React.PropTypes.bool.isRequired
 };
 
-export default PageView;
+export default WidgetsView;

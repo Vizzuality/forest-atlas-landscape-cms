@@ -13,7 +13,7 @@ class Header extends React.Component {
       <div className="l-header">
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/page">Page</Link></li>
+          <li><Link to="/widgets">Widgets</Link></li>
         </ul>
       </div>
     );

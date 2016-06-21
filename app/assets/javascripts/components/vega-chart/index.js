@@ -3,15 +3,24 @@ import React from 'react';
 class VegaChart extends React.Component {
 
   componentDidMount() {
-    this.parseVega();
+    this.resizeEvent = () => {
+      this.handleResize();
+    };
+    window.addEventListener('resize', this.resizeEvent);
+
+    this.renderChart();
   }
 
   componentDidUpdate() {
-    this.parseVega();
+    this.renderChart();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeEvent);
   }
 
   getData() {
-    const { data, width, height } = this.props;
+    const { data } = this.props;
     let dataObj = {};
 
     if (typeof data === 'object') {
@@ -20,14 +29,25 @@ class VegaChart extends React.Component {
       dataObj = JSON.parse(data);
     }
 
-    dataObj.width = width;
-    dataObj.height = height;
+    const widthSpace = dataObj.padding ?
+      dataObj.padding.left + dataObj.padding.right : 0;
+    const heightSpace = dataObj.padding ?
+    dataObj.padding.top + dataObj.padding.bottom : 0;
+
+    dataObj.width = this.width - widthSpace;
+    dataObj.height = this.height - heightSpace;
 
     return dataObj;
   }
 
+  setSize() {
+    this.width = this.refs.chartContainer.offsetWidth;
+    this.height = this.refs.chartContainer.offsetHeight;
+  }
+
   parseVega() {
     const dataObj = this.getData();
+
     vg.parse.spec(dataObj, chart => {
       const chartVis = chart({
         el: this.refs.vegaChart
@@ -37,17 +57,26 @@ class VegaChart extends React.Component {
     });
   }
 
+  handleResize() {
+    this.renderChart();
+  }
+
+  renderChart() {
+    this.setSize();
+    this.parseVega();
+  }
+
   render() {
     return (
-      <div ref="vegaChart" className="c-vega"></div>
+      <div ref="chartContainer" className="c-vega">
+        <div ref="vegaChart" className="chart"></div>
+      </div>
     );
   }
 }
 
 VegaChart.propTypes = {
-  data: React.PropTypes.any.isRequired,
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired
+  data: React.PropTypes.any.isRequired
 };
 
 export default VegaChart;

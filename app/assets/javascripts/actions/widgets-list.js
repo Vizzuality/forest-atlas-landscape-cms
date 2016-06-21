@@ -1,7 +1,7 @@
 export const INIT = 'INIT';
 export const LOADING = 'LOADING';
 export const WIDGET_UPDATE = 'WIDGET_UPDATE';
-export const ENDPOINT = 'http://ec2-52-23-163-254.compute-1.amazonaws.com';
+export const ENDPOINT = 'http://api.resourcewatch.org:81';
 
 
 function getWidgetEndpoint(widget) {
@@ -9,7 +9,7 @@ function getWidgetEndpoint(widget) {
 }
 
 function getWidgetDatasetEndpoint(dataset) {
-  return $.get(dataset.url).then((data) => {
+  return $.get(`${ENDPOINT}/${dataset.url}`).then((data) => {
     return {
       slug: dataset.slug,
       data: data

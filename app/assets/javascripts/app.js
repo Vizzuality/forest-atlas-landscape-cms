@@ -12,7 +12,7 @@ import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-rou
 import * as reducers from './reducers';
 
 import Home from './containers/Home';
-import Page from './containers/Page';
+import Widgets from './containers/Widgets';
 
 const DevTools = createDevTools(
   <DockMonitor
@@ -41,11 +41,11 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 export default function App() {
   return (
-    <div>
+    <div className="container">
       <Provider store={store}>
         <Router history={history}>
           <Route path={'/'} component={Home} />
-          <Route path={'/page'} component={Page} />
+          <Route path={'/widgets'} component={Widgets} />
         </Router>
       </Provider>
       <DevTools store={store} />

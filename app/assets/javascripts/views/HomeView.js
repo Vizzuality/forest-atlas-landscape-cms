@@ -12,9 +12,9 @@ class HomeView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="wrapper">
         <Header />
-        <div>Home</div>
+        <div className="l-content">Home</div>
       </div>
     );
   }

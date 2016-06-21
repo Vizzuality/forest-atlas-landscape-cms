@@ -9,6 +9,18 @@ body {
   font-weight: 300;
 }
 
+#main {
+  display: flex;
+
+  > .container {
+    width: 100%;
+
+    .wrapper {
+      width: 100%;
+    }
+  }
+}
+
 *,
 *:before,
 *:after {
