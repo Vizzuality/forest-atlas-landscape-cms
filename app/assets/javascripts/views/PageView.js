@@ -14,7 +14,6 @@ class PageView extends React.Component {
     return !this.props.loading
       ? <div>
         <Header />
-        <div>Page</div>
         <WidgetsList data={this.props.data} />
       </div>
       : <div>
@@ -26,6 +25,7 @@ class PageView extends React.Component {
 
 PageView.propTypes = {
   data: React.PropTypes.array.isRequired,
+  loading: React.PropTypes.bool.isRequired
 };
 
 export default PageView;

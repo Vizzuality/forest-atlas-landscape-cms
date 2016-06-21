@@ -44,7 +44,7 @@ function mapDispatchToProps(dispatch) {
 Page.propTypes = {
   widgets: React.PropTypes.array,
   loading: React.PropTypes.bool,
-  init: React.PropTypes.func,
+  init: React.PropTypes.func
 };
 
 export default connect(

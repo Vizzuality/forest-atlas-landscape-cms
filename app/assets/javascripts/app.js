@@ -15,7 +15,11 @@ import Home from './containers/Home';
 import Page from './containers/Page';
 
 const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+  <DockMonitor
+    toggleVisibilityKey="ctrl-h"
+    changePositionKey="ctrl-q"
+    defaultPosition="bottom"
+  >
     <LogMonitor theme="tomorrow" preserveScrollTop={false} />
   </DockMonitor>
 );

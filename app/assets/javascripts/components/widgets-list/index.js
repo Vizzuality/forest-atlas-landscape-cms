@@ -1,4 +1,5 @@
 import React from 'react';
+import Widget from '../widget';
 
 class WidgetsList extends React.Component {
 
@@ -11,9 +12,14 @@ class WidgetsList extends React.Component {
   render() {
     return (
       <div ref="widgets-list" className="c-widgets-list">
-        <ul>
+        <ul className="list">
           {this.props.data.map((item, key) => {
-            return <li key={key}>{item.name}</li>;
+            const data = item.data ? item.data.chart : {};
+            return (
+              <li className="item" key={key}>
+                <Widget name={item.name} widget={data} />
+              </li>
+            );
           })}
         </ul>
       </div>
