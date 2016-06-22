@@ -13,6 +13,7 @@ import * as reducers from './reducers';
 
 import Home from './containers/Home';
 import Widgets from './containers/Widgets';
+import Map from './containers/Map';
 
 const DevTools = createDevTools(
   <DockMonitor
@@ -46,9 +47,9 @@ export default function App() {
         <Router history={history}>
           <Route path={'/'} component={Home} />
           <Route path={'/widgets'} component={Widgets} />
+          <Route path={'/map'} component={Map} />
         </Router>
       </Provider>
-      <DevTools store={store} />
     </div>
   );
 }

@@ -21,6 +21,7 @@
     "React": true,
     "vg": true,
     "d3": true,
-    "$": true
+    "$": true,
+    "L": true
   },
 }

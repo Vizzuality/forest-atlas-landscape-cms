@@ -123,6 +123,7 @@ GEM
       railties (= 5.0.0.rc1)
       sprockets-rails (>= 2.0.0)
     rails-assets-d3 (3.5.17)
+    rails-assets-leaflet (0.7.7)
     rails-assets-vega (2.5.2)
       rails-assets-d3 (>= 3.5.6, < 4)
     rails-deprecated_sanitizer (1.0.3)
@@ -207,6 +208,7 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (>= 5.0.0.rc1, < 5.1)
   rails-assets-d3 (~> 3.5.16)!
+  rails-assets-leaflet (= 0.7.7)!
   rails-assets-vega (~> 2.5.2)!
   react-rails
   sass-rails (~> 5.0)
