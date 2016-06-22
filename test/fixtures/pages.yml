@@ -1,10 +1,13 @@
 # == Schema Information
 #
-# Table name: sites
+# Table name: pages
 #
 #  id          :integer          not null, primary key
-#  template_id :integer
+#  site_id     :integer
 #  name        :string
+#  description :string
+#  url         :string
+#  ancestry    :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -12,9 +15,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  domain: MyString
-  template: 
+  name: MyString
+  description: MyString
+  url: MyString
+  ancestry: MyString
 
 two:
-  domain: MyString
-  template: 
+  name: MyString
+  description: MyString
+  url: MyString
+  ancestry: MyString

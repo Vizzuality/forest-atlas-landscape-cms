@@ -3,7 +3,7 @@ class CreateSites < ActiveRecord::Migration[5.0]
     create_table :sites do |t|
       t.belongs_to :template, index: true
 
-      t.string :domain
+      t.string :name
 
       t.timestamps
     end

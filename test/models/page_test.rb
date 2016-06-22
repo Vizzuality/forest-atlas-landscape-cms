@@ -1,17 +1,20 @@
 # == Schema Information
 #
-# Table name: sites
+# Table name: pages
 #
 #  id          :integer          not null, primary key
-#  template_id :integer
+#  site_id     :integer
 #  name        :string
+#  description :string
+#  url         :string
+#  ancestry    :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 
 require 'test_helper'
 
-class SiteTest < ActiveSupport::TestCase
+class PageTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

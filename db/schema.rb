@@ -11,14 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617085210) do
+ActiveRecord::Schema.define(version: 20160622100151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "pages", force: :cascade do |t|
+    t.integer  "site_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "url"
+    t.string   "uri"
+    t.string   "ancestry"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["ancestry"], name: "index_pages_on_ancestry", using: :btree
+    t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
+  end
+
+  create_table "routes", force: :cascade do |t|
+    t.integer  "site_id"
+    t.string   "host"
+    t.string   "path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_routes_on_site_id", using: :btree
+  end
+
   create_table "sites", force: :cascade do |t|
     t.integer  "template_id"
-    t.string   "domain"
+    t.string   "name"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["template_id"], name: "index_sites_on_template_id", using: :btree
