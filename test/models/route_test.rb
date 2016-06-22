@@ -1,16 +1,18 @@
 # == Schema Information
 #
-# Table name: templates
+# Table name: routes
 #
 #  id         :integer          not null, primary key
-#  name       :string
+#  site_id    :integer
+#  host       :string
+#  path       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 require 'test_helper'
 
-class TemplateTest < ActiveSupport::TestCase
+class RouteTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
