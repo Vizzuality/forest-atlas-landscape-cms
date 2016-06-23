@@ -1,0 +1,28 @@
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Helvetica';
+  font-weight: 300;
+}
+
+#main {
+  display: flex;
+
+  > .container {
+    width: 100%;
+
+    .wrapper {
+      width: 100%;
+    }
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
