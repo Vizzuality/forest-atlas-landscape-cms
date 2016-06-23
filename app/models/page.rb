@@ -20,6 +20,11 @@ class Page < ApplicationRecord
   has_ancestry
 
   before_validation :regenerate_url
+  after_save :update_routes
+
+  def update_routes
+    DynamicRouter.build_routes_for_page self
+  end
 
   def url=(value)
     raise 'Cannot manually set the URL for a page, please set uri instead'
