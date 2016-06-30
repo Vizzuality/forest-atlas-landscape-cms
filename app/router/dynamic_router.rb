@@ -12,6 +12,8 @@ class DynamicRouter
 
   def self.load
     if @route_cache.empty?
+      return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
+
       Page.includes(:site, :routes).all.each do |page|
         page.routes.each do |route|
           _build_routes_for_page_and_route(page, route)
