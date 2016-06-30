@@ -1,4 +1,9 @@
 language: ruby
 rvm:
   - 2.3.1
-before_install: gem install bundler -v 1.12.5
+before_install:
+  - gem install bundler -v 1.12.5
+  - bundle exec rake db:drop RAILS_ENV=test
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:schema:load RAILS_ENV=test
+
