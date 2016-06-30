@@ -17,6 +17,6 @@ class Site < ApplicationRecord
   after_save :update_routes
 
   def update_routes
-    DynamicRouter.build_routes_for_site self
+    DynamicRouter.update_routes_for_site self
   end
 end

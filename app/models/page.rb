@@ -23,7 +23,7 @@ class Page < ApplicationRecord
   after_save :update_routes
 
   def update_routes
-    DynamicRouter.build_routes_for_page self
+    DynamicRouter.update_routes_for_page self
   end
 
   def url=(value)
@@ -33,11 +33,13 @@ class Page < ApplicationRecord
   def uri=(value)
     value = value.gsub(/^[\/]+|[\/]+$/, '')
     write_attribute(:uri, value)
+    regenerate_url
   end
 
   private
 
   def regenerate_url
+    uri = self.uri || ''
     current_url = '/' + uri
     parent_url = (parent.nil? || parent.url.eql?('/')) ? '' : parent.url
     current_url = parent_url + current_url

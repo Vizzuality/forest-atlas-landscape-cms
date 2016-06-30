@@ -12,9 +12,11 @@
 
 class Route < ApplicationRecord
   belongs_to :site
+  has_many :pages, through: :site
+
   after_save :update_routes
 
   def update_routes
-    DynamicRouter.build_routes_for_route self
+    DynamicRouter.update_routes_for_route self
   end
 end

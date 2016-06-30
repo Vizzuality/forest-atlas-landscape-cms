@@ -1,20 +1,20 @@
-class RouteMapper
+class TaggedCache
 
-  def initialize
+  def initialize(key_proc = Proc.new { |obj| obj.hash })
     @tag_cache = {}
-    @key_cache = {}
+    @key_proc = key_proc
   end
 
   def write(object, tags)
-    key = 'route/'+ object.constraints[:host] + object.path
-    Rails.cache.write key, object
+    key = @key_proc.call(object)
 
-    @key_cache[key] = [] unless @key_cache.has_key? key
+    return if tags.empty?
+
+    Rails.cache.write key, object
 
     tags.each do |tag|
       @tag_cache[tag] = [] unless @tag_cache.has_key? tag
       @tag_cache[tag] << key
-      @key_cache[key] << tag
     end
   end
 
@@ -26,7 +26,9 @@ class RouteMapper
       keys += @tag_cache[tag] if @tag_cache.has_key? tag
     end
 
-    Rails.cache.fetch_multi keys.uniq
+    return [] if keys.empty?
+
+    Rails.cache.fetch_multi(*keys.uniq)
   end
 
   def remove(tags)
@@ -34,27 +36,14 @@ class RouteMapper
 
     keys = []
     tags.each do |tag|
-      keys += @tag_cache[tag] if @tag_cache.has_key? tag
+      next unless @tag_cache.key? tag
+      keys += @tag_cache[tag]
       @tag_cache.delete tag
     end
 
-    keys.uniq.each do |key|
-      Rails.cache.delete key
-      key_tags = @key_cache[key]
-      key_tags.delete(key) if key_tags.include? key
-      @key_cache[key] = key_tags
-
-      @key_cache.delete(key) if key_tags.blank?
-
-    end
-  end
-
-  def dump_routes
-    @key_cache.each do |key, tags|
-      puts 'Key: ' + key.to_s
-      puts 'Tags: ' + tags.join(', ')
-      puts 'Route path: ' + Rails.cache.fetch(key).path
-      puts ''
+    @tag_cache.each do |tag, tag_keys|
+      @tag_cache[tag] = tag_keys - keys
+      @tag_cache.delete(tag) if tag_keys.empty?
     end
   end
 
@@ -69,5 +58,18 @@ class RouteMapper
       puts 'Routes path: ' + routes.join(', ')
       puts ''
     end
+  end
+
+  def all
+    routes = {}
+    @tag_cache.each_value do |keys|
+      keys_routes = Rails.cache.fetch_multi(*keys) { nil }
+      routes.merge! keys_routes
+    end
+    routes.values
+  end
+
+  def empty?
+    @tag_cache.empty?
   end
 end
