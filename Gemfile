@@ -33,6 +33,9 @@ end
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+    gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'master'
+  end
 end
 
 group :development do
