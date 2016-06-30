@@ -32,3 +32,4 @@
 # Ignore environment variables
 /.env
 
+/falcms_test
