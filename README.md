@@ -1,4 +1,6 @@
-# README
+# Forest Atlas and Landscape Application CMS
+
+[![Build Status](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms.svg?branch=master)](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms)
 
 Multisite content management system for forest atlas and lanscape applications
 
