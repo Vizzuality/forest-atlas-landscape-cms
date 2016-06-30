@@ -25,7 +25,7 @@ RSpec.describe DynamicRouter do
     expected_route = DynamicRouter::RouteDefinition.new('/sample-path/sample-page', 'page#show', {:id => @sample_page.id}, {:host => 'localhost'}, tags)
 
     @router.update_routes_for_site(@site)
-    expect(@route_cache).to have_received(:write).once.with(expected_route, tags)
+    expect(@route_cache).to have_received(:write).at_least(1).with(expected_route, tags)
   end
 
   it 'Creating a route updates routes' do
@@ -36,7 +36,7 @@ RSpec.describe DynamicRouter do
     expected_route = DynamicRouter::RouteDefinition.new('/sample-path/sample-page', 'page#show', {:id => @sample_page.id}, {:host => 'localhost'}, tags)
 
     @router.update_routes_for_route(@route)
-    expect(@route_cache).to have_received(:write).once.with(expected_route, tags)
+    expect(@route_cache).to have_received(:write).at_least(1).with(expected_route, tags)
   end
 
   it 'Creating a page updates routes' do
@@ -47,7 +47,7 @@ RSpec.describe DynamicRouter do
     expected_route = DynamicRouter::RouteDefinition.new('/sample-path/demo-page', 'page#show', {:id => @page.id}, {:host => 'localhost'}, tags)
 
     @router.update_routes_for_page(@page)
-    expect(@route_cache).to have_received(:write).once.with(expected_route, tags)
+    expect(@route_cache).to have_received(:write).at_least(1).with(expected_route, tags)
   end
 
   private
