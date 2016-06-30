@@ -17,6 +17,8 @@ gem 'react-rails'
 gem 'browserify-rails'
 
 gem 'devise'
+gem 'ancestry'
+gem 'rails-cache-tags'
 
 # Assets Pipeline
 
