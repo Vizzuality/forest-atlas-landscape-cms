@@ -1,28 +1,28 @@
 class Admin::SitesController < AdminController
   before_action :set_site, only: [:show, :edit, :update, :destroy]
 
-  # GET /sites
-  # GET /sites.json
+  # GET /admin/sites
+  # GET /admin/sites.json
   def index
     @sites = Site.all
   end
 
-  # GET /sites/1
-  # GET /sites/1.json
+  # GET /admin/sites/1
+  # GET /admin/sites/1.json
   def show
   end
 
-  # GET /sites/new
+  # GET /admin/sites/new
   def new
     @site = Site.new
   end
 
-  # GET /sites/1/edit
+  # GET /admin/sites/1/edit
   def edit
   end
 
-  # POST /sites
-  # POST /sites.json
+  # POST /admin/sites
+  # POST /admin/sites.json
   def create
     @site = Site.new(site_params)
 
@@ -37,8 +37,8 @@ class Admin::SitesController < AdminController
     end
   end
 
-  # PATCH/PUT /sites/1
-  # PATCH/PUT /sites/1.json
+  # PATCH/PUT /admin/sites/1
+  # PATCH/PUT /admin/sites/1.json
   def update
     respond_to do |format|
       if @site.update(site_params)
@@ -51,8 +51,8 @@ class Admin::SitesController < AdminController
     end
   end
 
-  # DELETE /sites/1
-  # DELETE /sites/1.json
+  # DELETE /admin/sites/1
+  # DELETE /admin/sites/1.json
   def destroy
     @site.destroy
     respond_to do |format|
