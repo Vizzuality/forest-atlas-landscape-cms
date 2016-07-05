@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Template</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -12,6 +13,7 @@
     <% @sites.each do |site| %>
       <tr>
         <td><%= site.name %></td>
+        <td><%= site.site_template.name %></td>
         <td><%= link_to 'Show', admin_site_path(site) %></td>
         <td><%= link_to 'Edit', edit_admin_site_path(site) %></td>
         <td><%= link_to 'Destroy', admin_site_path(site), method: :delete, data: { confirm: 'Are you sure?' } %></td>
