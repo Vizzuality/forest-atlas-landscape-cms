@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: templates
+# Table name: site_templates
 #
 #  id         :integer          not null, primary key
 #  name       :string
@@ -8,5 +8,5 @@
 #  updated_at :datetime         not null
 #
 
-class Template < ApplicationRecord
+class SiteTemplate < ApplicationRecord
 end

@@ -6,16 +6,16 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Template.delete_all
+SiteTemplate.delete_all
 Site.delete_all
 Page.delete_all
 Route.delete_all
 
-fa_template = Template.create({name: 'Forest Atlas'})
-la_template = Template.create({name: 'Landscape Application'})
-puts 'Templates created successfully'
+fa_template = SiteTemplate.create({name: 'Forest Atlas'})
+la_template = SiteTemplate.create({name: 'Landscape Application'})
+puts 'Site templates created successfully'
 
-base_site = Site.create({name: 'Base site', template: fa_template})
+base_site = Site.create({name: 'Base site', site_template: fa_template})
 puts 'Base site created successfully'
 
 routes = [
