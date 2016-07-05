@@ -1,0 +1,18 @@
+<nav class="navbar navbar-dark bg-primary">
+  <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
+    &#9776;
+  </button>
+  <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
+    <%= link_to ForestAtlasLandscapeCms::Application.config.site_name, admin_url, class: 'navbar-brand'%>
+    <% if user_signed_in? %>
+        <ul class="nav navbar-nav">
+          <li class="nav-item"><%= link_to 'Users', admin_users_path, {class: current_class('admin/users') + 'nav-link'} %></li>
+          <li class="nav-item"><%= link_to 'Sites', admin_sites_path, {class: current_class('admin/sites') + 'nav-link'} %></li>
+          <li class="nav-item"><%= link_to 'Templates', admin_site_templates_path, {class: current_class('admin/site_templates') + 'nav-link'} %></li>
+        </ul>
+        <ul class="nav navbar-nav pull-xs-right">
+          <li class="nav-item"><%= link_to 'Logout', destroy_user_session_path, {class: 'nav-link', :method => :delete} %></li>
+        </ul>
+    <% end %>
+  </div>
+</nav>
