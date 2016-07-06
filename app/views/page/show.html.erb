@@ -1,2 +1,2 @@
 <h1><%= @page.name %></h1>
-<p><%= @page.description %></p>
+<%= @page.content.html_safe unless @page.content.blank? %>

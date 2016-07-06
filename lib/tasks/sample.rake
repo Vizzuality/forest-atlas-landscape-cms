@@ -17,6 +17,9 @@ namespace :db do
         host: 'localhost',
         site: base_site
       }, {
+        host: 'localhost:3000',
+        site: base_site
+      }, {
         host: '0.0.0.0',
         site: base_site
       }

@@ -69,6 +69,6 @@ class Admin::SiteTemplatesController < AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def site_template_params
-      params.fetch(:site_template, {})
+      params.require(:site_template).permit(:name)
     end
 end
