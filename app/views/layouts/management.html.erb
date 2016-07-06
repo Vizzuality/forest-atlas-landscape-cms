@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= ForestAtlasLandscapeCms::Application.config.site_name %> - Site Administration</title>
+  <title><%= ForestAtlasLandscapeCms::Application.config.site_name %> - Content Management</title>
   <%= csrf_meta_tags %>
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'admin', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
 <div class="container-fluid">
-  <%= render 'admin/header' %>
+  <%= render 'management/header' %>
   <%= render 'shared/messages' %>
   <%= yield %>
 </div>

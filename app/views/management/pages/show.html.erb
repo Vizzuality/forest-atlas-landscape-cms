@@ -1,0 +1,33 @@
+<p>
+  <strong>Name:</strong>
+  <%= @page.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @page.description %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @page.content.html_safe unless @page.content.nil? %>
+</p>
+
+<p>
+  <strong>Page site:</strong>
+  <%= @page.site.name %>
+</p>
+
+<p>
+  <strong>URL:</strong>
+  <%= @page.url%>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= link_to @page.links(request.port).first, @page.links(request.port).first, target: '_blank' %>
+</p>
+
+
+<%= link_to 'Edit', edit_management_page_path(@page), class: 'btn btn-primary' %>
+<%= link_to 'Back', management_pages_path, class: 'btn btn-secondary' %>

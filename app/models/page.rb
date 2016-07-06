@@ -6,11 +6,12 @@
 #  site_id     :integer
 #  name        :string
 #  description :string
-#  url         :string
 #  uri         :string
+#  url         :string
 #  ancestry    :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  content     :text
 #
 
 class Page < ApplicationRecord
@@ -35,6 +36,10 @@ class Page < ApplicationRecord
     value = value.gsub(/^[\/]+|[\/]+$/, '')
     write_attribute(:uri, value)
     regenerate_url
+  end
+
+  def links(port=80)
+    self.routes.map {|route| route.link(port) + self.url }
   end
 
   private

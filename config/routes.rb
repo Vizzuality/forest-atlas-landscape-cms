@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users, path: 'admin'
+  mount Ckeditor::Engine => '/ckeditor'
+  devise_for :users
 
   namespace :admin do
     resources :sites
@@ -8,7 +9,12 @@ Rails.application.routes.draw do
     resources :site_templates
   end
 
+  namespace :management do
+    resources :pages
+  end
+
   get '/admin', to: 'static#admin'
+  get '/management', to: 'static#management'
 
   DynamicRouter.load
 end
