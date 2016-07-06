@@ -1,0 +1,33 @@
+<%= form_for([:admin, site]) do |f| %>
+    <% if site.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(site.errors.count, "error") %> prohibited this site from being saved:</h2>
+
+          <ul>
+            <% site.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <fieldset class="form-group row">
+      <%= f.label :name, class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %></div>
+    </fieldset>
+
+    <fieldset class="form-group row">
+      <%= f.label :template_id, class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :site_template_id, SiteTemplate.all, :id, :name, {}, {:class => 'form-control'} %>
+      </div>
+    </fieldset>
+
+    <div class="form-group row">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to 'Show', admin_site_path(site), class: 'btn btn-secondary' unless site.id.nil? %>
+        <%= link_to 'Back', admin_sites_path, class: 'btn btn-secondary' %>
+      </div>
+    </div>
+<% end %>

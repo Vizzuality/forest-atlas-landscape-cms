@@ -9,4 +9,5 @@
 #
 
 class SiteTemplate < ApplicationRecord
+  has_many :sites
 end

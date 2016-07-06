@@ -1,0 +1,30 @@
+<%= form_for([:admin, site_template]) do |f| %>
+    <% if site_template.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(site_template.errors.count, "error") %> prohibited this site_template from being saved:</h2>
+
+          <ul>
+            <% site_template.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <fieldset class="form-group row">
+      <%= f.label :name, class: 'col-sm-2 form-control-label', class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+    </fieldset>
+
+    <div class="form-group row">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to 'Show', admin_site_template_path(site_template), class: 'btn btn-secondary' unless site_template.id.nil? %>
+        <%= link_to 'Back', admin_site_templates_path, class: 'btn btn-secondary' %>
+      </div>
+    </div>
+
+    </div>
+<% end %>

@@ -18,6 +18,8 @@ gem 'browserify-rails'
 
 gem 'devise'
 gem 'ancestry'
+gem 'bootstrap', '~> 4.0.0.alpha3'
+
 
 # Assets Pipeline
 

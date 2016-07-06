@@ -7,6 +7,7 @@
 #  name        :string
 #  description :string
 #  url         :string
+#  uri         :string
 #  ancestry    :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
