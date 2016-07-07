@@ -1,6 +1,21 @@
 {
   "name": "forest-atlas-landscape-cms",
-  "devDependencies": {
+  "version": "1.0.0",
+  "description": "This repository will host the Forest Altas and Landscape Application Content Management System application developed by Vizzuality",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vizzuality/forest-atlas-landscape-cms.git"
+  },
+  "keywords": [
+    "visualisation"
+  ],
+  "author": "Vizzuality <hello@vizzuality.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vizzuality/forest-atlas-landscape-cms/issues"
+  },
+  "homepage": "https://github.com/Vizzuality/forest-atlas-landscape-cms#readme",
+  "dependencies": {
     "babel-eslint": "^6.0.4",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
@@ -15,9 +30,7 @@
     "eslint-plugin-react": "^5.1.1",
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",
-    "redux-devtools-log-monitor": "^1.0.11"
-  },
-  "dependencies": {
+    "redux-devtools-log-monitor": "^1.0.11",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
@@ -26,8 +39,8 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0"
   },
-  "license": "MIT",
   "engines": {
-    "node": ">= 6.2"
+    "node": "5.10.x",
+    "npm": "3.8.x"
   }
 }
