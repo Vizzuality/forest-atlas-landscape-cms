@@ -4,7 +4,12 @@ class Admin::UsersController < AdminController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @users }
+    end
   end
 
   # GET /users/1

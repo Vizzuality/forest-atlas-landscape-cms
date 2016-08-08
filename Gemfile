@@ -21,6 +21,8 @@ gem 'ancestry'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'ckeditor'
 gem 'paperclip'
+gem 'will_paginate', '~> 3.1.0'
+gem 'active_model_serializers', '~> 0.10.0'
 
 # Assets Pipeline
 
