@@ -13,9 +13,6 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'dotenv'
 
-# gem 'react-rails'
-# gem 'browserify-rails'
-
 gem 'devise'
 gem 'ancestry'
 gem 'bootstrap', '~> 4.0.0.alpha3'
