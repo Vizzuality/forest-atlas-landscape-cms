@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms.svg?branch=master)](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms)
 
-Multisite content management system for forest atlas and lanscape applications
+Multisite content management system for forest atlas and landscape applications
 
 ## Dependencies
 
