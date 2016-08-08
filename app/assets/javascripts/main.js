@@ -11,14 +11,6 @@
 
       // inits router
       new App.Router();
-    },
-
-    start: function() {
-      Backbone.history.start({ pushState: true });
-    },
-
-    stop: function() {
-      Backbone.history.stop();
     }
 
   });
