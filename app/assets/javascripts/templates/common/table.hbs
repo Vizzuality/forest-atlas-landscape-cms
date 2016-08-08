@@ -1,0 +1,38 @@
+
+
+<div class="c-table">
+  <div class="table-header">
+    <div class="table-row">
+      {{#each headers}}
+        <div class="table-caption">{{ field_name }}</div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="table-body">
+    {{#each results}}
+      <div class="table-row">
+        {{#each this}}
+        <div class="table-caption">{{ field }}</div>
+
+          {{#each value }}
+            <div class="table-join">{{ this }}</div>
+
+            {{else}}
+
+            <div class="table-cell">{{ value }}</div>
+
+          {{/each}}
+
+        {{/each}}
+      </div>
+
+      {{else}}
+
+      <div class="table-row">
+        <div class="table-cell">No data available</div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<div id="pagination" class="c-pagination"></div>

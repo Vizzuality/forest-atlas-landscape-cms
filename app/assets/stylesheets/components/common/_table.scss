@@ -1,0 +1,43 @@
+.c-table {
+
+  border: 1px solid $black;
+
+  > .table-header {
+    display: none;
+
+    @media screen and (min-width: $screen-m) {
+      display: flex;
+
+      border-bottom: 1px solid $black;
+    }
+  }
+
+  > .table-header .table-caption {
+
+  }
+
+  > .table-body {}
+
+  > .table-body .table-caption {
+    display: inline-flex;
+
+    font-weight: $font-weight-bold;
+
+    @media screen and (min-width: $screen-m) {
+      display: none;
+    }
+  }
+
+  > .table-body .table-cell{}
+
+  .table-row {
+    width: 100%;
+    padding: 5px 10px;
+
+
+    & + .table-row {
+      border-top: 1px solid $black;
+    }
+  }
+
+}

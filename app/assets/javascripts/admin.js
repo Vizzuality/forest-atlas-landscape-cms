@@ -10,18 +10,25 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
+//= require underscore
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require underscore
 //= require backbone
+//= require turbolinks
 //= require handlebars
+//= require fuse.js/fuse
 
 //= require_self
 
-// = require_tree ./routers
-// = require_tree ./views/admin
-// = require dispatcher
+//= require_tree ./routers
+//= require_tree ./collections/
+//= require_tree ./views/common
+//= require_tree ./views/admin
+//= require_tree ./templates/common
+//= require_tree ./templates/admin
+
+//= require dispatcher
 
 (function() {
 
@@ -30,8 +37,9 @@
   this.App = {
     Events: _.extend(Backbone.Events),
     View: {},
-    Model: {},
     Router: {},
+    Collection: {},
+    Model: {},
     Helper: {}
   };
 

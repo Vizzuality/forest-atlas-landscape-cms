@@ -1,0 +1,27 @@
+.c-pagination {
+  padding: 0 120px;
+  margin: 30px 0;
+
+  text-align: center;
+
+
+  > .pagination-list {
+    display: inline-flex;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  > .pagination-list > .pagination-item {
+    list-style: none;
+
+    & + .pagination-item {
+      margin-left: 15px;
+    }
+  }
+
+  .pagination-item > .pagination-link {
+
+    color: $black;
+  }
+}
