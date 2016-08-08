@@ -20,8 +20,8 @@ module ForestAtlasLandscapeCms
       g.helper false
     end
 
-    config.react.addons = true
-
-    config.browserify_rails.commandline_options = "-t [ babelify --presets [ es2015 react ] ]"
+    # config.react.addons = true
+    #
+    # config.browserify_rails.commandline_options = "-t [ babelify --presets [ es2015 react ] ]"
   end
 end

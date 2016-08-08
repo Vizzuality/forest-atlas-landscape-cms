@@ -13,8 +13,8 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'dotenv'
 
-gem 'react-rails'
-gem 'browserify-rails'
+# gem 'react-rails'
+# gem 'browserify-rails'
 
 gem 'devise'
 gem 'ancestry'
@@ -28,6 +28,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-d3', '~> 3.5.16'
   gem 'rails-assets-vega', '~> 2.5.2'
   gem 'rails-assets-leaflet', '0.7.7'
+  gem 'rails-assets-backbone'
+  gem 'rails-assets-handlebars'
 end
 
 # Use ActiveModel has_secure_password
