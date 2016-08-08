@@ -13,9 +13,6 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'dotenv'
 
-gem 'react-rails'
-gem 'browserify-rails'
-
 gem 'devise'
 gem 'ancestry'
 gem 'bootstrap', '~> 4.0.0.alpha3'
@@ -23,6 +20,7 @@ gem 'ckeditor'
 gem 'paperclip'
 gem 'will_paginate', '~> 3.1.0'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'handlebars_assets'
 
 # Assets Pipeline
 
@@ -30,6 +28,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-d3', '~> 3.5.16'
   gem 'rails-assets-vega', '~> 2.5.2'
   gem 'rails-assets-leaflet', '0.7.7'
+  gem 'rails-assets-backbone'
 end
 
 # Use ActiveModel has_secure_password
