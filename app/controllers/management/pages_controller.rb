@@ -4,8 +4,12 @@ class Management::PagesController < ManagementController
   # GET /management/pages
   # GET /management/pages.json
   def index
-    @pages = Page.all
-  end
+    @pages = Page.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @pages }
+    end  end
 
   # GET /management/pages/1
   # GET /management/pages/1.json
