@@ -23,6 +23,13 @@
       </div>
     </fieldset>
 
+    <fieldset class="form-group row">
+      <%= f.label :users, class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :user_ids, User.all, :id, :name, {}, {:class => 'form-control', :multiple => true} %>
+      </div>
+    </fieldset>
+
     <div class="form-group row">
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit class: 'btn btn-primary' %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160706112559) do
+ActiveRecord::Schema.define(version: 20160808143633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,15 @@ ActiveRecord::Schema.define(version: 20160706112559) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.index ["site_template_id"], name: "index_sites_on_site_template_id", using: :btree
+  end
+
+  create_table "user_site_associations", force: :cascade do |t|
+    t.integer  "site_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_user_site_associations_on_site_id", using: :btree
+    t.index ["user_id"], name: "index_user_site_associations_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

@@ -15,6 +15,10 @@ class Admin::SitesController < AdminController
   # GET /admin/sites/1
   # GET /admin/sites/1.json
   def show
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @site }
+    end
   end
 
   # GET /admin/sites/new
@@ -74,6 +78,6 @@ class Admin::SitesController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
-    params.require(:site).permit(:name, :site_template_id)
+    params.require(:site).permit(:name, :site_template_id, {user_ids: []})
   end
 end

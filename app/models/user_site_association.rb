@@ -1,13 +1,15 @@
 # == Schema Information
 #
-# Table name: site_templates
+# Table name: user_site_associations
 #
 #  id         :integer          not null, primary key
-#  name       :string
+#  site_id    :integer
+#  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
-class SiteTemplateSerializer < ActiveModel::Serializer
-  attributes :id, :name
+class UserSiteAssociation < ApplicationRecord
+  belongs_to :site
+  belongs_to :user
 end
