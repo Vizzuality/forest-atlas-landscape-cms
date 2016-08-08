@@ -2,6 +2,8 @@
 
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', new App.MainView());
+  document.addEventListener('DOMContentLoaded', function() {
+    new App.View.MainView();
+  });
 
 })(this.App);

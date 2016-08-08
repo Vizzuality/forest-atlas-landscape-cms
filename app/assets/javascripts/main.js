@@ -3,7 +3,7 @@
 
   'use strict';
 
-  App.MainView = Backbone.View.extend({
+  App.View.MainView = Backbone.View.extend({
 
     el: '#main',
 
@@ -14,6 +14,5 @@
     }
 
   });
-
 
 })(this.App);
