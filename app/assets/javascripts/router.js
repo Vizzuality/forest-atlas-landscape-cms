@@ -9,10 +9,6 @@
       '/map': '_map'
     },
 
-    initialize: function() {
-      console.log('init router');
-    },
-
     _home: function() {
       console.log('home');
     },
