@@ -3,7 +3,7 @@
     &#9776;
   </button>
   <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
-    <%= link_to 'Content Management', admin_url, class: 'navbar-brand'%>
+    <%= link_to 'Content Management', management_url, class: 'navbar-brand'%>
     <% if user_signed_in? %>
         <ul class="nav navbar-nav">
           <li class="nav-item"><%= link_to 'Pages', management_pages_path, {class: current_class('management/pages') + 'nav-link'} %></li>
