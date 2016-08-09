@@ -11,4 +11,6 @@
 
   });
 
+  new App.View.HomeView();
+
 })(this.App);
