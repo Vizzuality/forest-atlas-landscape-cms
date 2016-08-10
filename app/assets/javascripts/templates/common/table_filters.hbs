@@ -1,0 +1,17 @@
+
+{{#if isSortable}}
+  <div class="c-selector">
+    <select id="filter-sort" class="selector" name="sort_by">
+      <option value="">sort by</option>
+      {{#each filters}}
+        <option value="{{ field_name }}">{{ field_name }}</option>
+      {{/each}}
+    </select>
+  </div>
+{{/if}}
+
+{{#if hasSearch}}
+  <div class="input -search">
+    <input id="filter-search" type="text" name="search" placeholder="search">
+  </div>
+{{/if}}

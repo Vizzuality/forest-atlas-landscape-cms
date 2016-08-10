@@ -12,7 +12,9 @@
     index: function() {
       console.info('You are at admin page');
 
-      new App.View.AdminView();
+      document.addEventListener('DOMContentLoaded', function() {
+        new App.View.AdminView();
+      });
     }
 
   });

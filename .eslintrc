@@ -10,8 +10,9 @@
     "$": true,
     "L": true,
     "Backbone": true,
-    "handlebars": true,
-    "_": true
+    "HandlebarsTemplates": true,
+    "_": true,
+    "Fuse": true
   },
   "env": {
     "browser": true
