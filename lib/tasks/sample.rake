@@ -1,5 +1,5 @@
 namespace :db do
-  desc "Create sample development data"
+  desc 'Create sample development data'
   task :sample => :environment do
 
     Site.delete_all
@@ -8,6 +8,12 @@ namespace :db do
     User.delete_all
 
     fa_template = SiteTemplate.find_by name: 'Forest Atlas'
+    la_template = SiteTemplate.find_by name: 'Landscape Application'
+
+    site_one = Site.create({name: 'Site One', site_template: fa_template})
+    site_two = Site.create({name: 'Site Two', site_template: fa_template})
+    site_three = Site.create({name: 'Site Three', site_template: la_template})
+    site_four = Site.create({name: 'Site Four', site_template: la_template})
 
     base_site = Site.create({name: 'Base site', site_template: fa_template})
     puts 'Base site created successfully'
@@ -29,22 +35,103 @@ namespace :db do
     puts 'Routes created successfully'
 
     home = Page.create({name: 'Home', description: 'Homepage description', uri: '', site: base_site})
-    test = Page.create({name: 'Test', description: 'Test page description', uri: 'test', site: base_site, parent: home})
+    Page.create({name: 'Test', description: 'Test page description', uri: 'test', site: base_site, parent: home})
     section_1 = Page.create({name: 'Section 1', description: 'Section 1 description', uri: 'section-1', site: base_site, parent: home})
-    subsection_1 = Page.create({name: 'Subsection 1', description: 'Subsection 1 description', uri: 'subsection-1', site: base_site, parent: section_1})
+    Page.create({name: 'Subsection 1', description: 'Subsection 1 description', uri: 'subsection-1', site: base_site, parent: section_1})
     puts 'Pages created successfully'
 
-    users = [
+    # Create users
+    user_admin = User.create(
       {
         name: 'Admin User',
         email: 'admin@example.com',
         password: 'password',
         password_confirmation: 'password'
       }
+    )
+
+    user_one = User.create(
+      {
+        name: 'Test User One',
+        email: 'test-user-one@example.com',
+        password: 'password',
+        password_confirmation: 'password'
+      }
+    )
+    user_two = User.create(
+      {
+        name: 'Test User Two',
+        email: 'test-user-two@example.com',
+        password: 'password',
+        password_confirmation: 'password'
+      }
+    )
+    user_three = User.create(
+      {
+        name: 'Test User Three',
+        email: 'test-user-three@example.com',
+        password: 'password',
+        password_confirmation: 'password'
+      }
+    )
+    user_four = User.create(
+      {
+        name: 'Test User Four',
+        email: 'test-user-four@example.com',
+        password: 'password',
+        password_confirmation: 'password'
+      }
+    )
+    puts 'Users created successfully'
+
+    user_sites = [
+      {
+        user: user_admin,
+        site: base_site
+      }, {
+        user: user_admin,
+        site: site_two
+      }, {
+        user: user_admin,
+        site: site_three
+      }, {
+        user: user_admin,
+        site: site_four
+      }, {
+        user: user_one,
+        site: site_one
+      }, {
+        user: user_one,
+        site: site_two
+      }, {
+        user: user_one,
+        site: site_three
+      }, {
+        user: user_one,
+        site: site_four
+      }, {
+        user: user_two,
+        site: site_two
+      }, {
+        user: user_two,
+        site: site_three
+      }, {
+        user: user_two,
+        site: site_four
+      }, {
+        user: user_three,
+        site: site_three
+      }, {
+        user: user_three,
+        site: site_four
+      }, {
+        user: user_four,
+        site: site_four
+      },
     ]
 
-    # Create users
-    User.create(users)
-    puts "Users created successfully"
+    # Create user site associations
+    UserSiteAssociation.create(user_sites)
+    puts 'User-Site associations created successfully'
   end
 end
