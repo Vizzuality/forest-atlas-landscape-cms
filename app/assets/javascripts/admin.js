@@ -16,3 +16,23 @@
 //= require underscore
 //= require backbone
 //= require handlebars
+
+//= require_self
+
+// = require_tree ./routers
+// = require_tree ./views/admin
+// = require dispatcher
+
+(function() {
+
+  'use strict';
+
+  this.App = {
+    Events: _.extend(Backbone.Events),
+    View: {},
+    Model: {},
+    Router: {},
+    Helper: {}
+  };
+
+}).call(this);

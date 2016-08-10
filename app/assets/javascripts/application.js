@@ -23,9 +23,9 @@
 
 //= require_self
 
-//= require main
-//= require router
-//= require dispatcher
+// = require_tree ./routers
+// = require_tree ./views/home
+// = require dispatcher
 
 (function() {
 
@@ -35,6 +35,7 @@
     Events: _.extend(Backbone.Events),
     View: {},
     Model: {},
+    Router: {},
     Helper: {}
   };
 
