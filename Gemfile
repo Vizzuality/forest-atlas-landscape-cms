@@ -23,6 +23,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'handlebars_assets'
 
 # Assets Pipeline
+gem 'autoprefixer-rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-d3', '~> 3.5.16'
