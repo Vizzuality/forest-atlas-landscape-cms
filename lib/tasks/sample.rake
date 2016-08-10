@@ -36,6 +36,7 @@ namespace :db do
 
     users = [
       {
+        name: 'Admin User',
         email: 'admin@example.com',
         password: 'password',
         password_confirmation: 'password'

@@ -31,6 +31,13 @@
       <div class="col-sm-10"><%= f.password_field :password_confirmation, class: 'form-control', autocomplete: "off" %></div>
     </fieldset>
 
+    <fieldset class="form-group row">
+      <%= f.label :sites, class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :site_ids, Site.all, :id, :name, {}, {:class => 'form-control', :multiple => true} %>
+      </div>
+    </fieldset>
+
     <div class="form-group row">
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit class: 'btn btn-primary' %>
