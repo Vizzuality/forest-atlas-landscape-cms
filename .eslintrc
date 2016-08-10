@@ -1,11 +1,5 @@
 {
-  "extends": "airbnb",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
-  },
-  "plugins": [],
+  "extends": "eslint:recommended",
   "rules": {
     "arrow-body-style": 1,
     "func-names": 0
@@ -14,6 +8,12 @@
     "vg": true,
     "d3": true,
     "$": true,
-    "L": true
+    "L": true,
+    "Backbone": true,
+    "handlebars": true,
+    "_": true
   },
+  "env": {
+    "browser": true
+  }
 }
