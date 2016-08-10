@@ -273,6 +273,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   ancestry
   annotate
+  autoprefixer-rails
   bootstrap (~> 4.0.0.alpha3)
   byebug
   ckeditor
