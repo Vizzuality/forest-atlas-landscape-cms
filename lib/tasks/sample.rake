@@ -34,10 +34,10 @@ namespace :db do
     Route.create(routes)
     puts 'Routes created successfully'
 
-    home = Page.create({name: 'Home', description: 'Homepage description', uri: '', site: base_site})
-    Page.create({name: 'Test', description: 'Test page description', uri: 'test', site: base_site, parent: home})
-    section_1 = Page.create({name: 'Section 1', description: 'Section 1 description', uri: 'section-1', site: base_site, parent: home})
-    Page.create({name: 'Subsection 1', description: 'Subsection 1 description', uri: 'subsection-1', site: base_site, parent: section_1})
+    home = Page.create!({name: 'Home', description: 'Homepage description', uri: '', site: base_site, page_type: PageType::HOMEPAGE})
+    Page.create!({name: 'Test', description: 'Test page description', uri: 'test', site: base_site, parent: home, page_type: PageType::OPEN_CONTENT})
+    section_1 = Page.create!({name: 'Section 1', description: 'Section 1 description', uri: 'section-1', site: base_site, parent: home, page_type: PageType::OPEN_CONTENT})
+    Page.create!({name: 'Subsection 1', description: 'Subsection 1 description', uri: 'subsection-1', site: base_site, parent: section_1, page_type: PageType::OPEN_CONTENT})
     puts 'Pages created successfully'
 
     # Create users
