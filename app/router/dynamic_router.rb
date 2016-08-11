@@ -73,7 +73,18 @@ class DynamicRouter
     ancestor_tags = page.ancestors.map { |page| 'p:'+page.id.to_s }
     tags = ['r:'+route.id.to_s, 's:'+page.site.id.to_s, 'p:'+page.id.to_s] + ancestor_tags
 
-    route = RouteDefinition.new(path, 'page#show', {id: page.id}, constraints, tags)
+    case page.page_type
+      when PageType::HOMEPAGE
+        target = 'page#homepage'
+      when PageType::ANALYSIS_DASHBOARD
+        target = 'page#show'
+      when PageType::DYNAMIC_INDICATOR_DASHBOARD
+        target = 'page#show'
+      else
+        target = 'page#show'
+    end
+
+    route = RouteDefinition.new(path, target, {id: page.id}, constraints, tags)
     @route_cache.write(route, route.tags) unless route.nil?
   end
 

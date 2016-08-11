@@ -12,9 +12,12 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  content     :text
+#  page_type   :text
 #
 
 class Page < ApplicationRecord
+  extend EnumerateIt
+
   belongs_to :site
   has_many :routes, through: :site
   validates :url, uniqueness: {scope: :site}
@@ -23,6 +26,8 @@ class Page < ApplicationRecord
 
   before_validation :regenerate_url
   after_save :update_routes
+
+  has_enumeration_for :page_type, with: PageType
 
   def update_routes
     DynamicRouter.update_routes_for_page self
