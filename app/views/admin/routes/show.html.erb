@@ -1,0 +1,17 @@
+<p>
+  <strong>Site:</strong>
+  <%= @route.site.name %>
+</p>
+
+<p>
+  <strong>Host:</strong>
+  <%= @route.host %>
+</p>
+
+<p>
+  <strong>Path:</strong>
+  <%= @route.path %>
+</p>
+
+<%= link_to 'Edit', edit_admin_route_path(@route), class: 'btn btn-primary' %>
+<%= link_to 'Back', admin_routes_path, class: 'btn btn-primary' %>

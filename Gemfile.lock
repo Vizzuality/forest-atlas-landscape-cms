@@ -1,87 +1,92 @@
 GIT
   remote: https://github.com/rspec/rspec-core.git
-  revision: fe1256b4c51e1e972aae70d52f2370565218d3ff
+  revision: d9d7b4ff9378c338a1304a3cb92b2205cea8f30b
   branch: master
   specs:
-    rspec-core (3.5.0.pre)
-      rspec-support (= 3.5.0.pre)
+    rspec-core (3.6.0.pre)
+      rspec-support (= 3.6.0.pre)
 
 GIT
   remote: https://github.com/rspec/rspec-expectations.git
-  revision: 501a513a4259e82e1cf04442b45a1fedaa2fbcce
+  revision: a271631e9b8e1749be876dbcc65dbd7a6a40d2db
   branch: master
   specs:
-    rspec-expectations (3.5.0.pre)
+    rspec-expectations (3.6.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.5.0.pre)
+      rspec-support (= 3.6.0.pre)
 
 GIT
   remote: https://github.com/rspec/rspec-mocks.git
-  revision: 53fd0a3daaa2b659aba18b0fc1dcdc8e698bb82f
+  revision: 097bf1f54d1082b4c8e2d7e421614f4d2e252641
   branch: master
   specs:
-    rspec-mocks (3.5.0.pre)
+    rspec-mocks (3.6.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.5.0.pre)
+      rspec-support (= 3.6.0.pre)
 
 GIT
   remote: https://github.com/rspec/rspec-rails.git
-  revision: 1b2ae295b0e47f650a08237b8b22b5b75cda46c5
+  revision: a858f3c74f977687c21bad88cbc2ff82b81fbb5b
   branch: master
   specs:
-    rspec-rails (3.5.0.pre)
+    rspec-rails (3.6.0.pre)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec-core (= 3.5.0.pre)
-      rspec-expectations (= 3.5.0.pre)
-      rspec-mocks (= 3.5.0.pre)
-      rspec-support (= 3.5.0.pre)
+      rspec-core (= 3.6.0.pre)
+      rspec-expectations (= 3.6.0.pre)
+      rspec-mocks (= 3.6.0.pre)
+      rspec-support (= 3.6.0.pre)
 
 GIT
   remote: https://github.com/rspec/rspec-support.git
-  revision: 46ded3f0852d1d3b6f389ea9d793e5fb50c8573a
+  revision: abd792d51ec8f79111d815a55e527048c0523a1d
   branch: master
   specs:
-    rspec-support (3.5.0.pre)
+    rspec-support (3.6.0.pre)
 
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
-    actioncable (5.0.0.rc2)
-      actionpack (= 5.0.0.rc2)
+    actioncable (5.0.0)
+      actionpack (= 5.0.0)
       nio4r (~> 1.2)
       websocket-driver (~> 0.6.1)
-    actionmailer (5.0.0.rc2)
-      actionpack (= 5.0.0.rc2)
-      actionview (= 5.0.0.rc2)
-      activejob (= 5.0.0.rc2)
+    actionmailer (5.0.0)
+      actionpack (= 5.0.0)
+      actionview (= 5.0.0)
+      activejob (= 5.0.0)
       mail (~> 2.5, >= 2.5.4)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
-    actionpack (5.0.0.rc2)
-      actionview (= 5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
-      rack (~> 2.x)
+      rails-dom-testing (~> 2.0)
+    actionpack (5.0.0)
+      actionview (= 5.0.0)
+      activesupport (= 5.0.0)
+      rack (~> 2.0)
       rack-test (~> 0.6.3)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
+      rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
+    actionview (5.0.0)
+      activesupport (= 5.0.0)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
+      rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    activejob (5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
+    active_model_serializers (0.10.2)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      jsonapi (~> 0.1.1.beta2)
+      railties (>= 4.1, < 6)
+    activejob (5.0.0)
+      activesupport (= 5.0.0)
       globalid (>= 0.3.6)
-    activemodel (5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
-    activerecord (5.0.0.rc2)
-      activemodel (= 5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
+    activemodel (5.0.0)
+      activesupport (= 5.0.0)
+    activerecord (5.0.0)
+      activemodel (= 5.0.0)
+      activesupport (= 5.0.0)
       arel (~> 7.0)
-    activesupport (5.0.0.rc2)
+    activesupport (5.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -91,17 +96,23 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
-    arel (7.0.0)
-    babel-source (5.8.35)
-    babel-transpiler (0.7.0)
-      babel-source (>= 4.0, < 6)
-      execjs (~> 2.0)
+    arel (7.1.1)
+    autoprefixer-rails (6.4.0.1)
+      execjs
     bcrypt (3.1.11)
-    browserify-rails (3.1.0)
-      railties (>= 4.0.0, < 5.1)
-      sprockets (>= 3.5.2)
+    bootstrap (4.0.0.alpha3.1)
+      autoprefixer-rails (>= 6.0.3)
+      sass (>= 3.4.19)
     builder (3.2.2)
     byebug (9.0.5)
+    ckeditor (4.2.0)
+      cocaine
+      orm_adapter (~> 0.5.0)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.8)
+      climate_control (>= 0.0.3, < 1.0)
+    coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.1.x)
@@ -110,9 +121,8 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
-    connection_pool (2.2.0)
     debug_inspector (0.0.2)
-    devise (4.1.1)
+    devise (4.2.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -120,13 +130,20 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     dotenv (2.1.1)
+    enumerate_it (1.3.0)
+      activesupport (>= 3.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
-    ffi (1.9.10)
-    globalid (0.3.6)
+    ffi (1.9.14)
+    globalid (0.3.7)
       activesupport (>= 4.1.0)
+    handlebars_assets (0.23.1)
+      execjs (~> 2.0)
+      multi_json (~> 1.0)
+      sprockets (>= 2.0.0)
+      tilt (>= 1.2)
     i18n (0.7.0)
-    jbuilder (2.5.0)
+    jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
     jquery-rails (4.1.1)
@@ -134,6 +151,8 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
+    jsonapi (0.1.1.beta2)
+      json (~> 1.8)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -145,6 +164,7 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mimemagic (0.3.2)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
     multi_json (1.12.1)
@@ -153,42 +173,51 @@ GEM
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     orm_adapter (0.5.0)
+    paperclip (5.0.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      cocaine (~> 0.5.5)
+      mime-types
+      mimemagic (~> 0.3.0)
     pg (0.18.4)
     pkg-config (1.1.7)
-    puma (3.4.0)
-    rack (2.0.0.rc1)
-      json
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-rails (0.3.4)
+      pry (>= 0.9.10)
+    puma (3.6.0)
+    rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rails (5.0.0.rc2)
-      actioncable (= 5.0.0.rc2)
-      actionmailer (= 5.0.0.rc2)
-      actionpack (= 5.0.0.rc2)
-      actionview (= 5.0.0.rc2)
-      activejob (= 5.0.0.rc2)
-      activemodel (= 5.0.0.rc2)
-      activerecord (= 5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
+    rails (5.0.0)
+      actioncable (= 5.0.0)
+      actionmailer (= 5.0.0)
+      actionpack (= 5.0.0)
+      actionview (= 5.0.0)
+      activejob (= 5.0.0)
+      activemodel (= 5.0.0)
+      activerecord (= 5.0.0)
+      activesupport (= 5.0.0)
       bundler (>= 1.3.0, < 2.0)
-      railties (= 5.0.0.rc2)
+      railties (= 5.0.0)
       sprockets-rails (>= 2.0.0)
+    rails-assets-backbone (1.3.3)
+      rails-assets-underscore (>= 1.8.3)
     rails-assets-d3 (3.5.17)
     rails-assets-leaflet (0.7.7)
+    rails-assets-underscore (1.8.3)
     rails-assets-vega (2.5.2)
       rails-assets-d3 (>= 3.5.6, < 4)
-    rails-cache-tags (1.3.2)
-      activesupport (>= 3.0)
-    rails-deprecated_sanitizer (1.0.3)
-      activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.7)
-      activesupport (>= 4.2.0.beta, < 5.0)
+    rails-dom-testing (2.0.1)
+      activesupport (>= 4.2.0, < 6.0)
       nokogiri (~> 1.6.0)
-      rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    railties (5.0.0.rc2)
-      actionpack (= 5.0.0.rc2)
-      activesupport (= 5.0.0.rc2)
+    railties (5.0.0)
+      actionpack (= 5.0.0)
+      activesupport (= 5.0.0)
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
@@ -196,27 +225,21 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
-    react-rails (1.8.0)
-      babel-transpiler (>= 0.7.0)
-      coffee-script-source (~> 1.8)
-      connection_pool
-      execjs
-      railties (>= 3.2)
-      tilt
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     sass (3.4.22)
-    sass-rails (5.0.4)
-      railties (>= 4.0.0, < 5.0)
+    sass-rails (5.0.6)
+      railties (>= 4.0.0, < 6)
       sass (~> 3.1)
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    spring (1.7.1)
+    slop (3.6.0)
+    spring (1.7.2)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
       spring (~> 1.2)
-    sprockets (3.6.2)
+    sprockets (3.7.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.1.1)
@@ -226,45 +249,53 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
-    turbolinks (5.0.0.beta2)
-      turbolinks-source
-    turbolinks-source (5.0.0.beta5)
+    turbolinks (5.0.1)
+      turbolinks-source (~> 5)
+    turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (3.0.0)
+    uglifier (3.0.1)
       execjs (>= 0.3.0, < 3)
     warden (1.2.6)
       rack (>= 1.0)
-    web-console (3.3.0)
-      activemodel (>= 4.2)
+    web-console (3.3.1)
+      actionview (>= 5.0)
+      activemodel (>= 5.0)
       debug_inspector
-      railties (>= 4.2)
+      railties (>= 5.0)
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    will_paginate (3.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10.0)
   ancestry
   annotate
-  browserify-rails
+  autoprefixer-rails
+  bootstrap (~> 4.0.0.alpha3)
   byebug
+  ckeditor
   coffee-rails (~> 4.1.0)
   devise
   dotenv
+  enumerate_it
+  handlebars_assets
   jbuilder (~> 2.0)
   jquery-rails
   listen (~> 3.0.5)
+  paperclip
   pg (~> 0.18)
+  pry-rails
   puma (~> 3.0)
-  rails (>= 5.0.0.rc1, < 5.1)
+  rails (>= 5.0.0, < 5.1)
+  rails-assets-backbone!
   rails-assets-d3 (~> 3.5.16)!
   rails-assets-leaflet (= 0.7.7)!
   rails-assets-vega (~> 2.5.2)!
-  rails-cache-tags
-  react-rails
   rspec-core!
   rspec-expectations!
   rspec-mocks!
@@ -277,6 +308,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console
+  will_paginate (~> 3.1.0)
 
 BUNDLED WITH
    1.12.5

@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms.svg?branch=master)](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms)
 
-Multisite content management system for forest atlas and lanscape applications
+Multisite content management system for forest atlas and landscape applications
 
 ## Dependencies
 
@@ -26,6 +26,11 @@ To set up the database, run:
 
     bundle exec rake db:create
     bundle exec rake db:migrate
+    bundle exec rake db:seed
+
+If you are on a development environment, you might also want to load some sample data:
+
+    bundle exec rake db:sample
 
 ## Running
 

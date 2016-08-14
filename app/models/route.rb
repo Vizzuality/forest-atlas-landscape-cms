@@ -12,5 +12,17 @@
 
 class Route < ApplicationRecord
   belongs_to :site
+  has_many :pages, through: :site
 
+  after_save :update_routes
+
+  def link(port=80)
+    protocol = (port == 443 ? 'https://' : 'http://')
+    port = ([443, 80].include?(port) ? '' : ':' + port.to_s)
+    protocol + host + port + (path.blank? ? '' : ('/' + path))
+  end
+
+  def update_routes
+    DynamicRouter.update_routes_for_route self
+  end
 end

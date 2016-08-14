@@ -23,7 +23,7 @@ Rails.application.configure do
   else
     config.action_controller.perform_caching = false
 
-    config.cache_store = :null_store
+    config.cache_store = :memory_store
   end
 
   # Don't care if the mailer can't send.
@@ -49,6 +49,4 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # React configuration
-  config.react.variant = :development
 end

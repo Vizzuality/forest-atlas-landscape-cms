@@ -10,10 +10,33 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
+//= require underscore
 //= require jquery
 //= require jquery_ujs
+//= require backbone
 //= require turbolinks
 //= require d3
 //= require vega
 //= require leaflet
-//= require index.js
+//= require handlebars
+
+//= require_self
+
+// = require_tree ./routers
+// = require_tree ./views/home
+// = require dispatcher
+
+(function() {
+
+  'use strict';
+
+  this.App = {
+    Events: _.extend(Backbone.Events),
+    View: {},
+    Model: {},
+    Router: {},
+    Helper: {}
+  };
+
+}).call(this);
