@@ -73,12 +73,12 @@ class DynamicRouter
     ancestor_tags = page.ancestors.map { |page| 'p:'+page.id.to_s }
     tags = ['r:'+route.id.to_s, 's:'+page.site.id.to_s, 'p:'+page.id.to_s] + ancestor_tags
 
-    case page.page_type
-      when PageType::HOMEPAGE
+    case page.content_type
+      when ContentType::HOMEPAGE
         target = 'page#homepage'
-      when PageType::ANALYSIS_DASHBOARD
+      when ContentType::ANALYSIS_DASHBOARD
         target = 'page#show'
-      when PageType::DYNAMIC_INDICATOR_DASHBOARD
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
         target = 'page#show'
       else
         target = 'page#show'

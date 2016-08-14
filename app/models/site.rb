@@ -18,8 +18,13 @@ class Site < ApplicationRecord
 
 
   after_save :update_routes
+  after_create :create_template_content
 
   def update_routes
     DynamicRouter.update_routes_for_site self
+  end
+
+  def create_template_content
+    SiteCreator.create_site_content self
   end
 end
