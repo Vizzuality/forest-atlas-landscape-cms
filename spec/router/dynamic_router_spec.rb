@@ -54,8 +54,10 @@ RSpec.describe DynamicRouter do
 
   def save_without_route_update(obj)
     obj.class.skip_callback :save, :after, :update_routes
+    obj.class.skip_callback :create, :after, :update_routes, raise: false
     obj.save!
     obj.class.set_callback :save, :after, :update_routes
+    obj.class.set_callback :create, :after, :update_routes, raise: false
   end
 
 end

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :users
     resources :routes
     resources :site_templates
+    resources :page_templates
   end
 
   namespace :management do
