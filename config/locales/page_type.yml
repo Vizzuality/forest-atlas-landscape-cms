@@ -1,4 +1,4 @@
 en:
   enumerations:
-    page_type:
+    content_type:
       openContent: "Open Content"

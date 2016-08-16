@@ -16,6 +16,8 @@
 #  type         :text
 #
 
-class PageSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :url, :parent_id
+require 'rails_helper'
+
+RSpec.describe PageTemplate, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end
