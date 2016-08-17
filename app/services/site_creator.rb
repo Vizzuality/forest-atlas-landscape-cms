@@ -1,6 +1,6 @@
 class SiteCreator
   def self.create_site_content(site)
-    return nil if site.site_template.nil? or site.site_template.empty?
+    return nil if site.site_template_id.nil?
 
     pages = site.site_template.pages
     @new_page_tree = {}

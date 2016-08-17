@@ -11,7 +11,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5.x'
 gem 'jbuilder', '~> 2.0'
 
-gem 'dotenv'
+gem 'dotenv-rails', '~> 2.1'
 
 gem 'devise'
 gem 'ancestry'
