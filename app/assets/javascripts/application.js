@@ -24,6 +24,8 @@
 //= require_self
 
 // = require_tree ./routers
+// = require_tree ./templates
+// = require_tree ./views/shared
 // = require_tree ./views/home
 // = require dispatcher
 

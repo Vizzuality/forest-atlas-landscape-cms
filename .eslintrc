@@ -14,7 +14,7 @@
     "$": true,
     "L": true,
     "Backbone": true,
-    "handlebars": true,
+    "HandlebarsTemplates": true,
     "_": true
   },
   "env": {
