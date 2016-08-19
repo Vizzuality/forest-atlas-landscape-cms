@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160814153835) do
+ActiveRecord::Schema.define(version: 20160819102119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,10 +37,10 @@ ActiveRecord::Schema.define(version: 20160814153835) do
     t.string   "uri"
     t.string   "url"
     t.string   "ancestry"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.text     "content"
-    t.text     "content_type"
+    t.integer  "content_type"
     t.text     "type"
     t.index ["ancestry"], name: "index_pages_on_ancestry", using: :btree
     t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
