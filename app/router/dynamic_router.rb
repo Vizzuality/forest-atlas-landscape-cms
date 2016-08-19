@@ -76,12 +76,16 @@ class DynamicRouter
     case page.content_type
       when ContentType::HOMEPAGE
         target = 'page#homepage'
+      when ContentType::OPEN_CONTENT
+        target = 'page#open_content'
+      when ContentType::MAP
+        target = 'page#map'
       when ContentType::ANALYSIS_DASHBOARD
-        target = 'page#show'
+        target = 'page#analysis_dashboard'
       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        target = 'page#show'
+        target = 'page#dynamic_indicator_dashboard'
       else
-        target = 'page#show'
+        target = 'page#open_content'
     end
 
     route = RouteDefinition.new(path, target, {id: page.id}, constraints, tags)
