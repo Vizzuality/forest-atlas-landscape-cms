@@ -49,7 +49,7 @@ def create_pages_templates
 end
 
 def create_sites
-  @site_one = Site.create({name: 'Site One', site_template: @fa_template})
+  @staging_demo_site = Site.create({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template})
   @site_two = Site.create({name: 'Site Two', site_template: @fa_template})
   @site_three = Site.create({name: 'Site Three', site_template: @la_template})
   @site_four = Site.create({name: 'Site Four', site_template: @la_template})
@@ -66,7 +66,7 @@ def clear
   puts 'Database clear'
 end
 
-def create_routes
+def create_base_site_routes
   routes = [
     {
       host: 'localhost',
@@ -81,7 +81,19 @@ def create_routes
   ]
 
   Route.create(routes)
-  puts 'Routes created successfully'
+  puts 'Routes for base site created successfully'
+end
+
+def create_heroku_staging_site_routes
+  routes = [
+    {
+      host: 'fa-cms.herokuapp.com',
+      site: @staging_demo_site
+    }
+  ]
+
+  Route.create(routes)
+  puts 'Routes for staging site created successfully'
 end
 
 def create_users
@@ -140,7 +152,8 @@ namespace :db do
 
     create_pages_templates
     create_sites
-    create_routes
+    create_base_site_routes
+    create_heroku_staging_site_routes
     create_users
 
     user_sites = [
@@ -158,7 +171,7 @@ namespace :db do
         site: @site_four
       }, {
         user: @user_one,
-        site: @site_one
+        site: @staging_demo_site
       }, {
         user: @user_one,
         site: @site_two
