@@ -6,7 +6,8 @@
     initialize: function () {
       // Uncomment this code block to test tabs
       // var tabView = new App.View.TabView({
-      //   tabs: ['tab1', 'tab2', 'tab3']
+      //   tabs: ['tab1', 'tab2', 'tab3'],
+      //   cssClass: '-red'
       // }).render();
       //
       // $('body').html(tabView);

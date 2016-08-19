@@ -46,6 +46,12 @@
       $tab.addClass('-current');
     },
 
+    _setCustomStyle: function() {
+      if (!this.options.cssClass) return;
+
+      this.className += ' ' + this.options.cssClass;
+    },
+
     _onChangeTab: function(e) {
       if(!e) return;
 
@@ -65,7 +71,12 @@
 
     render: function() {
       var currentTabIndex = this.options.currentTab,
+        tabs = this.options.tabs,
         $tab;
+
+      if (!tabs.length > 0) return;
+
+      this._setCustomStyle();
 
       this.$el.html(this.template({
         cssClass: this.options.cssClass,
