@@ -41,7 +41,7 @@ class DynamicRouter
 
     @route_cache.remove('s:'+site.id.to_s)
 
-    site.pages.each do |site_page|
+    site.site_pages.each do |site_page|
       site_page.routes.each do |route|
         _build_routes_for_page_and_route(site_page, route)
       end
@@ -55,7 +55,7 @@ class DynamicRouter
 
     @route_cache.remove('r:'+route.id.to_s)
 
-    route.pages.each do |site_page|
+    route.site_pages.each do |site_page|
       _build_routes_for_page_and_route(site_page, route)
     end
 

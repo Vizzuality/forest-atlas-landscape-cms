@@ -18,7 +18,7 @@ RSpec.describe DynamicRouter do
   end
 
   it 'Creating a site updates routes' do
-    @site = Site.new(:name => 'Demo site', :routes => [@sample_route], :pages => [@sample_page])
+    @site = Site.new(:name => 'Demo site', :routes => [@sample_route], :site_pages => [@sample_page])
     save_without_route_update @site
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@site.id.to_s, 'p:'+@sample_page.id.to_s]
