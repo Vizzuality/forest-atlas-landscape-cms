@@ -4,7 +4,7 @@ class Admin::PageTemplatesController < AdminController
   # GET /admin/page_templates
   # GET /admin/page_templates.json
   def index
-    @page_templates = PageTemplate.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+    @page_templates = PageTemplate.paginate(:site_page => params[:site_page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
       format.html { render :index }

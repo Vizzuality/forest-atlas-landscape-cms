@@ -12,7 +12,7 @@
 class Site < ApplicationRecord
   belongs_to :site_template
   has_many :routes
-  has_many :pages
+  has_many :site_pages
   has_many :user_site_associations
   has_many :users, through: :user_site_associations
 

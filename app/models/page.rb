@@ -32,7 +32,7 @@ class Page < ApplicationRecord
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
 
   def update_routes
-    DynamicRouter.update_routes_for_page self
+    DynamicRouter.update_routes_for_site_page self
   end
 
   def url=(value)

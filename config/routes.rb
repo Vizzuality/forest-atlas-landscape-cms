@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   namespace :management do
-    resources :pages
+    resources :site_pages
   end
 
   get '/admin', to: 'static#admin'

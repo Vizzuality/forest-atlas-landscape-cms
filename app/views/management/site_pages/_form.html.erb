@@ -1,10 +1,10 @@
-<%= form_for([:management, page]) do |f| %>
-    <% if page.errors.any? %>
+<%= form_for([:management, site_page]) do |f| %>
+    <% if site_page.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(page.errors.count, "error") %> prohibited this page from being saved:</h2>
+          <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
 
           <ul>
-            <% page.errors.full_messages.each do |message| %>
+            <% site_page.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
             <% end %>
           </ul>
@@ -46,8 +46,8 @@
     <div class="form-group row">
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit class: 'btn btn-primary' %>
-        <%= link_to 'Show', management_page_path(page), class: 'btn btn-secondary' unless page.id.nil? %>
-        <%= link_to 'Back', management_pages_path, class: 'btn btn-secondary' %>
+        <%= link_to 'Show', management_site_page_path(site_page), class: 'btn btn-secondary' unless site_page.id.nil? %>
+        <%= link_to 'Back', management_site_pages_path, class: 'btn btn-secondary' %>
       </div>
     </div>
 <% end %>

@@ -6,7 +6,7 @@ class SiteCreator
     @new_page_tree = {}
 
     pages.each do |page|
-      newPage = Page.create!(
+      newPage = SitePage.create!(
         {
           name: page.name,
           description: page.description,
