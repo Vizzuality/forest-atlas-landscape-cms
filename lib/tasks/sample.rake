@@ -102,7 +102,17 @@ def create_users
       name: 'Admin User',
       email: 'admin@example.com',
       password: 'password',
-      password_confirmation: 'password'
+      password_confirmation: 'password',
+      admin: true
+    }
+  )
+  @user_manager = User.create(
+    {
+      name: 'Manager User',
+      email: 'manager@example.com',
+      password: 'password',
+      password_confirmation: 'password',
+      admin: false
     }
   )
 
