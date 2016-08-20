@@ -1,4 +1,4 @@
-class PageController < ApplicationController
+class SitePageController < ApplicationController
 
   def homepage
     @site_page = SitePage.find(params[:id])
