@@ -8,14 +8,14 @@ Rails.application.routes.draw do
     resources :routes
     resources :site_templates
     resources :page_templates
+    get '/', to: 'static_page#dashboard'
   end
 
   namespace :management do
     resources :site_pages
+    get '/', to: 'static_page#dashboard'
   end
-
-  get '/admin', to: 'static#admin'
-  get '/management', to: 'static#management'
+  get '/no-permissions', to: 'static_page#no_permissions'
 
   DynamicRouter.load
 end

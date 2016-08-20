@@ -12,7 +12,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  content      :text
-#  content_type :text
+#  content_type :integer
 #  type         :text
 #
 

@@ -32,6 +32,12 @@ If you are on a development environment, you might also want to load some sample
 
     bundle exec rake db:sample
 
+While not required, it's highly recommended that you use the included git hooks. 
+
+    ./bin/git/init-hooks
+    
+You only have to do this once. Future changes to hooks will be loaded automatically.
+
 ## Running
 
 To run application:
