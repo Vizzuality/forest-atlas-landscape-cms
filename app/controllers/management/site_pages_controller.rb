@@ -4,12 +4,16 @@ class Management::SitePagesController < ManagementController
   # GET /management/pages
   # GET /management/pages.json
   def index
-    @pages = SitePage.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+    @pages = SitePage.joins(:users)
+               .where(users: {id: current_user.id})
+               .paginate(:page => params[:page], :per_page => params[:per_page])
+               .order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @pages }
-    end  end
+    end
+  end
 
   # GET /management/pages/1
   # GET /management/pages/1.json

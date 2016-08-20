@@ -17,4 +17,5 @@
 #
 
 class SitePage < Page
+  has_many :users, through: :site
 end

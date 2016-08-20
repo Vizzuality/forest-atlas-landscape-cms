@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   namespace :management do
     resources :site_pages
+    resources :sites, only: [:index]
     get '/', to: 'static_page#dashboard'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
