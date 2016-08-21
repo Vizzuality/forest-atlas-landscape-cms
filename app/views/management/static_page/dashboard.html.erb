@@ -1,0 +1,20 @@
+<h1>Select a site</h1>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Name</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @sites.each do |site| %>
+      <tr>
+        <td><%= link_to site.name, management_site_pages_path({:site_id => site.id}) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+

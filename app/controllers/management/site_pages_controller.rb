@@ -6,6 +6,7 @@ class Management::SitePagesController < ManagementController
   def index
     @pages = SitePage.joins(:users)
                .where(users: {id: current_user.id})
+               .where(site_id: params[:site_id])
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
