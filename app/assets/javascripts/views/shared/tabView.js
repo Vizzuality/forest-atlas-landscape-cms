@@ -8,7 +8,9 @@
     className: 'c-tabs',
 
     defaults: {
-      // String array with the name of the tabs to display.
+      // Array of objects containing the name of the tabs and the id of their associated content
+      // Example: [ { name: "tab1", id: "content1" }, ... ]
+      // Don't forget to add the role "tabpanel" on the matching id elements
       tabs: [],
       // Integer. First tab actived by default. This is an internal value.
       defaultTab: 0,
@@ -19,7 +21,8 @@
     },
 
     events: {
-      'click .tab': '_onChangeTab'
+      'click .tab': '_onChangeTab',
+      'keydown': '_onKeydown'
     },
 
     template: HandlebarsTemplates['shared/tabs'],
@@ -35,7 +38,8 @@
      */
     _generateContainer: function () {
       var container = document.createElement('ul');
-      container.classList.add('c-tabs');
+      container.classList.add(this.className);
+      container.setAttribute('role', 'tablist');
 
       if (this.options.cssClass) {
         container.classList.add(this.options.cssClass);
@@ -55,7 +59,9 @@
      * Remove the "-current" class from the active tab
      */
     _cleanTabs: function () {
-      this.$tabs.removeClass('-current');
+      this.$tabs
+        .attr('tabindex', '-1')
+        .attr('aria-selected', 'false');
     },
 
     /**
@@ -63,25 +69,65 @@
      */
     _setCurrentTab: function (index) {
       this.options.currentTab = index;
-      this.$tabs.eq(index).addClass('-current');
+      this.$tabs.eq(index)
+        .attr('tabindex', '0')
+        .attr('aria-selected', 'true');
     },
 
+    /**
+     * Listener for the click event on the tabs
+     * @param {Object} event
+     */
     _onChangeTab: function (e) {
       if (!e) return;
 
       var $tab = $(e.currentTarget),
-        tabIndex = this.$tabs.index($tab),
-        tabName = this.options.tabs[tabIndex];
+        tabIndex = this.$tabs.index($tab);
 
       // if the selected tab has been selected previously, do nothing
       if (this.options.currentTab === tabIndex) return;
 
+      this._toggleTab(tabIndex);
+    },
+
+    /**
+     * Change the active tab
+     * @param {Number} index of the new active tab
+     * @param {Boolean} if the tab needs to be focused on
+     */
+    _toggleTab: function (index, focus) {
+      this.options.currentTab = index;
       this._cleanTabs();
-      this._setCurrentTab(tabIndex);
+      this._setCurrentTab(index);
+      if (focus) this.$tabs.eq(index).focus();
 
       // Triggers a Backbone event with the name of the tab selected to
       // communicate other views that tab has been selected
-      Backbone.Events.trigger('tab:selected', { tab: tabName });
+      var tabName = this.options.tabs[index].name;
+      App.Events.trigger('tab:selected', { tab: tabName });
+    },
+
+    /**
+     * Listener for the key events on the container
+     * @param {Object} event
+     */
+    _onKeydown: function (e) {
+      switch (e.keyCode) {
+        case 37: // left arrow
+        case 38: // top arrow
+          var previousTabIndex = (this.options.currentTab - 1) % this.options.tabs.length;
+          if (previousTabIndex < 0) previousTabIndex = this.options.tabs.length - 1;
+          this._toggleTab(previousTabIndex, true);
+          break;
+
+        case 39: // right arrow
+        case 40: // down arrow
+          var nextTabIndex = (this.options.currentTab + 1) % this.options.tabs.length;
+          this._toggleTab(nextTabIndex, true);
+          break;
+
+        default:
+      }
     },
 
     render: function () {
@@ -91,7 +137,6 @@
       if (tabs.length === 0) return this;
 
       this.$el.html(this.template({
-        cssClass: this.options.cssClass,
         tabs: this.options.tabs
       }));
 

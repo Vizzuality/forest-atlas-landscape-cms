@@ -5,12 +5,19 @@
 
     initialize: function () {
       // Uncomment this code block to test tabs
-      // var tabView = new App.View.TabView({
-      //   tabs: ['tab1', 'tab2', 'tab3'],
+      // var tabs = new App.View.TabView({
+      //   tabs: [
+      //     { name: 'tab1', id: 'tab1' },
+      //     { name: 'tab2', id: 'tab2' },
+      //     { name: 'tab3', id: 'tab3' }
+      //   ],
       //   cssClass: '-red'
       // }).render().el;
-      //
-      // $('body').html(tabView);
+
+      // $('body').append(tabs);
+      // $('body').append('<div id="tab1" role="tabpanel">Content for tab 1</div>' +
+      //   '<div id="tab2" role="tabpanel">Content for tab 2</div>' +
+      //   '<div id="tab3" role="tabpanel">Content for tab 3</div>');
     }
 
   });

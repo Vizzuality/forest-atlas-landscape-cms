@@ -5,10 +5,11 @@
     "func-names": 0,
     "no-new": 0,
     "no-param-reassign": [2, { "props": false }],
-    "max-len": [2, { "ignoreComments": true }],
+    "max-len": [2, 120, { "ignoreComments": true }],
     "vars-on-top": 0,
     "one-var": 0,
-    "no-underscore-dangle": [2, { "allowAfterThis": true, "allowAfterSuper": true }]
+    "no-underscore-dangle": [2, { "allowAfterThis": true, "allowAfterSuper": true }],
+    "quote-props": [2, "consistent"]
   },
   "globals": {
     "vg": true,
