@@ -1,6 +1,4 @@
-
-(function(App) {
-
+((function (App) {
   'use strict';
 
   App.Router.Management = Backbone.Router.extend({
@@ -9,12 +7,11 @@
       '(/)': 'index'
     },
 
-    index: function() {
+    index: function () {
       console.info('You are at management page (index)');
 
       new App.View.ManagementView();
     }
 
   });
-
-})(this.App);
+})(this.App));

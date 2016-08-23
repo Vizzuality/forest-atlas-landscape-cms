@@ -1,5 +1,4 @@
-(function(App) {
-
+(function (App) {
   'use strict';
 
   var Dispatcher = Backbone.Router.extend({
@@ -13,18 +12,17 @@
 
   var dispatcher = new Dispatcher();
 
-  dispatcher.on('route', function(routeName) {
+  dispatcher.on('route', function (routeName) {
     Backbone.history.stop();
     var Router = App.Router[routeName];
 
     if (Router) {
       new Router();
 
-      Backbone.history.start({pushState: false});
+      Backbone.history.start({ pushState: false });
     }
   });
 
   // We need this to detect router pathname
   Backbone.history.start({ pushState: true });
-
 }).call(this, this.App);

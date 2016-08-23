@@ -1,14 +1,11 @@
-
-(function(App) {
-
+((function (App) {
   'use strict';
 
   App.View.ManagementView = Backbone.View.extend({
 
-    initialize: function() {
+    initialize: function () {
       console.info('managementview initialized');
     }
 
   });
-
-})(this.App);
+})(this.App));
