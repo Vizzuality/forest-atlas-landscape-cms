@@ -6,7 +6,9 @@
     "no-new": 0,
     "no-param-reassign": [2, { "props": false }],
     "max-len": [2, { "ignoreComments": true }],
-    "vars-on-top": 0
+    "vars-on-top": 0,
+    "one-var": 0,
+    "no-underscore-dangle": [2, { "allowAfterThis": true, "allowAfterSuper": true }]
   },
   "globals": {
     "vg": true,

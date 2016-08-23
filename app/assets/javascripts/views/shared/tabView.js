@@ -1,6 +1,5 @@
 
-(function(App) {
-
+((function (App) {
   'use strict';
 
   App.View.TabView = Backbone.View.extend({
@@ -24,36 +23,36 @@
 
     template: HandlebarsTemplates['shared/tabs'],
 
-    initialize: function(settings) {
+    initialize: function (settings) {
       this.options = _.extend(this.defaults, settings);
 
       if (!this.options.currentTab) {
-        this.options.currentTab = this.options.defaultTab
+        this.options.currentTab = this.options.defaultTab;
       }
     },
 
-    _setVars: function() {
+    _setVars: function () {
       this.$tabs = this.$el.find('.tab');
     },
 
-    _cleanTabs: function() {
+    _cleanTabs: function () {
       this.$tabs.removeClass('-current');
     },
 
-    _setCurrentTab: function($tab) {
-      if(!$tab) return;
+    _setCurrentTab: function ($tab) {
+      if (!$tab) return;
 
       $tab.addClass('-current');
     },
 
-    _setCustomStyle: function() {
+    _setCustomStyle: function () {
       if (!this.options.cssClass) return;
 
       this.className += ' ' + this.options.cssClass;
     },
 
-    _onChangeTab: function(e) {
-      if(!e) return;
+    _onChangeTab: function (e) {
+      if (!e) return;
 
       var $tab = $(e.currentTarget),
         tabName = $tab.data('tab');
@@ -66,21 +65,21 @@
 
       // Triggers a Backbone event with the name of the tab selected to
       // comunicate other views that tab has been selected
-      Backbone.Events.trigger('tab:selected', {tab: tabName});
+      Backbone.Events.trigger('tab:selected', { tab: tabName });
     },
 
-    render: function() {
+    render: function () {
       var currentTabIndex = this.options.currentTab,
         tabs = this.options.tabs,
         $tab;
 
-      if (!tabs.length > 0) return;
+      if (!tabs.length > 0) return null;
 
       this._setCustomStyle();
 
       this.$el.html(this.template({
         cssClass: this.options.cssClass,
-        tabs: this.options.tabs,
+        tabs: this.options.tabs
       }));
 
       this._setVars();
@@ -98,5 +97,4 @@
     }
 
   });
-
-})(this.App);
+})(this.App));
