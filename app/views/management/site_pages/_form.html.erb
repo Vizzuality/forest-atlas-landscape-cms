@@ -43,6 +43,13 @@
       </div>
     </fieldset>
 
+    <fieldset class="form-group row">
+      <%= f.label :parent_id, class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :parent_id, SitePage.where(site_id: @site_page.site_id), :id, :name, {}, {:class => 'form-control'} %>
+      </div>
+    </fieldset>
+
     <div class="form-group row">
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit class: 'btn btn-primary' %>

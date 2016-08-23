@@ -1,28 +1,13 @@
 <ul class="desktop-menu">
   <% @menu_root.children.each do |child_page| -%>
       <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+      <% if !child_page.children.nil? %>
+          <ul class="dropdown_content">
+            <% child_page.children.each do |grandchild_page| -%>
+                <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
+            <% end -%>
+          </ul>
+      <% end -%>
   <% end -%>
 
-  <!--<li><a href="/map">Map</a></li>-->
-  <!--<li class="dropdown"><a href="#">News</a>-->
-    <!--<ul class="dropdown_content">-->
-      <!--<li><a href="/blog">Blog</a></li>-->
-      <!--<li><a href="/articles-publications">Articles and Publications</a></li>-->
-    <!--</ul>-->
-  <!--</li>-->
-  <!--<li class="dropdown"><a href="#">How To</a>-->
-    <!--<ul class="dropdown_content">-->
-      <!--<li><a href="/faq">FAQ</a></li>-->
-      <!--<li><a href="/tutorials">Tutorials</a></li>-->
-      <!--<li><a href="/definitions">Definitions</a></li>-->
-    <!--</ul>-->
-  <!--</li>-->
-  <!--<li class="dropdown"><a href="#">About</a>-->
-    <!--<ul class="dropdown_content">-->
-      <!--<li><a href="/the-project">The Project</a></li>-->
-      <!--<li><a href="/partners">Partners</a></li>-->
-      <!--<li><a href="/contact-us">Contact Us</a></li>-->
-    <!--</ul>-->
-  <!--</li>-->
-  <!--<li><a href="#" class="selected">Login</a></li>-->
 </ul>
