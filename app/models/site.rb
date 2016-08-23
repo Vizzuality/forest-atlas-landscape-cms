@@ -16,7 +16,7 @@ class Site < ApplicationRecord
   has_many :user_site_associations
   has_many :users, through: :user_site_associations
 
-
+  before_validation :generate_slug
   after_save :update_routes
   after_create :create_template_content
 
@@ -26,5 +26,15 @@ class Site < ApplicationRecord
 
   def create_template_content
     SiteCreator.create_site_content self
+  end
+
+  def root
+    SitePage.find_by site_id: self.id, uri: ''
+  end
+
+  private
+
+  def generate_slug
+    write_attribute(:slug, self.name.parameterize)
   end
 end

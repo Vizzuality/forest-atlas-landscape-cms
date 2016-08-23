@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :site_pages
     resources :sites, only: [:index]
     get '/', to: 'static_page#dashboard'
+    get '/:site_slug', to: 'site_pages#index'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
 

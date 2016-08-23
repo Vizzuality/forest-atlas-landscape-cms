@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ForestAtlasLandscapeCms</title>
+  <title><%= ForestAtlasLandscapeCms::Application.config.site_name %></title>
   <%= csrf_meta_tags %>
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 </head>
 
 <body>
-  <%= yield %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+<%= render 'shared/menu' %>
+<%= yield %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </body>
 </html>

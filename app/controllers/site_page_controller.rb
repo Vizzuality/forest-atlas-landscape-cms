@@ -1,42 +1,29 @@
 class SitePageController < ApplicationController
+  before_action :load_site_page
+  before_action :load_menu
 
-  def homepage
+  def load_site_page
     @site_page = SitePage.find(params[:id])
 
-    puts @site_page.path
-
     redirect_to not_found_path unless @site_page
+  end
+
+  def load_menu
+    @menu_root = @site_page.site.root
+  end
+
+  def homepage
   end
 
   def open_content
-    @site_page = SitePage.find(params[:id])
-
-    puts @site_page.path
-
-    redirect_to not_found_path unless @site_page
   end
 
   def map
-    @site_page = SitePage.find(params[:id])
-
-    puts @site_page.path
-
-    redirect_to not_found_path unless @site_page
   end
 
   def analysis_dashboard
-    @site_page = SitePage.find(params[:id])
-
-    puts @site_page.path
-
-    redirect_to not_found_path unless @site_page
   end
 
   def dynamic_indicator_dashboard
-    @site_page = SitePage.find(params[:id])
-
-    puts @site_page.path
-
-    redirect_to not_found_path unless @site_page
   end
 end

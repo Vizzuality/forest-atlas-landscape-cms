@@ -1,12 +1,12 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:show, :edit, :update, :destroy]
 
-  # GET /management/pages
-  # GET /management/pages.json
+  # GET /management/:site_slug
+  # GET /management/:site_slug.json
   def index
     @pages = SitePage.joins(:users)
                .where(users: {id: current_user.id})
-               .where(site_id: params[:site_id])
+               .where(sites: {slug: params[:site_slug]})
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 

@@ -21,7 +21,7 @@ class SiteCreator
   end
 
   def self.get_parent_content(page)
-    return nil if (page.parent_id.nil?) || @new_page_tree.key?(page.parent_id)
+    return nil if (page.parent_id.nil?) || !@new_page_tree.key?(page.parent_id)
 
     @new_page_tree[page.parent_id]
   end
