@@ -8,7 +8,7 @@
       // var tabView = new App.View.TabView({
       //   tabs: ['tab1', 'tab2', 'tab3'],
       //   cssClass: '-red'
-      // }).render();
+      // }).render().el;
       //
       // $('body').html(tabView);
     }

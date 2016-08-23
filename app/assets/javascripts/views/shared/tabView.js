@@ -4,6 +4,7 @@
 
   App.View.TabView = Backbone.View.extend({
 
+    // Don't set the "tagName" property here, see "_generateContainer"
     className: 'c-tabs',
 
     defaults: {
@@ -11,9 +12,9 @@
       tabs: [],
       // Integer. First tab actived by default. This is an internal value.
       defaultTab: 0,
-      // String. Name of the tab you want to select
-      currentTab: null,
-      // String. CSS Class applied to the tab container
+      // Integer. Index of the current selected tab.
+      currentTab: 0,
+      // String. CSS Class applied to the tab container. Only taken into account at instantiation.
       cssClass: null
     },
 
@@ -25,57 +26,69 @@
 
     initialize: function (settings) {
       this.options = _.extend(this.defaults, settings);
-
-      if (!this.options.currentTab) {
-        this.options.currentTab = this.options.defaultTab;
-      }
+      this._generateContainer();
     },
 
+    /**
+     * Update the el and $el elements of the instance in order to accept a
+     * custom / modifier class (see the view's options)
+     */
+    _generateContainer: function () {
+      var container = document.createElement('ul');
+      container.classList.add('c-tabs');
+
+      if (this.options.cssClass) {
+        container.classList.add(this.options.cssClass);
+      }
+
+      this.setElement(container);
+    },
+
+    /**
+     * Set global variables
+     */
     _setVars: function () {
       this.$tabs = this.$el.find('.tab');
     },
 
+    /**
+     * Remove the "-current" class from the active tab
+     */
     _cleanTabs: function () {
       this.$tabs.removeClass('-current');
     },
 
-    _setCurrentTab: function ($tab) {
-      if (!$tab) return;
-
-      $tab.addClass('-current');
-    },
-
-    _setCustomStyle: function () {
-      if (!this.options.cssClass) return;
-
-      this.className += ' ' + this.options.cssClass;
+    /**
+     * Save the current active tab and update the DOM to reflect the change
+     */
+    _setCurrentTab: function (index) {
+      this.options.currentTab = index;
+      this.$tabs.eq(index).addClass('-current');
     },
 
     _onChangeTab: function (e) {
       if (!e) return;
 
       var $tab = $(e.currentTarget),
-        tabName = $tab.data('tab');
+        tabIndex = this.$tabs.index($tab),
+        tabName = this.options.tabs[tabIndex];
 
       // if the selected tab has been selected previously, do nothing
-      if ($tab.hasClass('-current')) return;
+      if (this.options.currentTab === tabIndex) return;
 
       this._cleanTabs();
-      this._setCurrentTab($tab);
+      this._setCurrentTab(tabIndex);
 
       // Triggers a Backbone event with the name of the tab selected to
-      // comunicate other views that tab has been selected
+      // communicate other views that tab has been selected
       Backbone.Events.trigger('tab:selected', { tab: tabName });
     },
 
     render: function () {
       var currentTabIndex = this.options.currentTab,
-        tabs = this.options.tabs,
-        $tab;
+        tabs = this.options.tabs;
 
-      if (!tabs.length > 0) return null;
-
-      this._setCustomStyle();
+      if (tabs.length === 0) return this;
 
       this.$el.html(this.template({
         cssClass: this.options.cssClass,
@@ -83,17 +96,9 @@
       }));
 
       this._setVars();
+      this._setCurrentTab(currentTabIndex);
 
-      // Selects indicated tab by the user or default one
-      if (typeof currentTabIndex === 'string') {
-        $tab = $('.tab[data-tab="' + currentTabIndex + '"]');
-      } else {
-        $tab = $(this.$tabs[currentTabIndex]);
-      }
-
-      this._setCurrentTab($tab);
-
-      return this.$el;
+      return this;
     }
 
   });
