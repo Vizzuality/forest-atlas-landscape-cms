@@ -1,12 +1,12 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:show, :edit, :update, :destroy]
 
-  # GET /management/pages
-  # GET /management/pages.json
+  # GET /management/:site_slug
+  # GET /management/:site_slug.json
   def index
     @pages = SitePage.joins(:users)
                .where(users: {id: current_user.id})
-               .where(site_id: params[:site_id])
+               .where(sites: {slug: params[:site_slug]})
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
@@ -37,7 +37,7 @@ class Management::SitePagesController < ManagementController
 
     respond_to do |format|
       if @site_page.save
-        format.html { redirect_to management_page_path(@site_page), notice: 'SitePage was successfully created.' }
+        format.html { redirect_to management_site_page_path(@site_page), notice: 'SitePage was successfully created.' }
         format.json { render :show, status: :created, location: @site_page }
       else
         format.html { render :new }
@@ -51,7 +51,7 @@ class Management::SitePagesController < ManagementController
   def update
     respond_to do |format|
       if @site_page.update(page_params)
-        format.html { redirect_to management_page_path(@site_page), notice: 'SitePage was successfully updated.' }
+        format.html { redirect_to management_site_page_path(@site_page), notice: 'SitePage was successfully updated.' }
         format.json { render :show, status: :ok, location: @site_page }
       else
         format.html { render :edit }
@@ -78,6 +78,6 @@ class Management::SitePagesController < ManagementController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def page_params
-    params.require(:page).permit(:name, :description, :site_id, :uri, :content)
+    params.require(:site_page).permit(:name, :description, :site_id, :uri, :content, :parent_id)
   end
 end

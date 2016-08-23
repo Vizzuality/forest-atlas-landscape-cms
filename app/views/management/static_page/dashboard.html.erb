@@ -10,7 +10,7 @@
   <tbody>
   <% @sites.each do |site| %>
       <tr>
-        <td><%= link_to site.name, management_site_pages_path({:site_id => site.id}) %></td>
+        <td><%= link_to site.name, controller: 'management/site_pages', action: 'index', site_slug: site.slug %></td>
       </tr>
   <% end %>
   </tbody>

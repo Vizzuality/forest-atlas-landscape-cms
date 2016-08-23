@@ -1,0 +1,13 @@
+<ul class="desktop-menu">
+  <% @menu_root.children.each do |child_page| -%>
+      <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+      <% if !child_page.children.nil? %>
+          <ul class="dropdown_content">
+            <% child_page.children.each do |grandchild_page| -%>
+                <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
+            <% end -%>
+          </ul>
+      <% end -%>
+  <% end -%>
+
+</ul>
