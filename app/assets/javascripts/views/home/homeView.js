@@ -1,16 +1,13 @@
-
-(function(App) {
-
+((function (App) {
   'use strict';
 
   App.View.HomeView = Backbone.View.extend({
 
-    initialize: function() {
+    initialize: function () {
       console.info('homeview initialized');
     }
 
   });
 
   new App.View.HomeView();
-
-})(this.App);
+})(this.App));

@@ -27,8 +27,7 @@
 // = require_tree ./views/home
 // = require dispatcher
 
-(function() {
-
+(function () {
   'use strict';
 
   this.App = {
@@ -38,5 +37,4 @@
     Router: {},
     Helper: {}
   };
-
 }).call(this);

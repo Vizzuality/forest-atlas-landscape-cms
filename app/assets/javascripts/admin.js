@@ -23,8 +23,7 @@
 // = require_tree ./views/admin
 // = require dispatcher
 
-(function() {
-
+(function () {
   'use strict';
 
   this.App = {
@@ -34,5 +33,4 @@
     Router: {},
     Helper: {}
   };
-
 }).call(this);
