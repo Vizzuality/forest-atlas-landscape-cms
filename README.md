@@ -9,7 +9,10 @@ Multisite content management system for forest atlas and landscape applications
 Ruby 2.3.1
 nodejs + npm
 
+
 ## Installation
+
+### Without Docker
 
 Install global dependencies:
 
@@ -38,11 +41,41 @@ While not required, it's highly recommended that you use the included git hooks.
     
 You only have to do this once. Future changes to hooks will be loaded automatically.
 
+### With Docker
+
+#### First time user
+
+Perform the following steps:
+* [Install docker](https://docs.docker.com/engine/installation/)
+* Clone this repository: ```git@github.com:Vizzuality/forest-atlas-landscape-cms.git```
+* Enter in the directory (cd forest-atlas-landscape-cms)
+
+
+To set up the database, run:
+
+    docker-compose -f docker-compose.dev.yml run web rake db:seed
+
+If you are on a development environment, you might also want to load some sample data:
+
+    docker-compose -f docker-compose.dev.yml run web rake db:sample
+
 ## Running
+
+### Without Docker
 
 To run application:
 
     bundle exec rails server
+    
+### With Docker
+
+you open a terminal (if you have mac or windows, open a terminal with the 'Docker Quickstart Terminal') and execute the next command:
+
+```bash
+    ./service develop
+
+```
+    
 
 ## Development
 
