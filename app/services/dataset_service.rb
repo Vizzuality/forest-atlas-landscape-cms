@@ -1,19 +1,13 @@
-require 'singleton'
-
 class DatasetService
-  include Singleton
 
-  def initialize
-    @conn = Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
-      faraday.request  :url_encoded
-      faraday.response :logger
-      faraday.adapter  Faraday.default_adapter
-    end
+  @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
+    faraday.request :url_encoded
+    faraday.response :logger
+    faraday.adapter Faraday.default_adapter
   end
 
-
-  def get_datasets()
-    datasetRequest = @conn.get '/datasets', { :app => 'prep' }
+  def self.get_datasets
+    datasetRequest = @conn.get '/datasets', {:app => 'prep'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -23,7 +17,7 @@ class DatasetService
       datasets.push dataset
     end
 
-    return datasets
+    datasets
   end
 
 end

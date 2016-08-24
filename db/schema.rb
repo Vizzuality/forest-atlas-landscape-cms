@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160823111445) do
+ActiveRecord::Schema.define(version: 20160824193714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,43 @@ ActiveRecord::Schema.define(version: 20160823111445) do
     t.datetime "updated_at",                   null: false
     t.index ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
     t.index ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
+  end
+
+  create_table "context_datasets", force: :cascade do |t|
+    t.boolean  "is_confirmed"
+    t.boolean  "is_dataset_default_context"
+    t.integer  "context_id"
+    t.integer  "dataset_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["context_id"], name: "index_context_datasets_on_context_id", using: :btree
+    t.index ["dataset_id"], name: "index_context_datasets_on_dataset_id", using: :btree
+  end
+
+  create_table "context_sites", force: :cascade do |t|
+    t.boolean  "is_site_default_context"
+    t.integer  "context_id"
+    t.integer  "site_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["context_id"], name: "index_context_sites_on_context_id", using: :btree
+    t.index ["site_id"], name: "index_context_sites_on_site_id", using: :btree
+  end
+
+  create_table "context_users", force: :cascade do |t|
+    t.boolean  "is_context_admin"
+    t.integer  "context_id"
+    t.integer  "user_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["context_id"], name: "index_context_users_on_context_id", using: :btree
+    t.index ["user_id"], name: "index_context_users_on_user_id", using: :btree
+  end
+
+  create_table "contexts", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pages", force: :cascade do |t|
