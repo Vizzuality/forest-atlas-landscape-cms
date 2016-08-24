@@ -31,7 +31,5 @@ RUN bundle exec rake assets:precompile
 
 EXPOSE 4000
 
-VOLUME ["/usr/src/forest-atlas-landscape-cms2"]
-
 # Start puma
 ENTRYPOINT ["./entrypoint.sh"]

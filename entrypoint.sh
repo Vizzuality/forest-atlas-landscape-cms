@@ -5,6 +5,7 @@ case "$1" in
     develop)
         echo "Running Development Server"
         rake db:exists RAILS_ENV=development
+        bundle exec rake db:exists RAILS_ENV=development
         exec bundle exec rails server -b 0.0.0.0
 
         ;;
