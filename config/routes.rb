@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     resources :routes
     resources :site_templates
     resources :page_templates
+    resources :datasets, only: :index do
+      get 'dataset'
+    end
     get '/', to: 'static_page#dashboard'
   end
 
@@ -19,5 +22,5 @@ Rails.application.routes.draw do
   end
   get '/no-permissions', to: 'static_page#no_permissions'
 
-  DynamicRouter.load
+   DynamicRouter.load
 end

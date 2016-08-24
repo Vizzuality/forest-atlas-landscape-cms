@@ -11,17 +11,24 @@ class DynamicRouter
   end
 
   def self.load
-    if @route_cache.empty?
-      return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
+    begin
+      ActiveRecord::Base.connection
+    rescue
+      return
+    else
 
-      SitePage.includes(:site, :routes).all.each do |site_page|
-        site_page.routes.each do |route|
-          _build_routes_for_page_and_route(site_page, route)
+      if @route_cache.empty?
+        return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
+
+        SitePage.includes(:site, :routes).all.each do |site_page|
+          site_page.routes.each do |route|
+            _build_routes_for_page_and_route(site_page, route)
+          end
         end
       end
-    end
 
-    _load_routes_from_cache
+      _load_routes_from_cache
+    end
   end
 
   def self.update_routes_for_site_page(site_page)
