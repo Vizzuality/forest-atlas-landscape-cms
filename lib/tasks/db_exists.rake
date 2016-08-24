@@ -1,6 +1,6 @@
 namespace :db do
   desc 'Check if db exists'
-  task exists: :environment do
+  task :exists do
     begin
       ActiveRecord::Base.connection
     rescue
