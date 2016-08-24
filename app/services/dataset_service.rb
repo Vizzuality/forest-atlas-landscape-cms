@@ -21,9 +21,7 @@ class DatasetService
       dataset = Dataset.new
       dataset.attributes = data
       datasets.push dataset
-      puts datasets
     end
-
 
     return datasets
   end
