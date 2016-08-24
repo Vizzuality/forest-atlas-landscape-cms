@@ -50,6 +50,7 @@ Perform the following steps:
 * Clone this repository: ```git@github.com:Vizzuality/forest-atlas-landscape-cms.git```
 * Enter in the directory (cd forest-atlas-landscape-cms)
 
+Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
 
 To set up the database, run:
 
