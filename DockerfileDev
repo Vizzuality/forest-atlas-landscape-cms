@@ -1,0 +1,27 @@
+FROM ruby:2.3.1
+MAINTAINER Raul Requero <raul.requero@vizzuality.com>
+
+ENV NAME forest-atlas-landscape-cms
+
+# Install dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        postgresql-client \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get install -y nodejs
+
+# Install app dependencies
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --jobs 20 --retry 5
+
+# Create app directory
+ADD . /usr/src/$NAME
+WORKDIR /usr/src/$NAME
+
+
+
+EXPOSE 4000
+
+# Start server
+ENTRYPOINT ["./entrypoint.sh"]

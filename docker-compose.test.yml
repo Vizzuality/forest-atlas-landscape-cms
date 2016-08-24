@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432"
+    volumes:
+      - "$HOME/tmp/forest-atlas-landscape-cms/postgres:/var/lib/postgresql"
+  web:
+    build:
+      context: .
+      dockerfile: DockerfileDev
+    ports:
+      - "4000:4000"
+    env_file: .env
+    command: develop
+    environment:
+      - RACK_ENV=test
+      - RAILS_ENV=test
+      - PORT=4000
+      - POSTGRES_PORT_5432_TCP_ADDR=db
+      - POSTGRES_PORT_5432_TCP_PORT=5432
+      - POSTGRES_USER=postgres
+    restart: always
+    container_name: forest-atlas-landscape-cms
+    volumes:
+      - "./:/usr/src/forest-atlas-landscape-cms"
+    depends_on:
+      - db
+    links:
+      - db
