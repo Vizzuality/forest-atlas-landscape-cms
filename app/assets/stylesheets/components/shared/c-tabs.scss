@@ -1,17 +1,17 @@
 .c-tabs {
-  background-color: $color-1;
   display: flex;
-  height: 50px;
   justify-content: center;
-  list-style: none;
+  height: 50px;
   margin: 0;
+  background-color: $color-1;
+  list-style: none;
 
   > .tab {
-    cursor: pointer;
+    width: 200px;
     line-height: 50px;
     text-align: center;
     text-transform: uppercase;
-    width: 200px;
+    cursor: pointer;
 
     &[aria-selected='true'] {
       border-bottom: 5px solid $color-2;
