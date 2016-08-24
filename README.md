@@ -43,3 +43,19 @@ You only have to do this once. Future changes to hooks will be loaded automatica
 To run application:
 
     bundle exec rails server
+
+## Development
+
+### Code Quality
+
+To keep a good and consistent quality code we use `eslint` (JS) and `sass-lint` (CSS).
+
+`eslint` rules are based on [Airbnb](http://airbnb.io/javascript/) ones.
+
+`sass-lint` rules are based on [SMACSS](https://github.com/brigade/scss-lint/blob/master/data/property-sort-orders/smacss.txt) ones.
+
+Also we have some custom rules you can check in `.eslintrc` and `.sass-lint`, respectively.
+
+Have fun coding! 😁🌲
+
+
