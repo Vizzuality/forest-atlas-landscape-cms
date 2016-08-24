@@ -4,9 +4,16 @@ set -e
 case "$1" in
     develop)
         echo "Running Development Server"
-        exec rake db:exists RAILS_ENV=development
+        rake db:exists RAILS_ENV=development
         exec bundle exec rails server -b 0.0.0.0
 
+        ;;
+
+    test)
+        echo "Running Test"
+        bundle exec rake db:exists RAILS_ENV=test
+
+        exec rspec
         ;;
 
     start)

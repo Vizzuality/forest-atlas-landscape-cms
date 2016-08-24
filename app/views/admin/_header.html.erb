@@ -12,7 +12,7 @@
           <li class="nav-item"><%= link_to 'Sites', admin_sites_path, {class: current_class('admin/sites') + 'nav-link'} %></li>
           <li class="nav-item"><%= link_to 'Routes', admin_routes_path, {class: current_class('admin/routes') + 'nav-link'} %></li>
           <li class="nav-item"><%= link_to 'Page templates', admin_page_templates_path, {class: current_class('admin/page_templates') + 'nav-link'} %></li>
-          <li class="nav-item"><%= link_to 'Datasets', admin_page_templates_path, {class: current_class('admin/page_templates') + 'nav-link'} %></li>
+          <li class="nav-item"><%= link_to 'Datasets', admin_datasets_path, {class: current_class('admin/datasets') + 'nav-link'} %></li>
         </ul>
         <ul class="nav navbar-nav pull-xs-right">
           <li class="nav-item"><%= link_to 'Logout', destroy_user_session_path, {class: 'nav-link', :method => :delete} %></li>
