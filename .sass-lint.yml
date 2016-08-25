@@ -14,3 +14,4 @@ rules:
     - 2
     -
       max-depth: 3
+  no-vendor-prefixes: 0

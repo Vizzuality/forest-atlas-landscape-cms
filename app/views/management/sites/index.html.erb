@@ -1,22 +1,22 @@
-<h1>Sites</h1>
+<div class="wrapper">
+  <h1>Sites</h1>
 
-<table class="table table-bordered">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Template</th>
-  </tr>
-  </thead>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Template</th>
+    </tr>
+    </thead>
 
-  <tbody>
-  <% @sites.each do |site| %>
-      <tr>
-        <td><%= site.name %></td>
-        <td><%= site.site_template.name %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<br>
+    <tbody>
+    <% @sites.each do |site| %>
+        <tr>
+          <td><%= site.name %></td>
+          <td><%= site.site_template.name %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
 

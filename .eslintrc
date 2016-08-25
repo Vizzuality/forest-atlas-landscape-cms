@@ -18,7 +18,8 @@
     "L": true,
     "Backbone": true,
     "HandlebarsTemplates": true,
-    "_": true
+    "_": true,
+    "Turbolinks": true
   },
   "env": {
     "browser": true
