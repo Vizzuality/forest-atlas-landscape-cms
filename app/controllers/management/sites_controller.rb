@@ -14,4 +14,18 @@ class Management::SitesController < ManagementController
     end
   end
 
+  # GET /management/:site_slug/structure
+  # GET /management/:site_slug/structure.json
+  def structure
+    @pages = SitePage.joins(:users)
+               .where(users: {id: current_user.id})
+               .where(sites: {slug: params[:site_slug]})
+               .order(params[:order] || 'created_at ASC')
+
+    respond_to do |format|
+      format.html { render :structure }
+      format.json { render json: @pages }
+    end
+  end
+
 end

@@ -1,0 +1,29 @@
+<h1>Structure</h1>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Site</th>
+    <th>URL</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @pages.each do |site_page| %>
+      <tr>
+        <td><%= site_page.name %></td>
+        <td><%= site_page.site.name %></td>
+        <td><%= site_page.url %></td>
+        <td><%= link_to 'Show', management_site_page_path(site_page) %></td>
+        <td><%= link_to 'Edit', edit_management_site_page_path(site_page) %></td>
+        <td><%= link_to 'Destroy', management_site_page_path(site_page), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Page', management_site_site_pages_path, class: 'btn btn-primary' %>
