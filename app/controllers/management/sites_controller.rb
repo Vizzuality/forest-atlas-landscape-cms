@@ -1,5 +1,5 @@
 class Management::SitesController < ManagementController
-  before_action :set_site_for_page
+  before_action :set_site, only: [:structure]
 
   # GET /management/sites
   # GET /management/sites.json
@@ -27,6 +27,12 @@ class Management::SitesController < ManagementController
       format.html { render :structure }
       format.json { render json: @pages }
     end
+  end
+
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_site
+    @site = Site.find_by({slug: params[:site_slug]})
   end
 
 end
