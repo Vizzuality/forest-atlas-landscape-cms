@@ -1,4 +1,5 @@
 class Management::SitesController < ManagementController
+  before_action :set_site_for_page
 
   # GET /management/sites
   # GET /management/sites.json

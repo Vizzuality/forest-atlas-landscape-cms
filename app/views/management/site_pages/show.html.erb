@@ -30,4 +30,4 @@
 
 
 <%= link_to 'Edit', edit_management_site_page_path(@site_page), class: 'btn btn-primary' %>
-<%= link_to 'Back', management_site_pages_path, class: 'btn btn-secondary' %>
+<%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site_page.site.slug}, class: 'btn btn-secondary' %>

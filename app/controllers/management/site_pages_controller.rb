@@ -1,5 +1,6 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:show, :edit, :update, :destroy]
+  before_action :set_site, only: [:index, :new]
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
@@ -72,8 +73,15 @@ class Management::SitePagesController < ManagementController
 
   private
   # Use callbacks to share common setup or constraints between actions.
+  def set_site
+    @site = Site.find_by({slug: params[:site_slug]})
+  end
+
+  private
+  # Use callbacks to share common setup or constraints between actions.
   def set_page
     @site_page = SitePage.find(params[:id])
+    @site = @site_page.site
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
