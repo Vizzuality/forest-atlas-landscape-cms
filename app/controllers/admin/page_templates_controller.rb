@@ -9,7 +9,8 @@ class Admin::PageTemplatesController < AdminController
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @page_templates }
-    end  end
+    end
+  end
 
   # GET /admin/page_templates/1
   # GET /admin/page_templates/1.json

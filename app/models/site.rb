@@ -16,8 +16,11 @@ class Site < ApplicationRecord
   has_many :site_pages
   has_many :user_site_associations
   has_many :users, through: :user_site_associations
+  has_many :context_sites
+  has_many :contexts, through: :context_sites
 
   before_validation :generate_slug
+  before_create :create_context
   after_save :update_routes
   after_create :create_template_content
 
@@ -27,6 +30,14 @@ class Site < ApplicationRecord
 
   def create_template_content
     SiteCreator.create_site_content self
+  end
+
+  def create_context
+    return nil unless self.contexts.empty?
+
+    context = Context.create!({name: self.name})
+    site_context = ContextSite.create!({context: context, is_site_default_context: true})
+    self.context_sites.push(site_context)
   end
 
   def root
