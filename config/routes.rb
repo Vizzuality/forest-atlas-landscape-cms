@@ -16,10 +16,10 @@ Rails.application.routes.draw do
   end
 
   namespace :management do
-    resources :site_pages
-    resources :sites, only: [:index]
+    resources :sites, param: :slug, only: [:index] do
+      resources :site_pages, shallow: true
+    end
     get '/', to: 'static_page#dashboard'
-    get '/:site_slug', to: 'site_pages#index'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
 
