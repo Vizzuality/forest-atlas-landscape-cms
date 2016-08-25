@@ -33,7 +33,7 @@ class Admin::ContextsController < AdminController
 
     respond_to do |format|
       if @context.save
-        format.html { redirect_to @context, notice: 'Context was successfully created.' }
+        format.html { redirect_to admin_context_path(@context), notice: 'Context was successfully created.' }
         format.json { render :show, status: :created, location: @context }
       else
         format.html { render :new }
@@ -47,7 +47,7 @@ class Admin::ContextsController < AdminController
   def update
     respond_to do |format|
       if @context.update(context_params)
-        format.html { redirect_to @context, notice: 'Context was successfully updated.' }
+        format.html { redirect_to admin_context_path(@context), notice: 'Context was successfully updated.' }
         format.json { render :show, status: :ok, location: @context }
       else
         format.html { render :edit }
@@ -74,6 +74,6 @@ class Admin::ContextsController < AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def context_params
-      params.fetch(:context, {})
+      params.require(:context).permit(:name)
     end
 end
