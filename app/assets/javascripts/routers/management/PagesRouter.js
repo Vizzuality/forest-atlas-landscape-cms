@@ -54,7 +54,8 @@
       // We initialize the table
       new App.View.TableView({
         el: $('.js-table'),
-        collection: new TableCollection()
+        collection: new TableCollection(),
+        tableName: 'List of pages'
       });
     }
 
