@@ -1,0 +1,26 @@
+<table class="c-table">
+  {{#if error}}
+    <tr class="error">
+      <td>{{error}}</td>
+    </tr>
+  {{else}}
+    {{#if headers}}
+      <tr class="header">
+        {{#each headers}}
+          <th>{{this}}</th>
+        {{/each}}
+      </tr>
+    {{else}}
+      <tr class="no-data">
+        <td>No data</td>
+      </tr>
+    {{/if}}
+    {{#each rows}}
+      <tr>
+        {{#each this}}
+          <td>{{#if html}}{{{html}}}{{else}}{{value}}{{/if}}</td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  {{/if}}
+</table>
