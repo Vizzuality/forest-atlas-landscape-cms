@@ -15,7 +15,7 @@
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher'),
-        currentSite: this.slug
+        urlFormat: '/management/sites/:slug/widgets'
       });
     }
 

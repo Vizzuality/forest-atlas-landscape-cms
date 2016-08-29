@@ -14,8 +14,7 @@
     index: function () {
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
-        el: $('.js-site-switcher'),
-        currentSite: this.slug
+        el: $('.js-site-switcher')
       });
     }
 

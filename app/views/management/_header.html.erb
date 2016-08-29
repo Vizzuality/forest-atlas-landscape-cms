@@ -1,9 +1,10 @@
-<nav class="navbar navbar-dark bg-inverse">
+<nav class="navbar navbar-dark bg-inverse" style="margin-bottom: 20px;">
   <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
     &#9776;
   </button>
   <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
     <%= link_to 'Content Management', management_url, class: 'navbar-brand' %>
+    <div class="js-site-switcher"></div>
     <% unless @site.nil? %>
         <h2 class="navbar-brand">
           <%= link_to @site.name, {controller: 'management/site_pages', action: 'index', site_slug: @site.slug} %>
