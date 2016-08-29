@@ -1,4 +1,4 @@
-<%= form_for([:management, :site, site_page]) do |f| %>
+<%= form_for(form_for_path) do |f| %>
     <% if site_page.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
