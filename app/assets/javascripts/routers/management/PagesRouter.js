@@ -55,7 +55,8 @@
       new App.View.TableView({
         el: $('.js-table'),
         collection: new TableCollection(),
-        tableName: 'List of pages'
+        tableName: 'List of pages',
+        searchFieldContainer: $('.js-table-search')[0]
       });
     }
 

@@ -24,6 +24,16 @@
           <td role="gridcell">{{#if html}}{{{html}}}{{else}}{{value}}{{/if}}</td>
         {{/each}}
       </tr>
+    {{else}}
+      {{#if isSearchResult}}
+        <tr class="no-result" role="row">
+          <td role="gridcell">No result</td>
+        </tr>
+      {{else}}
+        <tr class="no-data" role="row">
+          <td role="gridcell">No data</td>
+        </tr>
+      {{/if}}
     {{/each}}
   {{/if}}
 </table>

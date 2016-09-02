@@ -45,6 +45,7 @@
 
     defaults: {
       // Number of results per page
+      // TODO: implement the feature
       resultsPerPage: 10,
       // Current pagination index
       paginationIndex: 0,
@@ -60,6 +61,7 @@
       //     ]
       //   }
       // ]
+      // NOTE: the collection will be added a comparator function and methods
       collection: null,
       // List of headers
       // This is computed at instantiation, do not set it from outside
@@ -69,7 +71,12 @@
       // Sort order: 1 for ASC, -1 for DESC
       sortOrder: 1,
       // Table name used by screen readers
-      tableName: null
+      tableName: null,
+      // Search field: must be a empty div DOM element
+      // If let to null, the search feature will be disabled
+      searchFieldContainer: null,
+      // Search query. Do not set from outside.
+      searchQuery: null
     },
 
     template: HandlebarsTemplates['shared/table'],
@@ -89,6 +96,7 @@
         .done(function () {
           this.options.headers = new HeadersCollection(this.options.collection.toJSON(), { parse: true });
           this._initSort();
+          if (this.options.searchFieldContainer) this._initSearch();
           this.render();
         }.bind(this))
         .fail(function () {
@@ -184,6 +192,80 @@
     },
 
     /**
+     *  Adds a search input and a submit button into the searchField container
+     */
+    _initSearch: function () {
+      // TODO add classes
+      var searchField = document.createElement('input');
+      searchField.setAttribute('type', 'input');
+      searchField.setAttribute('placeholder', 'Search');
+
+      var searchButton = document.createElement('button');
+      searchButton.textContent = 'Search';
+
+      // We attach the event listeners
+      searchField.addEventListener('input', function (e) {
+        this._search(e.target.value);
+      }.bind(this));
+      searchButton.addEventListener('click', function () {
+        this._search(searchField.value);
+      }.bind(this));
+
+      // We bind the elements to the DOM
+      this.options.searchFieldContainer.appendChild(searchField);
+      this.options.searchFieldContainer.appendChild(searchButton);
+
+      // We modify the toJSON method to take into account the search query
+      this.options.collection.toJSON = function (options) {
+        var collection = Backbone.Collection.prototype.toJSON.call(this.options.collection, options);
+        if (!this.options.searchQuery || !this.options.searchQuery.length) return collection;
+
+        // Each time, we need to recreate an instance of Fuse to maintain the sorting of the table
+        var searchableColumns = this.options.headers.toJSON()
+          .filter(function (header) { return header.searchable; })
+          .map(function (header) { return header.name; });
+
+        // We need to format the data for Fuse
+        // The basic idea is that Fuse has a direct access to the searchable columns and their value.
+        // We maintain a reference to the original row so we can display it later
+        // Example of the format:
+        // [
+        //   {
+        //     row: [
+        //      { name: 'Title', value: 'Vizzuality' },
+        //      { name: 'Price', value: '100€' }
+        //     ],
+        //     Title: 'Vizzuality',
+        //     Price: '100€'
+        //   }
+        // ]
+        var fuseCollection = collection.map(function (row) {
+          var o = {};
+          o.row = row;
+          for (var i = 0, j = searchableColumns.length; i < j; i++) {
+            var value = _.findWhere(row.row, { name: searchableColumns[i] }).value;
+            o[searchableColumns[i]] = value;
+          }
+          return o;
+        });
+
+        this.options.collection.fuse = new Fuse(fuseCollection, {
+          include: ['matches'],
+          keys: searchableColumns,
+          tokenize: true,
+          threshold: 0,
+          shouldSort: false
+        });
+
+        var searchResults = this.options.collection.fuse.search(this.options.searchQuery);
+
+        return searchResults.map(function (result) {
+          return result.item.row;
+        });
+      }.bind(this);
+    },
+
+    /**
      * Sort the table ASC by the column the user clicked on or DESC if the table was already
      * sorted ASC by the same column
      * @param {String} columnName
@@ -203,6 +285,15 @@
       }
 
       this.options.collection.sort();
+      this.render();
+    },
+
+    /**
+     * Render the table with the result of the search
+     * @param {String} query
+     */
+    _search: function (query) {
+      this.options.searchQuery = query;
       this.render();
     },
 
@@ -234,7 +325,8 @@
         rows: rows,
         sortColumn: sortColumn,
         sortOrder: this.options.sortOrder === 1 ? 'ascending' : 'descending',
-        error: this.error
+        error: this.error,
+        isSearchResult: this.options.searchQuery && !!this.options.searchQuery.length
       }));
 
       this._setVars();

@@ -21,7 +21,8 @@
     "_": true,
     "Turbolinks": true,
     "SirTrevor": true,
-    "gon": true
+    "gon": true,
+    "Fuse": true
   },
   "env": {
     "browser": true
