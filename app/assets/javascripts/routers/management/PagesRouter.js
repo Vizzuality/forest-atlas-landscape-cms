@@ -16,6 +16,18 @@
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher')
       });
+
+      // We initialize the tabs
+      new App.View.TabView({
+        el: $('.js-tabs'),
+        redirect: true,
+        currentTab: 1,
+        tabs: [
+          { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
+          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
+          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
+        ]
+      });
     }
 
   });

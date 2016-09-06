@@ -4,16 +4,17 @@
 
   App.View.TabView = Backbone.View.extend({
 
-    // Don't set the "tagName" property here, see "_generateContainer"
-    className: 'c-tabs',
-
     defaults: {
       // Array of objects containing the name of the tabs and the id of their associated content
-      // Example: [ { name: "tab1", id: "content1" }, ... ]
+      // or the URL of the page to load
       // Don't forget to add the role "tabpanel" on the matching id elements
+      // Example 1: [ { name: "tab1", id: "content1" }, ... ]
+      // Example 2: [ { name: "tab1", url: "http://www.example.com" }, ... ]
       tabs: [],
-      // Integer. First tab actived by default. This is an internal value.
-      defaultTab: 0,
+      // Boolean. Indicate whether to trigger an event when the tab changes or redirect the page
+      // to the URL of the selected tab. If false, the tabs objects must have an id so the content
+      // switch can be managed entirely by JS. Otherwise, you must provide an URL for each tab.
+      redirect: false,
       // Integer. Index of the current selected tab.
       currentTab: 0,
       // String. CSS Class applied to the tab container. Only taken into account at instantiation.
@@ -29,23 +30,7 @@
 
     initialize: function (settings) {
       this.options = _.extend(this.defaults, settings);
-      this._generateContainer();
-    },
-
-    /**
-     * Update the el and $el elements of the instance in order to accept a
-     * custom / modifier class (see the view's options)
-     */
-    _generateContainer: function () {
-      var container = document.createElement('ul');
-      container.classList.add(this.className);
-      container.setAttribute('role', 'tablist');
-
-      if (this.options.cssClass) {
-        container.classList.add(this.options.cssClass);
-      }
-
-      this.setElement(container);
+      this.render();
     },
 
     /**
@@ -96,15 +81,20 @@
      * @param {Boolean} if the tab needs to be focused on
      */
     _toggleTab: function (index, focus) {
-      this.options.currentTab = index;
-      this._cleanTabs();
-      this._setCurrentTab(index);
-      if (focus) this.$tabs.eq(index).focus();
+      if (this.options.redirect) {
+        var url = this.options.tabs[index].url;
+        Turbolinks.visit(url);
+      } else {
+        this.options.currentTab = index;
+        this._cleanTabs();
+        this._setCurrentTab(index);
+        if (focus) this.$tabs.eq(index).focus();
 
-      // Triggers a Backbone event with the name of the tab selected to
-      // communicate other views that tab has been selected
-      var tabName = this.options.tabs[index].name;
-      App.Events.trigger('tab:selected', { tab: tabName });
+        // Triggers a Backbone event with the name of the tab selected to
+        // communicate other views that tab has been selected
+        var tabName = this.options.tabs[index].name;
+        App.Events.trigger('tab:selected', { tab: tabName });
+      }
     },
 
     /**

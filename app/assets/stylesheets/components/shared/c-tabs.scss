@@ -3,8 +3,17 @@
   justify-content: center;
   height: 50px;
   margin: 0;
+  padding: 0 $wrapper-mobile-padding;
   background-color: $color-1;
   list-style: none;
+
+  @media #{$mq-mobile} {
+    padding: 0 $wrapper-tablet-padding;
+  }
+
+  @media #{$mq-tablet} {
+    padding: 0 $wrapper-padding;
+  }
 
   > .tab {
     width: 200px;
