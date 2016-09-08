@@ -72,7 +72,7 @@
       sortOrder: 1,
       // Table name used by screen readers
       tableName: null,
-      // Search field: must be a empty div DOM element
+      // Search field: must be a empty div DOM element with class "c-input-search" (to get the styles)
       // If let to null, the search feature will be disabled
       searchFieldContainer: null,
       // Search query. Do not set from outside.
@@ -195,7 +195,6 @@
      *  Adds a search input and a submit button into the searchField container
      */
     _initSearch: function () {
-      // TODO add classes
       var searchField = document.createElement('input');
       searchField.setAttribute('type', 'input');
       searchField.setAttribute('placeholder', 'Search');
