@@ -7,9 +7,16 @@
       '(/)': 'index'
     },
 
-    index: function () {
+    initialize: function () {
       // Instantiate the common views here for the page, use the "routes" object to instantiate
       // per route views
+      new App.View.HeaderView({
+        el: document.querySelector('.js-header')
+      });
+    },
+
+    index: function () {
+
     }
 
   });
