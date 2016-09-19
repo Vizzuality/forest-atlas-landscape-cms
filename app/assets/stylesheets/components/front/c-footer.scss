@@ -54,9 +54,10 @@
     }
 
     > .share-links-list {
-      // display: inline-flex;
+      height: 25px;
+
       > .share-link-item {
-        // display: inline-flex;
+        height: 100%;
         margin: 0 0 0 15px;
 
         & + .share-link-item {
@@ -68,9 +69,10 @@
       > .share-link-item > .share-link {
         display: inline-block;
         width: 25px;
-        height: 25px;
+        height: 100%;
 
         border-radius: 50%;
+        line-height: 25px;
 
         @if $theme == 2 {
           background-color: $color-2;
