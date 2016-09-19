@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 300;
+  src: font-url('fonts/FiraSansOT-Light.otf');
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 400;
+  src: font-url('fonts/FiraSansOT-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 700;
+  src: font-url('fonts/FiraSansOT-Medium.otf');
+}
+
+// Font families
+$font-family-1: 'Fira Sans', sans-serif;
+
+// Font sizes
+$font-size-small:    12px;
+$font-size-normal:   14px;
+$font-size-x-normal: 19px;
+$font-size-medium:   21px;
+$font-size-big:      35px;
+$font-size-x-big:    40px;
+$font-size-huge:     47px;
+
+// Font weights
+$font-weight-light:  300;
+$font-weight-normal: 400;
+$font-weight-bold:   700;
+
+// Colors
+$color-1:  #f7f7f7;
+$color-2:  #97bd3d;
+$color-3:  #fff;
+$color-4:  #555;
+
+// General layout
+$body-max-width:         1280px;
+$wrapper-padding:          80px;
+$wrapper-tablet-padding:   30px;
+$wrapper-mobile-padding:   15px;
+
+// Breakpoints
+$breakpoint-mobile:  425px;
+$breakpoint-tablet:  768px;
+$breakpoint-laptop: 1024px;
+
+// Media queries
+$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
+$mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
+$mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
+
+$mq-body-width: 'screen and (min-width: #{$body-max-width})';
+
+// Theme
+$theme: 2;

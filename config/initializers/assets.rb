@@ -11,3 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 Rails.application.config.assets.precompile += %w( management.js admin.js ckeditor/* )
+Rails.application.config.assets.precompile += %w( admin/application.css management/application.css front/application-theme-1.css front/application-theme-2.css )
