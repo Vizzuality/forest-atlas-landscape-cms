@@ -1,0 +1,37 @@
+
+.c-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  // image sample. This property should be injected through javascript
+  background-image: asset-url('forest.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .cover-title {
+    max-width: $content-max-width;
+    margin: 0 auto;
+
+    @if $theme == 2 {
+      font-family: $font-family-1;
+      font-size: $font-size-x-big;
+      font-weight: $font-weight-normal;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    } @else {
+      font-family: $font-family-2;
+      font-size: $font-size-huge;
+      font-weight: $font-weight-bold;
+      letter-spacing: 1.2px;
+
+      @media #{$mq-laptop} {
+        font-size: $font-size-x-huge;
+      }
+    }
+
+    color: $color-3;
+    line-height: 1;
+    text-align: center;
+  }
+}
