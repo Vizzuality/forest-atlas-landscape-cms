@@ -1,0 +1,139 @@
+
+.c-pre-footer {
+  padding: 65px 0 75px;
+
+  @if $theme == 2 {
+    background-color: rgba($color-2, .05);
+  } @else {
+    background-color: rgba($color-1, .05);
+  }
+
+  .intro {
+    margin: 0 0 25px;
+    color: $color-4;
+    font-family: $font-family-2;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-light;
+    line-height: 1.7;
+  }
+
+  .partners,
+  .supporters {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .supporters {
+    margin: 80px 0 0;
+  }
+
+  .logo-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    @media #{$mq-tablet} {
+      justify-content: center;
+    }
+
+    @media #{$mq-laptop} {
+      justify-content: flex-start;
+    }
+
+    > .logo-item {
+      flex-basis: 100%;
+      text-align: center;
+
+      // starting from second row
+      &:nth-child(n+2) {
+        padding: 30px 0 0;
+      }
+
+      > .partner,
+      > .supporter {
+        max-width: 175px;
+        height: auto;
+      }
+
+      @media #{$mq-mobile} {
+        flex-basis: calc(50% - 30px);
+
+        // reset
+        &:nth-child(n+2) {
+          padding: 0;
+
+        }
+
+        // starting from third row
+        &:nth-child(n+3) {
+          padding: 30px 0 0;
+        }
+
+        &:nth-child(even) {
+          padding-left: 30px;
+        }
+      }
+
+      @media #{$mq-tablet} {
+        flex-basis: calc(33.33% - 30px);
+        padding: 0 30px;
+
+        // reset property
+        &:nth-child(even) {
+          padding: 0;
+        }
+
+        // starting from second element...
+        &:nth-child(n+2) {
+          padding: 0 30px;
+        }
+
+        // starting from third element...
+        &:nth-child(n+3) {
+          padding: 0;
+        }
+
+        // beginning of row
+        &:nth-child(3n+1) {
+          padding: 0;
+        }
+
+        // end of row
+        &:nth-child(3n+3) {
+          padding-right: 0;
+          padding-left: 0;
+        }
+
+        // starting for the second row...
+        &:nth-child(n+4) {
+          padding-top: 30px;
+        }
+      }
+
+      @media #{$mq-laptop} {
+        flex-basis: calc(25% - 15px);
+        text-align: left;
+
+        // reset
+        &:nth-child(n+2) {
+          padding: 0 15px;
+        }
+
+        // beginning of row
+        &:nth-child(4n+1) {
+          padding: 0;
+        }
+
+        // Starting from second row
+        &:nth-child(n+5) {
+          padding-top: 30px;
+        }
+
+        // end of row
+        &:nth-child(4n+4) {
+          padding-right: 0;
+          padding-left: 15px;
+        }
+      }
+    }
+  }
+}
