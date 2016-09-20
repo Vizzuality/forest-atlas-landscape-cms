@@ -1,4 +1,5 @@
 class AdminController < ActionController::Base
+ # skip_before_action :verify_authenticity_token, raise: false
   before_action :authenticate_user!
   before_action :ensure_admin_user
   layout 'admin'

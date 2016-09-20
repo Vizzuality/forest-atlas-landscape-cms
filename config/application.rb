@@ -19,6 +19,7 @@ module ForestAtlasLandscapeCms
       g.assets false
       g.helper false
     end
-
+    config.log_level = :debug
+    
   end
 end

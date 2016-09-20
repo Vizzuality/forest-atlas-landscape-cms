@@ -19,7 +19,8 @@ RUN bundle install --jobs 20 --retry 5
 ADD . /usr/src/$NAME
 WORKDIR /usr/src/$NAME
 
-
+ENV RAILS_ENV development
+ENV RACK_ENV development
 
 EXPOSE 4000
 
