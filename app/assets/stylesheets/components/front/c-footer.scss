@@ -55,6 +55,8 @@
       height: 25px;
 
       > .share-link-item {
+        display: inline-flex;
+        align-items: center;
         height: 100%;
         margin: 0 0 0 15px;
 
@@ -63,18 +65,18 @@
         }
       }
 
-      // this is a temporal patch until we have the real icons
       > .share-link-item > .share-link {
-        display: inline-block;
-        width: 25px;
         height: 100%;
 
-        border-radius: 50%;
+        > .icon {
+          width: 25px;
+          height: 100%;
 
-        @if $theme == 2 {
-          background-color: $color-2;
-        } @else {
-          background-color: $color-3;
+          @if $theme == 2 {
+            fill: $color-2;
+          } @else {
+            fill: $color-3;
+          }
         }
       }
     }
