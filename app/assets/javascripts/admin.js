@@ -19,9 +19,9 @@
 
 //= require_self
 
-// = require_tree ./routers
+// = require_tree ./routers/admin
 // = require_tree ./views/admin
-// = require dispatcher
+// = require dispatchers/adminDispatcher
 
 (function () {
   'use strict';

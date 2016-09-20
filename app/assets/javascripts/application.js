@@ -23,11 +23,11 @@
 
 //= require_self
 
-// = require_tree ./routers
+// = require_tree ./routers/front
 // = require_tree ./templates
 // = require_tree ./views/shared
-// = require_tree ./views/home
-// = require dispatcher
+// = require_tree ./views/front
+// = require dispatchers/frontDispatcher
 
 (function () {
   'use strict';

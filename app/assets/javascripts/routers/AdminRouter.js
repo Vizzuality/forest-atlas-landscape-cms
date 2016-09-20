@@ -1,6 +1,10 @@
 ((function (App) {
   'use strict';
 
+  // LEGACY CODE
+  // To be removed when the admin section is updated to the architecture of the rest
+  // of the app
+
   App.Router.Admin = Backbone.Router.extend({
 
     routes: {
