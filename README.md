@@ -52,13 +52,7 @@ Perform the following steps:
 
 Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
 
-To set up the database, run:
 
-    docker-compose -f docker-compose.dev.yml run web rake db:seed
-
-If you are on a development environment, you might also want to load some sample data:
-
-    docker-compose -f docker-compose.dev.yml run web rake db:sample
 
 ## Running
 
@@ -76,6 +70,15 @@ you open a terminal (if you have mac or windows, open a terminal with the 'Docke
     ./service.sh develop
 
 ```
+
+#### First time running the app with Docker
+To set up the database, run:
+
+    docker-compose -f docker-compose.dev.yml run web rake db:seed
+
+If you are on a development environment, you might also want to load some sample data:
+
+    docker-compose -f docker-compose.dev.yml run web rake db:sample
     
 
 ## Development
