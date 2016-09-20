@@ -73,7 +73,7 @@ To run application:
 you open a terminal (if you have mac or windows, open a terminal with the 'Docker Quickstart Terminal') and execute the next command:
 
 ```bash
-    ./service develop
+    ./service.sh develop
 
 ```
     
