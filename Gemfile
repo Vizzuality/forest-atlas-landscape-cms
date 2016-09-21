@@ -36,9 +36,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fuse.js'
 end
 
-# Authentication
-# gem 'devise'
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

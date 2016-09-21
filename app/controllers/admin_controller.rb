@@ -6,11 +6,9 @@ class AdminController < ActionController::Base
   before_action :ensure_admin_user
   layout 'admin'
 
-
   private
 
   def ensure_admin_user
     ensure_user_type 'admin'
   end
-
 end

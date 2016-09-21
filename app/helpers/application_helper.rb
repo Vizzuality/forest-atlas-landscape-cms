@@ -54,5 +54,4 @@ module ApplicationHelper
   def redirect_to_api_gateway
     redirect_to "#{ENV['APIGATEWAY_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
   end
-
 end
