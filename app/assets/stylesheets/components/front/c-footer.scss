@@ -1,7 +1,11 @@
 .c-footer {
-  height: 50px;
-
+  padding: 15px 0;
   background-color: $color-1;
+
+  @media #{$mq-tablet} {
+    height: 50px;
+    padding: 0;
+  }
 
   > .wrapper {
     height: 100%;
@@ -37,11 +41,12 @@
 
   .share  {
     display: flex;
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    margin: 15px 0 0;
 
     @media #{$mq-tablet} {
-      width: auto;
+      flex-direction: row;
+      margin: 0;
     }
 
     > .share-text {
@@ -52,13 +57,19 @@
     }
 
     > .share-links-list {
-      height: 25px;
+      display: inline-flex;
+      margin: 10px 0 0;
+
+      @media #{$mq-tablet} {
+        margin: 0;
+      }
 
       > .share-link-item {
-        display: inline-flex;
-        align-items: center;
-        height: 100%;
-        margin: 0 0 0 15px;
+        height: 25px;
+
+        @media #{$mq-tablet} {
+          margin: 0 0 0 15px;
+        }
 
         & + .share-link-item {
           margin: 0 0 0 15px;
