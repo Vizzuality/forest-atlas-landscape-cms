@@ -27,7 +27,23 @@ body {
   }
 }
 
+ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: inline-block;
+    list-style: none;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
 .wrapper {
+  width: 100%;
   padding: 0 $wrapper-mobile-padding;
 
   @media #{$mq-mobile} {
@@ -37,6 +53,10 @@ body {
   @media #{$mq-tablet} {
     padding: 0 $wrapper-padding;
   }
+}
+
+.is-hidden {
+  display: none;
 }
 
 .turbolinks-progress-bar {
