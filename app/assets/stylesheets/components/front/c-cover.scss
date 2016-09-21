@@ -1,6 +1,7 @@
 
 .c-cover {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   height: 500px;
@@ -8,6 +9,25 @@
   background-image: asset-url('forest.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: -1;
+
+  &::after {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    @if $theme == 2 {
+      background-color: rgba($color-5, .3);
+    } @else {
+      background-color: rgba($color-1, .4);
+    }
+
+    content: '';
+    z-index: -1;
+  }
 
   .cover-title {
     max-width: $content-max-width;
