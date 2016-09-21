@@ -12,26 +12,29 @@
   z-index: -1;
 
   &::after {
-    display: inline-block;
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    content: '';
+    z-index: -1;
 
     @if $theme == 2 {
       background-color: rgba($color-5, .3);
     } @else {
       background-color: rgba($color-1, .4);
     }
-
-    content: '';
-    z-index: -1;
   }
 
   .cover-title {
     max-width: $content-max-width;
     margin: 0 auto;
+
+    color: $color-3;
+    line-height: 1;
+    text-align: center;
 
     @if $theme == 2 {
       font-family: $font-family-1;
@@ -49,9 +52,5 @@
         font-size: $font-size-x-huge;
       }
     }
-
-    color: $color-3;
-    line-height: 1;
-    text-align: center;
   }
 }
