@@ -1,5 +1,7 @@
 class ManagementController < ActionController::Base
-  before_action :authenticate_user!
+  include ApplicationHelper
+
+  before_action :ensure_management_user
   layout 'management'
 
   def authenticate_user_for_site!
@@ -7,5 +9,9 @@ class ManagementController < ActionController::Base
     raise ScriptError, 'Expected site to be defined to validate authorization, but none found' if @site.nil?
 
     raise Exception, 'User not authorized to access this site' unless @site.users.exists?(current_user)
+  end
+
+  def ensure_management_user
+    ensure_user_type 'management'
   end
 end
