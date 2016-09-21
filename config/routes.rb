@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  devise_for :users
-
   namespace :admin do
     resources :sites do
       member do
@@ -33,6 +31,10 @@ Rails.application.routes.draw do
     get '/', to: 'static_page#dashboard'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
+
+  # Auth
+  get 'auth/login', to: 'auth#login'
+  get 'auth/logout', to: 'auth#logout'
 
    DynamicRouter.load
 end

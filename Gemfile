@@ -13,7 +13,6 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'dotenv-rails', '~> 2.1'
 
-gem 'devise'
 gem 'closure_tree'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'paperclip', '~> 5.0.0'
@@ -36,6 +35,9 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery-ui'
   gem 'rails-assets-fuse.js'
 end
+
+# Authentication
+# gem 'devise'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
