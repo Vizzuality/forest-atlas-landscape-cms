@@ -1,23 +1,3 @@
-
-// Fira Sans
-@font-face {
-  font-family: 'Fira Sans';
-  font-weight: 300;
-  src: font-url('fonts/FiraSansOT-Light.otf');
-}
-
-@font-face {
-  font-family: 'Fira Sans';
-  font-weight: 400;
-  src: font-url('fonts/FiraSansOT-Regular.otf');
-}
-
-@font-face {
-  font-family: 'Fira Sans';
-  font-weight: 700;
-  src: font-url('fonts/FiraSansOT-Medium.otf');
-}
-
 // Merriweather
 @font-face {
   font-family: 'Merriweather';
@@ -37,13 +17,28 @@
   src: font-url('fonts/Merriweather/Merriweather-Bold.ttf');
 }
 
+@font-face {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-weight: 300;
+  src: font-url('fonts/Merriweather/Merriweather-LightItalic.ttf');
+}
+
+// Merriweather Sans
+@font-face {
+  font-family: 'Merriweather Sans';
+  font-weight: 300;
+  src: font-url('fonts/Merriweather/MerriweatherSans-Light.ttf');
+}
+
 // Font families
-$font-family-1: 'Fira Sans', sans-serif;
-$font-family-2: 'Merriweather', sans-serif;
+$font-family-1: 'Merriweather', sans-serif;
+$font-family-2: 'Merriweather Sans', sans-serif;
 
 // Font sizes
 $font-size-small:    12px;
 $font-size-normal:   14px;
+$font-size-s-normal: 15px;
 $font-size-x-normal: 19px;
 $font-size-medium:   21px;
 $font-size-big:      35px;
