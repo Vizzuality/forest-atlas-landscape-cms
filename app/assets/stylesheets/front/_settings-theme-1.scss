@@ -1,3 +1,4 @@
+
 // Fira Sans
 @font-face {
   font-family: 'Fira Sans';
@@ -48,6 +49,7 @@ $font-size-medium:   21px;
 $font-size-big:      35px;
 $font-size-x-big:    40px;
 $font-size-huge:     47px;
+$font-size-x-huge:   70px;
 
 // Font weights
 $font-weight-light:  300;
@@ -62,6 +64,7 @@ $color-4:  #555;
 
 // General layout
 $body-max-width:         1280px;
+$content-max-width:       750px;
 $wrapper-padding:          80px;
 $wrapper-tablet-padding:   30px;
 $wrapper-mobile-padding:   15px;

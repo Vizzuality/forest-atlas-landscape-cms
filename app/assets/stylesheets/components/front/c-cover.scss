@@ -1,0 +1,56 @@
+
+.c-cover {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  // image sample. This property should be injected through javascript
+  background-image: asset-url('forest.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+
+  &::after {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    z-index: -1;
+
+    @if $theme == 2 {
+      background-color: rgba($color-5, .3);
+    } @else {
+      background-color: rgba($color-1, .4);
+    }
+  }
+
+  .cover-title {
+    max-width: $content-max-width;
+    margin: 0 auto;
+
+    color: $color-3;
+    line-height: 1;
+    text-align: center;
+
+    @if $theme == 2 {
+      font-family: $font-family-1;
+      font-size: $font-size-x-big;
+      font-weight: $font-weight-normal;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    } @else {
+      font-family: $font-family-2;
+      font-size: $font-size-huge;
+      font-weight: $font-weight-bold;
+      letter-spacing: 1.2px;
+
+      @media #{$mq-laptop} {
+        font-size: $font-size-x-huge;
+      }
+    }
+  }
+}

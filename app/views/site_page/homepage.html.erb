@@ -2,6 +2,8 @@
 <h3><%= @site_page.name %></h3>
 <%= @site_page.content.html_safe unless @site_page.content.blank? %>
 
+<%= render 'front/cover'%>
+
 <%= render 'front/footer'%>
 
 <script type="text/javascript">
