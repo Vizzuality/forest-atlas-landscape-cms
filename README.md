@@ -96,3 +96,8 @@ Also we have some custom rules you can check in `.eslintrc` and `.sass-lint`, re
 Have fun coding! 😁🌲
 
 
+## Environment variables description
+
+#### API_URL
+
+URL of the API gateway. Used for user authentication.
