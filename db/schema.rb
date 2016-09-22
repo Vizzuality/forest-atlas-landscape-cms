@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 20160922092258) do
   create_table "site_settings", force: :cascade do |t|
     t.integer  "site_id"
     t.string   "name"
-    t.string   "value"
+    t.binary   "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["site_id", "name"], name: "index_site_settings_on_site_id_and_name", unique: true, using: :btree

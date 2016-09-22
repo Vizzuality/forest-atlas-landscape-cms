@@ -18,6 +18,7 @@ class Site < ApplicationRecord
   has_many :users, through: :user_site_associations
   has_many :context_sites
   has_many :contexts, through: :context_sites
+  has_many :site_settings
 
   before_validation :generate_slug
   before_create :create_context

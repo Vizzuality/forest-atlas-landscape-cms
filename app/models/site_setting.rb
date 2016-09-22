@@ -14,4 +14,23 @@ class SiteSetting < ApplicationRecord
   belongs_to :site
   validates_uniqueness_of :name, :scope => :site_id
 
+  def theme
+    self.where(name: 'theme')
+  end
+
+  def background
+    self.where(name: 'background')
+  end
+
+  def logo
+    self.where(name: 'logo')
+  end
+
+  def color
+    self.where(name: 'color')
+  end
+
+  def flag_colors
+    self.where(name: 'flag_colors')
+  end
 end

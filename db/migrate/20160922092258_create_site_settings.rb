@@ -4,7 +4,7 @@ class CreateSiteSettings < ActiveRecord::Migration[5.0]
       t.belongs_to :site, index:true
 
       t.string :name
-      t.string :value
+      t.binary :value
 
       t.timestamps
     end
