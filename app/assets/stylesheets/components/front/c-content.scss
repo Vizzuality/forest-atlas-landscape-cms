@@ -80,12 +80,14 @@
   }
 
   .image {
+    display: block;
     width: 100%;
     height: auto;
     margin: 35px 0 50px;
+    max-width: $media-max-width;
 
     @media #{$mq-mobile} {
-      margin: 65px 0 80px;
+      margin: 65px auto 80px;
     }
   }
 }

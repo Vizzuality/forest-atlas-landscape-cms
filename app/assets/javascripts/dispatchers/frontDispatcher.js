@@ -9,6 +9,10 @@
     var routerName = 'Front' + window.route;
 
     if (App.Router[routerName]) {
+      // Because turbolinks doesn't fully reload the page, we need to stop the
+      // history before anything else
+      Backbone.history.stop();
+
       new App.Router[routerName]();
 
       // We can still use the hash to store the state
