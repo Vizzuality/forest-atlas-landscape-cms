@@ -81,7 +81,7 @@
     @if $theme == 2 {
       display: inline-block;
       padding: 0 3px;
-      background-color: rgba($color-2, .2);
+      background-color: rgba($color-1, .2);
     } @else {
       color: $color-1;
       text-decoration: underline;

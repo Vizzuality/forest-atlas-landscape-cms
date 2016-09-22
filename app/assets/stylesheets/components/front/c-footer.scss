@@ -1,6 +1,11 @@
 .c-footer {
   padding: 15px 0;
-  background-color: $color-1;
+
+  @if $theme == 2 {
+    background-color: $color-6;
+  } @else {
+    background-color: $color-1;
+  }
 
   @media #{$mq-tablet} {
     height: 50px;
@@ -28,7 +33,7 @@
   .site-links-list {
     > .site-link-item > .site-link {
       @if $theme == 2 {
-        color: $color-2;
+        color: $color-1;
       } @else {
         color: $color-3;
       }
@@ -84,7 +89,7 @@
           height: 100%;
 
           @if $theme == 2 {
-            fill: $color-2;
+            fill: $color-1;
           } @else {
             fill: $color-3;
           }
