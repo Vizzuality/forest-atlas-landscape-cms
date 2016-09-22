@@ -4,12 +4,21 @@
   @if $theme == 2 {
     background-color: $color-6;
   } @else {
+    font-size: $font-size-normal;
     background-color: $color-1;
   }
 
   @media #{$mq-tablet} {
     height: 50px;
     padding: 0;
+  }
+
+  a {
+    @if $theme == 2 {
+      display: inline;
+      padding: 0;
+      background-color: transparent;
+    }
   }
 
   > .wrapper {
@@ -36,6 +45,7 @@
         color: $color-1;
       } @else {
         color: $color-3;
+        text-decoration: none;
       }
 
       font-weight: $font-weight-light;
