@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
 
   def redirect_to_apigateway
-    redirect_to "#{ENV['APIGATEWAY_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
+    redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
   end
 
   def jwt_authentication

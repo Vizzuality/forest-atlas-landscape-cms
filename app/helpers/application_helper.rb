@@ -29,7 +29,7 @@ module ApplicationHelper
 
   def current_user
     if session.key?('current_user')
-      connect = Faraday.new(url: "#{ENV['APIGATEWAY_URL']}") do |faraday|
+      connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
         faraday.request  :url_encoded             # form-encode POST params
         faraday.response :logger                  # log requests to STDOUT
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
@@ -52,6 +52,6 @@ module ApplicationHelper
   end
 
   def redirect_to_api_gateway
-    redirect_to "#{ENV['APIGATEWAY_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
+    redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
   end
 end
