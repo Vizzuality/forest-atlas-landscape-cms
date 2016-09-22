@@ -45,10 +45,15 @@ module ApplicationHelper
   end
 
   def current_user_type
-    if session['current_user']
-      user = JSON.parse session['current_user']
-      return user['role']
-    end
+    return 'ADMIN'
+
+    # TODO Should implement a local user management system with different roles
+    # (use a decorator on the user that is sent by the API)
+
+    #if session['current_user']
+    #  user = JSON.parse session['current_user']
+    #  return user['role']
+    #end
   end
 
   def redirect_to_api_gateway
