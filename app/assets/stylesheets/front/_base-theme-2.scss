@@ -40,7 +40,7 @@ ul {
 }
 
 a {
-  display: inline-block;
+  // Do not set inline-block here otherwise the links will be forced to be on online line
   padding: 0 3px;
   color: currentColor;
   text-decoration: none;
