@@ -16,32 +16,6 @@
   src: font-url('fonts/FiraSansOT-Medium.otf');
 }
 
-// Merriweather
-@font-face {
-  font-family: 'Merriweather';
-  font-weight: 300;
-  src: font-url('fonts/Merriweather/Merriweather-Light.ttf');
-}
-
-@font-face {
-  font-family: 'Merriweather';
-  font-weight: 400;
-  src: font-url('fonts/Merriweather/Merriweather-Regular.ttf');
-}
-
-@font-face {
-  font-family: 'Merriweather';
-  font-weight: 700;
-  src: font-url('fonts/Merriweather/Merriweather-Bold.ttf');
-}
-
-@font-face {
-  font-family: 'Merriweather';
-  font-style: italic;
-  font-weight: 300;
-  src: font-url('fonts/Merriweather/Merriweather-LightItalic.ttf');
-}
-
 // Font families
 $font-family-1: 'Fira Sans', sans-serif;
 
@@ -61,11 +35,12 @@ $font-weight-normal: 400;
 $font-weight-bold:   700;
 
 // Colors
-$color-1:  #333;
-$color-2:  #97bd3d;
+$color-1:  #97bd3d; // Theme main color
+$color-2:  #f7f7f7;
 $color-3:  #fff;
 $color-4:  #555;
 $color-5:  #000;
+$color-6:  #333;
 
 // General layout
 $body-max-width:         1280px;

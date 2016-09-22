@@ -4,7 +4,7 @@
   height: 50px;
   margin: 0;
   padding: 0 $wrapper-mobile-padding;
-  background-color: $color-1;
+  background-color: $color-2;
   list-style: none;
 
   @media #{$mq-mobile} {
@@ -23,7 +23,7 @@
     cursor: pointer;
 
     &[aria-selected='true'] {
-      border-bottom: 5px solid $color-2;
+      border-bottom: 5px solid $color-1;
     }
   }
 }

@@ -32,8 +32,8 @@
 }
 
 // Font families
-$font-family-1: 'Merriweather', sans-serif;
-$font-family-2: 'Merriweather Sans', sans-serif;
+$font-family-1: 'Merriweather Sans', sans-serif;
+$font-family-2: 'Merriweather', serif;
 
 // Font sizes
 $font-size-small:    12px;
@@ -52,10 +52,12 @@ $font-weight-normal: 400;
 $font-weight-bold:   700;
 
 // Colors
-$color-1:  #006a80;
-$color-2:  #97bd3d;
+$color-1:  #006a80; // Theme main color
+$color-2:  #f7f7f7;
 $color-3:  #fff;
 $color-4:  #555;
+$color-5:  #000;
+$color-6:  #333;
 
 // General layout
 $body-max-width:         1280px;

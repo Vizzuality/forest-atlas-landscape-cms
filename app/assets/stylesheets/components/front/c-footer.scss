@@ -1,10 +1,24 @@
 .c-footer {
   padding: 15px 0;
-  background-color: $color-1;
+
+  @if $theme == 2 {
+    background-color: $color-6;
+  } @else {
+    font-size: $font-size-normal;
+    background-color: $color-1;
+  }
 
   @media #{$mq-tablet} {
     height: 50px;
     padding: 0;
+  }
+
+  a {
+    @if $theme == 2 {
+      display: inline;
+      padding: 0;
+      background-color: transparent;
+    }
   }
 
   > .wrapper {
@@ -28,9 +42,10 @@
   .site-links-list {
     > .site-link-item > .site-link {
       @if $theme == 2 {
-        color: $color-2;
+        color: $color-1;
       } @else {
         color: $color-3;
+        text-decoration: none;
       }
 
       font-weight: $font-weight-light;
@@ -84,7 +99,7 @@
           height: 100%;
 
           @if $theme == 2 {
-            fill: $color-2;
+            fill: $color-1;
           } @else {
             fill: $color-3;
           }
