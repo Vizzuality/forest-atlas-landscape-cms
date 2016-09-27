@@ -26,6 +26,10 @@ body {
   @media #{$mq-body-width} {
     margin: 0 auto;
   }
+
+  &.-wide {
+    max-width: none;
+  }
 }
 
 ul {
