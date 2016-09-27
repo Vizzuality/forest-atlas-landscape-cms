@@ -99,10 +99,15 @@ ActiveRecord::Schema.define(version: 20160922092258) do
 
   create_table "site_settings", force: :cascade do |t|
     t.integer  "site_id"
-    t.string   "name"
-    t.binary   "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",               null: false
+    t.string   "value",              null: false
+    t.integer  "position",           null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.index ["site_id", "name"], name: "index_site_settings_on_site_id_and_name", unique: true, using: :btree
     t.index ["site_id"], name: "index_site_settings_on_site_id", using: :btree
   end

@@ -38,7 +38,16 @@ class Admin::SitesController < AdminController
 
     respond_to do |format|
       if @site.save
-        format.html { redirect_to admin_site_path(@site), notice: 'Site was successfully created.' }
+        format.html {
+          case params['site']['step']
+            when '1'
+              redirect_to admin_site_setting_path(@site)
+            when '2'
+              redirect_to admin_site_user_path(@site)
+            when '3'
+              #redirect_to
+          end
+           }
         format.json { render :show, status: :created, location: @site }
       else
         format.html { render :new }
@@ -52,7 +61,16 @@ class Admin::SitesController < AdminController
   def update
     respond_to do |format|
       if @site.update(site_params)
-        format.html { redirect_to admin_site_path(@site), notice: 'Site was successfully updated.' }
+        format.html {
+          case params['site']['step']
+            when '1'
+              redirect_to admin_site_setting_path(@site)
+            when '2'
+              redirect_to admin_site_user_path(@site)
+            when '3'
+              #redirect_to
+          end
+        }
         format.json { render :show, status: :ok, location: @site }
       else
         format.html { render :edit }
@@ -71,6 +89,10 @@ class Admin::SitesController < AdminController
     end
   end
 
+  def display
+
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_site
@@ -79,6 +101,7 @@ class Admin::SitesController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
-    params.require(:site).permit(:name, :site_template_id, {user_ids: []})
+    params.require(:site).permit(:name, :site_template_id,
+                                 {user_ids: []}, site_setting_attributes: [:id, :value, :name, :image])
   end
 end

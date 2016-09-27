@@ -1,5 +1,37 @@
 <h1>Site Settings</h1>
-<%= form_tag(controller: 'admin/site_settings') do %>
+<%= form_for [:admin, @site] do |f| %>
+    <%= f.hidden_field :step, value: '2' %>
 
-    <%= radio_button_tag(:theme, 'Theme') %>
+    <%= f.fields_for @site.get_ordered_settings do |s_f| %>
+      <% s_f.object.each do |setting| %>
+        <div>
+          <%= setting.name.capitalize %>
+          <% case setting.name
+             when 'background' %>
+              <%= image_tag setting.image.url(:thumb) %>
+              <%= s_f.file_field :image %>
+          <% when 'logo' %>
+              <%= image_tag setting.image.url(:thumb) %>
+              <%= s_f.file_field :image %>
+          <% when 'flag_colors' %>
+              <% settings.value.split(' ').each do |c| %>
+                <%= color_field_tag c %>
+              <% end %>
+          <% when 'color' %>
+              <%#= s_f.color_field :value %>
+              <%= color_field :site_setting, :value %>
+          <% when 'theme' %>
+              Theme 1
+              <%= radio_button_tag(:value, '1') %>
+              Theme 2
+              <%= radio_button_tag(:value, '2') %>
+          <% end %>
+        </div>
+      <% end %>
+        <%= render partial: 'admin/sites/footer', locals: { f: f , submit_text: 'SET SETTINGS', home: false} %>
+    <% end %>
 <% end %>
+
+<%= console %>
+
+

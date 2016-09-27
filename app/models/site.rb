@@ -18,7 +18,10 @@ class Site < ApplicationRecord
   has_many :users, through: :user_site_associations
   has_many :context_sites
   has_many :contexts, through: :context_sites
-  has_many :site_settings
+  has_many :site_settings, dependent: :destroy
+
+  accepts_nested_attributes_for :site_settings
+  accepts_nested_attributes_for :users
 
   before_validation :generate_slug
   before_create :create_context
@@ -43,6 +46,20 @@ class Site < ApplicationRecord
 
   def root
     SitePage.find_by site_id: self.id, uri: ''
+  end
+
+  def get_ordered_settings
+    settings = site_settings.order :position
+    if settings.blank?
+      (SiteSetting.new site_id: id, name: 'theme', value: '1', position: 0).save(validate: false)
+      (SiteSetting.new site_id: id, name: 'background', value: '', position: 1).save(validate: false)
+      (SiteSetting.create site_id: id, name: 'logo', value: '', position: 2).save(validate: false)
+      (SiteSetting.create site_id: id, name: 'color', value: '', position: 3).save(validate: false)
+      (SiteSetting.create site_id: id, name: 'flag', value: '', position: 4).save(validate: false)
+
+      settings = site_settings.order :position
+    end
+    settings
   end
 
   private
