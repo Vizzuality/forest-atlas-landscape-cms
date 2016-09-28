@@ -34,7 +34,7 @@
 
       this.collection.fetch()
         .done(this.render.bind(this))
-        .error(function () {
+        .fail(function () {
           throw new Error('Unable to load the lists of site for the site switcher selector.');
         });
     },
