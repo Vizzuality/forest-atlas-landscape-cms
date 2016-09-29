@@ -2,23 +2,16 @@
   <div class="mobile-drawer js-mobile-drawer">
     <div class="wrapper">
       <ul>
-        <li><a href="#">Simple item</a></li>
-        <li>
-          <a href="">Test</a>
-          <ul>
-            <li>
-              <a href="#">Option 1</a>
-              <ul>
-                <li><a href="#">Section 1</a></li>
-                <li><a href="#">Section 2</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Option 2</a></li>
-            <li><a href="#">Option 3</a></li>
-            <li><a href="#">Option 4</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Simple item</a></li>
+        <% @menu_root.children.each do |child_page| -%>
+            <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+            <% if !child_page.children.nil? %>
+                <ul>
+                  <% child_page.children.each do |grandchild_page| -%>
+                      <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
+                  <% end -%>
+                </ul>
+            <% end -%>
+        <% end -%>
       </ul>
       <ul>
         <li><a href="#">LANG</a></li>
@@ -27,7 +20,7 @@
   </div>
 
   <div class="mobile-menu wrapper">
-    <a class="logo-container" href="#">
+    <a class="logo-container" href="/">
       <div class="logo"></div>
     </a>
     <div class="hamburger-menu js-mobile-menu">
@@ -39,40 +32,25 @@
 
   <div class="desktop-menu wrapper">
     <div class="logo-container">
-      <a class="logo" href="#"></a>
+      <a class="logo" href="/"></a>
     </div>
     <ul>
-      <li><a href="#">Simple item</a></li>
-      <li class="dropdown-item">
-        Test
-        <ul>
-          <li><a href="">Test</a></li>
-          <li><a href="#">Option 1</a></li>
-          <li><a href="#">Option 2</a></li>
-          <li><a href="#">Option 3</a></li>
-          <li><a href="#">Option 4</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Simple item</a></li>
-      <!--
       <% @menu_root.children.each do |child_page| -%>
-        <% if !child_page.children.nil? %>
-          <li class="dropdown-item js-menu-dropdown">
-            <%= child_page.name %>
-            <ul>
-              <% child_page.children.each do |grandchild_page| -%>
-                <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
-              <% end -%>
-            </ul>
+          <li class="<%= 'dropdown-item' if !child_page.children.nil? and !child_page.children.empty? %>">
+            <a href="<%= child_page.url %>"><%= child_page.name %></a>
+            <% if !child_page.children.nil? and !child_page.children.empty? %>
+                <ul>
+                  <% child_page.children.each do |grandchild_page| -%>
+                      <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
+                  <% end -%>
+                </ul>
+            <% end -%>
           </li>
-        <% else %>
-          <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
-        <% end -%>
       <% end -%>
-      -->
     </ul>
     <ul>
       <li><a href="#">LANG</a></li>
+    </ul>
   </div>
 
   <div class="flag-border">
@@ -88,30 +66,22 @@
     <div class="wrapper">
       <div class="content">
         <ul class="breadcrumbs">
-          <li><a href="">Analyze Data</a></li>
-          <li><a href="">Option 1</a></li>
+          <% if @site_page.depth > 0 %>
+              <% @breadcrumbs.each do |breadcrumb| -%>
+                  <li><a href="<%= breadcrumb.url %>"><%= breadcrumb.name %></a></li>
+              <% end %>
+          <% end %>
         </ul>
         <ul class="sections">
-          <li><a href="">Section 1</a></li>
-          <li><a href="">Section 2</a></li>
+          <% if @site_page.depth >= 2 %>
+              <ul>
+                <% @site_page.children.each do |child_page| -%>
+                    <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+                <% end %>
+              </ul>
+          <% end %>
         </ul>
       </div>
     </div>
   </div>
 </header>
-
-<!--
-<ul class="desktop-menu">
-  <% @menu_root.children.each do |child_page| -%>
-      <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
-      <% if !child_page.children.nil? %>
-          <ul class="dropdown_content">
-            <% child_page.children.each do |grandchild_page| -%>
-                <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
-            <% end -%>
-          </ul>
-      <% end -%>
-  <% end -%>
-
-</ul>
--->

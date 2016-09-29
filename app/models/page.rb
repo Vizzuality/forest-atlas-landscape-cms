@@ -21,6 +21,7 @@ class Page < ApplicationRecord
 
   belongs_to :site
   has_many :routes, through: :site
+  has_one :site_template, through: :site
   has_and_belongs_to_many :site_templates
   validates :url, uniqueness: {scope: :site}
 
