@@ -1,0 +1,37 @@
+{{#*inline "item"}}
+  <ul>
+    {{#each pages}}
+      <li>
+        <div class="page">
+          <span>{{name}}</span>
+          <ul class="action-buttons">
+            <li><a href="" class="view-button">View</a></li>
+            <li><a href="" class="edit-button">Edit</a></li>
+            <li><a href="" class="delete-button">Delete</a></li>
+          </ul>
+        </div>
+        {{#if children}}
+          {{> item pages=children}}
+        {{/if}}
+      </li>
+    {{/each}}
+    <li>
+      <button type="button" class="add-page-button">Add page</button>
+    </li>
+  </ul>
+{{/inline}}
+
+<div class="c-tree-structure">
+  <ul>
+    <li>
+      <div class="page -site-title">
+        <span>Site's Title</span>
+        <ul class="action-buttons">
+          <li><a href="" class="view-button">View</a></li>
+          <li><a href="" class="edit-button">Edit</a></li>
+        </ul>
+      </div>
+      {{> item pages=pages}}
+    </li>
+  </ul>
+</div>
