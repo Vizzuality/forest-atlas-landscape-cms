@@ -64,8 +64,9 @@ a {
 }
 
 ::selection {
-  background:rgba($color-1, .2);
+  background: rgba($color-1, .2);
 }
+
 ::-moz-selection {
   background: rgba($color-1, .2);
 }

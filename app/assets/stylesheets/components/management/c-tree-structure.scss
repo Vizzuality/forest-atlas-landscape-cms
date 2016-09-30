@@ -1,4 +1,7 @@
 .c-tree-structure {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
 
   ul {
     display: block;
@@ -26,7 +29,10 @@
     }
 
     > li {
-      display: block;
+      // We want the elements to act like a block element but have
+      // a width corresponding to its content
+      display: table;
+
       margin-bottom: 20px;
 
       &:last-of-type {
@@ -36,6 +42,12 @@
       // Identation for nested levels
       ul { padding-left: 55px; }
     }
+  }
+
+  > ul {
+    // We want the root of the tree to act like a block element but have
+    // a width corresponding to its content
+    display: table;
   }
 
   .page {
@@ -94,6 +106,7 @@
       padding-left: 0;
 
       > li {
+        display: block;
         margin: 0 30px 0 0;
 
         &:last-of-type {
