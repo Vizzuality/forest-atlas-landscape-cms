@@ -2,36 +2,37 @@
 <%= form_for [:admin, @site] do |f| %>
     <%= f.hidden_field :step, value: '2' %>
 
-    <%= f.fields_for @site.get_ordered_settings do |s_f| %>
-      <% s_f.object.each do |setting| %>
-        <div>
-          <%= setting.name.capitalize %>
-          <% case setting.name
-             when 'background' %>
-              <%= image_tag setting.image.url(:thumb) %>
-              <%= s_f.file_field :image %>
-          <% when 'logo' %>
-              <%= image_tag setting.image.url(:thumb) %>
-              <%= s_f.file_field :image %>
-          <% when 'flag_colors' %>
-              <% settings.value.split(' ').each do |c| %>
-                <%= color_field_tag c %>
+    <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
+        <% setting = settings_form.object %>
+            <div>
+              <%= setting.name.capitalize %>
+              <% case setting.name
+                   when 'background' %>
+                  <%= image_tag setting.image.url(:thumb) %>
+                  <%= settings_form.file_field :image %>
+              <% when 'logo' %>
+                  <% puts "LOGOOOOO" %>
+                  <%= image_tag setting.image.url(:thumb) %>
+                  <%= settings_form.file_field :image %>
+              <% when 'flag' %>
+                <%= settings_form.fields_for :flag_colors do |colors_form| %>
+                    <% if !colors_form.object.nil? %>
+                      <%= colors_form.color_field :value %>
+                      <%= colors_form.check_box :_destroy, class: 'removable' %>
+                    <% end %>
+                <% end %>
+                <% if setting.flag_colors.count < 5 %>
+                  <%= link_to 'Add', 'javascript:void(0)' %>
+                <% end %>
+              <% when 'color' %>
+                  <%= settings_form.color_field :value %>
+              <% when 'theme' %>
+                  <%= settings_form.select :value, [['Theme 1', '1'], ['Theme 2', '2']] %>
               <% end %>
-          <% when 'color' %>
-              <%#= s_f.color_field :value %>
-              <%= color_field :site_setting, :value %>
-          <% when 'theme' %>
-              Theme 1
-              <%= radio_button_tag(:value, '1') %>
-              Theme 2
-              <%= radio_button_tag(:value, '2') %>
-          <% end %>
-        </div>
-      <% end %>
+            </div>
+        <% end %>
         <%= render partial: 'admin/sites/footer', locals: { f: f , submit_text: 'SET SETTINGS', home: false} %>
-    <% end %>
+    <%# end %>
 <% end %>
 
 <%= console %>
-
-

@@ -1,5 +1,6 @@
 <h1>Site Users</h1>
 <%= form_for [:admin, @site] do |f| %>
+    <%= f.hidden_field :step, value: '3' %>
     <% User.all.each do |user| %>
         <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user) %>
         <%= user.name %>

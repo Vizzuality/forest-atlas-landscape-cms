@@ -3,6 +3,8 @@
 
   var Dispatcher = Backbone.Router.extend({
     routes: {
+        '(/)': 'Index',
+        'sites/site_settings/:id(/)': 'Settings'
     }
   });
 
@@ -11,7 +13,7 @@
 
     dispatcher.on('route', function (routeName, params) {
       Backbone.history.stop();
-      var Router = App.Router['Management' + routeName];
+      var Router = App.Router['Admin' + routeName];
 
       if (Router) {
         new Router(params.slice(0, params.length - 1));
@@ -25,7 +27,7 @@
     Backbone.history.stop();
 
     // We need this to detect router pathname
-    Backbone.history.start({ pushState: true, root: '/management' });
+    Backbone.history.start({ pushState: true, root: '/admin' });
   };
 
   // We need for the DOM to be ready

@@ -1,6 +1,6 @@
 class Admin::SitesController < AdminController
 
-  before_action :set_site, only: [:show, :edit, :update, :destroy]
+  before_action :set_site, only: [:show, :edit, :update, :destroy, :display]
 
   # GET /admin/sites
   # GET /admin/sites.json
@@ -38,16 +38,7 @@ class Admin::SitesController < AdminController
 
     respond_to do |format|
       if @site.save
-        format.html {
-          case params['site']['step']
-            when '1'
-              redirect_to admin_site_setting_path(@site)
-            when '2'
-              redirect_to admin_site_user_path(@site)
-            when '3'
-              #redirect_to
-          end
-           }
+        format.html { redirect_to admin_site_setting_path(@site) }
         format.json { render :show, status: :created, location: @site }
       else
         format.html { render :new }
@@ -68,7 +59,7 @@ class Admin::SitesController < AdminController
             when '2'
               redirect_to admin_site_user_path(@site)
             when '3'
-              #redirect_to
+              redirect_to display_admin_site_path(@site)
           end
         }
         format.json { render :show, status: :ok, location: @site }
@@ -90,7 +81,6 @@ class Admin::SitesController < AdminController
   end
 
   def display
-
   end
 
   private
@@ -101,7 +91,7 @@ class Admin::SitesController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
-    params.require(:site).permit(:name, :site_template_id,
-                                 {user_ids: []}, site_setting_attributes: [:id, :value, :name, :image])
+    params.require(:site).permit(:name, :site_template_id, :url,
+                                 {user_ids: []}, site_settings_attributes: [:id, :value, :name, :image])
   end
 end

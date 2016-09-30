@@ -23,6 +23,8 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
 
+  validates_presence_of :name, :url, :site_template_id
+
   before_validation :generate_slug
   before_create :create_context
   after_save :update_routes
