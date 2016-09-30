@@ -16,6 +16,15 @@
       z-index: -1;
     }
 
+    // When the placeholder is dropped in a forbidden place, the dragged element goes back to its
+    // original position. Nevertheless, the ul created by the library to hold the placeholder is not
+    // removed. Because it has an height, the vertical grey lines of the parent nodes will
+    // have an excess of height. By targeting it, detecting when it's empty, we can make it
+    // invisible and thus prevent this issue.
+    &:empty {
+      display: none;
+    }
+
     > li {
       display: block;
       margin-bottom: 20px;
@@ -38,6 +47,9 @@
     border: 1px solid $color-7;
     border-radius: 4px;
     background-color: $color-3;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+
 
     &::after {
       display: block;
@@ -51,8 +63,19 @@
       content: '';
     }
 
+    &.-placeholder {
+      max-width: 200px;
+      height: 43px; // Height of the other pages
+      border-style: dashed;
+
+      &.-invalid {
+        border-color: $color-8;
+      }
+    }
+
     &.-site-title {
       text-transform: uppercase;
+      cursor: initial;
 
       &::after {
         content: none;
@@ -104,6 +127,17 @@
     }
   }
 
+  // Element that's being dragged
+  .ui-sortable-helper {
+    opacity: .7;
+
+    > .page {
+      // background: red;
+      cursor: -webkit-grabbing;
+      cursor: -moz-grabbing;
+    }
+  }
+
   .add-page-button {
     position: relative;
     padding: 10px 70px;
@@ -126,6 +160,12 @@
       transform: translateY(-50%);
       background-color: $color-7;
       content: '';
+    }
+
+    // This style is only used when the placeholder of the dragged item is placed just after
+    // the button
+    + ul {
+      padding-top: 30px;
     }
   }
 }

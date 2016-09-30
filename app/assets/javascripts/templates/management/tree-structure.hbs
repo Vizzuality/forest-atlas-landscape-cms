@@ -1,8 +1,8 @@
 {{#*inline "item"}}
-  <ul>
+  <ul {{#if firstCall}}class="js-tree-root"{{/if}}>
     {{#each pages}}
-      <li>
-        <div class="page">
+      <li class="js-draggable" id="page-{{id}}" data-name="{{name}}">
+        <div class="page js-handle">
           <span>{{name}}</span>
           <ul class="action-buttons">
             <li><a href="" class="view-button">View</a></li>
@@ -11,11 +11,11 @@
           </ul>
         </div>
         {{#if children}}
-          {{> item pages=children}}
+          {{> item pages=children firstCall=false}}
         {{/if}}
       </li>
     {{/each}}
-    <li>
+    <li class="js-not-nestable">
       <button type="button" class="add-page-button">Add page</button>
     </li>
   </ul>
@@ -31,7 +31,7 @@
           <li><a href="" class="edit-button">Edit</a></li>
         </ul>
       </div>
-      {{> item pages=pages}}
+      {{> item pages=pages firstCall=true}}
     </li>
   </ul>
 </div>
