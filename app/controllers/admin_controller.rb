@@ -1,6 +1,6 @@
 class AdminController < ActionController::Base
 
-  include ApplicationHelper
+  include PermissionsHelper
 
  # skip_before_action :verify_authenticity_token, raise: false
   before_action :ensure_admin_user
@@ -9,6 +9,6 @@ class AdminController < ActionController::Base
   private
 
   def ensure_admin_user
-    ensure_user_type 'admin'
+    ensure_user_can 'access_admin'
   end
 end

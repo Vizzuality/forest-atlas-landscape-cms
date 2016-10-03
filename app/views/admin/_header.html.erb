@@ -4,7 +4,7 @@
   </button>
   <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
     <%= link_to 'Site Administration', admin_url, class: 'navbar-brand'%>
-    <% if user_signed_in?
+    <% if user_can? 'access_admin'
          ## TODO: Is this header the same for admin and management?
          ## Signed in is not enough to display it. It should be role specific. %>
         <ul class="nav navbar-nav">

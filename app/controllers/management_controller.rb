@@ -1,5 +1,6 @@
 class ManagementController < ActionController::Base
   include ApplicationHelper
+  include PermissionsHelper
 
   before_action :ensure_management_user
   layout 'management'
@@ -12,6 +13,6 @@ class ManagementController < ActionController::Base
   end
 
   def ensure_management_user
-    ensure_user_type 'management'
+    ensure_user_can 'access_management'
   end
 end
