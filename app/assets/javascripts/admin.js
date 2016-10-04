@@ -20,6 +20,8 @@
 //= require_self
 
 // = require_tree ./routers/admin
+// = require_tree ./templates
+// = require_tree ./views/shared
 // = require_tree ./views/admin
 // = require dispatchers/adminDispatcher
 

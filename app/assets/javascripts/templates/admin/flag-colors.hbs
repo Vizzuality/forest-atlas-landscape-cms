@@ -1,0 +1,14 @@
+<input type="hidden" id="{{inputId}}" name="{{inputName}}" value="{{colorsValue}}">
+<ul class="c-flag-colors">
+    {{#each colors}}
+        <li>
+            <input type="color" value="{{color}}" data-id="{{@index}}">
+            <button type="button" class="js-remove-color" data-id="{{@index}}">Remove Color</button>
+        </li>
+    {{/each}}
+    {{#if addable}}
+        <li>
+            <button type="button" class="js-add-color">Add</button>
+        </li>
+    {{/if}}
+</ul>

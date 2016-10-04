@@ -29,6 +29,7 @@ class Admin::SitesController < AdminController
 
   # GET /admin/sites/1/edit
   def edit
+
   end
 
   # POST /admin/sites

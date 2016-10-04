@@ -18,7 +18,7 @@
 class SiteSetting < ApplicationRecord
   belongs_to :site
 
-  NAMES = %w[theme background logo color flag_colors]
+  NAMES = %w[theme background logo color flag]
   THEMES = [1, 2]
   MAX_COLORS = 5
 
@@ -48,7 +48,7 @@ class SiteSetting < ApplicationRecord
   end
 
   def self.flag_colors(site_id)
-    SiteSetting.where(name: 'flag_colors', site_id: site_id)
+    SiteSetting.where(name: 'flag', site_id: site_id)
   end
 
   def flag_colors

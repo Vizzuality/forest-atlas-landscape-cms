@@ -1,4 +1,5 @@
 <h1>Site Settings</h1>
+<%= include_gon %>
 <%= form_for [:admin, @site] do |f| %>
     <%= f.hidden_field :step, value: '2' %>
 
@@ -11,7 +12,6 @@
                   <%= image_tag setting.image.url(:thumb) %>
                   <%= settings_form.file_field :image %>
               <% when 'logo' %>
-                  <% puts "LOGOOOOO" %>
                   <%= image_tag setting.image.url(:thumb) %>
                   <%= settings_form.file_field :image %>
               <% when 'flag' %>
@@ -22,7 +22,7 @@
                     <% end %>
                 <% end %>
                 <% if setting.flag_colors.count < 5 %>
-                  <%= link_to 'Add', 'javascript:void(0)' %>
+                      <div class="js-flag-colors"></div>
                 <% end %>
               <% when 'color' %>
                   <%= settings_form.color_field :value %>

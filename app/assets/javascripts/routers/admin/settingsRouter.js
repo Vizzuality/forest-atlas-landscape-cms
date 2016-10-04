@@ -1,15 +1,15 @@
 ((function (App) {
-    'use strict';
 
-    App.Router.AdminSettings = Backbone.Router.extend({
+  'use strict';
 
-        routes: {
-            '(/)': 'index',
-        },
-        index: function () {
-            // We remove the site switcher container
-            new App.View.Settings({});
-        }
+  App.Router.AdminSettings = Backbone.Router.extend({
 
-    });
+    routes: {
+      '(/)': 'index'
+    },
+
+    index: function () {
+      new App.View.FlagColorsView({ el: '.js-flag-colors' });
+    }
+  });
 })(this.App));
