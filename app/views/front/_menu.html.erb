@@ -40,8 +40,13 @@
             <a href="<%= child_page.url %>"><%= child_page.name %></a>
             <% if !child_page.children.nil? and !child_page.children.empty? %>
                 <ul>
+                  <li>
+                     <a href="<%= child_page.url %>"><%= child_page.name %></a>
+                  </li>
                   <% child_page.children.each do |grandchild_page| -%>
-                      <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
+                      <li>
+                        <a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a>
+                      </li>
                   <% end -%>
                 </ul>
             <% end -%>
@@ -62,26 +67,26 @@
     <div style="background-color: #d4062f;"></div>
   </div>
 
-  <div class="sub-menu">
-    <div class="wrapper">
-      <div class="content">
-        <ul class="breadcrumbs">
-          <% if @site_page.depth > 0 %>
-              <% @breadcrumbs.each do |breadcrumb| -%>
-                  <li><a href="<%= breadcrumb.url %>"><%= breadcrumb.name %></a></li>
-              <% end %>
-          <% end %>
-        </ul>
-        <ul class="sections">
-          <% if @site_page.depth >= 2 %>
-              <ul>
-                <% @site_page.children.each do |child_page| -%>
-                    <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
-                <% end %>
-              </ul>
-          <% end %>
-        </ul>
+  <% if @site_page.depth > 0 %>
+    <div class="sub-menu">
+      <div class="wrapper">
+        <div class="content">
+          <ul class="breadcrumbs">
+            <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
+                <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
+            <% end %>
+          </ul>
+          <ul class="sections">
+            <% if @site_page.depth >= 2 %>
+                <ul>
+                  <% @site_page.children.each do |child_page| -%>
+                      <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+                  <% end %>
+                </ul>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </header>
