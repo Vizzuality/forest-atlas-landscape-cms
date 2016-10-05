@@ -34,17 +34,145 @@ def create_pages_templates
       site_templates: [@fa_template, @la_template]
     }
   )
-  PageTemplate.create!(
+  news = PageTemplate.create!(
     {
-      name: 'Tutorials',
-      description: 'View the tutorials',
-      uri: 'subsection-1',
+      name: 'News',
+      description: 'View the latest news',
+      uri: 'news',
       site: @base_site,
       parent: home,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: '<p>News</p>'
+    }
+  )
+  news_section_1 = PageTemplate.create!(
+    {
+      name: 'News section 1',
+      description: 'News section #1',
+      uri: 'news-section-1',
+      site: @base_site,
+      parent: news,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: '<p>News section 1</p>'
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News section 2',
+      description: 'News section #2',
+      uri: 'news-section-2',
+      site: @base_site,
+      parent: news,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: '<p>News section 2</p>'
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News section 3',
+      description: 'News section #3',
+      uri: 'news-section-3',
+      site: @base_site,
+      parent: news,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: '<p>News section 3</p>'
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News section 4',
+      description: 'News section #4',
+      uri: 'news-section-4',
+      site: @base_site,
+      parent: news,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: '<p>News section 4</p>'
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News section 5',
+      description: 'News section #5',
+      uri: 'news-section-5',
+      site: @base_site,
+      parent: news,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: '<p>News section 5</p>'
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News 1',
+      description: 'News topic #1',
+      uri: 'news-1',
+      site: @base_site,
+      parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
     }
   )
+  PageTemplate.create!(
+    {
+      name: 'News 2',
+      description: 'News topic #2',
+      uri: 'news-2',
+      site: @base_site,
+      parent: news_section_1,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News 3',
+      description: 'News topic #3',
+      uri: 'news-3',
+      site: @base_site,
+      parent: news_section_1,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News 4',
+      description: 'News topic #4',
+      uri: 'news-4',
+      site: @base_site,
+      parent: news_section_1,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News 5',
+      description: 'News topic #5',
+      uri: 'news-5',
+      site: @base_site,
+      parent: news_section_1,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
+  PageTemplate.create!(
+    {
+      name: 'News 6',
+      description: 'News topic #6',
+      uri: 'news-6',
+      site: @base_site,
+      parent: news_section_1,
+      content_type: ContentType::OPEN_CONTENT,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
+
   puts 'Template pages created successfully'
 end
 
