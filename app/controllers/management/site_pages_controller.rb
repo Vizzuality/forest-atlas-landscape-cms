@@ -87,6 +87,6 @@ class Management::SitePagesController < ManagementController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def page_params
-    params.require(:site_page).permit(:name, :description, :site_id, :uri, :content, :parent_id)
+    params.require(:site_page).permit(:name, :description, :site_id, :uri, :content, :content_js, :parent_id)
   end
 end

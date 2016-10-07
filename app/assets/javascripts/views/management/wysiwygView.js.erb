@@ -1,0 +1,65 @@
+((function (App) {
+  'use strict';
+
+  App.View.WysiwygView = Backbone.View.extend({
+
+    tagName: 'div',
+    className: 'c-wysiwyg',
+
+    defaults: {
+      // Command available in Sir Trevor's format bar
+      commands: ['Bold', 'Italic', 'Link', 'Unlink']
+    },
+
+    events: {
+    },
+
+    initialize: function (settings) {
+      this.options = _.extend(this.defaults, settings);
+
+      this.JSONContainer = document.querySelector('.js-content-json');
+      this.HTMLContainer = document.querySelector('.js-content');
+
+      // Some configuration for Sir Trevor
+      SirTrevor.setDefaults({
+        iconUrl: "<%= asset_path('icons/sir-trevor.svg') %>",
+        blockTypes: ['Text', 'Heading', 'Quote'],
+        formatBar: {
+          // We only display the commands specified in the defaults object
+          commands: _.reject(SirTrevor.config.defaults.formatBar.commands, function (command) {
+            return this.defaults.commands.indexOf(command.name) === -1;
+          }, this)
+        }
+      });
+
+      this.render();
+    },
+
+    /**
+     * Save the HTML output into the HTML container so the server can display the content easily
+     */
+    saveHTML: function () {
+      // We force Sir Trevor to update the store with the content
+      this.editor.onFormSubmit();
+      this.HTMLContainer.value = this.editor.store.retrieve()
+        .data
+        .reduce(function (res, block) {
+          if (block.data.format !== 'html') {
+            // eslint-disable-line no-console
+            console.warn('Sir Trevor\'s blocks should return an HTML content to be easily used by Rails\' views.');
+            return res;
+          }
+
+          return res + block.data.text;
+        }, '');
+    },
+
+    render: function () {
+      this.editor = new SirTrevor.Editor({
+        el: this.JSONContainer,
+        defaultType: 'Text'
+      });
+    }
+
+  });
+})(this.App));

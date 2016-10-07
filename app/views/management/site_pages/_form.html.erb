@@ -23,9 +23,15 @@
 
     <fieldset class="form-group row">
       <%= f.label :content, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.cktext_area :content, class: 'form-control' %></div>
+      <div class="col-sm-10">
+        <div class="c-content">
+          <%= f.hidden_field :content, class: 'js-content' %>
+          <%= f.cktext_area :content_js, class: 'js-content-json' %>
+        </div>
+      </div>
     </fieldset>
 
+    <!--
     <fieldset class="form-group row">
       <%= f.label :uri, class: 'col-sm-2 form-control-label' %>
       <div class="col-sm-10"><%= f.text_field :uri, class: 'form-control' %></div>
@@ -49,10 +55,11 @@
         <%= f.collection_select :parent_id, SitePage.where(site_id: @site_page.site_id), :id, :name, {}, {:class => 'form-control'} %>
       </div>
     </fieldset>
+    -->
 
     <div class="form-group row">
       <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
+        <%= f.submit class: 'js-submit btn btn-primary' %>
         <%= link_to 'Show', management_site_page_path(site_page), class: 'btn btn-secondary' unless site_page.id.nil? %>
         <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'btn btn-secondary' %>
       </div>

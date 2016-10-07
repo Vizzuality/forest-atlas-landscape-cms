@@ -19,7 +19,8 @@
     "Backbone": true,
     "HandlebarsTemplates": true,
     "_": true,
-    "Turbolinks": true
+    "Turbolinks": true,
+    "SirTrevor": true
   },
   "env": {
     "browser": true
