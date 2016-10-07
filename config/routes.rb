@@ -3,11 +3,17 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :admin do
-    resources :sites
+    resources :sites do
+      member do
+        get :display
+      end
+    end
     resources :users
     resources :routes
     resources :site_templates
     resources :page_templates
+    resources :site_settings
+    resources :site_users
     resources :datasets, only: :index do
       get 'dataset'
     end

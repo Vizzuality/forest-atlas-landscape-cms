@@ -1,0 +1,11 @@
+<div class="form-group row">
+  <div class="col-sm-offset-2 col-sm-10">
+    <%= if home
+          link_to 'SEE MY SITES', admin_sites_path, class: 'btn btn-primary'
+        else
+            f.submit submit_text, class: 'btn btn-primary'
+        end
+    %>
+    <%= link_to 'CANCEL', admin_sites_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

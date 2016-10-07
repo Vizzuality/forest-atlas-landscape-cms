@@ -17,11 +17,12 @@ gem 'devise'
 gem 'ancestry'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'ckeditor'
-gem 'paperclip'
+gem 'paperclip', "~> 5.0.0"
 gem 'will_paginate', '~> 3.1.0'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'handlebars_assets'
 gem 'enumerate_it'
+gem 'gon'
 
 gem 'faraday', '~> 0.9.2'
 
