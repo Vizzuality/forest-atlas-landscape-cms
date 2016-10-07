@@ -19,6 +19,8 @@
 //= require vega
 //= require leaflet
 //= require handlebars
+//= require jquery-ui
+//= require jquery-nested-sortable
 
 //= require_self
 

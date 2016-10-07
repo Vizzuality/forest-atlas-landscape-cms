@@ -1,0 +1,184 @@
+.c-tree-structure {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+
+  ul {
+    display: block;
+    position: relative;
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 15px;
+      width: 1px;
+      height: calc(100% - 21px); // 21 is half of the height of .add-page-button
+      background-color: $color-7;
+      content: '';
+      z-index: -1;
+    }
+
+    // When the placeholder is dropped in a forbidden place, the dragged element goes back to its
+    // original position. Nevertheless, the ul created by the library to hold the placeholder is not
+    // removed. Because it has an height, the vertical grey lines of the parent nodes will
+    // have an excess of height. By targeting it, detecting when it's empty, we can make it
+    // invisible and thus prevent this issue.
+    &:empty {
+      display: none;
+    }
+
+    > li {
+      // We want the elements to act like a block element but have
+      // a width corresponding to its content
+      display: table;
+
+      margin-bottom: 20px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      // Identation for nested levels
+      ul { padding-left: 55px; }
+    }
+  }
+
+  > ul {
+    // We want the root of the tree to act like a block element but have
+    // a width corresponding to its content
+    display: table;
+  }
+
+  .page {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border: 1px solid $color-7;
+    border-radius: 4px;
+    background-color: $color-3;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: -40px;
+      width: 40px;
+      height: 1px;
+      transform: translateY(-50%);
+      background-color: $color-7;
+      content: '';
+    }
+
+    &.-placeholder {
+      max-width: 200px;
+      height: 43px; // Height of the other pages
+      border-style: dashed;
+
+      &.-invalid {
+        border-color: $color-8;
+      }
+    }
+
+    &.-site-title {
+      text-transform: uppercase;
+      cursor: initial;
+
+      &::after {
+        content: none;
+      }
+    }
+
+    + ul {
+      padding-top: 30px; // We only padding to not break the border on the left
+    }
+
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-left: 100px;
+      padding-left: 0;
+
+      > li {
+        display: block;
+        margin: 0 30px 0 0;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+
+        > .view-button {
+          display: block;
+          width: 16px;
+          height: 11px;
+          background: image-url('icons/eye-icon.svg') no-repeat center center;
+          text-indent: -10000px; // For accessibility, the text should stay visible
+        }
+
+        > .edit-button {
+          display: block;
+          width: 16px;
+          height: 16px;
+          background: image-url('icons/pen-icon.svg') no-repeat center center;
+          text-indent: -10000px; // For accessibility, the text should stay visible
+        }
+
+        > .delete-button {
+          display: block;
+          width: 10px;
+          height: 14px;
+          background: image-url('icons/bin-icon.svg') no-repeat center center;
+          text-indent: -10000px; // For accessibility, the text should stay visible
+        }
+      }
+    }
+  }
+
+  // Element that's being dragged
+  .ui-sortable-helper {
+    opacity: .7;
+
+    > .page {
+      // background: red;
+      cursor: -webkit-grabbing;
+      cursor: -moz-grabbing;
+    }
+  }
+
+  .add-page-button {
+    position: relative;
+    padding: 10px 70px;
+    border: 1px solid $color-1;
+    border-radius: 36px;
+    background: transparent;
+    text-transform: uppercase;
+
+    &:active {
+      color: currentColor;
+    }
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: -40px;
+      width: 40px;
+      height: 1px;
+      transform: translateY(-50%);
+      background-color: $color-7;
+      content: '';
+    }
+
+    // This style is only used when the placeholder of the dragged item is placed just after
+    // the button
+    + ul {
+      padding-top: 30px;
+    }
+  }
+}
