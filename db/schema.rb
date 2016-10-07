@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 20160928112952) do
   create_table "site_settings", force: :cascade do |t|
     t.integer  "site_id"
     t.string   "name",               null: false
-    t.string   "value",              null: false
+    t.string   "value"
     t.integer  "position",           null: false
     t.string   "image_file_name"
     t.string   "image_content_type"

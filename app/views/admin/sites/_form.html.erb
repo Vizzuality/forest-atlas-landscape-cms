@@ -1,16 +1,6 @@
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= form_for([:admin, site]) do |f| %>
     <%= f.hidden_field :step, value: '1' %>
-    <% if site.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(site.errors.count, "error") %> prohibited this site from being saved:</h2>
-
-          <ul>
-            <% site.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
 
     <fieldset class="form-group row">
       <%= f.label :name, class: 'col-sm-2 form-control-label' %>

@@ -1,6 +1,7 @@
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <h1>Site Settings</h1>
 <%= include_gon %>
-<%= form_for [:admin, @site] do |f| %>
+<%= form_for [:admin, @site], html: { multipart: true } do |f| %>
     <%= f.hidden_field :step, value: '2' %>
 
     <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
@@ -9,11 +10,11 @@
               <%= setting.name.capitalize %>
               <% case setting.name
                    when 'background' %>
-                  <%= image_tag setting.image.url(:thumb) %>
-                  <%= settings_form.file_field :image %>
+                  <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '200', width: '500'%>
+                  <%= settings_form.file_field :image, class: 'image-uploader' %>
               <% when 'logo' %>
-                  <%= image_tag setting.image.url(:thumb) %>
-                  <%= settings_form.file_field :image %>
+                  <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '100', width: '100' %>
+                  <%= settings_form.file_field :image, class: 'image-uploader' %>
               <% when 'flag' %>
                 <%= settings_form.fields_for :flag_colors do |colors_form| %>
                     <% if !colors_form.object.nil? %>

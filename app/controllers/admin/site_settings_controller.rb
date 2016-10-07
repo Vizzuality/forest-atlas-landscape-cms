@@ -30,6 +30,9 @@ class Admin::SiteSettingsController < AdminController
     gon.colorControllerName = COLOR_CONTROLLER_NAME
     gon.colorArray = @settings.where(name: 'flag').first[:value].split(' ').map{ |x| {color: x }}
     gon.colorArray = @settings.where(name: 'flag').first[:value].split(' ').map{ |x| {color: x }}
+
+    # TODO: Verify if we should have a mandatory background and logo
+    # ... if so, we should set these two fields as dirty whenever the image is empty
   end
 
 

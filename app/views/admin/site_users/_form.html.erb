@@ -1,3 +1,4 @@
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <h1>Site Users</h1>
 <%= form_for [:admin, @site] do |f| %>
     <%= f.hidden_field :step, value: '3' %>

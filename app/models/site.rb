@@ -24,6 +24,7 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :users
 
   validates_presence_of :name, :url, :site_template_id
+  validates :url, :format => URI::regexp(%w(http https))
 
   before_validation :generate_slug
   before_create :create_context
@@ -55,9 +56,9 @@ class Site < ApplicationRecord
     if settings.blank?
       (SiteSetting.new site_id: id, name: 'theme', value: '1', position: 0).save(validate: false)
       (SiteSetting.new site_id: id, name: 'background', value: '', position: 1).save(validate: false)
-      (SiteSetting.create site_id: id, name: 'logo', value: '', position: 2).save(validate: false)
-      (SiteSetting.create site_id: id, name: 'color', value: '', position: 3).save(validate: false)
-      (SiteSetting.create site_id: id, name: 'flag', value: '', position: 4).save(validate: false)
+      (SiteSetting.new site_id: id, name: 'logo', value: '', position: 2).save(validate: false)
+      (SiteSetting.new site_id: id, name: 'color', value: '', position: 3).save(validate: false)
+      (SiteSetting.new site_id: id, name: 'flag', value: '', position: 4).save(validate: false)
 
       settings = site_settings.order :position
     end

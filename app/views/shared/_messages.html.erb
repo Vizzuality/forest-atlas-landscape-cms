@@ -1,14 +1,16 @@
 <% flash.each do |key, value| %>
-    <%
-      case key
-        when 'alert' then
-          key = 'warning'
-        when 'notice' then
-          key = 'success'
-      end
-    %>
-    <div class="alert alert-<%= key %>">
-      <a href="#" data-dismiss="alert" class="close">×</a>
-      <%= value %>
-    </div>
+    <% if key != 'error' %>
+      <%
+        case key
+          when 'alert' then
+            key = 'warning'
+          when 'notice' then
+            key = 'success'
+        end
+      %>
+      <div class="alert alert-<%= key %>">
+        <a href="#" data-dismiss="alert" class="close">×</a>
+        <%= value %>
+      </div>
+    <% end %>
 <% end %>

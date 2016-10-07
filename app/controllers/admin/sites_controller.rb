@@ -29,7 +29,7 @@ class Admin::SitesController < AdminController
 
   # GET /admin/sites/1/edit
   def edit
-
+    @site ||= Site.new
   end
 
   # POST /admin/sites
@@ -60,12 +60,21 @@ class Admin::SitesController < AdminController
             when '2'
               redirect_to admin_site_user_path(@site)
             when '3'
-              redirect_to display_admin_site_path(@site)
+              redirect_to display_admin_site_path(@site), notice: 'Site was successfully created! '
           end
         }
         format.json { render :show, status: :ok, location: @site }
       else
-        format.html { render :edit }
+        format.html {
+          case params['site']['step']
+            when '1'
+              render :edit
+            when '2'
+              render 'admin/site_settings/show'
+            when '3'
+              render 'admin/site_users/edit'
+          end
+        }
         format.json { render json: @site.errors, status: :unprocessable_entity }
       end
     end

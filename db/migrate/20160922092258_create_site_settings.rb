@@ -4,7 +4,7 @@ class CreateSiteSettings < ActiveRecord::Migration[5.0]
       t.belongs_to :site, index:true
 
       t.string :name, null: false
-      t.string :value, null: false
+      t.string :value, null: true
       t.integer :position, null: false
 
       t.attachment :image

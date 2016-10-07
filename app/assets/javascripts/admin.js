@@ -24,6 +24,7 @@
 // = require_tree ./views/shared
 // = require_tree ./views/admin
 // = require dispatchers/adminDispatcher
+// = require_tree ./helpers
 
 (function () {
   'use strict';

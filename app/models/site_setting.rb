@@ -22,14 +22,25 @@ class SiteSetting < ApplicationRecord
   THEMES = [1, 2]
   MAX_COLORS = 5
 
+  # Makes sure the same site doesn't have a repeated setting
   validates_uniqueness_of :name, scope: :site_id
-  validates :name, :value, :position, presence: :true
+  # All settings have mandatory values, except for images and flag
+  validates :value, presence: :true, if: :has_required_value?
+  # All fields must have a name and position
+  validates :name, :position, presence: :true
   validates :name, inclusion: { in: NAMES }
   validates :value, inclusion: { in: THEMES } if name == 'theme'
-  validates :value, length: { maximum: MAX_COLORS } if name == 'flag_colors'
 
-  has_attached_file :image #, default_url: '/assets/config/images/no_img.jpg'
-  validates_attachment_content_type :image, content_type: %w[image/jpg image/jpeg image/png] if (name == 'logo' || name == 'background')
+  has_attached_file :image,
+                    styles: lambda { |attachment| { thumb: (attachment.instance.name == 'logo' ? '100x100#' : '500x200#') }},
+                    default_url: ':style/missing.png'
+
+  validate :validate_image
+
+  validates_attachment :image,
+                       content_type: {content_type: %w[image/jpg image/jpeg image/png]},
+                       styles: lambda {|attachment| { thumb: (attachment.instance.value == 'logo' ? '100x100#' : '500x200#') }}
+
 
   def self.theme(site_id)
     SiteSetting.where(name: 'theme', site_id: site_id)
@@ -57,5 +68,20 @@ class SiteSetting < ApplicationRecord
 
   def flag_colors=(colors)
     write_attribute(:value, colors.join(' '))
+  end
+
+  private
+
+  def validate_image
+    if (name == 'background' || name == 'logo') && image.blank?
+      errors.add :key, 'You must update an image for the ' + name
+      return false
+    else
+      return true
+    end
+  end
+
+  def has_required_value?
+    %w[theme color].include?(name)
   end
 end
