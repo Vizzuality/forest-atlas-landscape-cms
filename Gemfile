@@ -33,6 +33,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-vega', '~> 2.5.2'
   gem 'rails-assets-leaflet', '0.7.7'
   gem 'rails-assets-backbone'
+  gem 'rails-assets-jquery-ui'
 end
 
 # Use ActiveModel has_secure_password

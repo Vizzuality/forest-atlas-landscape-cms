@@ -29,6 +29,11 @@
           { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]
       });
+
+      // We build the tree structure of the site
+      new App.View.TreeStructureView({
+        el: $('.js-tree')
+      });
     }
 
   });
