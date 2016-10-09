@@ -1,6 +1,6 @@
 class Management::SitePagesController < ManagementController
-  before_action :set_page, only: [:show, :edit, :update, :destroy]
-  before_action :set_site, only: [:index, :new]
+  before_action :set_page, only: [:show, :edit, :update, :destroy, :toggle_enable]
+  before_action :set_site, only: [:index, :new, :create]
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
@@ -34,7 +34,8 @@ class Management::SitePagesController < ManagementController
   # POST /management/pages
   # POST /management/pages.json
   def create
-    @site_page = SitePage.new(page_params)
+    @site_page = @site.site_pages.build(page_params)
+    @site_page.enabled = false
 
     respond_to do |format|
       if @site_page.save
@@ -70,6 +71,14 @@ class Management::SitePagesController < ManagementController
       format.html { redirect_to({'controller' => 'management/site_pages', 'action' => 'index', 'site_slug' => site.slug}, {notice: 'SitePage was successfully destroyed.'}) }
       format.json { head :no_content }
     end
+  end
+
+
+  def toggle_enable
+    @site_page.enabled = !@site_page.enabled
+    @site_page.save
+
+    redirect_to management_site_site_pages_path(@site.slug)
   end
 
   private

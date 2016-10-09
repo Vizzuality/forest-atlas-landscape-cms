@@ -23,7 +23,11 @@ Rails.application.routes.draw do
 
   namespace :management do
     resources :sites, param: :slug, only: [:index] do
-      resources :site_pages, shallow: true
+      resources :site_pages, shallow: true do
+        member do
+          put :toggle_enable
+        end
+      end
       get '/structure', to: 'sites#structure'
     end
     get '/', to: 'static_page#dashboard'

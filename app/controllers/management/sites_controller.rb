@@ -24,7 +24,9 @@ class Management::SitesController < ManagementController
                .order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
-      format.html { render :structure }
+      format.html {
+        gon.structure = @pages
+        render :structure }
       format.json { render json: @pages }
     end
   end
