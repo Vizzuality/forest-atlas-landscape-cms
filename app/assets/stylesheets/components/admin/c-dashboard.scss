@@ -1,0 +1,11 @@
+.c-dashboard {
+  width: 100%;
+  max-width: $body-max-width;
+  margin: 0 auto;
+  padding: 0 $wrapper-padding;
+
+  .title-dashboard {
+    font-family: $font-family-1;
+    font-size: $font-size-huge;
+  }
+}

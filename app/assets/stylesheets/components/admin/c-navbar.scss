@@ -1,0 +1,51 @@
+.c-navbar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: $body-max-width;
+  height: 50px;
+  margin: 0 auto;
+  padding: 0 $wrapper-padding;
+  background-color: $color-7;
+
+
+
+  .navbar-brand {
+    color: $color-1;
+    text-transform: uppercase;
+  }
+
+  .contain-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .navbar-nav {
+
+    .nav-item {
+      margin-right: 15px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      &.-border-right {
+        padding-right: 15px;
+        border-right: 1px solid $color-3;
+      }
+
+      .nav-link {
+        color: $color-3;
+        font-family: $font-family-1;
+      }
+    }
+  }
+
+  button {
+
+    &.-hidden {
+      display: none;
+    }
+  }
+}

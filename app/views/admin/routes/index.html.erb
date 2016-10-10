@@ -1,29 +1,32 @@
-<h1>Routes</h1>
+<div class="c-dashboard">
+  <h1 class="title-dashboard">Routes</h1>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Site</th>
-      <th>Host</th>
-      <th>Path</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @routes.each do |route| %>
+  <table class="c-table-basic" cellspacing="0">
+    <thead class="header-table">
       <tr>
-        <td><%= route.site.name %></td>
-        <td><%= route.host %></td>
-        <td><%= route.path %></td>
-        <td><%= link_to 'Show', admin_route_path(route) %></td>
-        <td><%= link_to 'Edit', edit_admin_route_path(route) %></td>
-        <td><%= link_to 'Destroy', admin_route_path(route), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Site</th>
+        <th>Host</th>
+        <th>Path</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @routes.each do |route| %>
+        <tr>
+          <td><%= route.site.name %></td>
+          <td><%= route.host %></td>
+          <td><%= route.path %></td>
+          <td><%= link_to 'Show', admin_route_path(route) %></td>
+          <td><%= link_to 'Edit', edit_admin_route_path(route) %></td>
+          <td><%= link_to 'Destroy', admin_route_path(route), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Admin Route', new_admin_route_path, class: 'btn btn-primary' %>
+  <br>
+
+  <%= link_to 'New Admin Route', new_admin_route_path, class: 'c-button -green' %>
+
+</div>

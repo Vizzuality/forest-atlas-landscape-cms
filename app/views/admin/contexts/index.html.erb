@@ -1,25 +1,27 @@
-<h1>Contexts</h1>
+<div class="c-dashboard">
+  <h1 class="title-dashboard">Contexts</h1>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @contexts.each do |context| %>
+  <table class="c-table-basic" cellspacing="0">
+    <thead class="header-table">
       <tr>
-        <td><%= context.name %></td>
-        <td><%= link_to 'Show', admin_context_path(context) %></td>
-        <td><%= link_to 'Edit', edit_admin_context_path(context) %></td>
-        <td><%= link_to 'Destroy', admin_context_path(context), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Name</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @contexts.each do |context| %>
+        <tr>
+          <td><%= context.name %></td>
+          <td><%= link_to 'Show', admin_context_path(context) %></td>
+          <td><%= link_to 'Edit', edit_admin_context_path(context) %></td>
+          <td><%= link_to 'Destroy', admin_context_path(context), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Context', new_admin_context_path, class: 'btn btn-primary' %>
+  <br>
+
+  <%= link_to 'New Context', new_admin_context_path, class: 'c-button -green' %>
+</div>
