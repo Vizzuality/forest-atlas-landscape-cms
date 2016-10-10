@@ -25,7 +25,7 @@ class Page < ApplicationRecord
   has_and_belongs_to_many :site_templates
   validates :url, uniqueness: {scope: :site}
 
-  has_ancestry
+  has_closure_tree order: 'position'
 
   before_validation :regenerate_url
   after_save :update_routes

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161009193746) do
+ActiveRecord::Schema.define(version: 20161010154642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,13 +67,20 @@ ActiveRecord::Schema.define(version: 20161009193746) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "page_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "page_anc_desc_idx", unique: true, using: :btree
+    t.index ["descendant_id"], name: "page_desc_idx", using: :btree
+  end
+
   create_table "pages", force: :cascade do |t|
     t.integer  "site_id"
     t.string   "name"
     t.string   "description"
     t.string   "uri"
     t.string   "url"
-    t.string   "ancestry"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.text     "content"
@@ -81,7 +88,8 @@ ActiveRecord::Schema.define(version: 20161009193746) do
     t.text     "type"
     t.string   "content_js"
     t.boolean  "enabled"
-    t.index ["ancestry"], name: "index_pages_on_ancestry", using: :btree
+    t.integer  "parent_id"
+    t.integer  "position"
     t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
   end
 

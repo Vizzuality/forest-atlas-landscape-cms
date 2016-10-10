@@ -288,8 +288,8 @@ namespace :db do
     @fa_template = SiteTemplate.find_by name: 'Forest Atlas'
     @la_template = SiteTemplate.find_by name: 'Landscape Application'
 
-    create_pages_templates
     create_sites
+    create_pages_templates
     create_base_site_routes
     create_heroku_staging_site_routes
     create_users

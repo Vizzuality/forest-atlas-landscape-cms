@@ -14,7 +14,7 @@ class Site < ApplicationRecord
   belongs_to :site_template
   has_many :routes
   has_many :site_pages
-  has_many :user_site_associations
+  has_many :user_site_associations, dependent: :destroy
   has_many :users, through: :user_site_associations
   has_many :context_sites
   has_many :contexts, through: :context_sites
@@ -42,9 +42,14 @@ class Site < ApplicationRecord
   def create_context
     return nil unless self.contexts.empty?
 
+    begin
     context = Context.create!({name: self.name})
     site_context = ContextSite.create!({context: context, is_site_default_context: true})
     self.context_sites.push(site_context)
+    rescue Exception => e
+      puts "EXCEPTION: #{e.inspect}"
+    end
+
   end
 
   def root

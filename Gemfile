@@ -14,7 +14,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'dotenv-rails', '~> 2.1'
 
 gem 'devise'
-gem 'ancestry'
+gem 'closure_tree'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'ckeditor'
 gem 'paperclip', "~> 5.0.0"
