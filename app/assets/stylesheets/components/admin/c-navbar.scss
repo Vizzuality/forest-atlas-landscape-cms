@@ -38,6 +38,10 @@
       .nav-link {
         color: $color-3;
         font-family: $font-family-1;
+
+        &.active {
+          border-bottom: 2px solid $color-3;
+        }
       }
     }
   }

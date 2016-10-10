@@ -1,0 +1,16 @@
+.c-input {
+  padding: 10px 15px;
+  border: solid 1px $color-4;
+  border-radius: 4px;
+  outline: 0;
+  background-color: $color-3;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  text-transform: capitalize;
+
+  &.-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}
