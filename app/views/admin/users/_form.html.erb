@@ -1,4 +1,4 @@
-<%= form_for([:admin, user]) do |f| %>
+<%= form_for([:admin, user], :html => { :class =>'c-form-basic' }) do |f| %>
     <% if user.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -11,38 +11,36 @@
         </div>
     <% end %>
 
-    <fieldset class="form-group row">
-      <%= f.label :name, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %></div>
+    <fieldset class="container-input">
+      <%= f.label :name, class: '' %>
+      <div class="col-sm-10"><%= f.text_field :name,placeholder: 'name', class: 'c-input' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :email, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :email, class: 'form-control' %></div>
+    <fieldset class="container-input">
+      <%= f.label :email, class: '' %>
+      <div class="col-sm-10"><%= f.text_field :email,placeholder: 'email', class: 'c-input' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :password, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.password_field :password, class: 'form-control', autocomplete: "off" %></div>
+    <fieldset class="container-input">
+      <%= f.label :password, class: '' %>
+      <div class="col-sm-10"><%= f.password_field :password,placeholder: '*******', class: 'c-input', autocomplete: "off" %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :password_confirmation, 'Confirm new password', class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.password_field :password_confirmation, class: 'form-control', autocomplete: "off" %></div>
+    <fieldset class="container-input">
+      <%= f.label :password_confirmation, 'Confirm new password', class: '' %>
+      <div class="col-sm-10"><%= f.password_field :password_confirmation,placeholder: '*******', class: 'c-input', autocomplete: "off" %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :sites, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10">
-        <%= f.collection_select :site_ids, Site.all, :id, :name, {}, {:class => 'form-control', :multiple => true} %>
+    <fieldset class="container-input">
+      <%= f.label :sites, class: '' %>
+      <div>
+        <%= f.collection_select :site_ids, Site.all, :id, :name, {}, {:class => 'c-input', :multiple => true} %>
       </div>
     </fieldset>
 
-    <div class="form-group row">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
-        <%= link_to 'Show', admin_user_path(user), class: 'btn btn-secondary' unless user.id.nil? %>
-        <%= link_to 'Back', admin_users_path, class: 'btn btn-secondary' %>
-      </div>
+    <div class="footer-form">
+      <%= f.submit class: 'c-button -primary' %>
+      <%= link_to 'Show', admin_user_path(user), class: 'c-button -primary' unless user.id.nil? %>
+      <%= link_to 'Back', admin_users_path, class: 'c-button -secondary' %>
     </div>
 <% end %>

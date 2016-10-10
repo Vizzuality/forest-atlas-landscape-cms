@@ -1,24 +1,22 @@
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-<%= form_for([:admin, site]) do |f| %>
+<%= form_for([:admin ,site], :html => { :class =>'c-form-basic' }) do |f|%>
     <%= f.hidden_field :step, value: '1' %>
 
-    <fieldset class="form-group row">
-      <%= f.label :name, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %></div>
+    <fieldset class="container-input">
+      <%= f.label :name, class: '' %>
+      <div><%= f.text_field :name, class: 'c-input', placeholder: 'name' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :url, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :url, class: 'form-control' %></div>
+    <fieldset class="container-input">
+      <%= f.label :url, class: '' %>
+      <div><%= f.text_field :url, class: 'c-input', placeholder: 'url' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :template_id, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10">
-        <%= f.collection_select :site_template_id, SiteTemplate.all, :id, :name, {}, {:class => 'form-control'} %>
+    <fieldset class="container-input">
+      <%= f.label :template_id, class: '' %>
+      <div class="container-select">
+        <%= f.collection_select :site_template_id, SiteTemplate.all, :id, :name, {}, {:class => 'c-input -select'} %>
       </div>
     </fieldset>
     <%= render partial: 'footer', locals: { f: f , submit_text: 'CREATE', home: false} %>
 <% end %>
-
-<%= console %>

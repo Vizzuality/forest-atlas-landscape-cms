@@ -1,0 +1,57 @@
+.c-form-basic {
+  margin-bottom: 20px;
+
+  .container-input {
+    padding: 0;
+    border: 0;
+
+    &:first-of-type {
+
+      label {
+        margin-top: 0;
+      }
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-light;
+    }
+
+    input{
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .container-select {
+      position: relative;
+      max-width: 400px;
+      cursor: pointer;
+
+      select {
+        width: 100%;
+        max-width: 400px;
+        cursor: pointer;
+      }
+
+      &::after {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 6px;
+        height: 6px;
+        transform: rotate(-45deg);
+        border-bottom: 2px solid $color-4;
+        border-left: 2px solid $color-4;
+        background: transparent;
+        content: '';
+      }
+    }
+  }
+
+  .footer-form {
+    margin-top: 40px;
+  }
+}

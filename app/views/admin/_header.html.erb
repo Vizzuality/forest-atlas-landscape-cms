@@ -1,8 +1,8 @@
-<nav class="navbar navbar-dark bg-primary">
-  <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
+<nav class="navbar navbar-dark bg-primary c-navbar">
+  <button class="-hidden" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
     &#9776;
   </button>
-  <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
+  <div class="contain-links" id="exCollapsingNavbar2">
     <%= link_to 'Site Administration', admin_url, class: 'navbar-brand'%>
     <% if user_signed_in? %>
         <ul class="nav navbar-nav">
@@ -13,9 +13,7 @@
           <li class="nav-item"><%= link_to 'Routes', admin_routes_path, {class: current_class('admin/routes') + 'nav-link'} %></li>
           <li class="nav-item"><%= link_to 'Page templates', admin_page_templates_path, {class: current_class('admin/page_templates') + 'nav-link'} %></li>
           <li class="nav-item"><%= link_to 'Datasets', admin_datasets_path, {class: current_class('admin/datasets') + 'nav-link'} %></li>
-          <li class="nav-item"><%= link_to 'Contexts', admin_contexts_path, {class: current_class('admin/contexts') + 'nav-link'} %></li>
-        </ul>
-        <ul class="nav navbar-nav pull-xs-right">
+          <li class="nav-item -border-right"><%= link_to 'Contexts', admin_contexts_path, {class: current_class('admin/contexts') + 'nav-link'} %></li>
           <li class="nav-item"><%= link_to 'Logout', destroy_user_session_path, {class: 'nav-link', :method => :delete} %></li>
         </ul>
     <% end %>

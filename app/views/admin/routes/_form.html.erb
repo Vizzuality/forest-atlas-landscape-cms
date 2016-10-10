@@ -1,4 +1,4 @@
-<%= form_for([:admin, route]) do |f| %>
+<%= form_for([:admin, route], :html => { :class =>'c-form-basic' }) do |f| %>
     <% if route.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(route.errors.count, "error") %> prohibited this route from being saved:</h2>
@@ -11,28 +11,26 @@
         </div>
     <% end %>
 
-    <fieldset class="form-group row">
-      <%= f.label :site_id, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10">
-        <%= f.collection_select :site_id, Site.all, :id, :name, {}, {:class => 'form-control'} %>
+    <fieldset class="container-input">
+      <%= f.label :site_id, class: '' %>
+      <div class="container-select">
+        <%= f.collection_select :site_id, Site.all, :id, :name, {}, {:class => 'c-input -select'} %>
       </div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :host, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :host, class: 'form-control' %></div>
+    <fieldset class="container-input">
+      <%= f.label :host, class: '' %>
+      <div class="col-sm-10"><%= f.text_field :host, class: 'c-input' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
-      <%= f.label :path, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :path, class: 'form-control' %></div>
+    <fieldset class="container-input">
+      <%= f.label :path, class: '' %>
+      <div class="col-sm-10"><%= f.text_field :path, class: 'c-input' %></div>
     </fieldset>
 
-    <div class="form-group row">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
-        <%= link_to 'Show', admin_route_path(route), class: 'btn btn-secondary' unless route.id.nil? %>
-        <%= link_to 'Back', admin_routes_path, class: 'btn btn-secondary' %>
-      </div>
+    <div class="footer-form">
+      <%= f.submit class: 'c-button -primary' %>
+      <%= link_to 'Show', admin_route_path(route), class: 'c-button -primary' unless route.id.nil? %>
+      <%= link_to 'Back', admin_routes_path, class: 'c-button -secondary' %>
     </div>
 <% end %>

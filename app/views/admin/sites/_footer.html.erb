@@ -1,11 +1,11 @@
-<div class="form-group row">
-  <div class="col-sm-offset-2 col-sm-10">
+<div class="footer-form">
+  <div class="">
     <%= if home
-          link_to 'SEE MY SITES', admin_sites_path, class: 'btn btn-primary'
+          link_to 'SEE MY SITES', admin_sites_path, class: 'c-button -primary'
         else
-            f.submit submit_text, class: 'btn btn-primary'
+            f.submit submit_text, class: 'c-button -primary'
         end
     %>
-    <%= link_to 'CANCEL', admin_sites_path, class: 'btn btn-secondary' %>
+    <%= link_to 'CANCEL', admin_sites_path, class: 'c-button -secondary' %>
   </div>
 </div>

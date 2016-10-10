@@ -1,0 +1,19 @@
+.c-button {
+  padding: 10px 80px;
+  border-radius: 36px;
+  outline: 0;
+  font-size: $font-size-small;
+  cursor: pointer;
+
+  &.-primary {
+    border: 0;
+    background-color: $color-1;
+    color: $color-3;
+  }
+
+  &.-secondary {
+    border: 1px solid $color-1;
+    background-color: $color-3;
+    color: $color-1;
+  }
+}
