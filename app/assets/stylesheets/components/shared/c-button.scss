@@ -3,14 +3,15 @@
   border-radius: 36px;
   outline: 0;
   font-size: $font-size-small;
+  cursor: pointer;
 
-  &.-green {
+  &.-primary {
     border: 0;
     background-color: $color-1;
     color: $color-3;
   }
 
-  &.-white {
+  &.-secondary {
     border: 1px solid $color-1;
     background-color: $color-3;
     color: $color-1;

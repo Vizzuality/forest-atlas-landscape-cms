@@ -13,4 +13,8 @@
     -moz-appearance: none;
     appearance: none;
   }
+
+  &.-textarea {
+    min-width: 400px;
+  }
 }

@@ -1,4 +1,4 @@
-<%= form_for([:admin, page_template]) do |f| %>
+<%= form_for([:admin, page_template], :html => { :class =>'c-form-basic' }) do |f| %>
     <% if page_template.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(page_template.errors.count, "error") %> prohibited this page_template from being saved:</h2>
@@ -11,43 +11,41 @@
         </div>
     <% end %>
 
-    <fieldset class="form-group row">
+    <fieldset class="container-input">
       <%= f.label :name, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %></div>
+      <div class="col-sm-10"><%= f.text_field :name, class: 'c-input' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
+    <fieldset class="container-input">
       <%= f.label :description, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :description, class: 'form-control' %></div>
+      <div class="col-sm-10"><%= f.text_field :description, class: 'c-input' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
+    <fieldset class="container-input">
       <%= f.label :content, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.cktext_area :content, class: 'form-control' %></div>
+      <div class="col-sm-10"><%= f.cktext_area :content, class: 'c-input -textarea' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
+    <fieldset class="container-input">
       <%= f.label :uri, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :uri, class: 'form-control' %></div>
+      <div class="col-sm-10"><%= f.text_field :uri, class: 'c-input' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
+    <fieldset class="container-input">
       <%= f.label :url, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10"><%= f.text_field :url, class: 'form-control', disabled: 'true' %></div>
+      <div class="col-sm-10"><%= f.text_field :url, class: 'c-input', disabled: 'true' %></div>
     </fieldset>
 
-    <fieldset class="form-group row">
+    <fieldset class="container-input">
       <%= f.label :site_id, class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10">
-        <%= f.collection_select :site_id, Site.all, :id, :name, {}, {:class => 'form-control'} %>
+      <div class="container-select">
+        <%= f.collection_select :site_id, Site.all, :id, :name, {}, {class: 'c-input -select'} %>
       </div>
     </fieldset>
 
-    <div class="form-group row">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'btn btn-primary' %>
-        <%= link_to 'Show', admin_page_template_path(page_template), class: 'btn btn-secondary' unless page_template.id.nil? %>
-        <%= link_to 'Back', admin_page_templates_path, class: 'btn btn-secondary' %>
-      </div>
+    <div class="footer-form">
+      <%= f.submit class: 'c-button -primary' %>
+      <%= link_to 'Show', admin_page_template_path(page_template), class: 'c-button -secondary' unless page_template.id.nil? %>
+      <%= link_to 'Back', admin_page_templates_path, class: 'c-button -secondary' %>
     </div>
 <% end %>

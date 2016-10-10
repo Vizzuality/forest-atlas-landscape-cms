@@ -1,11 +1,11 @@
 <div class="footer-form">
   <div class="">
     <%= if home
-          link_to 'SEE MY SITES', admin_sites_path, class: 'c-button -green'
+          link_to 'SEE MY SITES', admin_sites_path, class: 'c-button -primary'
         else
-            f.submit submit_text, class: 'c-button -green'
+            f.submit submit_text, class: 'c-button -primary'
         end
     %>
-    <%= link_to 'CANCEL', admin_sites_path, class: 'c-button -white' %>
+    <%= link_to 'CANCEL', admin_sites_path, class: 'c-button -secondary' %>
   </div>
 </div>
