@@ -27,7 +27,7 @@ class Site < ApplicationRecord
   validates :url, :format => URI::regexp(%w(http https))
 
   before_validation :generate_slug
-  before_create :create_context
+  after_create :create_context
   after_save :update_routes
   after_create :create_template_content
 
@@ -42,14 +42,8 @@ class Site < ApplicationRecord
   def create_context
     return nil unless self.contexts.empty?
 
-    begin
-      context = Context.create!({name: self.name})
-      site_context = ContextSite.create!({context: context, is_site_default_context: true})
-      self.context_sites.push(site_context)
-    rescue Exception => e
-      puts "EXCEPTION: #{e.inspect}"
-    end
-
+    context = Context.create!({name: self.name})
+    self.context_sites.create(context_id: context.id, is_site_default_context: true)
   end
 
   def root
