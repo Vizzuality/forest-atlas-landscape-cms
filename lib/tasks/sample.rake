@@ -158,7 +158,7 @@ def create_pages_templates
     }
   )
 
-  puts 'Template pages createßd successfully'
+  puts 'Template pages created successfully'
 end
 
 def create_sites

@@ -20,7 +20,7 @@ class Page < ApplicationRecord
   extend EnumerateIt
 
   has_and_belongs_to_many :site_templates
-  
+
   has_closure_tree order: 'position'
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
   before_validation :regenerate_url
@@ -45,7 +45,7 @@ class Page < ApplicationRecord
   def regenerate_url
     uri = self.uri || ''
     current_url = '/' + uri
-    parent_url = (parent.nil? || parent.url.eql?('/')) ? '' : parent.url
+    parent_url = (parent.nil? || (parent.url.count('/') < 2)) ? '' : parent.url
     current_url = parent_url + current_url
     write_attribute(:url, current_url)
   end
