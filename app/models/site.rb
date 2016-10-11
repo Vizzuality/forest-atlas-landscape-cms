@@ -43,9 +43,9 @@ class Site < ApplicationRecord
     return nil unless self.contexts.empty?
 
     begin
-    context = Context.create!({name: self.name})
-    site_context = ContextSite.create!({context: context, is_site_default_context: true})
-    self.context_sites.push(site_context)
+      context = Context.create!({name: self.name})
+      site_context = ContextSite.create!({context: context, is_site_default_context: true})
+      self.context_sites.push(site_context)
     rescue Exception => e
       puts "EXCEPTION: #{e.inspect}"
     end

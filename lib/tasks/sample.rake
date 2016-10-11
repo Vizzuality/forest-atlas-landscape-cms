@@ -177,11 +177,11 @@ def create_pages_templates
 end
 
 def create_sites
-  @staging_demo_site = Site.create({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template})
-  @site_two = Site.create({name: 'Site Two', site_template: @fa_template})
-  @site_three = Site.create({name: 'Site Three', site_template: @la_template})
-  @site_four = Site.create({name: 'Site Four', site_template: @la_template})
-  @base_site = Site.create({name: 'Base site', site_template: @fa_template})
+  @staging_demo_site = Site.create!({name: 'Heroku staging for FA LSA CMS', url: 'http://localhost:3000/first', site_template: @fa_template})
+  @site_two = Site.create!({name: 'Site Two', url: 'http://localhost:3000/second', site_template: @fa_template})
+  @site_three = Site.create!({name: 'Site Three', url: 'http://localhost:3000/third', site_template: @la_template})
+  @site_four = Site.create!({name: 'Site Four', url: 'http://localhost:3000/fourth', site_template: @la_template})
+  @base_site = Site.create!({name: 'Base site', url: 'http://localhost:3000/base', site_template: @fa_template})
   puts 'Base site created successfully'
 end
 
