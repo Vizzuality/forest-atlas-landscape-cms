@@ -4,7 +4,6 @@ def create_pages_templates
       name: 'Homepage',
       description: 'Homepage description',
       uri: '',
-      site: @base_site,
       content_type: ContentType::HOMEPAGE,
       site_templates: [@fa_template, @la_template]
     }
@@ -15,7 +14,6 @@ def create_pages_templates
       name: 'Map',
       description: 'Explore the map',
       uri: 'map',
-      site: @base_site,
       parent: home,
       content_type: ContentType::MAP,
       site_templates: [@fa_template, @la_template]
@@ -28,7 +26,6 @@ def create_pages_templates
       description: 'Download the data',
       content: 'http://cmr-data.forest-atlas.org/',
       uri: 'data',
-      site: @base_site,
       parent: home,
       content_type: ContentType::LINK,
       site_templates: [@fa_template, @la_template]
@@ -39,7 +36,6 @@ def create_pages_templates
       name: 'News',
       description: 'View the latest news',
       uri: 'news',
-      site: @base_site,
       parent: home,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
@@ -51,7 +47,6 @@ def create_pages_templates
       name: 'News section 1',
       description: 'News section #1',
       uri: 'news-section-1',
-      site: @base_site,
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
@@ -63,7 +58,6 @@ def create_pages_templates
       name: 'News section 2',
       description: 'News section #2',
       uri: 'news-section-2',
-      site: @base_site,
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
@@ -75,7 +69,6 @@ def create_pages_templates
       name: 'News section 3',
       description: 'News section #3',
       uri: 'news-section-3',
-      site: @base_site,
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
@@ -87,7 +80,6 @@ def create_pages_templates
       name: 'News section 4',
       description: 'News section #4',
       uri: 'news-section-4',
-      site: @base_site,
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
@@ -99,7 +91,6 @@ def create_pages_templates
       name: 'News section 5',
       description: 'News section #5',
       uri: 'news-section-5',
-      site: @base_site,
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
@@ -111,7 +102,6 @@ def create_pages_templates
       name: 'News 1',
       description: 'News topic #1',
       uri: 'news-1',
-      site: @base_site,
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
@@ -122,7 +112,6 @@ def create_pages_templates
       name: 'News 2',
       description: 'News topic #2',
       uri: 'news-2',
-      site: @base_site,
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
@@ -133,7 +122,6 @@ def create_pages_templates
       name: 'News 3',
       description: 'News topic #3',
       uri: 'news-3',
-      site: @base_site,
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
@@ -144,7 +132,6 @@ def create_pages_templates
       name: 'News 4',
       description: 'News topic #4',
       uri: 'news-4',
-      site: @base_site,
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
@@ -155,7 +142,6 @@ def create_pages_templates
       name: 'News 5',
       description: 'News topic #5',
       uri: 'news-5',
-      site: @base_site,
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
@@ -166,14 +152,13 @@ def create_pages_templates
       name: 'News 6',
       description: 'News topic #6',
       uri: 'news-6',
-      site: @base_site,
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template]
     }
   )
 
-  puts 'Template pages created successfully'
+  puts 'Template pages createßd successfully'
 end
 
 def create_sites
@@ -288,8 +273,8 @@ namespace :db do
     @fa_template = SiteTemplate.find_by name: 'Forest Atlas'
     @la_template = SiteTemplate.find_by name: 'Landscape Application'
 
-    create_sites
     create_pages_templates
+    create_sites
     create_base_site_routes
     create_heroku_staging_site_routes
     create_users

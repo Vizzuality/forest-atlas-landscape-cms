@@ -19,22 +19,12 @@
 class Page < ApplicationRecord
   extend EnumerateIt
 
-  belongs_to :site
-  has_many :routes, through: :site
-  has_one :site_template, through: :site
   has_and_belongs_to_many :site_templates
-  validates :url, uniqueness: {scope: :site}
-
+  
   has_closure_tree order: 'position'
-
-  before_validation :regenerate_url
-  after_save :update_routes
-
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
+  before_validation :regenerate_url
 
-  def update_routes
-    DynamicRouter.update_routes_for_site_page self
-  end
 
   def url=(value)
     raise 'Cannot manually set the URL for a page, please set uri instead'
@@ -59,4 +49,5 @@ class Page < ApplicationRecord
     current_url = parent_url + current_url
     write_attribute(:url, current_url)
   end
+
 end
