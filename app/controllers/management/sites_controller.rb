@@ -38,8 +38,8 @@ class Management::SitesController < ManagementController
   end
 
   def build_pages_tree
+    tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position).hash_tree
 
-
-    gon.structure = @pages
+    gon.structure = tree
   end
 end
