@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <h1>Editing Page</h1>
+  <h1><%= @title %></h1>
 
-  <%= render 'form', site_page: @site_page, form_for_path: [:management, @site_page]%>
+  <%= render @partial, site_page: @site_page, form_for_path: [:management, @site_page] unless @partial.nil?%>
 </div>
