@@ -32,7 +32,8 @@
 
       // We build the tree structure of the site
       new App.View.TreeStructureView({
-        el: $('.js-tree')
+        el: $('.js-tree'),
+        collection: gon.structure
       });
     }
 

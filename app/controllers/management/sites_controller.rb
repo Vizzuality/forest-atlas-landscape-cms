@@ -25,7 +25,7 @@ class Management::SitesController < ManagementController
 
     respond_to do |format|
       format.html {
-        gon.structure = @pages
+        build_pages_tree
         render :structure }
       format.json { render json: @pages }
     end
@@ -37,4 +37,9 @@ class Management::SitesController < ManagementController
     @site = Site.find_by({slug: params[:site_slug]})
   end
 
+  def build_pages_tree
+    tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position).hash_tree
+
+    gon.structure = tree
+  end
 end

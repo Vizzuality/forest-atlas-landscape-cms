@@ -7,7 +7,9 @@ RSpec.describe DynamicRouter do
 
     @router.instance_variable_set(:@route_cache, @route_cache)
 
-    @sample_site = Site.new(:name => 'Sample site')
+    @sample_site_template = SiteTemplate.create!()
+
+    @sample_site = Site.new(:name => 'Sample site', :site_template => @sample_site_template, :url => 'http://test')
     save_without_route_update @sample_site
 
     @sample_route = Route.new(:host => 'localhost', :path => 'sample-path', :site => @sample_site)
@@ -18,7 +20,7 @@ RSpec.describe DynamicRouter do
   end
 
   it 'Creating a site updates routes' do
-    @site = Site.new(:name => 'Demo site', :routes => [@sample_route], :site_pages => [@sample_page])
+    @site = Site.new(:name => 'Demo site', :routes => [@sample_route], :site_pages => [@sample_page], :site_template => @sample_site_template, :url => 'http://test')
     save_without_route_update @site
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@site.id.to_s, 'p:'+@sample_page.id.to_s]
@@ -29,7 +31,7 @@ RSpec.describe DynamicRouter do
   end
 
   it 'Creating a route updates routes' do
-    @route = Route.new(:host => 'localhost', :path => 'the-path', :site => @site)
+    @route = Route.new(:host => 'localhost', :path => 'the-path', :site => @sample_site)
     save_without_route_update @route
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@sample_site.id.to_s, 'p:'+@sample_page.id.to_s]
@@ -40,7 +42,7 @@ RSpec.describe DynamicRouter do
   end
 
   it 'Creating a page updates routes' do
-    @page = Page.new(:name => 'Demo page', :site_id => @sample_site.id, :uri => 'demo-page')
+    @page = SitePage.new(:name => 'Demo page', :site_id => @sample_site.id, :uri => 'demo-page')
     save_without_route_update @page
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@sample_site.id.to_s, 'p:'+@page.id.to_s]

@@ -14,7 +14,7 @@ class Site < ApplicationRecord
   belongs_to :site_template
   has_many :routes
   has_many :site_pages
-  has_many :user_site_associations
+  has_many :user_site_associations, dependent: :destroy
   has_many :users, through: :user_site_associations
   has_many :context_sites
   has_many :contexts, through: :context_sites
@@ -27,7 +27,7 @@ class Site < ApplicationRecord
   validates :url, :format => URI::regexp(%w(http https))
 
   before_validation :generate_slug
-  before_create :create_context
+  after_create :create_context
   after_save :update_routes
   after_create :create_template_content
 
@@ -43,8 +43,7 @@ class Site < ApplicationRecord
     return nil unless self.contexts.empty?
 
     context = Context.create!({name: self.name})
-    site_context = ContextSite.create!({context: context, is_site_default_context: true})
-    self.context_sites.push(site_context)
+    self.context_sites.create(context_id: context.id, is_site_default_context: true)
   end
 
   def root
