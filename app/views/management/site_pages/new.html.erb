@@ -1,5 +1,8 @@
 <div class="wrapper">
-  <h1>New Page</h1>
+  <h1><%= @title %></h1>
 
-  <%= render 'form', site_page: @site_page, form_for_path: [:management, :site, @site_page]%>
+  <%= link_to 'Back', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug} unless @partial.eql? 'select_type'%>
+  <%= link_to 'List', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug} if @partial.eql? 'select_type'%>
+
+  <%= render @partial, site_page: @site_page, form_for_path: [:management, :site, @site_page]%>
 </div>

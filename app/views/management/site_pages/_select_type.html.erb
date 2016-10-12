@@ -1,0 +1,8 @@
+<ul>
+  <li>
+    <%= link_to 'Open Content', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::OPEN_CONTENT} %>
+    <%= link_to 'Analysis Dashboard', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::ANALYSIS_DASHBOARD} %>
+    <%= link_to 'Dynamic Indicator Dashboard', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::DYNAMIC_INDICATOR_DASHBOARD} %>
+    <%= link_to 'Link', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::LINK} %>
+  </li>
+</ul>

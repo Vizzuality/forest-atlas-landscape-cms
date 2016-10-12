@@ -8,6 +8,7 @@
         <th>Name</th>
         <th>Site</th>
         <th>URL</th>
+        <th>Content type</th>
         <th colspan="4"></th>
       </tr>
     </thead>
@@ -18,6 +19,7 @@
           <td><%= site_page.name %></td>
           <td><%= site_page.site.name %></td>
           <td><%= site_page.url %></td>
+          <td><%= site_page.content_type_humanize %></td>
           <td><%= link_to site_page.enabled ? 'Disable' : 'Enable', toggle_enable_management_site_page_path(site_page), method: :put %></td>
           <td><%= link_to 'Show', management_site_page_path(site_page) %></td>
           <td><%= link_to 'Edit', edit_management_site_page_path(site_page) %></td>
