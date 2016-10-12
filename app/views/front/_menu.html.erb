@@ -4,12 +4,25 @@
       <ul>
         <% @menu_root.children.each do |child_page| -%>
             <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
-            <% if !child_page.children.nil? %>
+            <% unless child_page.children.nil? or child_page.children.empty? %>
+              <li>
                 <ul>
                   <% child_page.children.each do |grandchild_page| -%>
-                      <li><a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a></li>
+                    <li>
+                      <a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a>
+                    </li>
+                    <% unless grandchild_page.children.nil? or grandchild_page.children.empty? %>
+                      <li>
+                        <ul>
+                          <% grandchild_page.children.each do |sub_section| -%>
+                              <li><a href="<%= sub_section.url %>"><%= sub_section.name %></a></li>
+                          <% end %>
+                        </ul>
+                      </li>
+                    <% end %>
                   <% end -%>
                 </ul>
+              </li>
             <% end -%>
         <% end -%>
       </ul>
