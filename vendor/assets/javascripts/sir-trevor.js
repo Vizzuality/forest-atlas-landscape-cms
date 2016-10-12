@@ -17055,7 +17055,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this._scribe.getTextContent() !== '') {
 	      var fakeContent = document.createElement('div');
 	      fakeContent.innerHTML = this.getTextBlockHTML();
-	      content = fakeContent.firstChild.innerHTML || fakeContent.innerHTML;
+        content = fakeContent.children &&
+          Array.prototype.slice.call(fakeContent.children).reduce(function (res, child) {
+            return res + child.innerHTML;
+          }, '') || fakeContent.innerHTML;
 	      return content.replace(/^[\s\uFEFF\xA0]+|$/g, '');
 	    }
 	    return content;
@@ -19764,6 +19767,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var range = selection.range.cloneRange();
 
 	      range.setStartBefore(scribe.el.firstChild, 0);
+
+        var node = range.endContainer.nodeType === 3 ? range.endContainer.parentNode : range.endContainer;
+
+        if (scribe.el.firstChild !== node) {
+          return false;
+        }
 
 	      return rangeToHTML(range, false) === '';
 	    };
