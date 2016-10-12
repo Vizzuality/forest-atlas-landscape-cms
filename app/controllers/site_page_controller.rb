@@ -2,6 +2,7 @@ class SitePageController < ApplicationController
   before_action :load_site_page
   before_action :load_menu
   before_action :load_breadcrumbs
+  protect_from_forgery except: :map_resources
 
   def load_site_page
     @site_page = SitePage.find(params[:id])
@@ -31,7 +32,7 @@ class SitePageController < ApplicationController
   def open_content
   end
 
-  def map
+  def map_resources
   end
 
   def analysis_dashboard

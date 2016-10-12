@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
       "application"
     end
   end
+
+  def json_request?
+    request.format.json?
+  end
+
 end
