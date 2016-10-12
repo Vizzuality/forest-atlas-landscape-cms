@@ -1,0 +1,23 @@
+.c-wysiwyg {
+
+
+  .content-title {
+    color: $color-4;
+    font-size: $font-size-big;
+    font-weight: $font-weight-bold;
+
+    &.-empty {
+      position: relative;
+
+      &::after {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: rgba($color-4, .3);
+        content: 'Title';
+      }
+    }
+  }
+
+}

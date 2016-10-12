@@ -23,7 +23,7 @@
       // Some configuration for Sir Trevor
       SirTrevor.setDefaults({
         iconUrl: "<%= asset_path('icons/sir-trevor.svg') %>",
-        blockTypes: ['Text', 'Heading', 'Quote'],
+        blockTypes: ['Text', 'Heading', 'Quote', 'Title'],
         formatBar: {
           // We only display the commands specified in the defaults object
           commands: _.reject(SirTrevor.config.defaults.formatBar.commands, function (command) {

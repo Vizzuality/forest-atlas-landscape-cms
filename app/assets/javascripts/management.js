@@ -27,6 +27,7 @@
 
 // = require_tree ./routers/management
 // = require_tree ./templates
+// = require_tree ./blocks
 // = require_tree ./views/shared
 // = require_tree ./views/management
 // = require dispatchers/managementDispatcher
