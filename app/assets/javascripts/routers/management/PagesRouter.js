@@ -13,9 +13,9 @@
             { name: 'Description', value: row.description, searchable: true },
             { name: 'URL', value: row.url, searchable: true },
             // TODO: attach the real icons and add the real links
-            { name: null, html: '<a href="">Show</a>', searchable: false },
-            { name: null, html: '<a href="">Edit</a>', searchable: false },
-            { name: null, html: '<a href="">Delete</a>', searchable: false }
+            { name: null, html: '<a href="" class="c-table-action-button -show" title="Show">Show</a>', searchable: false },
+            { name: null, html: '<a href="" class="c-table-action-button -edit" title="Edit">Edit</a>', searchable: false },
+            { name: null, html: '<a href="" class="c-table-action-button -delete" title="Delete">Delete</a>', searchable: false }
           ]
         };
       });
