@@ -2,7 +2,9 @@ class SiteCreator
   def self.create_site_content(site)
     return nil if site.site_template_id.nil?
 
-    pages = site.site_template.pages
+    page_root = PageTemplate.joins(:site_templates).where(:parent_id => nil, "site_templates.id" => site.site_template_id).take!
+    pages = page_root.self_and_descendants
+
     @new_page_tree = {}
 
     pages.each do |page|
