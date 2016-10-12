@@ -8,12 +8,15 @@
 #  description  :string
 #  uri          :string
 #  url          :string
-#  ancestry     :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  content      :text
 #  content_type :integer
 #  type         :text
+#  content_js   :string
+#  enabled      :boolean
+#  parent_id    :integer
+#  position     :integer
 #
 
 class Page < ApplicationRecord
@@ -45,7 +48,7 @@ class Page < ApplicationRecord
   def regenerate_url
     uri = self.uri || ''
     current_url = '/' + uri
-    parent_url = (parent.nil? || (parent.url.count('/') < 2)) ? '' : parent.url
+    parent_url = (parent.nil? || parent.url.eql?('/')) ? '' : parent.url
     current_url = parent_url + current_url
     write_attribute(:url, current_url)
   end

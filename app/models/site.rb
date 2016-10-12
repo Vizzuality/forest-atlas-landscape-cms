@@ -23,8 +23,7 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
 
-  validates_presence_of :name, :url, :site_template_id
-  validates :url, :format => URI::regexp(%w(http https))
+  validates_presence_of :name, :site_template_id
 
   before_validation :generate_slug
   after_create :create_context
