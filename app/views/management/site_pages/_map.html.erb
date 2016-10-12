@@ -1,1 +1,30 @@
-<h2>Coming soon...</h2>
+<%= form_for(form_for_path) do |f| %>
+    <% if site_page.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
+
+          <ul>
+            <% site_page.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <fieldset class="form-group row">
+      <%= f.label 'Map settings', class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <div class="c-content">
+          <%= f.text_area :content %>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="form-group row">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: 'js-submit btn btn-primary' %>
+        <%= link_to 'Show', management_site_page_path(site_page), class: 'btn btn-secondary' unless site_page.id.nil? %>
+        <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'btn btn-secondary' %>
+      </div>
+    </div>
+<% end %>

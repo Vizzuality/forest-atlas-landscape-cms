@@ -17,6 +17,7 @@ class SiteCreator
         {
           name: page.name,
           description: page.description,
+          content: page.content,
           uri: page.uri,
           site: site,
           content_type: page.content_type,
