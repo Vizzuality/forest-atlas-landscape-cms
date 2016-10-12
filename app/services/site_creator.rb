@@ -10,7 +10,7 @@ class SiteCreator
         {
           name: page.name,
           description: page.description,
-          uri: page.url,
+          uri: page.uri,
           site: site,
           content_type: page.content_type,
           parent: get_parent_content(page)

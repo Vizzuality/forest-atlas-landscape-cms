@@ -9,7 +9,7 @@ RSpec.describe DynamicRouter do
 
     @sample_site_template = SiteTemplate.create!()
 
-    @sample_site = Site.new(:name => 'Sample site', :site_template => @sample_site_template, :url => 'http://test')
+    @sample_site = Site.new(:name => 'Sample site', :site_template => @sample_site_template)
     save_without_route_update @sample_site
 
     @sample_route = Route.new(:host => 'localhost', :path => 'sample-path', :site => @sample_site)
@@ -20,7 +20,7 @@ RSpec.describe DynamicRouter do
   end
 
   it 'Creating a site updates routes' do
-    @site = Site.new(:name => 'Demo site', :routes => [@sample_route], :site_pages => [@sample_page], :site_template => @sample_site_template, :url => 'http://test')
+    @site = Site.new(:name => 'Demo site', :routes => [@sample_route], :site_pages => [@sample_page], :site_template => @sample_site_template)
     save_without_route_update @site
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@site.id.to_s, 'p:'+@sample_page.id.to_s]
