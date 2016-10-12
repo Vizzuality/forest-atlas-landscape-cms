@@ -129,7 +129,7 @@
 
     type: 'introduction',
     icon_name: 'text',
-    template: '<p class="st-text-block paragrapg -intro -empty js-content" contenteditable="true"></p>',
+    template: '<p class="st-text-block paragraph -intro -empty js-content" contenteditable="true"></p>',
     // By making the block textable, we can navigate to the one below by pressing the bottom key
     textable: true,
 

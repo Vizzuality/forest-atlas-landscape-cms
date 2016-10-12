@@ -1,5 +1,42 @@
 .c-wysiwyg {
 
+  p {
+    margin: 0;
+    font-size: $font-size-s-normal;
+
+    &.-intro {
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-light;
+
+      &.-empty {
+        position: relative;
+
+        &::after {
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: rgba($color-4, .3);
+          content: 'Introduction';
+        }
+      }
+    }
+  }
+
+  .st-block {
+    &[data-type='title'] {
+      margin: 40px 0 15px;
+    }
+
+    &[data-type='introduction'] {
+      margin: 15px 0;
+    }
+
+    &[data-type='text'] {
+      margin: 10px 0;
+    }
+  }
+
 
   .content-title {
     color: $color-4;
