@@ -4,7 +4,8 @@
   var Dispatcher = Backbone.Router.extend({
     routes: {
       '(/)': 'Index',
-      'site_settings/:id(/)': 'Settings'
+      'site_settings/:id(/)': 'Settings',
+      'site/:id(/)': 'Urls'
     }
   });
 
