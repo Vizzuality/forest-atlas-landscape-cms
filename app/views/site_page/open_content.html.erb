@@ -1,7 +1,9 @@
 <%= render 'front/cover'%>
 
 <div class="c-content">
-  <%= @site_page.content['body'].html_safe unless @site_page.content['body'].blank? %>
+  <div class="wrapper">
+    <%= @site_page.content['body'].html_safe unless @site_page.content['body'].blank? %>
+  </div>
 </div>
 
 <%= render 'front/footer'%>
