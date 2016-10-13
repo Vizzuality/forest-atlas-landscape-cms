@@ -1,5 +1,5 @@
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-<% include_gon %>
+<%= include_gon %>
 <%= form_for([:admin, site]) do |f| %>
     <%= f.hidden_field :step, value: '1' %>
 
@@ -12,6 +12,7 @@
     </fieldset>
 
     <%= fields_for :routes do |url_form| %>
+      <div class="js-urls"></div>
     <% end %>
 
 
