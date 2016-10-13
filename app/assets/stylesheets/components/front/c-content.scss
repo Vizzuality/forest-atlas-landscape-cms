@@ -58,6 +58,14 @@
     font-size: $font-size-medium;
     font-weight: $font-weight-light;
 
+    &::before {
+      content: '“';
+    }
+
+    &::after {
+      content: '”';
+    }
+
     @media #{$mq-mobile} {
       margin: 60px auto;
       font-size: $font-size-big;

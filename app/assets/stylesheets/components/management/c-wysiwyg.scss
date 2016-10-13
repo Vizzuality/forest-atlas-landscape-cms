@@ -23,21 +23,6 @@
     }
   }
 
-  .st-block {
-    &[data-type='title'] {
-      margin: 40px 0 15px;
-    }
-
-    &[data-type='introduction'] {
-      margin: 15px 0;
-    }
-
-    &[data-type='text'] {
-      margin: 10px 0;
-    }
-  }
-
-
   .content-title {
     color: $color-4;
     font-size: $font-size-big;
@@ -54,6 +39,57 @@
         color: rgba($color-4, .3);
         content: 'Title';
       }
+    }
+  }
+
+  .quote {
+    font-size: $font-size-x-normal;
+    font-style: italic;
+
+    &::before {
+      content: '“';
+    }
+
+    &::after {
+      content: '”';
+    }
+
+    &.-empty {
+      position: relative;
+
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: rgba($color-4, .3);
+        content: '“Citation”';
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+  .st-block {
+    &[data-type='title'] {
+      margin: 40px 0 15px;
+    }
+
+    &[data-type='introduction'] {
+      margin: 15px 0;
+    }
+
+    &[data-type='quote'] {
+      margin: 15px 0;
+
+      > .st-block__inner {
+        margin: 0 110px;
+      }
+    }
+
+    &[data-type='text'] {
+      margin: 10px 0;
     }
   }
 
