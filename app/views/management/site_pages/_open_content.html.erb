@@ -30,8 +30,10 @@
       <%= f.label :content, class: 'col-sm-2 form-control-label' %>
       <div class="col-sm-10">
         <div class="c-content">
-          <%= f.hidden_field :content, class: 'js-content' %>
-          <%= f.cktext_area :content_js, class: 'js-content-json' %>
+          <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
+              <%= ff.hidden_field :body, class: 'js-content' %>
+              <%= ff.cktext_area :json, class: 'js-content-json' %>
+          <% end %>
         </div>
       </div>
     </fieldset>

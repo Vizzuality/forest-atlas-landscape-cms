@@ -10,7 +10,7 @@
 
 <p>
   <strong>Content:</strong>
-  <%= @page_template.content.html_safe unless @page_template.content.nil? %>
+  <%= @page_template.content['body'].html_safe unless @page_template.content.nil? %>
 </p>
 
 <p>

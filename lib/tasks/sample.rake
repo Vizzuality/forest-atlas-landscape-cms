@@ -25,7 +25,7 @@ def create_pages_templates
     {
       name: 'Data',
       description: 'Download the data',
-      content: 'http://cmr-data.forest-atlas.org/',
+      content: {url: 'http://cmr-data.forest-atlas.org/'},
       uri: 'data',
       parent: home,
       content_type: ContentType::LINK,
@@ -40,7 +40,7 @@ def create_pages_templates
       parent: home,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: '<p>News</p>'
+      content: {body: '<p>News</p>'}
     }
   )
   news_section_1 = PageTemplate.create!(
@@ -51,7 +51,7 @@ def create_pages_templates
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: '<p>News section 1</p>'
+      content: {body: '<p>News section 1</p>'}
     }
   )
   PageTemplate.create!(
@@ -62,7 +62,7 @@ def create_pages_templates
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: '<p>News section 2</p>'
+      content: {body: '<p>News section 2</p>'}
     }
   )
   PageTemplate.create!(
@@ -73,7 +73,7 @@ def create_pages_templates
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: '<p>News section 3</p>'
+      content: {body: '<p>News section 3</p>'}
     }
   )
   PageTemplate.create!(
@@ -84,7 +84,7 @@ def create_pages_templates
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: '<p>News section 4</p>'
+      content: {body: '<p>News section 4</p>'}
     }
   )
   PageTemplate.create!(
@@ -95,7 +95,7 @@ def create_pages_templates
       parent: news,
       content_type: ContentType::OPEN_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: '<p>News section 5</p>'
+      content: {body: '<p>News section 5</p>'}
     }
   )
   PageTemplate.create!(
