@@ -1,0 +1,12 @@
+<ul class="c-flag-colors">
+    {{#each urls}}
+        <li>
+            <input type="text" value="{{url}}" data-id="{{@index}}">
+            <button type="button" class="js-remove-url" data-id="{{@index}}">Remove Url</button>
+        </li>
+    {{/each}}
+    <li>
+        <button type="button" class="js-add-url">Add</button>
+    </li>
+</ul>
+ß

@@ -2,6 +2,9 @@ class Admin::SitesController < AdminController
 
   before_action :set_site, only: [:show, :edit, :update, :destroy, :display]
 
+  URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
+  URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
+
   # GET /admin/sites
   # GET /admin/sites.json
   def index
@@ -34,6 +37,11 @@ class Admin::SitesController < AdminController
   # GET /admin/sites/new
   def new
     @site = Site.new
+
+    gon.urlControllerId = URL_CONTROLLER_ID
+    gon.urlControllerName = URL_CONTROLLER_NAME
+
+    gon.urlArray = @site.routes
   end
 
   # GET /admin/sites/1/edit
@@ -111,7 +119,7 @@ class Admin::SitesController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
-    params.require(:site).permit(:name, :site_template_id, :url,
-                                 {user_ids: []}, site_settings_attributes: [:id, :value, :name, :image])
+    params.require(:site).permit(:name, :site_template_id,
+                                 {user_ids: []}, site_routes_attributes: [:id, :host, :path], site_settings_attributes: [:id, :value, :name, :image])
   end
 end
