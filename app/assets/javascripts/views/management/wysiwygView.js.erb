@@ -23,7 +23,7 @@
       // Some configuration for Sir Trevor
       SirTrevor.setDefaults({
         iconUrl: "<%= asset_path('icons/sir-trevor.svg') %>",
-        blockTypes: ['Text', 'Heading', 'Title', 'Introduction', 'Quote'],
+        blockTypes: ['Text', 'Heading', 'Title', 'Introduction', 'Quote', 'Image'],
         formatBar: {
           // We only display the commands specified in the defaults object
           commands: _.reject(SirTrevor.config.defaults.formatBar.commands, function (command) {
@@ -54,7 +54,7 @@
         .data
         .reduce(function (res, block) {
           if (block.data.format !== 'html') {
-            // eslint-disable-line no-console
+            // eslint-disable-next-line no-console
             console.warn('Sir Trevor\'s blocks should return an HTML content to be easily used by Rails\' views.');
             return res;
           }
