@@ -18,8 +18,7 @@
 class SiteSetting < ApplicationRecord
   belongs_to :site
 
-  NAMES = %w[theme background logo color flag]
-  THEMES = [1, 2]
+  NAMES = %w[background logo color flag]
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
@@ -29,7 +28,6 @@ class SiteSetting < ApplicationRecord
   # All fields must have a name and position
   validates :name, :position, presence: :true
   validates :name, inclusion: { in: NAMES }
-  validates :value, inclusion: { in: THEMES } if name == 'theme'
 
   has_attached_file :image,
                     styles: lambda { |attachment| { thumb: (attachment.instance.name == 'logo' ? '100x100#' : '500x200#') }},
@@ -41,10 +39,6 @@ class SiteSetting < ApplicationRecord
                        content_type: {content_type: %w[image/jpg image/jpeg image/png]},
                        styles: lambda {|attachment| { thumb: (attachment.instance.value == 'logo' ? '100x100#' : '500x200#') }}
 
-
-  def self.theme(site_id)
-    SiteSetting.where(name: 'theme', site_id: site_id)
-  end
 
   def self.background(site_id)
     SiteSetting.where(name: 'background', site_id: site_id)
@@ -82,6 +76,6 @@ class SiteSetting < ApplicationRecord
   end
 
   def has_required_value?
-    %w[theme color].include?(name)
+    %w[color].include?(name)
   end
 end

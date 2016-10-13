@@ -1,14 +1,14 @@
 ((function (App) {
-
   'use strict';
 
-  App.Router.AdminSettings = Backbone.Router.extend({
+  App.Router.AdminUrls = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'
     },
 
     index: function () {
+      console.log('yeahhhh!');
       new App.View.UrlsView({ el: '.js-urls' });
     }
   });

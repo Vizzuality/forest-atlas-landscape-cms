@@ -52,7 +52,6 @@ class Site < ApplicationRecord
   def get_ordered_settings
     settings = site_settings.order :position
     if settings.blank?
-      (SiteSetting.new site_id: id, name: 'theme', value: '1', position: 0).save(validate: false)
       (SiteSetting.new site_id: id, name: 'background', value: '', position: 1).save(validate: false)
       (SiteSetting.new site_id: id, name: 'logo', value: '', position: 2).save(validate: false)
       (SiteSetting.new site_id: id, name: 'color', value: '', position: 3).save(validate: false)

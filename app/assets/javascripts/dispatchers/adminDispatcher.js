@@ -7,7 +7,7 @@
       'users(/)': 'Users',
       'sites(/)': 'Sites',
       'site_settings/:id(/)': 'Settings',
-      'site/:id(/)': 'Urls'
+      'sites/new(/)': 'Urls'
     }
   });
 
