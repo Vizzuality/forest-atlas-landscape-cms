@@ -1,33 +1,29 @@
 <div class="wrapper">
-  <p>
-    <strong>Name:</strong>
-    <%= @site_page.name %>
-  </p>
+  <%
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        partial = 'open_content'
+      when ContentType::ANALYSIS_DASHBOARD
+        partial = 'analysis_dashboard'
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        partial = 'dynamic_indicator_dashboard'
+      when ContentType::HOMEPAGE
+        partial = 'homepage'
+      when ContentType::LINK
+        partial = 'link'
+      when ContentType::MAP
+        partial = 'map'
+    end
+  %>
+
 
   <p>
-    <strong>Description:</strong>
-    <%= @site_page.description %>
+    <strong>Content type:</strong>
+    <%= @site_page.content_type_humanize %>
   </p>
 
-  <p>
-    <strong>Content:</strong>
-    <%= @site_page.content['body'].html_safe unless @site_page.content.nil? %>
-  </p>
 
-  <p>
-    <strong>Page site:</strong>
-    <%= @site_page.site.name %>
-  </p>
-
-  <p>
-    <strong>URL:</strong>
-    <%= @site_page.url%>
-  </p>
-
-  <p>
-    <strong>Link:</strong>
-    <%= link_to @site_page.links(request.port).first, @site_page.links(request.port).first, target: '_blank' %>
-  </p>
+  <%= render "management/site_pages/shows/#{partial}", site_page: @site_page, form_for_path: [:management, :site, @site_page] %>
 
   <%= link_to 'Edit', edit_management_site_page_path(@site_page), class: 'btn btn-primary' %>
   <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site_page.site.slug}, class: 'btn btn-secondary' %>

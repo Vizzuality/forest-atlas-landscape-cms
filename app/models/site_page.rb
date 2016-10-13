@@ -25,10 +25,11 @@ class SitePage < Page
   has_one :site_template, through: :site
   has_many :users, through: :site
 
-  validates :url, uniqueness: {scope: :site}
+  validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql? ContentType::LINK'
   after_save :update_routes
 
   def update_routes
+    return if self.content_type.eql? ContentType::LINK
     DynamicRouter.update_routes_for_site_page self
   end
 end
