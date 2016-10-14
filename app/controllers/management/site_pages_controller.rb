@@ -42,6 +42,7 @@ class Management::SitePagesController < ManagementController
         @title = 'New page - Select type'
     end
 
+    @breadcrumbs = ['Page creation']
     @site_page = SitePage.new
   end
 

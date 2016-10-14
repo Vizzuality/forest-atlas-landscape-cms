@@ -1,0 +1,38 @@
+.c-header {
+  height: 50px;
+  background-color: $color-6;
+  color: rgba($color-3, .5);
+  font-weight: bold;
+  text-transform: uppercase;
+
+  a {
+    color: rgba($color-3, .5);
+    text-decoration: none;
+  }
+
+  > .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .site-switcher {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .breadcrumbs {
+    > li {
+      &::after {
+        content: ' /';
+      }
+
+      &:last-of-type {
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+}

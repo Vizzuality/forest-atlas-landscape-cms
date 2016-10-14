@@ -15,7 +15,8 @@
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/widgets'
+        urlFormat: '/management/sites/:slug/widgets',
+        slug: this.slug
       });
 
       // We initialize the tabs
