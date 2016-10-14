@@ -26,8 +26,8 @@
         currentTab: 0,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
-          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
-          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
+          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' }
+          // { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]
       });
 

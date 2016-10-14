@@ -1,0 +1,13 @@
+.c-button {
+  padding: 10px 25px;
+  border: 1px solid $color-10;
+  border-radius: 20px;
+  background: $color-10;
+  color: $color-3;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+
+  &.-outline {
+    background: transparent;
+  }
+}

@@ -8,6 +8,7 @@
 </head>
 <body>
   <%= render 'management/header' %>
+  <%= yield :extended_header %>
   <%= render 'shared/messages' %>
   <%= yield %>
   <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
