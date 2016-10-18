@@ -5,7 +5,7 @@
     routes: {
       '(/)': 'Index',
       'site_settings/:id(/)': 'Settings',
-      'sites/new(/)': 'Urls'
+      'site_steps/name(/)': 'Urls'
     }
   });
 

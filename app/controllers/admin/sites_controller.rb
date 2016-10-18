@@ -2,8 +2,6 @@ class Admin::SitesController < AdminController
 
   before_action :set_site, only: [:show, :edit, :update, :destroy, :display]
 
-  URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
-  URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
 
   # GET /admin/sites
   # GET /admin/sites.json
@@ -31,8 +29,9 @@ class Admin::SitesController < AdminController
 
     gon.urlControllerId = URL_CONTROLLER_ID
     gon.urlControllerName = URL_CONTROLLER_NAME
-
     gon.urlArray = @site.routes
+
+    render_wizard
   end
 
   # GET /admin/sites/1/edit
@@ -43,6 +42,7 @@ class Admin::SitesController < AdminController
   # POST /admin/sites
   # POST /admin/sites.json
   def create
+=begin
     @site = Site.new(site_params)
 
     respond_to do |format|
@@ -54,12 +54,32 @@ class Admin::SitesController < AdminController
         format.json { render json: @site.errors, status: :unprocessable_entity }
       end
     end
+=end
   end
 
   # PATCH/PUT /admin/sites/1
   # PATCH/PUT /admin/sites/1.json
   def update
     respond_to do |format|
+      case step
+        when :name
+          @site = Site.new(site_params)
+          if @site.valid?
+            session[:site] = site.attributes
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        when :users
+        when :style
+        when :settings
+        when :finish
+
+      end
+
+
+
+=begin
       if @site.update(site_params)
         format.html {
           case params['site']['step']
@@ -85,6 +105,8 @@ class Admin::SitesController < AdminController
         }
         format.json { render json: @site.errors, status: :unprocessable_entity }
       end
+=end
+
     end
   end
 
@@ -97,9 +119,6 @@ class Admin::SitesController < AdminController
       format.html { redirect_to admin_sites_url, notice: 'Site was successfully destroyed.' }
       format.json { head :no_content }
     end
-  end
-
-  def display
   end
 
   private

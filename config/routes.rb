@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         get :display
       end
     end
+    resources :site_steps
     resources :users
     resources :routes
     resources :site_templates

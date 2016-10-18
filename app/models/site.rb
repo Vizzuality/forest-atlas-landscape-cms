@@ -11,7 +11,7 @@
 #
 
 class Site < ApplicationRecord
-  belongs_to :site_template
+  belongs_to :site_template, optional: :true
   has_many :routes
   has_many :site_pages
   has_many :user_site_associations, dependent: :destroy
@@ -23,12 +23,31 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
 
-  validates_presence_of :name, :site_template_id
+  validates_presence_of :name, if: -> { required_for_step? :name }
+  validates_presence_of :users, if: -> { required_for_step? :users }
+
+  # TODO: Put this back in. Solve the backbone problem and put this back in.
+  # validates_presence_of :routes, if: -> { required_for_step? :name }
+  validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   before_validation :generate_slug
   after_create :create_context
   after_save :update_routes
   after_create :create_template_content
+
+  cattr_accessor :form_steps do
+    %w[name users style settings finish]
+  end
+  attr_accessor :form_step
+
+  def required_for_step?(step)
+    # All fields are required if no form step is present
+    return true if form_step.nil?
+
+    # All fields from previous steps are required if the
+    # step parameter appears before or we are on the current step
+    return true if self.form_steps.index(step.to_s) <= self.form_steps.index(form_step)
+  end
 
   def update_routes
     DynamicRouter.update_routes_for_site self
@@ -52,10 +71,10 @@ class Site < ApplicationRecord
   def get_ordered_settings
     settings = site_settings.order :position
     if settings.blank?
-      (SiteSetting.new site_id: id, name: 'background', value: '', position: 1).save(validate: false)
-      (SiteSetting.new site_id: id, name: 'logo', value: '', position: 2).save(validate: false)
-      (SiteSetting.new site_id: id, name: 'color', value: '', position: 3).save(validate: false)
-      (SiteSetting.new site_id: id, name: 'flag', value: '', position: 4).save(validate: false)
+      SiteSetting.new site_id: id, name: 'background', value: '', position: 1
+      SiteSetting.new site_id: id, name: 'logo', value: '', position: 2
+      SiteSetting.new site_id: id, name: 'color', value: '', position: 3
+      SiteSetting.new site_id: id, name: 'flag', value: '', position: 4
 
       settings = site_settings.order :position
     end

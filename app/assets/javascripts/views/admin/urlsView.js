@@ -55,6 +55,8 @@
     },
 
     render: function () {
+      console.log('Rendering urls');
+      console.log(gon.urlControllerId);
       this.$el.html(this.template({
         urls: this.collection.toJSON(),
         inputId: gon.urlControllerId,

@@ -8,7 +8,6 @@
     },
 
     index: function () {
-      console.log('yeahhhh!');
       new App.View.UrlsView({ el: '.js-urls' });
     }
   });
