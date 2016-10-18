@@ -1,0 +1,38 @@
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
+<%= include_gon %>
+
+<h1>CUSTOMIZE</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+    <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
+        <% setting = settings_form.object %>
+        <fieldset class="form-group row">
+          <% case setting.name
+               when 'logo' %>
+              <%= f.label :name, class: 'col-sm-2 form-control-label' , value: 'LOGO IMAGE' %>
+              <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %>
+                <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '100', width: '100' %>
+                <%= settings_form.file_field :image, class: 'image-uploader' %>
+              </div>
+            <% when 'background' %>
+              <%= f.label :name, class: 'col-sm-2 form-control-label' , value: 'BACKGROUND IMAGE' %>
+              <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %>
+                <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '200', width: '500'%>
+                <%= settings_form.file_field :image, class: 'image-uploader' %>
+              </div>
+        <% when 'flag' %>
+              <%= settings_form.fields_for :flag_colors do |colors_form| %>
+                  <% if !colors_form.object.nil? %>
+                      <%= colors_form.color_field :value %>
+                      <%#= colors_form.check_box :_destroy, class: 'removable' %>
+                  <% end %>
+              <% end %>
+              <% if setting.flag_colors.count < 5 %>
+                  <div class="js-flag-colors"></div>
+              <% end %>
+          <% end %>
+        </fieldset>
+    <% end %>
+    <%= render partial: 'footer', locals: { f: f} %>
+<% end %>
