@@ -5,7 +5,7 @@
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
     <% User.all.each_with_index do |user, i| %>
-        <%= check_box_tag "site[users_attributes][#{i}][id]", user.id, f.object.users.include?(user) %>
+        <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user) %>
         <%= user.name %>
     <% end %>
     <%= render partial: 'footer', locals: { f: f } %>

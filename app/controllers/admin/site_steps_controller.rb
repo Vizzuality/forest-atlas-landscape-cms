@@ -18,7 +18,6 @@ class Admin::SiteStepsController < AdminController
       if step == 'style'
         if @site.site_settings.count < 1
           @site.site_settings.new(name: 'color', value: '#000000', position: 3)
-          session[:site] = @site.attributes
         end
       end
     end
@@ -31,10 +30,6 @@ class Admin::SiteStepsController < AdminController
           @site = Site.new(site_params)
           @site.form_step = 'name'
 
-          # TODO: put this back! Solve the Backbone problem and put this back in
-          # params['site']['routes_attributes'].each do |route|
-          #  @site.routes.new host: route
-          # end
           if @site.valid?
             session[:site] = @site.attributes
             redirect_to next_wizard_path
@@ -42,36 +37,23 @@ class Admin::SiteStepsController < AdminController
             render_wizard
           end
         when 'users'
-          session[:site] = session[:site].merge(site_params)
+          session[:site] = session[:site].merge(site_params.to_h)
 
-          @site = Site.new(session[:site])
+          @site = Site.new(session[:site].to_h)
           @site.form_step = 'users'
 
-          #unless params['site'].blank? || params['site']['user_ids'].blank?
-          #  params['site']['user_ids'].each do |user|
-          #    @site.users << User.find(user)
-          #  end
-          #end
-
           if @site.valid?
-            #session[:site] = @site.attributes
-            #session[:site][:users_attributes] = @site.users
-
             redirect_to next_wizard_path
           else
             render_wizard
           end
 
         when 'style'
-          session[:site] = session[:site].merge(site_params)
+          session[:site] = session[:site].merge(site_params.to_h)
           @site = Site.new(session[:site])
           @site.form_step = 'style'
-          #@site.site_settings = params[:site][:site_settings_attributes]
-
-          #@site.assign_attributes(params)
 
           if @site.valid?
-            #session[:site] = @site.attributes
             redirect_to next_wizard_path
           else
             render_wizard
@@ -91,7 +73,7 @@ class Admin::SiteStepsController < AdminController
   def site_params
     params.require(:site).
       permit(:name, :site_template_id,
-             users_attributes: [:id],
+             user_ids: [],
              site_routes_attributes: [:id, :host, :path],
              site_settings_attributes: [:id, :position, :value, :name, :image])
   end
