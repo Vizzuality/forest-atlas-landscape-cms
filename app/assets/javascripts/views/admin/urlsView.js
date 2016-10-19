@@ -16,7 +16,7 @@
     events: {
       'click .js-add-url': '_addUrl',
       'click .js-remove-url': '_removeUrl',
-      'input input': '_updateUrl'
+      'blur input': '_updateUrl'
     },
 
     initialize: function (settings) {
@@ -25,7 +25,6 @@
     },
 
     _addUrl: function () {
-      this.collection.push({ url: '' });
       this.render();
     },
 
@@ -34,19 +33,23 @@
      */
     _removeUrl: function (e) {
       if (this._canRemoveUrl()) {
-        var index = $(e.target).data('id'),
-          model = this.collection.at(+index);
+        var index = +e.target.dataset.id,
+          model = this.collection.at(index);
         this.collection.remove(model);
         this.render();
       }
     },
 
     _updateUrl: function (e) {
-      var url = $(e.target).val(),
-        position = $(e.target).data('id');
+      var input = e.target;
+      var position = +input.dataset.id || this.collection.length;
+      var model = this.collection.at(position);
 
-      this.collection.at(position).set({ url: url });
-      this.render();
+      if (!model) {
+        this.collection.push({ url: input.value });
+      } else {
+        model.set({ url: input.value });
+      }
     },
 
     _canRemoveUrl: function () {
