@@ -23,7 +23,7 @@
       // Some configuration for Sir Trevor
       SirTrevor.setDefaults({
         iconUrl: "<%= asset_path('icons/sir-trevor.svg') %>",
-        blockTypes: ['Text', 'Heading', 'Quote'],
+        blockTypes: ['Text', 'Heading', 'Title', 'Introduction', 'Quote', 'Image'],
         formatBar: {
           // We only display the commands specified in the defaults object
           commands: _.reject(SirTrevor.config.defaults.formatBar.commands, function (command) {
@@ -36,6 +36,15 @@
     },
 
     /**
+     * Return true if the param is a standard html paragraph
+     * @param {string} html
+     * @return {boolean}
+     */
+    _isParagraph: function (html) {
+      return html.indexOf('<p>') === 0;
+    },
+
+    /**
      * Save the HTML output into the HTML container so the server can display the content easily
      */
     saveHTML: function () {
@@ -45,13 +54,25 @@
         .data
         .reduce(function (res, block) {
           if (block.data.format !== 'html') {
-            // eslint-disable-line no-console
+            // eslint-disable-next-line no-console
             console.warn('Sir Trevor\'s blocks should return an HTML content to be easily used by Rails\' views.');
             return res;
           }
 
+          // By default, the block created by Sir Trevor is a standard paragraph. Nevertheless,
+          // we want this paragraph to have a special class to be styled.
+          if (this._isParagraph(block.data.text)) {
+            // When the user creates a new line by pressing Shift + Enter on his keyboard,
+            // Sir Trevor concatenate a new paragraph at the end of the main one. Instead, we
+            // just want a new line.
+            block.data.text = block.data.text.replace(/<\/p><p>/g, '<br/>');
+            // At this stage, we should only have one opening paragraph tag so we just modify
+            // it to have a class
+            block.data.text = block.data.text.replace('<p>', '<p class="paragraph">');
+          }
+
           return res + block.data.text;
-        }, '');
+        }.bind(this), '');
     },
 
     render: function () {
