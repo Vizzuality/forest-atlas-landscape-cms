@@ -18,16 +18,6 @@
   <%= @page_template.site.name %>
 </p>
 
-<p>
-  <strong>URL:</strong>
-  <%= @page_template.url%>
-</p>
-
-<p>
-  <strong>Link:</strong>
-  <%= link_to @page_template.links(request.port).first, @page_template.links(request.port).first, target: '_blank' %>
-</p>
-
 
 <%= link_to 'Edit', edit_admin_page_template_path(@page_template), class: 'btn btn-primary' %>
 <%= link_to 'Back', admin_page_templates_path, class: 'btn btn-secondary' %>
