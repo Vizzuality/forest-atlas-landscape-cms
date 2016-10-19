@@ -9,7 +9,7 @@
     className: 'c-urls',
     template: HandlebarsTemplates['admin/urls'],
     collection: new Collection(
-      gon.urlArray
+      window.gon ? gon.urlArray : []
     ),
     defaults: {
       url: 'New url'
@@ -55,12 +55,10 @@
     },
 
     render: function () {
-      console.log('Rendering urls');
-      console.log(gon.urlControllerId);
       this.$el.html(this.template({
         urls: this.collection.toJSON(),
-        inputId: gon.urlControllerId,
-        inputName: gon.urlControllerName,
+        inputId: window.gon && gon.urlControllerId,
+        inputName: window.gon && gon.urlControllerName,
       }));
       this.setElement(this.el);
     }
