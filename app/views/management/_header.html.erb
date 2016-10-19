@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div>
       <div class="site-switcher js-site-switcher"></div>
-      <% unless @breadcrumbs.nil? or @breadcrumbs.empty? %>
+      <% unless @breadcrumbs.blank? %>
         <ul class="breadcrumbs">
           <% @breadcrumbs.each do |item| %>
             <li><%= item %></li>
