@@ -10,4 +10,13 @@
   &.-outline {
     background: transparent;
   }
+
+  &.-dark-text {
+    color: $color-4;
+  }
+
+  &.-disabled {
+    cursor: default;
+    opacity: .3;
+  }
 }

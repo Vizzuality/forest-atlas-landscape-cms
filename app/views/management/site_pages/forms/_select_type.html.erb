@@ -1,8 +1,39 @@
-<ul>
-  <li>
-    <%= link_to 'Open Content', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::OPEN_CONTENT} %>
-    <%= link_to 'Analysis Dashboard', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::ANALYSIS_DASHBOARD} %>
-    <%= link_to 'Dynamic Indicator Dashboard', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::DYNAMIC_INDICATOR_DASHBOARD} %>
-    <%= link_to 'Link', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::LINK} %>
-  </li>
-</ul>
+<div class="l-page-creation -type">
+  <div class="wrapper">
+    <div class="c-card-list">
+      <div class="card -footer-at-bottom">
+        <h3 class="title">Open Content page</h3>
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+        <div class="footer">
+          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::OPEN_CONTENT}, class: 'c-button' %>
+        </div>
+      </div>
+      <div class="card -footer-at-bottom">
+        <h3 class="title">Analysis Dashboard</h3>
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+        <div class="footer">
+          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::ANALYSIS_DASHBOARD}, class: 'c-button' %>
+        </div>
+      </div>
+      <div class="card -footer-at-bottom">
+        <h3 class="title">Dynamic Indicator Dashboard</h3>
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+        <div class="footer">
+          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::DYNAMIC_INDICATOR_DASHBOARD}, class: 'c-button' %>
+        </div>
+      </div>
+      <div class="card -footer-at-bottom">
+        <h3 class="title">External link</h3>
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+        <div class="footer">
+          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::LINK}, class: 'c-button' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :action_bar do %>
+  <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
+  <a class="c-button -disabled">Continue</a>
+<% end %>

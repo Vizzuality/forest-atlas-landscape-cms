@@ -1,0 +1,12 @@
+.l-page-creation {
+  // We make sure the fixed c-action-bar doesn't cover the content if the
+  // screen has a small height
+  padding-bottom: 75px;
+
+  &.-type {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 360px);
+  }
+
+}

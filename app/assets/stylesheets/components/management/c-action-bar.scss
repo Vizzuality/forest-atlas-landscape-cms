@@ -1,0 +1,21 @@
+.c-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: $body-max-width;
+  height: 60px;
+  background-color: $color-2;
+
+  @media #{$mq-body-width} {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  > .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+}
