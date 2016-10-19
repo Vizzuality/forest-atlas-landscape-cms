@@ -26,7 +26,7 @@ class Page < ApplicationRecord
 
   has_closure_tree order: 'position'
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
-  before_validation :regenerate_url
+  before_validation :regenerate_url, :unless => Proc.new { |page| page.content_type.eql? ContentType::LINK }
 
 
   def url=(value)

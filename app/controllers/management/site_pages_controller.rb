@@ -24,52 +24,12 @@ class Management::SitePagesController < ManagementController
 
   # GET /management/pages/new
   def new
-    case params['type'].to_i
-      when ContentType::OPEN_CONTENT
-        @partial = 'open_content'
-        @title = 'New open content page'
-      when ContentType::ANALYSIS_DASHBOARD
-        @partial = 'analysis_dashboard'
-        @title = 'New analysis dashboard page'
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @partial = 'dynamic_indicator_dashboard'
-        @title = 'New dynamic indicator dashboard page'
-      when ContentType::LINK
-        @partial = 'link'
-        @title = 'New link'
-      else
-        @partial = 'select_type'
-        @title = 'New page - Select type'
-    end
-
     @breadcrumbs = ['Page creation']
-    @site_page = SitePage.new
+    @site_page = SitePage.new(content_type: params['type'].to_i)
   end
 
   # GET /management/pages/1/edit
   def edit
-    case @site_page.content_type
-      when ContentType::OPEN_CONTENT
-        @partial = 'open_content'
-        @title = 'Edit open content page'
-      when ContentType::ANALYSIS_DASHBOARD
-        @partial = 'analysis_dashboard'
-        @title = 'Edit analysis dashboard page'
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @partial = 'dynamic_indicator_dashboard'
-        @title = 'Edit dynamic indicator dashboard page'
-      when ContentType::HOMEPAGE
-        @partial = 'homepage'
-        @title = 'Edit homepage'
-      when ContentType::LINK
-        @partial = 'link'
-        @title = 'Edit link'
-      when ContentType::MAP
-        @partial = 'map'
-        @title = 'Edit map'
-      else
-        @title = 'Error - Content type not found'
-    end
   end
 
   # POST /management/pages
@@ -142,7 +102,7 @@ class Management::SitePagesController < ManagementController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def page_params
-    params.require(:site_page).permit(:name, :description, :site_id, :uri, :content, :content_js, :parent_id)
+    params.require(:site_page).permit(:name, :description, :site_id, :uri, :parent_id, :content_type, content: [:body, :json, :url])
   end
 
 end

@@ -1,0 +1,14 @@
+<p>
+  <strong>Name:</strong>
+  <%= @site_page.name %>
+</p>
+
+<p>
+  <strong>Target link:</strong>
+  <%= @site_page.content['url'] unless @site_page.content['url'].nil? %>
+</p>
+
+<p>
+  <strong>Page site:</strong>
+  <%= @site_page.site.name %>
+</p>

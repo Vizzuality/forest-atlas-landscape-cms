@@ -93,6 +93,8 @@ class DynamicRouter
         target = 'site_page#analysis_dashboard'
       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
         target = 'site_page#dynamic_indicator_dashboard'
+      when ContentType::LINK
+        return
       else
         target = 'site_page#open_content'
     end

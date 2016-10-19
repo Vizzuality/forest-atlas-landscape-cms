@@ -1,6 +1,6 @@
 <h1>Dynamic indicator dashboard</h1>
 <h3><%= @site_page.name %></h3>
-<%= @site_page.content.html_safe unless @site_page.content.blank? %>
+<%= @site_page.content['body'].html_safe unless @site_page.content.blank? %>
 
 <script type="text/javascript">
   window.route = 'DynamicIndicator';

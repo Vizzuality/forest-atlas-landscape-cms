@@ -3,19 +3,19 @@
     <div class="wrapper">
       <ul>
         <% @menu_root.children.each do |child_page| -%>
-            <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+            <li><%= page_link child_page %></li>
             <% unless child_page.children.nil? or child_page.children.empty? %>
               <li>
                 <ul>
                   <% child_page.children.each do |grandchild_page| -%>
                     <li>
-                      <a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a>
+                      <%= page_link grandchild_page %>
                     </li>
                     <% unless grandchild_page.children.nil? or grandchild_page.children.empty? %>
                       <li>
                         <ul>
                           <% grandchild_page.children.each do |sub_section| -%>
-                              <li><a href="<%= sub_section.url %>"><%= sub_section.name %></a></li>
+                              <li><%= page_link sub_section %></li>
                           <% end %>
                         </ul>
                       </li>
@@ -50,15 +50,15 @@
     <ul>
       <% @menu_root.children.each do |child_page| -%>
           <li class="<%= 'dropdown-item' if !child_page.children.nil? and !child_page.children.empty? %>">
-            <a href="<%= child_page.url %>"><%= child_page.name %></a>
+            <%= page_link child_page %>
             <% if !child_page.children.nil? and !child_page.children.empty? %>
                 <ul>
                   <li>
-                     <a href="<%= child_page.url %>"><%= child_page.name %></a>
+                    <%= page_link child_page %>
                   </li>
                   <% child_page.children.each do |grandchild_page| -%>
                       <li>
-                        <a href="<%= grandchild_page.url %>"><%= grandchild_page.name %></a>
+                        <%= page_link grandchild_page %>
                       </li>
                   <% end -%>
                 </ul>
@@ -93,7 +93,7 @@
             <% if @site_page.depth >= 2 %>
                 <ul>
                   <% @site_page.children.each do |child_page| -%>
-                      <li><a href="<%= child_page.url %>"><%= child_page.name %></a></li>
+                      <li><%= page_link child_page %></li>
                   <% end %>
                 </ul>
             <% end %>
