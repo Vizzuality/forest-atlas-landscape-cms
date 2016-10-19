@@ -12,7 +12,6 @@
       window.gon ? gon.urlArray : []
     ),
     defaults: {
-      url: 'New url'
     },
     events: {
       'click .js-add-url': '_addUrl',
@@ -26,7 +25,7 @@
     },
 
     _addUrl: function () {
-      this.collection.push({ url: this.options.url });
+      this.collection.push({ url: '' });
       this.render();
     },
 
