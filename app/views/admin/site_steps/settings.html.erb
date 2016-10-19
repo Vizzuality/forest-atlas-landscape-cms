@@ -5,26 +5,30 @@
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-    <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
+    <%= f.fields_for :site_settings, f.object.site_settings do |settings_form| %>
         <% setting = settings_form.object %>
-        <fieldset class="form-group row">
           <% case setting.name
-               when 'logo' %>
-              <%= f.label :name, class: 'col-sm-2 form-control-label' , value: 'LOGO IMAGE' %>
-              <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %>
+               when 'logo_image' %>
+              <%= settings_form.label :name, class: 'col-sm-2 form-control-label' , value: 'LOGO IMAGE' %>
+              <div class="col-sm-10">
                 <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '100', width: '100' %>
                 <%= settings_form.file_field :image, class: 'image-uploader' %>
+                <%= settings_form.hidden_field :name, value: 'logo_image'%>
+                <%= settings_form.hidden_field :position, value: '2'%>
               </div>
-            <% when 'background' %>
-              <%= f.label :name, class: 'col-sm-2 form-control-label' , value: 'BACKGROUND IMAGE' %>
-              <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %>
-                <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '200', width: '500'%>
-                <%= settings_form.file_field :image, class: 'image-uploader' %>
+            <% when 'logo_background' %>
+              <%= settings_form.label :name, class: 'col-sm-2 form-control-label' , value: 'LOGO BACKGROUND' %>
+              <div class="col-sm-10">
+                <%= settings_form.color_field :value %>
+                <%= settings_form.hidden_field :name, value: 'logo_background'%>
+                <%= settings_form.hidden_field :position, value: '3'%>
               </div>
-        <% when 'flag' %>
+            <% when 'flag' %>
               <%= settings_form.fields_for :flag_colors do |colors_form| %>
                   <% if !colors_form.object.nil? %>
                       <%= colors_form.color_field :value %>
+                      <%= settings_form.hidden_field :name, value: 'flag'%>
+                      <%= settings_form.hidden_field :position, value: '4'%>
                       <%#= colors_form.check_box :_destroy, class: 'removable' %>
                   <% end %>
               <% end %>
@@ -32,7 +36,6 @@
                   <div class="js-flag-colors"></div>
               <% end %>
           <% end %>
-        </fieldset>
     <% end %>
     <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
