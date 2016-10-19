@@ -1,5 +1,5 @@
 <div class="c-content">
   <div class="wrapper">
-    <%= content.html_safe unless content.blank? %>
+    <%= content['body'].html_safe unless content.blank? %>
   </div>
 </div>
