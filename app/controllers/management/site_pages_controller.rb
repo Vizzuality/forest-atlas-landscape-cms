@@ -24,8 +24,31 @@ class Management::SitePagesController < ManagementController
 
   # GET /management/pages/new
   def new
-    @breadcrumbs = ['Page creation']
     @site_page = SitePage.new(content_type: params['type'].to_i)
+
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @partial = 'open_content'
+        @breadcrumbs = ['Page creation', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @partial = 'analysis_dashboard'
+        @breadcrumbs = ['Page creation', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @partial = 'dynamic_indicator_dashboard'
+        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @partial = 'homepage'
+        @breadcrumbs = ['Page creation', 'Homepage']
+      when ContentType::LINK
+        @partial = 'link'
+        @breadcrumbs = ['Page creation', 'External Link']
+      when ContentType::MAP
+        @partial = 'map'
+        @breadcrumbs = ['Page creation', 'Map']
+      else
+        @partial = 'select_type'
+        @breadcrumbs = ['Page creation']
+    end
   end
 
   # GET /management/pages/1/edit
