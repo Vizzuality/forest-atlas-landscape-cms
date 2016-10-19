@@ -40,6 +40,9 @@ class Management::SitesController < ManagementController
   def build_pages_tree
     tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position).hash_tree
 
+
+    tree = [{ name: 'test', id: 0, children: [{ name: 'seg', id: 11 }] }]
     gon.structure = tree
+
   end
 end
