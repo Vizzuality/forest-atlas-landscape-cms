@@ -16,16 +16,10 @@ class Admin::SiteStepsController < AdminController
     else
       @site = Site.new(session[:site])
       if step == 'style'
-        if @site.site_settings.count < 1
-          @site.site_settings.new(name: 'color', value: '#000000', position: 1)
-        end
+        SiteSetting.create_color_settings @site
       end
       if step == 'settings'
-        if @site.site_settings.length < 4
-          @site.site_settings.new(name: 'logo_image', value: '', position: 2)
-          @site.site_settings.new(name: 'logo_background', value: '#000000', position: 3)
-          @site.site_settings.new(name: 'flag', value: '#000000', position: 4)
-        end
+        SiteSetting.create_additional_settings @site
       end
     end
     render_wizard
