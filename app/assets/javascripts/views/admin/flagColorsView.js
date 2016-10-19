@@ -9,7 +9,7 @@
     className: 'c-flag-colors',
     template: HandlebarsTemplates['admin/flag-colors'],
     collection: new Collection(
-      window.gon && gon.colorArray
+      window.gon ? gon.colorArray: []
     ),
     defaults: {
       color: '#000000'
