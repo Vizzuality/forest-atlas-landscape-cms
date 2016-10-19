@@ -6,7 +6,7 @@
       '(/)': 'Index',
       'users(/)': 'Users',
       'sites(/)': 'Sites',
-      'site_settings/:id(/)': 'Settings',
+      'site_steps/settings(/)': 'Settings',
       'site_steps/name(/)': 'Urls'
     }
   });

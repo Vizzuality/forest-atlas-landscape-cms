@@ -17,7 +17,14 @@ class Admin::SiteStepsController < AdminController
       @site = Site.new(session[:site])
       if step == 'style'
         if @site.site_settings.count < 1
-          @site.site_settings.new(name: 'color', value: '#000000', position: 3)
+          @site.site_settings.new(name: 'color', value: '#000000', position: 1)
+        end
+      end
+      if step == 'settings'
+        if @site.site_settings.length < 4
+          @site.site_settings.new(name: 'logo_image', value: '', position: 2)
+          @site.site_settings.new(name: 'logo_background', value: '#000000', position: 3)
+          @site.site_settings.new(name: 'flag', value: '#000000', position: 4)
         end
       end
     end
@@ -60,8 +67,18 @@ class Admin::SiteStepsController < AdminController
           end
 
         when 'settings'
-        when 'finish'
+          settings = site_params.to_h
+          @site = Site.new(session[:site])
+          begin
+            settings[:site_settings_attributes].map {|s| @site.site_settings.build(s[1]) }
+          end
+          @site.form_step = 'settings'
 
+          if @site.save
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
     end
   end
 

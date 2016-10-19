@@ -16,9 +16,9 @@
 #
 
 class SiteSetting < ApplicationRecord
-  belongs_to :site
+  belongs_to :site, optional: true
 
-  NAMES = %w[background logo color flag]
+  NAMES = %w[logo_image logo_background color flag]
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
@@ -30,22 +30,22 @@ class SiteSetting < ApplicationRecord
   validates :name, inclusion: { in: NAMES }
 
   has_attached_file :image,
-                    styles: lambda { |attachment| { thumb: (attachment.instance.name == 'logo' ? '100x100#' : '500x200#') }},
+                    styles: {thumb: '100x100#'}, #lambda { |attachment| { thumb: (attachment.instance.name == 'logo' ? '100x100#' : '500x200#') }},
                     default_url: ':style/missing.png'
 
   validate :validate_image
 
   validates_attachment :image,
                        content_type: {content_type: %w[image/jpg image/jpeg image/png]},
-                       styles: lambda {|attachment| { thumb: (attachment.instance.value == 'logo' ? '100x100#' : '500x200#') }}
+                       styles: {thumb: '100x100#'} #lambda {|attachment| { thumb: (attachment.instance.value == 'logo' ? '100x100#' : '500x200#') }}
 
 
-  def self.background(site_id)
-    SiteSetting.where(name: 'background', site_id: site_id)
+  def self.logo_background(site_id)
+    SiteSetting.where(name: 'logo_background', site_id: site_id)
   end
 
-  def self.logo(site_id)
-    SiteSetting.where(name: 'logo', site_id: site_id)
+  def self.logo_image(site_id)
+    SiteSetting.where(name: 'logo_image', site_id: site_id)
   end
 
   def self.color(site_id)
@@ -67,7 +67,7 @@ class SiteSetting < ApplicationRecord
   private
 
   def validate_image
-    if (name == 'background' || name == 'logo') && image.blank?
+    if name == 'logo_image' && image.blank?
       errors.add :key, 'You must update an image for the ' + name
       return false
     else
