@@ -7,11 +7,10 @@
   <%= stylesheet_link_tag 'management/application', media: 'all', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
-<div class="wrapper">
   <%= render 'management/header' %>
+  <%= yield :extended_header %>
   <%= render 'shared/messages' %>
+  <%= yield %>
   <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
-</div>
-<%= yield %>
 </body>
 </html>

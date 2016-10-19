@@ -1,9 +1,11 @@
 .c-site-switcher {
-  width: 125px;
-  padding-right: 11px;
+  padding-left: 20px;
   border: 0;
-  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDEwIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPmZsZWNoaXRhPC90aXRsZT48cGF0aCBkPSJNOS4yNDMgMUw1IDUuMjQzLjc1NyAxIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZT0iI0ZGRiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+') no-repeat center right;
-  color: $color-3;
+  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPmZsZWNoaXRhPC90aXRsZT48cGF0aCBkPSJNOS40ODUgMS4yNDNMNS4yNDMgNS40ODUgMSAxLjI0MyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2U9IiM5N0JFMzIiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==') no-repeat center left;
+  color: $color-10;
+  font-size: $font-size-normal;
+  font-weight: bold;
+  text-transform: uppercase;
   -webkit-appearance: none;
   -moz-appearance: none;
 }

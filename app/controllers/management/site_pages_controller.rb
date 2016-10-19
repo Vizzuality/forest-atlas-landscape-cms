@@ -24,6 +24,7 @@ class Management::SitePagesController < ManagementController
 
   # GET /management/pages/new
   def new
+    @breadcrumbs = ['Page creation']
     @site_page = SitePage.new(content_type: params['type'].to_i)
   end
 
@@ -85,6 +86,11 @@ class Management::SitePagesController < ManagementController
   # Use callbacks to share common setup or constraints between actions.
   def set_site
     @site = Site.find_by({slug: params[:site_slug]})
+
+    if (@site.routes.any?)
+      # We just want a valid URL for the site
+      @url = @site.routes.first.host
+    end
   end
 
   private

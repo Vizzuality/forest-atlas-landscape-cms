@@ -6,7 +6,7 @@
     routes: {
       '(/)': 'Index',
       'sites/:slug/site_pages(/)': 'Pages',
-      'sites/:slug/site_pages/new(/)': 'PageEdition',
+      'sites/:slug/site_pages/new(/)': 'PageCreation',
       'site_pages/:id/edit(/)': 'PageEdition',
       'sites/:slug/structure(/)': 'Structure',
       'sites/:slug/widgets(/)': 'Widgets'

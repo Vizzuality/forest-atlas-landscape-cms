@@ -1,6 +1,6 @@
-<select class="c-site-switcher">
-  <option value="" disabled selected>Change site</option>
+<select class="c-site-switcher" {{#if slug}}style="width: {{width}};"{{/if}}>
+  <option value="" disabled {{#unless slug}}selected{{/unless}}>Change site</option>
   {{#each sites}}
-    <option value="{{slug}}">{{name}}</option>
+    <option value="{{slug}}" {{#if active}}selected{{/if}}>{{name}}</option>
   {{/each}}
 </select>

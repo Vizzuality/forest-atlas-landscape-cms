@@ -15,7 +15,8 @@
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/structure'
+        urlFormat: '/management/sites/:slug/structure',
+        slug: this.slug
       });
 
       // We initialize the tabs
@@ -25,8 +26,8 @@
         currentTab: 0,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
-          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
-          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
+          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' }
+          // { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]
       });
 

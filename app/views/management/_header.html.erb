@@ -1,4 +1,22 @@
-<nav class="navbar navbar-dark bg-inverse">
+<div class="c-header">
+  <div class="wrapper">
+    <div>
+      <div class="site-switcher js-site-switcher"></div>
+      <% unless @breadcrumbs.blank? %>
+        <ul class="breadcrumbs">
+          <% @breadcrumbs.each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+    <div>
+      <%= link_to 'Logout', destroy_user_session_path, {:method => :delete} %>
+    </div>
+  </div>
+</div>
+
+<!--<nav class="navbar navbar-dark bg-inverse">
   <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
     &#9776;
   </button>
@@ -21,4 +39,4 @@
         </ul>
     <% end %>
   </div>
-</nav>
+</nav>-->

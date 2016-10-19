@@ -40,10 +40,13 @@ $color-3:  #fff;
 $color-4:  #555;
 $color-5:  #000;
 $color-6:  #333;
+$color-8:  #ff706c;
+$color-9:  #404040;
+$color-10: darken(saturate($color-1, 10%), 5%);
 
 // General layout
 $body-max-width:         1280px;
-$wrapper-padding:          30px;
+$wrapper-padding:          130px;
 $wrapper-tablet-padding:   20px;
 $wrapper-mobile-padding:   15px;
 
