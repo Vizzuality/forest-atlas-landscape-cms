@@ -5,7 +5,11 @@
         <div class="page js-handle">
           <span>{{name}}</span>
           <ul class="action-buttons">
-            <li><a href="" class="view-button">View</a></li>
+            {{#if enabled}}
+                <li><a href="" class="view-button">View</a></li>
+            {{else}}
+                <li><a href="" class="view-button-slashed">View</a></li>
+            {{/if}}
             <li><a href="" class="edit-button">Edit</a></li>
             <li><a href="" class="delete-button">Delete</a></li>
           </ul>

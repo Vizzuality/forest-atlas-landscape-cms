@@ -55,10 +55,14 @@
 
           return true;
         },
-        relocate: function () {
+        change: function () {
           this._saveStructure();
           this.render();
         }.bind(this)
+        // relocate: function () {
+        //   this._saveStructure();
+        //   this.render();
+        // }.bind(this)
       });
     },
 
