@@ -31,12 +31,16 @@
       if (this._shouldInitEditor()) {
         // We instantiate the wysiwyg editor
         this.wysiwygView = new App.View.WysiwygView({
-          el: '.js-content'
+          el: '.js-content',
+          defaultBlocks: ['Title', 'Introduction']
         });
 
         // Before the form is submitted, we need to save the output HTML
         $('.js-submit').on('click', function () {
           this.wysiwygView.saveHTML();
+
+          var form = document.querySelector('.js-form');
+          if (form) form.submit();
         }.bind(this));
       }
     }

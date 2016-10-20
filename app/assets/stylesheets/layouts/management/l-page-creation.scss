@@ -9,4 +9,16 @@
     min-height: calc(100vh - 360px);
   }
 
+  &.-wysiwyg {
+    margin-top: 50px;
+
+    .c-input {
+      margin-bottom: 20px;
+
+      &:last-of-type {
+        margin-bottom: 50px;
+      }
+    }
+  }
+
 }

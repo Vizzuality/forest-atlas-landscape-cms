@@ -8,7 +8,9 @@
 
     defaults: {
       // Command available in Sir Trevor's format bar
-      commands: ['Bold', 'Italic', 'Link', 'Unlink']
+      commands: ['Bold', 'Italic', 'Link', 'Unlink'],
+      // Blocks to be present by default if any
+      defaultBlocks: []
     },
 
     events: {
@@ -75,7 +77,39 @@
         }.bind(this), '');
     },
 
+    _setDefaultBlocks: function () {
+      var JSONContent = this.JSONContainer.textContent;
+
+      // We don't want to override any existing content
+      if (this.options.defaultBlocks.length === 0 || JSONContent.length > 0) {
+        return;
+      }
+
+      var blocks = this.options.defaultBlocks.reduce(function (res, blockName) {
+        var block = App.Block[blockName + 'Block'];
+
+        if (!block) {
+          // eslint-disable-next-line no-console
+          console.warn('Unable to initialize the block ' + blockName);
+          return res;
+        }
+
+        res.push({
+          type: block.prototype.type,
+          data: block.prototype.generateJSONData('')
+        });
+
+        return res;
+      }, []);
+
+      var json = { data: blocks };
+
+      this.JSONContainer.textContent = JSON.stringify(json);
+    },
+
     render: function () {
+      this._setDefaultBlocks();
+
       this.editor = new SirTrevor.Editor({
         el: this.JSONContainer,
         defaultType: 'Text'
