@@ -28,8 +28,8 @@ class Admin::SiteStepsController < AdminController
   def update
       case step
         when 'name'
-          session[:site] = @site.attributes
           @site = Site.new(site_params)
+          session[:site] = site_params.to_h
           @site.form_step = 'name'
 
           if @site.valid?
@@ -89,6 +89,4 @@ class Admin::SiteStepsController < AdminController
              #site_routes_attributes: [:id, :host, :path],
              site_settings_attributes: [:id, :position, :value, :name, :image])
   end
-
-
 end

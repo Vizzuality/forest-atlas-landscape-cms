@@ -22,12 +22,11 @@ class Site < ApplicationRecord
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :routes
 
-  validates_presence_of :name, :routes, if: -> { required_for_step? :name }
+  validates_presence_of :name, if: -> { required_for_step? :name }
+  validates_presence_of :routes, if: -> { required_for_step? :name }
   validates_presence_of :users, if: -> { required_for_step? :users }
-
-  # TODO: Put this back in. Solve the backbone problem and put this back in.
-  # validates_presence_of :routes, if: -> { required_for_step? :name }
   validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   before_validation :generate_slug
