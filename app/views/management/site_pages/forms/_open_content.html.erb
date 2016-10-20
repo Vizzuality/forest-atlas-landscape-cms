@@ -28,9 +28,18 @@
 
       <div class="wrapper">
 
-        <%= f.text_field :name, class: 'c-input', placeholder: 'Page\'s title' %>
-        <%= f.text_field :description, class: 'c-input', placeholder: 'Short description' %>
-        <%= f.text_field :uri, class: 'c-input', placeholder: 'Page\'s URI' %>
+        <div class="c-fieldset">
+          <%= f.text_field :name, id: 'title', placeholder: 'Page\'s title' %>
+          <%= f.label 'Page\'s title', for: 'title' %>
+        </div>
+        <div class="c-fieldset">
+          <%= f.text_field :description, id: 'description', placeholder: 'Short description' %>
+          <%= f.label 'Short description', for: 'description' %>
+        </div>
+        <div class="c-fieldset">
+          <%= f.text_field :uri, id: 'uri', placeholder: 'Page\'s URI' %>
+          <%= f.label 'Page\'s URI', for: 'uri' %>
+        </div>
 
         <div class="c-wysiwyg">
           <%= f.fields_for :content, OpenStruct.new(site_page.content) do |ff| %>
@@ -65,5 +74,5 @@
 
 <% content_for :action_bar do %>
   <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-  <button type="submit" class="c-button js-submit">Save</button>
+  <button type="submit" class="c-button js-submit"><%= (!defined? edit || edit == false) ? 'Save' : 'Update' %></button>
 <% end %>

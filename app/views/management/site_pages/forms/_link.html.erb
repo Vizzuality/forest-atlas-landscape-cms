@@ -27,15 +27,21 @@
     <%= f.hidden_field :content_type %>
 
     <div class="wrapper">
-      <%= f.text_field :name, class: 'c-input', placeholder: 'Link\'s name' %>
-      <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
-          <%= ff.text_field :url, class: 'c-input', placeholder: 'URL' %>
-      <% end %>
+      <div class="c-fieldset">
+        <%= f.text_field :name, placeholder: 'Link\'s name', id: 'name' %>
+        <%= f.label 'Link\'s name', for: 'name' %>
+      </div>
+      <div class="c-fieldset">
+        <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
+            <%= ff.text_field :url, placeholder: 'URL', id: 'url' %>
+            <%= ff.label 'URL', for: 'url' %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>
 
 <% content_for :action_bar do %>
   <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-  <button type="submit" class="c-button js-submit">Create</button>
+  <button type="submit" class="c-button js-submit"><%= (!defined? edit || edit == false) ? 'Create' : 'Update' %></button>
 <% end %>

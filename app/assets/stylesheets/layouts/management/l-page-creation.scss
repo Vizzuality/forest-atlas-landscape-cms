@@ -12,19 +12,19 @@
   &.-wysiwyg {
     margin-top: 50px;
 
-    .c-input {
+    .c-fieldset {
       margin-bottom: 20px;
+    }
 
-      &:last-of-type {
-        margin-bottom: 50px;
-      }
+    .c-wysiwyg {
+      margin-top: 60px;
     }
   }
 
   &.-link {
     margin-top: 50px;
 
-    .c-input {
+    .c-fieldset {
       margin-bottom: 20px;
     }
   }

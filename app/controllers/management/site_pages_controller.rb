@@ -76,6 +76,29 @@ class Management::SitePagesController < ManagementController
 
   # GET /management/pages/1/edit
   def edit
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @partial = 'open_content'
+        @breadcrumbs = ['Page edition', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @partial = 'analysis_dashboard'
+        @breadcrumbs = ['Page edition', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @partial = 'dynamic_indicator_dashboard'
+        @breadcrumbs = ['Page edition', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @partial = 'homepage'
+        @breadcrumbs = ['Page edition', 'Homepage']
+      when ContentType::LINK
+        @partial = 'link'
+        @breadcrumbs = ['Page edition', 'External Link']
+      when ContentType::MAP
+        @partial = 'map'
+        @breadcrumbs = ['Page edition', 'Map']
+      else
+        @partial = 'select_type'
+        @breadcrumbs = ['Page edition']
+    end
   end
 
   # POST /management/pages
