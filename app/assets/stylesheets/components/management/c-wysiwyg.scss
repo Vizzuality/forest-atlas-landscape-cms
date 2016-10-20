@@ -1,4 +1,7 @@
 .c-wysiwyg {
+  padding: 20px 0;
+  border: 1px solid rgba($color-4, .3);
+  box-shadow: 0 2px 3px 0 rgba($color-4, .1);
 
   p {
     margin: 0;
@@ -10,6 +13,7 @@
 
       &.-empty {
         position: relative;
+        min-height: $font-size-x-normal;
 
         &::after {
           display: inline-block;
@@ -30,6 +34,7 @@
 
     &.-empty {
       position: relative;
+      min-height: $font-size-big;
 
       &::after {
         display: inline-block;
@@ -56,6 +61,7 @@
 
     &.-empty {
       position: relative;
+      min-height: $font-size-x-normal;
 
       &::before {
         position: absolute;

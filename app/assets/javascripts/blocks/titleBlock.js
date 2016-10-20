@@ -125,7 +125,7 @@
     };
   };
 
-  SirTrevor.Blocks.Title = SirTrevor.Block.extend({
+  App.Block.TitleBlock = SirTrevor.Blocks.Title = SirTrevor.Block.extend({
 
     type: 'title',
     icon_name: 'heading',
@@ -159,9 +159,18 @@
     },
 
     _serializeData: function () {
+      return this.generateJSONData(this.getContent().innerHTML);
+    },
+
+    /**
+     * Generate the JSON object that will be stored in the server
+     * @param {string} content - block's content
+     * @returns {object} - object to be saved in the server
+     */
+    generateJSONData: function (content) {
       return {
         format: 'html',
-        text: '<h3 class="content-title">' + this.getContent().innerHTML + '</h3>'
+        text: '<h3 class="content-title">' + content + '</h3>'
       };
     },
 

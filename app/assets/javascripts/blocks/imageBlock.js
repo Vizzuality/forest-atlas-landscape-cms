@@ -1,7 +1,7 @@
 ((function () {
   'use strict';
 
-  SirTrevor.Blocks.Image = SirTrevor.Block.extend({
+  App.Block.ImageBlock = SirTrevor.Blocks.Image = SirTrevor.Block.extend({
 
     type: 'image',
     icon_name: 'image',
@@ -66,9 +66,18 @@
     },
 
     _serializeData: function () {
+      return this.generateJSONData(this.editor.innerHTML);
+    },
+
+    /**
+     * Generate the JSON object that will be stored in the server
+     * @param {string} content - block's content
+     * @returns {object} - object to be saved in the server
+     */
+    generateJSONData: function (content) {
       return {
         format: 'html',
-        text: this.editor.innerHTML
+        text: content
       };
     },
 

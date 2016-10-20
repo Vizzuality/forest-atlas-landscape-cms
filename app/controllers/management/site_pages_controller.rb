@@ -20,16 +20,85 @@ class Management::SitePagesController < ManagementController
   # GET /management/pages/1
   # GET /management/pages/1.json
   def show
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @partial = 'open_content'
+        @breadcrumbs = ['Page creation', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @partial = 'analysis_dashboard'
+        @breadcrumbs = ['Page creation', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @partial = 'dynamic_indicator_dashboard'
+        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @partial = 'homepage'
+        @breadcrumbs = ['Page creation', 'Homepage']
+      when ContentType::LINK
+        @partial = 'link'
+        @breadcrumbs = ['Page creation', 'External Link']
+      when ContentType::MAP
+        @partial = 'map'
+        @breadcrumbs = ['Page creation', 'Map']
+      else
+        @partial = 'select_type'
+        @breadcrumbs = ['Page creation']
+    end
   end
 
   # GET /management/pages/new
   def new
-    @breadcrumbs = ['Page creation']
     @site_page = SitePage.new(content_type: params['type'].to_i)
+
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @partial = 'open_content'
+        @breadcrumbs = ['Page creation', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @partial = 'analysis_dashboard'
+        @breadcrumbs = ['Page creation', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @partial = 'dynamic_indicator_dashboard'
+        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @partial = 'homepage'
+        @breadcrumbs = ['Page creation', 'Homepage']
+      when ContentType::LINK
+        @partial = 'link'
+        @breadcrumbs = ['Page creation', 'External Link']
+      when ContentType::MAP
+        @partial = 'map'
+        @breadcrumbs = ['Page creation', 'Map']
+      else
+        @partial = 'select_type'
+        @breadcrumbs = ['Page creation']
+    end
   end
 
   # GET /management/pages/1/edit
   def edit
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @partial = 'open_content'
+        @breadcrumbs = ['Page edition', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @partial = 'analysis_dashboard'
+        @breadcrumbs = ['Page edition', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @partial = 'dynamic_indicator_dashboard'
+        @breadcrumbs = ['Page edition', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @partial = 'homepage'
+        @breadcrumbs = ['Page edition', 'Homepage']
+      when ContentType::LINK
+        @partial = 'link'
+        @breadcrumbs = ['Page edition', 'External Link']
+      when ContentType::MAP
+        @partial = 'map'
+        @breadcrumbs = ['Page edition', 'Map']
+      else
+        @partial = 'select_type'
+        @breadcrumbs = ['Page edition']
+    end
   end
 
   # POST /management/pages
@@ -40,7 +109,7 @@ class Management::SitePagesController < ManagementController
 
     respond_to do |format|
       if @site_page.save
-        format.html { redirect_to management_site_page_path(@site_page), notice: 'SitePage was successfully created.' }
+        format.html { redirect_to management_site_page_path(@site_page) }
         format.json { render :show, status: :created, location: @site_page }
       else
         format.html { render :new }
