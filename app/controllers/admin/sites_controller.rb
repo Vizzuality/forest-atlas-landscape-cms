@@ -2,6 +2,7 @@ class Admin::SitesController < AdminController
 
   before_action :set_site, only: [:show, :edit, :update, :destroy, :display]
 
+
   # GET /admin/sites
   # GET /admin/sites.json
   def index
@@ -25,6 +26,12 @@ class Admin::SitesController < AdminController
   # GET /admin/sites/new
   def new
     @site = Site.new
+
+    gon.urlControllerId = URL_CONTROLLER_ID
+    gon.urlControllerName = URL_CONTROLLER_NAME
+    gon.urlArray = @site.routes
+
+    render_wizard
   end
 
   # GET /admin/sites/1/edit
@@ -35,49 +42,11 @@ class Admin::SitesController < AdminController
   # POST /admin/sites
   # POST /admin/sites.json
   def create
-    @site = Site.new(site_params)
-
-    respond_to do |format|
-      if @site.save
-        format.html { redirect_to admin_site_setting_path(@site) }
-        format.json { render :show, status: :created, location: @site }
-      else
-        format.html { render :new }
-        format.json { render json: @site.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /admin/sites/1
   # PATCH/PUT /admin/sites/1.json
   def update
-    respond_to do |format|
-      if @site.update(site_params)
-        format.html {
-          case params['site']['step']
-            when '1'
-              redirect_to admin_site_setting_path(@site)
-            when '2'
-              redirect_to admin_site_user_path(@site)
-            when '3'
-              redirect_to display_admin_site_path(@site), notice: 'Site was successfully created! '
-          end
-        }
-        format.json { render :show, status: :ok, location: @site }
-      else
-        format.html {
-          case params['site']['step']
-            when '1'
-              render :edit
-            when '2'
-              render 'admin/site_settings/show'
-            when '3'
-              render 'admin/site_users/edit'
-          end
-        }
-        format.json { render json: @site.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # DELETE /admin/sites/1
@@ -91,9 +60,6 @@ class Admin::SitesController < AdminController
     end
   end
 
-  def display
-  end
-
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_site
@@ -102,7 +68,7 @@ class Admin::SitesController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
-    params.require(:site).permit(:name, :site_template_id, :url,
-                                 {user_ids: []}, site_settings_attributes: [:id, :value, :name, :image])
+    params.require(:site).permit(:name, :site_template_id,
+                                 {user_ids: []}, site_routes_attributes: [:id, :host, :path], site_settings_attributes: [:id, :value, :name, :image])
   end
 end

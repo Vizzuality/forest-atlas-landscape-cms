@@ -23,6 +23,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'handlebars_assets'
 gem 'enumerate_it'
 gem 'gon'
+gem 'wicked' # Multi-steps form
 
 gem 'faraday', '~> 0.9.2'
 

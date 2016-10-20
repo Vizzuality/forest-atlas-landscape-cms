@@ -11,7 +11,7 @@
 #
 
 class Route < ApplicationRecord
-  belongs_to :site
+  belongs_to :site, optional: true
   has_many :site_pages, through: :site
 
   after_save :update_routes

@@ -1,0 +1,6 @@
+<h1>SITE CREATED!</h1>
+<h2>What do you want to do now?</h2>
+
+<%= link_to  'GO TO SITE', @site.routes.first.host, target: '_blank' %>
+<%= link_to 'CREATE A NEW SITE', admin_site_steps_path %>
+<%= link_to 'SEE MY SITES', admin_sites_path %>

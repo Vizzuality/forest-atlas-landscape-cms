@@ -1,0 +1,12 @@
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
+
+<h1>USERS</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+    <% User.all.each_with_index do |user, i| %>
+        <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user) %>
+        <%= user.name %>
+    <% end %>
+    <%= render partial: 'footer', locals: { f: f } %>
+<% end %>
