@@ -32,6 +32,9 @@ class SitePageController < ApplicationController
   def open_content
   end
 
+  def static_content
+  end
+
   def map_resources
   end
 

@@ -158,8 +158,18 @@ def create_pages_templates
       site_templates: [@fa_template, @la_template]
     }
   )
-
-  puts 'Template pages created successfully'
+  PageTemplate.create!(
+    {
+      name: 'Terms and privacy',
+      description: 'Terms and privacy',
+      uri: 'terms-and-privacy',
+      parent: home,
+      content_type: ContentType::STATIC_CONTENT,
+      site_templates: [@fa_template, @la_template],
+      content: {body: '<p>Terms and privacy</p>'}
+    }
+  )
+    puts 'Template pages created successfully'
 end
 
 def create_sites

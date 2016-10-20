@@ -5,6 +5,7 @@ class ContentType < EnumerateIt::Base
     dynamic_indicator_dashboard: [3, 'Dynamic Indicator Dashboard'],
     homepage: [4, 'Homepage'],
     map: [5, 'Map'],
-    link: [6, 'Link']
+    link: [6, 'Link'],
+    static_content: [7, 'Static Content']
   )
 end
