@@ -18,7 +18,7 @@
 
     _getPageType: function () {
       var matches = location.search.match(/type=([0-9])$/);
-      return matches.length > 1 ? +matches[1] : null;
+      return matches && matches.length > 1 ? +matches[1] : null;
     },
 
     index: function () {
