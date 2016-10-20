@@ -1,6 +1,11 @@
 ((function (App) {
   'use strict';
 
+  var OPEN_CONTENT = 1;
+  var ANALYSIS_DASHBOARD = 2;
+  var DYNAMIC_INDICATOR = 3;
+  var LINK = 6;
+
   App.Router.ManagementPageCreation = Backbone.Router.extend({
 
     routes: {
@@ -11,16 +16,14 @@
       this.slug = params[0] || null;
     },
 
-    /**
-     * Return true if the editor should be instantiated base on whether the
-     * query params
-     * @returns {boolean}
-     */
-    _shouldInitEditor: function () {
-      return /\?type=[0-9]/.test(window.location.search);
+    _getPageType: function () {
+      var matches = location.search.match(/type=([0-9])$/);
+      return matches.length > 1 ? +matches[1] : null;
     },
 
     index: function () {
+      var pageType = this._getPageType();
+
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher'),
@@ -28,16 +31,17 @@
         slug: this.slug
       });
 
-      if (this._shouldInitEditor()) {
+      if (pageType === OPEN_CONTENT) {
         // We instantiate the wysiwyg editor
         this.wysiwygView = new App.View.WysiwygView({
           el: '.js-content',
           defaultBlocks: ['Title', 'Introduction']
         });
+      }
 
-        // Before the form is submitted, we need to save the output HTML
+      if (pageType === OPEN_CONTENT || pageType === LINK) {
         $('.js-submit').on('click', function () {
-          this.wysiwygView.saveHTML();
+          if (this.wysiwygView) this.wysiwygView.saveHTML();
 
           var form = document.querySelector('.js-form');
           if (form) form.submit();
