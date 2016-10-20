@@ -7,4 +7,4 @@
   <%= link_to 'Save', management_site_site_pages_path, class: 'btn btn-primary' %>
 </div>
 
-<%= console %>
+<%= console if Rails.env.development? %>
