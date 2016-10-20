@@ -2,7 +2,7 @@
   <ul {{#if firstCall}}class="js-tree-root"{{/if}}>
     {{#each pages}}
       <li class="js-draggable" id="page-{{id}}" data-name="{{name}}">
-        <div class="page js-handle">
+        <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">
           <span>{{name}}</span>
           <ul class="action-buttons">
             {{#if enabled}}

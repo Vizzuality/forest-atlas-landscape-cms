@@ -69,6 +69,10 @@
       content: '';
     }
 
+    &.-disabled {
+      opacity: .3
+    }
+
     &.-placeholder {
       max-width: 200px;
       height: 43px; // Height of the other pages
