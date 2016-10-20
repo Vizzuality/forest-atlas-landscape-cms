@@ -10,4 +10,12 @@
   </div>
 <% end %>
 
-<h2>Coming soon...</h2>
+<div class="l-page-creation -indicator-dashboard">
+  <div class="wrapper">
+    <h2>Coming soon...</h2>
+  </div>
+</div>
+
+<% content_for :action_bar do %>
+  <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button' %>
+<% end %>
