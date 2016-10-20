@@ -39,15 +39,22 @@ class Admin::SiteStepsController < AdminController
           end
 
         when 'users'
-          session[:site] = session[:site].merge(site_params.to_h)
-          @site = Site.new(session[:site])
-          @site.form_step = 'users'
+          unless params[:site].blank?
+            session[:site] = session[:site].merge(site_params.to_h)
+            @site = Site.new(session[:site])
+            @site.form_step = 'users'
 
-          if @site.valid?
-            redirect_to next_wizard_path
+            if @site.valid?
+              redirect_to next_wizard_path
+            else
+              render_wizard
+            end
           else
+            @site = Site.new
+            @site.errors.add(:users, 'Site must have at least one user')
             render_wizard
           end
+
 
         when 'style'
           session[:site] = session[:site].merge(site_params.to_h)

@@ -22,7 +22,7 @@ class Site < ApplicationRecord
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
-  accepts_nested_attributes_for :routes
+  accepts_nested_attributes_for :routes, reject_if: proc {|r| r['host'].blank?}
 
   validates_presence_of :name, if: -> { required_for_step? :name }
   validates_presence_of :routes, if: -> { required_for_step? :name }

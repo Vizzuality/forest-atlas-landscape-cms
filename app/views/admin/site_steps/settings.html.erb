@@ -24,17 +24,19 @@
                 <%= settings_form.hidden_field :position, value: '3'%>
               </div>
             <% when 'flag' %>
-              <%= settings_form.fields_for :flag_colors do |colors_form| %>
-                  <% if !colors_form.object.nil? %>
-                      <%= colors_form.color_field :value %>
-                      <%= settings_form.hidden_field :name, value: 'flag'%>
-                      <%= settings_form.hidden_field :position, value: '4'%>
-                      <%#= colors_form.check_box :_destroy, class: 'removable' %>
+              <%= settings_form.label :name, class: 'col-sm-2 form-control-label' , value: 'FLAG COLORS' %>
+              <div class="col-sm-10">
+                <%= settings_form.fields_for :flag_colors do |colors_form| %>
+                      <% if !colors_form.object.nil? %>
+                          <%= colors_form.color_field :value %>
+                          <%= settings_form.hidden_field :name, value: 'flag'%>
+                          <%= settings_form.hidden_field :position, value: '4'%>
+                      <% end %>
                   <% end %>
-              <% end %>
-              <% if setting.flag_colors.count < 5 %>
-                  <div class="js-flag-colors"></div>
-              <% end %>
+                  <% if setting.flag_colors.count < 5 %>
+                      <div class="js-flag-colors"></div>
+                  <% end %>
+                </div>
           <% end %>
     <% end %>
     <%= render partial: 'footer', locals: { f: f} %>
