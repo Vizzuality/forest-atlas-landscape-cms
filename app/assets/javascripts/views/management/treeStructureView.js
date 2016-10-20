@@ -31,11 +31,12 @@
         handle: '.js-handle',
         items: '.js-draggable',
         toleranceElement: '.js-handle',
-        maxLevels: 3, // Max nested level is 3
+        maxLevels: 4, // Max nested level is 4
         isTree: true,
         placeholder: 'page -placeholder',
         forcePlaceholderSize: true,
         errorClass: '-invalid',
+        protectRoot: true, // Prevent the root to be changed
         isAllowed: function (placeholder, placeholderParent) {
           // We allow the element to be dragged in the root element
           // This condition needs to be here because placeholderParent is undefined in this case
@@ -55,14 +56,10 @@
 
           return true;
         },
-        change: function () {
+        relocate: function () {
           this._saveStructure();
           this.render();
         }.bind(this)
-        // relocate: function () {
-        //   this._saveStructure();
-        //   this.render();
-        // }.bind(this)
       });
     },
 
