@@ -125,7 +125,7 @@
     };
   };
 
-  SirTrevor.Blocks.Quote = SirTrevor.Block.extend({
+  App.Block.QuoteBlock =SirTrevor.Blocks.Quote = SirTrevor.Block.extend({
 
     type: 'quote',
     icon_name: 'quote',
@@ -159,9 +159,18 @@
     },
 
     _serializeData: function () {
+      return this.generateJSONData(this._scribe.getContent());
+    },
+
+    /**
+     * Generate the JSON object that will be stored in the server
+     * @param {string} content - block's content
+     * @returns {object} - object to be saved in the server
+     */
+    generateJSONData: function (content) {
       return {
         format: 'html',
-        text: '<blockquote class="quote">' + this._scribe.getContent() + '</blockquote>'
+        text: '<blockquote class="quote">' + content + '</blockquote>'
       };
     },
 

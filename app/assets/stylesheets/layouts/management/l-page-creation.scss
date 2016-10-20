@@ -1,0 +1,59 @@
+.l-page-creation {
+  // We make sure the fixed c-action-bar doesn't cover the content if the
+  // screen has a small height
+  padding-bottom: 75px;
+
+  &.-type {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 360px);
+  }
+
+  &.-wysiwyg {
+    margin-top: 50px;
+
+    .c-fieldset {
+      margin-bottom: 20px;
+    }
+
+    .c-wysiwyg {
+      margin-top: 60px;
+    }
+  }
+
+  &.-link {
+    margin-top: 50px;
+
+    .c-fieldset {
+      margin-bottom: 20px;
+    }
+  }
+
+  &.-analysis-dashboard,
+  &.-indicator-dashboard {
+    margin-top: 50px;
+
+    h2 {
+      font-size: $font-size-big;
+      text-align: center;
+    }
+  }
+
+  &.-created {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 300px);
+    padding-top: 50px;
+    padding-bottom: 0;
+
+    > .wrapper {
+      text-align: center;
+
+      .c-button {
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+}

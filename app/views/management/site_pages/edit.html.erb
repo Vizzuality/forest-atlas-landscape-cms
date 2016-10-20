@@ -1,21 +1,7 @@
-<div class="wrapper">
-  <h1>Edit <%= @site_page.content_type_humanize %></h1>
+<%= render "management/site_pages/forms/#{@partial}", site_page: @site_page, edit: true, form_for_path: [:management, @site_page] unless @partial.nil? %>
 
-  <% case @site_page.content_type
-       when ContentType::OPEN_CONTENT
-         partial = 'open_content'
-       when ContentType::ANALYSIS_DASHBOARD
-         partial = 'analysis_dashboard'
-       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-         partial = 'dynamic_indicator_dashboard'
-       when ContentType::HOMEPAGE
-         partial = 'homepage'
-       when ContentType::LINK
-         partial = 'link'
-       when ContentType::MAP
-         partial = 'map'
-     end
-  %>
-
-  <%= render "management/site_pages/forms/#{partial}", site_page: @site_page, form_for_path: [:management, @site_page] unless partial.nil? %>
+<div class="c-action-bar">
+  <div class="wrapper">
+    <%= yield :action_bar %>
+  </div>
 </div>

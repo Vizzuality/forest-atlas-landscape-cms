@@ -40,6 +40,7 @@
     View: {},
     Model: {},
     Router: {},
-    Helper: {}
+    Helper: {},
+    Block: {}
   };
 }).call(this);

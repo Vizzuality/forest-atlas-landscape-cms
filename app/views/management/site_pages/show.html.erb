@@ -1,30 +1,23 @@
-<div class="wrapper">
-  <%
-    case @site_page.content_type
-      when ContentType::OPEN_CONTENT
-        partial = 'open_content'
-      when ContentType::ANALYSIS_DASHBOARD
-        partial = 'analysis_dashboard'
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        partial = 'dynamic_indicator_dashboard'
-      when ContentType::HOMEPAGE
-        partial = 'homepage'
-      when ContentType::LINK
-        partial = 'link'
-      when ContentType::MAP
-        partial = 'map'
-    end
-  %>
+<% content_for :extended_header do %>
+  <div class="c-extended-header -high">
+    <div class="wrapper">
+      <div class="description">
+        <% if @site_page.content_type == ContentType::LINK %>
+          <h1>Link created!</h1>
+        <% else %>
+          <h1>Page created!</h1>
+        <% end %>
+        <p>What do you want to do now?</p>
+      </div>
+      <div></div>
+    </div>
+  </div>
+<% end %>
 
-
-  <p>
-    <strong>Content type:</strong>
-    <%= @site_page.content_type_humanize %>
-  </p>
-
-
-  <%= render "management/site_pages/shows/#{partial}", site_page: @site_page, form_for_path: [:management, :site, @site_page] %>
-
-  <%= link_to 'Edit', edit_management_site_page_path(@site_page), class: 'btn btn-primary' %>
-  <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site_page.site.slug}, class: 'btn btn-secondary' %>
+<div class="l-page-creation -created">
+  <div class="wrapper">
+    <%= link_to 'See the list of pages', {controller: 'management/site_pages', action: 'index', site_slug: @site_page.site.slug}, class: 'c-button' %>
+    <br/>
+    <%= link_to (@site_page.content_type == ContentType::LINK ? 'Create a new link' : 'Create a new page'), {controller: 'management/site_pages', action: 'new', site_slug: @site_page.site.slug}, class: 'c-button -outline -dark-text' %>
+  </div>
 </div>
