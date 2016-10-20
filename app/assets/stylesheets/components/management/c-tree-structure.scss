@@ -44,12 +44,6 @@
     }
   }
 
-  > ul {
-    // We want the root of the tree to act like a block element but have
-    // a width corresponding to its content
-    display: table;
-  }
-
   .page {
     display: inline-flex;
     position: relative;
@@ -86,15 +80,6 @@
 
       &.-invalid {
         border-color: $color-8;
-      }
-    }
-
-    &.-site-title {
-      text-transform: uppercase;
-      cursor: initial;
-
-      &::after {
-        content: none;
       }
     }
 
@@ -148,6 +133,20 @@
           background: image-url('icons/bin-icon.svg') no-repeat center center;
           text-indent: -10000px; // For accessibility, the text should stay visible
         }
+      }
+    }
+  }
+
+  > ul {
+    // We want the root of the tree to act like a block element but have
+    // a width corresponding to its content
+    display: table;
+
+    > li > .page {
+      cursor: default;
+
+      &::after {
+        content: none;
       }
     }
   }
