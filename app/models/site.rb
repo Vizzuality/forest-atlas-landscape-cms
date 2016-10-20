@@ -23,7 +23,7 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
 
-  validates_presence_of :name, if: -> { required_for_step? :name }
+  validates_presence_of :name, :routes, if: -> { required_for_step? :name }
   validates_presence_of :users, if: -> { required_for_step? :users }
 
   # TODO: Put this back in. Solve the backbone problem and put this back in.

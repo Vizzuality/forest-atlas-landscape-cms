@@ -28,19 +28,19 @@ class Admin::SiteStepsController < AdminController
   def update
       case step
         when 'name'
+          session[:site] = @site.attributes
           @site = Site.new(site_params)
           @site.form_step = 'name'
 
           if @site.valid?
-            session[:site] = @site.attributes
             redirect_to next_wizard_path
           else
             render_wizard
           end
+
         when 'users'
           session[:site] = session[:site].merge(site_params.to_h)
-
-          @site = Site.new(session[:site].to_h)
+          @site = Site.new(session[:site])
           @site.form_step = 'users'
 
           if @site.valid?
@@ -85,7 +85,8 @@ class Admin::SiteStepsController < AdminController
     params.require(:site).
       permit(:name, :site_template_id,
              user_ids: [],
-             site_routes_attributes: [:id, :host, :path],
+             routes_attributes: [:host],
+             #site_routes_attributes: [:id, :host, :path],
              site_settings_attributes: [:id, :position, :value, :name, :image])
   end
 

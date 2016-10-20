@@ -59,8 +59,8 @@
     render: function () {
       this.$el.html(this.template({
         urls: this.collection.toJSON(),
-        inputId: window.gon && gon.urlControllerId,
-        inputName: window.gon && gon.urlControllerName
+        inputId: (window.gon && gon.urlControllerId) ? gon.urlControllerId : '',
+        inputName: (window.gon && gon.urlControllerName) ? gon.urlControllerName : ''
       }));
       this.setElement(this.el);
     }
