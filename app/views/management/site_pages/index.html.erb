@@ -46,4 +46,4 @@
   <%= link_to 'New Page', new_management_site_site_page_path, class: 'btn btn-primary' %>
 </div>
 
-<%= console %>
+<%= console if Rails.env.development? %>
