@@ -38,11 +38,35 @@ class Management::SitesController < ManagementController
   end
 
   def build_pages_tree
-    tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position).hash_tree
-
-
-    tree = [{ name: 'test', id: 0, children: [{ name: 'seg', id: 11 }] }]
-    gon.structure = tree
-
+    tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position, :enabled).hash_tree
+    formatted_tree = format_tree tree.keys.first, tree.values.first
+    gon.structure = formatted_tree
   end
+
+
+  def format_tree(node_k, node_v)
+    head = node_k
+    h = {id: head.id, name: head.name}
+    unless node_v.blank?
+      h.merge!({children: [node_v.each do |k, v|
+        format_tree(k,v)
+      end]
+      })
+    end
+    return h
+  end
+
+
+
+=begin
+  def format_tree(node)
+    head = node.keys.first
+    #{id: head.id, name: head.name, children: node.values.each{|n| format_tree(n) if n!= {}} }
+    {id: head.id, name: head.name,
+     children: node.values.first.each do |n|
+      format_tree(n) if n!= {}
+    end
+    }
+  end
+=end
 end
