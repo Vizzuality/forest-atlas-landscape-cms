@@ -45,19 +45,13 @@ class Management::SitesController < ManagementController
 
 
   def format_tree(node_k, node_v)
-    head = node_k
-    h = {id: head.id, name: head.name}
+    h = {id: node_k.id, name: node_k.name, parent_id: node_k.parent_id, position: node_k.position, enabled: node_k.enabled}
     unless node_v.blank?
       children = []
       node_v.each do |k, v|
         children << format_tree(k,v)
       end
       h.merge!({children: children})
-
-      #h.merge!({children: [] << node_v.each do |k, v|
-      #  format_tree(k,v)
-      #end
-      #})
     end
     return h
   end
