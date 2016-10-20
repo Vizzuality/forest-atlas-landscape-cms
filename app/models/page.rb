@@ -24,7 +24,7 @@ class Page < ApplicationRecord
 
   has_and_belongs_to_many :site_templates
 
-  has_closure_tree order: 'position'
+  has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
   before_validation :regenerate_url, :unless => Proc.new { |page| page.content_type.eql? ContentType::LINK }
 

@@ -1,57 +1,12 @@
 ((function (App) {
   'use strict';
 
-  var Collection = Backbone.Collection.extend({
-    // url: '/management.json',
-    // parse: function (data) {
-    //   return data.map(function (site) {
-    //     var o = {};
-    //     o.name = site.name;
-    //     o.slug = site.slug;
-    //     return o;
-    //   });
-    // }
-  });
-
   App.View.TreeStructureView = Backbone.View.extend({
 
     tagName: 'div',
     className: 'c-tree-structure',
     template: HandlebarsTemplates['management/tree-structure'],
-    collection: new Collection([
-      {
-        name: 'Home',
-        id: 0
-      },
-      {
-        name: 'Sections',
-        id: 1,
-        children: [
-          {
-            name: 'Section 1',
-            id: 11
-          },
-          {
-            name: 'Section 2',
-            id: 12
-          },
-          {
-            name: 'Section 3',
-            id: 13,
-            children: [
-              {
-                name: 'Sub-section 1',
-                id: 131
-              }
-            ]
-          }
-        ]
-      },
-      {
-        name: 'Map',
-        id: 2
-      }
-    ]),
+    collection: new Backbone.Collection(),
 
     events: {
     },

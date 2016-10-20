@@ -34,7 +34,7 @@
       // We build the tree structure of the site
       new App.View.TreeStructureView({
         el: $('.js-tree'),
-        collection: gon.structure
+        collection: new Backbone.Collection(gon.structure)
       });
     }
 
