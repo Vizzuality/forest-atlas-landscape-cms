@@ -7,6 +7,8 @@ class Management::StaticPageController < ManagementController
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
+    @breadcrumbs = ['Dashboard']
+
     respond_to do |format|
       format.html { render layout: "management" }
       format.json { render json: @sites }
