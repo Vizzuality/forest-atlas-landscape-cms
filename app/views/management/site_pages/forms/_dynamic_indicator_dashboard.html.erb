@@ -17,5 +17,5 @@
 </div>
 
 <% content_for :action_bar do %>
-  <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button' %>
+  <%= link_to 'Back', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug}, class: 'c-button' %>
 <% end %>
