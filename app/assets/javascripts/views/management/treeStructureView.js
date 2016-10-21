@@ -109,7 +109,15 @@
       }));
 
       this._initSortableTree();
-    }
+    },
 
+    save: function () {
+      // $.ajax({
+      //   url: '',
+      //   type: 'PUT',
+      //   contentType: 'application/json',
+      //   data: JSON.stringify(structure)
+      // });
+    }
   });
 })(this.App));
