@@ -12,7 +12,7 @@
 
 class Route < ApplicationRecord
   belongs_to :site
-  has_many :pages, through: :site
+  has_many :site_pages, through: :site
 
   after_save :update_routes
 

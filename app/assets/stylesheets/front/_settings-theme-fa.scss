@@ -1,0 +1,69 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 300;
+  src: font-url('fonts/FiraSansOT-Light.otf');
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 400;
+  src: font-url('fonts/FiraSansOT-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 700;
+  src: font-url('fonts/FiraSansOT-Medium.otf');
+}
+
+// Font families
+$font-family-1: 'Fira Sans', sans-serif;
+
+// Font sizes
+$font-size-small:    12px;
+$font-size-normal:   14px;
+$font-size-s-normal: 15px;
+$font-size-x-normal: 19px;
+$font-size-medium:   21px;
+$font-size-big:      35px;
+$font-size-x-big:    40px;
+$font-size-huge:     47px;
+
+// Font weights
+$font-weight-light:  300;
+$font-weight-normal: 400;
+$font-weight-bold:   700;
+
+// Colors
+$color-1:  #97bd3d; // Theme main color
+$color-2:  #f7f7f7;
+$color-3:  #fff;
+$color-4:  #555;
+$color-5:  #000;
+$color-6:  #333;
+$color-7:  #3b3b3b;
+$color-8:  #f5f4f4;
+$color-9:  #eceaea;
+
+// General layout
+$body-max-width:         1280px;
+$content-max-width:       750px;
+$media-max-width:        1060px;
+$wrapper-padding:          30px;
+$wrapper-tablet-padding:   30px;
+$wrapper-mobile-padding:   15px;
+
+// Breakpoints
+$breakpoint-mobile:  425px;
+$breakpoint-tablet:  768px;
+$breakpoint-laptop: 1024px;
+
+// Media queries
+$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
+$mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
+$mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
+
+$mq-body-width: 'screen and (min-width: #{$body-max-width})';
+
+// Theme
+$theme: 2;

@@ -19,12 +19,14 @@
 
 //= require_self
 
-// = require_tree ./routers
+// = require_tree ./routers/admin
+// = require_tree ./templates
+// = require_tree ./views/shared
 // = require_tree ./views/admin
-// = require dispatcher
+// = require dispatchers/adminDispatcher
+// = require_tree ./helpers
 
-(function() {
-
+(function () {
   'use strict';
 
   this.App = {
@@ -34,5 +36,4 @@
     Router: {},
     Helper: {}
   };
-
 }).call(this);

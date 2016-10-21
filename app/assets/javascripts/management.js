@@ -10,22 +10,29 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require underscore
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require ckeditor/init
-//= require underscore
 //= require backbone
+//= require turbolinks
+//= require d3
+//= require vega
+//= require leaflet
 //= require handlebars
+//= require jquery-ui
+//= require jquery-nested-sortable
+//= require sir-trevor
 
 //= require_self
 
-// = require_tree ./routers
+// = require_tree ./routers/management
+// = require_tree ./templates
+// = require_tree ./blocks
+// = require_tree ./views/shared
 // = require_tree ./views/management
-// = require dispatcher
+// = require dispatchers/managementDispatcher
 
-(function() {
-
+(function () {
   'use strict';
 
   this.App = {
@@ -33,7 +40,7 @@
     View: {},
     Model: {},
     Router: {},
-    Helper: {}
+    Helper: {},
+    Block: {}
   };
-
 }).call(this);

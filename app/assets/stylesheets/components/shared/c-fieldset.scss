@@ -1,0 +1,45 @@
+.c-fieldset {
+  position: relative;
+  padding-top: 15px;
+
+  label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity ease-out .3s;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid rgba($color-4, .3);
+    outline: none;
+    color: $color-4;
+    font-size: $font-size-medium;
+    text-align: center;
+    box-shadow: 0 2px 3px 0 rgba($color-4, .1);
+
+    // Here there's a trick:
+    // We want the label to only appear when the input isn't empty. For that, we
+    // use the pseudo-selector ":placeholder-shown". Nevertheless, the support
+    // isn't great, so the trick consists in showing the label whenever the
+    // browser doesn't understand it.
+    & + label { opacity: 1; }
+    &:placeholder-shown + label { opacity: 0; }
+
+    &:not(:placeholder-shown) + label {
+      opacity: 1;
+    }
+
+    &:focus {
+      border-color: $color-1;
+      box-shadow: 0 2px 3px 0 rgba($color-1, .1);
+    }
+  }
+
+}

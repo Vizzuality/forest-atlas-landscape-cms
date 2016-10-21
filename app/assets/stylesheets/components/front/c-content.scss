@@ -1,0 +1,103 @@
+.c-content {
+  margin: 50px 0 60px;
+
+  @media #{$mq-mobile} {
+    margin: 60px 0 90px;
+  }
+
+  .content-title,
+  .paragraph,
+  .quote {
+    max-width: $content-max-width;
+    margin: 0 auto;
+  }
+
+
+  .content-title {
+    margin: 0 auto 25px;
+    font-size: $font-size-big;
+    letter-spacing: .3px;
+
+    @media #{$mq-mobile} {
+      font-size: $font-size-x-big;
+    }
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-huge;
+    }
+
+    @if $theme == 2 {
+      color: $color-4;
+      font-weight: $font-weight-light;
+    } @else {
+      color: $color-1;
+      font-family: $font-family-2;
+      font-weight: $font-weight-bold;
+      line-height: 1.25;
+    }
+  }
+
+  .paragraph {
+    letter-spacing: .1px;
+
+    &.-intro {
+      font-size: $font-size-x-normal;
+
+      @if $theme == 2 {
+        font-weight: $font-weight-light;
+      }
+    }
+
+    & + .paragraph {
+      margin: 20px auto 0;
+    }
+  }
+
+  .quote {
+    margin: 30px auto;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-light;
+
+    &::before {
+      content: '“';
+    }
+
+    &::after {
+      content: '”';
+    }
+
+    @media #{$mq-mobile} {
+      margin: 60px auto;
+      font-size: $font-size-big;
+    }
+
+    @if $theme == 2 {
+      line-height: 1.1;
+      color: $color-4;
+      letter-spacing: .2px;
+    } @else {
+      color: $color-1;
+      font-family: $font-family-2;
+      font-style: italic;
+      line-height: 1.5;
+
+      @media #{$mq-mobile} {
+        line-height: 1.25;
+      }
+    }
+  }
+
+  .image {
+    display: block;
+    max-width: 100%;
+    margin: 35px 0 50px;
+
+    @media #{$mq-mobile} {
+      margin: 65px auto 80px;
+    }
+
+    @media #{$mq-laptop} {
+      max-width: $media-max-width;
+    }
+  }
+}

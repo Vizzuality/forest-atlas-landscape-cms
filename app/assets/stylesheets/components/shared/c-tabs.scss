@@ -1,0 +1,31 @@
+.c-tabs {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  margin: 0;
+  padding: 0 $wrapper-mobile-padding;
+  background-color: $color-9;
+  color: rgba($color-3, .5);
+  list-style: none;
+
+  @media #{$mq-mobile} {
+    padding: 0 $wrapper-tablet-padding;
+  }
+
+  @media #{$mq-tablet} {
+    padding: 0 $wrapper-padding;
+  }
+
+  > .tab {
+    width: 200px;
+    line-height: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &[aria-selected='true'] {
+      background-color: $color-3;
+      color: $color-4;
+    }
+  }
+}

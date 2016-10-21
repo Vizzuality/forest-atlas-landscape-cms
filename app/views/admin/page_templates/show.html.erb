@@ -1,0 +1,23 @@
+<p>
+  <strong>Name:</strong>
+  <%= @page_template.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @page_template.description %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @page_template.content['body'].html_safe unless @page_template.content.nil? %>
+</p>
+
+<p>
+  <strong>Page site:</strong>
+  <%= @page_template.site.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_admin_page_template_path(@page_template), class: 'btn btn-primary' %>
+<%= link_to 'Back', admin_page_templates_path, class: 'btn btn-secondary' %>

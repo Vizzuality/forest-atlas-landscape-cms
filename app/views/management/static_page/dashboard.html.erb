@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <h1>Select a site</h1>
+
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @sites.each do |site| %>
+        <tr>
+          <td><%= link_to site.name, controller: 'management/site_pages', action: 'index', site_slug: site.slug %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= console if Rails.env.development? %>

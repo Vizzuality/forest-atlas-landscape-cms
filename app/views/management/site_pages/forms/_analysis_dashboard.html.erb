@@ -1,0 +1,21 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header -high">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Analysis Dashboard</h1>
+        <p>Please come back later to create one.</p>
+      </div>
+      <div></div>
+    </div>
+  </div>
+<% end %>
+
+<div class="l-page-creation -analysis-dashboard">
+  <div class="wrapper">
+    <h2>Coming soon...</h2>
+  </div>
+</div>
+
+<% content_for :action_bar do %>
+  <%= link_to 'Back', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug}, class: 'c-button' %>
+<% end %>

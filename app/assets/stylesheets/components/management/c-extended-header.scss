@@ -1,0 +1,46 @@
+.c-extended-header {
+  display: flex;
+  align-items: stretch;
+  min-height: 165px;
+  background-color: $color-6;
+  color: rgba($color-3, .5);
+
+  &.-high {
+    min-height: 250px;
+  }
+
+  h1 {
+    color: $color-3;
+    font-size: $font-size-huge;
+    font-weight: $font-weight-light;
+  }
+
+  > .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .description {
+    max-width: 400px;
+
+    > h1 {
+      margin: 0 0 10px;
+    }
+
+    > p {
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+
+  .action-buttons {
+    > li {
+      margin-right: 10px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
+}

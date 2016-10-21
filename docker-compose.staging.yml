@@ -1,0 +1,28 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - "/home/ubuntu/database-manager:/var/lib/postgresql"
+  web:
+    build: .
+    ports:
+      - "4000:4000"
+    env_file: .env
+    environment:
+      - RACK_ENV=staging
+      - RAILS_ENV=staging
+      - PORT=4000
+      - POSTGRES_PORT_5432_TCP_ADDR=db
+      - POSTGRES_PORT_5432_TCP_PORT=5432
+      - POSTGRES_USER=postgres
+    restart: always
+    container_name: forest-atlas-landscape-cms
+    volumes:
+      - "/home/ubuntu/prep-manager/uploads:/usr/src/forest-atlas-landscape-cms/public/system"
+    depends_on:
+      - db
+    links:
+      - db

@@ -1,0 +1,39 @@
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
+<h1>Site Settings</h1>
+<%= include_gon %>
+<%= form_for [:admin, @site], html: { multipart: true } do |f| %>
+    <%= f.hidden_field :step, value: '2' %>
+
+    <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
+        <% setting = settings_form.object %>
+            <div>
+              <%= setting.name.capitalize %>
+              <% case setting.name
+                   when 'background' %>
+                  <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '200', width: '500'%>
+                  <%= settings_form.file_field :image, class: 'image-uploader' %>
+              <% when 'logo' %>
+                  <%= image_tag setting.image.url(:thumb), class: 'thumbnail', height: '100', width: '100' %>
+                  <%= settings_form.file_field :image, class: 'image-uploader' %>
+              <% when 'flag' %>
+                <%= settings_form.fields_for :flag_colors do |colors_form| %>
+                    <% if !colors_form.object.nil? %>
+                      <%= colors_form.color_field :value %>
+                      <%= colors_form.check_box :_destroy, class: 'removable' %>
+                    <% end %>
+                <% end %>
+                <% if setting.flag_colors.count < 5 %>
+                      <div class="js-flag-colors"></div>
+                <% end %>
+              <% when 'color' %>
+                  <%= settings_form.color_field :value %>
+              <% when 'theme' %>
+                  <%= settings_form.select :value, [['Theme 1', '1'], ['Theme 2', '2']] %>
+              <% end %>
+            </div>
+        <% end %>
+        <%= render partial: 'admin/sites/footer', locals: { f: f , submit_text: 'SET SETTINGS', home: false} %>
+    <%# end %>
+<% end %>
+
+<%= console if Rails.env.development? %>

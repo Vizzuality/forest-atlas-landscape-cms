@@ -7,10 +7,11 @@
 #  name             :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  slug             :text
 #
 
 class SiteSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :name, :slug
 
   belongs_to :site_template, serializer: SiteTemplateSerializer
   has_many :users, through: :user_site_associations

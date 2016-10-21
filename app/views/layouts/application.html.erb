@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ForestAtlasLandscapeCms</title>
+  <title><%= ForestAtlasLandscapeCms::Application.config.site_name %></title>
   <%= csrf_meta_tags %>
-
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag 'front/application-theme-fa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Forest Atlas' %>
+  <%= stylesheet_link_tag 'front/application-theme-lsa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Landscape Application' %>
+  <%= yield :head %>
 </head>
 
 <body>
+  <%= render 'front/menu' %>
+  <%= render 'front/icons' %>
   <%= yield %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </body>

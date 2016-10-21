@@ -1,0 +1,102 @@
+.c-wysiwyg {
+  padding: 20px 0;
+  border: 1px solid rgba($color-4, .3);
+  box-shadow: 0 2px 3px 0 rgba($color-4, .1);
+
+  p {
+    margin: 0;
+    font-size: $font-size-s-normal;
+
+    &.-intro {
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-light;
+
+      &.-empty {
+        position: relative;
+        min-height: $font-size-x-normal;
+
+        &::after {
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: rgba($color-4, .3);
+          content: 'Introduction';
+        }
+      }
+    }
+  }
+
+  .content-title {
+    color: $color-4;
+    font-size: $font-size-big;
+    font-weight: $font-weight-bold;
+
+    &.-empty {
+      position: relative;
+      min-height: $font-size-big;
+
+      &::after {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: rgba($color-4, .3);
+        content: 'Title';
+      }
+    }
+  }
+
+  .quote {
+    font-size: $font-size-x-normal;
+    font-style: italic;
+
+    &::before {
+      content: '“';
+    }
+
+    &::after {
+      content: '”';
+    }
+
+    &.-empty {
+      position: relative;
+      min-height: $font-size-x-normal;
+
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: rgba($color-4, .3);
+        content: '“Citation”';
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+  .st-block {
+    &[data-type='title'] {
+      margin: 40px 0 15px;
+    }
+
+    &[data-type='introduction'] {
+      margin: 15px 0;
+    }
+
+    &[data-type='quote'] {
+      margin: 15px 0;
+
+      > .st-block__inner {
+        margin: 0 110px;
+      }
+    }
+
+    &[data-type='text'] {
+      margin: 10px 0;
+    }
+  }
+
+}

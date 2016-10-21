@@ -11,17 +11,20 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5.x'
 gem 'jbuilder', '~> 2.0'
 
-gem 'dotenv'
+gem 'dotenv-rails', '~> 2.1'
 
 gem 'devise'
-gem 'ancestry'
+gem 'closure_tree'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'ckeditor'
-gem 'paperclip'
+gem 'paperclip', "~> 5.0.0"
 gem 'will_paginate', '~> 3.1.0'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'handlebars_assets'
 gem 'enumerate_it'
+gem 'gon'
+
+gem 'faraday', '~> 0.9.2'
 
 # Assets Pipeline
 gem 'autoprefixer-rails'
@@ -31,6 +34,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-vega', '~> 2.5.2'
   gem 'rails-assets-leaflet', '0.7.7'
   gem 'rails-assets-backbone'
+  gem 'rails-assets-jquery-ui'
 end
 
 # Use ActiveModel has_secure_password

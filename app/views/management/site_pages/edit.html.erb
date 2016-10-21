@@ -1,0 +1,7 @@
+<%= render "management/site_pages/forms/#{@partial}", site_page: @site_page, edit: true, form_for_path: [:management, @site_page] unless @partial.nil? %>
+
+<div class="c-action-bar">
+  <div class="wrapper">
+    <%= yield :action_bar %>
+  </div>
+</div>

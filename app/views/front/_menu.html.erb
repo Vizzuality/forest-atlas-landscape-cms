@@ -1,0 +1,105 @@
+<header class="c-header js-header">
+  <div class="mobile-drawer js-mobile-drawer">
+    <div class="wrapper">
+      <ul>
+        <% @menu_root.children.each do |child_page| -%>
+            <li><%= page_link child_page %></li>
+            <% unless child_page.children.nil? or child_page.children.empty? %>
+              <li>
+                <ul>
+                  <% child_page.children.each do |grandchild_page| -%>
+                    <li>
+                      <%= page_link grandchild_page %>
+                    </li>
+                    <% unless grandchild_page.children.nil? or grandchild_page.children.empty? %>
+                      <li>
+                        <ul>
+                          <% grandchild_page.children.each do |sub_section| -%>
+                              <li><%= page_link sub_section %></li>
+                          <% end %>
+                        </ul>
+                      </li>
+                    <% end %>
+                  <% end -%>
+                </ul>
+              </li>
+            <% end -%>
+        <% end -%>
+      </ul>
+      <ul>
+        <li><a href="#">LANG</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mobile-menu wrapper">
+    <a class="logo-container" href="/">
+      <div class="logo"></div>
+    </a>
+    <div class="hamburger-menu js-mobile-menu">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div class="desktop-menu wrapper">
+    <div class="logo-container">
+      <a class="logo" href="/"></a>
+    </div>
+    <ul>
+      <% @menu_root.children.each do |child_page| -%>
+          <li class="<%= 'dropdown-item' if !child_page.children.nil? and !child_page.children.empty? %>">
+            <%= page_link child_page %>
+            <% if !child_page.children.nil? and !child_page.children.empty? %>
+                <ul>
+                  <li>
+                    <%= page_link child_page %>
+                  </li>
+                  <% child_page.children.each do |grandchild_page| -%>
+                      <li>
+                        <%= page_link grandchild_page %>
+                      </li>
+                  <% end -%>
+                </ul>
+            <% end -%>
+          </li>
+      <% end -%>
+    </ul>
+    <ul>
+      <li><a href="#">LANG</a></li>
+    </ul>
+  </div>
+
+  <div class="flag-border">
+    <!--  Add here a list of div with background color to display the flag -->
+    <div style="background-color: #002d84;"></div>
+    <div style="background-color: white;"></div>
+    <div style="background-color: #20981e;"></div>
+    <div style="background-color: #ffcf00;"></div>
+    <div style="background-color: #d4062f;"></div>
+  </div>
+
+  <% if @site_page.depth > 0 %>
+    <div class="sub-menu">
+      <div class="wrapper">
+        <div class="content">
+          <ul class="breadcrumbs">
+            <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
+                <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
+            <% end %>
+          </ul>
+          <ul class="sections">
+            <% if @site_page.depth >= 2 %>
+                <ul>
+                  <% @site_page.children.each do |child_page| -%>
+                      <li><%= page_link child_page %></li>
+                  <% end %>
+                </ul>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</header>

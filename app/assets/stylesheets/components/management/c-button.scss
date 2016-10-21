@@ -1,0 +1,23 @@
+.c-button {
+  padding: 10px 25px;
+  border: 1px solid $color-10;
+  border-radius: 20px;
+  background: $color-10;
+  color: $color-3;
+  font-size: $font-size-normal; // Mandatory for button.c-button
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+
+  &.-outline {
+    background: transparent;
+  }
+
+  &.-dark-text {
+    color: $color-4;
+  }
+
+  &.-disabled {
+    cursor: default;
+    opacity: .3;
+  }
+}

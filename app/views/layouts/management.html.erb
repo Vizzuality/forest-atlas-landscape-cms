@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title><%= ForestAtlasLandscapeCms::Application.config.site_name %> - Content Management</title>
   <%= csrf_meta_tags %>
-
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag 'management/application', media: 'all', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
-<div class="container-fluid">
   <%= render 'management/header' %>
+  <%= yield :extended_header %>
   <%= render 'shared/messages' %>
   <%= yield %>
-</div>
+  <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
 </body>
 </html>

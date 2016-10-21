@@ -1,0 +1,5 @@
+<ul class="c-tabs">
+  {{#each tabs}}
+    <li class="tab" role="tab" {{#if id}}aria-controls="{{id}}"{{/if}}>{{name}}</li>
+  {{/each}}
+</ul>
