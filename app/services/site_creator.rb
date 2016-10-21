@@ -21,6 +21,7 @@ class SiteCreator
           uri: page.uri,
           site: site,
           content_type: page.content_type,
+          enabled: true,
           parent: get_parent_content(page)
         }
       )
