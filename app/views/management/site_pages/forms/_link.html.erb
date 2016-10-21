@@ -43,5 +43,5 @@
 
 <% content_for :action_bar do %>
   <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-  <button type="submit" class="c-button js-submit"><%= (!defined? edit || edit == false) ? 'Create' : 'Update' %></button>
+  <button type="submit" class="c-button js-submit"><%= (!defined?(edit) || edit == false) ? 'Create' : 'Update' %></button>
 <% end %>
