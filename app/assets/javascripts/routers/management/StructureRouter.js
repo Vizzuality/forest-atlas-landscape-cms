@@ -32,11 +32,15 @@
       });
 
       // We build the tree structure of the site
-      new App.View.TreeStructureView({
+      this.treeStructureView = new App.View.TreeStructureView({
         el: $('.js-tree'),
         collection: new Backbone.Collection(gon.structure)
       });
-    }
 
+      // On pressing submit
+      $('.js-submit').on('click', function () {
+        this.treeStructureView.save();
+      }.bind(this));
+    }
   });
 })(this.App));
