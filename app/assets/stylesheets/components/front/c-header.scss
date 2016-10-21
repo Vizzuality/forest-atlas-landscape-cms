@@ -216,6 +216,10 @@
         line-height: 50px;
         text-transform: uppercase;
 
+        &.-active {
+          background-color: grey;
+        }
+
         // If the menu has just one element (such as the lang selector), we don't want the border
         &:last-of-type {
           &:not(:first-of-type) {

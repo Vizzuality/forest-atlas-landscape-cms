@@ -49,7 +49,7 @@
     </div>
     <ul>
       <% @menu_root.children.each do |child_page| -%>
-          <li class="<%= 'dropdown-item' if !child_page.children.nil? and !child_page.children.empty? %>">
+          <li class="<%= 'dropdown-item' if !child_page.children.nil? and !child_page.children.empty? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
             <%= page_link child_page %>
             <% if !child_page.children.nil? and !child_page.children.empty? %>
                 <ul>
