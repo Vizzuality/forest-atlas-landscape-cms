@@ -72,14 +72,7 @@
             site.active = site.slug === this.options.slug;
             return site;
           }, this),
-        slug: this.options.slug,
-        // Basically, we want the width of the select input to be the width of its content
-        // Because it's not possible with CSS, we base the width of the input on the length of
-        // the content and then use it with the "ch" unit (which is roughly the width of the
-        // character "0")
-        // There's an offset of 2ch to compensate the left padding for the arrow and as an error
-        // margin
-        width: (this.options.slug.length + 2) + 'ch'
+        slug: this.options.slug
       }));
     }
 
