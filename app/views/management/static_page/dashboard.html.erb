@@ -1,21 +1,25 @@
-<div class="wrapper">
-  <h1>Select a site</h1>
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Dashboard</h1>
+        <p>Select a site to start writing a new page or make some changes.</p>
+      </div>
+    </div>
+  </div>
+<% end %>
 
-  <table class="table table-bordered">
-    <thead>
-    <tr>
-      <th>Name</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% @sites.each do |site| %>
-        <tr>
-          <td><%= link_to site.name, controller: 'management/site_pages', action: 'index', site_slug: site.slug %></td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
+<div class="l-dashboard">
+  <div class="wrapper">
+    <div class="c-card-list">
+      <% @sites.each do |site| %>
+        <div class="card -footer-at-bottom">
+          <h2 class="title"><%= site.name %></h2>
+          <div class="footer">
+            <%= link_to 'Go to site', { controller: 'management/site_pages', action: 'index', site_slug: site.slug }, class: 'c-button' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-<%= console if Rails.env.development? %>

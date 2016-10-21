@@ -107,6 +107,14 @@ class Management::SitePagesController < ManagementController
     @site_page = @site.site_pages.build(page_params)
     @site_page.enabled = false
 
+    # TODO: While it's not possible to select where to create the page..
+    # ..it will be created under the homepage in the last position
+
+    if @site_page.parent_id.blank?
+      @site_page.parent_id = @site.site_pages.where(url: '/').first.id
+      @site_page.position = @site.site_pages.where(parent_id: @site_page.parent).length
+    end
+
     respond_to do |format|
       if @site_page.save
         format.html { redirect_to management_site_page_path(@site_page) }
