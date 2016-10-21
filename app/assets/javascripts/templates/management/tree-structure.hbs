@@ -1,7 +1,8 @@
 {{#*inline "item"}}
   <ul {{#if firstCall}}class="js-tree-root"{{/if}}>
     {{#each pages}}
-      <li class="js-draggable" id="page-{{id}}" data-name="{{name}}">
+      <li class="js-draggable" id="page-{{id}}" data-name="{{name}}" data-parent="{{parent_id}}"
+          data-position="{{position}}" data-enabled="{{enabled}}" data-type="{{type}}">
         <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">
           <span>{{name}}</span>
           <ul class="action-buttons">
