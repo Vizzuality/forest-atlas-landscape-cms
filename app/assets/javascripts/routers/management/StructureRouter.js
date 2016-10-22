@@ -38,8 +38,9 @@
       });
 
       // On pressing submit
-      $('.js-submit').on('click', function () {
+      $('.js-submit').on('click', function (event) {
         this.treeStructureView.save();
+        event.preventDefault();
       }.bind(this));
     }
   });
