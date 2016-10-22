@@ -71,11 +71,13 @@
      * @argument {object} branch
      * @returns {object} normalized branch
      */
-    _normalizeData: function (branch) {
+    _normalizeData: function (branch, parentId, position) {
       branch.id = +branch.id; // Quick way to convert to int
+      branch.parent = +parentId;
+      branch.position = position;
       if (branch.children) {
-        branch.children.forEach(function (subBranch) {
-          this._normalizeData(subBranch);
+        branch.children.forEach(function (subBranch, index) {
+          this._normalizeData(subBranch, branch.id, index);
         }, this);
       }
       return branch;
@@ -88,19 +90,11 @@
       // The ids are returned as strings so we need to convert them to ints
       var structure = this.$el.find('.js-tree-root').nestedSortable('toHierarchy', { startDepthCount: 0 })
         .map(function (item) {
-          return this._normalizeData(item);
+          return this._normalizeData(item, null, 0);
         }, this);
 
       // We then replace the whole collection with the new structure
       this.collection.reset(structure);
-
-      // We finally save the collection
-      // $.ajax({
-      //   url: '',
-      //   type: 'PUT',
-      //   contentType: 'application/json',
-      //   data: JSON.stringify(structure)
-      // });
     },
 
     render: function () {
@@ -112,12 +106,12 @@
     },
 
     save: function () {
-      // $.ajax({
-      //   url: '',
-      //   type: 'PUT',
-      //   contentType: 'application/json',
-      //   data: JSON.stringify(structure)
-      // });
+      $.ajax({
+        url: '',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(this)
+      });
     }
   });
 })(this.App));
