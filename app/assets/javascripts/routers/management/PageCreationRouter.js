@@ -5,6 +5,7 @@
   var ANALYSIS_DASHBOARD = 2;
   var DYNAMIC_INDICATOR = 3;
   var LINK = 6;
+  var STATIC_CONTENT = 7;
 
   App.Router.ManagementPageCreation = Backbone.Router.extend({
 

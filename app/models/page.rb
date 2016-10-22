@@ -10,13 +10,13 @@
 #  url          :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  content      :text
 #  content_type :integer
 #  type         :text
-#  content_js   :string
 #  enabled      :boolean
 #  parent_id    :integer
 #  position     :integer
+#  content      :json
+#  show_on_menu :boolean          default(TRUE)
 #
 
 class Page < ApplicationRecord
