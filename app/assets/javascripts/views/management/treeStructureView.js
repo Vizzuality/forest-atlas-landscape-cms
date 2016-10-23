@@ -112,6 +112,34 @@
         contentType: 'application/json',
         data: JSON.stringify(this)
       });
+    },
+
+    toggleEnable: function (node) {
+      var enabledStatus = $(node).attr('data-enabled'),
+        id = $(node).attr('id').match(/\d+/)[0];
+      var structure = this.$el.find('.js-tree-root').nestedSortable('toHierarchy', { startDepthCount: 0 })
+        .map(function (item) {
+          return this._toggleEnabledLeaves(item, !enabledStatus, id);
+        }, this);
+
+      this.collection.reset(structure);
+      this.render();
+    },
+
+    _toggleEnabledLeaves: function (node, value, id) {
+      if (node.id === id) {
+        node.enabled = value;
+      }
+      if (node.children) {
+        node.children.forEach(function (subBranch) {
+          if (node.id === id) {
+            this._toggleEnabledLeaves(subBranch, value, subBranch.id);
+          } else {
+            this._toggleEnabledLeaves(subBranch, value, id);
+          }
+        }, this);
+      }
+      return node;
     }
   });
 })(this.App));
