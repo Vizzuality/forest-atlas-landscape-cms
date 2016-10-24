@@ -16,9 +16,8 @@
 
 <div class="l-page-creation -created">
   <div class="wrapper">
-    <%= link_to 'Edit the page', {controller: 'management/site_pages', action: 'edit', site_slug: @site_page.site.slug}, class: 'c-button' %>
-    <%= link_to 'See the list of pages', {controller: 'management/site_pages', action: 'index', site_slug: @site_page.site.slug}, class: 'c-button' %>
-    <br/>
+    <%= link_to (@site_page.content_type == ContentType::LINK ? 'Edit the link' : 'Edit the page'), {controller: 'management/site_pages', action: 'edit', site_slug: @site_page.site.slug}, class: 'c-button' %>
+    <%= link_to 'See the list of pages', {controller: 'management/site_pages', action: 'index', site_slug: @site_page.site.slug}, class: 'c-button -outline -dark-text' %>
     <%= link_to (@site_page.content_type == ContentType::LINK ? 'Create a new link' : 'Create a new page'), {controller: 'management/site_pages', action: 'new', site_slug: @site_page.site.slug}, class: 'c-button -outline -dark-text' %>
   </div>
 </div>

@@ -21,6 +21,24 @@ class Management::SitePagesController < ManagementController
   # GET /management/pages/1
   # GET /management/pages/1.json
   def show
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @breadcrumbs = ['Page creation', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @breadcrumbs = ['Page creation', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @breadcrumbs = ['Page creation', 'Homepage']
+      when ContentType::LINK
+        @breadcrumbs = ['Page creation', 'External Link']
+      when ContentType::MAP
+        @breadcrumbs = ['Page creation', 'Map']
+      when ContentType::STATIC_CONTENT
+        @breadcrumbs = ['Page creation', 'Static Content']
+      else
+        @breadcrumbs = ['Page creation']
+    end
   end
 
   # GET /management/pages/new
