@@ -69,8 +69,14 @@ a {
 }
 
 ::selection {
-  background:rgba($color-1, .2);
+  background: rgba($color-1, .2);
 }
+
 ::-moz-selection {
   background: rgba($color-1, .2);
+}
+
+// We hide the map header
+.app-header {
+  display: none !important;
 }
