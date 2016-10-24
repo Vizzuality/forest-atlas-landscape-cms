@@ -9,17 +9,15 @@
     collection: new Backbone.Collection(),
 
     events: {
+      'click .js-enable': '_onClickEnable',
+      'click .js-disable': '_onClickDisable'
     },
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
 
       this.render();
-      // this.collection.fetch()
-      //   .done(this.render.bind(this))
-      //   .fail(function () {
-      //     throw new Error('Unable to load the lists of pages for the site structure tree.');
-      //   });
+      this.setElement(this.el);
     },
 
     /**
@@ -59,6 +57,7 @@
         relocate: function () {
           this._saveStructure();
           this.render();
+          this.setElement(this.el);
         }.bind(this)
       });
     },
@@ -114,32 +113,73 @@
       });
     },
 
-    toggleEnable: function (node) {
-      var enabledStatus = $(node).attr('data-enabled'),
-        id = $(node).attr('id').match(/\d+/)[0];
-      var structure = this.$el.find('.js-tree-root').nestedSortable('toHierarchy', { startDepthCount: 0 })
-        .map(function (item) {
-          return this._toggleEnabledLeaves(item, !enabledStatus, id);
-        }, this);
-
-      this.collection.reset(structure);
-      this.render();
+    /**
+     * Event listener for when the enable button is clicked on a node
+     * @param {object} e - event object
+     */
+    _onClickEnable: function (e) {
+      e.preventDefault();
+      var node = $(e.target).closest('.js-draggable')[0];
+      this.toggleEnable(node, true);
     },
 
-    _toggleEnabledLeaves: function (node, value, id) {
-      if (node.id === id) {
-        node.enabled = value;
+    /**
+     * Event listener for when the disable button is clicked on a node
+     * @param {object} e - event object
+     */
+    _onClickDisable: function (e) {
+      e.preventDefault();
+      var node = $(e.target).closest('.js-draggable')[0];
+      this.toggleEnable(node, false);
+    },
+
+    /**
+     * Recursively, toggle the enabled attribute of the subtree whose root is designated
+     * If nodeId is null, toggle the attribute for all the nodes / subtree
+     * @param {object}   currentNode - the current node / subtree
+     * @param {number}   nodeId - id of the target node, can be null
+     * @enable {boolean} enable - whether to enable or disable the subtree
+     */
+    _toggleEnableRecursive: function (currentNode, nodeId, enable) {
+      var newNode = currentNode;
+      var isTargetedNode = !nodeId || currentNode.id === nodeId;
+
+      // TODO: shouldn't be able to enable a node if it's parent is disabled
+
+      if (isTargetedNode) {
+        newNode.enabled = enable;
       }
-      if (node.children) {
-        node.children.forEach(function (subBranch) {
-          if (node.id === id) {
-            this._toggleEnabledLeaves(subBranch, value, subBranch.id);
-          } else {
-            this._toggleEnabledLeaves(subBranch, value, id);
-          }
+
+      if (newNode.children) {
+        newNode.children = newNode.children.map(function (childNode) {
+          return this._toggleEnableRecursive(childNode, isTargetedNode ? null : nodeId, enable);
         }, this);
       }
-      return node;
+
+      return newNode;
+    },
+
+    /**
+     * Toggle the visibility of a node
+     * @param {object}  node - DOM element
+     * @param {boolean} enable - whether to enable or disable
+     */
+    toggleEnable: function (node, enable) {
+      var nodeId = node.id.match(/^page-(\d+)/);
+
+      if (!nodeId || nodeId.length < 2) {
+        // TODO: the user clicked on the root
+        return;
+      }
+
+      nodeId = +nodeId[1];
+
+      var rootNode = this.collection.toJSON()[0];
+      var newTree = this._toggleEnableRecursive(rootNode, nodeId, enable);
+
+      this.collection.reset(newTree);
+      this.render();
+      this.setElement(this.el);
     }
   });
 })(this.App));

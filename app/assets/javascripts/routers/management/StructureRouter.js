@@ -42,11 +42,6 @@
         this.treeStructureView.save();
         event.preventDefault();
       }.bind(this));
-
-      $('.view-button').on('click', function (event) {
-        this.treeStructureView.toggleEnable(event.target.closest('.js-draggable'));
-        event.preventDefault();
-      }.bind(this));
     }
   });
 })(this.App));
