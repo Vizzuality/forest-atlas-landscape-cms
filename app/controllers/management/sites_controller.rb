@@ -1,5 +1,5 @@
 class Management::SitesController < ManagementController
-  before_action :set_site, only: [:structure]
+  before_action :set_site, only: [:structure, :update_structure]
   before_action :get_pages, only: [:structure, :update_structure]
 
   # GET /management/sites
@@ -19,7 +19,7 @@ class Management::SitesController < ManagementController
   # GET /management/:site_slug/structure
   # GET /management/:site_slug/structure.json
   def structure
-    gon.updateStructurePath = management_site_update_structure_path(@site)
+    gon.updateStructurePath = management_site_update_structure_path(@site.slug)
 
     respond_to do |format|
       format.html {
@@ -30,16 +30,27 @@ class Management::SitesController < ManagementController
   end
 
   def update_structure
-    puts params.inspect
+    new_tree = params['collection'].first
+    update_tree_nodes(new_tree, nil, 0)
 
-    #@pages.each do |page|
-    #  puts params['collection'].first
-    #end
-
-    redirect_to management_site_site_pages_path(@site)
+    redirect_to management_site_site_pages_path(@site.slug)
   end
 
   private
+  # Update the tree nodes to their current position
+  def update_tree_nodes(node, parent_id, position)
+    page = SitePage.find node['id']
+    page.parent_id = parent_id
+    page.position = position
+    page.enabled = node['enabled']
+    page.save
+    unless node['children'].blank?
+      node['children'].each_with_index do |leaf, index|
+        update_tree_nodes leaf, node['id'], index
+      end
+    end
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_site
     @site = Site.find_by({slug: params[:site_slug]})
@@ -50,13 +61,14 @@ class Management::SitesController < ManagementController
     end
   end
 
+  # Creates a closure tree for a site
   def build_pages_tree
     tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position, :enabled, :type).hash_tree
     formatted_tree = format_tree tree.keys.first, tree.values.first
     gon.structure = formatted_tree
   end
 
-
+  # Formats the tree to send it to Backbone through gon
   def format_tree(node_key, node_value)
     tree = {id: node_key.id, name: node_key.name, parent_id: node_key.parent_id,
             position: node_key.position, enabled: node_key.enabled, type: node_key.type}
@@ -70,6 +82,7 @@ class Management::SitesController < ManagementController
     return tree
   end
 
+  # Gets all the pages of the site
   def get_pages
     @pages = SitePage.joins(:users)
                .where(users: {id: current_user.id})
