@@ -39,8 +39,8 @@
 
       // On pressing submit
       $('.js-submit').on('click', function (event) {
-        this.treeStructureView.save();
         event.preventDefault();
+        this.treeStructureView.save(gon.updateStructurePath);
       }.bind(this));
     }
   });

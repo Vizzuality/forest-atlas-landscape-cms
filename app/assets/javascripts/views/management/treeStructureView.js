@@ -104,9 +104,9 @@
       this._initSortableTree();
     },
 
-    save: function () {
+    save: function (path) {
       $.ajax({
-        url: '',
+        url: path,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(this)
