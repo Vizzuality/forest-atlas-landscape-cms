@@ -99,4 +99,9 @@
     }
   }
 
+  .st-block-replacer {
+    // Do not remove unless you make sure the "+" button doesn't overlap the action bar
+    z-index: 0;
+  }
+
 }
