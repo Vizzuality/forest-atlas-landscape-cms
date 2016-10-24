@@ -93,31 +93,33 @@ class Management::SitePagesController < ManagementController
 
   def set_content_type_variables
     @site_page = SitePage.new(content_type: params['type'].to_i) if @site_page.nil?
+    @is_creation = action_name == 'edit'
+
     case @site_page.content_type
       when ContentType::OPEN_CONTENT
         @partial = 'open_content'
-        @breadcrumbs = ['Page edition', 'Open Content']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Open Content']
       when ContentType::ANALYSIS_DASHBOARD
         @partial = 'analysis_dashboard'
-        @breadcrumbs = ['Page edition', 'Analysis Dashboard']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Analysis Dashboard']
       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
         @partial = 'dynamic_indicator_dashboard'
-        @breadcrumbs = ['Page edition', 'Dynamic Indicator Dashboard']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Dynamic Indicator Dashboard']
       when ContentType::HOMEPAGE
         @partial = 'homepage'
-        @breadcrumbs = ['Page edition', 'Homepage']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Homepage']
       when ContentType::LINK
         @partial = 'link'
-        @breadcrumbs = ['Page edition', 'External Link']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'External Link']
       when ContentType::MAP
         @partial = 'map'
-        @breadcrumbs = ['Page edition', 'Map']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Map']
       when ContentType::STATIC_CONTENT
         @partial = 'static_content'
-        @breadcrumbs = ['Page edition', 'Static Content']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Static Content']
       else
         @partial = 'select_type'
-        @breadcrumbs = ['Page edition']
+        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation']
     end
   end
 
