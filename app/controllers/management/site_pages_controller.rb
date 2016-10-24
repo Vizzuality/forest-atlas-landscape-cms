@@ -1,6 +1,7 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:show, :edit, :update, :destroy, :toggle_enable]
   before_action :set_site, only: [:index, :new, :create]
+  before_action :set_content_type_variables, only: [:new, :edit]
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
@@ -20,85 +21,14 @@ class Management::SitePagesController < ManagementController
   # GET /management/pages/1
   # GET /management/pages/1.json
   def show
-    case @site_page.content_type
-      when ContentType::OPEN_CONTENT
-        @partial = 'open_content'
-        @breadcrumbs = ['Page creation', 'Open Content']
-      when ContentType::ANALYSIS_DASHBOARD
-        @partial = 'analysis_dashboard'
-        @breadcrumbs = ['Page creation', 'Analysis Dashboard']
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @partial = 'dynamic_indicator_dashboard'
-        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
-      when ContentType::HOMEPAGE
-        @partial = 'homepage'
-        @breadcrumbs = ['Page creation', 'Homepage']
-      when ContentType::LINK
-        @partial = 'link'
-        @breadcrumbs = ['Page creation', 'External Link']
-      when ContentType::MAP
-        @partial = 'map'
-        @breadcrumbs = ['Page creation', 'Map']
-      else
-        @partial = 'select_type'
-        @breadcrumbs = ['Page creation']
-    end
   end
 
   # GET /management/pages/new
   def new
-    @site_page = SitePage.new(content_type: params['type'].to_i)
-
-    case @site_page.content_type
-      when ContentType::OPEN_CONTENT
-        @partial = 'open_content'
-        @breadcrumbs = ['Page creation', 'Open Content']
-      when ContentType::ANALYSIS_DASHBOARD
-        @partial = 'analysis_dashboard'
-        @breadcrumbs = ['Page creation', 'Analysis Dashboard']
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @partial = 'dynamic_indicator_dashboard'
-        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
-      when ContentType::HOMEPAGE
-        @partial = 'homepage'
-        @breadcrumbs = ['Page creation', 'Homepage']
-      when ContentType::LINK
-        @partial = 'link'
-        @breadcrumbs = ['Page creation', 'External Link']
-      when ContentType::MAP
-        @partial = 'map'
-        @breadcrumbs = ['Page creation', 'Map']
-      else
-        @partial = 'select_type'
-        @breadcrumbs = ['Page creation']
-    end
   end
 
   # GET /management/pages/1/edit
   def edit
-    case @site_page.content_type
-      when ContentType::OPEN_CONTENT
-        @partial = 'open_content'
-        @breadcrumbs = ['Page edition', 'Open Content']
-      when ContentType::ANALYSIS_DASHBOARD
-        @partial = 'analysis_dashboard'
-        @breadcrumbs = ['Page edition', 'Analysis Dashboard']
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @partial = 'dynamic_indicator_dashboard'
-        @breadcrumbs = ['Page edition', 'Dynamic Indicator Dashboard']
-      when ContentType::HOMEPAGE
-        @partial = 'homepage'
-        @breadcrumbs = ['Page edition', 'Homepage']
-      when ContentType::LINK
-        @partial = 'link'
-        @breadcrumbs = ['Page edition', 'External Link']
-      when ContentType::MAP
-        @partial = 'map'
-        @breadcrumbs = ['Page edition', 'Map']
-      else
-        @partial = 'select_type'
-        @breadcrumbs = ['Page edition']
-    end
   end
 
   # POST /management/pages
@@ -160,6 +90,37 @@ class Management::SitePagesController < ManagementController
   end
 
   private
+
+  def set_content_type_variables
+    @site_page = SitePage.new(content_type: params['type'].to_i) if @site_page.nil?
+    case @site_page.content_type
+      when ContentType::OPEN_CONTENT
+        @partial = 'open_content'
+        @breadcrumbs = ['Page edition', 'Open Content']
+      when ContentType::ANALYSIS_DASHBOARD
+        @partial = 'analysis_dashboard'
+        @breadcrumbs = ['Page edition', 'Analysis Dashboard']
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        @partial = 'dynamic_indicator_dashboard'
+        @breadcrumbs = ['Page edition', 'Dynamic Indicator Dashboard']
+      when ContentType::HOMEPAGE
+        @partial = 'homepage'
+        @breadcrumbs = ['Page edition', 'Homepage']
+      when ContentType::LINK
+        @partial = 'link'
+        @breadcrumbs = ['Page edition', 'External Link']
+      when ContentType::MAP
+        @partial = 'map'
+        @breadcrumbs = ['Page edition', 'Map']
+      when ContentType::STATIC_CONTENT
+        @partial = 'static_content'
+        @breadcrumbs = ['Page edition', 'Static Content']
+      else
+        @partial = 'select_type'
+        @breadcrumbs = ['Page edition']
+    end
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_site
     @site = Site.find_by({slug: params[:site_slug]})
@@ -179,7 +140,7 @@ class Management::SitePagesController < ManagementController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def page_params
-    params.require(:site_page).permit(:name, :description, :site_id, :uri, :parent_id, :content_type, content: [:body, :json, :url])
+    params.require(:site_page).permit(:name, :description, :site_id, :uri, :parent_id, :content_type, :show_on_menu, content: [:body, :json, :url, :target_blank])
   end
 
 end
