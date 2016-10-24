@@ -1,11 +1,13 @@
 ((function (App) {
   'use strict';
 
+  /* eslint-disable no-unused-vars */
   var OPEN_CONTENT = 1;
   var ANALYSIS_DASHBOARD = 2;
   var DYNAMIC_INDICATOR = 3;
   var LINK = 6;
   var STATIC_CONTENT = 7;
+  /* eslint-enable no-unused-vars */
 
   App.Router.ManagementPageEdition = Backbone.Router.extend({
 
@@ -19,14 +21,14 @@
     },
 
     _getPageType: function () {
-      var type_input = document.querySelector('#site_page_content_type');
-      return type_input != null ? parseInt(type_input.value) : null;
+      var input = document.querySelector('#site_page_content_type');
+      return input && +input.value;
     },
 
     index: function () {
       var pageType = this._getPageType();
 
-      if (pageType === OPEN_CONTENT) {
+      if (pageType === OPEN_CONTENT || pageType === STATIC_CONTENT) {
         // We instantiate the wysiwyg editor
         this.wysiwygView = new App.View.WysiwygView({
           el: '.js-content'
