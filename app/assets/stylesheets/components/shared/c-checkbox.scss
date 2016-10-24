@@ -1,0 +1,71 @@
+.c-checkbox {
+  padding-top: 15px;
+
+  label {
+    display: inline-block;
+    position: relative;
+    padding: 20px 20px 20px 70px;
+    transition: color .3s;
+    border: 1px solid rgba($color-4, .3);
+    color: rgba($color-4, .5);
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    box-shadow: 0 2px 3px 0 rgba($color-4, .1);
+    cursor: pointer;
+
+    &:hover {
+      color: $color-4;
+    }
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 26px;
+      width: 30px;
+      height: 4px;
+      transform: translateY(calc(-2px - 50%)) rotate(-40deg);
+      background-color: $color-1;
+    }
+
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 26px;
+      width: 20px;
+      height: 4px;
+      transform: translateY(-50%);
+      background-color: rgba($color-4, .3);
+      content: '';
+    }
+  }
+
+  input {
+    // For accessibility reasons (tabindex), the input cannot be just hidden
+    // using display: none;
+    position: absolute;
+    top: -100000px;
+    opacity: 0;
+
+    &:focus {
+      + label {
+        border-color: $color-1;
+      }
+    }
+
+    &:checked {
+      + label {
+        color: $color-4;
+
+        &::before {
+          content: '';
+        }
+
+        &::after {
+          width: 12px;
+          transform: translate(-6px, -50%) rotate(50deg);
+          background-color: $color-1;
+        }
+      }
+    }
+  }
+}

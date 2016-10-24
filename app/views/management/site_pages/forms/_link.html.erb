@@ -31,19 +31,16 @@
           <%= f.text_field :name, placeholder: 'Link\'s name', id: 'name' %>
           <%= f.label 'Link\'s name', for: 'name' %>
         </div>
-        <div class="c-fieldset">
-          <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
-              <div class="c-fieldset">
-                <%= ff.check_box :target_blank, id: 'target_blank' %>
-                <%= ff.label 'Open in separate tab', for: 'target_blank' %>
-              </div>
-              <div class="c-fieldset">
-                <%= ff.text_field :url, placeholder: 'URL', id: 'url' %>
-                <%= ff.label 'URL', for: 'url' %>
-              </div>
-
-          <% end %>
-        </div>
+        <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
+          <div class="c-fieldset">
+            <%= ff.text_field :url, placeholder: 'URL', id: 'url' %>
+            <%= ff.label 'URL', for: 'url' %>
+          </div>
+          <div class="c-checkbox">
+            <%= ff.check_box :target_blank, id: 'target_blank' %>
+            <%= ff.label 'Open in separate tab', for: 'target_blank' %>
+          </div>
+        <% end %>
       </div>
   <% end %>
 </div>
