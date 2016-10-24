@@ -1,5 +1,6 @@
 class Management::SitesController < ManagementController
   before_action :set_site, only: [:structure]
+  before_action :get_pages, only: [:structure, :update_structure]
 
   # GET /management/sites
   # GET /management/sites.json
@@ -18,10 +19,7 @@ class Management::SitesController < ManagementController
   # GET /management/:site_slug/structure
   # GET /management/:site_slug/structure.json
   def structure
-    @pages = SitePage.joins(:users)
-               .where(users: {id: current_user.id})
-               .where(sites: {slug: params[:site_slug]})
-               .order(params[:order] || 'created_at ASC')
+    gon.updateStructurePath = management_site_update_structure_path(@site)
 
     respond_to do |format|
       format.html {
@@ -29,6 +27,16 @@ class Management::SitesController < ManagementController
         render :structure }
       format.json { render json: @pages }
     end
+  end
+
+  def update_structure
+    puts params.inspect
+
+    #@pages.each do |page|
+    #  puts params['collection'].first
+    #end
+
+    redirect_to management_site_site_pages_path(@site)
   end
 
   private
@@ -61,4 +69,12 @@ class Management::SitesController < ManagementController
     end
     return tree
   end
+
+  def get_pages
+    @pages = SitePage.joins(:users)
+               .where(users: {id: current_user.id})
+               .where(sites: {slug: params[:site_slug]})
+               .order(params[:order] || 'created_at ASC')
+  end
+
 end

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         end
       end
       get '/structure', to: 'sites#structure'
+      put :update_structure
     end
     get '/', to: 'static_page#dashboard'
   end
