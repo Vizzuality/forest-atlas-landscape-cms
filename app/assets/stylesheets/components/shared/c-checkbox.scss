@@ -43,7 +43,7 @@
     // For accessibility reasons (tabindex), the input cannot be just hidden
     // using display: none;
     position: absolute;
-    top: -100000px;
+    left: -100000px; // Can't change the top property otherwise the browser scrolls when the user clicks the label
     opacity: 0;
 
     &:focus {
