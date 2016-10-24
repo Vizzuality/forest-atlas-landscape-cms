@@ -111,33 +111,33 @@ class Management::SitePagesController < ManagementController
 
   def set_content_type_variables
     @site_page = SitePage.new(content_type: params['type'].to_i) if @site_page.nil?
-    @is_creation = action_name == 'edit'
+    @is_creation = action_name == 'new'
 
     case @site_page.content_type
       when ContentType::OPEN_CONTENT
         @partial = 'open_content'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Open Content']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Open Content']
       when ContentType::ANALYSIS_DASHBOARD
         @partial = 'analysis_dashboard'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Analysis Dashboard']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Analysis Dashboard']
       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
         @partial = 'dynamic_indicator_dashboard'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Dynamic Indicator Dashboard']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Dynamic Indicator Dashboard']
       when ContentType::HOMEPAGE
         @partial = 'homepage'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Homepage']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Homepage']
       when ContentType::LINK
         @partial = 'link'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'External Link']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'External Link']
       when ContentType::MAP
         @partial = 'map'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Map']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Map']
       when ContentType::STATIC_CONTENT
         @partial = 'static_content'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation', 'Static Content']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Static Content']
       else
         @partial = 'select_type'
-        @breadcrumbs = [@is_creation ? 'Page edition': 'Page creation']
+        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition']
     end
   end
 
