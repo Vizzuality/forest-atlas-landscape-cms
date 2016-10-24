@@ -14,5 +14,6 @@
   <%= render 'front/icons' %>
   <%= yield %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= yield :external_js %>
 </body>
 </html>
