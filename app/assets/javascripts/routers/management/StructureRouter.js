@@ -42,6 +42,12 @@
         event.preventDefault();
         this.treeStructureView.save(gon.updateStructurePath);
       }.bind(this));
+
+      // On pressing reset
+      $('.js-reset').on('click', function (event) {
+        event.preventDefault();
+        this.treeStructureView.reset();
+      }.bind(this));
     }
   });
 })(this.App));

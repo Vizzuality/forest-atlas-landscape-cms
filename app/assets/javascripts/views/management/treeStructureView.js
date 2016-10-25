@@ -16,6 +16,9 @@
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
 
+      // We save the initial collection so we can reset it if needed
+      this.initialCollection = new Backbone.Collection(this.collection.toJSON());
+
       this.render();
       this.setElement(this.el);
     },
@@ -111,6 +114,15 @@
         contentType: 'application/json',
         data: JSON.stringify(this)
       });
+    },
+
+    /**
+     * Restore the tree to its original state
+     */
+    reset: function () {
+      this.collection = new Backbone.Collection(this.initialCollection.toJSON());
+      this.render();
+      this.setElement(this.el);
     },
 
     /**
