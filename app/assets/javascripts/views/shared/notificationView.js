@@ -31,11 +31,18 @@
       this.options = _.extend(this.defaults, settings);
 
       this._createEl();
-      this.render();
 
-      if (this.options.visible) {
-        this.show();
-      }
+      // This double rAF pattern is enables the animation of the notification right
+      // after it is appended to the DOM in case this.options.visible is set to true
+      requestAnimationFrame(function () {
+        this.render();
+
+        requestAnimationFrame(function () {
+          if (this.options.visible) {
+            this.show();
+          }
+        }.bind(this));
+      }.bind(this));
     },
 
     /**
