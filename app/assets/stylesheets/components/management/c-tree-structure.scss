@@ -1,7 +1,6 @@
 .c-tree-structure {
   display: flex;
   justify-content: center;
-  padding-top: 50px;
 
   ul {
     display: block;
@@ -44,6 +43,14 @@
     }
   }
 
+  // We target the vertical line going out of the root
+  > ul {
+    &::after {
+      top: 39px;
+      height: calc(100% - 21px - 39px);  // 21 is half of the height of .add-page-button, 39px is the height of a page
+    }
+  }
+
   .page {
     display: inline-flex;
     position: relative;
@@ -70,7 +77,20 @@
     }
 
     &.-disabled {
-      opacity: .3
+      opacity: .5;
+
+      // The vertical lines must also be faded out
+      + ul {
+        &::after {
+          opacity: .5;
+        }
+
+        .add-page-button {
+          &::after {
+            opacity: .5;
+          }
+        }
+      }
     }
 
     &.-placeholder {
@@ -113,7 +133,7 @@
         > .view-button-slashed {
           display: block;
           width: 16px;
-          height: 11px;
+          height: 16px;
           background: image-url('icons/slashed-eye-icon.svg') no-repeat center center;
           text-indent: -10000px; // For accessibility, the text should stay visible
         }
@@ -178,8 +198,8 @@
       display: block;
       position: absolute;
       top: 50%;
-      left: -40px;
-      width: 40px;
+      left: -43px;
+      width: 42px;
       height: 1px;
       transform: translateY(-50%);
       background-color: $color-7;
