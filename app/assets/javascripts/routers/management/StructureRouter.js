@@ -4,14 +4,14 @@
   App.Router.ManagementStructure = Backbone.Router.extend({
 
     routes: {
-      '(/)': 'index'
+      '(:state)(/)': 'index'
     },
 
     initialize: function (params) {
       this.slug = params[0] || null;
     },
 
-    index: function () {
+    index: function (state) {
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher'),
@@ -36,6 +36,15 @@
         el: $('.js-tree'),
         collection: new Backbone.Collection(gon.structure)
       });
+
+      if (state && state === 'success') {
+        new App.View.NotificationView({
+          content: 'The structure has been successfully saved!',
+          closeable: false,
+          autoCloseTimer: 5,
+          visible: true
+        });
+      }
 
       // On pressing submit
       $('.js-submit').on('click', function (event) {
