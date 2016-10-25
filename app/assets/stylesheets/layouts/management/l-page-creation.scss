@@ -29,6 +29,18 @@
     }
   }
 
+  &.-map {
+    margin-top: 20px;
+
+    .c-fieldset {
+      height: calc(100vh - 360px);
+
+      textarea {
+        font-family: monospace;
+      }
+    }
+  }
+
   &.-analysis-dashboard,
   &.-indicator-dashboard,
   &.-homepage {
