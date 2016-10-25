@@ -203,9 +203,10 @@
      */
     _toggleEnableRecursive: function (currentNode, nodeId, ancestorsVisibility, enable) {
       var newNode = currentNode;
-      var isTargetedNode = !nodeId || currentNode.id === nodeId;
-
-      // TODO: shouldn't be able to enable a node if it's parent is disabled
+      // The current node is the targeted node if:
+      //  1/ We're not searching for a concrete node and we want do disable the pages
+      //  2/ It is effectively the targeted node :)
+      var isTargetedNode = (!nodeId && !enable) || (currentNode.id === nodeId);
 
       if (isTargetedNode) {
 
