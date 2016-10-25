@@ -12,7 +12,9 @@
       new App.View.TabView({
         el: $('.js-tabs'),
         redirect: true,
+        currentTab: 0,
         tabs: [
+          { name: 'Dashboard', url: '' },
           { name: 'Sites', url: '/admin/sites/' },
           { name: 'Users', url: '/admin/users/' }
         ]
