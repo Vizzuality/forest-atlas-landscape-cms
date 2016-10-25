@@ -17,7 +17,8 @@
       this.options = Object.assign({}, this.defaults, settings);
 
       // We save the initial collection so we can reset it if needed
-      this.initialCollection = new Backbone.Collection(this.collection.toJSON());
+      // We need to deep clone it to avoid mutations of the models
+      this.initialCollection = this._deepCloneCollection(this.collection);
 
       this.render();
       this.setElement(this.el);
@@ -103,6 +104,16 @@
     },
 
     /**
+     * Return a deep clone of a collection
+     * This method considers the collection to have onely one root models
+     * @param   {object} collection - Backbone collection to clone
+     * @returns {object} deep clone
+     */
+    _deepCloneCollection: function (collection) {
+      return new Backbone.Collection(collection.length > 0 ? [$.extend(true, {}, collection.toJSON()[0])] : []);
+    },
+
+    /**
      * Display a warning to remember the user to save the tree before
      * clicking any button that would leave the page
      */
@@ -168,7 +179,7 @@
      * Restore the tree to its original state
      */
     reset: function () {
-      this.collection = new Backbone.Collection(this.initialCollection.toJSON());
+      this.collection = this._deepCloneCollection(this.initialCollection);
       this.render();
       this.setElement(this.el);
     },
@@ -209,7 +220,6 @@
       var isTargetedNode = (!nodeId && !enable) || (currentNode.id === nodeId);
 
       if (isTargetedNode) {
-
         if (enable) {
           var hasDisabledAncestor = ancestorsVisibility.reduce(function (res, vis) {
             return res || !vis;
