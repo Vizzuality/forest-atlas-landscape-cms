@@ -21,6 +21,7 @@
     },
 
     events: {
+      'transitionend': '_onTransitionend',
       'click .js-close': '_onClickClose',
       'keydown .js-close': '_onKeydownClose'
     },
@@ -87,6 +88,16 @@
     },
 
     /**
+     * Set the focus on the close button
+     */
+    _setFocus: function () {
+      if (!this.isFocusSet) {
+        this.el.querySelector('.js-close').focus();
+        this.isFocusSet = true;
+      }
+    },
+
+    /**
      * Event handler called when the close button of the notification is clicked
      */
     _onClickClose: function () {
@@ -108,9 +119,19 @@
     },
 
     /**
+     * Event handler called when the notification stops animating
+     */
+    _onTransitionend: function () {
+      if (this.options.closeable && this.options.visible) {
+        this._setFocus();
+      }
+    },
+
+    /**
      * Render the content of the notification
      */
     render: function () {
+      this.isFocusSet = false; // Whether the focus has been set on the close button
       this.el.classList[this.options.visible ? 'add' : 'remove']('-visible');
       this.el.setAttribute('aria-hidden', !this.options.visible);
 
@@ -121,10 +142,6 @@
         visible: this.options.visible
       });
       this.setElement(this.el);
-
-      if (this.options.closeable) {
-        this.el.querySelector('.js-close').focus();
-      }
     }
 
   });
