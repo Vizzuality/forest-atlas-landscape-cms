@@ -20,9 +20,11 @@
         {{/if}}
       </li>
     {{/each}}
-    <li class="js-not-nestable">
-      <button type="button" class="add-page-button">Add page</button>
-    </li>
+    {{#unless firstCall}}
+      <li class="js-not-nestable">
+        <button type="button" class="add-page-button">Add page</button>
+      </li>
+    {{/unless}}
   </ul>
 {{/inline}}
 
