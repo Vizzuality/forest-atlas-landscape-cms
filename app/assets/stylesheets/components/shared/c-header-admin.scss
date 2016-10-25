@@ -1,4 +1,4 @@
-.c-header {
+.c-header-admin {
   height: 50px;
   border-bottom: 1px solid $color-9;
   background-color: $color-6;
@@ -9,6 +9,10 @@
   a {
     color: rgba($color-3, .5);
     text-decoration: none;
+
+    &.-highlight {
+      color: $color-1;
+    }
   }
 
   > .wrapper {
@@ -33,6 +37,16 @@
         &::after {
           content: none;
         }
+      }
+    }
+  }
+
+  .menu {
+    > li {
+      margin-right: 20px;
+
+      &:last-of-type {
+        margin-right: 0;
       }
     }
   }

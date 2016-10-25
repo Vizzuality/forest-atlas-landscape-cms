@@ -1,4 +1,4 @@
-<div class="c-header">
+<div class="c-header-admin">
   <div class="wrapper">
     <div>
       <div class="site-switcher js-site-switcher"></div>
@@ -10,33 +10,8 @@
         </ul>
       <% end %>
     </div>
-    <div>
-      <%= link_to 'Logout', auth_logout_url, {:method => :post} %>
-    </div>
+   <ul class="menu">
+      <li><%= link_to 'Logout', auth_logout_url, {:method => :post} %></li>
+    </ul>
   </div>
 </div>
-
-<!--<nav class="navbar navbar-dark bg-inverse">
-  <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
-    &#9776;
-  </button>
-  <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
-    <%= link_to 'Content Management', management_url, class: 'navbar-brand' %>
-    <div class="js-site-switcher"></div>
-    <% unless @site.nil? %>
-        <h2 class="navbar-brand">
-          <%= link_to @site.name, {controller: 'management/site_pages', action: 'index', site_slug: @site.slug} %>
-        </h2>
-    <% end %>
-    <% if user_can? 'access_management' %>
-        <ul class="nav navbar-nav">
-        </ul>
-        <ul class="nav navbar-nav pull-xs-right">
-          <% if user_can?('access_management') %>
-              <li class="nav-item"><%= link_to 'Admin interface', admin_path, {class: 'nav-link'} %></li>
-          <% end %>
-          <li class="nav-item"><%= link_to 'Logout', auth_logout_url, {class: 'nav-link', :method => :post} %></li>
-        </ul>
-    <% end %>
-  </div>
-</nav>-->
