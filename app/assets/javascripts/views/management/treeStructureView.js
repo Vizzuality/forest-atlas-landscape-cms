@@ -58,6 +58,9 @@
           return true;
         },
         relocate: function () {
+          // We let the user know they must not forget to save before leaving the page
+          this._displaySaveWarning();
+
           this._saveStructure();
           this.render();
           this.setElement(this.el);
@@ -99,6 +102,50 @@
       this.collection.reset(structure);
     },
 
+    /**
+     * Display a warning to remember the user to save the tree before
+     * clicking any button that would leave the page
+     */
+    _displaySaveWarning: function () {
+      if (this.saveNotification) {
+        this.saveNotification.show();
+        return;
+      }
+
+      this.saveNotification = new App.View.NotificationView({
+        content: 'Don\'t forget to save the changes before leaving the page!',
+        type: 'warning',
+        visible: true
+      });
+    },
+
+    /**
+     * Hide the warning remembering the user to save before leaving
+     * the page
+     */
+    _hideSaveWarning: function () {
+      if (this.saveNotification) {
+        this.saveNotification.hide();
+      }
+    },
+
+    /**
+     * Display a warning to remember the user that if they enable a page
+     * that as disabled ancestors, it won't be visible until they are all enabled
+     */
+    _displayVisibilityWarning: function () {
+      if (this.visibilityNotification) {
+        this.visibilityNotification.show();
+        return;
+      }
+
+      this.visibilityNotification = new App.View.NotificationView({
+        content: 'This page won\'t be visible to the users until all of its ancestors are enabled!',
+        type: 'warning',
+        visible: true
+      });
+    },
+
     render: function () {
       this.$el.html(this.template({
         pages: this.collection.toJSON()
@@ -108,6 +155,7 @@
     },
 
     save: function (path) {
+      this._hideSaveWarning();
       $.ajax({
         url: path,
         type: 'PUT',
@@ -150,21 +198,36 @@
      * If nodeId is null, toggle the attribute for all the nodes / subtree
      * @param {object}   currentNode - the current node / subtree
      * @param {number}   nodeId - id of the target node, can be null
+     * @param {array}    ancestorsVisibility - visibility of the direct ancestors (true = visible)
      * @enable {boolean} enable - whether to enable or disable the subtree
      */
-    _toggleEnableRecursive: function (currentNode, nodeId, enable) {
+    _toggleEnableRecursive: function (currentNode, nodeId, ancestorsVisibility, enable) {
       var newNode = currentNode;
       var isTargetedNode = !nodeId || currentNode.id === nodeId;
 
       // TODO: shouldn't be able to enable a node if it's parent is disabled
 
       if (isTargetedNode) {
+
+        if (enable) {
+          var hasDisabledAncestor = ancestorsVisibility.reduce(function (res, vis) {
+            return res || !vis;
+          }, false);
+
+          // If the node we want to enable has a disabled ancestor, a warning is displayed
+          // to inform the user the page won't be visible until all of its ancestors are visible
+          if (hasDisabledAncestor) {
+            this._displayVisibilityWarning();
+          }
+        }
+
         newNode.enabled = enable;
       }
 
       if (newNode.children) {
+        var newAncestorsVisibility = ancestorsVisibility.concat([currentNode.enabled]);
         newNode.children = newNode.children.map(function (childNode) {
-          return this._toggleEnableRecursive(childNode, isTargetedNode ? null : nodeId, enable);
+          return this._toggleEnableRecursive(childNode, isTargetedNode ? null : nodeId, newAncestorsVisibility, enable);
         }, this);
       }
 
@@ -187,7 +250,7 @@
       nodeId = +nodeId[1];
 
       var rootNode = this.collection.toJSON()[0];
-      var newTree = this._toggleEnableRecursive(rootNode, nodeId, enable);
+      var newTree = this._toggleEnableRecursive(rootNode, nodeId, [], enable);
 
       this.collection.reset(newTree);
       this.render();
