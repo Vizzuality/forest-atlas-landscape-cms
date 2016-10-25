@@ -12,7 +12,7 @@
     },
 
     initialize: function (settings) {
-      this.options = _.extend(this.defaults, settings);
+      this.options = Object.assign({}, this.defaults, settings);
 
       this.render();
       // this.collection.fetch()
