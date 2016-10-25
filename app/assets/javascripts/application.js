@@ -20,6 +20,7 @@
 //= require vega
 //= require leaflet
 //= require handlebars
+//= require object-assign-polyfill
 
 //= require_self
 

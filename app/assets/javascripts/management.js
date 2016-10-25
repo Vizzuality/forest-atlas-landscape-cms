@@ -22,6 +22,7 @@
 //= require jquery-ui
 //= require jquery-nested-sortable
 //= require sir-trevor
+//= require object-assign-polyfill
 
 //= require_self
 
