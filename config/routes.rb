@@ -3,12 +3,13 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :admin do
-    resources :sites do
+    resources :sites, param: :slug do
       member do
         get :display
       end
+      resources :site_steps, only: [:show, :update, :edit]
     end
-    resources :site_steps
+    resources :site_steps, only: [:show, :update, :index, :new]
     resources :users
     resources :routes
     resources :site_templates

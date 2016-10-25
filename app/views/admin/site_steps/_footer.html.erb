@@ -1,6 +1,9 @@
 <div class="form-group row">
   <div class="col-sm-offset-2 col-sm-10">
     <%= f.submit 'CONTINUE', method: :put, class: 'btn btn-primary' %>
+    <% if @site.id %>
+      <%= f.submit 'SAVE CHANGES', method: :put, class: 'btn btn-primary' %>
+    <% end %>
     <%= link_to 'CANCEL', admin_sites_path, class: 'btn btn-secondary' %>
   </div>
 </div>

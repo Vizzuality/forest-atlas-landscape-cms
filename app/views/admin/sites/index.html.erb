@@ -14,9 +14,8 @@
       <tr>
         <td><%= site.name %></td>
         <td><%= site.site_template.name %></td>
-        <td><%= link_to 'Show', admin_site_path(site) %></td>
-        <td><%= link_to 'Edit', edit_admin_site_path(site) %></td>
-        <td><%= link_to 'Destroy', admin_site_path(site), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_admin_site_site_step_path(site_slug: site.slug, id: :name) %></td>
+        <td><%= link_to 'Delete', admin_site_path(site.slug), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +23,4 @@
 
 <br>
 
-<%= link_to 'New Site', admin_site_steps_path, class: 'btn btn-primary' %>
+<%= link_to 'New Site', new_admin_site_step_path , class: 'btn btn-primary' %>
