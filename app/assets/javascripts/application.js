@@ -27,7 +27,6 @@
 // = require_tree ./templates
 // = require_tree ./views/shared
 // = require_tree ./views/front
-// = require_tree ./views/admin
 // = require dispatchers/frontDispatcher
 
 (function () {
