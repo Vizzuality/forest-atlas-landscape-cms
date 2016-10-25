@@ -1,14 +1,10 @@
 ((function (App) {
   'use strict';
 
-  var Collection = Backbone.Collection.extend({
-    // url: 'flag_colors.json'
-  });
-
   App.View.UrlsView = Backbone.View.extend({
     className: 'c-urls',
     template: HandlebarsTemplates['admin/urls'],
-    collection: new Collection(
+    collection: new Backbone.Collection(
       window.gon ? gon.urlArray : []
     ),
     defaults: {
@@ -59,8 +55,8 @@
     render: function () {
       this.$el.html(this.template({
         urls: this.collection.toJSON(),
-        inputId: (window.gon && gon.urlControllerId) ? gon.urlControllerId : '',
-        inputName: (window.gon && gon.urlControllerName) ? gon.urlControllerName : ''
+        inputId: (window.gon && gon.urlControllerId) || '',
+        inputName: (window.gon && gon.urlControllerName) || ''
       }));
       this.setElement(this.el);
     }

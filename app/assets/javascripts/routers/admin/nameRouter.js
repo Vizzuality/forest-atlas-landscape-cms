@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.Router.AdminUrls = Backbone.Router.extend({
+  App.Router.AdminName = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'

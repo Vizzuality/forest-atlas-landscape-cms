@@ -7,7 +7,7 @@
       'users(/)': 'Users',
       'sites(/)': 'Sites',
       'site_steps/settings(/)': 'Settings',
-      'site_steps/name(/)': 'Urls'
+      'site_steps/name(/)': 'Name'
     }
   });
 
