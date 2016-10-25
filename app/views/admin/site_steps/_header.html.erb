@@ -1,0 +1,3 @@
+<% @site.form_steps.each do |site_step| %>
+    <%= link_to site_step.capitalize, wizard_path(site_step), class: 'btn btn-primary', disabled: disable_button?(site_step)%>
+<% end %>

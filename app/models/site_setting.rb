@@ -66,7 +66,7 @@ class SiteSetting < ApplicationRecord
 
   # Creates the color setting for a site
   def self.create_color_settings site
-    if site.site_settings.count < 1
+    if site.site_settings.length < 1
       site.site_settings.new(name: 'color', value: '#000000', position: 1)
     end
   end

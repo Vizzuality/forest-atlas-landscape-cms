@@ -1,3 +1,4 @@
+<%= render partial: 'header'%>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= include_gon %>
 
@@ -17,6 +18,7 @@
     <fieldset class="form-group row">
       <label class="col-sm-2 form-control-label">THEME COLOR</label>
       <div class="col-sm-10">
+        <%= color_form.hidden_field :id %>
         <%= color_form.hidden_field :name, value: 'color' %>
         <%= color_form.hidden_field :position, value: '1' %>
         <%= color_form.color_field :value %>
@@ -29,7 +31,7 @@
     <%= render partial: 'footer', locals: { f: f } %>
 <% end %>
 
-<%= console %>
+<%= console if Rails.env.develop? %>
 
 
 
