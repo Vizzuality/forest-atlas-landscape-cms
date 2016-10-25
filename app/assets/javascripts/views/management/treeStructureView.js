@@ -157,6 +157,16 @@
       });
     },
 
+    /**
+     * Hide the warning to remember the user that if they enable a page
+     * that as disabled ancestors, it won't be visible until they are all enabled
+     */
+    _hideVisibilityWarning: function () {
+      if (this.visibilityNotification) {
+        this.visibilityNotification.hide();
+      }
+    },
+
     render: function () {
       this.$el.html(this.template({
         pages: this.collection.toJSON()
@@ -179,6 +189,9 @@
      * Restore the tree to its original state
      */
     reset: function () {
+      this._hideSaveWarning();
+      this._hideVisibilityWarning();
+
       this.collection = this._deepCloneCollection(this.initialCollection);
       this.render();
       this.setElement(this.el);
