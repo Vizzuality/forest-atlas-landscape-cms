@@ -1,37 +1,32 @@
 <% content_for :extended_header do %>
   <div class="c-extended-header">
     <div class="wrapper">
-      <div class="description">
-        <h1>Users</h1>
-      </div>
+      <h1>Users</h1>
+      <ul class="action-buttons">
+        <li><%= link_to 'New user', new_admin_user_path, class: 'c-button' %></li>
+      </ul>
     </div>
   </div>
 <% end %>
 
 <div class="js-tabs"></div>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th colspan="3">Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.name %></td>
-        <td><%= user.email %></td>
-        <td><%= link_to 'Show', admin_user_path(user) %></td>
-        <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
-        <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<div class="l-user-list">
+  <div class="wrapper">
+    <table class="c-table">
+      <tr class="header">
+        <th>Name</th>
+        <th>Email</th>
+        <th colspan="2"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New User', new_admin_user_path, class: 'btn btn-primary' %>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= link_to 'Edit', edit_admin_user_path(user), class: 'c-table-action-button -edit', title: 'Edit' %></td>
+          <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'c-table-action-button -delete', title: 'Delete' %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
