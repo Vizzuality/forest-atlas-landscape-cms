@@ -1,13 +1,13 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:show, :edit, :update, :destroy, :toggle_enable]
   before_action :set_site, only: [:index, :new, :create]
+  before_action :authenticate_user_for_site!, only: [:index, :new, :create]
   before_action :set_content_type_variables, only: [:new, :edit]
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
   def index
-    @pages = SitePage.joins(:users)
-               .where(users: {id: current_user.id})
+    @pages = SitePage.joins(:site)
                .where(sites: {slug: params[:site_slug]})
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
