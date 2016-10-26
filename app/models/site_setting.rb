@@ -30,14 +30,14 @@ class SiteSetting < ApplicationRecord
   validates :name, inclusion: { in: NAMES }
 
   has_attached_file :image,
-                    styles: {thumb: '100x100#'}, #lambda { |attachment| { thumb: (attachment.instance.name == 'logo' ? '100x100#' : '500x200#') }},
+                    styles: {thumb: '100x100#'},
                     default_url: ':style/missing.png'
 
   validate :validate_image
 
   validates_attachment :image,
                        content_type: {content_type: %w[image/jpg image/jpeg image/png]},
-                       styles: {thumb: '100x100#'} #lambda {|attachment| { thumb: (attachment.instance.value == 'logo' ? '100x100#' : '500x200#') }}
+                       styles: {thumb: '100x100#'}
 
 
   def self.logo_background(site_id)
@@ -73,7 +73,7 @@ class SiteSetting < ApplicationRecord
 
   # Creates all the additional settings for a site
   def self.create_additional_settings site
-    if site.site_settings.length < 4
+    unless site.site_settings.exists?({name: 'logo_background'})
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
       site.site_settings.new(name: 'logo_background', value: '#000000', position: 3)
       site.site_settings.new(name: 'flag', value: '#000000', position: 4)
