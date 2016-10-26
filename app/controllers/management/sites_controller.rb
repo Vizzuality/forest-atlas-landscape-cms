@@ -33,7 +33,7 @@ class Management::SitesController < ManagementController
     new_tree = params['collection'].first
     update_tree_nodes(new_tree, nil, 0)
 
-    redirect_to management_site_site_pages_path(@site.slug)
+    redirect_to action: "structure", anchor: "success"
   end
 
   private

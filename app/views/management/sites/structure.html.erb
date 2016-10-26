@@ -10,13 +10,19 @@
   </div>
 <% end %>
 
+<%= include_gon %>
+
 <div class="js-tabs"></div>
-<div class="wrapper">
-  <div class="js-tree"></div>
 
-  <%= include_gon %>
-
-  <%= link_to 'Save', management_site_update_structure_path(@site.slug), class: 'btn btn-primary js-submit' %>
+<div class="l-tree-structure">
+  <div class="wrapper">
+    <div class="js-tree"></div>
+  </div>
 </div>
 
-<%= console if Rails.env.development? %>
+<div class="c-action-bar">
+  <div class="wrapper">
+    <button class="c-button -outline -dark-text js-reset">Undo all changes</button>
+    <%= link_to 'Save', management_site_update_structure_path(@site.slug), class: 'c-button js-submit' %>
+  </div>
+</div>

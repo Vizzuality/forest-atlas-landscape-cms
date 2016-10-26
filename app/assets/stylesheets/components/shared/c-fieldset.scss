@@ -42,4 +42,24 @@
     }
   }
 
+  textarea {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border: 1px solid rgba($color-4, .3);
+    outline: none;
+    font-size: $font-size-small;
+    box-shadow: 0 2px 3px 0 rgba($color-4, .1);
+
+    &:focus {
+      border-color: $color-1;
+      box-shadow: 0 2px 3px 0 rgba($color-1, .1);
+
+      + label {
+        opacity: 1;
+      }
+    }
+  }
+
 }

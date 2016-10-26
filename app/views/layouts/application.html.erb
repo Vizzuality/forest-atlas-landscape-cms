@@ -9,10 +9,11 @@
   <%= yield :head %>
 </head>
 
-<body>
+<body <%= yield :body_class %>>
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
   <%= yield %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= yield :external_js %>
 </body>
 </html>

@@ -1,0 +1,29 @@
+.c-table-action-button {
+  display: inline-block;
+  text-indent: -10000px; // Hide the text
+  vertical-align: middle;
+
+  &.-enable {
+    width: 16px;
+    height: 16px;
+    background: image-url('icons/slashed-eye-icon.svg') no-repeat center center;
+  }
+
+  &.-disable {
+    width: 16px;
+    height: 11px;
+    background: image-url('icons/eye-icon.svg') no-repeat center center;
+  }
+
+  &.-edit {
+    width: 16px;
+    height: 16px;
+    background: image-url('icons/pen-icon.svg') no-repeat center center;
+  }
+
+  &.-delete {
+    width: 10px;
+    height: 14px;
+    background: image-url('icons/bin-icon.svg') no-repeat center center;
+  }
+}

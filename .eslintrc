@@ -20,7 +20,9 @@
     "HandlebarsTemplates": true,
     "_": true,
     "Turbolinks": true,
-    "SirTrevor": true
+    "SirTrevor": true,
+    "gon": true,
+    "Fuse": true
   },
   "env": {
     "browser": true

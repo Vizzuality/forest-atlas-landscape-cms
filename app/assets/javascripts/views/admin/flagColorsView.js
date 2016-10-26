@@ -9,7 +9,7 @@
     className: 'c-flag-colors',
     template: HandlebarsTemplates['admin/flag-colors'],
     collection: new Collection(
-      gon.colorArray
+      window.gon && gon.colorArray
     ),
     defaults: {
       color: '#000000'
@@ -21,7 +21,7 @@
     },
 
     initialize: function (settings) {
-      this.options = _.extend(this.defaults, settings);
+      this.options = Object.assign({}, this.defaults, settings);
       this.render();
     },
 
@@ -58,8 +58,8 @@
       this.$el.html(this.template({
         colors: this.collection.toJSON(),
         addable: this._canAddColor(),
-        inputId: gon.colorControllerId,
-        inputName: gon.colorControllerName,
+        inputId: window.gon && gon.colorControllerId,
+        inputName: window.gon && gon.colorControllerName,
         colorsValue: this.collection.toJSON().reduce(function (eachRes, color) {
           return eachRes + ' ' + color.color;
         }, '')

@@ -1,49 +1,49 @@
 GIT
   remote: https://github.com/rspec/rspec-core.git
-  revision: b54e2a161b7de5e6cfdcfde9abce2ea3cec10b82
+  revision: 8c5717b05c820fdc91faf277164b36a2a31b6c08
   branch: master
   specs:
-    rspec-core (3.6.0.pre)
-      rspec-support (= 3.6.0.pre)
+    rspec-core (3.6.0.beta1)
+      rspec-support (= 3.6.0.beta1)
 
 GIT
   remote: https://github.com/rspec/rspec-expectations.git
-  revision: a271631e9b8e1749be876dbcc65dbd7a6a40d2db
+  revision: f07af78f18abe02f2478db8a47cd341146b0ba02
   branch: master
   specs:
-    rspec-expectations (3.6.0.pre)
+    rspec-expectations (3.6.0.beta1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.6.0.pre)
+      rspec-support (= 3.6.0.beta1)
 
 GIT
   remote: https://github.com/rspec/rspec-mocks.git
-  revision: 097bf1f54d1082b4c8e2d7e421614f4d2e252641
+  revision: c0bf45b5ceb179c51b0d38d7c91faf60a7a6048f
   branch: master
   specs:
-    rspec-mocks (3.6.0.pre)
+    rspec-mocks (3.6.0.beta1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.6.0.pre)
+      rspec-support (= 3.6.0.beta1)
 
 GIT
   remote: https://github.com/rspec/rspec-rails.git
-  revision: a858f3c74f977687c21bad88cbc2ff82b81fbb5b
+  revision: 3caa42e5d4c677315ca2ca230faa0723118ef828
   branch: master
   specs:
-    rspec-rails (3.6.0.pre)
+    rspec-rails (3.6.0.beta1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec-core (= 3.6.0.pre)
-      rspec-expectations (= 3.6.0.pre)
-      rspec-mocks (= 3.6.0.pre)
-      rspec-support (= 3.6.0.pre)
+      rspec-core (= 3.6.0.beta1)
+      rspec-expectations (= 3.6.0.beta1)
+      rspec-mocks (= 3.6.0.beta1)
+      rspec-support (= 3.6.0.beta1)
 
 GIT
   remote: https://github.com/rspec/rspec-support.git
-  revision: abd792d51ec8f79111d815a55e527048c0523a1d
+  revision: 52858b626baae90cf58d539790f6e6a6892334af
   branch: master
   specs:
-    rspec-support (3.6.0.pre)
+    rspec-support (3.6.0.beta1)
 
 GEM
   remote: https://rubygems.org/
@@ -94,18 +94,15 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
-    arel (7.1.1)
-    autoprefixer-rails (6.4.0.2)
+    arel (7.1.4)
+    autoprefixer-rails (6.5.1.1)
       execjs
     bcrypt (3.1.11)
-    bootstrap (4.0.0.alpha3.1)
+    bootstrap (4.0.0.alpha5)
       autoprefixer-rails (>= 6.0.3)
       sass (>= 3.4.19)
     builder (3.2.2)
-    byebug (9.0.5)
-    ckeditor (4.2.0)
-      cocaine
-      orm_adapter (~> 0.5.0)
+    byebug (9.0.6)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     closure_tree (6.2.0)
@@ -134,7 +131,7 @@ GEM
     dotenv-rails (2.1.1)
       dotenv (= 2.1.1)
       railties (>= 4.0, < 5.1)
-    enumerate_it (1.3.0)
+    enumerate_it (1.4.0)
       activesupport (>= 3.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -157,13 +154,16 @@ GEM
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
-    jquery-rails (4.1.1)
+    jquery-rails (4.2.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (1.8.3)
-    jsonapi (0.1.1.beta2)
-      json (~> 1.8)
+    json (2.0.2)
+    jsonapi (0.1.1.beta6)
+      jsonapi-parser (= 0.1.1.beta3)
+      jsonapi-renderer (= 0.1.1.beta1)
+    jsonapi-parser (0.1.1.beta3)
+    jsonapi-renderer (0.1.1.beta1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -177,13 +177,12 @@ GEM
     mime-types-data (3.2016.0521)
     mimemagic (0.3.2)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.9.1)
     multi_json (1.12.1)
     multipart-post (2.0.0)
     nio4r (1.2.1)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     orm_adapter (0.5.0)
     paperclip (5.0.0)
       activemodel (>= 4.2.0)
@@ -191,8 +190,7 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (~> 0.3.0)
-    pg (0.18.4)
-    pkg-config (1.1.7)
+    pg (0.19.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -218,6 +216,7 @@ GEM
     rails-assets-backbone (1.3.3)
       rails-assets-underscore (>= 1.8.3)
     rails-assets-d3 (3.5.17)
+    rails-assets-fuse.js (2.5.0)
     rails-assets-jquery (3.1.1)
     rails-assets-jquery-ui (1.12.1)
       rails-assets-jquery (>= 1.6)
@@ -236,8 +235,8 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (11.2.2)
-    rb-fsevent (0.9.7)
+    rake (11.3.0)
+    rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     request_store (1.3.1)
@@ -251,14 +250,15 @@ GEM
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
     slop (3.6.0)
-    spring (1.7.2)
-    spring-watcher-listen (2.0.0)
+    spring (2.0.0)
+      activesupport (>= 4.2)
+    spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
-      spring (~> 1.2)
+      spring (>= 1.2, < 3.0)
     sprockets (3.7.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.1.1)
+    sprockets-rails (3.2.0)
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
@@ -270,7 +270,7 @@ GEM
     turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (3.0.1)
+    uglifier (3.0.3)
       execjs (>= 0.3.0, < 3)
     warden (1.2.6)
       rack (>= 1.0)
@@ -282,7 +282,7 @@ GEM
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    will_paginate (3.1.0)
+    will_paginate (3.1.5)
     with_advisory_lock (3.0.0)
       activerecord (>= 3.2)
       thread_safe
@@ -296,7 +296,6 @@ DEPENDENCIES
   autoprefixer-rails
   bootstrap (~> 4.0.0.alpha3)
   byebug
-  ckeditor
   closure_tree
   coffee-rails (~> 4.1.0)
   devise
@@ -315,6 +314,7 @@ DEPENDENCIES
   rails (>= 5.0.0, < 5.1)
   rails-assets-backbone!
   rails-assets-d3 (~> 3.5.16)!
+  rails-assets-fuse.js!
   rails-assets-jquery-ui!
   rails-assets-leaflet (= 0.7.7)!
   rails-assets-vega (~> 2.5.2)!
@@ -333,4 +333,4 @@ DEPENDENCIES
   will_paginate (~> 3.1.0)
 
 BUNDLED WITH
-   1.13.0
+   1.13.4

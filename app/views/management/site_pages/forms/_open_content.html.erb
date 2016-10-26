@@ -40,11 +40,15 @@
           <%= f.text_field :uri, id: 'uri', placeholder: 'Page\'s URI' %>
           <%= f.label 'Page\'s URI', for: 'uri' %>
         </div>
+        <div class="c-checkbox">
+          <%= f.check_box :show_on_menu, id: 'show_on_menu' %>
+          <%= f.label :show_on_menu, for: 'show_on_menu' %>
+        </div>
 
         <div class="c-wysiwyg">
           <%= f.fields_for :content, OpenStruct.new(site_page.content) do |ff| %>
               <%= ff.hidden_field :body, class: 'js-content' %>
-              <%= ff.cktext_area :json, class: 'js-content-json' %>
+              <%= ff.text_area :json, class: 'js-content-json' %>
           <% end %>
         </div>
       </div>
@@ -74,5 +78,5 @@
 
 <% content_for :action_bar do %>
   <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-  <button type="submit" class="c-button js-submit"><%= (!defined? edit || edit == false) ? 'Save' : 'Update' %></button>
+  <button type="submit" class="c-button js-submit"><%= (!defined?(edit) || edit == false) ? 'Save' : 'Update' %></button>
 <% end %>

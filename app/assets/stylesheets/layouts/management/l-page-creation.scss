@@ -29,8 +29,21 @@
     }
   }
 
+  &.-map {
+    margin-top: 20px;
+
+    .c-fieldset {
+      height: calc(100vh - 360px);
+
+      textarea {
+        font-family: monospace;
+      }
+    }
+  }
+
   &.-analysis-dashboard,
-  &.-indicator-dashboard {
+  &.-indicator-dashboard,
+  &.-homepage {
     margin-top: 50px;
 
     h2 {
@@ -47,10 +60,13 @@
     padding-bottom: 0;
 
     > .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
 
       .c-button {
-        display: inline-block;
+        width: 200px;
         margin-bottom: 20px;
       }
     }

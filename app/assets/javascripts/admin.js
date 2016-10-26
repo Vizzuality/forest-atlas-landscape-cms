@@ -16,9 +16,11 @@
 //= require underscore
 //= require backbone
 //= require handlebars
+//= require object-assign-polyfill
 
 //= require_self
 
+// = require_tree ./helpers
 // = require_tree ./routers/admin
 // = require_tree ./templates
 // = require_tree ./views/shared
