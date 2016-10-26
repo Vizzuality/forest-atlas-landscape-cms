@@ -1,8 +1,10 @@
 class Admin::SiteStepsController < AdminController
   include Wicked::Wizard
 
-  URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
-  URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
+  URL_CONTROLLER_ID =    'site_routes_attributes'.freeze
+  URL_CONTROLLER_NAME =  'site[routes_attributes]'.freeze
+  SAVE =                 'SAVE CHANGES'.freeze
+  CONTINUE =              'CONTINUE'.freeze
 
   steps *Site.form_steps
   helper_method :disable_button?
@@ -45,7 +47,7 @@ class Admin::SiteStepsController < AdminController
           #@site.assign_attributes site_params
 
           # If the user pressed the save button
-          if params[:commit] == 'SAVE CHANGES'
+          if params[:commit] == SAVE
             if @site.save
               redirect_to admin_sites_path
             else
@@ -67,8 +69,8 @@ class Admin::SiteStepsController < AdminController
           #@site = Site.new(session[:site])
           @site = current_site
           unless params[:site].blank?
-            if params[:commit] == 'SAVE CHANGES'
-              if site.save
+            if params[:commit] == SAVE
+              if @site.save
                 redirect_to admin_sites_path
               else
                 render_wizard
@@ -92,8 +94,8 @@ class Admin::SiteStepsController < AdminController
           #session[:site] = session[:site].merge(site_params.to_h)
           #@site = Site.new(session[:site])
           @site = current_site
-          if params[:commit] == 'SAVE CHANGES'
-            if site.save
+          if params[:commit] == SAVE
+            if @site.save
               redirect_to admin_sites_path
             else
               render_wizard
@@ -108,16 +110,24 @@ class Admin::SiteStepsController < AdminController
             end
           end
 
+        # In this step, the site is always saved
         when 'settings'
           settings = site_params.to_h
-          #@site = Site.new(session[:site])
-
           @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site])
-          #@site = current_site
+
           begin
-            settings[:site_settings_attributes].map {|s| @site.site_settings.build(s[1]) }
+            # If the user is editing
+            if @site.id
+              @site.site_settings.each do |site_setting|
+                setting = settings[:site_settings_attributes].values.select {|s| s['id'] == site_setting.id.to_s}
+                site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+              end
+            # If the user is creating a new site
+            else
+              settings[:site_settings_attributes].map {|s| @site.site_settings.build(s[1]) }
+              @site.form_step = 'settings'
+            end
           end
-          @site.form_step = 'settings'
 
           if @site.save
             redirect_to next_wizard_path
@@ -126,7 +136,6 @@ class Admin::SiteStepsController < AdminController
           end
     end
   end
-
 
   private
 
