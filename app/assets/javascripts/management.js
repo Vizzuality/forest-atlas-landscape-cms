@@ -27,6 +27,7 @@
 
 //= require_self
 
+// = require_tree ./helpers
 // = require_tree ./routers/management
 // = require_tree ./templates
 // = require_tree ./blocks

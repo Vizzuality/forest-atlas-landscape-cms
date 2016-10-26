@@ -30,8 +30,7 @@
             return {
               name: cell.name,
               searchable: !!cell.searchable,
-              // For now, if a column is searchable, it is also sortable
-              sortable: !!cell.searchable
+              sortable: !!cell.sortable
             };
           });
       }
@@ -92,17 +91,24 @@
         throw new Error('Please provide a name to the table component.');
       }
 
-      this.options.collection.fetch()
-        .done(function () {
-          this.options.headers = new HeadersCollection(this.options.collection.toJSON(), { parse: true });
-          this._initSort();
-          if (this.options.searchFieldContainer) this._initSearch();
-          this.render();
-        }.bind(this))
-        .fail(function () {
-          this.error = 'Unable to load the data for the table.';
-          this.render();
-        }.bind(this));
+      // Callback executed when the collection has data
+      var done = function () {
+        this.options.headers = new HeadersCollection(this.options.collection.toJSON(), { parse: true });
+        this._initSort();
+        if (this.options.searchFieldContainer) this._initSearch();
+        this.render();
+      };
+
+      if (this.options.collection.length > 0) {
+        done.call(this);
+      } else {
+        this.options.collection.fetch()
+          .done(done.bind(this))
+          .fail(function () {
+            this.error = 'Unable to load the data for the table.';
+            this.render();
+          }.bind(this));
+      }
     },
 
     /**

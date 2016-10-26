@@ -10,6 +10,8 @@
   </div>
 <% end %>
 
+<%= include_gon %>
+
 <div class="js-tabs"></div>
 
 <div class="l-page-list">
@@ -24,33 +26,5 @@
     </div>
 
     <div class="js-table"></div>
-
-    <table class="c-table">
-      <tr class="header">
-        <th>Name</th>
-        <th>Site</th>
-        <th>URL</th>
-        <th>Content type</th>
-        <th colspan="3"></th>
-      </tr>
-
-      <% @pages.each do |site_page| %>
-        <tr>
-          <td><%= site_page.name %></td>
-          <td><%= site_page.site.name %></td>
-          <td><%= site_page.url %></td>
-          <td><%= site_page.content_type_humanize %></td>
-          <td>
-            <% if site_page.enabled %>
-              <%= link_to 'Disable', toggle_enable_management_site_page_path(site_page), method: :put, class: 'c-table-action-button -disable', title: 'Disable' %>
-            <% else %>
-              <%= link_to 'Enable', toggle_enable_management_site_page_path(site_page), method: :put, class: 'c-table-action-button -enable', title: 'Enable' %>
-            <% end %>
-          </td>
-          <td><%= link_to 'Edit', edit_management_site_page_path(site_page), class: 'c-table-action-button -edit', title: 'Edit' %></td>
-          <td><%= link_to 'Delete', management_site_page_path(site_page), method: :delete, data: { confirm: 'Are you sure?' }, class: 'c-table-action-button -delete', title: 'Delete' %></td>
-        </tr>
-      <% end %>
-    </table>
   </div>
 </div>
