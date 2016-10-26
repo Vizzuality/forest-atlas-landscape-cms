@@ -35,6 +35,8 @@
   }
 
   .action-buttons {
+    flex-shrink: 0;
+
     > li {
       margin-right: 10px;
 
