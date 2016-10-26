@@ -1,0 +1,39 @@
+<table class="c-table" role="grid" aria-readonly="true">
+  <caption>
+    {{tableName}}, sorted by {{sortColumn}}: {{sortOrder}}
+  </caption>
+  {{#if error}}
+    <tr class="error">
+      <td>{{error}}</td>
+    </tr>
+  {{else}}
+    {{#if headers}}
+      <tr class="header js-header" role="rowheader">
+        {{#each headers}}
+          <th class="-order-{{sort}}" aria-sort="{{#if sort}}{{sort}}{{else}}none{{/if}}" tabindex="{{#if sort}}0{{else}}-1{{/if}}" role="columnheader">{{name}}</th>
+        {{/each}}
+      </tr>
+    {{else}}
+      <tr class="no-data" role="row">
+        <td role="gridcell">No data</td>
+      </tr>
+    {{/if}}
+    {{#each rows}}
+      <tr role="row">
+        {{#each this}}
+          <td role="gridcell">{{#if html}}{{{html}}}{{else}}{{value}}{{/if}}</td>
+        {{/each}}
+      </tr>
+    {{else}}
+      {{#if isSearchResult}}
+        <tr class="no-result" role="row">
+          <td role="gridcell">No result</td>
+        </tr>
+      {{else}}
+        <tr class="no-data" role="row">
+          <td role="gridcell">No data</td>
+        </tr>
+      {{/if}}
+    {{/each}}
+  {{/if}}
+</table>

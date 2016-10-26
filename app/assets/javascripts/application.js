@@ -24,6 +24,7 @@
 
 //= require_self
 
+// = require_tree ./helpers
 // = require_tree ./routers/front
 // = require_tree ./templates
 // = require_tree ./views/shared

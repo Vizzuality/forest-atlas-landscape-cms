@@ -12,6 +12,18 @@ class Management::SitePagesController < ManagementController
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
+    gon.pages = @pages.map do |page|
+      {
+        'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
+        'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
+        'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
+        'enabled' => {'value' => page.enabled},
+        'enable' => {'value' => toggle_enable_management_site_page_path(page), 'method' => 'put'},
+        'edit' => {'value' => edit_management_site_page_path(page), 'method' => 'get'},
+        'delete' => {'value' => management_site_page_path(page), 'method' => 'delete'}
+      }
+    end
+
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @pages }

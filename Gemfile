@@ -34,6 +34,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-leaflet', '0.7.7'
   gem 'rails-assets-backbone'
   gem 'rails-assets-jquery-ui'
+  gem 'rails-assets-fuse.js'
 end
 
 # Use ActiveModel has_secure_password

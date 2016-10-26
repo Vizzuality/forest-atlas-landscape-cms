@@ -1,0 +1,30 @@
+.c-action-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px 0;
+
+  > .buttons {
+
+    > li {
+      max-width: 230px;
+
+      &:not(:last-of-type) {
+        margin-right: 40px;
+      }
+    }
+
+  }
+
+  > .filters {
+
+    > li {
+      width: 230px;
+
+      &:not(:last-of-type) {
+        margin-right: 40px;
+      }
+    }
+
+  }
+}
