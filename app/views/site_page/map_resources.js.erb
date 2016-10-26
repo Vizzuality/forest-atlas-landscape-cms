@@ -4,5 +4,5 @@ define(['exports'], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = JSON.parse('<%= @site_page.content.nil? ? '{}' : @site_page.content.squish.gsub("'", %q(\\\')).html_safe %>')
+  exports.default = JSON.parse('<%= @site_page.content.nil? ? '{}' : @site_page.content['settings'].squish.gsub("'", %q(\\\')).html_safe %>')
 });

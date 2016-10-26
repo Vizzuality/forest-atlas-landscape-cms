@@ -160,7 +160,8 @@ class Management::SitePagesController < ManagementController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def page_params
-    params.require(:site_page).permit(:name, :description, :site_id, :uri, :parent_id, :content_type, :show_on_menu, content: [:body, :json, :url, :target_blank])
+    all_options = params.require(:site_page).fetch(:content, nil).try(:permit!)
+    params.require(:site_page).permit(:name, :description, :site_id, :uri, :parent_id, :content_type, :show_on_menu).merge(:content => all_options)
   end
 
 end

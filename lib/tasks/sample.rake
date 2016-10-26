@@ -13,7 +13,7 @@ def create_pages_templates
     {
       name: 'Map',
       description: 'Explore the map',
-      content: File.read(Dir.pwd + '/lib/tasks/map_config.json'),
+      content: {settings: File.read(Dir.pwd + '/lib/tasks/map_config.json')},
       uri: 'map',
       parent: home,
       content_type: ContentType::MAP,
