@@ -48,7 +48,7 @@
         <div class="c-wysiwyg">
           <%= f.fields_for :content, OpenStruct.new(site_page.content) do |ff| %>
               <%= ff.hidden_field :body, class: 'js-content' %>
-              <%= ff.cktext_area :json, class: 'js-content-json' %>
+              <%= ff.text_area :json, class: 'js-content-json' %>
           <% end %>
         </div>
       </div>
