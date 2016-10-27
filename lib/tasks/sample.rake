@@ -169,7 +169,7 @@ def create_pages_templates
       content: {body: '<p>Terms and privacy</p>'}
     }
   )
-    puts 'Template pages created successfully'
+  puts 'Template pages created successfully'
 end
 
 def create_sites
@@ -226,43 +226,19 @@ def create_heroku_staging_site_routes
 end
 
 def create_users
-  @user_admin = User.create(
+  @tiago_garcia_user = User.create(
     {
-      name: 'Admin User',
-      email: 'admin@example.com',
-      admin: true
+      email: 'tiago.garcia@vizzuality.com',
     }
   )
-  @user_manager = User.create(
+  @tiago_santos_user = User.create(
     {
-      name: 'Manager User',
-      email: 'manager@example.com',
-      admin: false
+      email: 'tiago.santos@vizzuality.com',
     }
   )
-
-  @user_one = User.create(
+  @clement_prodhomme_user = User.create(
     {
-      name: 'Test User One',
-      email: 'test-user-one@example.com',
-    }
-  )
-  @user_two = User.create(
-    {
-      name: 'Test User Two',
-      email: 'test-user-two@example.com',
-    }
-  )
-  @user_three = User.create(
-    {
-      name: 'Test User Three',
-      email: 'test-user-three@example.com',
-    }
-  )
-  @user_four = User.create(
-    {
-      name: 'Test User Four',
-      email: 'test-user-four@example.com',
+      email: 'clement.prodhomme@vizzuality.com',
     }
   )
   puts 'Users created successfully'
@@ -285,48 +261,39 @@ namespace :db do
 
     user_sites = [
       {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @base_site
       }, {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @site_two
       }, {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @site_three
       }, {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @site_four
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @staging_demo_site
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @site_two
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @site_three
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @site_four
       }, {
-        user: @user_two,
+        user: @clement_prodhomme_user,
         site: @site_two
       }, {
-        user: @user_two,
+        user: @clement_prodhomme_user,
         site: @site_three
       }, {
-        user: @user_two,
+        user: @clement_prodhomme_user,
         site: @site_four
-      }, {
-        user: @user_three,
-        site: @site_three
-      }, {
-        user: @user_three,
-        site: @site_four
-      }, {
-        user: @user_four,
-        site: @site_four
-      },
+      }
     ]
 
     # Create user site associations
