@@ -14,7 +14,6 @@
         redirect: true,
         currentTab: 0,
         tabs: [
-          { name: 'Dashboard', url: '' },
           { name: 'Sites', url: '/admin/sites/' },
           { name: 'Users', url: '/admin/users/' }
         ]
