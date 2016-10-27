@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resources :datasets, only: :index do
       get 'dataset'
     end
-    get '/', to: 'static_page#dashboard'
+    get '/', to: redirect('/admin/sites')
     resources :contexts
   end
 
