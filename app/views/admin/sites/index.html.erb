@@ -9,24 +9,21 @@
   </div>
 <% end %>
 
+<%= include_gon %>
+
 <div class="js-tabs"></div>
 
 <div class="l-site-list">
   <div class="wrapper">
-    <table class="c-table">
-      <tr class="header">
-        <th>Name</th>
-        <th>Template</th>
-        <th colspan="2"></th>
-      </tr>
-      <% @sites.each do |site| %>
-        <tr>
-          <td><%= site.name %></td>
-          <td><%= site.site_template.name %></td>
-          <td><%= link_to 'Edit', edit_admin_site_path(site), class: 'c-table-action-button -edit', title: 'Edit' %></td>
-          <td><%= link_to 'Delete', admin_site_path(site), method: :delete, data: { confirm: 'Are you sure?' }, class: 'c-table-action-button -delete', title: 'Delete' %></td>
-        </tr>
-      <% end %>
-    </table>
+
+    <div class="c-action-toolbar">
+      <ul class="buttons">
+      </ul>
+      <ul class="filters">
+        <li><div class="c-input-search js-table-search"></div></li>
+      </ul>
+    </div>
+
+    <div class="js-table"></div>
   </div>
 </div>

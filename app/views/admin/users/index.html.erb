@@ -9,24 +9,21 @@
   </div>
 <% end %>
 
+<%= include_gon %>
+
 <div class="js-tabs"></div>
 
 <div class="l-user-list">
   <div class="wrapper">
-    <table class="c-table">
-      <tr class="header">
-        <th>Name</th>
-        <th>Email</th>
-        <th colspan="2"></th>
-      </tr>
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= link_to 'Edit', edit_admin_user_path(user), class: 'c-table-action-button -edit', title: 'Edit' %></td>
-          <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'c-table-action-button -delete', title: 'Delete' %></td>
-        </tr>
-      <% end %>
-    </table>
+
+    <div class="c-action-toolbar">
+      <ul class="buttons">
+      </ul>
+      <ul class="filters">
+        <li><div class="c-input-search js-table-search"></div></li>
+      </ul>
+    </div>
+
+    <div class="js-table"></div>
   </div>
 </div>
