@@ -24,12 +24,11 @@ class Admin::SiteStepsController < AdminController
   def show
     if step == 'name'
       @site = current_site
-      gon.urlControllerId = URL_CONTROLLER_ID
-      gon.urlControllerName = URL_CONTROLLER_NAME
-      gon.urlArray = @site.routes.to_a
+      gon.global.urlControllerId = URL_CONTROLLER_ID
+      gon.global.urlControllerName = URL_CONTROLLER_NAME
+      gon.global.urlArray = @site.routes.to_a
     else
       @site = current_site
-      #@site.attributes = session[:site]
       if step == 'style'
         SiteSetting.create_color_settings @site
       end
@@ -44,7 +43,6 @@ class Admin::SiteStepsController < AdminController
       case step
         when 'name'
           @site = current_site
-          #@site.assign_attributes site_params
 
           # If the user pressed the save button
           if params[:commit] == SAVE
@@ -65,8 +63,6 @@ class Admin::SiteStepsController < AdminController
           end
 
         when 'users'
-          #session[:site] = session[:site].merge(site_params.to_h)
-          #@site = Site.new(session[:site])
           @site = current_site
           unless params[:site].blank?
             if params[:commit] == SAVE
@@ -91,8 +87,6 @@ class Admin::SiteStepsController < AdminController
           end
 
         when 'style'
-          #session[:site] = session[:site].merge(site_params.to_h)
-          #@site = Site.new(session[:site])
           @site = current_site
           if params[:commit] == SAVE
             if @site.save
@@ -150,7 +144,6 @@ class Admin::SiteStepsController < AdminController
 
   def current_site
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
-    #site.assign_attributes site_params if params[:site] && site_params
     session[:site].merge!(site_params.to_h) if params[:site] && site_params.to_h
     site.assign_attributes session[:site] if session[:site]
     site
