@@ -43,6 +43,9 @@ class Page < ApplicationRecord
     self.routes.map {|route| route.link(port) + self.url }
   end
 
+  def disableable?
+    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::DYNAMIC_INDICATOR_DASHBOARD].include? self.content_type
+  end
   private
 
   def regenerate_url
