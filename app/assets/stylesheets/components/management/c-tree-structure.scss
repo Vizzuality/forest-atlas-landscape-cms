@@ -126,16 +126,20 @@
           display: block;
           width: 16px;
           height: 11px;
+          border: 0;
           background: image-url('icons/eye-icon.svg') no-repeat center center;
           text-indent: -10000px; // For accessibility, the text should stay visible
+          cursor: pointer;
         }
 
         > .view-button-slashed {
           display: block;
           width: 16px;
           height: 16px;
+          border: 0;
           background: image-url('icons/slashed-eye-icon.svg') no-repeat center center;
           text-indent: -10000px; // For accessibility, the text should stay visible
+          cursor: pointer;
         }
 
         > .edit-button {

@@ -7,16 +7,16 @@
           <span>{{name}}</span>
           <ul class="action-buttons">
             {{#if disableable}}
-                {{#if enabled}}
-                    <li><a href="" class="view-button js-disable">Disable</a></li>
-                {{else}}
-                    <li><a href="" class="view-button-slashed js-enable">Enable</a></li>
-                {{/if}}
+              {{#if enabled}}
+                  <li><button class="view-button js-disable">Disable</a></button>
+              {{else}}
+                  <li><button class="view-button-slashed js-enable">Enable</a></button>
               {{/if}}
+            {{/if}}
             <li><a href="{{editUrl}}" class="edit-button">Edit</a></li>
-              {{#if disableable}}
-                <li><a href="{{deleteUrl}}" class="delete-button">Delete</a></li>
-              {{/if}}
+            {{#if disableable}}
+              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{deleteUrl}}" class="delete-button">Delete</a></li>
+            {{/if}}
           </ul>
         </div>
         {{#if children}}
@@ -33,5 +33,5 @@
 {{/inline}}
 
 <div class="c-tree-structure">
-      {{> item pages=pages firstCall=true}}
+  {{> item pages=pages firstCall=true}}
 </div>
