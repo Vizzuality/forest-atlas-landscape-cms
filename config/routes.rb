@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  mount Ckeditor::Engine => '/ckeditor'
-  devise_for :users
-
   namespace :admin do
     resources :sites do
       member do
@@ -29,10 +26,15 @@ Rails.application.routes.draw do
         end
       end
       get '/structure', to: 'sites#structure'
+      put :update_structure
     end
     get '/', to: 'static_page#dashboard'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
+
+  # Auth
+  get 'auth/login', to: 'auth#login'
+  post 'auth/logout', to: 'auth#logout'
 
    DynamicRouter.load
 end

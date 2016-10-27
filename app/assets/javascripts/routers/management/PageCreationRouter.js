@@ -1,10 +1,13 @@
 ((function (App) {
   'use strict';
 
+  /* eslint-disable no-unused-vars */
   var OPEN_CONTENT = 1;
   var ANALYSIS_DASHBOARD = 2;
   var DYNAMIC_INDICATOR = 3;
   var LINK = 6;
+  var STATIC_CONTENT = 7;
+  /* eslint-enable no-unused-vars */
 
   App.Router.ManagementPageCreation = Backbone.Router.extend({
 

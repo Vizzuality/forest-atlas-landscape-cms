@@ -10,13 +10,13 @@
 #  url          :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  content      :text
 #  content_type :integer
 #  type         :text
-#  content_js   :string
 #  enabled      :boolean
 #  parent_id    :integer
 #  position     :integer
+#  content      :json
+#  show_on_menu :boolean          default(TRUE)
 #
 
 class Page < ApplicationRecord
@@ -43,6 +43,9 @@ class Page < ApplicationRecord
     self.routes.map {|route| route.link(port) + self.url }
   end
 
+  def disableable?
+    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::DYNAMIC_INDICATOR_DASHBOARD].include? self.content_type
+  end
   private
 
   def regenerate_url

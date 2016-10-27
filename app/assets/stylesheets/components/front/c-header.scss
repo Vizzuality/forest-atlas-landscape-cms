@@ -1,11 +1,13 @@
 .c-header {
   position: relative;
+  font-family: $font-family-1; // Needed as the map CSS overrides it
   z-index: 5;
 
   @if $theme == 2 {
     color: $color-3;
   } @else {
     color: $color-1;
+    font-size: $font-size-normal;
   }
 
   a {
@@ -217,7 +219,11 @@
         text-transform: uppercase;
 
         &.-active {
-          background-color: grey;
+          @if $theme == 2 {
+            background-color: rgba($color-3, .1);
+          } @else {
+            background-color: rgba($color-1, .1);
+          }
         }
 
         // If the menu has just one element (such as the lang selector), we don't want the border
@@ -333,6 +339,15 @@
             }
           }
 
+          @if $theme == 2 {
+            &.-active {
+              > ul {
+                li:first-of-type {
+                  background-color: rgba($color-3, .1);
+                }
+              }
+            }
+          }
         }
       }
 

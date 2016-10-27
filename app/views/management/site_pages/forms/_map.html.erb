@@ -1,30 +1,42 @@
-<%= form_for(form_for_path) do |f| %>
-    <% if site_page.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
-
-          <ul>
-            <% site_page.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
+<% content_for :extended_header do %>
+    <div class="c-extended-header -high">
+      <div class="wrapper">
+        <div class="description">
+          <h1>Map</h1>
+          <p>Update this JSON to update the map's look and features.</p>
         </div>
-    <% end %>
-
-    <fieldset class="form-group row">
-      <%= f.label 'Map settings', class: 'col-sm-2 form-control-label' %>
-      <div class="col-sm-10">
-        <div class="c-content">
-          <%= f.text_area :content %>
-        </div>
-      </div>
-    </fieldset>
-
-    <div class="form-group row">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit class: 'js-submit btn btn-primary' %>
-        <%= link_to 'Show', management_site_page_path(site_page), class: 'btn btn-secondary' unless site_page.id.nil? %>
-        <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'btn btn-secondary' %>
+        <div></div>
       </div>
     </div>
+<% end %>
+
+<div class="l-page-creation -map">
+  <div class="wrapper">
+    <%= form_for(form_for_path, :html => {:class => 'js-form'}) do |f| %>
+        <% if site_page.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
+
+              <ul>
+                <% site_page.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="c-fieldset">
+          <%= f.fields_for :content, OpenStruct.new(site_page.content) do |ff| %>
+              <%= ff.text_area :settings, class: 'settings' %>
+              <%= ff.label 'Map settings', class: 'col-sm-2 form-control-label' %>
+          <% end %>
+        </div>
+
+    <% end %>
+  </div>
+</div>
+
+<% content_for :action_bar do %>
+    <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
+    <button type="submit" class="c-button js-submit">Update</button>
 <% end %>

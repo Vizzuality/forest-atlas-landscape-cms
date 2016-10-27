@@ -1,47 +1,51 @@
 <% content_for :extended_header do %>
-  <div class="c-extended-header -high">
-    <div class="wrapper">
-      <div class="description">
-        <h1>External link</h1>
-        <p>Please give the link the name to appear in the menu.</p>
+    <div class="c-extended-header -high">
+      <div class="wrapper">
+        <div class="description">
+          <h1>External link</h1>
+          <p>Please give the link the name to appear in the menu.</p>
+        </div>
+        <div></div>
       </div>
-      <div></div>
     </div>
-  </div>
 <% end %>
 
 <div class="l-page-creation -link">
-  <%= form_for(form_for_path, :html => { :class => 'js-form' }) do |f| %>
-    <% if site_page.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
+  <%= form_for(form_for_path, :html => {:class => 'js-form'}) do |f| %>
+      <% if site_page.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
 
-        <ul>
-          <% site_page.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+            <ul>
+              <% site_page.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
 
-    <%= f.hidden_field :content_type %>
+      <%= f.hidden_field :content_type %>
 
-    <div class="wrapper">
-      <div class="c-fieldset">
-        <%= f.text_field :name, placeholder: 'Link\'s name', id: 'name' %>
-        <%= f.label 'Link\'s name', for: 'name' %>
-      </div>
-      <div class="c-fieldset">
+      <div class="wrapper">
+        <div class="c-fieldset">
+          <%= f.text_field :name, placeholder: 'Link\'s name', id: 'name' %>
+          <%= f.label 'Link\'s name', for: 'name' %>
+        </div>
         <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
+          <div class="c-fieldset">
             <%= ff.text_field :url, placeholder: 'URL', id: 'url' %>
             <%= ff.label 'URL', for: 'url' %>
+          </div>
+          <div class="c-checkbox">
+            <%= ff.check_box :target_blank, id: 'target_blank' %>
+            <%= ff.label 'Open in separate tab', for: 'target_blank' %>
+          </div>
         <% end %>
       </div>
-    </div>
   <% end %>
 </div>
 
 <% content_for :action_bar do %>
-  <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-  <button type="submit" class="c-button js-submit"><%= (!defined?(edit) || edit == false) ? 'Create' : 'Update' %></button>
+    <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
+    <button type="submit" class="c-button js-submit"><%= (!defined?(edit) || edit == false) ? 'Create' : 'Update' %></button>
 <% end %>

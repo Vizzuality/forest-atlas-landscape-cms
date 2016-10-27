@@ -22,9 +22,12 @@
 //= require jquery-ui
 //= require jquery-nested-sortable
 //= require sir-trevor
+//= require fuse.js/fuse
+//= require object-assign-polyfill
 
 //= require_self
 
+// = require_tree ./helpers
 // = require_tree ./routers/management
 // = require_tree ./templates
 // = require_tree ./blocks

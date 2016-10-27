@@ -1,13 +1,22 @@
 {{#*inline "item"}}
   <ul {{#if firstCall}}class="js-tree-root"{{/if}}>
     {{#each pages}}
-      <li class="js-draggable" id="page-{{id}}" data-name="{{name}}">
-        <div class="page js-handle">
+      <li class="js-draggable" id="page-{{id}}" data-name="{{name}}" data-parent="{{parent_id}}"
+          data-position="{{position}}" data-enabled="{{enabled}}" data-type="{{type}}">
+        <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">
           <span>{{name}}</span>
           <ul class="action-buttons">
-            <li><a href="" class="view-button">View</a></li>
-            <li><a href="" class="edit-button">Edit</a></li>
-            <li><a href="" class="delete-button">Delete</a></li>
+            {{#if disableable}}
+              {{#if enabled}}
+                  <li><button class="view-button js-disable">Disable</a></button>
+              {{else}}
+                  <li><button class="view-button-slashed js-enable">Enable</a></button>
+              {{/if}}
+            {{/if}}
+            <li><a href="{{editUrl}}" class="edit-button">Edit</a></li>
+            {{#if disableable}}
+              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{deleteUrl}}" class="delete-button">Delete</a></li>
+            {{/if}}
           </ul>
         </div>
         {{#if children}}
@@ -15,23 +24,14 @@
         {{/if}}
       </li>
     {{/each}}
-    <li class="js-not-nestable">
-      <button type="button" class="add-page-button">Add page</button>
-    </li>
+    {{#unless firstCall}}
+      <li class="js-not-nestable">
+        <button type="button" class="add-page-button">Add page</button>
+      </li>
+    {{/unless}}
   </ul>
 {{/inline}}
 
 <div class="c-tree-structure">
-  <ul>
-    <li>
-      <div class="page -site-title">
-        <span>Site's Title</span>
-        <ul class="action-buttons">
-          <li><a href="" class="view-button">View</a></li>
-          <li><a href="" class="edit-button">Edit</a></li>
-        </ul>
-      </div>
-      {{> item pages=pages firstCall=true}}
-    </li>
-  </ul>
+  {{> item pages=pages firstCall=true}}
 </div>

@@ -13,11 +13,9 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'dotenv-rails', '~> 2.1'
 
-gem 'devise'
 gem 'closure_tree'
 gem 'bootstrap', '~> 4.0.0.alpha3'
-gem 'ckeditor'
-gem 'paperclip', "~> 5.0.0"
+gem 'paperclip', '~> 5.0.0'
 gem 'will_paginate', '~> 3.1.0'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'handlebars_assets'
@@ -35,6 +33,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-leaflet', '0.7.7'
   gem 'rails-assets-backbone'
   gem 'rails-assets-jquery-ui'
+  gem 'rails-assets-fuse.js'
 end
 
 # Use ActiveModel has_secure_password
