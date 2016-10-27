@@ -173,11 +173,16 @@ def create_pages_templates
 end
 
 def create_sites
-  @staging_demo_site = Site.create!({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template})
-  @site_two = Site.create!({name: 'Site Two', site_template: @fa_template})
-  @site_three = Site.create!({name: 'Site Three', site_template: @la_template})
-  @site_four = Site.create!({name: 'Site Four', site_template: @la_template})
-  @base_site = Site.create!({name: 'Base site', site_template: @fa_template})
+  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template})
+  @staging_demo_site.save!(validate: false)
+  @site_two = Site.new({name: 'Site Two', site_template: @fa_template})
+  @site_two.save!(validate: false)
+  @site_three = Site.new({name: 'Site Three', site_template: @la_template})
+  @site_three.save!(validate: false)
+  @site_four = Site.new({name: 'Site Four', site_template: @la_template})
+  @site_four.save!(validate: false)
+  @base_site = Site.new({name: 'Base site', site_template: @fa_template})
+  @base_site.save!(validate: false)
   puts 'Base site created successfully'
 end
 
