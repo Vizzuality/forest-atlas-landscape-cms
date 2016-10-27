@@ -4,7 +4,9 @@
   </button>
   <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
     <%= link_to 'Site Administration', admin_url, class: 'navbar-brand'%>
-    <% if user_signed_in? %>
+    <% if user_can? 'access_admin'
+         ## TODO: Is this header the same for admin and management?
+         ## Signed in is not enough to display it. It should be role specific. %>
         <ul class="nav navbar-nav">
           <li class="nav-item"><%= link_to 'Content Management ', management_path, {class: 'nav-link'} %></li>
           <li class="nav-item"><%= link_to 'Users', admin_users_path, {class: current_class('admin/users') + 'nav-link'} %></li>
@@ -16,7 +18,7 @@
           <li class="nav-item"><%= link_to 'Contexts', admin_contexts_path, {class: current_class('admin/contexts') + 'nav-link'} %></li>
         </ul>
         <ul class="nav navbar-nav pull-xs-right">
-          <li class="nav-item"><%= link_to 'Logout', destroy_user_session_path, {class: 'nav-link', :method => :delete} %></li>
+          <li class="nav-item"><%= link_to 'Logout', auth_logout_path, {class: 'nav-link', :method => :delete} %></li>
         </ul>
     <% end %>
   </div>

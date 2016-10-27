@@ -28,7 +28,7 @@
           <%= link_to @site.name, {controller: 'management/site_pages', action: 'index', site_slug: @site.slug} %>
         </h2>
     <% end %>
-    <% if user_signed_in? %>
+    <% if user_can? 'access_management' %>
         <ul class="nav navbar-nav">
         </ul>
         <ul class="nav navbar-nav pull-xs-right">
