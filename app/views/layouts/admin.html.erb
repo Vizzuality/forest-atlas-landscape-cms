@@ -8,10 +8,9 @@
   <%= javascript_include_tag 'admin', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
-<div class="container-fluid">
   <%= render 'admin/header' %>
+  <%= yield :extended_header %>
   <%= render 'shared/messages' %>
   <%= yield %>
-</div>
 </body>
 </html>

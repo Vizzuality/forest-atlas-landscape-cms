@@ -16,6 +16,7 @@
 //= require underscore
 //= require backbone
 //= require handlebars
+//= require fuse.js/fuse
 //= require object-assign-polyfill
 
 //= require_self

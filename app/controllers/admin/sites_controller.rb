@@ -7,6 +7,15 @@ class Admin::SitesController < AdminController
   def index
     @sites = Site.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
 
+    gon.sites = @sites.map do |site|
+      {
+        'title' => {'value' => site.name, 'searchable' => true, 'sortable' => true},
+        'template' => {'value' => site.site_template.name, 'searchable' => true, 'sortable' => true},
+        'edit' => {'value' => edit_admin_site_path(site), 'method' => 'get'},
+        'delete' => {'value' => admin_site_path(site), 'method' => 'delete'}
+      }
+    end
+
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @sites }

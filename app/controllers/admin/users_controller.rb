@@ -6,6 +6,15 @@ class Admin::UsersController < AdminController
   def index
     @users = User.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
 
+    gon.users = @users.map do |user|
+      {
+        'name' => {'value' => user.name, 'searchable' => true, 'sortable' => true},
+        'email' => {'value' => user.email, 'searchable' => true, 'sortable' => true},
+        'edit' => {'value' => edit_admin_user_path(user), 'method' => 'get'},
+        'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
+      }
+    end
+
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @users }
