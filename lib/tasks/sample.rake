@@ -225,8 +225,6 @@ def create_users
     {
       name: 'Admin User',
       email: 'admin@example.com',
-      password: 'password',
-      password_confirmation: 'password',
       admin: true
     }
   )
@@ -234,8 +232,6 @@ def create_users
     {
       name: 'Manager User',
       email: 'manager@example.com',
-      password: 'password',
-      password_confirmation: 'password',
       admin: false
     }
   )
@@ -244,32 +240,24 @@ def create_users
     {
       name: 'Test User One',
       email: 'test-user-one@example.com',
-      password: 'password',
-      password_confirmation: 'password'
     }
   )
   @user_two = User.create(
     {
       name: 'Test User Two',
       email: 'test-user-two@example.com',
-      password: 'password',
-      password_confirmation: 'password'
     }
   )
   @user_three = User.create(
     {
       name: 'Test User Three',
       email: 'test-user-three@example.com',
-      password: 'password',
-      password_confirmation: 'password'
     }
   )
   @user_four = User.create(
     {
       name: 'Test User Four',
       email: 'test-user-four@example.com',
-      password: 'password',
-      password_confirmation: 'password'
     }
   )
   puts 'Users created successfully'
