@@ -2,7 +2,7 @@ class Management::StaticPageController < ManagementController
 
   # GET /management
   def dashboard
-    if (current_user.admin?)
+    if user_can?('access_management')
       @sites = Site
     else
       @sites = Site.joins(:users).where(users: {id: current_user.id})

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   # Auth
   get 'auth/login', to: 'auth#login'
-  get 'auth/logout', to: 'auth#logout'
+  post 'auth/logout', to: 'auth#logout'
 
    DynamicRouter.load
 end
