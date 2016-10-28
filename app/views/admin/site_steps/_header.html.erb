@@ -3,7 +3,7 @@
     <ul class="steps">
       <% @site.form_steps.each do |site_step| %>
         <li>
-          <%= link_to site_step.capitalize, wizard_path(site_step), class: (disable_button?(site_step) ? '-disabled' : (active_button?(site_step) ? '-active' : '')) %>
+          <%= link_to site_step.capitalize, wizard_path(site_step), 'tabindex': disable_button?(site_step) ? '-1' : '0', class: (disable_button?(site_step) ? '-disabled' : (active_button?(site_step) ? '-active' : '')) %>
         </li>
       <% end %>
     </ul>
