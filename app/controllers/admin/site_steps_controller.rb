@@ -8,6 +8,7 @@ class Admin::SiteStepsController < AdminController
 
   steps *Site.form_steps
   helper_method :disable_button?
+  helper_method :active_button?
 
   # This action cleans the session
   def new
@@ -153,10 +154,21 @@ class Admin::SiteStepsController < AdminController
   def disable_button? (current_step)
     # When is editing the site
     if @site.id
+      return false
+      # When is creating the site
+    else
+      return steps.find_index(step) < steps.find_index(current_step)
+    end
+  end
+
+  # Checks if the navigation buttons should be active, according to the current step
+  def active_button? (current_step)
+    # When is editing the site
+    if @site.id
       return step == current_step
       # When is creating the site
     else
-      return steps.find_index(step) <= steps.find_index(current_step)
+      return steps.find_index(step) === steps.find_index(current_step)
     end
   end
 
