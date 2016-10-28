@@ -13,6 +13,12 @@
     text-transform: uppercase;
   }
 
+  hr {
+    margin: 30px 0;
+    border: 0;
+    border-bottom: 1px solid $color-7;
+  }
+
   .intro {
     max-width: 520px;
     margin: 0 auto 40px;
@@ -94,11 +100,13 @@
         }
       }
     }
+  }
 
-    hr {
-      margin: 40px 0 30px;
-      border: 0;
-      border-bottom: 1px solid $color-7;
+  &.-settings {
+    .c-centered-input {
+      justify-content: space-between;
+      width: 400px;
+      margin: 0 auto 30px;
     }
   }
 

@@ -9,9 +9,9 @@
       <button type="button" class="remove-url js-remove-url" data-id="{{@index}}">Remove</button>
     </div>
   {{/each}}
-    <div>
-      <label for="url-0">{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}</label>
-      <input type="url" value="" placeholder="{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}" name="{{inputName}}[{{urls.length}}][host]" id="url-0">
-    </div>
-    <button type="button" class="add-url js-add-url">ADD URL</button>
+  <div>
+    <label for="url-0">{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}</label>
+    <input type="url" value="" placeholder="{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}" name="{{inputName}}[{{urls.length}}][host]" id="url-0">
+  </div>
+  <button type="button" class="add-url js-add-url">ADD URL</button>
 </div>
