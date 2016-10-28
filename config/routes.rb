@@ -1,12 +1,9 @@
 Rails.application.routes.draw do
   namespace :admin do
     resources :sites, param: :slug do
-      member do
-        get :display
-      end
       resources :site_steps, only: [:show, :update, :edit]
     end
-    resources :site_steps, only: [:show, :update, :index, :new]
+    resources :site_steps, only: [:show, :update, :new]
     resources :users
     resources :routes
     resources :site_templates

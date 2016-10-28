@@ -12,7 +12,7 @@ class Admin::SiteStepsController < AdminController
   # This action cleans the session
   def new
     session[:site] = {}
-    redirect_to admin_site_steps_path(id: :name)
+    redirect_to admin_site_step_path(id: :name)
   end
 
   # This action cleans the session
