@@ -4,7 +4,7 @@ class Admin::SiteStepsController < AdminController
   URL_CONTROLLER_ID =    'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME =  'site[routes_attributes]'.freeze
   SAVE =                 'SAVE CHANGES'.freeze
-  CONTINUE =              'CONTINUE'.freeze
+  CONTINUE =             'CONTINUE'.freeze
 
   steps *Site.form_steps
   helper_method :disable_button?
