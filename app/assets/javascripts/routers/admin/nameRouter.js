@@ -15,7 +15,7 @@
           id: url.id
         };
       });
-      new App.View.UrlsView({
+      new App.View.UrlsInputView({
         el: '.js-urls',
         collection: new Backbone.Collection(formattedUrls)
       });
