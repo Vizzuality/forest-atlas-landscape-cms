@@ -39,6 +39,8 @@ module PermissionsHelper
       user_data = JSON.parse response.body
 
       session[:current_user] = user_data
+      email = user_data['email']
+      User.find_by!(:email => email)
     else
       return false
     end

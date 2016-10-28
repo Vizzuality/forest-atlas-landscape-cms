@@ -1,5 +1,4 @@
 ((function (App) {
-
   'use strict';
 
   App.Router.AdminSettings = Backbone.Router.extend({

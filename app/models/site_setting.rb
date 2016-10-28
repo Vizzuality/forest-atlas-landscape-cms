@@ -16,10 +16,9 @@
 #
 
 class SiteSetting < ApplicationRecord
-  belongs_to :site
+  belongs_to :site, optional: true
 
-  NAMES = %w[theme background logo color flag]
-  THEMES = [1, 2]
+  NAMES = %w[logo_image logo_background color flag]
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
@@ -29,29 +28,24 @@ class SiteSetting < ApplicationRecord
   # All fields must have a name and position
   validates :name, :position, presence: :true
   validates :name, inclusion: { in: NAMES }
-  validates :value, inclusion: { in: THEMES } if name == 'theme'
 
   has_attached_file :image,
-                    styles: lambda { |attachment| { thumb: (attachment.instance.name == 'logo' ? '100x100#' : '500x200#') }},
+                    styles: {thumb: '100x100#'},
                     default_url: ':style/missing.png'
 
   validate :validate_image
 
   validates_attachment :image,
                        content_type: {content_type: %w[image/jpg image/jpeg image/png]},
-                       styles: lambda {|attachment| { thumb: (attachment.instance.value == 'logo' ? '100x100#' : '500x200#') }}
+                       styles: {thumb: '100x100#'}
 
 
-  def self.theme(site_id)
-    SiteSetting.where(name: 'theme', site_id: site_id)
+  def self.logo_background(site_id)
+    SiteSetting.where(name: 'logo_background', site_id: site_id)
   end
 
-  def self.background(site_id)
-    SiteSetting.where(name: 'background', site_id: site_id)
-  end
-
-  def self.logo(site_id)
-    SiteSetting.where(name: 'logo', site_id: site_id)
+  def self.logo_image(site_id)
+    SiteSetting.where(name: 'logo_image', site_id: site_id)
   end
 
   def self.color(site_id)
@@ -70,10 +64,26 @@ class SiteSetting < ApplicationRecord
     write_attribute(:value, colors.join(' '))
   end
 
+  # Creates the color setting for a site
+  def self.create_color_settings site
+    if site.site_settings.length < 1
+      site.site_settings.new(name: 'color', value: '#000000', position: 1)
+    end
+  end
+
+  # Creates all the additional settings for a site
+  def self.create_additional_settings site
+    unless site.site_settings.exists?({name: 'logo_background'})
+      site.site_settings.new(name: 'logo_image', value: '', position: 2)
+      site.site_settings.new(name: 'logo_background', value: '#000000', position: 3)
+      site.site_settings.new(name: 'flag', value: '#000000', position: 4)
+    end
+  end
+
   private
 
   def validate_image
-    if (name == 'background' || name == 'logo') && image.blank?
+    if name == 'logo_image' && image.blank?
       errors.add :key, 'You must update an image for the ' + name
       return false
     else
@@ -82,6 +92,6 @@ class SiteSetting < ApplicationRecord
   end
 
   def has_required_value?
-    %w[theme color].include?(name)
+    %w[color].include?(name)
   end
 end

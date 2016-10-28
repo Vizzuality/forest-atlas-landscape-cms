@@ -1,0 +1,37 @@
+<%= render partial: 'header'%>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
+<%= include_gon %>
+
+<h1>STYLE</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+
+    <fieldset class="form-group row">
+      <%= f.label :template_id, class: 'col-sm-2 form-control-label' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :site_template_id, SiteTemplate.all, :id, :name, {}, {:class => 'form-control'} %>
+      </div>
+    </fieldset>
+
+    <%= f.fields_for :site_settings, f.object.site_settings.select{|v| v.name == 'color'} do |color_form| %>
+    <fieldset class="form-group row">
+      <label class="col-sm-2 form-control-label">THEME COLOR</label>
+      <div class="col-sm-10">
+        <%= color_form.hidden_field :id %>
+        <%= color_form.hidden_field :name, value: 'color' %>
+        <%= color_form.hidden_field :position, value: '1' %>
+        <%= color_form.color_field :value %>
+      </div>
+    </fieldset>
+<% end %>
+
+    <p>Press Enter or click "Continue"</p>
+
+    <%= render partial: 'footer', locals: { f: f } %>
+<% end %>
+
+<%= console if Rails.env.develop? %>
+
+
+

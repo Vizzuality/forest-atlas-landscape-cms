@@ -1,10 +1,9 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resources :sites do
-      member do
-        get :display
-      end
+    resources :sites, param: :slug do
+      resources :site_steps, only: [:show, :update, :edit]
     end
+    resources :site_steps, only: [:show, :update, :new]
     resources :users
     resources :routes
     resources :site_templates
@@ -14,7 +13,7 @@ Rails.application.routes.draw do
     resources :datasets, only: :index do
       get 'dataset'
     end
-    get '/', to: 'static_page#dashboard'
+    get '/', to: redirect('/admin/sites')
     resources :contexts
   end
 

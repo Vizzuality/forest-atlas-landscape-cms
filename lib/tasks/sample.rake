@@ -169,15 +169,20 @@ def create_pages_templates
       content: {body: '<p>Terms and privacy</p>'}
     }
   )
-    puts 'Template pages created successfully'
+  puts 'Template pages created successfully'
 end
 
 def create_sites
-  @staging_demo_site = Site.create!({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template})
-  @site_two = Site.create!({name: 'Site Two', site_template: @fa_template})
-  @site_three = Site.create!({name: 'Site Three', site_template: @la_template})
-  @site_four = Site.create!({name: 'Site Four', site_template: @la_template})
-  @base_site = Site.create!({name: 'Base site', site_template: @fa_template})
+  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template, slug: 'heroku-staging-for-fa-lsa-cms'})
+  @staging_demo_site.save!(validate: false)
+  @site_two = Site.new({name: 'Site Two', site_template: @fa_template, slug: 'site-two'})
+  @site_two.save!(validate: false)
+  @site_three = Site.new({name: 'Site Three', site_template: @la_template, slug: 'site-three'})
+  @site_three.save!(validate: false)
+  @site_four = Site.new({name: 'Site Four', site_template: @la_template, slug: 'site-four'})
+  @site_four.save!(validate: false)
+  @base_site = Site.new({name: 'Base site', site_template: @fa_template, slug: 'base-site'})
+  @base_site.save!(validate: false)
   puts 'Base site created successfully'
 end
 
@@ -221,55 +226,19 @@ def create_heroku_staging_site_routes
 end
 
 def create_users
-  @user_admin = User.create(
+  @tiago_garcia_user = User.create(
     {
-      name: 'Admin User',
-      email: 'admin@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      admin: true
+      email: 'tiago.garcia@vizzuality.com',
     }
   )
-  @user_manager = User.create(
+  @tiago_santos_user = User.create(
     {
-      name: 'Manager User',
-      email: 'manager@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      admin: false
+      email: 'tiago.santos@vizzuality.com',
     }
   )
-
-  @user_one = User.create(
+  @clement_prodhomme_user = User.create(
     {
-      name: 'Test User One',
-      email: 'test-user-one@example.com',
-      password: 'password',
-      password_confirmation: 'password'
-    }
-  )
-  @user_two = User.create(
-    {
-      name: 'Test User Two',
-      email: 'test-user-two@example.com',
-      password: 'password',
-      password_confirmation: 'password'
-    }
-  )
-  @user_three = User.create(
-    {
-      name: 'Test User Three',
-      email: 'test-user-three@example.com',
-      password: 'password',
-      password_confirmation: 'password'
-    }
-  )
-  @user_four = User.create(
-    {
-      name: 'Test User Four',
-      email: 'test-user-four@example.com',
-      password: 'password',
-      password_confirmation: 'password'
+      email: 'clement.prodhomme@vizzuality.com',
     }
   )
   puts 'Users created successfully'
@@ -292,48 +261,39 @@ namespace :db do
 
     user_sites = [
       {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @base_site
       }, {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @site_two
       }, {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @site_three
       }, {
-        user: @user_admin,
+        user: @tiago_garcia_user,
         site: @site_four
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @staging_demo_site
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @site_two
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @site_three
       }, {
-        user: @user_one,
+        user: @tiago_santos_user,
         site: @site_four
       }, {
-        user: @user_two,
+        user: @clement_prodhomme_user,
         site: @site_two
       }, {
-        user: @user_two,
+        user: @clement_prodhomme_user,
         site: @site_three
       }, {
-        user: @user_two,
+        user: @clement_prodhomme_user,
         site: @site_four
-      }, {
-        user: @user_three,
-        site: @site_three
-      }, {
-        user: @user_three,
-        site: @site_four
-      }, {
-        user: @user_four,
-        site: @site_four
-      },
+      }
     ]
 
     # Create user site associations
