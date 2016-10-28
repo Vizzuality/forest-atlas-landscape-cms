@@ -1,0 +1,34 @@
+.c-centered-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  label {
+    display: inline-block;
+    margin-right: 55px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+  }
+
+  input {
+    height: 44px;
+    padding: 0 15px;
+    border: 1px solid $color-7;
+    border-radius: 4px;
+    background: transparent;
+    line-height: 44px;
+
+    &[type="color"] {
+      min-width: 100px;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 10px 0;
+      }
+
+      &::-webkit-color-swatch {
+        padding: 1px;
+      }
+    }
+  }
+}
