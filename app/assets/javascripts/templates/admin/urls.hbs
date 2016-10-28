@@ -1,7 +1,7 @@
 <ul class="c-url-colors">
     {{#each urls}}
         <li>
-            <input type="text" value="{{url}}" placeholder="https://www.my-site.com" data-id="{{@index}}" name="{{inputName}}[{{@index}}][host]">
+            <input type="text" value="{{url}}" placeholder="https://www.my-site.com" data-id="{{@index}}" name="{{../inputName}}[{{@index}}][host]">
             <button type="button" class="js-remove-url" data-id="{{@index}}">Remove Url</button>
         </li>
     {{/each}}
