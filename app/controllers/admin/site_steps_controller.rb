@@ -24,9 +24,9 @@ class Admin::SiteStepsController < AdminController
   def show
     if step == 'name'
       @site = current_site
-      gon.global.urlControllerId = URL_CONTROLLER_ID
-      gon.global.urlControllerName = URL_CONTROLLER_NAME
-      gon.global.urlArray = @site.routes.to_a
+      gon.global.url_controller_id = URL_CONTROLLER_ID
+      gon.global.url_controller_name = URL_CONTROLLER_NAME
+      gon.global.url_array = @site.routes.to_a
     else
       @site = current_site
       if step == 'style'

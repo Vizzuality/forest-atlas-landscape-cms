@@ -8,7 +8,17 @@
     },
 
     index: function () {
-      new App.View.UrlsView({ el: '.js-urls' });
+      var formattedUrls = (window.gon && window.gon.global) ? gon.global.urlArray : [];
+      formattedUrls = formattedUrls.map(function (url) {
+        return {
+          url: url.host,
+          id: url.id
+        };
+      });
+      new App.View.UrlsView({
+        el: '.js-urls',
+        collection: new Backbone.Collection(formattedUrls)
+      });
     }
   });
 })(this.App));

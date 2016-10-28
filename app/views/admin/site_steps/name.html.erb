@@ -1,7 +1,6 @@
 <%= render partial: 'header'%>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-<%#= include_gon(init: true) %>
-<%= Gon::Base.render_data(camel_case: true, init: false) %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <h1>SITE NAME</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
