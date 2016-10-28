@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def layout_by_resource
-    if @current_user
+    if @current_user && !self.is_a?(SitePageController)
       "admin"
     else
       "application"

@@ -241,6 +241,11 @@ def create_users
       email: 'clement.prodhomme@vizzuality.com',
     }
   )
+  @thomas_maschler_user = User.create(
+    {
+      email: 'tmaschler@wri.org',
+    }
+  )
   puts 'Users created successfully'
 end
 
