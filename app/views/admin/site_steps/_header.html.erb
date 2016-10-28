@@ -1,3 +1,11 @@
-<% @site.form_steps.each do |site_step| %>
-    <%= link_to site_step.capitalize, wizard_path(site_step), class: 'btn btn-primary', disabled: disable_button?(site_step)%>
-<% end %>
+<div class="c-steps-bar">
+  <div class="wrapper">
+    <ul class="steps">
+      <% @site.form_steps.each do |site_step| %>
+        <li>
+          <%= link_to site_step.capitalize, wizard_path(site_step), class: (disable_button?(site_step) ? '-disabled' : (active_button?(site_step) ? '-active' : '')) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

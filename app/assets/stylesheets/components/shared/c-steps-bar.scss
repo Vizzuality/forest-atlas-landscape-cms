@@ -1,0 +1,33 @@
+.c-steps-bar {
+  padding: 12px 0;
+  background-color: $color-9;
+
+  .wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .steps {
+    border: 1px solid rgba($color-2, .3);
+    border-radius: 40px;
+
+    a {
+      display: block;
+      padding: 0 40px;
+      color: $color-3;
+      line-height: 27px;
+
+      &.-active {
+        border-radius: 40px;
+        background: $color-3;
+        color: $color-4;
+        pointer-events: none;
+      }
+
+      &.-disabled {
+        opacity: .3;
+        pointer-events: none;
+      }
+    }
+  }
+}
