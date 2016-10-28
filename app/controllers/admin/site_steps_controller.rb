@@ -45,7 +45,7 @@ class Admin::SiteStepsController < AdminController
           @site = current_site
 
           # If the user pressed the save button
-          if params[:commit] == SAVE
+          if save_button?
             if @site.save
               redirect_to admin_sites_path
             else
@@ -65,7 +65,7 @@ class Admin::SiteStepsController < AdminController
         when 'users'
           @site = current_site
           unless params[:site].blank?
-            if params[:commit] == SAVE
+            if save_button?
               if @site.save
                 redirect_to admin_sites_path
               else
@@ -88,7 +88,7 @@ class Admin::SiteStepsController < AdminController
 
         when 'style'
           @site = current_site
-          if params[:commit] == SAVE
+          if save_button?
             if @site.save
               redirect_to admin_sites_path
             else
@@ -158,5 +158,9 @@ class Admin::SiteStepsController < AdminController
     else
       return steps.find_index(step) <= steps.find_index(current_step)
     end
+  end
+
+  def save_button?
+    params[:button] == SAVE
   end
 end
