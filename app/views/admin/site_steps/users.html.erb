@@ -1,13 +1,24 @@
 <%= render partial: 'header'%>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
 
-<h1>USERS</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
-
-<%= form_for @site, url: wizard_path, method: :put do |f| %>
-    <% User.all.each_with_index do |user, i| %>
-        <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user) %>
-        <%= user.name %>
+<div class="l-site-creation -users">
+  <div class="wrapper">
+    <h1>Users</h1>
+    <p class="intro">Choose which user can manage the site.</p>
+    <%= form_for @site, url: wizard_path, method: :put do |f| %>
+      <div class="c-users-list">
+        <% User.all.each_with_index do |user, i| %>
+          <div class="user">
+            <label for="user-<%= user.id %>"><%= user.name %></label>
+            <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user), id: ('user-' + user.id.to_s) %>
+            <div class="content">
+              <h3><%= user.name %></h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+            </div>
+          </div>
+        <% end %>
+        <%= render partial: 'footer', locals: { f: f } %>
+      </div>
     <% end %>
-    <%= render partial: 'footer', locals: { f: f } %>
-<% end %>
+  </div>
+</div>
