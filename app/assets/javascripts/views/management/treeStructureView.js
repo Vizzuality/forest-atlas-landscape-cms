@@ -10,7 +10,8 @@
 
     events: {
       'click .js-enable': '_onClickEnable',
-      'click .js-disable': '_onClickDisable'
+      'click .js-disable': '_onClickDisable',
+      'click .add-page-button': '_onClickAddPage'
     },
 
     initialize: function (settings) {
@@ -215,6 +216,16 @@
       e.preventDefault();
       var node = $(e.target).closest('.js-draggable')[0];
       this.toggleEnable(node, false);
+    },
+
+    /**
+     * Event listener for when the add page button is clicked
+     * @param {object} e - event object
+     */
+    _onClickAddPage: function (e) {
+      e.preventDefault();
+      var node = $(e.target).closest('.js-draggable')[0];
+      window.location = '' + gon.addPagePath + '?parent=' + $(node).attr('id').match(/\d+/)[0];
     },
 
     /**
