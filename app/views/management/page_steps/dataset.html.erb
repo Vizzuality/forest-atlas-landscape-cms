@@ -1,0 +1,8 @@
+<%= render partial: 'header'%>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+
+
+    <%= render partial: 'footer', locals: {f: f} %>
+<% end %>

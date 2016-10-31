@@ -22,7 +22,9 @@ Rails.application.routes.draw do
         member do
           put :toggle_enable
         end
+        resources :page_steps, only: [:show, :update, :delete]
       end
+      resources :page_steps, only: [:show, :update, :new]
       get '/structure', to: 'sites#structure'
       put :update_structure
     end
