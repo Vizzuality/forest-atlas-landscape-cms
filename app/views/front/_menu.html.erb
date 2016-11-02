@@ -3,13 +3,13 @@
     <div class="wrapper">
       <ul>
         <% @menu_root.children.each do |child_page| -%>
-            <% next unless child_page.show_on_menu %>
+            <% next unless (child_page.show_on_menu && child_page.visible?) %>
             <li><%= page_link child_page %></li>
             <% unless child_page.children.nil? or child_page.children.empty? %>
               <li>
                 <ul>
                   <% child_page.children.each do |grandchild_page| -%>
-                    <% next unless grandchild_page.show_on_menu %>
+                    <% next unless (grandchild_page.show_on_menu  && grandchild_page.visible?) %>
                     <li>
                       <%= page_link grandchild_page %>
                     </li>
@@ -52,7 +52,7 @@
     </div>
     <ul>
       <% @menu_root.children.each do |child_page| -%>
-          <% next unless child_page.show_on_menu %>
+          <% next unless (child_page.show_on_menu && child_page.visible?) %>
           <li class="<%= 'dropdown-item' if !child_page.children.nil? and !child_page.children.empty? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
             <%= page_link child_page %>
             <% if !child_page.children.nil? and !child_page.children.empty? %>
@@ -61,7 +61,7 @@
                     <%= page_link child_page %>
                   </li>
                   <% child_page.children.each do |grandchild_page| -%>
-                      <% next unless grandchild_page.show_on_menu %>
+                      <% next unless (grandchild_page.show_on_menu && grandchild_page.visible?) %>
                       <li>
                         <%= page_link grandchild_page %>
                       </li>

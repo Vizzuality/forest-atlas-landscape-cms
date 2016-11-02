@@ -46,6 +46,13 @@ class Page < ApplicationRecord
   def disableable?
     [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::DYNAMIC_INDICATOR_DASHBOARD].include? self.content_type
   end
+
+  def visible?
+    return false if !enabled
+    return enabled if parent_id == nil
+    Page.find(parent_id).visible?
+  end
+
   private
 
   def regenerate_url
