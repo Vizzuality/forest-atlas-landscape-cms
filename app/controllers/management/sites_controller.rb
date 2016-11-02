@@ -20,6 +20,7 @@ class Management::SitesController < ManagementController
   # GET /management/:site_slug/structure.json
   def structure
     gon.updateStructurePath = management_site_update_structure_path(@site.slug)
+    gon.addPagePath = new_management_site_site_page_path(@site.slug)
 
     respond_to do |format|
       format.html {

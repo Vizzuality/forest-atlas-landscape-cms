@@ -8,7 +8,7 @@ class SitePageController < ApplicationController
   def load_site_page
     @site_page = SitePage.find(params[:id])
 
-    redirect_to not_found_path unless @site_page
+    redirect_to not_found_path unless @site_page && @site_page.visible?
   end
 
   def load_menu
