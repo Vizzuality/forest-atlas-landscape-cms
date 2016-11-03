@@ -36,6 +36,8 @@ class Management::PageStepsController < ManagementController
   def show
     if step == :dataset
       @page = current_page
+      @datasets = DatasetService.get_datasets
+
     end
     render_wizard
   end

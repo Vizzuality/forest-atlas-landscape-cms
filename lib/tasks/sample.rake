@@ -261,6 +261,70 @@ def create_users
   puts 'Users created successfully'
 end
 
+def create_user_sites
+  user_sites = [
+    {
+      user: @tiago_garcia_user,
+      site: @base_site
+    }, {
+      user: @tiago_garcia_user,
+      site: @site_two
+    }, {
+      user: @tiago_garcia_user,
+      site: @site_three
+    }, {
+      user: @tiago_garcia_user,
+      site: @site_four
+    }, {
+      user: @tiago_santos_user,
+      site: @staging_demo_site
+    }, {
+      user: @tiago_santos_user,
+      site: @site_two
+    }, {
+      user: @tiago_santos_user,
+      site: @site_three
+    }, {
+      user: @tiago_santos_user,
+      site: @site_four
+    }, {
+      user: @clement_prodhomme_user,
+      site: @site_two
+    }, {
+      user: @clement_prodhomme_user,
+      site: @site_three
+    }, {
+      user: @clement_prodhomme_user,
+      site: @site_four
+    }
+  ]
+
+  # Create user site associations
+  UserSiteAssociation.create(user_sites)
+  puts 'User-Site associations created successfully'
+end
+
+def create_contexts
+  c1 = Context.create!(
+    {
+      name: 'First Context',
+      user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id],
+      site_ids: [@base_site.id, @staging_demo_site.id]
+      #dataset_ids: %w[5306fd54-df71-4e20-8b34-2ff464ab28be 3d170908-043f-49db-b26b-9e9bfaaa40ce b98de805-798b-4f93-9f90-323e7d93d94f]
+    })
+  c1.context_datasets.new dataset_id: '5306fd54-df71-4e20-8b34-2ff464ab28be'
+  c1.save
+  c2 = Context.create!(
+    {
+      name: 'Second Context',
+      user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id],
+      site_ids: [@base_site.id, @staging_demo_site.id]
+      #dataset_ids: %w[b1089fc4-be58-4667-9dce-b92ac9a637b5 b9c76d91-46d6-4464-a751-ef532e043c03 03965f50-4376-4d3a-a680-683eecf07050]
+    })
+
+  puts 'Contexts created successfully'
+end
+
 namespace :db do
   desc 'Create sample development data'
   task :sample => :environment do
@@ -275,47 +339,7 @@ namespace :db do
     create_base_site_routes
     create_heroku_staging_site_routes
     create_users
-
-    user_sites = [
-      {
-        user: @tiago_garcia_user,
-        site: @base_site
-      }, {
-        user: @tiago_garcia_user,
-        site: @site_two
-      }, {
-        user: @tiago_garcia_user,
-        site: @site_three
-      }, {
-        user: @tiago_garcia_user,
-        site: @site_four
-      }, {
-        user: @tiago_santos_user,
-        site: @staging_demo_site
-      }, {
-        user: @tiago_santos_user,
-        site: @site_two
-      }, {
-        user: @tiago_santos_user,
-        site: @site_three
-      }, {
-        user: @tiago_santos_user,
-        site: @site_four
-      }, {
-        user: @clement_prodhomme_user,
-        site: @site_two
-      }, {
-        user: @clement_prodhomme_user,
-        site: @site_three
-      }, {
-        user: @clement_prodhomme_user,
-        site: @site_four
-      }
-    ]
-
-    # Create user site associations
-    UserSiteAssociation.create(user_sites)
-    puts 'User-Site associations created successfully'
+    create_user_sites
+    create_contexts
   end
-
 end

@@ -11,6 +11,7 @@
 class Context < ApplicationRecord
   has_many :context_datasets
   has_many :datasets, through: :context_datasets
+  accepts_nested_attributes_for :datasets
 
   has_many :context_users
   has_many :users, through: :context_users
