@@ -305,22 +305,20 @@ def create_user_sites
 end
 
 def create_contexts
-  c1 = Context.create!(
-    {
-      name: 'First Context',
-      user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id],
-      site_ids: [@base_site.id, @staging_demo_site.id]
-      #dataset_ids: %w[5306fd54-df71-4e20-8b34-2ff464ab28be 3d170908-043f-49db-b26b-9e9bfaaa40ce b98de805-798b-4f93-9f90-323e7d93d94f]
-    })
-  c1.context_datasets.new dataset_id: '5306fd54-df71-4e20-8b34-2ff464ab28be'
-  c1.save
-  c2 = Context.create!(
-    {
-      name: 'Second Context',
-      user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id],
-      site_ids: [@base_site.id, @staging_demo_site.id]
-      #dataset_ids: %w[b1089fc4-be58-4667-9dce-b92ac9a637b5 b9c76d91-46d6-4464-a751-ef532e043c03 03965f50-4376-4d3a-a680-683eecf07050]
-    })
+  datasets_array = [
+    %w[5306fd54-df71-4e20-8b34-2ff464ab28be 3d170908-043f-49db-b26b-9e9bfaaa40ce b98de805-798b-4f93-9f90-323e7d93d94f],
+    %w[b1089fc4-be58-4667-9dce-b92ac9a637b5 b9c76d91-46d6-4464-a751-ef532e043c03 03965f50-4376-4d3a-a680-683eecf07050]
+  ]
+  datasets_array.each_with_index do |datasets, i|
+    c = Context.create!(
+      {
+        name: "Context #{i}",
+        user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id],
+        site_ids: [@base_site.id, @staging_demo_site.id]
+      })
+    datasets.each{|d| c.context_datasets.build(dataset_id: d)}
+    c.save
+  end
 
   puts 'Contexts created successfully'
 end

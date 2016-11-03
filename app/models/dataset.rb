@@ -7,7 +7,6 @@ class Dataset
 
   has_many :context_datasets
 
-
   def initialize(data = {})
     self.attributes = data
   end
