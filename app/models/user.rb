@@ -24,4 +24,18 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   has_many :user_site_associations
   has_many :sites, through: :user_site_associations
+
+  has_many :context_users
+  has_many :contexts, through: :context_users
+
+  def get_datasets
+    all_datasets = DatasetService.get_datasets
+    dataset_ids = []
+    self.contexts.each do |context|
+      context.context_datasets.each {|cd| dataset_ids << cd.dataset_id}
+    end
+    dataset_ids.uniq!
+
+    all_datasets.select {|ds| dataset_ids.include?(ds.id)}
+  end
 end

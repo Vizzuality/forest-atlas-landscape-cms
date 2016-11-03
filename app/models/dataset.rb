@@ -32,6 +32,4 @@ class Dataset
   attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
                 :attributes_path, :provider, :format, :layers, :connector_url,
                 :table_name, :tags, :data_overwrite
-
-
 end

@@ -7,11 +7,12 @@ class DatasetService
   end
 
   def self.get_datasets
-    datasetRequest = @conn.get '/datasets', {:app => 'prep'}
+    # TODO: Change the app to FA's name.
+    datasetRequest = @conn.get '/dataset' , {:app => 'prep'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
-    datasetsJSON.each do |data|
+    datasetsJSON['data'].each do |data|
       dataset = Dataset.new
       dataset.attributes = data
       datasets.push dataset
@@ -19,5 +20,4 @@ class DatasetService
 
     datasets
   end
-
 end

@@ -2,7 +2,10 @@
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
-
+    <% @datasets.each_with_index do |dataset, i| %>
+        <%#= check_box_tag "page[datasets_ids][]", dataset.id, f.object.datasets.include?(dataset) %>
+        <%= dataset.name %>
+    <% end %>
 
     <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
