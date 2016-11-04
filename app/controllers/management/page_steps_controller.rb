@@ -34,24 +34,30 @@ class Management::PageStepsController < ManagementController
   end
 
   def show
-    if step == :dataset
+    case step
+    when :dataset
       @page = current_page
-      #@datasets = DatasetService.get_datasets
-      @datasets = current_user.get_datasets
+      @context_datasets = current_user.get_context_datasets
+    when :filters
+      @page = current_page
+      @dataset = session[:page]
     end
     render_wizard
   end
 
   def update
     case step
-      when 'dataset'
+      when :dataset
         @page = current_page
+        session[:page] = page_params
+        # Add validation
+        redirect_to next_wizard_path
     end
   end
 
   private
   def page_params
-    params.require(:page).permit(:name)
+    params.require(:page).permit(:name, :dataset)
   end
 
   def set_site

@@ -10,7 +10,7 @@
 
 class Context < ApplicationRecord
   has_many :context_datasets
-  #has_many :datasets, through: :context_datasets
+  has_many :dataset_settings
 
   has_many :context_users
   has_many :users, through: :context_users

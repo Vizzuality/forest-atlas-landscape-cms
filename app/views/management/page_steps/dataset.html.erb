@@ -2,10 +2,16 @@
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
-    <% @datasets.each_with_index do |dataset, i| %>
-        <%#= check_box_tag "page[datasets_ids][]", dataset.id, f.object.datasets.include?(dataset) %>
-        <%= dataset.name %>
+    <% @context_datasets.each do |context_id, datasets| %>
+        <%= ::Context.find(context_id).name %>
+        <% datasets.each do |dataset| %>
+          <fieldset>
+            <%= radio_button_tag 'page[dataset_setting]', context_id.to_s + '_' + dataset.id, f.object.dataset_setting ? (f.object.dataset_setting.id == dataset.id) : nil %>
+            <%= dataset.name %>
+          </fieldset>
+        <% end %>
     <% end %>
 
     <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
+<%= console if Rails.env.development? %>

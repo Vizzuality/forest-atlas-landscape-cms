@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103155126) do
+ActiveRecord::Schema.define(version: 20161104114854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,17 @@ ActiveRecord::Schema.define(version: 20161103155126) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "datasets_settings", force: :cascade do |t|
+    t.integer "page_id"
+    t.integer "context_id"
+    t.string  "dataset_id",         null: false
+    t.string  "filters"
+    t.string  "columns_visible"
+    t.string  "columns_changeable"
+    t.index ["context_id"], name: "index_datasets_settings_on_context_id", using: :btree
+    t.index ["page_id"], name: "index_datasets_settings_on_page_id", using: :btree
   end
 
   create_table "page_hierarchies", id: false, force: :cascade do |t|
