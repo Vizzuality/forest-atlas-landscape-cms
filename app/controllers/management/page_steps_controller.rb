@@ -20,7 +20,7 @@ class Management::PageStepsController < ManagementController
 
   # This action cleans the session
   def new
-    session[:page] = {}
+    session[:page] = {uri: 'test'}
     session[:dataset_setting] = {}
     # The next line should be used. While developing this feature...
     # ... there will be a direct jump to datasets
@@ -42,8 +42,7 @@ class Management::PageStepsController < ManagementController
       @context_datasets = current_user.get_context_datasets
     when :filters
       @page = current_page
-      @dataset = session[:page]
-      @dataset_setting = session[:dataset_setting]
+      @dataset_setting = current_dataset_setting
       @dataset_setting.get_fields
     end
     render_wizard
@@ -73,12 +72,17 @@ class Management::PageStepsController < ManagementController
   def current_page
     page = params[:page_id] ? SitePage.find(params[:page_id]) : SitePage.new
     session[:page].merge!(page_params.to_h.except(:dataset_setting)) if params[:page] && page_params.to_h && page_params.to_h.except(:dataset_setting)
-    page.assign_attributes session[:page] if session[:page]
+    unless session[:page].blank?
+      new_attributes = session[:page].clone
+      new_attributes.delete('url')
+      page.assign_attributes new_attributes
+    end
     page
   end
 
   def current_dataset_setting
-    ds_params = page_params.to_h[:dataset_setting]
+    ds_params = {}
+    ds_params = page_params.to_h[:dataset_setting] if params[:page] && page_params.to_h
 
     dataset_setting = nil
     if ds_params[:id]
@@ -90,10 +94,12 @@ class Management::PageStepsController < ManagementController
         ds_params[:dataset_id] = ids[1]
         ds_params[:context_id] = ids[0]
         ds_params.delete(:context_id_dataset_id)
+      else
+        dataset_setting = DatasetSetting.new
       end
     end
 
-    session[:dataset_setting].merge!(ds_params) if ds_params
-    dataset_setting.assign_attributes ds_params if ds_params
+    session[:dataset_setting].merge!(ds_params) unless ds_params.blank?
+    dataset_setting.assign_attributes session[:dataset_setting]
   end
 end
