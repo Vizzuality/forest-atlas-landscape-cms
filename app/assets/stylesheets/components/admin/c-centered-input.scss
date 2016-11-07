@@ -10,29 +10,6 @@
     margin-right: 55px;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
-
-    &.-file {
-      height: 44px;
-      line-height: 44px;
-
-      &::after {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: calc(100% + 71px);
-        width: 250px;
-        height: 44px;
-        padding: 0 15px;
-        border: 1px solid $color-7;
-        border-radius: 4px;
-        font-size: $font-size-x-normal;
-        font-weight: $font-weight-light;
-        line-height: 44px;
-        text-transform: none;
-        content: 'Select a file';
-        cursor: pointer;
-      }
-    }
   }
 
   input {
@@ -52,10 +29,6 @@
       &::-webkit-color-swatch-wrapper {
         padding: 10px 0;
       }
-    }
-
-    &[type="file"] {
-      display: none;
     }
   }
 }

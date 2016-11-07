@@ -15,8 +15,10 @@
                 <%= settings_form.hidden_field :position, value: '2'%>
                 <%= settings_form.hidden_field :name, value: 'logo_image'%>
                 <div class="c-centered-input">
-                  <%= settings_form.label :image, value: 'Logo image', for: 'logo', class: '-file' %>
-                  <%= settings_form.file_field :image, id: 'logo' %>
+                  <%= settings_form.label :image, value: 'Logo image', for: 'logo' %>
+                  <div class="js-file-input">
+                    <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
+                  </div>
                 </div>
               <% when 'logo_background' %>
                 <%= settings_form.hidden_field :name, value: 'logo_background'%>
