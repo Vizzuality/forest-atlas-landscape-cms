@@ -4,24 +4,17 @@
     <div class="c-centered-input">
       <label for="color-{{index}}">Flag color {{index}}</label>
       <div>
-        <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove Color</button>
+        {{#if canRemoveColor}}
+          <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove Color</button>
+        {{/if}}
         <input type="color" value="{{color}}" id="color-{{index}}" data-id="{{@index}}">
       </div>
     </div>
   {{/each}}
-  {{#if addable}}
+  {{#if addButtonVisible}}
     <div class="c-centered-input">
-      <label for="color-{{#if colors.length}}{{lastColorIndex}}{{else}}0{{/if}}">Flag color {{#if colors.length}}{{lastColorIndex}}{{else}}1{{/if}}</label>
-      <div>
-        <button type="button" class="remove-color js-remove-color" data-id="{{colors.length}}">Remove Color</button>
-        <input type="color" value="{{color}}" id="color-{{#if colors.length}}{{lastColorIndex}}{{else}}0{{/if}}" data-id="{{#if colors.length}}{{colors.length}}{{else}}0{{/if}}">
-      </div>
+      <label>Add color</label>
+      <button type="button" class="add-color js-add-color">Add</button>
     </div>
-    {{#if addButtonVisible}}
-      <div class="c-centered-input">
-        <label>Add color</label>
-        <button type="button" class="add-color js-add-color">Add</button>
-      </div>
-    {{/if}}
   {{/if}}
 </div>
