@@ -1,9 +1,11 @@
-<div class="form-group row">
-  <div class="col-sm-offset-2 col-sm-10">
-    <%= f.button 'CONTINUE', value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'btn btn-primary' %>
-    <% if @site.id %>
-      <%= f.button 'SAVE CHANGES', value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'btn btn-primary' %>
-    <% end %>
-    <%= link_to 'CANCEL', admin_sites_path, class: 'btn btn-secondary' %>
+<div class="c-action-bar">
+  <div class="wrapper">
+    <%= link_to 'Cancel', admin_sites_path, class: 'c-button -outline -dark-text js-cancel' %>
+    <div>
+      <button type="button" class="c-button js-continue <%= @site.id ? '-outline -dark-text' : '' %>">Continue</button>
+      <% if @site.id %>
+        <button type="button" class="c-button js-save">Save changes</button>
+      <% end %>
+    </div>
   </div>
 </div>

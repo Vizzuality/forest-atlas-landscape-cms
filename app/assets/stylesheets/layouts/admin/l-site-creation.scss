@@ -19,6 +19,10 @@
     border-bottom: 1px solid $color-7;
   }
 
+  .invisible-buttons {
+    display: none;
+  }
+
   .intro {
     max-width: 520px;
     margin: 0 auto 40px;
