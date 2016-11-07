@@ -217,6 +217,7 @@
       }.bind(this));
 
       // We bind the elements to the DOM
+      this.options.searchFieldContainer.innerHTML = ''; // We make sure the container is empty
       this.options.searchFieldContainer.appendChild(searchField);
       this.options.searchFieldContainer.appendChild(searchButton);
 
