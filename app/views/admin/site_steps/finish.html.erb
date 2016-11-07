@@ -1,6 +1,25 @@
-<h1>SITE CREATED!</h1>
-<h2>What do you want to do now?</h2>
+<% content_for :extended_header do %>
+  <div class="c-extended-header -high">
+    <div class="wrapper">
+      <div class="description">
+        <% if @site.id %>
+          <h1>Site saved!</h1>
+        <% else %>
+          <h1>Site created!</h1>
+        <% end %>
+        <p>What do you want to do now?</p>
+      </div>
+      <div></div>
+    </div>
+  </div>
+<% end %>
 
-<%= link_to  'GO TO SITE', @site.routes.first.host, target: '_blank' %>
-<%= link_to 'CREATE A NEW SITE', new_admin_site_step_path %>
-<%= link_to 'SEE MY SITES', admin_sites_path %>
+<div class="l-site-creation -finish">
+  <div class="wrapper">
+    <%= link_to  'Go to site', @site.routes.first.host, target: '_blank', class: 'c-button' %>
+    <%= link_to 'Create a new site', new_admin_site_step_path, class: 'c-button -outline -dark-text' %>
+    <%= link_to 'See my sites', admin_sites_path, class: 'c-button -outline -dark-text' %>
+  </div>
+</div>
+
+
