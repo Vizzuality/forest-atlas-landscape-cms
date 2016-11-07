@@ -1,5 +1,10 @@
 <%= render partial: 'header'%>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+    <% @dataset_setting.each do |ds|%>
+        <%= ds.name %>
+    <% end %>
+<% end %>
 
 <%= console if Rails.env.development? %>

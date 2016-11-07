@@ -21,15 +21,17 @@ class Management::PageStepsController < ManagementController
   # This action cleans the session
   def new
     session[:page] = {}
+    session[:dataset_setting] = {}
     # The next line should be used. While developing this feature...
     # ... there will be a direct jump to datasets
     # redirect_to management_page_step_path(id: :position)
-    redirect_to management_page_step_path(site_slug: params[:site_slug], id: :dataset)
+    redirect_to management_site_page_step_path(id: :dataset)
   end
 
   # This action cleans the session
   def edit
     session[:page] = {}
+    session[:dataset_setting] = {}
     redirect_to management_site_page_step_path(page: params[:page_id], id: :dataset)
   end
 
@@ -41,15 +43,19 @@ class Management::PageStepsController < ManagementController
     when :filters
       @page = current_page
       @dataset = session[:page]
+      @dataset_setting = session[:dataset_setting]
+      @dataset_setting.get_fields
     end
     render_wizard
   end
 
   def update
+    @page = current_page
     case step
       when :dataset
-        @page = current_page
-        session[:page] = page_params
+        @dataset_setting = current_dataset_setting
+        session[:page] = @page
+        session[:dataset_setting] = @dataset_setting
         # Add validation
         redirect_to next_wizard_path
     end
@@ -57,7 +63,7 @@ class Management::PageStepsController < ManagementController
 
   private
   def page_params
-    params.require(:page).permit(:name, :dataset)
+    params.require(:page).permit(:name, dataset_setting: [:context_id_dataset_id])
   end
 
   def set_site
@@ -66,8 +72,28 @@ class Management::PageStepsController < ManagementController
 
   def current_page
     page = params[:page_id] ? SitePage.find(params[:page_id]) : SitePage.new
-    session[:page].merge!(page_params.to_h) if params[:page] && page_params.to_h
+    session[:page].merge!(page_params.to_h.except(:dataset_setting)) if params[:page] && page_params.to_h && page_params.to_h.except(:dataset_setting)
     page.assign_attributes session[:page] if session[:page]
     page
+  end
+
+  def current_dataset_setting
+    ds_params = page_params.to_h[:dataset_setting]
+
+    dataset_setting = nil
+    if ds_params[:id]
+      dataset_setting = DatasetSetting.find(ds_params[:id])
+    else
+      if ids = ds_params[:context_id_dataset_id]
+        ids = ids.split(' ')
+        dataset_setting = DatasetSetting.new(context_id: ids[0], dataset_id: ids[1])
+        ds_params[:dataset_id] = ids[1]
+        ds_params[:context_id] = ids[0]
+        ds_params.delete(:context_id_dataset_id)
+      end
+    end
+
+    session[:dataset_setting].merge!(ds_params) if ds_params
+    dataset_setting.assign_attributes ds_params if ds_params
   end
 end

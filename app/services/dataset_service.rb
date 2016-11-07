@@ -13,11 +13,22 @@ class DatasetService
     datasets = []
 
     datasetsJSON['data'].each do |data|
-      dataset = Dataset.new
-      dataset.attributes = data
+      dataset = Dataset.new data
       datasets.push dataset
     end
 
     datasets
+  end
+
+  def self.get_fields dataset_id
+    fieldsRequest = @connect.get "/fields/#{dataset_id}"
+    fieldsJSON = JSON.parse fieldsRequest.body
+
+    fields = []
+    fieldsJSON['data'].each do |data|
+      fields << Field.new(data)
+    end
+
+    fields
   end
 end

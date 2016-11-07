@@ -52,15 +52,15 @@ ActiveRecord::Schema.define(version: 20161104114854) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "datasets_settings", force: :cascade do |t|
+  create_table "dataset_settings", force: :cascade do |t|
     t.integer "page_id"
     t.integer "context_id"
     t.string  "dataset_id",         null: false
     t.string  "filters"
     t.string  "columns_visible"
     t.string  "columns_changeable"
-    t.index ["context_id"], name: "index_datasets_settings_on_context_id", using: :btree
-    t.index ["page_id"], name: "index_datasets_settings_on_page_id", using: :btree
+    t.index ["context_id"], name: "index_dataset_settings_on_context_id", using: :btree
+    t.index ["page_id"], name: "index_dataset_settings_on_page_id", using: :btree
   end
 
   create_table "page_hierarchies", id: false, force: :cascade do |t|
