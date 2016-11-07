@@ -18,14 +18,16 @@
         if (this[stepMethod]) this[stepMethod]();
       }
 
-      // We want the hidden continue button of the form clicked when the user clicks the one from the action-bar
-      var continueButton = document.querySelector('.js-continue');
-      var hiddenContinueButton = document.querySelector('.js-continue-original');
+      if (!this.step || this.step !== 'finish') {
+        // We want the hidden continue button of the form clicked when the user clicks the one from the action-bar
+        var continueButton = document.querySelector('.js-continue');
+        var hiddenContinueButton = document.querySelector('.js-continue-original');
 
-      continueButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        hiddenContinueButton.click();
-      });
+        continueButton.addEventListener('click', function (e) {
+          e.preventDefault();
+          hiddenContinueButton.click();
+        });
+      }
     },
 
     initNameStep: function () {
