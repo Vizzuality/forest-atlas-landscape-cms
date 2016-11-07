@@ -154,7 +154,7 @@ class Admin::SiteStepsController < AdminController
   def disable_button? (current_step)
     # When is editing the site
     if @site.id
-      return false
+      return current_step == 'finish'
       # When is creating the site
     else
       return steps.find_index(step) < steps.find_index(current_step)
