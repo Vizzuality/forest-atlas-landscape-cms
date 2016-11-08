@@ -1,4 +1,3 @@
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <h1>Site Settings</h1>
 <%= include_gon %>
 <%= form_for [:admin, @site], html: { multipart: true } do |f| %>
@@ -33,3 +32,4 @@
         <%= render partial: 'admin/sites/footer', locals: { f: f , submit_text: 'SET SETTINGS', home: false} %>
     <%# end %>
 <% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
