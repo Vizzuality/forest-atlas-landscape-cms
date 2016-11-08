@@ -3,8 +3,8 @@ class Admin::SiteStepsController < AdminController
 
   URL_CONTROLLER_ID =    'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME =  'site[routes_attributes]'.freeze
-  SAVE =                 'SAVE CHANGES'.freeze
-  CONTINUE =             'CONTINUE'.freeze
+  SAVE =                 'Save Changes'.freeze
+  CONTINUE =             'Continue'.freeze
 
   steps *Site.form_steps
   helper_method :disable_button?
@@ -173,6 +173,6 @@ class Admin::SiteStepsController < AdminController
   end
 
   def save_button?
-    params[:button] == SAVE
+    params[:button] == SAVE.upcase
   end
 end

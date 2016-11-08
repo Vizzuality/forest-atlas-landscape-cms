@@ -13,11 +13,9 @@
         <%= f.text_field :name, id:'name', placeholder: 'Type here the site’s name' %>
       </div>
 
-        <%= fields_for :routes do |url_form| %>
-            <div class="js-urls"></div>
-        <% end %>
+      <div class="js-urls"></div>
 
-        <%= render partial: 'form_footer', locals: { f: f} %>
+      <%= render partial: 'form_footer', locals: { f: f} %>
     <% end %>
   </div>
 </div>
