@@ -2,12 +2,12 @@
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= include_gon %>
 
-<div class="l-site-creation -style">
-  <div class="wrapper">
-    <h1>Style</h1>
-    <p class="intro">Choose one of the two templates below and its main color.</p>
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -style">
+    <div class="wrapper">
+      <h1>Style</h1>
+      <p class="intro">Choose one of the two templates below and its main color.</p>
 
-    <%= form_for @site, url: wizard_path, method: :put do |f| %>
       <div class="templates">
         <% SiteTemplate.all.each do |template| %>
           <div class="template">
@@ -33,12 +33,10 @@
           </div>
       <% end %>
 
-      <%= render partial: 'form_footer', locals: { f: f } %>
-  <% end %>
+    </div>
   </div>
-</div>
-
-<%= render partial: 'footer' %>
+  <%= render partial: 'footer', locals: { f: f } %>
+<% end %>
 
 
 

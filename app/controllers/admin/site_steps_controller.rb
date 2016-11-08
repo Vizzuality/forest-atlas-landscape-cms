@@ -173,6 +173,6 @@ class Admin::SiteStepsController < AdminController
   end
 
   def save_button?
-    params[:button] == SAVE.upcase
+    params[:button].upcase == SAVE.upcase
   end
 end

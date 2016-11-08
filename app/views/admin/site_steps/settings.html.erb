@@ -2,48 +2,47 @@
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= include_gon %>
 
-<div class="l-site-creation -settings">
-  <div class="wrapper">
-    <h1>Customize</h1>
-    <p class="intro">Get the most out of these last settings to customize your site.</p>
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -settings">
+    <div class="wrapper">
+      <h1>Customize</h1>
+      <p class="intro">Get the most out of these last settings to customize your site.</p>
 
-    <%= form_for @site, url: wizard_path, method: :put do |f| %>
       <%= f.fields_for :site_settings, f.object.site_settings do |settings_form| %>
-          <% setting = settings_form.object %>
-            <% case setting.name
-              when 'logo_image' %>
-                <%= settings_form.hidden_field :position, value: '2'%>
-                <%= settings_form.hidden_field :name, value: 'logo_image'%>
-                <div class="c-centered-input">
-                  <%= settings_form.label :image, value: 'Logo image', for: 'logo' %>
-                  <div class="js-file-input">
-                    <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
-                  </div>
-                </div>
-              <% when 'logo_background' %>
-                <%= settings_form.hidden_field :name, value: 'logo_background'%>
-                <%= settings_form.hidden_field :position, value: '3'%>
-                <div class="c-centered-input">
-                  <%= settings_form.label :name, value: 'Logo background' %>
-                  <%= settings_form.color_field :value %>
-                </div>
-                <hr />
-              <% when 'flag' %>
-                <%= settings_form.fields_for :flag_colors do |colors_form| %>
-                <% if !colors_form.object.nil? %>
-                  <%= colors_form.color_field :value %>
-                  <%= settings_form.hidden_field :name, value: 'flag'%>
-                  <%= settings_form.hidden_field :position, value: '4'%>
-              <% end %>
+        <% setting = settings_form.object %>
+        <% case setting.name
+           when 'logo_image' %>
+          <%= settings_form.hidden_field :position, value: '2'%>
+          <%= settings_form.hidden_field :name, value: 'logo_image'%>
+          <div class="c-centered-input">
+            <%= settings_form.label :image, value: 'Logo image', for: 'logo' %>
+            <div class="js-file-input">
+              <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
+            </div>
+          </div>
+        <% when 'logo_background' %>
+          <%= settings_form.hidden_field :name, value: 'logo_background'%>
+          <%= settings_form.hidden_field :position, value: '3'%>
+          <div class="c-centered-input">
+            <%= settings_form.label :name, value: 'Logo background' %>
+            <%= settings_form.color_field :value %>
+          </div>
+          <hr />
+        <% when 'flag' %>
+          <%= settings_form.fields_for :flag_colors do |colors_form| %>
+            <% if !colors_form.object.nil? %>
+              <%= colors_form.color_field :value %>
+              <%= settings_form.hidden_field :name, value: 'flag'%>
+              <%= settings_form.hidden_field :position, value: '4'%>
             <% end %>
-            <% if setting.flag_colors.count < 5 %>
-              <div class="js-flag-colors"></div>
-            <% end %>
+          <% end %>
+          <% if setting.flag_colors.count < 5 %>
+            <div class="js-flag-colors"></div>
+          <% end %>
         <% end %>
       <% end %>
-      <%= render partial: 'form_footer', locals: { f: f} %>
-    <% end %>
+    </div>
   </div>
-</div>
+  <%= render partial: 'footer', locals: { f: f} %>
+<% end %>
 
-<%= render partial: 'footer' %>
