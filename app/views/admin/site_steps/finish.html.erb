@@ -2,11 +2,7 @@
   <div class="c-extended-header -high">
     <div class="wrapper">
       <div class="description">
-        <% if @site.id %>
-          <h1>Site saved!</h1>
-        <% else %>
-          <h1>Site created!</h1>
-        <% end %>
+          <h1>Site <%= @site.id ? 'saved' : 'created' %>!</h1>
         <p>What do you want to do now?</p>
       </div>
       <div></div>

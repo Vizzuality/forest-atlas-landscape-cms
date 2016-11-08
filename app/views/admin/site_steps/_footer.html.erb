@@ -2,9 +2,9 @@
   <div class="wrapper">
     <%= link_to 'Cancel', admin_sites_path, class: 'c-button -outline -dark-text js-cancel' %>
     <div>
-      <button type="button" class="c-button js-continue <%= @site.id ? '-outline -dark-text' : '' %>">Continue</button>
+      <button type="button" class="c-button js-continue <%= @site.id ? '-outline -dark-text' : '' %>"><%= Admin::SiteStepsController::CONTINUE %></button>
       <% if @site.id %>
-        <button type="button" class="c-button js-save">Save changes</button>
+        <button type="button" class="c-button js-save"><%= Admin::SiteStepsController::SAVE %>></button>
       <% end %>
     </div>
   </div>
