@@ -1,5 +1,4 @@
 <%= render partial: 'header'%>
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= include_gon %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
@@ -37,6 +36,7 @@
   </div>
   <%= render partial: 'footer', locals: { f: f } %>
 <% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
 
 
 

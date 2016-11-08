@@ -27,13 +27,14 @@
             <%= settings_form.label :name, value: 'Logo background' %>
             <%= settings_form.color_field :value %>
           </div>
-          <hr />
         <% when 'flag' %>
-            <div class="js-flag-colors"></div>
+          <hr />
+          <div class="js-flag-colors"></div>
         <% end %>
       <% end %>
     </div>
   </div>
   <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
 

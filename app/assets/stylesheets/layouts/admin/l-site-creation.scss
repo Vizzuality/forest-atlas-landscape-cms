@@ -90,17 +90,25 @@
           text-indent: -10000px; // We want to keep the text for accessibility
           cursor: pointer;
           z-index: 1; // Required to be positioned on top
+
+          &:hover + input + .content {
+            opacity: 1;
+          }
         }
 
-        img {
-          border: 1px solid $color-7;
-          border-radius: 7px;
-        }
+        .content {
+          transition: .3s opacity;
 
-        p {
-          margin: 7px 0 0;
-          font-weight: $font-weight-bold;
-          text-transform: uppercase;
+          img {
+            border: 1px solid $color-7;
+            border-radius: 7px;
+          }
+
+          p {
+            margin: 7px 0 0;
+            font-weight: $font-weight-bold;
+            text-transform: uppercase;
+          }
         }
       }
     }

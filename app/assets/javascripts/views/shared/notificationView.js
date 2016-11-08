@@ -16,7 +16,7 @@
       // Type of the notification, can be: 'success', 'warning' or 'error'
       // The type can't be changed after instantiation
       type: 'success',
-      // Content of the notification, HTML will not be interprated
+      // Content of the notification, HTML will not be interpreted
       content: ''
     },
 
