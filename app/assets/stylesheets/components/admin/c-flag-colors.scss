@@ -1,0 +1,23 @@
+.c-flag-colors {
+  .add-color {
+    width: 100px;
+    height: 44px;
+    border: 2px dashed $color-7;
+    border-radius: 4px;
+    background: transparent;
+    text-indent: -10000px; // We still need the text for accessibility
+    cursor: pointer;
+  }
+
+  .remove-color {
+    position: relative ;
+    top: -4px;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+    border: 0;
+    background: asset-url('icons/close-icon.svg') no-repeat center center;
+    text-indent: -10000px; // For accessibility, we should keep the text
+    cursor: pointer;
+  }
+}

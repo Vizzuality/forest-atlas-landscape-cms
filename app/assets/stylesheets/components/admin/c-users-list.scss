@@ -1,0 +1,50 @@
+.c-users-list {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+
+  .user {
+    position: relative;
+    flex-basis: calc(33.33% - 20px);
+    margin: 10px;
+
+    input {
+      position: absolute;
+      left: -10000px;
+
+      &:checked + .content {
+        border-color: $color-1;
+        background: $color-1;
+        color: $color-3;
+      }
+    }
+
+    label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-indent: -10000px;
+      cursor: pointer;
+    }
+
+    .content {
+      padding: 20px;
+      border: 1px solid $color-7;
+      border-radius: 7px;
+
+      h3 {
+        margin: 0 0 7px;
+        text-transform: uppercase;
+      }
+
+      p {
+        font-size: $font-size-small;
+        line-height: 1.5;
+      }
+    }
+  }
+}

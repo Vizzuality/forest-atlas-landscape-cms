@@ -6,9 +6,8 @@
       '(/)': 'Index',
       'users(/)': 'Users',
       'sites(/)': 'Sites',
-      'site_steps/settings(/)': 'Settings',
-      'site_steps/name(/)': 'Name',
-      'sites/:slug/site_steps/name(/)': 'Name'
+      'site_steps/(:step)': 'SiteCreation',
+      'sites/:slug/site_steps/:step(/)': 'SiteEdition'
     }
   });
 

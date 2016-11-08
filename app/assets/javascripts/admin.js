@@ -18,7 +18,7 @@
 //= require handlebars
 //= require fuse.js/fuse
 //= require object-assign-polyfill
-
+//= require dom-matches-polyfill
 //= require_self
 
 // = require_tree ./helpers

@@ -1,0 +1,6 @@
+<div class="invisible-buttons">
+  <%= f.button 'CONTINUE', value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'js-continue-original' %>
+  <% if @site.id %>
+    <%= f.button 'SAVE CHANGES', value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'js-save-original' %>
+  <% end %>
+</div>
