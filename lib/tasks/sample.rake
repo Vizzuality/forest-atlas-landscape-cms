@@ -198,13 +198,13 @@ end
 def create_base_site_routes
   routes = [
     {
-      host: 'localhost',
+      host: 'http://localhost',
       site: @base_site
     }, {
-      host: 'localhost:3000',
+      host: 'http://localhost:3000',
       site: @base_site
     }, {
-      host: '0.0.0.0',
+      host: 'http://0.0.0.0',
       site: @base_site
     }
   ]
@@ -216,7 +216,7 @@ end
 def create_heroku_staging_site_routes
   routes = [
     {
-      host: 'fa-cms.herokuapp.com',
+      host: 'http://fa-cms.herokuapp.com',
       site: @staging_demo_site
     }
   ]
