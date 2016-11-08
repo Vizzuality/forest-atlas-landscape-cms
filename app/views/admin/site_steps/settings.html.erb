@@ -27,8 +27,8 @@
             <%= settings_form.label :name, value: 'Logo background' %>
             <%= settings_form.color_field :value %>
           </div>
-          <hr />
         <% when 'flag' %>
+          <hr />
           <%= settings_form.fields_for :flag_colors do |colors_form| %>
             <% if !colors_form.object.nil? %>
               <%= colors_form.color_field :value %>
