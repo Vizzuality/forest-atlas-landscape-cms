@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     resources :routes
     resources :site_templates
     resources :page_templates
-    resources :site_settings
     resources :site_users
     resources :datasets, only: :index do
       get 'dataset'

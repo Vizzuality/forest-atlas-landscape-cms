@@ -1,6 +1,6 @@
 <%= render partial: 'header'%>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-<%= include_gon %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -settings">
@@ -29,16 +29,7 @@
           </div>
           <hr />
         <% when 'flag' %>
-          <%= settings_form.fields_for :flag_colors do |colors_form| %>
-            <% if !colors_form.object.nil? %>
-              <%= colors_form.color_field :value %>
-              <%= settings_form.hidden_field :name, value: 'flag'%>
-              <%= settings_form.hidden_field :position, value: '4'%>
-            <% end %>
-          <% end %>
-          <% if setting.flag_colors.count < 5 %>
             <div class="js-flag-colors"></div>
-          <% end %>
         <% end %>
       <% end %>
     </div>

@@ -1,4 +1,6 @@
-<input type="hidden" id="{{inputId}}" name="{{inputName}}" value="{{colorsValue}}">
+<input type="hidden" id="{{inputId}}_value" name="{{inputName}}[value]" value="{{colorsValue}}">
+<input type="hidden" id="{{inputId}}_name" name="{{inputName}}[name]" value="flag">
+<input type="hidden" id="{{inputId}}_position" name="{{inputName}}[position]" value="3">
 <div class="c-flag-colors">
   {{#each colors}}
     <div class="c-centered-input">

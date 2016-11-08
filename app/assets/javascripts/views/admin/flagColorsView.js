@@ -1,4 +1,4 @@
-((function (App) {
+(function (App) {
   'use strict';
 
   var Collection = Backbone.Collection.extend({
@@ -22,7 +22,8 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-      this.collection = new Collection((window.gon && gon.colorArray) || [this.options.color]);
+      this.collection = new Collection((window.gon && gon.global.colorArray && gon.global.colorArray)
+        || [this.options.color]);
       this.render();
     },
 
@@ -31,7 +32,7 @@
      */
     _addColor: function () {
       if (this._canAddColor()) {
-        this.collection.push({ color: this.options.color });
+        this.collection.push({color: this.options.color});
         this.render();
       }
     },
@@ -57,7 +58,7 @@
       var color = $(e.target).val();
       var position = $(e.target).data('id');
       var model = this.collection.at(position);
-      model.set({ color: color });
+      model.set({color: color});
     },
 
     /**
@@ -85,8 +86,8 @@
             return color;
           }, this),
         addButtonVisible: this._canAddColor(),
-        inputId: window.gon && gon.colorControllerId,
-        inputName: window.gon && gon.colorControllerName,
+        inputId: window.gon && gon.global && gon.global.colorControllerId,
+        inputName: window.gon && gon.global && gon.global.colorControllerName,
         colorsValue: this.collection.toJSON().reduce(function (eachRes, color) {
           return eachRes + ' ' + color.color;
         }, '')
@@ -94,4 +95,4 @@
       this.setElement(this.el);
     }
   });
-})(this.App));
+})(this.App);

@@ -1,8 +1,11 @@
 class Admin::SiteStepsController < AdminController
   include Wicked::Wizard
 
-  URL_CONTROLLER_ID =    'site_routes_attributes'.freeze
-  URL_CONTROLLER_NAME =  'site[routes_attributes]'.freeze
+  URL_CONTROLLER_ID =     'site_routes_attributes'.freeze
+  URL_CONTROLLER_NAME =   'site[routes_attributes]'.freeze
+  COLOR_CONTROLLER_ID =   'site_site_settings_attributes_3'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
+
   SAVE =                 'Save Changes'.freeze
   CONTINUE =             'Continue'.freeze
 
@@ -35,6 +38,14 @@ class Admin::SiteStepsController < AdminController
       end
       if step == 'settings'
         SiteSetting.create_additional_settings @site
+        gon.global.color_controller_id = COLOR_CONTROLLER_ID
+        gon.global.color_controller_name = COLOR_CONTROLLER_NAME
+
+        color_array = @site.site_settings.where(name: 'flag').first
+        gon.global.color_array = color_array[:value].split(' ').map{ |x| {color: x }} if color_array
+
+        image = @site.site_settings.where(name: 'logo_image').first
+        gon.global.logo_image = image.image_file_name if image
       end
     end
     render_wizard
