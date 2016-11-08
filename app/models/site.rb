@@ -73,7 +73,7 @@ class Site < ApplicationRecord
       SiteSetting.new site_id: id, name: 'background', value: '', position: 1
       SiteSetting.new site_id: id, name: 'logo', value: '', position: 2
       SiteSetting.new site_id: id, name: 'color', value: '', position: 3
-      SiteSetting.new site_id: id, name: 'flag', value: '', position: 4
+      SiteSetting.new site_id: id, name: 'flag', value: '', position: 4 if site_template.name == 'Forest Atlas'
 
       settings = site_settings.order :position
     end

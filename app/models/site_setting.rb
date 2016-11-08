@@ -73,10 +73,10 @@ class SiteSetting < ApplicationRecord
 
   # Creates all the additional settings for a site
   def self.create_additional_settings site
-    unless site.site_settings.exists?({name: 'logo_background'})
+    unless site.site_settings.length > 1
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
       site.site_settings.new(name: 'logo_background', value: '#000000', position: 3)
-      site.site_settings.new(name: 'flag', value: '#000000', position: 4)
+      site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'
     end
   end
 
