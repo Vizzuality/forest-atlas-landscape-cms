@@ -173,15 +173,23 @@ def create_pages_templates
 end
 
 def create_sites
-  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template, slug: 'heroku-staging-for-fa-lsa-cms'})
+
+  general_site_settings = [
+    {name: 'color', value: '#000000', position: 1},
+    {name: 'logo_image', value: '', position: 2},
+    {name: 'logo_background', value: '#000000', position: 3},
+    {name: 'flag', value: '#000000', position: 4}
+  ]
+
+  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template, slug: 'heroku-staging-for-fa-lsa-cms', site_settings_attributes: general_site_settings})
   @staging_demo_site.save!(validate: false)
-  @site_two = Site.new({name: 'Site Two', site_template: @fa_template, slug: 'site-two'})
+  @site_two = Site.new({name: 'Site Two', site_template: @fa_template, slug: 'site-two', site_settings_attributes: general_site_settings})
   @site_two.save!(validate: false)
-  @site_three = Site.new({name: 'Site Three', site_template: @la_template, slug: 'site-three'})
+  @site_three = Site.new({name: 'Site Three', site_template: @la_template, slug: 'site-three', site_settings_attributes: general_site_settings})
   @site_three.save!(validate: false)
-  @site_four = Site.new({name: 'Site Four', site_template: @la_template, slug: 'site-four'})
+  @site_four = Site.new({name: 'Site Four', site_template: @la_template, slug: 'site-four', site_settings_attributes: general_site_settings})
   @site_four.save!(validate: false)
-  @base_site = Site.new({name: 'Base site', site_template: @fa_template, slug: 'base-site'})
+  @base_site = Site.new({name: 'Base site', site_template: @fa_template, slug: 'base-site', site_settings_attributes: general_site_settings})
   @base_site.save!(validate: false)
   puts 'Base site created successfully'
 end
@@ -198,10 +206,10 @@ end
 def create_base_site_routes
   routes = [
     {
-      host: 'http://localhost',
+      host: 'http://localhost:3000',
       site: @base_site
     }, {
-      host: 'http://localhost:3000',
+      host: 'http://localhost',
       site: @base_site
     }, {
       host: 'http://0.0.0.0',
