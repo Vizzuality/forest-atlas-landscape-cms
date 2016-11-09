@@ -31,6 +31,9 @@
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
 
+      // This is used to cancel any running timer
+      this.timer = null;
+
       this._createEl();
 
       // This double rAF pattern is enables the animation of the notification right
@@ -66,8 +69,11 @@
       this.options.visible = true;
       this.render();
 
+      // We cancel any running timeout before setting a new one
+      if (this.timer) clearTimeout(this.timer);
+
       if (this.options.autoCloseTimer !== -1) {
-        setTimeout(this.hide.bind(this), this.options.autoCloseTimer * 1000);
+        this.timer = setTimeout(this.hide.bind(this), this.options.autoCloseTimer * 1000);
       }
     },
 
@@ -76,6 +82,7 @@
      */
     hide: function () {
       this.options.visible = false;
+      this.timer = null;
       this.render();
     },
 
