@@ -98,7 +98,9 @@
             <% if @site_page.depth >= 2 %>
                 <ul>
                   <% @site_page.children.each do |child_page| -%>
-                      <li><%= page_link child_page %></li>
+                      <% if child_page.visible? %>
+                        <li><%= page_link child_page %></li>
+                      <% end%>
                   <% end %>
                 </ul>
             <% end %>
