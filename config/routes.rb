@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   namespace :management do
-    resources :sites, param: :slug, only: [:index] do
+    resources :sites, param: :slug, only: [:index], defaults: {format: :json} do
       resources :site_pages, shallow: true do
         member do
           put :toggle_enable

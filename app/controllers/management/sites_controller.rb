@@ -11,7 +11,7 @@ class Management::SitesController < ManagementController
                .order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
-      format.html { render :index }
+      format.html { redirect_to management_path }
       format.json { render json: @sites }
     end
   end
