@@ -73,7 +73,7 @@ class DynamicRouter
     return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
 
     constraints = {}
-    constraints.store(:host, route.host) unless route.blank?
+    constraints.store(:host, route.host.gsub(/https?:\/\//, '')) unless route.blank? || route.host.blank?
 
     path = '/' + (route.path.blank? ? '' : route.path) + site_page.url.to_s
 

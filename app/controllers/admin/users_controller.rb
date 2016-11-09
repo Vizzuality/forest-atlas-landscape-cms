@@ -15,6 +15,8 @@ class Admin::UsersController < AdminController
       }
     end
 
+    @breadcrumbs = ['CMS']
+
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @users }
