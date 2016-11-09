@@ -18,7 +18,7 @@ class Site < ApplicationRecord
   has_many :users, through: :user_site_associations
   has_many :context_sites
   has_many :contexts, through: :context_sites
-  has_many :site_settings, dependent: :destroy
+  has_many :site_settings, dependent: :destroy, inverse_of: :site
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users

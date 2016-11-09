@@ -16,7 +16,8 @@
 #
 
 class SiteSetting < ApplicationRecord
-  belongs_to :site, optional: true
+  belongs_to :site, inverse_of: :site_settings
+  validates_presence_of :site
 
   NAMES = %w[logo_image logo_background color flag]
   MAX_COLORS = 5
@@ -41,19 +42,19 @@ class SiteSetting < ApplicationRecord
 
 
   def self.logo_background(site_id)
-    SiteSetting.where(name: 'logo_background', site_id: site_id)
+    SiteSetting.find_by(name: 'logo_background', site_id: site_id)
   end
 
   def self.logo_image(site_id)
-    SiteSetting.where(name: 'logo_image', site_id: site_id)
+    SiteSetting.find_by(name: 'logo_image', site_id: site_id)
   end
 
   def self.color(site_id)
-    SiteSetting.where(name: 'color', site_id: site_id)
+    SiteSetting.find_by(name: 'color', site_id: site_id)
   end
 
   def self.flag_colors(site_id)
-    SiteSetting.where(name: 'flag', site_id: site_id)
+    SiteSetting.find_by(name: 'flag', site_id: site_id)
   end
 
   def flag_colors
@@ -83,10 +84,14 @@ class SiteSetting < ApplicationRecord
   private
 
   def validate_image
-    if name == 'logo_image' && image.blank?
-      errors.add :key, 'You must update an image for the ' + name
-      return false
-    else
+    begin
+      if name == 'logo_image' && image.blank? && site.site_template.name == 'Forest Atlas'
+        errors.add :key, 'You must update an image for the ' + name
+        return false
+      else
+        return true
+      end
+    rescue # If the site has no template
       return true
     end
   end
