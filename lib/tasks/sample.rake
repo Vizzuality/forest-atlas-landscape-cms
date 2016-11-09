@@ -237,21 +237,25 @@ def create_users
   @tiago_garcia_user = User.create(
     {
       email: 'tiago.garcia@vizzuality.com',
+      name: 'Tiago Garcia'
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
+      name: 'Tiago Santos'
     }
   )
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
+      name: 'Clément Prodhomme'
     }
   )
   @thomas_maschler_user = User.create(
     {
       email: 'tmaschler@wri.org',
+      name: 'Thomas Maschler'
     }
   )
   puts 'Users created successfully'
