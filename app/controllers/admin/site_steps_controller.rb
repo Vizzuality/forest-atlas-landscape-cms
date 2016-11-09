@@ -26,6 +26,13 @@ class Admin::SiteStepsController < AdminController
   end
 
   def show
+    @breadcrumbs = ['CMS']
+    if current_site.id
+      @breadcrumbs << 'Site edition'
+    else
+      @breadcrumbs << 'Site creation'
+    end
+
     if step == 'name'
       @site = current_site
       gon.global.url_controller_id = URL_CONTROLLER_ID
