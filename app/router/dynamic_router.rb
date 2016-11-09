@@ -89,6 +89,9 @@ class DynamicRouter
         target = 'site_page#map'
         resources_route = RouteDefinition.new('resources.js', 'site_page#map_resources', {id: site_page.id}, constraints, tags)
         @route_cache.write(resources_route, resources_route.tags) unless resources_route.nil?
+        # Create the route for a call to /report.html
+        resources_route = RouteDefinition.new('//report.html', target, {id: site_page.id}, constraints, tags)
+        @route_cache.write(resources_route, resources_route.tags) unless resources_route.nil?
       when ContentType::ANALYSIS_DASHBOARD
         target = 'site_page#analysis_dashboard'
       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
