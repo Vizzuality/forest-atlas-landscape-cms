@@ -20,6 +20,7 @@ module ForestAtlasLandscapeCms
       g.helper false
     end
     config.log_level = :debug
-    
+    config.exceptions_app = self.routes
+
   end
 end

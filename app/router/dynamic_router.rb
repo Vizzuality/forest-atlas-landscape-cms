@@ -82,6 +82,16 @@ class DynamicRouter
 
     case site_page.content_type
       when ContentType::HOMEPAGE
+        # Create error pages
+        [
+          {error: '/404', action: 'not_found'},
+          {error: '/500', action: 'internal_server_error'},
+          {error: '/422', action: 'unacceptable'}
+        ].each do |error|
+          route = RouteDefinition.new(error[:error], 'site_page#' + error[:action], {id: site_page.id}, constraints, tags)
+          @route_cache.write(route, route.tags) unless route.nil?
+        end
+
         target = 'site_page#homepage'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'

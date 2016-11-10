@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   # Auth
   get 'auth/login', to: 'auth#login'
   post 'auth/logout', to: 'auth#logout'
+  get '/not_found', to: 'static_page#not_found'
 
-   DynamicRouter.load
+  DynamicRouter.load
 end
