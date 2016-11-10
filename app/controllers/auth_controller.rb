@@ -19,14 +19,16 @@ class AuthController < ApplicationController
 
       session[:current_user] = response.body
 
-      redirect_to admin_sites_path # TODO: This has to be to the kind of user
+      # TODO: Validate the user type
+      redirect_url = session.delete(:return_to)
+      redirect_to controller: redirect_url['controller'], action: redirect_url['action']
     end
   end
 
   def logout
     session.delete(:user_token)
     session.delete(:current_user)
-    redirect_to_apigateway
+    redirect_to_apigateway_logout
   end
 
 end
