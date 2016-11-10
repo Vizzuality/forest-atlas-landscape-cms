@@ -6,16 +6,14 @@
     <div class="c-centered-input">
       <label for="color-{{index}}">Flag color {{index}}</label>
       <div>
-        {{#if canRemoveColor}}
-          <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove Color</button>
-        {{/if}}
+        <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove Color</button>
         <input type="color" value="{{color}}" id="color-{{index}}" data-id="{{@index}}">
       </div>
     </div>
   {{/each}}
   {{#if addButtonVisible}}
     <div class="c-centered-input">
-      <label>Add color</label>
+      <label>Add flag color</label>
       <button type="button" class="add-color js-add-color">Add</button>
     </div>
   {{/if}}
