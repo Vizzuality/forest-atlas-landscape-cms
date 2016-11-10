@@ -64,7 +64,6 @@ class SitePageController < ApplicationController
   # 404
   # GET /not_found
   def not_found
-    puts params
   end
 
   # 500

@@ -7,6 +7,5 @@ class StaticPageController < ApplicationController
   # 404
   # GET /not_found
   def not_found
-    puts params
   end
 end
