@@ -21,6 +21,29 @@
     justify-content: space-between;
   }
 
+  .two-options {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 100%;
+      background-color: $color-9;
+      content: '';
+    }
+
+    > .description {
+      flex-basis: calc(50% - 70px);
+    }
+  }
+
   .description {
     max-width: 400px;
 
@@ -31,6 +54,11 @@
     > p {
       margin: 0;
       line-height: 1.5;
+    }
+
+    > .c-button {
+      display: inline-block;
+      margin-top: 22px;
     }
   }
 

@@ -9,7 +9,8 @@
       'sites/:slug/site_pages/new(/)': 'PageCreation',
       'site_pages/:id/edit(/)': 'PageEdition',
       'sites/:slug/structure(/)': 'Structure',
-      'sites/:slug/widgets(/)': 'Widgets'
+      'sites/:slug/widgets(/)': 'Widgets',
+      'sites/:slug/page_steps/dataset': 'DatasetStep'
     }
   });
 

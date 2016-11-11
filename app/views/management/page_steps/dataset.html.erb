@@ -1,5 +1,18 @@
-<%= render partial: 'header'%>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
+<div class="c-extended-header -high">
+  <div class="wrapper">
+    <div class="two-options">
+      <div class="description">
+        <h1>Select a Dataset</h1>
+        <p>Pick the dataset you want to use for the dashboard.</p>
+      </div>
+      <div class="description">
+        <h1>Register a Dataset</h1>
+        <p>You can also create a new dataset.</p>
+        <a href="" class="c-button -outline js-register-dataset">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
     <% @context_datasets.each do |context_id, datasets| %>
@@ -15,4 +28,5 @@
 
     <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
-<%= console if Rails.env.development? %>
+
+<%= render partial: 'shared/errors', locals: { resource: @page } %>

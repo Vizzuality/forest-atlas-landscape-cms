@@ -45,6 +45,9 @@ class Management::PageStepsController < ManagementController
       @dataset_setting = current_dataset_setting
       @dataset_setting.get_fields
     end
+
+    @breadcrumbs = ['Page creation']
+
     render_wizard
   end
 
