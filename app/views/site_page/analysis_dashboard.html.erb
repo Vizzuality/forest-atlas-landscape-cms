@@ -1,6 +1,31 @@
-<h1>Analysis dashboard</h1>
-<h3><%= @site_page.name %></h3>
-<%= @site_page.content['body'].html_safe unless @site_page.content.blank? %>
+<% content_for :body_class do %>
+  class="-wide"
+<% end %>
+
+<div class="l-analysis-dashboard">
+  <div class="main-container">
+    <h2>Title of the dashboard</h2>
+    <p class="description">
+      One sentence description
+    </p>
+    <div class="filters js-filters">
+      Filters coming soon
+    </div>
+    <div class="map js-map">
+    </div>
+  </div>
+  <div class="secondary-container">
+    <div class="graph">
+      Graph 1
+    </div>
+    <div class="graph">
+      Graph 2
+    </div>
+    <div class="bookmarks">
+      Bookmarks
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
   window.route = 'Dashboard';
