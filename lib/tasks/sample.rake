@@ -160,6 +160,16 @@ def create_pages_templates
   )
   PageTemplate.create!(
     {
+      name: 'Analysis Dashboard',
+      description: 'Analysing information',
+      uri: 'analysis-dashboard',
+      parent: news_section_1,
+      content_type: ContentType::ANALYSIS_DASHBOARD,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
+  PageTemplate.create!(
+    {
       name: 'Terms and privacy',
       description: 'Terms and privacy',
       uri: 'terms-and-privacy',
