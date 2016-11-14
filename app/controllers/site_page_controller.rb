@@ -4,6 +4,7 @@ class SitePageController < ApplicationController
   before_action :load_breadcrumbs
   before_action :get_active_menu_item
   before_action :load_logo_image
+  before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable]
   protect_from_forgery except: :map_resources
 
   def load_site_page
@@ -60,6 +61,19 @@ class SitePageController < ApplicationController
     end
   end
 
+  # 404
+  # GET /not_found
+  def not_found
+  end
+
+  # 500
+  def internal_server_error
+  end
+
+  # 422
+  def unacceptable
+  end
+
   private
 
   def get_menu_item(node)
@@ -68,6 +82,10 @@ class SitePageController < ApplicationController
     else
       get_menu_item node.parent
     end
+  end
+
+  def create_menu_tree
+    @menu_tree = @menu_root.hash_tree
   end
 
 end
