@@ -7,7 +7,7 @@ class Field
 
   def attributes=(data)
     @name = data.keys.first
-    @type = data.values['type']
+    @type = data.values.first['type']
   end
 
   attr_accessor :name, :type

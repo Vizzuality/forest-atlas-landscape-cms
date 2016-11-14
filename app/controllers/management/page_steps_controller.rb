@@ -7,7 +7,7 @@ class Management::PageStepsController < ManagementController
   SAVE     = 'SAVE CHANGES'.freeze
 
   # Steps for Analysis Dashboard
-  steps :dataset, :filters, :columns, :visibility, :customization, :preview
+  steps :dataset, :columns, :filters, :visibility, :customization, :preview
 
   # Common steps
   # steps %w[position name type]
@@ -40,10 +40,14 @@ class Management::PageStepsController < ManagementController
     when :dataset
       @page = current_page
       @context_datasets = current_user.get_context_datasets
+    when :columns
+      @page = current_page
+      @dataset_setting = current_dataset_setting
+      @fields = @dataset_setting.get_fields
     when :filters
       @page = current_page
       @dataset_setting = current_dataset_setting
-      @dataset_setting.get_fields
+      @fields = @dataset_setting.get_fields
     end
 
     @breadcrumbs = ['Page creation']
@@ -58,14 +62,20 @@ class Management::PageStepsController < ManagementController
         @dataset_setting = current_dataset_setting
         session[:page] = @page
         session[:dataset_setting] = @dataset_setting
-        # Add validation
+        # TODO: Add validation
+        redirect_to next_wizard_path
+      when :columns
+        @dataset_setting = current_dataset_setting
+        session[:page] = @page
+        session[:dataset_setting] = @dataset_setting
+        # TODO: Add validation
         redirect_to next_wizard_path
     end
   end
 
   private
   def page_params
-    params.require(:page).permit(:name, dataset_setting: [:context_id_dataset_id])
+    params.require(:page).permit(:name, dataset_setting: [:context_id_dataset_id, visible_fields: [] ])
   end
 
   def set_site
@@ -97,12 +107,19 @@ class Management::PageStepsController < ManagementController
         ds_params[:dataset_id] = ids[1]
         ds_params[:context_id] = ids[0]
         ds_params.delete(:context_id_dataset_id)
-      else
-        dataset_setting = DatasetSetting.new
       end
+      dataset_setting = DatasetSetting.new unless dataset_setting
+    end
+
+    if fields = ds_params[:visible_fields]
+      columns_visible = fields.join(' ')
+      ds_params.delete(:visible_fields)
+      ds_params[:columns_visible] = columns_visible
+      dataset_setting.columns_visible = columns_visible
     end
 
     session[:dataset_setting].merge!(ds_params) unless ds_params.blank?
     dataset_setting.assign_attributes session[:dataset_setting]
+    dataset_setting
   end
 end

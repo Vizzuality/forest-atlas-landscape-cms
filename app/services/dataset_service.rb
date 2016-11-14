@@ -21,11 +21,11 @@ class DatasetService
   end
 
   def self.get_fields dataset_id
-    fieldsRequest = @connect.get "/fields/#{dataset_id}"
+    fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
     fields = []
-    fieldsJSON['data'].each do |data|
+    fieldsJSON['fields'].each do |data|
       fields << Field.new(data)
     end
 
