@@ -7,7 +7,7 @@ class Management::PageStepsController < ManagementController
   SAVE     = 'SAVE CHANGES'.freeze
 
   # Steps for Analysis Dashboard
-  steps :dataset, :columns, :filters, :visibility, :customization, :preview
+  steps :dataset, :filters, :columns, :customization, :preview
 
   # Common steps
   # steps %w[position name type]
@@ -40,11 +40,11 @@ class Management::PageStepsController < ManagementController
     when :dataset
       @page = current_page
       @context_datasets = current_user.get_context_datasets
-    when :columns
+    when :filters
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
-    when :filters
+    when :columns
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
@@ -64,6 +64,8 @@ class Management::PageStepsController < ManagementController
         session[:dataset_setting] = @dataset_setting
         # TODO: Add validation
         redirect_to next_wizard_path
+      when :filters
+
       when :columns
         @dataset_setting = current_dataset_setting
         session[:page] = @page

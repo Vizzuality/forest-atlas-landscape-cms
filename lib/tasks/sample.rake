@@ -211,10 +211,10 @@ def add_analysis_dashboard
     dataset_id: 'b846230f-cec0-4208-92d1-3fc11ea7e32b',
     api_table_name: 'index_b846230fcec0420892d13fc11ea7e32b',
     columns_changeable: ['confidence'].to_json,
-    columns_visible: %w[confidence julian_day year].to_json,
+    columns_visible: %w[confidence julian_day year lat lon].to_json,
     filters: ['year = 2016'].to_json,
-    default_graphs: {type: 'line', x: 'julian_day', y: 'confidence'}.to_json,
-    default_map: {graph_type: 'dots', x_left: '0', x_right: '1000', y_up: '0', y_down: '1000', data: 'confidence'}.to_json,
+    default_graphs: [{type: 'line', x: 'confidence', y: 'julian_day'}, {type: 'pie', x: 'confidence'}].to_json,
+    default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'confidence'}.to_json,
   }
 
   @staging_demo_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
