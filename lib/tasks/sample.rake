@@ -204,6 +204,27 @@ def create_sites
   puts 'Base site created successfully'
 end
 
+def add_analysis_dashboard
+
+  general_dataset_setting = {
+    context_id: Context.last.id,
+    dataset_id: 'b846230f-cec0-4208-92d1-3fc11ea7e32b',
+    api_table_name: 'index_b846230fcec0420892d13fc11ea7e32b',
+    columns_changeable: ['confidence'].to_json,
+    columns_visible: %w[confidence julian_day year].to_json,
+    filters: ['year = 2016'].to_json,
+    default_graphs: {type: 'line', x: 'julian_day', y: 'confidence'}.to_json,
+    default_map: {graph_type: 'dots', x_left: '0', x_right: '1000', y_up: '0', y_down: '1000', data: 'confidence'}.to_json,
+  }
+
+  @staging_demo_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
+  @base_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
+  @site_two.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
+  @site_three.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
+  @site_four.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
+  puts 'Added data to analysis dashboard successfully'
+end
+
 def clear
   Site.delete_all
   Page.delete_all
@@ -318,7 +339,7 @@ def create_contexts
   datasets_array = [
     %w[8611a1cb-9d24-4a64-9576-d267889cb822 6a18cd92-acd3-4107-b855-95fa2af24473 62520fd2-2dfb-4a13-840b-35ac88fc7aa4],
     %w[d44b5936-ecee-4361-8eac-4a50c8d3d3b6 bd61bb68-592b-42ff-90d6-b6a5d0006101 3feaf26c-42c8-43ce-b1b5-07a02a773c36],
-    %w[49ef62d6-eebe-4a52-800e-d48d3d15996d]
+    %w[49ef62d6-eebe-4a52-800e-d48d3d15996d b846230f-cec0-4208-92d1-3fc11ea7e32b]
   ]
   datasets_array.each_with_index do |datasets, i|
     c = Context.create!(
@@ -350,5 +371,6 @@ namespace :db do
     create_users
     create_user_sites
     create_contexts
+    add_analysis_dashboard
   end
 end

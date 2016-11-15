@@ -28,7 +28,16 @@ class DatasetService
     fieldsJSON['fields'].each do |data|
       fields << Field.new(data)
     end
-
     fields
+  end
+
+  def self.get_filtered_dataset dataset_id, query
+    filteredRequest = @conn.get "/query/#{dataset_id}?sql=#{query}"
+    JSON.parse filteredRequest.body
+  end
+
+  def self.get_dataset dataset_id
+    request = @conn.get "/dataset/#{dataset_id}"
+    JSON.parse request
   end
 end

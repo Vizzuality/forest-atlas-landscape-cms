@@ -3,13 +3,16 @@
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
     <% @dataset_setting.columns_visible.split(' ').each do |vf|%>
+        <% field = @fields.find_by(name: vf) %>
         <fieldset>
           <table>
             <tr>
               <td><%= vf %></td>
+              <% if field.type == ''%>
               <td>FROM OPTION</td>
               <td>TO OPTION</td>
               <td>Visible checkbox</td>
+              <% end %>
             </tr>
           </table>
         </fieldset>
