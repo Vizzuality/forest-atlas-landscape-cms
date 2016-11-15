@@ -36,6 +36,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-backbone'
   gem 'rails-assets-jquery-ui'
   gem 'rails-assets-fuse.js'
+  gem 'rails-assets-datalib', '1.7.3'
 end
 
 # Use ActiveModel has_secure_password

@@ -1,0 +1,71 @@
+{
+  "width": {{{width}}},
+  "height": {{{height}}},
+  "padding": {
+    "top": 10,
+    "left": 0,
+    "bottom": 30,
+    "right": 0
+  },
+  "data": [{
+    "name": "table",
+    "values": {{{data}}}
+  }],
+  "scales": [{
+    "name": "x",
+    "type": "ordinal",
+    "range": "width",
+    "domain": {
+      "data": "table",
+      "field": {{{xColumn}}}
+    }
+  }, {
+    "name": "y",
+    "type": "linear",
+    "range": "height",
+    "domain": {
+      "data": "table",
+      "field": {{{yColumn}}}
+    },
+    "nice": true
+  }],
+  "axes": [{
+    "type": "x",
+    "scale": "x"
+  }, {
+    "type": "y",
+    "scale": "y"
+  }],
+  "marks": [{
+    "type": "symbol",
+    "from": {
+      "data": "table"
+    },
+    "properties": {
+      "enter": {
+        "x": {
+          "scale": "x",
+          "field": {{{xColumn}}}
+        },
+        "width": {
+          "scale": "x",
+          "band": true,
+          "offset": -1
+        },
+        "y": {
+          "scale": "y",
+          "field": {{{yColumn}}}
+        },
+        "y2": {
+          "scale": "y",
+          "value": 0
+        }
+      },
+      "update": {
+        "fill": {
+          "value": "steelblue"
+        }
+      }
+    }
+  }]
+}

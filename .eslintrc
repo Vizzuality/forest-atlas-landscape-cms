@@ -22,7 +22,8 @@
     "Turbolinks": true,
     "SirTrevor": true,
     "gon": true,
-    "Fuse": true
+    "Fuse": true,
+    "Jiminy": true
   },
   "env": {
     "browser": true

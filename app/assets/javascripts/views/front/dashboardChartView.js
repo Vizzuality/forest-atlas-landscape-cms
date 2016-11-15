@@ -6,10 +6,14 @@
     template: HandlebarsTemplates['front/dashboard-chart'],
 
     defaults: {
-      // JSON spec file representing the vega chart
-      json: null,
       // Ratio between the height and the width (i.e. height = chartRatio * width)
       chartRatio: 0.6,
+      // Data to display on the chart
+      data: [],
+      // Name of the default chart type
+      chart: null,
+      // Configuration of the charts
+      chartConfig: [],
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
@@ -33,7 +37,7 @@
      * Event handler for when the window is resized
      */
     _onResize: function () {
-      if (!this.chart) return;
+      if (!this.options.chart) return;
 
       /* eslint-disable no-underscore-dangle */
       var previousWidth = this.options._width;
@@ -48,19 +52,29 @@
 
     /**
      * Compute the chart dimensions
-     * @returns {object} { width, height }
+     * @returns {{ width: number, height: number}}
      */
     _computeChartDimensions: function () {
+      // We render the template with fake data in order to parse it as a JS object and retrieve the padding
+      var chartTemplate = JSON.parse(this._getChartTemplate()({
+        data: JSON.stringify([]),
+        xColumn: JSON.stringify(''),
+        yColumn: JSON.stringify(''),
+        width: JSON.stringify(''),
+        height: JSON.stringify('')
+      }));
+
       var containerDimensions = this.chartContainer.getBoundingClientRect();
-      var padding = Object.assign({}, this.options.json.padding, {
+
+      var padding = Object.assign({}, chartTemplate.padding, {
         top: 0,
         right: 0,
         bottom: 0,
         left: 0
       });
 
-      var width = containerDimensions.width - padding.left - padding.right;
-      var height = width * this.options.chartRatio;
+      var width = Math.round(containerDimensions.width - padding.left - padding.right);
+      var height = Math.round(width * this.options.chartRatio);
 
       // We save the current dimensions of the chart to diff them whenever the window is resized in order to minimize
       // the number of re-renders
@@ -76,19 +90,116 @@
     },
 
     /**
+     * Creates the instance of Jiminy and attach it to this.jiminy
+     */
+    _initJiminy: function () {
+      this.jiminy = new Jiminy(this.options.data, this.options.chartConfig);
+    },
+
+    /**
+     * Return the list of charts that can be generated with the dataset
+     * @returns {string[]}
+     */
+    _getAvailableCharts: function () {
+      if (!this.jiminy) this._initJiminy();
+      return this.jiminy.recommendation();
+    },
+
+    /**
+     * Return the available x columns for the chart
+     * @returns {string[]}
+     */
+    _getAvailableXColumns: function () {
+      if (!this.jiminy) this._initJiminy();
+      return this.jiminy.columns(this.options.chart);
+    },
+
+    /**
+     * Return the available y columns for the selected chart and x column
+     * The method can return null if the chart only accept one column (for the pie for example)
+     * @param {string} xColumn - x column name
+     * @returns {string[]|null}
+     */
+    _getAvailableYColumns: function (xColumn) {
+      if (!this.jiminy) this._initJiminy();
+      return this.jiminy.columns(this.options.chart, xColumn);
+    },
+
+    /**
+     * Return two random columns that can be used to generate the chart (x and y)
+     * The y column can be null depending on the chart
+     * @return {{ x: string, y: string }}
+     */
+    _getRandomColumns: function () {
+      if (!this.jiminy) this._initJiminy();
+
+      var xColumns = this._getAvailableXColumns();
+      var xColumn;
+      if (!xColumns.length) {
+        // eslint-disable-next-line no-console
+        console.warn('Unable to generate a chart out of the current dataset');
+        return { x: null, y: null };
+      }
+
+      xColumn = xColumns[0];
+
+      var yColumns = this._getAvailableYColumns(xColumn);
+      var yColumn = yColumns.length ? yColumns[0] : null;
+
+      return {
+        x: xColumn,
+        y: yColumn
+      };
+    },
+
+    /**
+     * Get the chart Handlebars template
+     * @returns {function}
+     */
+    _getChartTemplate: function () {
+      return HandlebarsTemplates['front/charts/' + this.options.chart];
+    },
+
+    /**
+     * Generate the vega spec
+     * @returns {object}
+     */
+    _generateVegaSpec: function () {
+      if (!this.options.chart) {
+        var availableCharts = this._getAvailableCharts();
+        if (availableCharts.length) {
+          this.options.chart = availableCharts[0];
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('Unable to generate a chart out of the current dataset');
+          return {};
+        }
+      }
+
+      var columns = this._getRandomColumns();
+      var chartDimensions = this._computeChartDimensions();
+
+      return this._getChartTemplate()({
+        data: JSON.stringify(this.options.data),
+        xColumn: JSON.stringify(columns.x),
+        yColumn: JSON.stringify(columns.y),
+        width: chartDimensions.width,
+        height: chartDimensions.height
+      });
+    },
+
+    /**
      * Create the chart and append it to the DOM
      */
     _renderChart: function () {
-      if (!this.options.json) {
+      if (!this.options.data.length) {
         // eslint-disable-next-line no-console
         console.warn('The chart needs a JSON spec file to be rendered');
         return;
       }
 
-      var json = Object.assign({}, this.options.json, this._computeChartDimensions());
-
       vg.parse
-        .spec(json, function (error, chart) {
+        .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
           this.chart = chart({ el: this.chartContainer }).update();
         }.bind(this));
     },
