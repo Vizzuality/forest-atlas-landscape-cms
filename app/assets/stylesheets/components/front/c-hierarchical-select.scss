@@ -1,0 +1,151 @@
+.c-hierarchical-select {
+  position: relative;
+  width: 200px;
+  height: 40px;
+  z-index: 1;
+
+  > .label {
+    height: 40px;
+    padding: 0 15px;
+    line-height: 40px;
+    box-shadow: 0 2px 3px 0 rgba($color-4, .3);
+    cursor: pointer;
+
+    > .arrow {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      transition: background-color .3s;
+      background-color: rgba($color-1, .1);
+
+      &::before {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: calc(50% + 2px);
+        width: 12px;
+        height: 2px;
+        transform: translate(-100%, 0) rotate(45deg) ;
+        background-color: darken($color-1, 10%);
+        content: '';
+      }
+
+      &::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: calc(50% + 2px);
+        width: 12px;
+        height: 2px;
+        transform: translate(100%, 0) rotate(-45deg);
+        background-color: darken($color-1, 10%);
+        content: '';
+      }
+
+      &.-left {
+        display: inline-block;
+        position: relative;
+        right: auto;
+        left: -15px;
+        margin-right: 15px;
+        transform: rotate(90deg);
+        vertical-align: middle;
+      }
+    }
+
+    &:hover > .arrow {
+      background-color: rgba($color-1, .2);
+    }
+  }
+
+  .steps-wrapper {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid rgba($color-4, .3);
+    background-color: $color-3;
+    box-shadow: 0 2px 3px 0 rgba($color-4, .3);
+    opacity: 1;
+    overflow: hidden;
+    pointer-events: all;
+
+    &.-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  .steps {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    transition: transform .3s;
+  }
+
+  .step {
+    flex-basis: 100%;
+    flex-shrink: 0;
+    border-top: 0;
+  }
+
+  .options {
+    display: block;
+  }
+
+  .option {
+    display: block;
+    position: relative;
+    height: 40px;
+    padding: 0 15px;
+    transition: background-color .3s;
+    outline: none;
+    line-height: 40px;
+    text-transform: capitalize;
+    cursor: pointer;
+
+    > .arrow {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      transition: opacity .3s .1s;
+      background-color: rgba($color-1, .2);
+      opacity: 0;
+
+      &::before {
+        display: block;
+        position: absolute;
+        top: calc(50% + 1px);
+        left: calc(50% - 2px);
+        width: 12px;
+        height: 2px;
+        transform: rotate(45deg) translate(-50%, -100%);
+        background-color: darken($color-1, 10%);
+        content: '';
+      }
+
+      &::after {
+        display: block;
+        position: absolute;
+        bottom: calc(50% + 1px);
+        left: calc(50% - 2px);
+        width: 12px;
+        height: 2px;
+        transform: rotate(-45deg) translate(-50%, 100%);
+        background-color: darken($color-1, 10%);
+        content: '';
+      }
+    }
+
+    &:hover,
+    &[aria-selected="true"] {
+      background-color: rgba($color-1, .1);
+
+      &.-arrow > .arrow { opacity: 1; }
+    }
+  }
+}

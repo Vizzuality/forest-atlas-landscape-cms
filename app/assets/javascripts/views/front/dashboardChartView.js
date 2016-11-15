@@ -12,6 +12,10 @@
       data: [],
       // Name of the default chart type
       chart: null,
+      // Name of the column x
+      columnX: null,
+      // Name of the column y
+      columnY: null,
       // Configuration of the charts
       chartConfig: [],
       // Inner width of the chart, used internally
@@ -48,6 +52,17 @@
       if (newDimensions.width !== previousWidth || newDimensions.height !== previousHeight) {
         this._renderChart();
       }
+    },
+
+    /**
+     * Event handler for when the chart is changed by the selector
+     * @param {string[]} - chart, column x, column y
+     */
+    _onChangeChart: function () {
+      this.options.chart = arguments[0][0];
+      this.options.columnX = arguments[0][1];
+      this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
+      this._renderChart();
     },
 
     /**
@@ -106,23 +121,25 @@
     },
 
     /**
-     * Return the available x columns for the chart
+     * Return the available x columns for the selected chart
+     * @param {string} chart - check the available columns for this specific chart (optional)
      * @returns {string[]}
      */
-    _getAvailableXColumns: function () {
+    _getAvailableXColumns: function (chart) {
       if (!this.jiminy) this._initJiminy();
-      return this.jiminy.columns(this.options.chart);
+      return this.jiminy.columns(chart || this.options.chart);
     },
 
     /**
      * Return the available y columns for the selected chart and x column
      * The method can return null if the chart only accept one column (for the pie for example)
      * @param {string} xColumn - x column name
+     * @param {string} chart - check the available columns for this specific chart (optional)
      * @returns {string[]|null}
      */
-    _getAvailableYColumns: function (xColumn) {
+    _getAvailableYColumns: function (xColumn, chart) {
       if (!this.jiminy) this._initJiminy();
-      return this.jiminy.columns(this.options.chart, xColumn);
+      return this.jiminy.columns(chart || this.options.chart, xColumn);
     },
 
     /**
@@ -178,11 +195,12 @@
 
       var columns = this._getRandomColumns();
       var chartDimensions = this._computeChartDimensions();
+      var needsRandomColumns = !this.options.columnX && !this.options.columnY;
 
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
-        xColumn: JSON.stringify(columns.x),
-        yColumn: JSON.stringify(columns.y),
+        xColumn: JSON.stringify(needsRandomColumns ? columns.x : this.options.columnX),
+        yColumn: JSON.stringify(needsRandomColumns ? columns.y : this.options.columnY),
         width: chartDimensions.width,
         height: chartDimensions.height
       });
@@ -204,10 +222,53 @@
         }.bind(this));
     },
 
+    /**
+     * Create the chart selector and append it to the DOM
+     */
+    _renderChartSelector: function () {
+      var hierarchy = { label: 'Customize chart', options: [] };
+      hierarchy.options = this._getAvailableCharts().map(function (chartName) {
+        var chart = _.findWhere(this.options.chartConfig, { name: chartName });
+        var acceptedColumnsNb = chart.acceptedStatTypes[0].length;
+
+        var res = { name: chartName, id: chartName };
+        res.label = acceptedColumnsNb === 1 ? 'Select a column' : 'Select X column';
+        res.options = this._getAvailableXColumns(chartName).map(function (xColumn) {
+          var o = {};
+          o.name = xColumn;
+          o.id = xColumn;
+
+          if (acceptedColumnsNb > 1) {
+            o.label = 'Select Y column';
+            o.options = this._getAvailableYColumns(xColumn, chartName).map(function (yColumn) {
+              // eslint-disable-next-line no-shadow
+              var o = {};
+              o.name = yColumn;
+              o.id = yColumn;
+              return o;
+            });
+          }
+
+          return o;
+        }, this);
+
+        return res;
+      }, this);
+
+      new App.View.HierarchicalSelectView({
+        el: this.chartSelectorContainer,
+        ID: +(new Date()),
+        hierarchy: hierarchy,
+        onChange: this._onChangeChart.bind(this)
+      });
+    },
+
     render: function () {
       this.el.innerHTML = this.template();
       this.chartContainer = this.el.querySelector('.js-chart');
+      this.chartSelectorContainer = this.el.querySelector('.js-chart-selector');
       this._renderChart();
+      this._renderChartSelector();
       return this.el;
     }
 
