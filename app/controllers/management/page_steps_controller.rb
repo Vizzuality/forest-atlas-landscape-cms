@@ -49,6 +49,12 @@ class Management::PageStepsController < ManagementController
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
+      when :customization
+        @page = current_page
+        @dataset_setting = current_dataset_setting
+      when :preview
+        @page = current_page
+        @dataset_setting = current_dataset_setting
     end
 
     @breadcrumbs = ['Page creation']
@@ -67,11 +73,14 @@ class Management::PageStepsController < ManagementController
         redirect_to next_wizard_path
       when :filters
 
+        redirect_to next_wizard_path
       when :columns
         @dataset_setting = current_dataset_setting
         session[:page] = @page
         session[:dataset_setting] = @dataset_setting
         # TODO: Add validation
+        redirect_to next_wizard_path
+      when :customization
         redirect_to next_wizard_path
     end
   end
