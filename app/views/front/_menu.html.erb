@@ -48,7 +48,7 @@
 
   <div class="desktop-menu wrapper">
     <div class="logo-container">
-      <a class="logo" href="<%= asset_url(@image_url) %>"></a>
+      <a class="logo" href="<%= (@image_url && @image_url != '/')? asset_url(@image_url) : asset_url('logo')%>"></a>
     </div>
     <ul>
       <% @menu_root.children.each do |child_page| -%>
