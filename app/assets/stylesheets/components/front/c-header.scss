@@ -40,11 +40,15 @@
       z-index: 1; // Make the logo on top of the flag border
 
       .logo {
+        display: block;
         width: 80px;
         height: 80px;
         border: 1px solid;
         border-top: 0;
         background-color: $color-3;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
 
         @if $theme == 2 {
           border-color: rgba($color-4, .2);
@@ -194,6 +198,9 @@
         border: 1px solid;
         border-top: 0;
         background-color: $color-3;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
         pointer-events: all; // We want the logo to receive the events
 
         @if $theme == 2 {
