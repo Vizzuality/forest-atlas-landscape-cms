@@ -82,6 +82,8 @@ class Management::PageStepsController < ManagementController
         redirect_to next_wizard_path
       when :customization
         redirect_to next_wizard_path
+      when :preview
+        redirect_to management_site_site_pages_path @page.site.slug
     end
   end
 
