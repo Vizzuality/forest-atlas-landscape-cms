@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.Router.ManagementFiltersRouter = Backbone.Router.extend({
+  App.Router.ManagementFilters = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'
