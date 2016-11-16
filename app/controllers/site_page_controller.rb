@@ -52,6 +52,9 @@ class SitePageController < ApplicationController
   def dynamic_indicator_dashboard
   end
 
+  def map_report
+  end
+
   def get_active_menu_item
     if @site_page.root?
       @active_menu_item = nil
