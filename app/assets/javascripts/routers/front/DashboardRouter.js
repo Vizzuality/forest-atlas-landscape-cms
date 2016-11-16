@@ -1,11 +1,6 @@
 ((function (App) {
   'use strict';
 
-  /* This bit of code is temporal pending a refined architecture */
-
-  // eslint-disable-next-line
-  var dataset = [{"x":1,"y":28,"gender":"male"},{"x":2,"y":55,"gender":"female"},{"x":3,"y":43,"gender":"male"},{"x":4,"y":91,"gender":"male"},{"x":5,"y":81,"gender":"female"},{"x":6,"y":53,"gender":"female"},{"x":7,"y":19,"gender":"female"},{"x":8,"y":87,"gender":"female"},{"x":9,"y":52,"gender":"female"},{"x":10,"y":48,"gender":"male"},{"x":11,"y":24,"gender":"female"},{"x":12,"y":49,"gender":"female"},{"x":13,"y":87,"gender":"female"},{"x":14,"y":66,"gender":"female"},{"x":15,"y":17,"gender":"female"},{"x":16,"y":27,"gender":"male"},{"x":17,"y":68,"gender":"male"},{"x":18,"y":16,"gender":"male"},{"x":19,"y":49,"gender":"male"},{"x":20,"y":15,"gender":"female"}];
-
   var chartConfig = [
     {
       name: 'bar',
@@ -40,8 +35,6 @@
     }
   ];
 
-  /* End */
-
   App.Router.FrontDashboard = Backbone.Router.extend({
 
     routes: {
@@ -60,18 +53,25 @@
     },
 
     _initCharts: function () {
+      var dataset = (window.gon && gon.analysisData.data) || [];
+      var charts = (window.gon && gon.analysisGraphs) || [{}, {}];
+
       new App.View.DashboardChartView({
         el: document.querySelector('.js-chart-1'),
         data: dataset,
         chartConfig: chartConfig,
-        chart: 'bar'
+        chart: charts[0].type || null,
+        columnX: charts[0].x || null,
+        columnY: charts[0].y || null
       });
 
       new App.View.DashboardChartView({
         el: document.querySelector('.js-chart-2'),
         data: dataset,
         chartConfig: chartConfig,
-        chart: 'scatter'
+        chart: charts[1].type || null,
+        columnX: charts[1].x || null,
+        columnY: charts[1].y || null
       });
     },
 
