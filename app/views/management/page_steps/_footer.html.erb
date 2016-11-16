@@ -1,0 +1,9 @@
+<div class="form-group row">
+  <div class="col-sm-offset-2 col-sm-10">
+    <%= f.button 'CONTINUE', value: Management::PageStepsController::CONTINUE, type: 'submit', method: :put, class: 'btn btn-primary' %>
+    <% if @page.id %>
+        <%= f.button 'SAVE CHANGES', value: Management::PageStepsController::SAVE, type: 'submit', method: :put, class: 'btn btn-primary' %>
+    <% end %>
+    <%= link_to 'CANCEL', management_site_site_pages_path(@site.slug), class: 'btn btn-secondary' %>
+  </div>
+</div>

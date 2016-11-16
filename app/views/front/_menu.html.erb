@@ -36,9 +36,9 @@
   </div>
 
   <div class="mobile-menu wrapper">
-    <a class="logo-container" href="/">
-      <div class="logo"></div>
-    </a>
+    <div class="logo-container" href="/">
+      <a class="logo" href="/" style="background-image: url(<%= (@image_url && @image_url != '/')? asset_url(@image_url) : asset_url('logo')%>);"></a>
+    </div>
     <div class="hamburger-menu js-mobile-menu">
       <div></div>
       <div></div>
@@ -48,7 +48,7 @@
 
   <div class="desktop-menu wrapper">
     <div class="logo-container">
-      <a class="logo" href="/"></a>
+      <a class="logo" href="/" style="background-image: url(<%= (@image_url && @image_url != '/')? asset_url(@image_url) : asset_url('logo')%>);"></a>
     </div>
     <ul>
       <% @menu_root.children.each do |child_page| -%>
@@ -98,7 +98,9 @@
             <% if @site_page.depth >= 2 %>
                 <ul>
                   <% @site_page.children.each do |child_page| -%>
-                      <li><%= page_link child_page %></li>
+                      <% if child_page.visible? %>
+                        <li><%= page_link child_page %></li>
+                      <% end%>
                   <% end %>
                 </ul>
             <% end %>

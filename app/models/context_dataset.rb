@@ -13,6 +13,5 @@
 
 class ContextDataset < ApplicationRecord
   belongs_to :context
-  belongs_to :dataset
 
 end

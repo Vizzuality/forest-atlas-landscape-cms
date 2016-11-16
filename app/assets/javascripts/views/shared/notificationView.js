@@ -16,7 +16,7 @@
       // Type of the notification, can be: 'success', 'warning' or 'error'
       // The type can't be changed after instantiation
       type: 'success',
-      // Content of the notification, HTML will not be interprated
+      // Content of the notification, HTML will not be interpreted
       content: ''
     },
 
@@ -30,6 +30,9 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
+
+      // This is used to cancel any running timer
+      this.timer = null;
 
       this._createEl();
 
@@ -66,8 +69,11 @@
       this.options.visible = true;
       this.render();
 
+      // We cancel any running timeout before setting a new one
+      if (this.timer) clearTimeout(this.timer);
+
       if (this.options.autoCloseTimer !== -1) {
-        setTimeout(this.hide.bind(this), this.options.autoCloseTimer * 1000);
+        this.timer = setTimeout(this.hide.bind(this), this.options.autoCloseTimer * 1000);
       }
     },
 
@@ -76,6 +82,7 @@
      */
     hide: function () {
       this.options.visible = false;
+      this.timer = null;
       this.render();
     },
 

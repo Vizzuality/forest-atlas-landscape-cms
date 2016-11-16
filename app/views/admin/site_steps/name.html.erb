@@ -1,23 +1,21 @@
 <%= render partial: 'header'%>
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
-<h1>SITE NAME</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
-
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-      <fieldset class="form-group row">
-        <%= f.label :name, class: 'col-sm-2 form-control-label' , value: '' %>
-      <div class="col-sm-10"><%= f.text_field :name, class: 'form-control' %></div>
-    </fieldset>
+  <div class="l-site-creation -name">
+    <div class="wrapper">
+      <h1>Site name</h1>
+      <p class="intro">Please choose a name for the site and provide the list of all the URLs it can be accessed from.</p>
 
-    <%= fields_for :routes do |url_form| %>
-        <div class="js-urls"></div>
-    <% end %>
+      <div class="site-name">
+        <%= f.label :name, for: 'name' %>
+        <%= f.text_field :name, id:'name', placeholder: 'Type here the site’s name' %>
+      </div>
 
+      <div class="js-urls"></div>
 
-    <p>Press Enter or click "Continue"</p>
-
-    <%= render partial: 'footer', locals: { f: f} %>
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
-<%= console if Rails.env.development? %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>

@@ -1,16 +1,21 @@
 <% flash.each do |key, value| %>
-    <% if key != 'error' %>
-      <%
-        case key
-          when 'alert' then
-            key = 'warning'
-          when 'notice' then
-            key = 'success'
-        end
-      %>
-      <div class="alert alert-<%= key %>">
-        <a href="#" data-dismiss="alert" class="close">×</a>
-        <%= value %>
-      </div>
-    <% end %>
+  <% if key != 'error' %>
+    <%
+      case key
+        when 'alert' then
+          key = 'warning'
+        when 'notice' then
+          key = 'success'
+      end
+    %>
+    <script>
+     new App.View.NotificationView({
+      visible: true,
+      closeable: true,
+      autoCloseTimer: <%= key == 'alert' ? '-1' : '5' %>,
+      type: '<%= key %>',
+      content: '<%== j value %>'
+     });
+    </script>
+  <% end %>
 <% end %>

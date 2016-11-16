@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     resources :routes
     resources :site_templates
     resources :page_templates
-    resources :site_settings
     resources :site_users
     resources :datasets, only: :index do
       get 'dataset'
@@ -18,12 +17,14 @@ Rails.application.routes.draw do
   end
 
   namespace :management do
-    resources :sites, param: :slug, only: [:index] do
+    resources :sites, param: :slug, only: :none do
       resources :site_pages, shallow: true do
         member do
           put :toggle_enable
         end
+        resources :page_steps, only: [:show, :update, :delete]
       end
+      resources :page_steps, only: [:show, :update, :new]
       get '/structure', to: 'sites#structure'
       put :update_structure
     end
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
   # Auth
   get 'auth/login', to: 'auth#login'
   post 'auth/logout', to: 'auth#logout'
+  get '/not_found', to: 'static_page#not_found'
 
-   DynamicRouter.load
+  DynamicRouter.load
 end

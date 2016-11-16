@@ -1,11 +1,11 @@
 <% if resource && resource.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(resource.errors.count, "error") %> occurred:</h2>
-
-      <ul>
-        <% resource.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
+  <script>
+    new App.View.NotificationView({
+    visible: true,
+    closeable: true,
+    autoCloseTimer: -1,
+    type: 'error',
+    content: '<%== j pluralize(resource.errors.count, "error") %> occurred: <% resource.errors.full_messages.each do |message| %><%== j message + (message == resource.errors.full_messages.last ? '' : ', ') %> <% end %>'
+    });
+  </script>
 <% end %>

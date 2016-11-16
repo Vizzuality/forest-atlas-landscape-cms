@@ -1,10 +1,13 @@
 class Admin::SiteStepsController < AdminController
   include Wicked::Wizard
 
-  URL_CONTROLLER_ID =    'site_routes_attributes'.freeze
-  URL_CONTROLLER_NAME =  'site[routes_attributes]'.freeze
-  SAVE =                 'SAVE CHANGES'.freeze
-  CONTINUE =             'CONTINUE'.freeze
+  URL_CONTROLLER_ID =     'site_routes_attributes'.freeze
+  URL_CONTROLLER_NAME =   'site[routes_attributes]'.freeze
+  COLOR_CONTROLLER_ID =   'site_site_settings_attributes_3'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
+
+  SAVE =                 'Save Changes'.freeze
+  CONTINUE =             'Continue'.freeze
 
   steps *Site.form_steps
   helper_method :disable_button?
@@ -23,6 +26,13 @@ class Admin::SiteStepsController < AdminController
   end
 
   def show
+    @breadcrumbs = ['CMS']
+    if current_site.id
+      @breadcrumbs << 'Site edition'
+    else
+      @breadcrumbs << 'Site creation'
+    end
+
     if step == 'name'
       @site = current_site
       gon.global.url_controller_id = URL_CONTROLLER_ID
@@ -35,6 +45,14 @@ class Admin::SiteStepsController < AdminController
       end
       if step == 'settings'
         SiteSetting.create_additional_settings @site
+        gon.global.color_controller_id = COLOR_CONTROLLER_ID
+        gon.global.color_controller_name = COLOR_CONTROLLER_NAME
+
+        color_array = @site.site_settings.where(name: 'flag').first
+        gon.global.color_array = color_array[:value].split(' ').map{ |x| {color: x }} if color_array
+
+        image = @site.site_settings.where(name: 'logo_image').first
+        gon.global.logo_image = image.image_file_name if image
       end
     end
     render_wizard
@@ -154,7 +172,7 @@ class Admin::SiteStepsController < AdminController
   def disable_button? (current_step)
     # When is editing the site
     if @site.id
-      return false
+      return current_step == 'finish'
       # When is creating the site
     else
       return steps.find_index(step) < steps.find_index(current_step)
@@ -173,6 +191,6 @@ class Admin::SiteStepsController < AdminController
   end
 
   def save_button?
-    params[:button] == SAVE
+    params[:button].upcase == SAVE.upcase
   end
 end

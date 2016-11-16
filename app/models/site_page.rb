@@ -25,11 +25,23 @@ class SitePage < Page
   has_one :site_template, through: :site
   has_many :users, through: :site
 
+  before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql? ContentType::LINK'
   after_save :update_routes
 
   def update_routes
     return if self.content_type.eql? ContentType::LINK
     DynamicRouter.update_routes_for_site_page self
+  end
+
+  private
+  def construct_url
+    if self.content['url']
+      old_content = self.content
+      unless old_content['url'].starts_with? 'http://', 'https://'
+        old_content['url'] = 'http://' + old_content['url']
+        self.content = old_content
+      end
+    end
   end
 end

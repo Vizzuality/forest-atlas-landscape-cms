@@ -73,7 +73,7 @@ class DynamicRouter
     return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
 
     constraints = {}
-    constraints.store(:host, route.host) unless route.blank?
+    constraints.store(:host, route.host.gsub(/https?:\/\//, '')) unless route.blank? || route.host.blank?
 
     path = '/' + (route.path.blank? ? '' : route.path) + site_page.url.to_s
 
@@ -82,12 +82,25 @@ class DynamicRouter
 
     case site_page.content_type
       when ContentType::HOMEPAGE
+        # Create error pages
+        [
+          {error: '/404', action: 'not_found'},
+          {error: '/500', action: 'internal_server_error'},
+          {error: '/422', action: 'unacceptable'}
+        ].each do |error|
+          route = RouteDefinition.new(error[:error], 'site_page#' + error[:action], {id: site_page.id}, constraints, tags)
+          @route_cache.write(route, route.tags) unless route.nil?
+        end
+
         target = 'site_page#homepage'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
       when ContentType::MAP
         target = 'site_page#map'
         resources_route = RouteDefinition.new('resources.js', 'site_page#map_resources', {id: site_page.id}, constraints, tags)
+        @route_cache.write(resources_route, resources_route.tags) unless resources_route.nil?
+        # Create the route for a call to /report.html
+        resources_route = RouteDefinition.new('//report.html', 'site_page#map_report', {id: site_page.id}, constraints, tags)
         @route_cache.write(resources_route, resources_route.tags) unless resources_route.nil?
       when ContentType::ANALYSIS_DASHBOARD
         target = 'site_page#analysis_dashboard'

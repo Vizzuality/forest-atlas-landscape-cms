@@ -2,7 +2,7 @@
 
 <div class="c-content">
   <div class="wrapper">
-    <%= @site_page.content['body'].html_safe unless @site_page.content['body'].blank? %>
+    <%= @site_page.content['body'].html_safe unless @site_page.content.blank? || @site_page.content['body'].blank? %>
   </div>
 </div>
 

@@ -1,6 +1,28 @@
-<h1>Analysis dashboard</h1>
-<h3><%= @site_page.name %></h3>
-<%= @site_page.content['body'].html_safe unless @site_page.content.blank? %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<% content_for :body_class do %>
+  class="-wide"
+<% end %>
+
+<div class="l-analysis-dashboard">
+  <div class="main-container">
+    <h2><%= @site_page.name %></h2>
+    <p class="description">
+      <%= @site_page.description %>
+    </p>
+    <div class="filters js-filters">
+      Filters coming soon
+    </div>
+    <div class="map js-map">
+    </div>
+  </div>
+  <div class="secondary-container">
+    <div class="graph js-chart-1"></div>
+    <div class="graph js-chart-2"></div>
+    <div class="bookmarks">
+      Bookmarks
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
   window.route = 'Dashboard';

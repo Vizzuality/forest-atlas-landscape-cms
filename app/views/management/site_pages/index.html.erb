@@ -1,17 +1,5 @@
-<% content_for :extended_header do %>
-  <div class="c-extended-header">
-    <div class="wrapper">
-      <h1><%= @site.name %></h1>
-      <ul class="action-buttons">
-        <li><%= link_to 'New page', new_management_site_site_page_path, class: 'c-button -outline' %></li>
-        <% if @url.present? %><li><a href="<%= @url %>" class="c-button">Go to site</a></li><% end %>
-      </ul>
-    </div>
-  </div>
-<% end %>
-
+<%= render partial: 'management/extended_header'%>
 <%= include_gon %>
-
 <div class="js-tabs"></div>
 
 <div class="l-page-list">

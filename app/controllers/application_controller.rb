@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
   end
 
+  def redirect_to_apigateway_logout
+    redirect_to "#{ENV['API_URL']}/auth/logout?callbackUrl=#{auth_login_url}"
+  end
+
   def jwt_authentication
     unless session.key?('user_token')
       redirect_to_apigateway

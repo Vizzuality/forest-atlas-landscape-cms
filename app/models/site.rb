@@ -18,7 +18,7 @@ class Site < ApplicationRecord
   has_many :users, through: :user_site_associations
   has_many :context_sites
   has_many :contexts, through: :context_sites
-  has_many :site_settings, dependent: :destroy
+  has_many :site_settings, dependent: :destroy, inverse_of: :site
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
@@ -65,19 +65,6 @@ class Site < ApplicationRecord
 
   def root
     SitePage.find_by site_id: self.id, uri: ''
-  end
-
-  def get_ordered_settings
-    settings = site_settings.order :position
-    if settings.blank?
-      SiteSetting.new site_id: id, name: 'background', value: '', position: 1
-      SiteSetting.new site_id: id, name: 'logo', value: '', position: 2
-      SiteSetting.new site_id: id, name: 'color', value: '', position: 3
-      SiteSetting.new site_id: id, name: 'flag', value: '', position: 4
-
-      settings = site_settings.order :position
-    end
-    settings
   end
 
   private

@@ -41,6 +41,20 @@
     }
   }
 
+  &.-bright {
+    background-color: $color-1;
+    color: $color-3;
+
+    a {
+      color: $color-3;
+      &.-highlight { color: $color-3; }
+    }
+
+    .breadcrumbs {
+      color: rgba($color-3, .5);
+    }
+  }
+
   .menu {
     > li {
       margin-right: 20px;

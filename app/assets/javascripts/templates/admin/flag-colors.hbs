@@ -1,14 +1,20 @@
-<input type="hidden" id="{{inputId}}" name="{{inputName}}" value="{{colorsValue}}">
-<ul class="c-flag-colors">
-    {{#each colors}}
-        <li>
-            <input type="color" value="{{color}}" data-id="{{@index}}">
-            <button type="button" class="js-remove-color" data-id="{{@index}}">Remove Color</button>
-        </li>
-    {{/each}}
-    {{#if addable}}
-        <li>
-            <button type="button" class="js-add-color">Add</button>
-        </li>
-    {{/if}}
-</ul>
+<input type="hidden" id="{{inputId}}_value" name="{{inputName}}[value]" value="{{colorsValue}}">
+<input type="hidden" id="{{inputId}}_name" name="{{inputName}}[name]" value="flag">
+<input type="hidden" id="{{inputId}}_position" name="{{inputName}}[position]" value="3">
+<div class="c-flag-colors">
+  {{#each colors}}
+    <div class="c-centered-input">
+      <label for="color-{{index}}">Flag color {{index}}</label>
+      <div>
+        <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove Color</button>
+        <input type="color" value="{{color}}" id="color-{{index}}" data-id="{{@index}}">
+      </div>
+    </div>
+  {{/each}}
+  {{#if addButtonVisible}}
+    <div class="c-centered-input">
+      <label>Add flag color</label>
+      <button type="button" class="add-color js-add-color">Add</button>
+    </div>
+  {{/if}}
+</div>

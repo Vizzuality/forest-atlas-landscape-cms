@@ -1,9 +1,9 @@
 ((function (App) {
   'use strict';
 
-  App.View.UrlsView = Backbone.View.extend({
-    className: 'c-urls',
-    template: HandlebarsTemplates['admin/urls'],
+  App.View.UrlsInputView = Backbone.View.extend({
+    className: 'c-urls-input',
+    template: HandlebarsTemplates['admin/urls-input'],
 
     defaults: {
     },

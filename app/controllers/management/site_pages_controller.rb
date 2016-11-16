@@ -55,6 +55,7 @@ class Management::SitePagesController < ManagementController
 
   # GET /management/pages/new
   def new
+    session[:new_page_parent] = params[:parent] if params[:parent]
   end
 
   # GET /management/pages/1/edit
@@ -67,11 +68,13 @@ class Management::SitePagesController < ManagementController
     @site_page = @site.site_pages.build(page_params)
     @site_page.enabled = false
 
-    # TODO: While it's not possible to select where to create the page..
-    # ..it will be created under the homepage in the last position
+    @site_page.parent_id = session[:new_page_parent]
+    session[:new_page_parent] = nil
 
     if @site_page.parent_id.blank?
       @site_page.parent_id = @site.site_pages.where(url: '/').first.id
+      @site_page.position = @site.site_pages.where(parent_id: @site_page.parent).length
+    elsif @site_page.position.blank?
       @site_page.position = @site.site_pages.where(parent_id: @site_page.parent).length
     end
 
