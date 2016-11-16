@@ -3,29 +3,8 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 
-
-<div class="js-filters"></div>
-
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
-    <%# @dataset_setting.columns_visible.split(' ').each do |vf|%>
-        <%# field = @fields.find_by(name: vf) %>
-        <fieldset>
-          <table>
-            <tr>
-              <td><%#= vf %></td>
-              <%# if field.type == ''%>
-              <td>FROM OPTION</td>
-              <td>TO OPTION</td>
-              <td>Visible checkbox</td>
-              <%# end %>
-            </tr>
-          </table>
-        </fieldset>
-
-    <%# end %>
-    <%= render partial: 'footer', locals: {f: f} %>
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <div class="js-filters"></div>
+  <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
-
-
-<%= console if Rails.env.development? %>
