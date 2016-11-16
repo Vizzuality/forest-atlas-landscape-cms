@@ -49,6 +49,12 @@
       // On pressing submit
       $('.js-submit').on('click', function (event) {
         event.preventDefault();
+        new App.View.NotificationView({
+          content: 'Saving the structure...',
+          closeable: false,
+          autoCloseTimer: 5,
+          visible: true
+        });
         this.treeStructureView.save(gon.updateStructurePath);
       }.bind(this));
 
