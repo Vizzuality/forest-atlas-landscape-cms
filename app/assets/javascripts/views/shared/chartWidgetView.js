@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.View.DashboardChartView = Backbone.View.extend({
+  App.View.ChartWidgetView = Backbone.View.extend({
 
     template: HandlebarsTemplates['front/dashboard-chart'],
 

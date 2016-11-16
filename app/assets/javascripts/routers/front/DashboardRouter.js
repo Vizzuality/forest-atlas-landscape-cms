@@ -1,40 +1,6 @@
 ((function (App) {
   'use strict';
 
-  var chartConfig = [
-    {
-      name: 'bar',
-      acceptedStatTypes: [
-        ['nominal', 'quantitative'],
-        ['temporal', 'quantitative'],
-        ['ordinal', 'quantitative']
-      ]
-    },
-    {
-      name: 'line',
-      acceptedStatTypes: [
-        ['temporal', 'quantitative'],
-        ['ordinal', 'quantitative']
-      ]
-    },
-    {
-      name: 'pie',
-      acceptedStatTypes: [
-        ['nominal'],
-        ['ordinal']
-      ]
-    },
-    {
-      name: 'scatter',
-      acceptedStatTypes: [
-        ['quantitative', 'quantitative'],
-        ['nominal', 'nominal'],
-        ['nominal', 'ordinal'],
-        ['ordinal', 'ordinal']
-      ]
-    }
-  ];
-
   App.Router.FrontDashboard = Backbone.Router.extend({
 
     routes: {
@@ -56,19 +22,19 @@
       var dataset = (window.gon && gon.analysisData.data) || [];
       var charts = (window.gon && gon.analysisGraphs) || [{}, {}];
 
-      new App.View.DashboardChartView({
+      new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart-1'),
         data: dataset,
-        chartConfig: chartConfig,
+        chartConfig: App.Helper.ChartConfig,
         chart: charts[0].type || null,
         columnX: charts[0].x || null,
         columnY: charts[0].y || null
       });
 
-      new App.View.DashboardChartView({
+      new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart-2'),
         data: dataset,
-        chartConfig: chartConfig,
+        chartConfig: App.Helper.ChartConfig,
         chart: charts[1].type || null,
         columnX: charts[1].x || null,
         columnY: charts[1].y || null

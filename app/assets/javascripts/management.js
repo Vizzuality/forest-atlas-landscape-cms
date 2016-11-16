@@ -24,6 +24,7 @@
 //= require sir-trevor
 //= require fuse.js/fuse
 //= require object-assign-polyfill
+//= require jiminy
 
 //= require_self
 
