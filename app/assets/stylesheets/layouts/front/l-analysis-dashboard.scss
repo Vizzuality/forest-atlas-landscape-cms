@@ -26,28 +26,28 @@ $secondary-container-initial-width: 400px;
   }
 
   > .main-container {
-    flex-basis: calc(100% - $secondary-container-initial-width);
-    flex-grow: 1;
-    flex-shrink: 1;
     padding: $wrapper-mobile-padding;
 
     @media #{$mq-laptop} {
+      flex-basis: calc(100% - $secondary-container-initial-width);
+      flex-grow: 1;
+      flex-shrink: 1;
       padding: 15px 25px;
     }
   }
 
   > .secondary-container {
-    flex-basis: $secondary-container-initial-width;
-    flex-grow: 0;
-    flex-shrink: 0;
     padding: 0 $wrapper-mobile-padding 15px;
     border-left: 1px solid rgba($color-4, .1);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 
 
     @media #{$mq-laptop} {
+      flex-basis: $secondary-container-initial-width;
+      flex-grow: 0;
+      flex-shrink: 0;
       padding: 0 25px 15px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
   }
 
