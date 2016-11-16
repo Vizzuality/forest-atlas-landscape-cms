@@ -48,6 +48,20 @@ class SitePageController < ApplicationController
   end
 
   def analysis_dashboard
+    @setting = @site_page.dataset_setting
+    if @setting
+      # Query the API in the dataset_setting
+
+      # Fill the gon for:
+      # ... user filters
+      gon.analysis_user_filters = JSON.parse @setting.columns_changeable
+      # ... default graphs (type: {X,Y})
+      gon.analysis_graphs = JSON.parse @setting.default_graphs
+      # ... default map (type: {up_left, right_bottom})
+      gon.analysis_map = JSON.parse @setting.default_map
+      # ... data
+      gon.analysis_data = @setting.get_filtered_dataset
+    end
   end
 
   def dynamic_indicator_dashboard

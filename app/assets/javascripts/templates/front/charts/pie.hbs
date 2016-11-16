@@ -1,0 +1,102 @@
+{
+  "width": {{{width}}},
+  "height": {{{height}}},
+  "data": [{
+    "name": "table",
+    "values": {{{data}}},
+    "transform": [{
+      "type": "aggregate",
+      "groupby": {{{xColumn}}},
+      "summarize": [{
+        "field": {{{xColumn}}},
+        "ops": ["count"],
+        "as": "count"
+      }]
+    }, {
+      "type": "pie",
+      "field": "count"
+    }]
+  }],
+  "scales": [],
+  "marks": [{
+    "type": "arc",
+    "from": {
+      "data": "table"
+    },
+    "properties": {
+      "enter": {
+        "x": {
+          "field": {
+            "group": "width"
+          },
+          "mult": 0.5
+        },
+        "y": {
+          "field": {
+            "group": "height"
+          },
+          "mult": 0.5
+        },
+        "startAngle": {
+          "field": "layout_start"
+        },
+        "endAngle": {
+          "field": "layout_end"
+        },
+        "innerRadius": {
+          "value": 0
+        },
+        "outerRadius": {
+          "value": 100
+        },
+        "stroke": {
+          "value": "#fff"
+        }
+      },
+      "update": {
+        "fill": {
+          "value": "#ccc"
+        }
+      }
+    }
+  }, {
+    "type": "text",
+    "from": {
+      "data": "table"
+    },
+    "properties": {
+      "enter": {
+        "x": {
+          "field": {
+            "group": "width"
+          },
+          "mult": 0.5
+        },
+        "y": {
+          "field": {
+            "group": "height"
+          },
+          "mult": 0.5
+        },
+        "radius": {
+          "value": 80
+        },
+        "theta": {
+          "field": "layout_mid"
+        },
+        "fill": {
+          "value": "#000"
+        },
+        "align": {
+          "value": "center"
+        },
+        "baseline": {
+          "value": "middle"
+        },
+        "text": {
+          "field": {{{xColumn}}}
+        }
+      }
+    }
+  }]
+}

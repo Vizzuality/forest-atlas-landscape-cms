@@ -21,6 +21,8 @@
 //= require leaflet
 //= require handlebars
 //= require object-assign-polyfill
+//= require datalib
+//= require jiminy
 
 //= require_self
 

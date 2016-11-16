@@ -4,6 +4,7 @@
     "arrow-body-style": 1,
     "func-names": 0,
     "no-new": 0,
+    "no-multi-str": 0,
     "no-param-reassign": [2, { "props": false }],
     "max-len": [2, 120, { "ignoreComments": true }],
     "vars-on-top": 0,
@@ -17,12 +18,14 @@
     "$": true,
     "L": true,
     "Backbone": true,
+    "Handlebars": true,
     "HandlebarsTemplates": true,
     "_": true,
     "Turbolinks": true,
     "SirTrevor": true,
     "gon": true,
-    "Fuse": true
+    "Fuse": true,
+    "Jiminy": true
   },
   "env": {
     "browser": true

@@ -1,0 +1,26 @@
+<div class="c-filters">
+  <input type="hidden" id="page_dataset_setting_filters" name="page[data_setting][filters]" value="{{json}}">
+
+  {{#each filters}}
+    <div>
+      <label>Filter {{id}}</label>
+      <div>
+        <select id="filter-{{@index}}" data-id="{{@index}}" class="js-input-field">
+            <option value="" disabled="disabled" {{#unless name}}selected="selected"{{/unless}}>Choose a field</option>
+            {{#each ../fields}}
+              <option value="{{name}}" {{#if_eq name ../name}}selected="selected"{{/if_eq}}>{{name}}</option>
+            {{/each}}
+        </select>
+        <input type="text" name="from" id="from-{{@index}}" data-id="{{@index}}" class="js-input-filter" placeholder="From" value="{{from}}">
+        <input type="text" name="to" id="to-{{@index}}" data-id="{{@index}}" class="js-input-filter" placeholder="To" value="{{to}}">
+        <input type="checkbox" id="variable-{{@index}}" data-id="{{@index}}" class="js-input-variable" {{#if variable}}checked="checked"{{/if}}>
+        <label for="variable-{{@index}}">Variable</label>
+        <button type="button" id="remove-{{@index}}" data-id="{{@index}}" class="js-remove-filter">Remove Filter</button>
+      </div>
+    </div>
+  {{/each}}
+
+  <div>
+    <button type="button" class="add-filter js-add-filter">Add filter</button>
+  </div>
+</div>

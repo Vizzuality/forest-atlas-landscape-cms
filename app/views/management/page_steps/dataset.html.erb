@@ -1,0 +1,32 @@
+<div class="c-extended-header -high">
+  <div class="wrapper">
+    <div class="two-options">
+      <div class="description">
+        <h1>Select a Dataset</h1>
+        <p>Pick the dataset you want to use for the dashboard.</p>
+      </div>
+      <div class="description">
+        <h1>Register a Dataset</h1>
+        <p>You can also create a new dataset.</p>
+        <a href="" class="c-button -outline js-register-dataset">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+    <% @context_datasets.each do |context_id, datasets| %>
+        <%# TODO: Remove the DB query from the view %>
+        <%= ::Context.find(context_id).name %>
+        <% datasets.each do |dataset| %>
+          <fieldset>
+            <%= radio_button_tag 'page[dataset_setting][context_id_dataset_id]', [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.id == dataset.id) : nil %>
+            <%= dataset.name %>
+          </fieldset>
+        <% end %>
+    <% end %>
+
+    <%= render partial: 'footer', locals: {f: f} %>
+<% end %>
+
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
