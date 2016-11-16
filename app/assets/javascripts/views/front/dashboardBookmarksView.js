@@ -18,12 +18,20 @@
     events: {
       'click .js-add-state': '_onClickAddState',
       'keydown .js-name': '_onKeydownName',
+      'blur .js-name': '_onKeydownName',
       'click .js-apply': '_onClickApply',
       'click .js-delete': '_onClickDelete'
     },
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
+
+      // These notifications are later used to display feedback
+      // By creating them now, we avoid to layer them on top of another if several notifications
+      // need to be displayed at once
+      this.successNotification = new App.View.NotificationView({ autoCloseTimer: 5 });
+      this.errorNotification = new App.View.NotificationView({ type: 'error' });
+
       this.render();
     },
 
@@ -39,7 +47,7 @@
      * Event handler for when editing the name of a bookmark
      */
     _onKeydownName: function (e) {
-      if (e.keyCode !== 13) return; // enter key
+      if (e.keyCode && e.keyCode !== 13) return; // enter key
       e.preventDefault();
       var id = +e.currentTarget.dataset.id;
       this._editBookmark(id, { name: e.currentTarget.textContent });
@@ -80,11 +88,8 @@
         localStorage.removeItem(this.options.storageID);
 
         // We display an error
-        new App.View.NotificationView({
-          visible: true,
-          type: 'error',
-          content: 'The bookmarks have been corrupted and can\'t be retrieved'
-        });
+        this.errorNotification.options.content = 'The bookmarks have been corrupted and can\'t be retrieved';
+        this.errorNotification.show();
       }
 
       return bookmarks || [];
@@ -111,11 +116,8 @@
         localStorage.setItem(this.options.storageID, JSON.stringify(bookmarks));
       } catch (err) {
         // We display an error
-        new App.View.NotificationView({
-          visible: true,
-          type: 'error',
-          content: 'The bookmark couldn\'t be saved properly'
-        });
+        this.errorNotification.options.content = 'The bookmark couldn\'t be saved properly';
+        this.errorNotification.show();
       }
     },
 
@@ -132,11 +134,8 @@
         localStorage.setItem(this.options.storageID, JSON.stringify(bookmarks));
       } catch (err) {
         // We display an error
-        new App.View.NotificationView({
-          visible: true,
-          type: 'error',
-          content: 'The name of the bookmark couldn\'t be updated'
-        });
+        this.errorNotification.options.content = 'The name of the bookmark couldn\'t be updated';
+        this.errorNotification.show();
       }
     },
 
@@ -154,19 +153,13 @@
         couldSave = true;
       } catch (err) {
         // We display an error
-        new App.View.NotificationView({
-          visible: true,
-          type: 'error',
-          content: 'The bookmark couldn\'t be deleted'
-        });
+        this.errorNotification.options.content = 'The bookmark couldn\'t be deleted';
+        this.errorNotification.show();
       }
 
       if (couldSave) {
-        new App.View.NotificationView({
-          visible: true,
-          autoCloseTimer: 5,
-          content: 'The bookmark has been successfully deleted!'
-        });
+        this.successNotification.options.content = 'The bookmark has been successfully deleted!';
+        this.successNotification.show();
       }
     },
 

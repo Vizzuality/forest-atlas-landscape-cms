@@ -23,6 +23,14 @@
       justify-content: space-between;
       padding: 12px 15px;
       border-bottom: 1px solid rgba($color-4, .1);
+
+      &.no-bookmark {
+        display: block;
+        width: 100%;
+        border-bottom-color: transparent;
+        text-align: center;
+        opacity: .5;
+      }
     }
   }
 

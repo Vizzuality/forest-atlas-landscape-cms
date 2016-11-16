@@ -3,6 +3,9 @@
   <button type="button" class="c-button -outline -dark-text -normal-weight js-add-state">Add state</button>
 </header>
 <ul class="bookmarks">
+  {{#unless bookmarks.length}}
+    <li class="no-bookmark">You haven't saved any bookmark yet</li>
+  {{/unless}}
   {{#each bookmarks}}
     <li>
       <span title="Click to edit the name" contenteditable="true" class="js-name" data-id="{{@index}}">{{name}}</span>
