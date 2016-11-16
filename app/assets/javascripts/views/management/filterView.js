@@ -2,16 +2,14 @@
   'use strict';
 
   var CollectionFilters = Backbone.Collection.extend({
-    url: 'filters.json',
   });
 
   var CollectionChangeables = Backbone.Collection.extend({
-    url: 'filters.json',
   });
 
   App.View.FilterView = Backbone.View.extend({
 
-    template: HandlebarsTemplates['management/site-switcher'],
+    template: HandlebarsTemplates['management/filter'],
     collectionFilters: new CollectionFilters(),
     collectionChangeables: new CollectionChangeables(),
 
@@ -41,7 +39,7 @@
 
     _addFilter: function () {
       this.collectionFilters.push({ filter: this.options.filter });
-      this.collectionFilters.push('false');
+      this.collectionChangeables.push('false');
       this.render();
     },
 
@@ -60,6 +58,9 @@
       var position = $(e.target).data('id');
       var model = this.collectionFilters.at(position);
       // TODO: This is wrong, this should be a query with the data of all fields
+      // country = 'portugal' // Strings
+      // people_count between 0 and 10000 // numbers
+      // Collection: ['country = portugal', 'people_count_between 0 and 10000']
       model.set(filter);
     },
 

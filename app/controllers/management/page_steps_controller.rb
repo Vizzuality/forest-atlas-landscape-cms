@@ -44,11 +44,11 @@ class Management::PageStepsController < ManagementController
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
+      gon.fields = @fields
     when :columns
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
-      gon.fields = @fields
     end
 
     @breadcrumbs = ['Page creation']
