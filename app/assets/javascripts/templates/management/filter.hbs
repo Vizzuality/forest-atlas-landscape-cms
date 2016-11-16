@@ -1,0 +1,23 @@
+<input type="hidden" id="page_dataset_setting_filters" name="page[data_setting][filters]" value="{{filtersValue}}">
+<input type="hidden" id="page_dataset_setting_columns_changeable" name="page[data_setting][columns_changeable]" value="{{changeablesValue}}">
+<div class="c-filters">
+  {{#each filters}}
+    <div class="">
+      <label for="">Filter {{index}}</label>
+      <div>
+        <select id="filter-{{index}}" data-id="{{index}}">
+          {{#each fields}}
+            <option value="{{fields}}">{{fields}}</option>
+          {{/each}}
+        </select>
+        <input type="text" id="from-{{index}}" data-id="{{index}}" class='js-input-filter js-input-filter-type' value="from">
+        <input type="text" id="to-{{index}}" data-id="{{index}}" class='js-input-filter' value="to">
+        <input type="checkbox" id="visible-{{index}}" data-id="{{index}}" class='js-input-visible'>Variable
+        <button type="button" id="remove-{{index}}" data-id="{{index}}" class="js-remove-filter">Remove Filter</button>
+      </div>
+    </div>
+  {{/each}}
+  <div>
+    <button type="button" class="add-filter js-add-filter">Add filter</button>
+  </div>
+</div>
