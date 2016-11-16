@@ -41,9 +41,9 @@
     _onKeydownName: function (e) {
       if (e.keyCode !== 13) return; // enter key
       e.preventDefault();
-      var id = +e.target.dataset.id;
-      this._editBookmark(id, { name: e.target.textContent });
-      e.target.blur();
+      var id = +e.currentTarget.dataset.id;
+      this._editBookmark(id, { name: e.currentTarget.textContent });
+      e.currentTarget.blur();
     },
 
     /**
@@ -51,7 +51,7 @@
      * @param {object} e - event object
      */
     _onClickApply: function (e) {
-      var id = +e.target.dataset.id;
+      var id = +e.currentTarget.dataset.id;
       var bookmark = this._getBookmark(id);
       this.options.setState(bookmark);
     },
@@ -61,7 +61,7 @@
      * @param {object} e - event object
      */
     _onClickDelete: function (e) {
-      var id = +e.target.dataset.id;
+      var id = +e.currentTarget.dataset.id;
       this._deleteBookmark(id);
       this.render();
     },

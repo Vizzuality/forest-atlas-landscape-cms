@@ -42,6 +42,7 @@
       this._initMap();
       this._initBookmarks();
       this._setListeners();
+      this._renderCharts();
     },
 
     /**
@@ -105,7 +106,7 @@
       new App.View.DashboardBookmarksView({
         el: document.querySelector('.js-bookmarks'),
         getState: function () { return this.state; }.bind(this),
-        setState: function (state) { console.log(state); }
+        setState: this._restoreState.bind(this)
       });
     },
 
@@ -130,6 +131,40 @@
 
         default:
       }
+    },
+
+    /**
+     * Restore the state of the dashboard
+     * @param {object} state
+     */
+    _restoreState: function (state) {
+      // We restore the first chart
+      var chart1State = {
+        chart: state.config.charts[0].type,
+        columnX: state.config.charts[0].x,
+        columnY: state.config.charts[0].y
+      };
+      this.chart1.options = Object.assign({}, this.chart1.options, chart1State);
+      this.chart1.renderChart();
+
+      // We restore the second chart
+      var chart2State = {
+        chart: state.config.charts[1].type,
+        columnX: state.config.charts[1].x,
+        columnY: state.config.charts[1].y
+      };
+      this.chart2.options = Object.assign({}, this.chart2.options, chart2State);
+      this.chart2.renderChart();
+
+      // TODO do the same for the map
+    },
+
+    /**
+     * Render the charts
+     */
+    _renderCharts: function () {
+      this.chart1.render();
+      this.chart2.render();
     },
 
     index: function () {
