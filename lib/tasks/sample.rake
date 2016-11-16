@@ -32,6 +32,16 @@ def create_pages_templates
       site_templates: [@fa_template, @la_template]
     }
   )
+  PageTemplate.create!(
+    {
+      name: 'Analysis Dashboard',
+      description: 'Analysing information',
+      uri: 'analysis-dashboard',
+      parent: home,
+      content_type: ContentType::ANALYSIS_DASHBOARD,
+      site_templates: [@fa_template, @la_template]
+    }
+  )
   news = PageTemplate.create!(
     {
       name: 'News',
@@ -155,16 +165,6 @@ def create_pages_templates
       uri: 'news-6',
       parent: news_section_1,
       content_type: ContentType::OPEN_CONTENT,
-      site_templates: [@fa_template, @la_template]
-    }
-  )
-  PageTemplate.create!(
-    {
-      name: 'Analysis Dashboard',
-      description: 'Analysing information',
-      uri: 'analysis-dashboard',
-      parent: news_section_1,
-      content_type: ContentType::ANALYSIS_DASHBOARD,
       site_templates: [@fa_template, @la_template]
     }
   )
