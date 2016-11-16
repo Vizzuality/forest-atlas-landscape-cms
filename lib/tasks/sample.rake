@@ -289,6 +289,12 @@ def create_users
       name: 'Thomas Maschler'
     }
   )
+  @daniel_caso_user = User.create(
+    {
+      email: 'daniel.caso@vizzuality.com',
+      name: 'Daniel Caso'
+    }
+  )
   puts 'Users created successfully'
 end
 
@@ -327,6 +333,12 @@ def create_user_sites
     }, {
       user: @clement_prodhomme_user,
       site: @site_four
+    }, {
+      user: @daniel_caso_user,
+      site: @staging_demo_site
+    }, {
+      user: @daniel_caso_user,
+      site: @base_site
     }
   ]
 
@@ -345,7 +357,7 @@ def create_contexts
     c = Context.create!(
       {
         name: "Context #{i}",
-        user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id],
+        user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id, @daniel_caso_user.id],
         site_ids: [@base_site.id, @staging_demo_site.id]
       })
     datasets.each{|d| c.context_datasets.build(dataset_id: d)}
