@@ -11,7 +11,8 @@
       'sites/:slug/structure(/)': 'Structure',
       'sites/:slug/widgets(/)': 'Widgets',
       'sites/:slug/page_steps/dataset': 'DatasetStep',
-      'sites/:slug/page_steps/filters': 'FiltersStep'
+      'sites/:slug/page_steps/filters': 'FiltersStep',
+      'sites/:slug/page_steps/preview': 'PreviewStep'
     }
   });
 
