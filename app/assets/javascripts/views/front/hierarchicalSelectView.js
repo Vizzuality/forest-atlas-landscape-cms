@@ -62,6 +62,9 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
+      // We need to copy it manually because Object.assign doesn't deep clone
+      // eslint-disable-next-line no-underscore-dangle
+      this.options._path = Array.prototype.slice.call(this.options._path);
 
       if (!this.options.ID) {
         // eslint-disable-next-line no-console
@@ -331,7 +334,6 @@
       // eslint-disable-next-line no-underscore-dangle
       this.options._path.pop();
 
-      var prevLevel = level !== 0 ? level - 1 : 0;
       // eslint-disable-next-line no-underscore-dangle
       var hierarchy = this._getHierarchy();
 
