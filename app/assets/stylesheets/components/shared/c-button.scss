@@ -18,6 +18,10 @@
     color: $color-4;
   }
 
+  &.-normal-weight {
+    font-weight: $font-weight-normal;
+  }
+
   &.-disabled {
     cursor: default;
     opacity: .3;

@@ -3,6 +3,30 @@
 
   App.Router.FrontDashboard = Backbone.Router.extend({
 
+    // Global state of the dashboard
+    state: {
+      name: 'New bookmark',
+      config: {
+        map: {
+          lat: null,
+          lng: null,
+          zoom: null
+        },
+        charts: [
+          {
+            type: null,
+            x: null,
+            y: null
+          },
+          {
+            type: null,
+            x: null,
+            y: null
+          }
+        ]
+      }
+    },
+
     routes: {
       '(/)': 'index'
     },
@@ -16,13 +40,33 @@
 
       this._initCharts();
       this._initMap();
+      this._initBookmarks();
+      this._setListeners();
+      this._renderCharts();
     },
 
+    /**
+     * Set the listeners that don't depend on a DOM element
+     */
+    _setListeners: function () {
+      this.listenTo(this.chart1, 'state:change', function (state) {
+        this._saveState('chart1', state);
+      });
+      this.listenTo(this.chart2, 'state:change', function (state) {
+        this._saveState('chart2', state);
+      });
+
+      // We would do the same for the map
+    },
+
+    /**
+     * Init the charts
+     */
     _initCharts: function () {
       var dataset = (window.gon && gon.analysisData.data) || [];
       var charts = (window.gon && gon.analysisGraphs) || [{}, {}];
 
-      new App.View.ChartWidgetView({
+      this.chart1 = new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart-1'),
         data: dataset,
         chartConfig: App.Helper.ChartConfig,
@@ -31,7 +75,7 @@
         columnY: charts[0].y || null
       });
 
-      new App.View.ChartWidgetView({
+      this.chart2 = new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart-2'),
         data: dataset,
         chartConfig: App.Helper.ChartConfig,
@@ -41,6 +85,9 @@
       });
     },
 
+    /**
+     * Init the map
+     */
     _initMap: function () {
       // This JS will probably be moved to independent views once the architecture will be refined
       var map = L.map(document.querySelector('.js-map'), {
@@ -50,6 +97,74 @@
       L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
       }).addTo(map);
+    },
+
+    /**
+     * Init the bookmarks
+     */
+    _initBookmarks: function () {
+      new App.View.DashboardBookmarksView({
+        el: document.querySelector('.js-bookmarks'),
+        getState: function () { return this.state; }.bind(this),
+        setState: this._restoreState.bind(this)
+      });
+    },
+
+    /**
+     * Save the state of the specified component into a global state object
+     * @param {string} component - "chart1", "chart2" or "map"
+     * @param {object} state - state to save
+     */
+    _saveState: function (component, state) {
+      switch (component) {
+        case 'map':
+          this.state.config.map = Object.assign({}, this.state.config.map, state);
+          break;
+
+        case 'chart1':
+          this.state.config.charts[0] = Object.assign({}, this.state.config.charts[0], state);
+          break;
+
+        case 'chart2':
+          this.state.config.charts[1] = Object.assign({}, this.state.config.charts[1], state);
+          break;
+
+        default:
+      }
+    },
+
+    /**
+     * Restore the state of the dashboard
+     * @param {object} state
+     */
+    _restoreState: function (state) {
+      // We restore the first chart
+      var chart1State = {
+        chart: state.config.charts[0].type,
+        columnX: state.config.charts[0].x,
+        columnY: state.config.charts[0].y
+      };
+      this.chart1.options = Object.assign({}, this.chart1.options, chart1State);
+      this.chart1.renderChart();
+
+      // We restore the second chart
+      var chart2State = {
+        chart: state.config.charts[1].type,
+        columnX: state.config.charts[1].x,
+        columnY: state.config.charts[1].y
+      };
+      this.chart2.options = Object.assign({}, this.chart2.options, chart2State);
+      this.chart2.renderChart();
+
+      // TODO do the same for the map
+    },
+
+    /**
+     * Render the charts
+     */
+    _renderCharts: function () {
+      this.chart1.render();
+      this.chart2.render();
     },
 
     index: function () {
