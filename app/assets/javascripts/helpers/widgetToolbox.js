@@ -88,5 +88,36 @@
     return App.Helper.ChartConfig;
   };
 
+  /**
+   * Check the validity of a chart regarding the data provided to the constructor
+   * @param {{ type: string, x: string, y: string | null}} chart
+   * @returns {boolean} validity - true if valid
+   */
+  App.Helper.WidgetToolbox.prototype.checkChartValidity = function (chart) {
+    // If the chart hasn't a type, we consider it as valid
+    if (!chart.type) return true;
+    // If the chart can't be rendered with the current dataset
+    if (this.getAvailableCharts().indexOf(chart.type) === -1) return false;
+    // If the x column can be chosen to render the chart
+    if (this.getAvailableXColumns(chart.type).indexOf(chart.x) === -1) return false;
+    // If the y column can be chosen to render the chart with the x column
+    // NOTE: not all the charts have two columns
+    if (this.getAvailableYColumns(chart.type, chart.x).length && (!chart.y || this.getAvailableYColumns(chart.type, chart.x).indexOf(chart.y) === -1)) return false;
+    // If we reach this point, this particular chart is valid
+    return true;
+  };
+
+  /**
+   * Check the validity of a state regarding the data provided to the constructor
+   * For now, only the charts are checked
+   * @param {object} state
+   * @returns {boolean} validity - true if valid
+   */
+  App.Helper.WidgetToolbox.prototype.checkStateValidity = function (state) {
+    return state.config.charts.reduce(function (isValid, chart) {
+      return isValid && this.checkChartValidity(chart);
+    }.bind(this), true);
+  };
+
   /* eslint-enable no-underscore-dangle */
 })(this.App));
