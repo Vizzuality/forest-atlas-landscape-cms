@@ -29,7 +29,7 @@ class DatasetSetting < ApplicationRecord
   private
   def update_timestamp
     self.fields_last_modified = {
-      columns_changeable: self.columns_chageable,
+      columns_changeable: self.columns_changeable,
       columns_visible: self.columns_visible,
       filters: self.filters}.hash
   end
