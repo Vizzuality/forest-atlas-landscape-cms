@@ -3,6 +3,7 @@ class DatasetSetting < ApplicationRecord
   belongs_to :page
 
   validates_presence_of :dataset_id
+  before_save :update_timestamp
 
   def get_fields
     DatasetService.get_fields self.dataset_id
@@ -23,5 +24,13 @@ class DatasetSetting < ApplicationRecord
       query += ' limit 10000'
       return DatasetService.get_filtered_dataset self.dataset_id, query
     end
+  end
+
+  private
+  def update_timestamp
+    self.fields_last_modified = {
+      columns_changeable: self.columns_chageable,
+      columns_visible: self.columns_visible,
+      filters: self.filters}.hash
   end
 end
