@@ -27,7 +27,6 @@
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
       this._setListeners();
-      this.render();
     },
 
     /**
@@ -50,7 +49,7 @@
 
       var newDimensions = this._computeChartDimensions();
       if (newDimensions.width !== previousWidth || newDimensions.height !== previousHeight) {
-        this._renderChart();
+        this.renderChart();
       }
     },
 
@@ -62,7 +61,7 @@
       this.options.chart = arguments[0][0];
       this.options.columnX = arguments[0][1];
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
-      this._renderChart();
+      this.renderChart();
     },
 
     /**
@@ -193,14 +192,19 @@
         }
       }
 
-      var columns = this._getRandomColumns();
       var chartDimensions = this._computeChartDimensions();
-      var needsRandomColumns = !this.options.columnX && !this.options.columnY;
+
+      // We check if we need to automatically select the columns
+      if (!this.options.columnX && !this.options.columnY) {
+        var columns = this._getRandomColumns();
+        this.options.columnX = columns.x;
+        this.options.columnY = columns.y;
+      }
 
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
-        xColumn: JSON.stringify(needsRandomColumns ? columns.x : this.options.columnX),
-        yColumn: JSON.stringify(needsRandomColumns ? columns.y : this.options.columnY),
+        xColumn: JSON.stringify(this.options.columnX),
+        yColumn: JSON.stringify(this.options.columnY),
         width: chartDimensions.width,
         height: chartDimensions.height
       });
@@ -209,12 +213,20 @@
     /**
      * Create the chart and append it to the DOM
      */
-    _renderChart: function () {
+    renderChart: function () {
       if (!this.options.data.length) {
         // eslint-disable-next-line no-console
         console.warn('The chart needs a JSON spec file to be rendered');
         return;
       }
+
+      // We save the state of the widget each time we render as it can be the
+      // consequence of a change in the configuration
+      this.trigger('state:change', {
+        type: this.options.chart,
+        x: this.options.columnX,
+        y: this.options.columnY
+      });
 
       vg.parse
         .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
@@ -267,7 +279,7 @@
       this.el.innerHTML = this.template();
       this.chartContainer = this.el.querySelector('.js-chart');
       this.chartSelectorContainer = this.el.querySelector('.js-chart-selector');
-      this._renderChart();
+      this.renderChart();
       this._renderChartSelector();
       return this.el;
     }
