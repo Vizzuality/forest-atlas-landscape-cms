@@ -59,6 +59,9 @@
       this.listenTo(this.filters, 'filters:change', function (filters) {
         this._saveState('filters', filters);
       });
+      this.listenTo(this.map, 'state:change', function (state) {
+        this._saveState('map', state);
+      });
       this.listenTo(this.chart1, 'state:change', function (state) {
         this._saveState('chart1', state);
       });
@@ -77,7 +80,10 @@
           this.chart2.options.data = this._getDataset();
           this.chart2.render();
         }
-        // TODO do the same for the map
+        if (this.map) {
+          this.map.options.data = this._getDataset();
+          this.map.render();
+        }
       });
 
       // We would do the same for the map
@@ -147,18 +153,31 @@
      * Init the map
      */
     _initMap: function () {
-      var mapContainer = document.querySelector('.js-map');
-      // We always empty the container to avoid initializing twice the map in it
-      mapContainer.innerHTML = '';
+      var dataset = this._getDataset();
+      var type = (window.gon && gon.analysisMap.graphType) || null;
+      var center = [
+        (window.gon && gon.analysisMap.lat) || null,
+        (window.gon && gon.analysisMap.lon) || null
+      ];
+      var zoom = (window.gon && gon.analysisMap.zoom) || null;
 
-      // This JS will probably be moved to independent views once the architecture will be refined
-      var map = L.map(mapContainer, {
-        scrollWheelZoom: false
-      })
-        .setView([40.44, -3.70], 10);
-      L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-      }).addTo(map);
+      var params = {
+        el: document.querySelector('.js-map'),
+        data: dataset,
+        // TODO
+        // Once gon is updated, we should retrieve the real names of the fields used to position
+        // the dots
+        fields: {
+          lat: 'latitude' || null,
+          lng: 'longitude' || null
+        }
+      };
+
+      if (type) params.type = type;
+      if (center[0] && center[1]) params.center = center;
+      if (zoom) params.zoom = zoom;
+
+      this.map = new App.View.MapWidgetView(params);
     },
 
     /**
@@ -387,9 +406,8 @@
 
         // We don't forget to still show the interface
         this.filters.render();
-        this.chart1.render();
-        this.chart2.render();
-        // TODO: add the map here
+        this._renderCharts();
+        this._renderMap();
 
         return false;
       }
@@ -405,7 +423,6 @@
         columnY: state.config.charts[0].y
       };
       this.chart1.options = Object.assign({}, this.chart1.options, chart1State);
-      this.chart1.render();
 
       // We restore the second chart
       var chart2State = {
@@ -414,9 +431,17 @@
         columnY: state.config.charts[1].y
       };
       this.chart2.options = Object.assign({}, this.chart2.options, chart2State);
-      this.chart2.render();
 
-      // TODO do the same for the map
+      // We restore the map
+      var mapState = {
+        center: [state.config.map.lat, state.config.map.lng],
+        zoom: state.config.map.zoom
+      };
+      this.map.options = Object.assign({}, this.map.options, mapState);
+
+      // We finally render the whole dashboard
+      this._renderCharts();
+      this._renderMap();
 
       return true;
     },
@@ -430,6 +455,13 @@
     },
 
     /**
+     * Render the map
+     */
+    _renderMap: function () {
+      this.map.render();
+    },
+
+    /**
      * Default route to be called
      */
     indexRoute: function () {
@@ -439,6 +471,7 @@
       this._initMap();
       this._setListeners();
       this._renderCharts();
+      this._renderMap();
       this._initBookmarks();
     },
 
