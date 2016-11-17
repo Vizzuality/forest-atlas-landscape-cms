@@ -29,6 +29,11 @@ class SitePage < Page
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql? ContentType::LINK'
   after_save :update_routes
 
+  cattr_accessor :form_steps do
+    %w[dataset filters columns customization preview]
+  end
+  attr_accessor :form_step
+
   def update_routes
     return if self.content_type.eql? ContentType::LINK
     DynamicRouter.update_routes_for_site_page self

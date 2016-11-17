@@ -1,9 +1,19 @@
 <div class="c-steps-bar">
   <div class="wrapper">
     <ul class="steps">
-      <% @site.form_steps.each do |site_step| %>
+      <% form_steps.each do |step| %>
         <li>
-          <%= link_to site_step.capitalize, wizard_path(site_step), 'tabindex': disable_button?(site_step) ? '-1' : '0', class: (disable_button?(site_step) ? '-disabled' : (active_button?(site_step) ? '-active' : '')) %>
+          <% tab_index = disable_button?(form_steps, step, current_step, id) ? '-1' : '0' %>
+          <% html_class =
+               if disable_button?(form_steps, step, current_step, id)
+                 '-disabled'
+               elsif active_button?(form_steps, step, current_step, id)
+                 '-active'
+               else
+                 ''
+               end
+          %>
+          <%= link_to step.capitalize, wizard_path(step), 'tabindex': tab_index, class: html_class %>
         </li>
       <% end %>
     </ul>

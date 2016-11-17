@@ -7,7 +7,7 @@ class Management::PageStepsController < ManagementController
   SAVE     = 'SAVE CHANGES'.freeze
 
   # Steps for Analysis Dashboard
-  steps :dataset, :filters, :columns, :customization, :preview
+  steps *SitePage.form_steps
 
   # Common steps
   # steps %w[position name type]
@@ -32,26 +32,30 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to management_site_page_step_path(page: params[:page_id], id: :dataset)
+    redirect_to management_site_page_step_path(page: params[:page_id], id: 'dataset')
   end
 
   def show
     case step
-    when :dataset
+    when 'dataset'
       @page = current_page
       @context_datasets = current_user.get_context_datasets
-    when :filters
+
+    when 'filters'
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
       gon.fields = @fields
-    when :columns
+
+    when 'columns'
       @page = current_page
       @dataset_setting = current_dataset_setting
       @fields = @dataset_setting.get_fields
-      when :customization
+
+      when 'customization'
         @page = current_page
-      when :preview
+
+      when 'preview'
         @page = current_page
         @dataset_setting = current_dataset_setting
     end
@@ -64,24 +68,27 @@ class Management::PageStepsController < ManagementController
   def update
     @page = current_page
     case step
-      when :dataset
+      when 'dataset'
         @dataset_setting = current_dataset_setting
         session[:page] = @page
         session[:dataset_setting] = @dataset_setting
         # TODO: Add validation
         redirect_to next_wizard_path
-      when :filters
 
+      when 'filters'
         redirect_to next_wizard_path
-      when :columns
+
+      when 'columns'
         @dataset_setting = current_dataset_setting
         session[:page] = @page
         session[:dataset_setting] = @dataset_setting
         # TODO: Add validation
         redirect_to next_wizard_path
-      when :customization
+
+      when 'customization'
         redirect_to next_wizard_path
-      when :preview
+
+      when 'preview'
         redirect_to management_site_site_pages_path params[:site_slug]
     end
   end

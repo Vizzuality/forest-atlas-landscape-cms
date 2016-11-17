@@ -1,4 +1,5 @@
-<div class="c-extended-header -high">
+<%= render partial: 'shared/navigation_header', locals: {form_steps: @site.form_steps, id: @site.id, current_step: step} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %><div class="c-extended-header -high">
   <div class="wrapper">
     <div class="two-options">
       <div class="description">

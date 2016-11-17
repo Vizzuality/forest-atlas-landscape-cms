@@ -1,5 +1,6 @@
 class Admin::SiteStepsController < AdminController
   include Wicked::Wizard
+  include NavigationHelper
 
   URL_CONTROLLER_ID =     'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME =   'site[routes_attributes]'.freeze
@@ -168,8 +169,9 @@ class Admin::SiteStepsController < AdminController
     site
   end
 
+=begin
   # Checks if the navigation buttons should be enabled, according to the current step
-  def disable_button? (current_step)
+  def disable_button? (current_step, id)
     # When is editing the site
     if @site.id
       return current_step == 'finish'
@@ -180,7 +182,7 @@ class Admin::SiteStepsController < AdminController
   end
 
   # Checks if the navigation buttons should be active, according to the current step
-  def active_button? (current_step)
+  def active_button? (current_step, id)
     # When is editing the site
     if @site.id
       return step == current_step
@@ -189,6 +191,7 @@ class Admin::SiteStepsController < AdminController
       return steps.find_index(step) === steps.find_index(current_step)
     end
   end
+=end
 
   def save_button?
     params[:button].upcase == SAVE.upcase
