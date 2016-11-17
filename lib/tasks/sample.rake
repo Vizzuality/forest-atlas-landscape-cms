@@ -212,7 +212,7 @@ def add_analysis_dashboard
     api_table_name: 'index_b846230fcec0420892d13fc11ea7e32b',
     columns_changeable: ['confidence'].to_json,
     columns_visible: %w[confidence julian_day year lat lon].to_json,
-    filters: ['year = 2016'].to_json,
+    filters: ['year = 2016', 'julian_day between 1 and 10'].to_json,
     default_graphs: [{type: 'line', x: 'confidence', y: 'julian_day'}, {type: 'pie', x: 'confidence'}].to_json,
     default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'confidence'}.to_json,
   }
