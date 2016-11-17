@@ -1,5 +1,4 @@
 class DatasetSetting < ApplicationRecord
-  include ERB::Util
   belongs_to :context
   belongs_to :page
 
@@ -20,8 +19,8 @@ class DatasetSetting < ApplicationRecord
         query += '*'
       end
       query += " from #{self.api_table_name} "
-      query += 'where ' + (JSON.parse self.filters).join(' AND ')
-      query = url_encode(query)
+      query += 'where ' + (JSON.parse self.filters).join(' AND ') if self.filters.length > 0
+      query += ' limit 10000'
       return DatasetService.get_filtered_dataset self.dataset_id, query
     end
   end

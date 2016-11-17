@@ -21,7 +21,7 @@ class DatasetService
   end
 
   def self.get_fields dataset_id
-    fieldsRequest = @conn.get "/fields/#{dataset_id}"
+    fieldsRequest = @conn.get ERB::Util.url_encode("/fields/#{dataset_id}")
     fieldsJSON = JSON.parse fieldsRequest.body
 
     fields = []
@@ -32,7 +32,9 @@ class DatasetService
   end
 
   def self.get_filtered_dataset dataset_id, query
-    filteredRequest = @conn.get "/query/#{dataset_id}?sql=#{query}"
+    full_query = "/query/#{dataset_id}?sql=#{query}"
+
+    filteredRequest = @conn.get full_query
     JSON.parse filteredRequest.body
   end
 
