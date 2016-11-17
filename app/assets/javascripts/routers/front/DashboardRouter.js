@@ -69,7 +69,6 @@
       this.chart1 = new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart-1'),
         data: dataset,
-        chartConfig: App.Helper.ChartConfig,
         chart: charts[0].type || null,
         columnX: charts[0].x || null,
         columnY: charts[0].y || null
@@ -78,7 +77,6 @@
       this.chart2 = new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart-2'),
         data: dataset,
-        chartConfig: App.Helper.ChartConfig,
         chart: charts[1].type || null,
         columnX: charts[1].x || null,
         columnY: charts[1].y || null
@@ -160,7 +158,7 @@
     },
 
     /**
-     * Render the charts
+     * Render the whole charts components
      */
     _renderCharts: function () {
       this.chart1.render();
