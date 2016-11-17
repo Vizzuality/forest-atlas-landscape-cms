@@ -1,24 +1,32 @@
+<%= render partial: 'header'%>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+
 <% content_for :body_class do %>
   class="-wide"
 <% end %>
 
-<div class="l-analysis-dashboard">
-  <div class="main-container">
-    <h2>Title</h2>
-    <p class="description">
-      One-sentence description
-    </p>
-    <div class="filters js-filters">
-      Filters coming soon
+  <div class="l-analysis-dashboard">
+    <div class="main-container">
+      <h2>Title</h2>
+      <p class="description">
+        One-sentence description
+      </p>
+      <div class="filters js-filters">
+        Filters coming soon
+      </div>
+      <div class="map js-map">
+      </div>
     </div>
-    <div class="map js-map">
+    <div class="secondary-container">
+      <div class="graph js-chart-1"></div>
+      <div class="graph js-chart-2"></div>
+      <div class="bookmarks">
+        Bookmarks
+      </div>
     </div>
   </div>
-  <div class="secondary-container">
-    <div class="graph js-chart-1"></div>
-    <div class="graph js-chart-2"></div>
-    <div class="bookmarks">
-      Bookmarks
-    </div>
-  </div>
-</div>
+  <%= render partial: 'footer', locals: {f: f} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>

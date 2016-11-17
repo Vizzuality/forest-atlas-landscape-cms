@@ -51,7 +51,6 @@ class Management::PageStepsController < ManagementController
       @fields = @dataset_setting.get_fields
       when :customization
         @page = current_page
-        @dataset_setting = current_dataset_setting
       when :preview
         @page = current_page
         @dataset_setting = current_dataset_setting
@@ -83,13 +82,13 @@ class Management::PageStepsController < ManagementController
       when :customization
         redirect_to next_wizard_path
       when :preview
-        redirect_to management_site_site_pages_path @page.site.slug
+        redirect_to management_site_site_pages_path params[:site_slug]
     end
   end
 
   private
   def page_params
-    params.require(:page).permit(:name, dataset_setting: [:context_id_dataset_id, visible_fields: [] ])
+    params.require(:page).permit(:name, :description, dataset_setting: [:context_id_dataset_id, visible_fields: [] ])
   end
 
   def set_site

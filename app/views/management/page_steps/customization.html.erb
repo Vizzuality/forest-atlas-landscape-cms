@@ -6,6 +6,9 @@
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <div>
     <h1>Title</h1>
+    <%= f.text_field :name%>
+    <h2>Description</h2>
+    <%= f.text_area :description %>
     <%= text_field_tag :title, nil, placeholder: 'Select the title' %>
   </div>
   <%= render partial: 'footer', locals: {f: f} %>
