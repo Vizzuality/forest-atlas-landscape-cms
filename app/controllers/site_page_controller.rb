@@ -61,6 +61,8 @@ class SitePageController < ApplicationController
       gon.analysis_map = JSON.parse @setting.default_map
       # ... data
       gon.analysis_data = @setting.get_filtered_dataset
+      # ... last modification of the fields
+      gon.analysis_timestamp = @setting.fields_last_modified
     end
   end
 
