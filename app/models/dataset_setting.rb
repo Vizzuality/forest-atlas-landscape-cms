@@ -11,7 +11,8 @@ class DatasetSetting < ApplicationRecord
 
   def get_filtered_dataset
     if self.filters.blank?
-      return DatasetService.get_dataset self.dataset_id
+      query = "select * from #{self.api_table_name} limit 10000"
+      return DatasetService.get_filtered_dataset self.dataset_id, query
     else
       query = 'select '
       if self.columns_visible
@@ -31,6 +32,6 @@ class DatasetSetting < ApplicationRecord
     self.fields_last_modified = {
       columns_changeable: self.columns_changeable,
       columns_visible: self.columns_visible,
-      filters: self.filters}.hash
+      filters: self.filters}.hash.to_s(36)[1..5]
   end
 end
