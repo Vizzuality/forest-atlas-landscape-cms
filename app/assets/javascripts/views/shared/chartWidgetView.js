@@ -26,6 +26,11 @@
       this.options = Object.assign({}, this.defaults, settings);
       this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
       this._setListeners();
+
+      // We pre-render the component with its template
+      this.el.innerHTML = this.template();
+      this.chartContainer = this.el.querySelector('.js-chart');
+      this.chartSelectorContainer = this.el.querySelector('.js-chart-selector');
     },
 
     /**
@@ -48,7 +53,7 @@
 
       var newDimensions = this._computeChartDimensions();
       if (newDimensions.width !== previousWidth || newDimensions.height !== previousHeight) {
-        this.renderChart();
+        this._renderChart();
       }
     },
 
@@ -60,7 +65,7 @@
       this.options.chart = arguments[0][0];
       this.options.columnX = arguments[0][1];
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
-      this.renderChart();
+      this._renderChart();
     },
 
     /**
@@ -147,7 +152,7 @@
     /**
      * Create the chart and append it to the DOM
      */
-    renderChart: function () {
+    _renderChart: function () {
       if (!this.options.data.length) {
         // eslint-disable-next-line no-console
         console.warn('The chart needs a JSON spec file to be rendered');
@@ -210,10 +215,7 @@
     },
 
     render: function () {
-      this.el.innerHTML = this.template();
-      this.chartContainer = this.el.querySelector('.js-chart');
-      this.chartSelectorContainer = this.el.querySelector('.js-chart-selector');
-      this.renderChart();
+      this._renderChart();
       this._renderChartSelector();
       return this.el;
     }

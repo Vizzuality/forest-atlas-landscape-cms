@@ -13,10 +13,9 @@
       // history before anything else
       Backbone.history.stop();
 
-      // We can still use the hash to store the state
-      Backbone.history.start({ pushState: false });
-
       new App.Router[routerName]();
+
+      // NOTE: Don't forget to start Backbone.history in the router
 
     } else {
       // eslint-disable-next-line no-console
