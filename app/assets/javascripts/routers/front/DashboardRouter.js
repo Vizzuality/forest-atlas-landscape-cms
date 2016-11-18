@@ -4,6 +4,8 @@
   App.Router.FrontDashboard = Backbone.Router.extend({
 
     // Global state of the dashboard
+    // NOTE: If you update its structure, don't forget to update the _compressState and
+    // _decompressState functions used to update the URL and restore the state from it
     state: {
       name: 'New bookmark',
       version: null,
@@ -29,7 +31,8 @@
     },
 
     routes: {
-      '(/)': 'index'
+      '(/)': 'indexRoute',
+      '*hash': 'restoreStateRoute'
     },
 
     initialize: function () {
@@ -44,11 +47,8 @@
       this.warningNotification = new App.View.NotificationView({ type: 'warning' });
       this.errorNotification = new App.View.NotificationView({ type: 'error' });
 
-      this._initCharts();
-      this._initMap();
-      this._initBookmarks();
-      this._setListeners();
-      this._renderCharts();
+      // We start the router
+      Backbone.history.start({ pushState: false });
     },
 
     /**
@@ -160,6 +160,125 @@
 
         default:
       }
+
+      this._updateUrl();
+    },
+
+    /**
+     * Compress the state to reduce its footprint
+     * With the current structure of the state, we're able to compress it by about 44%
+     * @param {object} state
+     * @returns {object} compressedState
+     */
+    _compressState: function (state) {
+      var compressedState = {
+        v: state.version,
+        la: state.config.map.lat,
+        ln: state.config.map.lng,
+        z: state.config.map.zoom,
+        // We get rid of the charts that don't have any value
+        c: this.state.config.charts.map(function (chart) {
+          if (!chart.type) return null;
+          var res = {
+            t: chart.type,
+            x: chart.x,
+            y: chart.y
+          };
+
+          if (!res.y) delete res.y;
+          return res;
+        }).filter(function (o) {
+          return !!o;
+        })
+      };
+
+      // We remove the entries for which the values evaluate to false
+      var keys = Object.keys(compressedState);
+      for (var i = 0, j = keys.length; i < j; i++) {
+        if (!compressedState[keys[i]]) {
+          delete compressedState[keys[i]];
+        }
+      }
+
+      return compressedState;
+    },
+
+    /**
+     * Decompress the state
+     * @param {object} compressedState
+     * @returns {object} state
+     */
+    _decompressState: function (compressedState) {
+      return {
+        name: this.state.name,
+        version: compressedState.v || this.state.version,
+        config: {
+          map: {
+            lat: compressedState.la || this.state.config.map.lat,
+            lng: compressedState.ln || this.state.config.map.lng,
+            zoom: compressedState.z || this.state.config.map.zoom
+          },
+          charts: compressedState.c.map(function (chart) {
+            return {
+              type: chart.t || this.state.config.charts[0].type,
+              x: chart.x || this.state.config.charts[0].x,
+              y: chart.y || this.state.config.charts[0].y
+            };
+          }, this) || this.state.config.charts
+        }
+      };
+    },
+
+    /**
+     * Return an URL-ready encoded string representing the state
+     * @param {object} state - whether compressed or not (i.e. any type of object)
+     * @returns {string} - encodedState
+     */
+    _encodeState: function (state) {
+      return encodeURIComponent(btoa(JSON.stringify(state)));
+    },
+
+    /**
+     * Return the state encoded as an URL
+     * NOTE: return null if the state couldn't be decoded properly
+     * @param {object} encodedState
+     * @returns {object|null} state
+     */
+    _decodeState: function (encodedState) {
+      try {
+        return JSON.parse(atob(decodeURIComponent(encodedState)));
+      } catch (err) {
+        // Couldn't be parsed as a JSON, we return null
+        return null;
+      }
+    },
+
+    /**
+     * Construct the URL from a specific state
+     * @param {object} state
+     * @returns {string} url - absolute URL without the host (for example "/bla")
+     */
+    _constructURL: function (state) {
+      return '/' + this._encodeState(this._compressState(state));
+    },
+
+    /**
+     * Return the compression ratio of the state
+     * @param {object} state - original application state
+     * @returns {number} ratio
+     */
+    _getCompressionRatio: function (state) {
+      var encodedOriginalState = this._encodeState(state);
+      var encodedCompressedState = this._encodeState(this._compressState(state));
+      return (encodedOriginalState.length - encodedCompressedState.length) / encodedOriginalState.length;
+    },
+
+    /**
+     * Update the URL to reflect the current state of the application
+     */
+    _updateUrl: function () {
+      var url = this._constructURL(this.state);
+      this.navigate(url, { replace: true });
     },
 
     /**
@@ -206,7 +325,7 @@
         columnY: state.config.charts[0].y
       };
       this.chart1.options = Object.assign({}, this.chart1.options, chart1State);
-      this.chart1.renderChart();
+      this.chart1.render();
 
       // We restore the second chart
       var chart2State = {
@@ -215,7 +334,7 @@
         columnY: state.config.charts[1].y
       };
       this.chart2.options = Object.assign({}, this.chart2.options, chart2State);
-      this.chart2.renderChart();
+      this.chart2.render();
 
       // TODO do the same for the map
 
@@ -230,8 +349,51 @@
       this.chart2.render();
     },
 
-    index: function () {
+    /**
+     * Default route to be called
+     */
+    indexRoute: function () {
+      this._initCharts();
+      this._initMap();
+      this._setListeners();
+      this._renderCharts();
+      this._initBookmarks();
+    },
 
+    /**
+     * Route called whenever the URL contains a state
+     */
+    restoreStateRoute: function (compressedState) {
+      var decodedState = this._decodeState(compressedState);
+
+      // If the decoded state is empty, it's because it failed
+      if (!decodedState) {
+        this.warningNotification.hide();
+        this.errorNotification.options.content = 'The URL you’ve been shared is corrupted. Here is the default dashboard.';
+        this.errorNotification.show();
+        return;
+      }
+
+      // We init the charts and the map
+      this._initCharts();
+      this._initMap();
+
+      var state = this._decompressState(decodedState);
+      if (this._restoreState(state)) {
+        // Even if when the charts will be render, they will emit an event with their state
+        // and thus this.state will be updated, the version number won't, that's why we need
+        // to save the state before
+        this.state = state;
+      }
+
+      // We need to initialize the listeners before they start to trigger events
+      this._setListeners();
+
+      // We render the charts with the new global state
+      this._renderCharts();
+
+
+      this._initBookmarks();
     }
 
   });
