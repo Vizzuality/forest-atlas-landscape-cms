@@ -160,6 +160,84 @@
 
         default:
       }
+
+      this._updateUrl();
+    },
+
+    /**
+     * Compress the state to reduce its footprint
+     * With the current structure of the state, we're able to compress it by about 44%
+     * @param {object} state
+     * @returns {object} compressedState
+     */
+    _compressState: function (state) {
+      var compressedState = {
+        v: state.version,
+        la: state.config.map.lat,
+        ln: state.config.map.lng,
+        z: state.config.map.zoom,
+        // We get rid of the charts that don't have any value
+        c: this.state.config.charts.map(function (chart) {
+          if (!chart.type) return null;
+          var res = {
+            t: chart.type,
+            x: chart.x,
+            y: chart.y
+          };
+
+          if (!res.y) delete res.y;
+          return res;
+        }).filter(function (o) {
+          return !!o;
+        })
+      };
+
+      // We remove the entries for which the values evaluate to false
+      var keys = Object.keys(compressedState);
+      for (var i = 0, j = keys.length; i < j; i++) {
+        if (!compressedState[keys[i]]) {
+          delete compressedState[keys[i]];
+        }
+      }
+
+      return compressedState;
+    },
+
+    /**
+     * Return an URL-ready encoded string representing the state
+     * @param {object} state - whether compressed or not (i.e. any type of object)
+     * @returns {string} - encodedState
+     */
+    _encodeState: function (state) {
+      return encodeURIComponent(btoa(JSON.stringify(state)));
+    },
+
+    /**
+     * Construct the URL from a specific state
+     * @param {object} state
+     * @returns {string} url - absolute URL without the host (for example "/bla")
+     */
+    _constructURL: function (state) {
+      return '?s=' + this._encodeState(this._compressState(state));
+    },
+
+    /**
+     * Return the compression ratio of the state
+     * @param {object} state - original application state
+     * @returns {number} ratio
+     */
+    _getCompressionRatio: function (state) {
+      var encodedOriginalState = this._encodeState(state);
+      var encodedCompressedState = this._encodeState(this._compressState(state));
+      return (encodedOriginalState.length - encodedCompressedState.length) / encodedOriginalState.length;
+    },
+
+    /**
+     * Update the URL to reflect the current state of the application
+     */
+    _updateUrl: function () {
+      var url = this._constructURL(this.state);
+      this.navigate(url, { replace: true });
     },
 
     /**
