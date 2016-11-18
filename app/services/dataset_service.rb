@@ -8,7 +8,7 @@ class DatasetService
 
   def self.get_datasets
     # TODO: Change the app to FA's name.
-    datasetRequest = @conn.get '/dataset' , {:app => 'prep'}
+    datasetRequest = @conn.get '/dataset' , {:app => 'prep', 'page[number]': '1', 'page[size]': '10000'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -20,8 +20,8 @@ class DatasetService
     datasets
   end
 
-  def self.get_fields dataset_id
-    fieldsRequest = @conn.get ERB::Util.url_encode("/fields/#{dataset_id}")
+  def self.get_fields(dataset_id)
+    fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
     fields = []
@@ -31,14 +31,14 @@ class DatasetService
     fields
   end
 
-  def self.get_filtered_dataset dataset_id, query
+  def self.get_filtered_dataset(dataset_id, query)
     full_query = "/query/#{dataset_id}?sql=#{query}"
 
     filteredRequest = @conn.get full_query
     JSON.parse filteredRequest.body
   end
 
-  def self.get_dataset dataset_id
+  def self.get_dataset(dataset_id)
     request = @conn.get "/dataset/#{dataset_id}"
     JSON.parse request
   end
