@@ -25,7 +25,7 @@ class Management::PageStepsController < ManagementController
     # The next line should be used. While developing this feature...
     # ... there will be a direct jump to datasets
     # redirect_to management_page_step_path(id: :position)
-    redirect_to management_site_page_step_path(id: :dataset)
+    redirect_to management_site_page_step_path(id: 'dataset')
   end
 
   # This action cleans the session

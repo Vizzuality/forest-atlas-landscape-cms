@@ -1,5 +1,5 @@
-<%= render partial: 'shared/navigation_header', locals: {form_steps: @site.form_steps, id: @site.id, current_step: step} %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %><div class="c-extended-header -high">
+<% #TODO Put this in a header partial %>
+<div class="c-extended-header -high">
   <div class="wrapper">
     <div class="two-options">
       <div class="description">
@@ -14,6 +14,8 @@
     </div>
   </div>
 </div>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: @page.form_steps, id: @page.id, current_step: step} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
     <% @context_datasets.each do |context_id, datasets| %>
