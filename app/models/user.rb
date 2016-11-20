@@ -50,6 +50,8 @@ class User < ApplicationRecord
       context.context_datasets.each {|cd| context_datasets_ids[context.id] << cd.dataset_id}
     end
 
+    # TODO: Change this to request to ask info for each dataset ...
+    # ... this might be to heavy. Talk to RA to ask which is faster
     context_datasets_ids.each do |k, v|
       context_datasets[k] =all_datasets.select {|ds| v.include?(ds.id)}
     end

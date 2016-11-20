@@ -27,6 +27,10 @@ class DatasetSetting < ApplicationRecord
     end
   end
 
+  def get_table_name
+    (DatasetService.get_dataset self.dataset_id).dig('data', 'attributes', 'tableName')
+  end
+
   private
   def update_timestamp
     self.fields_last_modified = {

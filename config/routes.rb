@@ -18,11 +18,11 @@ Rails.application.routes.draw do
 
   namespace :management do
     resources :sites, param: :slug, only: :none do
-      resources :site_pages, shallow: true do
+      resources :site_pages do
         member do
           put :toggle_enable
         end
-        resources :page_steps, only: [:show, :update, :delete]
+        resources :page_steps, only: [:show, :update, :edit]
       end
       resources :page_steps, only: [:show, :update, :new]
       get '/structure', to: 'sites#structure'

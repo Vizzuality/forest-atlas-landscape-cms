@@ -43,7 +43,9 @@
     },
 
     _updateFilter: function (e) {
-      var filter = e.target.name;
+      // TODO: Clement, check if there's a better way to do this
+      // var filter = e.target.id.match(/.*-/)[0].replace('-','');
+      var filter = e.target.getAttribute('data-name');
       var value = e.target.value;
       var position = +e.target.dataset.id;
       var model = this.collection.at(position);

@@ -35,11 +35,19 @@ class DatasetService
     full_query = "/query/#{dataset_id}?sql=#{query}"
 
     filteredRequest = @conn.get full_query
-    JSON.parse filteredRequest.body
+    if filteredRequest.body.blank?
+      return {}
+    else
+      return JSON.parse filteredRequest.body
+    end
   end
 
   def self.get_dataset(dataset_id)
     request = @conn.get "/dataset/#{dataset_id}"
-    JSON.parse request
+    if request.body.blank?
+      return {}
+    else
+      return JSON.parse request.body
+    end
   end
 end
