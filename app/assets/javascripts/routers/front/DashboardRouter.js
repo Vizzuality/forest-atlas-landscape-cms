@@ -10,6 +10,7 @@
       name: 'New bookmark',
       version: null,
       config: {
+        filters: [],
         map: {
           lat: null,
           lng: null,
@@ -55,11 +56,28 @@
      * Set the listeners that don't depend on a DOM element
      */
     _setListeners: function () {
+      this.listenTo(this.filters, 'filters:change', function (filters) {
+        this._saveState('filters', filters);
+      });
       this.listenTo(this.chart1, 'state:change', function (state) {
         this._saveState('chart1', state);
       });
       this.listenTo(this.chart2, 'state:change', function (state) {
         this._saveState('chart2', state);
+      });
+
+      // When the dataset is filtered, we need to update the components
+      this.listenTo(this.filters, 'dataset:change', function (dataset) {
+        this.filteredDataset = dataset;
+        if (this.chart1) {
+          this.chart1.options.data = this._getDataset();
+          this.chart1.render();
+        }
+        if (this.chart2) {
+          this.chart2.options.data = this._getDataset();
+          this.chart2.render();
+        }
+        // TODO do the same for the map
       });
 
       // We would do the same for the map
@@ -70,7 +88,7 @@
      * @returns {object[]} dataset
      */
     _getDataset: function () {
-      return (window.gon && gon.analysisData.data) || [];
+      return this.filteredDataset || (window.gon && gon.analysisData.data) || [];
     },
 
     /**
@@ -87,6 +105,18 @@
      */
     _getDashboardCharts: function () {
       return (window.gon && gon.analysisGraphs) || [{}, {}];
+    },
+
+    /**
+     * Init the filters
+     */
+    _initFilters: function () {
+      var dataset = this._getDataset();
+      this.filters = new App.View.DashboardFiltersView({
+        el: document.querySelector('.js-filters'),
+        data: dataset,
+        filteringFields: (window.gon && gon.analysisUserFilters) || []
+      });
     },
 
     /**
@@ -140,12 +170,16 @@
 
     /**
      * Save the state of the specified component into a global state object
-     * @param {string} component - "chart1", "chart2" or "map"
+     * @param {string} component - "filters", "chart1", "chart2" or "map"
      * @param {object} state - state to save
      */
     _saveState: function (component, state) {
       this.state.version = this._getDashboardVersion();
       switch (component) {
+        case 'filters':
+          this.state.config.filters = state;
+          break;
+
         case 'map':
           this.state.config.map = Object.assign({}, this.state.config.map, state);
           break;
@@ -173,6 +207,7 @@
     _compressState: function (state) {
       var compressedState = {
         v: state.version,
+        f: state.config.filters.map(function (filter) { return [filter.name, filter.value]; }),
         la: state.config.map.lat,
         ln: state.config.map.lng,
         z: state.config.map.zoom,
@@ -192,10 +227,12 @@
         })
       };
 
-      // We remove the entries for which the values evaluate to false
+      // We remove the entries for which the values evaluate to false and
+      // the values that are empty arrays
       var keys = Object.keys(compressedState);
       for (var i = 0, j = keys.length; i < j; i++) {
-        if (!compressedState[keys[i]]) {
+        var value = compressedState[keys[i]];
+        if (!value || (typeof value === 'object' && value.length === 0)) {
           delete compressedState[keys[i]];
         }
       }
@@ -213,6 +250,15 @@
         name: this.state.name,
         version: compressedState.v || this.state.version,
         config: {
+          filters: (compressedState.f && compressedState.f.map(function (filter) {
+            if (!filter.length || filter.length < 2) return null;
+            return {
+              name: filter[0],
+              value: filter[1]
+            };
+          }).filter(function (filter) {
+            return !!filter;
+          })) || [],
           map: {
             lat: compressedState.la || this.state.config.map.lat,
             lng: compressedState.ln || this.state.config.map.lng,
@@ -294,6 +340,26 @@
     },
 
     /**
+     * Check if the state is valid by checking the graphs and the filters
+     * @param {object} state
+     * @returns {boolean} valid - true if valid
+     */
+    _checkStateValidity: function (state) {
+      var dataset = this._getDataset();
+
+      // We check the validity of the charts
+      var widgetToolbox = new App.Helper.WidgetToolbox(dataset);
+      if (!widgetToolbox.checkStateValidity(state)) return false;
+
+      // We check the validity of the filters: if the filters are based on columns that exist
+      // in the first row
+      var firstRow = dataset[0];
+      return state.config.filters.reduce(function (res, filter) {
+        return res && Object.keys(firstRow).indexOf(filter.name) !== -1;
+      }, true);
+    },
+
+    /**
      * Restore the state of the dashboard
      * NOTE: must be called after _renderCharts
      * @param {object} state
@@ -308,15 +374,25 @@
         this.warningNotification.show();
       }
 
-      var widgetToolbox = new App.Helper.WidgetToolbox(this._getDataset());
-      var isStateValid = widgetToolbox.checkStateValidity(state);
+      var isStateValid = this._checkStateValidity(state);
 
       if (!isStateValid) {
         this.warningNotification.hide();
         this.errorNotification.options.content = 'The dashboard\'s state couldn\'t be restored, probably because of changes of the data';
         this.errorNotification.show();
+
+        // We don't forget to still show the interface
+        this.filters.render();
+        this.chart1.render();
+        this.chart2.render();
+        // TODO: add the map here
+
         return false;
       }
+
+      // We restore the filters
+      this.filters.setFilters(state.config.filters);
+      this.filters.render();
 
       // We restore the first chart
       var chart1State = {
@@ -353,6 +429,8 @@
      * Default route to be called
      */
     indexRoute: function () {
+      this._initFilters();
+      this.filters.render();
       this._initCharts();
       this._initMap();
       this._setListeners();
@@ -374,9 +452,17 @@
         return;
       }
 
-      // We init the charts and the map
+      // NOTE: the order of the rest of the lines is really important. Please make sure
+      // that if you modify it, you try to reach the dashboard without the state param,
+      // and with the state param with and without the filters
+
+      // We init the filters, the charts and the map
+      this._initFilters();
       this._initCharts();
       this._initMap();
+
+      // We need to initialize the listeners before they start to trigger events
+      this._setListeners();
 
       var state = this._decompressState(decodedState);
       if (this._restoreState(state)) {
@@ -385,13 +471,6 @@
         // to save the state before
         this.state = state;
       }
-
-      // We need to initialize the listeners before they start to trigger events
-      this._setListeners();
-
-      // We render the charts with the new global state
-      this._renderCharts();
-
 
       this._initBookmarks();
     }
