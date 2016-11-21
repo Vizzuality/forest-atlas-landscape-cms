@@ -340,6 +340,26 @@
     },
 
     /**
+     * Check if the state is valid by checking the graphs and the filters
+     * @param {object} state
+     * @returns {boolean} valid - true if valid
+     */
+    _checkStateValidity: function (state) {
+      var dataset = this._getDataset();
+
+      // We check the validity of the charts
+      var widgetToolbox = new App.Helper.WidgetToolbox(dataset);
+      if (!widgetToolbox.checkStateValidity(state)) return false;
+
+      // We check the validity of the filters: if the filters are based on columns that exist
+      // in the first row
+      var firstRow = dataset[0];
+      return state.config.filters.reduce(function (res, filter) {
+        return res && Object.keys(firstRow).indexOf(filter.name) !== -1;
+      }, true);
+    },
+
+    /**
      * Restore the state of the dashboard
      * NOTE: must be called after _renderCharts
      * @param {object} state
@@ -354,13 +374,19 @@
         this.warningNotification.show();
       }
 
-      var widgetToolbox = new App.Helper.WidgetToolbox(this._getDataset());
-      var isStateValid = widgetToolbox.checkStateValidity(state);
+      var isStateValid = this._checkStateValidity(state);
 
       if (!isStateValid) {
         this.warningNotification.hide();
         this.errorNotification.options.content = 'The dashboard\'s state couldn\'t be restored, probably because of changes of the data';
         this.errorNotification.show();
+
+        // We don't forget to still show the interface
+        this.filters.render();
+        this.chart1.render();
+        this.chart2.render();
+        // TODO: add the map here
+
         return false;
       }
 
