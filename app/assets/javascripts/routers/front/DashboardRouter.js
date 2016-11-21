@@ -147,8 +147,12 @@
      * Init the map
      */
     _initMap: function () {
+      var mapContainer = document.querySelector('.js-map');
+      // We always empty the container to avoid initializing twice the map in it
+      mapContainer.innerHTML = '';
+
       // This JS will probably be moved to independent views once the architecture will be refined
-      var map = L.map(document.querySelector('.js-map'), {
+      var map = L.map(mapContainer, {
         scrollWheelZoom: false
       })
         .setView([40.44, -3.70], 10);
