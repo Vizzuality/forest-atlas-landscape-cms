@@ -30,7 +30,6 @@
       // eslint-disable-next-line no-underscore-dangle
       this.options._filteredData = this._copyDataset(this.options.data);
       this._initFilters();
-      this.render();
     },
 
     /**
@@ -138,6 +137,20 @@
           values: this._getUniqueFieldValues(filter).sort()
         };
       }, this);
+    },
+
+    /**
+     * Set the active filters
+     * NOTE: it doesn't reset the filters priors to settings them
+     * @param {object[]} filters to set
+     */
+    setFilters: function (filters) {
+      filters.forEach(function (filter) {
+        // eslint-disable-next-line no-underscore-dangle
+        var res = _.findWhere(this.options._filters, { name: filter.name });
+        res.value = filter.value;
+      }, this);
+      this._updateFilteredDataset();
     },
 
     render: function () {
