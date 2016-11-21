@@ -169,30 +169,6 @@ class Admin::SiteStepsController < AdminController
     site
   end
 
-=begin
-  # Checks if the navigation buttons should be enabled, according to the current step
-  def disable_button? (current_step, id)
-    # When is editing the site
-    if @site.id
-      return current_step == 'finish'
-      # When is creating the site
-    else
-      return steps.find_index(step) < steps.find_index(current_step)
-    end
-  end
-
-  # Checks if the navigation buttons should be active, according to the current step
-  def active_button? (current_step, id)
-    # When is editing the site
-    if @site.id
-      return step == current_step
-      # When is creating the site
-    else
-      return steps.find_index(step) === steps.find_index(current_step)
-    end
-  end
-=end
-
   def save_button?
     params[:button].upcase == SAVE.upcase
   end

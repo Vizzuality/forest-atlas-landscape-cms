@@ -23,7 +23,7 @@
         <%= ::Context.find(context_id).name %>
         <% datasets.each do |dataset| %>
           <fieldset>
-            <%= radio_button_tag 'page[dataset_setting][context_id_dataset_id]', [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.id == dataset.id) : nil %>
+            <%= radio_button_tag 'site_page[dataset_setting][context_id_dataset_id]', [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.id == dataset.id) : nil %>
             <%= dataset.name %>
           </fieldset>
         <% end %>

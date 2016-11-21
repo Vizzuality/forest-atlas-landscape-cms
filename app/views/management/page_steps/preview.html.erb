@@ -5,9 +5,9 @@
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
 
-<% content_for :body_class do %>
-  class="-wide"
-<% end %>
+  <% content_for :body_class do %>
+    class="-wide"
+  <% end %>
 
   <div class="l-analysis-dashboard">
     <div class="main-container">
@@ -32,3 +32,4 @@
   <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
+<%= console if Rails.env.development? %>

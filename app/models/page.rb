@@ -31,7 +31,6 @@ class Page < ApplicationRecord
 
 
   def url=(value)
-    raise 'Cannot manually set the URL for a page, please set uri instead'
   end
 
   def uri=(value)
