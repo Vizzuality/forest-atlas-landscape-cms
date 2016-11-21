@@ -10,6 +10,9 @@
     </div>
 <% end %>
 
+<%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
 <div class="l-page-creation -map">
   <div class="wrapper">
     <%= form_for(form_for_path, :html => {:class => 'js-form'}) do |f| %>

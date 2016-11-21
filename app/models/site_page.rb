@@ -35,27 +35,6 @@ class SitePage < Page
 
   # Add validations for each of the steps
 
-  cattr_accessor :form_steps do
-    case self.content_type
-      when nil
-        return %w[position title type]
-      when ContentType::OPEN_CONTENT
-        return %w[open_content oc_preview]
-      when ContentType::ANALYSIS_DASHBOARD
-        return %w[dataset filters columns customization preview]
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        return %w[widget did did_preview]
-      when ContentType::HOMEPAGE
-        return %w[homepage]
-      when ContentType::MAP
-        return %w[map]
-      when ContentType::LINK
-        return %w[link]
-      when ContentType::STATIC_CONTENT
-        return %w[static_content]
-    end
-
-  end
   attr_accessor :form_step
 
   def update_routes

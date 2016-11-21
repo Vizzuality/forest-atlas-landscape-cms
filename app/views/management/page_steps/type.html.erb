@@ -10,6 +10,9 @@
   </div>
 <% end %>
 
+<%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
 <div class="l-page-creation -type">
   <div class="wrapper">
     <div class="c-card-list">
@@ -17,28 +20,28 @@
         <h3 class="title">Open Content page</h3>
         <p class="description">Create a new page with any type of content you want in.</p>
         <div class="footer">
-          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::OPEN_CONTENT}, class: 'c-button' %>
+          <%#= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::OPEN_CONTENT}, class: 'c-button' %>
         </div>
       </div>
       <div class="card -footer-at-bottom">
         <h3 class="title">Analysis Dashboard</h3>
         <p class="description">Build a dashboard based on a dataset.</p>
         <div class="footer">
-          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::ANALYSIS_DASHBOARD}, class: 'c-button' %>
+          <%#= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::ANALYSIS_DASHBOARD}, class: 'c-button' %>
         </div>
       </div>
       <div class="card -footer-at-bottom">
         <h3 class="title">Dynamic Indicator Dashboard</h3>
         <p class="description">Create a dynamic indicator based on a list of widgets.</p>
         <div class="footer">
-          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::DYNAMIC_INDICATOR_DASHBOARD}, class: 'c-button' %>
+          <%#= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::DYNAMIC_INDICATOR_DASHBOARD}, class: 'c-button' %>
         </div>
       </div>
       <div class="card -footer-at-bottom">
         <h3 class="title">External link</h3>
         <p class="description">Add a link to appear in the menus.</p>
         <div class="footer">
-          <%= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::LINK}, class: 'c-button' %>
+          <%#= link_to 'Create', {controller: 'management/site_pages', action: 'new', site_slug: @site.slug, type: ContentType::LINK}, class: 'c-button' %>
         </div>
       </div>
     </div>

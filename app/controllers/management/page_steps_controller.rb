@@ -3,25 +3,15 @@ class Management::PageStepsController < ManagementController
 
   before_action :set_site, only: [:new, :edit, :show, :update]
   before_action :build_current_page_state, only: [:show, :update]
+  prepend_before_action :set_steps
+
+  helper_method :form_steps
 
   CONTINUE = 'CONTINUE'.freeze
   SAVE     = 'SAVE CHANGES'.freeze
 
-  # Steps for Analysis Dashboard
-  steps *SitePage.form_steps
-
-  # Common steps
-  # steps %w[position name type]
-
-  # Steps for Open Content
-  # steps %w[wysiwyg preview]
-
-  # Steps for Dynamic Indicator Dashboard
-  # steps %w[widgets style preview]
-
   # This action cleans the session
   def new
-    #session[:page] = {uri: 'test'}
     # TODO: change this when the pages are unified
     if params[:position] && params[:parent_id]
       session[:page] =  {uri: "test-#{DateTime.new.to_id}", parent_id: params[:parent_id], position: params[:position]}
@@ -29,56 +19,64 @@ class Management::PageStepsController < ManagementController
       session[:page] = {uri: "test-#{DateTime.new.to_i}", parent_id: @site.root.id, position: @site.site_pages.where(parent_id: @site.root.id).length}
     end
 
-
     session[:dataset_setting] = {}
-
 
     # TODO: The next line should be used. While developing this feature...
     # ... there will be a direct jump to datasets
     # redirect_to management_page_step_path(id: :position)
-    redirect_to management_site_page_step_path(id: 'dataset')
+    redirect_to management_site_page_step_path(id: 'position')
   end
 
   # This action cleans the session
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to management_site_page_step_path(page: params[:page_id], id: 'dataset')
+    redirect_to next_wizard_path
+    #redirect_to management_site_page_step_path(page: params[:page_id], id: 'dataset')
   end
 
   def show
     case step
-    when 'dataset'
-      @context_datasets = current_user.get_context_datasets
+      when 'position'
+      when 'title'
+      when 'type'
 
-    when 'filters'
-      build_current_dataset_setting
-      @fields = @dataset_setting.get_fields
-      gon.fields = @fields
+      when 'dataset'
+        @context_datasets = current_user.get_context_datasets
 
-    when 'columns'
-      build_current_dataset_setting
-      @fields = @dataset_setting.get_fields
+      when 'filters'
+        build_current_dataset_setting
+        @fields = @dataset_setting.get_fields
+        gon.fields = @fields
 
-    when 'customization'
-       build_current_page_state
-    when 'preview'
-      build_current_dataset_setting
-      gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? {} : (JSON.parse @dataset_setting.columns_changeable)
-      gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? {} : (JSON.parse @dataset_setting.default_graphs)
-      gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
-      gon.analysis_data = @dataset_setting.get_filtered_dataset
-      gon.analysis_timestamp = @dataset_setting.fields_last_modified
-    end
+      when 'columns'
+        build_current_dataset_setting
+        @fields = @dataset_setting.get_fields
 
-    @breadcrumbs = ['Page creation']
+      when 'customization'
+      when 'preview'
+        build_current_dataset_setting
+        gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? {} : (JSON.parse @dataset_setting.columns_changeable)
+        gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? {} : (JSON.parse @dataset_setting.default_graphs)
+        gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
+        gon.analysis_data = @dataset_setting.get_filtered_dataset
+        gon.analysis_timestamp = @dataset_setting.fields_last_modified
+      end
 
-    render_wizard
+      @breadcrumbs = ['Page creation']
+
+      render_wizard
   end
 
   # TODO: REFACTOR
   def update
     case step
+      when 'position'
+        redirect_to next_wizard_path
+      when 'title'
+        redirect_to next_wizard_path
+      when 'type'
+        redirect_to next_wizard_path
       when 'dataset'
         build_current_dataset_setting
         set_current_dataset_setting_state
@@ -109,7 +107,6 @@ class Management::PageStepsController < ManagementController
         end
 
       when 'customization'
-        build_current_page_state
         build_current_dataset_setting
         set_current_dataset_setting_state
         set_current_page_state
@@ -122,7 +119,6 @@ class Management::PageStepsController < ManagementController
       when 'preview'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        build_current_page_state
         @page.dataset_setting = @dataset_setting
         if @page.save
           redirect_to management_site_site_pages_path params[:site_slug]
@@ -202,5 +198,32 @@ class Management::PageStepsController < ManagementController
 
   def set_current_dataset_setting_state
     session[:dataset_setting] = @dataset_setting
+  end
+
+  def set_steps
+    unless @page && @page.content_type
+      self.steps = %w[position title type]
+    else
+      case @page.content_type
+        when ContentType::OPEN_CONTENT
+          self.steps = %w[open_content oc_preview]
+        when ContentType::ANALYSIS_DASHBOARD
+          self.steps = %w[dataset filters columns customization preview]
+        when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+          self.steps = %w[widget did did_preview]
+        when ContentType::HOMEPAGE
+          self.steps =%w[homepage]
+        when ContentType::MAP
+          self.steps = %w[map]
+        when ContentType::LINK
+          self.steps = %w[link]
+        when ContentType::STATIC_CONTENT
+          self.steps = %w[static_content]
+      end
+    end
+  end
+
+  def form_steps
+    self.steps
   end
 end

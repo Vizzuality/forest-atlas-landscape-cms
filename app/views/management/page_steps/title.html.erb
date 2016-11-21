@@ -1,0 +1,21 @@
+<%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+  <%# TODO: Create CSS %>
+  <div class="l-page-creation -name">
+    <div class="wrapper">
+      <h1>PAGE TITLE</h1>
+      <p class="intro">Please choose a name for the page and a short description.</p>
+
+      <div class="page-name">
+        <%= f.label :name %>
+        <%= f.text_field :name , placeholder: 'Type here your page\'s title' %>
+        <%= f.label :description %>
+        <%= f.text_field :description, placeholder: 'Description here' %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: {f: f} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
