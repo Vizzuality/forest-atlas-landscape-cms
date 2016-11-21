@@ -58,8 +58,25 @@ $secondary-container-initial-width: 400px;
   }
 
   .filters {
-    height: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     margin-top: 20px;
+
+    @media #{$mq-tablet} {
+      flex-direction: row;
+      align-items: flex-start;
+      height: 35px;
+    }
+
+    > *:not(:last-of-type) {
+      margin-bottom: 15px;
+
+      @media #{$mq-tablet} {
+        margin-bottom: 0;
+        margin-right: 17px;
+      }
+    }
   }
 
   .map {
