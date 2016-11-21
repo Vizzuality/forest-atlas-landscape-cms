@@ -7,7 +7,7 @@
   <%= stylesheet_link_tag 'management/application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
 </head>
-<body>
+<body <%= yield :body_class %>>
   <%= render 'management/header' %>
   <%= render 'shared/messages' %>
   <%= yield :extended_header %>

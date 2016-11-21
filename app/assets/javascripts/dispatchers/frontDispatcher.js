@@ -15,8 +15,8 @@
 
       new App.Router[routerName]();
 
-      // We can still use the hash to store the state
-      Backbone.history.start({ pushState: false });
+      // NOTE: Don't forget to start Backbone.history in the router
+
     } else {
       // eslint-disable-next-line no-console
       console.warn('The route ' + window.route + ' doesn\'t have any associated router.');

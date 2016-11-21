@@ -1,4 +1,4 @@
-<%= render partial: 'header'%>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: @page.form_steps, id: @page.id, current_step: step} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <h1>CREATE AN INTRODUCTION</h1>
@@ -6,7 +6,9 @@
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <div>
     <h1>Title</h1>
-    <%= text_field_tag :title, nil, placeholder: 'Select the title' %>
+    <%= f.text_field :name, placeholder: 'Choose the title'%>
+    <h2>Description</h2>
+    <%= f.text_area :description %>
   </div>
   <%= render partial: 'footer', locals: {f: f} %>
 <% end %>

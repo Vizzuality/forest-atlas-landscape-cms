@@ -8,7 +8,7 @@ class DatasetService
 
   def self.get_datasets
     # TODO: Change the app to FA's name.
-    datasetRequest = @conn.get '/dataset' , {:app => 'prep'}
+    datasetRequest = @conn.get '/dataset' , {:app => 'prep', 'page[number]': '1', 'page[size]': '10000'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -20,7 +20,7 @@ class DatasetService
     datasets
   end
 
-  def self.get_fields dataset_id
+  def self.get_fields(dataset_id)
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
@@ -31,13 +31,23 @@ class DatasetService
     fields
   end
 
-  def self.get_filtered_dataset dataset_id, query
-    filteredRequest = @conn.get "/query/#{dataset_id}?sql=#{query}"
-    JSON.parse filteredRequest.body
+  def self.get_filtered_dataset(dataset_id, query)
+    full_query = "/query/#{dataset_id}?sql=#{query}"
+
+    filteredRequest = @conn.get full_query
+    if filteredRequest.body.blank?
+      return {}
+    else
+      return JSON.parse filteredRequest.body
+    end
   end
 
-  def self.get_dataset dataset_id
+  def self.get_dataset(dataset_id)
     request = @conn.get "/dataset/#{dataset_id}"
-    JSON.parse request
+    if request.body.blank?
+      return {}
+    else
+      return JSON.parse request.body
+    end
   end
 end

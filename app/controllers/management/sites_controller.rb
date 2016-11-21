@@ -75,8 +75,8 @@ class Management::SitesController < ManagementController
   def format_tree(node_key, node_value)
     tree = {id: node_key.id, name: node_key.name, parent_id: node_key.parent_id,
             position: node_key.position, enabled: node_key.enabled, content_type: node_key.content_type,
-            disableable: node_key.disableable?, deleteUrl: management_site_page_path(node_key.id),
-            editUrl: edit_management_site_page_path(node_key.id)}
+            disableable: node_key.disableable?, deleteUrl: management_site_site_page_path(@site.slug, node_key.id),
+            editUrl: edit_management_site_site_page_path(@site.slug, node_key.id)}
     unless node_value.blank?
       children = []
       node_value.each do |key, value|

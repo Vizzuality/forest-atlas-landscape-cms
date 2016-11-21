@@ -1,3 +1,4 @@
+<% #TODO Put this in a header partial %>
 <div class="c-extended-header -high">
   <div class="wrapper">
     <div class="two-options">
@@ -13,6 +14,8 @@
     </div>
   </div>
 </div>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: @page.form_steps, id: @page.id, current_step: step} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
     <% @context_datasets.each do |context_id, datasets| %>
@@ -20,7 +23,7 @@
         <%= ::Context.find(context_id).name %>
         <% datasets.each do |dataset| %>
           <fieldset>
-            <%= radio_button_tag 'page[dataset_setting][context_id_dataset_id]', [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.id == dataset.id) : nil %>
+            <%= radio_button_tag 'site_page[dataset_setting][context_id_dataset_id]', [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.id == dataset.id) : nil %>
             <%= dataset.name %>
           </fieldset>
         <% end %>
@@ -30,3 +33,5 @@
 <% end %>
 
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
+
+<%= console if Rails.env.development? %>

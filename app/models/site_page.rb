@@ -25,9 +25,19 @@ class SitePage < Page
   has_one :site_template, through: :site
   has_many :users, through: :site
 
+  before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
+
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql? ContentType::LINK'
+  validates_presence_of :site_id
   after_save :update_routes
+
+  # Add validations for each of the steps
+
+  cattr_accessor :form_steps do
+    %w[dataset filters columns customization preview]
+  end
+  attr_accessor :form_step
 
   def update_routes
     return if self.content_type.eql? ContentType::LINK
@@ -42,6 +52,14 @@ class SitePage < Page
         old_content['url'] = 'http://' + old_content['url']
         self.content = old_content
       end
+    end
+  end
+
+  def set_defaults
+    self.enabled = false
+    # Put the parent as the root, if it doesn't exist
+    unless self.parent_id
+      self.parent_id = self.site.root.id
     end
   end
 end

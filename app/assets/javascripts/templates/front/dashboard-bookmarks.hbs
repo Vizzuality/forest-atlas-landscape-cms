@@ -1,0 +1,18 @@
+<header>
+  <h3>Bookmarks</h3>
+  <button type="button" class="c-button {{#if_eq template 'fa'}}-outline{{/if_eq}} -dark-text -normal-weight js-add-state">Add state</button>
+</header>
+<ul class="bookmarks">
+  {{#unless bookmarks.length}}
+    <li class="no-bookmark">You haven't saved any bookmark yet</li>
+  {{/unless}}
+  {{#each bookmarks}}
+    <li>
+      <span title="Click to edit the name" contenteditable="true" class="js-name" data-id="{{@index}}">{{name}}</span>
+      <div class="buttons">
+        <button type="button" class="-apply js-apply" data-id="{{@index}}" title="Apply state">Apply state<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg"><path d="M5.895 5.5a2.106 2.106 0 1 0 4.21 0 2.106 2.106 0 1 0-4.21 0zM16 5.5C14.467 2.768 11.461 0 8 0 4.547 0 1.533 2.768 0 5.5 1.533 8.232 4.547 11 8 11c3.461 0 6.467-2.768 8-5.5zM8 1.692c2.09 0 3.79 1.705 3.79 3.808 0 2.103-1.7 3.808-3.79 3.808S4.21 7.603 4.21 5.5c0-2.103 1.7-3.808 3.79-3.808z" fill="#555" fill-rule="evenodd"/></svg></button>
+        <button type="button" class="-delete js-delete" data-id="{{@index}}" title="Delete bookmark">Delete bookmark<svg width="10" height="14" viewBox="0 0 10 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1V0H3v1H0v2h10V1H7zM1 14h8V4H1v10z" fill="#555" fill-rule="evenodd"/></svg></button>
+      </div>
+    </li>
+  {{/each}}
+</ul>

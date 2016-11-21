@@ -13,16 +13,9 @@ $secondary-container-initial-width: 400px;
   h2 {
     margin: 0 0 15px;
     font-size: $font-size-huge;
+    font-weight: $font-weight-light;
     letter-spacing: .3px;
     line-height: 1.1;
-
-    @if $theme == 2 {
-      font-weight: $font-weight-light;
-    } @else {
-      color: $color-1;
-      font-family: $font-family-2;
-      font-weight: $font-weight-bold;
-    }
   }
 
   > .main-container {
@@ -58,25 +51,12 @@ $secondary-container-initial-width: 400px;
   }
 
   .filters {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    height: 35px;
     margin-top: 20px;
-
-    @media #{$mq-tablet} {
-      flex-direction: row;
-      align-items: flex-start;
-      height: 40px;
-    }
-
-    > *:not(:last-of-type) {
-      margin-bottom: 15px;
-
-      @media #{$mq-tablet} {
-        margin-bottom: 0;
-        margin-right: 17px;
-      }
-    }
+    background: rgba($color-4, .1);
+    line-height: 35px;
+    text-align: center;
+    text-transform: uppercase;
   }
 
   .map {
@@ -89,7 +69,7 @@ $secondary-container-initial-width: 400px;
     }
 
     @media #{$mq-laptop} {
-      height: calc(100vh - 332px);
+      height: calc(100vh - 328px);
     }
 
     .leaflet-control-attribution {

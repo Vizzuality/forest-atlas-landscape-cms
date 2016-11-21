@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.View.DashboardChartView = Backbone.View.extend({
+  App.View.ChartWidgetView = Backbone.View.extend({
 
     template: HandlebarsTemplates['front/dashboard-chart'],
 
@@ -16,8 +16,6 @@
       columnX: null,
       // Name of the column y
       columnY: null,
-      // Configuration of the charts
-      chartConfig: [],
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
@@ -26,8 +24,13 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
+      this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
       this._setListeners();
-      this.render();
+
+      // We pre-render the component with its template
+      this.el.innerHTML = this.template();
+      this.chartContainer = this.el.querySelector('.js-chart');
+      this.chartSelectorContainer = this.el.querySelector('.js-chart-selector');
     },
 
     /**
@@ -105,71 +108,6 @@
     },
 
     /**
-     * Creates the instance of Jiminy and attach it to this.jiminy
-     */
-    _initJiminy: function () {
-      this.jiminy = new Jiminy(this.options.data, this.options.chartConfig);
-    },
-
-    /**
-     * Return the list of charts that can be generated with the dataset
-     * @returns {string[]}
-     */
-    _getAvailableCharts: function () {
-      if (!this.jiminy) this._initJiminy();
-      return this.jiminy.recommendation();
-    },
-
-    /**
-     * Return the available x columns for the selected chart
-     * @param {string} chart - check the available columns for this specific chart (optional)
-     * @returns {string[]}
-     */
-    _getAvailableXColumns: function (chart) {
-      if (!this.jiminy) this._initJiminy();
-      return this.jiminy.columns(chart || this.options.chart);
-    },
-
-    /**
-     * Return the available y columns for the selected chart and x column
-     * The method can return null if the chart only accept one column (for the pie for example)
-     * @param {string} xColumn - x column name
-     * @param {string} chart - check the available columns for this specific chart (optional)
-     * @returns {string[]|null}
-     */
-    _getAvailableYColumns: function (xColumn, chart) {
-      if (!this.jiminy) this._initJiminy();
-      return this.jiminy.columns(chart || this.options.chart, xColumn);
-    },
-
-    /**
-     * Return two random columns that can be used to generate the chart (x and y)
-     * The y column can be null depending on the chart
-     * @return {{ x: string, y: string }}
-     */
-    _getRandomColumns: function () {
-      if (!this.jiminy) this._initJiminy();
-
-      var xColumns = this._getAvailableXColumns();
-      var xColumn;
-      if (!xColumns.length) {
-        // eslint-disable-next-line no-console
-        console.warn('Unable to generate a chart out of the current dataset');
-        return { x: null, y: null };
-      }
-
-      xColumn = xColumns[0];
-
-      var yColumns = this._getAvailableYColumns(xColumn);
-      var yColumn = yColumns.length ? yColumns[0] : null;
-
-      return {
-        x: xColumn,
-        y: yColumn
-      };
-    },
-
-    /**
      * Get the chart Handlebars template
      * @returns {function}
      */
@@ -183,7 +121,7 @@
      */
     _generateVegaSpec: function () {
       if (!this.options.chart) {
-        var availableCharts = this._getAvailableCharts();
+        var availableCharts = this.widgetToolbox.getAvailableCharts();
         if (availableCharts.length) {
           this.options.chart = availableCharts[0];
         } else {
@@ -193,14 +131,19 @@
         }
       }
 
-      var columns = this._getRandomColumns();
       var chartDimensions = this._computeChartDimensions();
-      var needsRandomColumns = !this.options.columnX && !this.options.columnY;
+
+      // We check if we need to automatically select the columns
+      if (!this.options.columnX && !this.options.columnY) {
+        var columns = this.widgetToolbox.getRandomColumns(this.options.chart);
+        this.options.columnX = columns.x;
+        this.options.columnY = columns.y;
+      }
 
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
-        xColumn: JSON.stringify(needsRandomColumns ? columns.x : this.options.columnX),
-        yColumn: JSON.stringify(needsRandomColumns ? columns.y : this.options.columnY),
+        xColumn: JSON.stringify(this.options.columnX),
+        yColumn: JSON.stringify(this.options.columnY),
         width: chartDimensions.width,
         height: chartDimensions.height
       });
@@ -216,6 +159,14 @@
         return;
       }
 
+      // We save the state of the widget each time we render as it can be the
+      // consequence of a change in the configuration
+      this.trigger('state:change', {
+        type: this.options.chart,
+        x: this.options.columnX,
+        y: this.options.columnY
+      });
+
       vg.parse
         .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
           this.chart = chart({ el: this.chartContainer }).update();
@@ -227,20 +178,20 @@
      */
     _renderChartSelector: function () {
       var hierarchy = { label: 'Customize chart', options: [] };
-      hierarchy.options = this._getAvailableCharts().map(function (chartName) {
-        var chart = _.findWhere(this.options.chartConfig, { name: chartName });
+      hierarchy.options = this.widgetToolbox.getAvailableCharts().map(function (chartName) {
+        var chart = _.findWhere(this.widgetToolbox.getChartConfig(), { name: chartName });
         var acceptedColumnsNb = chart.acceptedStatTypes[0].length;
 
         var res = { name: chartName, id: chartName };
         res.label = acceptedColumnsNb === 1 ? 'Select a column' : 'Select X column';
-        res.options = this._getAvailableXColumns(chartName).map(function (xColumn) {
+        res.options = this.widgetToolbox.getAvailableXColumns(chartName).map(function (xColumn) {
           var o = {};
           o.name = xColumn;
           o.id = xColumn;
 
           if (acceptedColumnsNb > 1) {
             o.label = 'Select Y column';
-            o.options = this._getAvailableYColumns(xColumn, chartName).map(function (yColumn) {
+            o.options = this.widgetToolbox.getAvailableYColumns(chartName, xColumn).map(function (yColumn) {
               // eslint-disable-next-line no-shadow
               var o = {};
               o.name = yColumn;
@@ -264,9 +215,6 @@
     },
 
     render: function () {
-      this.el.innerHTML = this.template();
-      this.chartContainer = this.el.querySelector('.js-chart');
-      this.chartSelectorContainer = this.el.querySelector('.js-chart-selector');
       this._renderChart();
       this._renderChartSelector();
       return this.el;

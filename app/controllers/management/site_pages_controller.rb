@@ -13,14 +13,18 @@ class Management::SitePagesController < ManagementController
                .order(params[:order] || 'created_at ASC')
 
     gon.pages = @pages.map do |page|
+      # TODO: Temporary while the pages are not all editable in the same place
+      edit_url = (page.content_type == ContentType::ANALYSIS_DASHBOARD) ?\
+        edit_management_site_site_page_page_step_path(page.site.slug, page, :dataset) : edit_management_site_site_page_path(page.site.slug, page)
+
       {
         'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
         'enabled' => {'value' => page.enabled},
-        'enable' => {'value' => toggle_enable_management_site_page_path(page), 'method' => 'put'},
-        'edit' => {'value' => edit_management_site_page_path(page), 'method' => 'get'},
-        'delete' => {'value' => management_site_page_path(page), 'method' => 'delete'}
+        'enable' => {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'},
+        'edit' => {'value' => edit_url, 'method' => 'get'},
+        'delete' => {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'}
       }
     end
 

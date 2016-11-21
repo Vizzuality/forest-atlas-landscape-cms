@@ -1,4 +1,4 @@
-<%= render partial: 'header'%>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: @page.form_steps, id: @page.id, current_step: step} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <h1>SELECT COLUMNS</h1>
@@ -7,7 +7,7 @@
     <% @fields.each do |field|%>
         <fieldset>
           <%= field.name %>
-          <%= check_box_tag "page[dataset_setting][visible_fields][]", field.name %>
+          <%= check_box_tag "site_page[dataset_setting][visible_fields][]", field.name %>
         </fieldset>
     <% end %>
     <%= render partial: 'footer', locals: {f: f} %>

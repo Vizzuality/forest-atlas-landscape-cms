@@ -1,0 +1,21 @@
+<div class="c-steps-bar">
+  <div class="wrapper">
+    <ul class="steps">
+      <% form_steps.each do |step| %>
+        <li>
+          <% tab_index = disable_button?(form_steps, step, current_step, id) ? '-1' : '0' %>
+          <% html_class =
+               if disable_button?(form_steps, step, current_step, id)
+                 '-disabled'
+               elsif active_button?(form_steps, step, current_step, id)
+                 '-active'
+               else
+                 ''
+               end
+          %>
+          <%= link_to step.capitalize, wizard_path(step), 'tabindex': tab_index, class: html_class %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
