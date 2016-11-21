@@ -55,11 +55,12 @@ class SitePage < Page
     end
   end
 
+  # TODO: Temporary fix. This won't be needed when the page creation is merged
   def set_defaults
     self.enabled = false
     # Put the parent as the root, if it doesn't exist
     unless self.parent_id
-      self.parent_id = self.site.root.id
+      self.parent_id = self.site.root.id if self.site.root
     end
   end
 end
