@@ -1,0 +1,10 @@
+{{#each filters}}
+  <div  class="js-filter">
+    <select data-id="{{@index}}">
+      <option value="" {{#unless value}}selected="selected"{{/unless}}>Filter by {{name}}</option>
+      {{#each values}}
+        <option value="{{this}}" {{#if_eq this ../value}}selected="selected"{{/if_eq}}>{{this}}</option>
+      {{/each}}
+    </select>
+  </div>
+{{/each}}

@@ -60,16 +60,6 @@ $secondary-container-initial-width: 400px;
   .filters {
     height: 35px;
     margin-top: 20px;
-    line-height: 35px;
-    text-align: center;
-    text-transform: uppercase;
-
-    @if $theme == 2 {
-      background: rgba($color-4, .1);
-    } @else {
-      background: rgba($color-1, .1);
-      color: $color-1;
-    }
   }
 
   .map {

@@ -90,6 +90,18 @@
     },
 
     /**
+     * Init the filters
+     */
+    _initFilters: function () {
+      var dataset = this._getDataset();
+      this.filters = new App.View.DashboardFiltersView({
+        el: document.querySelector('.js-filters'),
+        data: dataset,
+        filteringFields: (window.gon && gon.analysisUserFilters) || []
+      });
+    },
+
+    /**
      * Init the charts
      */
     _initCharts: function () {
@@ -353,6 +365,7 @@
      * Default route to be called
      */
     indexRoute: function () {
+      this._initFilters();
       this._initCharts();
       this._initMap();
       this._setListeners();
