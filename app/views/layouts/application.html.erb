@@ -13,6 +13,9 @@
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
   <%= yield %>
+  <script>
+    window.template = '<%= (@site_page.site_template.name.eql? 'Forest Atlas') ? 'fa' : 'lsa' %>';
+  </script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= yield :external_js %>
 </body>

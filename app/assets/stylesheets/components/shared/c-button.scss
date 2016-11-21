@@ -1,14 +1,21 @@
 .c-button {
   padding: 10px 25px;
-  border: 1px solid $color-10;
+  border: 1px solid;
   border-radius: 20px;
-  background: $color-10;
   color: $color-3;
   font-family: $font-family-1; // Mandatory for button.c-button
   font-size: $font-size-normal; // Mandatory for button.c-button
   font-weight: $font-weight-bold;
-  text-transform: uppercase;
   cursor: pointer;
+
+  @if $theme == 2 {
+    border-color: $color-10;
+    background: $color-10;
+    text-transform: uppercase;
+  } @else {
+    border-color: transparent;
+    background: rgba($color-1, .1);
+  }
 
   &.-outline {
     background: transparent;

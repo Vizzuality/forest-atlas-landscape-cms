@@ -166,7 +166,8 @@
     render: function () {
       this.el.classList.add(this.className);
       this.el.innerHTML = this.template({
-        bookmarks: this._getBookmarks()
+        bookmarks: this._getBookmarks(),
+        template: window.template || 'fa'
       });
       this.setElement(this.el);
     }
