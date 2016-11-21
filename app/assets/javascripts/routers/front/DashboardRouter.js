@@ -10,6 +10,7 @@
       name: 'New bookmark',
       version: null,
       config: {
+        filters: [],
         map: {
           lat: null,
           lng: null,
@@ -55,11 +56,28 @@
      * Set the listeners that don't depend on a DOM element
      */
     _setListeners: function () {
+      this.listenTo(this.filters, 'filters:change', function (filters) {
+        this._saveState('filters', filters);
+      });
       this.listenTo(this.chart1, 'state:change', function (state) {
         this._saveState('chart1', state);
       });
       this.listenTo(this.chart2, 'state:change', function (state) {
         this._saveState('chart2', state);
+      });
+
+      // When the dataset is filtered, we need to update the components
+      this.listenTo(this.filters, 'dataset:change', function (dataset) {
+        this.filteredDataset = dataset;
+        if (this.chart1) {
+          this.chart1.options.data = this._getDataset();
+          this.chart1.render();
+        }
+        if (this.chart2) {
+          this.chart2.options.data = this._getDataset();
+          this.chart2.render();
+        }
+        // TODO do the same for the map
       });
 
       // We would do the same for the map
@@ -70,7 +88,7 @@
      * @returns {object[]} dataset
      */
     _getDataset: function () {
-      return (window.gon && gon.analysisData.data) || [];
+      return this.filteredDataset || (window.gon && gon.analysisData.data) || [];
     },
 
     /**
@@ -152,12 +170,16 @@
 
     /**
      * Save the state of the specified component into a global state object
-     * @param {string} component - "chart1", "chart2" or "map"
+     * @param {string} component - "filters", "chart1", "chart2" or "map"
      * @param {object} state - state to save
      */
     _saveState: function (component, state) {
       this.state.version = this._getDashboardVersion();
       switch (component) {
+        case 'filters':
+          this.state.config.filters = state;
+          break;
+
         case 'map':
           this.state.config.map = Object.assign({}, this.state.config.map, state);
           break;

@@ -88,6 +88,15 @@
      */
     _triggerDataset: function () {
       // eslint-disable-next-line no-underscore-dangle
+      this.trigger('filters:change', this.options._filters.map(function (filter) {
+        return {
+          name: filter.name,
+          value: filter.value
+        };
+      }).filter(function (filter) {
+        return !!filter.value;
+      }));
+      // eslint-disable-next-line no-underscore-dangle
       this.trigger('dataset:change', this.options._filteredData);
     },
 
