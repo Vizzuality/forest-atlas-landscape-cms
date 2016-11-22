@@ -3,7 +3,7 @@
 
   App.View.ChartWidgetView = Backbone.View.extend({
 
-    template: HandlebarsTemplates['front/dashboard-chart'],
+    template: HandlebarsTemplates['front/chart-widget'],
 
     defaults: {
       // Ratio between the height and the width (i.e. height = chartRatio * width)
