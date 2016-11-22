@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161117162359) do
+ActiveRecord::Schema.define(version: 20161122104951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20161117162359) do
   end
 
   create_table "dataset_settings", force: :cascade do |t|
-    t.integer "page_id"
+    t.integer "site_page_id"
     t.integer "context_id"
     t.string  "dataset_id",           null: false
     t.json    "filters"
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 20161117162359) do
     t.string  "api_table_name"
     t.string  "fields_last_modified"
     t.index ["context_id"], name: "index_dataset_settings_on_context_id", using: :btree
-    t.index ["page_id"], name: "index_dataset_settings_on_page_id", using: :btree
+    t.index ["site_page_id"], name: "index_dataset_settings_on_site_page_id", using: :btree
   end
 
   create_table "page_hierarchies", id: false, force: :cascade do |t|
