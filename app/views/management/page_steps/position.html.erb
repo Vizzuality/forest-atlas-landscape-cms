@@ -2,9 +2,9 @@
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 
-<h1>SELECT COLUMNS</h1>
+<h1>POSITION</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla laoreet velit ante, ornare pretium sapien venenatis vel. Mauris nec nisi sit amet ex commodo sodales eget placerat metus.</p>
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
+<%= render partial: 'shared/errors', locals: { resource: @page} %>

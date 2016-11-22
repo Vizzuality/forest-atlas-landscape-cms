@@ -1,9 +1,16 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
 
-  before_action :set_site, only: [:new, :edit, :show, :update]
-  before_action :build_current_page_state, only: [:show, :update]
   prepend_before_action :set_steps
+
+  prepend_before_action :build_current_page_state, only: [:show, :update]
+
+  prepend_before_action :set_site, only: [:new, :edit, :show, :update]
+
+
+
+
+  before_action :setup_wizard
 
   helper_method :form_steps
 
@@ -76,6 +83,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
         redirect_to next_wizard_path
       when 'type'
+        set_current_page_state
         redirect_to next_wizard_path
       when 'dataset'
         build_current_dataset_setting
@@ -131,7 +139,7 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+    params.require(:site_page).permit(:name, :description, :content_type, dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
   end
 
   def set_site
@@ -141,7 +149,7 @@ class Management::PageStepsController < ManagementController
   def build_current_page_state
     # Verify if the manager is editing a page or creating a new one
     # TODO : For now, all the content type will be ANALYSIS_DASHBOARD
-    @page = params[:page_id] ? SitePage.find(params[:page_id]) : (SitePage.new site_id: @site.id, content_type: ContentType::ANALYSIS_DASHBOARD)
+    @page = params[:page_id] ? SitePage.find(params[:page_id]) : (SitePage.new site_id: @site.id)
 
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page] if session[:page]
@@ -206,19 +214,19 @@ class Management::PageStepsController < ManagementController
     else
       case @page.content_type
         when ContentType::OPEN_CONTENT
-          self.steps = %w[open_content oc_preview]
+          self.steps = %w[position title type open_content oc_preview]
         when ContentType::ANALYSIS_DASHBOARD
-          self.steps = %w[dataset filters columns customization preview]
+          self.steps = %w[position title type dataset filters columns customization preview]
         when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-          self.steps = %w[widget did did_preview]
+          self.steps = %w[position title type widget did did_preview]
         when ContentType::HOMEPAGE
-          self.steps =%w[homepage]
+          self.steps = %w[position title typehomepage]
         when ContentType::MAP
-          self.steps = %w[map]
+          self.steps = %w[position title type map]
         when ContentType::LINK
-          self.steps = %w[link]
+          self.steps = %w[position title type link]
         when ContentType::STATIC_CONTENT
-          self.steps = %w[static_content]
+          self.steps = %w[position title type static_content]
       end
     end
   end

@@ -14,13 +14,13 @@
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <div class="l-page-creation -wysiwyg">
-  <%= form_for(form_for_path, :html => { :class => 'js-form' }) do |f| %>
-      <% if site_page.errors.any? %>
+  <%= form_for(@page, url: wizard_path, :html => { :class => 'js-form' }) do |f| %>
+      <% if @page.errors.any? %>
           <div id="error_explanation">
             <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
 
             <ul>
-              <% site_page.errors.full_messages.each do |message| %>
+              <% @page.errors.full_messages.each do |message| %>
                   <li><%= message %></li>
               <% end %>
             </ul>
