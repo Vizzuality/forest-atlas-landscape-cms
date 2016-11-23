@@ -1,23 +1,24 @@
 {{#*inline "item"}}
   <ul {{#if firstCall}}class="js-tree-root"{{/if}}>
     {{#each pages}}
-      <li class="js-draggable" id="page-{{id}}" data-name="{{name}}" data-parent="{{parent_id}}"
-          data-position="{{position}}" data-enabled="{{enabled}}" data-type="{{type}}">
-        <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">
-          <span>{{name}}</span>
-          <ul class="action-buttons">
-            {{#if disableable}}
-              {{#if enabled}}
-                  <li><button class="view-button js-disable">Disable</button></li>
+      <li
+        class="js-draggable"
+        {{#each this}}
+          {{#if_eq @key 'id'}}
+            id="page-{{this}}"
+          {{else}}
+            {{#if_eq @key 'children'}}
+            {{else}}
+              {{#if_eq this null}}
               {{else}}
-                  <li><button class="view-button-slashed js-enable">Enable</button></li>
-              {{/if}}
-            {{/if}}
-            <li><a href="{{editUrl}}" class="edit-button">Edit</a></li>
-            {{#if disableable}}
-              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{deleteUrl}}" class="delete-button">Delete</a></li>
-            {{/if}}
-          </ul>
+                data-{{@key}}="{{this}}"
+              {{/if_eq}}
+            {{/if_eq}}
+          {{/if_eq}}
+        {{/each}}
+      >
+        <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">
+          {{> pageTemplate}}
         </div>
         {{#if children}}
           {{> item pages=children firstCall=false}}
@@ -26,7 +27,7 @@
     {{/each}}
     {{#unless firstCall}}
       <li class="js-not-nestable">
-        <button type="button" class="add-page-button">Add page</button>
+        {{> additionalPageTemplate}}
       </li>
     {{/unless}}
   </ul>
