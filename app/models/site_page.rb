@@ -33,9 +33,30 @@ class SitePage < Page
   validates_presence_of :site_id
   after_save :update_routes
 
-  # Add validations for each of the steps
+  # TODO: Add validations for each of the steps
 
   attr_accessor :form_step
+  attr_accessor :form_steps do
+    steps = nil
+
+    case self.content_type
+      when ContentType::OPEN_CONTENT
+        steps = %w[position title type open_content open_content_preview]
+      when ContentType::ANALYSIS_DASHBOARD
+        steps = %w[position title type dataset filters columns customization preview]
+      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
+        steps = %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview]
+      when ContentType::HOMEPAGE
+        steps = %w[position title type homepage]
+      when ContentType::MAP
+        steps = %w[position title type map]
+      when ContentType::LINK
+        steps = %w[position title type link]
+      when ContentType::STATIC_CONTENT
+        steps = %w[position title type static_content]
+    end
+    steps
+  end
 
   def update_routes
     return if self.content_type.eql? ContentType::LINK

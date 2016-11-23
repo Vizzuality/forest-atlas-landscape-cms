@@ -265,22 +265,7 @@ class Management::PageStepsController < ManagementController
     unless @page && @page.content_type
       self.steps = %w[position title type]
     else
-      case @page.content_type
-        when ContentType::OPEN_CONTENT
-          self.steps = %w[position title type open_content open_content_preview]
-        when ContentType::ANALYSIS_DASHBOARD
-          self.steps = %w[position title type dataset filters columns customization preview]
-        when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-          self.steps = %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview]
-        when ContentType::HOMEPAGE
-          self.steps = %w[position title type homepage]
-        when ContentType::MAP
-          self.steps = %w[position title type map]
-        when ContentType::LINK
-          self.steps = %w[position title type link]
-        when ContentType::STATIC_CONTENT
-          self.steps = %w[position title type static_content]
-      end
+      self.steps = @page.form_steps
     end
   end
 
