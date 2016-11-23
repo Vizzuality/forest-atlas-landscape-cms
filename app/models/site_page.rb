@@ -36,24 +36,26 @@ class SitePage < Page
   # TODO: Add validations for each of the steps
 
   attr_accessor :form_step
-  attr_accessor :form_steps do
+
+  def form_steps
     steps = nil
 
     case self.content_type
       when ContentType::OPEN_CONTENT
-        steps = %w[position title type open_content open_content_preview]
+        steps = { pages: %w[position title type open_content open_content_preview],
+                  names: ['Position', 'Title', 'Type', 'Open Content', 'Open Content Preview']}
       when ContentType::ANALYSIS_DASHBOARD
-        steps = %w[position title type dataset filters columns customization preview]
+        steps = { pages: %w[position title type dataset filters columns customization preview],
+                  names: ['Position', 'Title', 'Type', 'Dataset', 'Filters', 'Columns', 'Customization' 'Preview']}
       when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        steps = %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview]
-      when ContentType::HOMEPAGE
-        steps = %w[position title type homepage]
-      when ContentType::MAP
-        steps = %w[position title type map]
+        steps = { pages: %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview],
+                  names: ['Position', 'Title',  'Type', 'Widget', 'Dynamic Indicator Dashboard', 'Preview']}
       when ContentType::LINK
-        steps = %w[position title type link]
+        steps = { pages: %w[position title type link],
+                  names: ['Position', 'Title', 'Type', 'Link']}
       when ContentType::STATIC_CONTENT
-        steps = %w[position title type static_content]
+        steps = { pages: %w[position title type static_content],
+                  names: ['Position', 'Title', 'Type', 'Static Content']}
     end
     steps
   end

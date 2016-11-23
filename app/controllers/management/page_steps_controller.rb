@@ -12,6 +12,8 @@ class Management::PageStepsController < ManagementController
 # before_action :set_content_type_variables, only: [:new, :edit]
 
   helper_method :form_steps
+  attr_accessor :steps_names
+  attr_accessor :invalid_steps
 
   CONTINUE = 'CONTINUE'.freeze
   SAVE     = 'SAVE CHANGES'.freeze
@@ -262,14 +264,26 @@ class Management::PageStepsController < ManagementController
   end
 
   def set_steps
+    invalid_steps = []
     unless @page && @page.content_type
-      self.steps = %w[position title type]
+      steps = { pages: %w[position title type],
+                names: %w[Position Title Type] }
+      self.steps = steps[:pages]
+      self.steps_names = steps[:names]
     else
-      self.steps = @page.form_steps
+      steps = @page.form_steps
+      self.steps = steps[:pages]
+      self.steps_names = steps[:names]
+      invalid_steps = ['title']
     end
+    set_invalid_steps invalid_steps
   end
 
   def form_steps
     self.steps
+  end
+
+  def set_invalid_steps(steps)
+    self.invalid_steps = steps
   end
 end
