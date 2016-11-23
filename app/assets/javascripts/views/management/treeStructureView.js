@@ -9,12 +9,15 @@
     collection: new Backbone.Collection(),
 
     defaults: {
+      // If tree, the nodes can't be dragged
+      readOnly: false,
       // Template for each page (string)
+      // The template must be wrapped in the following div with at least these attributes
       // Can't be modified after intantiation
-      pageTemplate: '',
+      pageTemplate: '<div class="page js-handle"></div>',
       // Template for the page added at the end of each branch
       // Can't be modified after intantiation
-      additionalPageTemplate: '',
+      additionalPageTemplate: null,
       // Maximum level for nested nodes
       maxNestedLevel: 4,
       // Method called after a node has been moved
@@ -36,7 +39,9 @@
 
       // We register partials for the page template
       Handlebars.registerPartial('pageTemplate', this.options.pageTemplate);
-      Handlebars.registerPartial('additionalPageTemplate', this.options.additionalPageTemplate);
+      if (this.options.additionalPageTemplate) {
+        Handlebars.registerPartial('additionalPageTemplate', this.options.additionalPageTemplate);
+      }
 
       this.render();
       this.setElement(this.el);
@@ -70,8 +75,25 @@
         errorClass: '-invalid',
         protectRoot: true, // Prevent the root to be changed
         isAllowed: this._isDropAllowed.bind(this),
-        relocate: this._onRelocate.bind(this)
+        relocate: this._onRelocate.bind(this),
+        start: this._onDrag
       });
+    },
+
+    /**
+     * Event handler called when the user starts dragging a node
+     * @param {object} e - event
+     * @param {object} ui - jquery ui
+     */
+    _onDrag: function (e, ui) {
+      // If the node is readonly, we prevent the user from dragging it
+      if (ui.item.hasClass('js-readonly')) {
+        // It seems to be a bug from jQuery: if we don't use the setTimeout, we
+        // get an unpredictable behaviour with JS errors
+        setTimeout(function () {
+          $(this).sortable('cancel');
+        }.bind(this), 0);
+      }
     },
 
     /**
@@ -91,8 +113,10 @@
       // The button should be the last element of a list, so we check the position of the placeholder (to not be the last)
       // There's an exception: if we nest the dragged element inside another which hasn't any nested yet
       var parentNestedElements = placeholder.parent().children();
-      if (parentNestedElements.index(placeholder) === parentNestedElements.length - 1 &&
-        parentNestedElements.length > 1) {
+      var placeholderIndex = parentNestedElements.index(placeholder);
+      if (placeholderIndex === parentNestedElements.length - 1 &&
+        parentNestedElements.length > 1 &&
+        parentNestedElements[placeholderIndex - 1].classList.contains('js-last-node')) {
         return false;
       }
 
@@ -170,10 +194,12 @@
 
     render: function () {
       this.$el.html(this.template({
-        pages: this.collection.toJSON()
+        pages: this.collection.toJSON(),
+        hasAdditionalPage: !!this.options.additionalPageTemplate,
+        readOnly: this.options.readOnly
       }));
 
-      this._initSortableTree();
+      if (!this.options.readOnly) this._initSortableTree();
 
       this.options.renderCallback();
     }

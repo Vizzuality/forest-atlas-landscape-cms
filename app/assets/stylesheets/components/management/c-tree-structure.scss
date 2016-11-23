@@ -56,6 +56,7 @@
     position: relative;
     align-items: center;
     justify-content: space-between;
+    min-width: 260px;
     padding: 10px 15px;
     border: 1px solid $color-7;
     border-radius: 4px;
@@ -74,6 +75,12 @@
       transform: translateY(-50%);
       background-color: $color-7;
       content: '';
+    }
+
+    &.-highlight {
+      border-color: $color-1;
+      background-color: $color-1;
+      color: $color-3;
     }
 
     &.-disabled {
@@ -111,7 +118,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-left: 100px;
+      margin-left: 40px;
       padding-left: 0;
 
       > li {
@@ -161,6 +168,10 @@
     }
   }
 
+  &.-readonly .page {
+    cursor: default;
+  }
+
   > ul {
     // We want the root of the tree to act like a block element but have
     // a width corresponding to its content
@@ -180,9 +191,12 @@
     opacity: .7;
 
     > .page {
-      // background: red;
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing;
+
+      &::after {
+        content: none;
+      }
     }
   }
 

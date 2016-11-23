@@ -3,6 +3,10 @@
   // screen has a small height
   padding-bottom: 75px;
 
+  &.-position {
+    margin-top: 50px;
+  }
+
   &.-type {
     display: flex;
     align-items: center;
