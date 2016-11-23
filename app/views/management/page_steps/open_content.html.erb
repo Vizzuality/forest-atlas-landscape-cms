@@ -10,14 +10,14 @@
   </div>
 <% end %>
 
-%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-<div class="l-page-creation -wysiwyg">
-  <%= form_for(@page, url: wizard_path, :html => { :class => 'js-form' }) do |f| %>
+<%= form_for(@page, url: wizard_path, method: :put, :html => { :class => 'js-form' }) do |f| %>
+  <div class="l-page-creation -wysiwyg">
       <% if @page.errors.any? %>
           <div id="error_explanation">
-            <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
+            <h2><%= pluralize(@page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
 
             <ul>
               <% @page.errors.full_messages.each do |message| %>
@@ -31,6 +31,7 @@
 
       <div class="wrapper">
 
+        <!--
         <div class="c-fieldset">
           <%= f.text_field :name, id: 'title', placeholder: 'Page\'s title' %>
           <%= f.label 'Page\'s title', for: 'title' %>
@@ -47,39 +48,24 @@
           <%= f.check_box :show_on_menu, id: 'show_on_menu' %>
           <%= f.label :show_on_menu, for: 'show_on_menu' %>
         </div>
+        -->
 
         <div class="c-wysiwyg">
-          <%= f.fields_for :content, OpenStruct.new(site_page.content) do |ff| %>
+          <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
               <%= ff.hidden_field :body, class: 'js-content' %>
               <%= ff.text_area :json, class: 'js-content-json' %>
           <% end %>
         </div>
       </div>
 
-      <!--
-      <fieldset class="form-group row">
-        <%= f.label :url, class: 'col-sm-2 form-control-label' %>
-        <div class="col-sm-10"><%= f.text_field :url, class: 'form-control', disabled: 'true' %></div>
-      </fieldset>
+      <%#= f.label :url, class: 'col-sm-2 form-control-label' %>
 
-      <fieldset class="form-group row">
-        <%= f.label :site_id, class: 'col-sm-2 form-control-label' %>
-        <div class="col-sm-10">
-          <%= f.collection_select :site_id, Site.all, :id, :name, {}, {:class => 'form-control'} %>
-        </div>
-      </fieldset>
+      <%#= f.label :site_id, class: 'col-sm-2 form-control-label' %>
+      <%#= f.collection_select :site_id, Site.all, :id, :name, {}, {:class => 'form-control'} %>
 
-      <fieldset class="form-group row">
-        <%= f.label :parent_id, class: 'col-sm-2 form-control-label' %>
-        <div class="col-sm-10">
-          <%= f.collection_select :parent_id, SitePage.where(site_id: @site_page.site_id), :id, :name, {}, {:class => 'form-control'} %>
-        </div>
-      </fieldset>
-      -->
-  <% end %>
-</div>
+      <%#= f.label :parent_id, class: 'col-sm-2 form-control-label' %>
+      <%#= f.collection_select :parent_id, SitePage.where(site_id: @page.site_id), :id, :name, {}, {:class => 'form-control'} %>
 
-<% content_for :action_bar do %>
-  <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-  <button type="submit" class="c-button js-submit"><%= (!defined?(edit) || edit == false) ? 'Save' : 'Update' %></button>
+  </div>
+  <%= render partial: 'footer', locals: {f: f} %>
 <% end %>

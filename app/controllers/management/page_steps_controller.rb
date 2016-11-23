@@ -1,16 +1,15 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
 
+  # The order of prepend is the opposite of its declaration
   prepend_before_action :set_steps
-
   prepend_before_action :build_current_page_state, only: [:show, :update]
-
   prepend_before_action :set_site, only: [:new, :edit, :show, :update]
-
-
-
-
   before_action :setup_wizard
+
+# TODO: Authenticate user per site
+# before_action :authenticate_user_for_site!, only: [:index, :new, :create]
+# before_action :set_content_type_variables, only: [:new, :edit]
 
   helper_method :form_steps
 
@@ -68,6 +67,9 @@ class Management::PageStepsController < ManagementController
         gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
+      when 'open_content'
+      when 'open_content_preview'
+
       end
 
       @breadcrumbs = ['Page creation']
@@ -128,6 +130,23 @@ class Management::PageStepsController < ManagementController
         build_current_dataset_setting
         set_current_dataset_setting_state
         @page.dataset_setting = @dataset_setting
+        if @page.save
+          redirect_to management_site_site_pages_path params[:site_slug]
+        else
+          render_wizard
+        end
+
+      # OPEN CONTENT PATH
+      when 'open_content'
+        build_current_dataset_setting
+        set_current_dataset_setting_state
+        if @page.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
+
+      when 'open_content_preview'
         if @page.save
           redirect_to management_site_site_pages_path params[:site_slug]
         else
@@ -214,13 +233,13 @@ class Management::PageStepsController < ManagementController
     else
       case @page.content_type
         when ContentType::OPEN_CONTENT
-          self.steps = %w[position title type open_content oc_preview]
+          self.steps = %w[position title type open_content open_content_preview]
         when ContentType::ANALYSIS_DASHBOARD
           self.steps = %w[position title type dataset filters columns customization preview]
         when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-          self.steps = %w[position title type widget did did_preview]
+          self.steps = %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview]
         when ContentType::HOMEPAGE
-          self.steps = %w[position title typehomepage]
+          self.steps = %w[position title type homepage]
         when ContentType::MAP
           self.steps = %w[position title type map]
         when ContentType::LINK
