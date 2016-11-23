@@ -55,6 +55,8 @@
           autoCloseTimer: 5,
           visible: true
         });
+
+        this.navigate('/', { replace: true });
       }
     },
 
