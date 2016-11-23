@@ -13,14 +13,15 @@
 <%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-<div class="l-page-creation -link">
-  <%= form_for(form_for_path, :html => {:class => 'js-form'}) do |f| %>
-      <% if site_page.errors.any? %>
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <%# TODO: Remove this and use shared errors%>
+  <div class="l-page-creation -link">
+      <% if @page.errors.any? %>
           <div id="error_explanation">
             <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
 
             <ul>
-              <% site_page.errors.full_messages.each do |message| %>
+              <% page.errors.full_messages.each do |message| %>
                   <li><%= message %></li>
               <% end %>
             </ul>
@@ -45,10 +46,6 @@
           </div>
         <% end %>
       </div>
-  <% end %>
-</div>
-
-<% content_for :action_bar do %>
-    <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-    <button type="submit" class="c-button js-submit"><%= (!defined?(edit) || edit == false) ? 'Create' : 'Update' %></button>
+  </div>
+  <%= render partial: 'footer', locals: {f: f} %>
 <% end %>

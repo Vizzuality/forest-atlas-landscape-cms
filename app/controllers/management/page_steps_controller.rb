@@ -67,11 +67,19 @@ class Management::PageStepsController < ManagementController
         gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
+
+      # OPEN CONTENT PATH
       when 'open_content'
       when 'open_content_preview'
 
+      # DYNAMIC INDICATOR PATH
+      when 'widget'
+      when 'dynamic_indicator_dashboard'
+      when 'dynamic_indicator_dashboard_preview'
+
       end
 
+       # TODO: Is this supposed to have only page creation?
       @breadcrumbs = ['Page creation']
 
       render_wizard
@@ -82,15 +90,18 @@ class Management::PageStepsController < ManagementController
     case step
       when 'position'
         redirect_to next_wizard_path
+
       when 'title'
         redirect_to next_wizard_path
+
       when 'type'
         set_current_page_state
         redirect_to next_wizard_path
+
+      # ANALYSIS DASHBOARD PATH
       when 'dataset'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        # TODO : Apply validation (keep in mind that the controller is not called)
         if @page.valid?
           redirect_to next_wizard_path
         else
@@ -147,6 +158,30 @@ class Management::PageStepsController < ManagementController
         end
 
       when 'open_content_preview'
+        # TODO : When validations are done, put this back
+        #if @page.save
+          redirect_to management_site_site_pages_path params[:site_slug]
+        #else
+        #  render_wizard
+        #end
+
+      # DYNAMIC INDICATOR DASHBOARD PATH
+      when 'widget'
+        redirect_to next_wizard_path
+
+      when 'dynamic_indicator_dashboard'
+        redirect_to next_wizard_path
+
+      when 'dynamic_indicator_dashboard_preview'
+        # TODO: When the validations are done, put this back
+        #if @page.save
+          redirect_to management_site_site_pages_path params[:site_slug]
+        #else
+        #  render_wizard
+        #end
+
+      # LINK PATH
+      when 'link'
         if @page.save
           redirect_to management_site_site_pages_path params[:site_slug]
         else
@@ -158,7 +193,7 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :content_type, dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+    params.require(:site_page).permit(:name, :description, :content_type, content: [:url, :target_blank], dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
   end
 
   def set_site
@@ -167,7 +202,6 @@ class Management::PageStepsController < ManagementController
 
   def build_current_page_state
     # Verify if the manager is editing a page or creating a new one
-    # TODO : For now, all the content type will be ANALYSIS_DASHBOARD
     @page = params[:page_id] ? SitePage.find(params[:page_id]) : (SitePage.new site_id: @site.id)
 
     # Update the page with the attributes saved on the session
