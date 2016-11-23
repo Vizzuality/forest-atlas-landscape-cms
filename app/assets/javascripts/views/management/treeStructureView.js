@@ -8,10 +8,23 @@
     template: HandlebarsTemplates['management/tree-structure'],
     collection: new Backbone.Collection(),
 
+    defaults: {
+      // Template for each page (string)
+      // Can't be modified after intantiation
+      pageTemplate: '',
+      // Template for the page added at the end of each branch
+      // Can't be modified after intantiation
+      additionalPageTemplate: '',
+      // Maximum level for nested nodes
+      maxNestedLevel: 4,
+      // Method called after a node has been moved
+      moveCallback: function () {},
+      // Method called after the tree has been rendered (typically for attaching event
+      // listeners to the pages)
+      renderCallback: function () {}
+    },
+
     events: {
-      'click .js-enable': '_onClickEnable',
-      'click .js-disable': '_onClickDisable',
-      'click .add-page-button': '_onClickAddPage'
     },
 
     initialize: function (settings) {
@@ -21,8 +34,24 @@
       // We need to deep clone it to avoid mutations of the models
       this.initialCollection = this._deepCloneCollection(this.collection);
 
+      // We register partials for the page template
+      Handlebars.registerPartial('pageTemplate', this.options.pageTemplate);
+      Handlebars.registerPartial('additionalPageTemplate', this.options.additionalPageTemplate);
+
       this.render();
       this.setElement(this.el);
+    },
+
+    /**
+     * Event handler for when a page is successfully dragged and dropped in the tree
+     */
+    _onRelocate: function () {
+      this._saveStructure();
+      this.render();
+      this.setElement(this.el);
+
+      // We call the callback to let the user perform some actions
+      this.options.moveCallback();
     },
 
     /**
@@ -34,40 +63,40 @@
         handle: '.js-handle',
         items: '.js-draggable',
         toleranceElement: '.js-handle',
-        maxLevels: 4, // Max nested level is 4
+        maxLevels: this.options.maxNestedLevel,
         isTree: true,
         placeholder: 'page -placeholder',
         forcePlaceholderSize: true,
         errorClass: '-invalid',
         protectRoot: true, // Prevent the root to be changed
-        isAllowed: function (placeholder, placeholderParent) {
-          // We allow the element to be dragged in the root element
-          // This condition needs to be here because placeholderParent is undefined in this case
-          if (placeholder.parent().hasClass('js-tree-root')) return true;
-
-          // We don't want the dragged element to be nested under a "Add page" button
-          if (placeholderParent.hasClass('js-not-nestable')) return false;
-
-          // We don't want the dragged element to be placed after a "Add page" button
-          // The button should be the last element of a list, so we check the position of the placeholder (to not be the last)
-          // There's an exception: if we nest the dragged element inside another which hasn't any nested yet
-          var parentNestedElements = placeholder.parent().children();
-          if (parentNestedElements.index(placeholder) === parentNestedElements.length - 1 &&
-            parentNestedElements.length > 1) {
-            return false;
-          }
-
-          return true;
-        },
-        relocate: function () {
-          // We let the user know they must not forget to save before leaving the page
-          this._displaySaveWarning();
-
-          this._saveStructure();
-          this.render();
-          this.setElement(this.el);
-        }.bind(this)
+        isAllowed: this._isDropAllowed.bind(this),
+        relocate: this._onRelocate.bind(this)
       });
+    },
+
+    /**
+     * Return true if the page currently being dragged can be dropped at the current position
+     * @param {object} placeholder - dragged page's placeholder element
+     * @param {object} placeholderParent - parent of the placeholder element
+     */
+    _isDropAllowed: function (placeholder, placeholderParent) {
+      // We allow the element to be dragged in the root element
+      // This condition needs to be here because placeholderParent is undefined in this case
+      if (placeholder.parent().hasClass('js-tree-root')) return true;
+
+      // We don't want the dragged element to be nested under a non-nestable page
+      if (placeholderParent.hasClass('js-not-nestable')) return false;
+
+      // We don't want the dragged element to be placed after a non-nestable page
+      // The button should be the last element of a list, so we check the position of the placeholder (to not be the last)
+      // There's an exception: if we nest the dragged element inside another which hasn't any nested yet
+      var parentNestedElements = placeholder.parent().children();
+      if (parentNestedElements.index(placeholder) === parentNestedElements.length - 1 &&
+        parentNestedElements.length > 1) {
+        return false;
+      }
+
+      return true;
     },
 
     /**
@@ -115,57 +144,28 @@
     },
 
     /**
-     * Display a warning to remember the user to save the tree before
-     * clicking any button that would leave the page
+     * Return the tree
+     * @returns {object} root of the tree
      */
-    _displaySaveWarning: function () {
-      if (this.saveNotification) {
-        this.saveNotification.show();
-        return;
-      }
-
-      this.saveNotification = new App.View.NotificationView({
-        content: 'Don\'t forget to save the changes before leaving the page!',
-        type: 'warning',
-        visible: true
-      });
+    getTree: function () {
+      return this._deepCloneCollection(this.collection).toJSON()[0];
     },
 
     /**
-     * Hide the warning remembering the user to save before leaving
-     * the page
+     * Set the tree used by the library
+     * @param {object} newTree
      */
-    _hideSaveWarning: function () {
-      if (this.saveNotification) {
-        this.saveNotification.hide();
-      }
+    setTree: function (newTree) {
+      this.collection.reset(newTree);
+      this.render();
+      this.setElement(this.el);
     },
 
     /**
-     * Display a warning to remember the user that if they enable a page
-     * that as disabled ancestors, it won't be visible until they are all enabled
+     * Restore the tree to its original state
      */
-    _displayVisibilityWarning: function () {
-      if (this.visibilityNotification) {
-        this.visibilityNotification.show();
-        return;
-      }
-
-      this.visibilityNotification = new App.View.NotificationView({
-        content: 'This page won\'t be visible to the users until all of its ancestors are enabled!',
-        type: 'warning',
-        visible: true
-      });
-    },
-
-    /**
-     * Hide the warning to remember the user that if they enable a page
-     * that as disabled ancestors, it won't be visible until they are all enabled
-     */
-    _hideVisibilityWarning: function () {
-      if (this.visibilityNotification) {
-        this.visibilityNotification.hide();
-      }
+    reset: function () {
+      this.setTree(this._deepCloneCollection(this.initialCollection).toJSON());
     },
 
     render: function () {
@@ -174,122 +174,8 @@
       }));
 
       this._initSortableTree();
-    },
 
-    save: function (path) {
-      this._hideSaveWarning();
-      $.ajax({
-        url: path,
-        type: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(this)
-      });
-    },
-
-    /**
-     * Restore the tree to its original state
-     */
-    reset: function () {
-      this._hideSaveWarning();
-      this._hideVisibilityWarning();
-
-      this.collection = this._deepCloneCollection(this.initialCollection);
-      this.render();
-      this.setElement(this.el);
-    },
-
-    /**
-     * Event listener for when the enable button is clicked on a node
-     * @param {object} e - event object
-     */
-    _onClickEnable: function (e) {
-      e.preventDefault();
-      var node = $(e.target).closest('.js-draggable')[0];
-      this.toggleEnable(node, true);
-    },
-
-    /**
-     * Event listener for when the disable button is clicked on a node
-     * @param {object} e - event object
-     */
-    _onClickDisable: function (e) {
-      e.preventDefault();
-      var node = $(e.target).closest('.js-draggable')[0];
-      this.toggleEnable(node, false);
-    },
-
-    /**
-     * Event listener for when the add page button is clicked
-     * @param {object} e - event object
-     */
-    _onClickAddPage: function (e) {
-      e.preventDefault();
-      var node = $(e.target).closest('.js-draggable')[0];
-      window.location = '' + gon.addPagePath + '?parent=' + $(node).attr('id').match(/\d+/)[0];
-    },
-
-    /**
-     * Recursively, toggle the enabled attribute of the subtree whose root is designated
-     * If nodeId is null, toggle the attribute for all the nodes / subtree
-     * @param {object}   currentNode - the current node / subtree
-     * @param {number}   nodeId - id of the target node, can be null
-     * @param {array}    ancestorsVisibility - visibility of the direct ancestors (true = visible)
-     * @enable {boolean} enable - whether to enable or disable the subtree
-     */
-    _toggleEnableRecursive: function (currentNode, nodeId, ancestorsVisibility, enable) {
-      var newNode = currentNode;
-      // The current node is the targeted node if:
-      //  1/ We're not searching for a concrete node and we want do disable the pages
-      //  2/ It is effectively the targeted node :)
-      var isTargetedNode = (!nodeId && !enable) || (currentNode.id === nodeId);
-
-      if (isTargetedNode) {
-        if (enable) {
-          var hasDisabledAncestor = ancestorsVisibility.reduce(function (res, vis) {
-            return res || !vis;
-          }, false);
-
-          // If the node we want to enable has a disabled ancestor, a warning is displayed
-          // to inform the user the page won't be visible until all of its ancestors are visible
-          if (hasDisabledAncestor) {
-            this._displayVisibilityWarning();
-          }
-        }
-
-        newNode.enabled = enable;
-      }
-
-      if (newNode.children) {
-        var newAncestorsVisibility = ancestorsVisibility.concat([currentNode.enabled]);
-        newNode.children = newNode.children.map(function (childNode) {
-          return this._toggleEnableRecursive(childNode, isTargetedNode ? null : nodeId, newAncestorsVisibility, enable);
-        }, this);
-      }
-
-      return newNode;
-    },
-
-    /**
-     * Toggle the visibility of a node
-     * @param {object}  node - DOM element
-     * @param {boolean} enable - whether to enable or disable
-     */
-    toggleEnable: function (node, enable) {
-      var nodeId = node.id.match(/^page-(\d+)/);
-
-      if (!nodeId || nodeId.length < 2) {
-        // TODO: the user clicked on the root
-        return;
-      }
-
-      nodeId = +nodeId[1];
-
-      var rootNode = this.collection.toJSON()[0];
-      var newTree = this._toggleEnableRecursive(rootNode, nodeId, [], enable);
-
-      this.collection.reset(newTree);
-      this.render();
-      this.setElement(this.el);
+      this.options.renderCallback();
     }
   });
 })(this.App));
