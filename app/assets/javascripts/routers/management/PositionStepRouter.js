@@ -24,6 +24,50 @@
         pageTemplate: this._getPageTemplate(),
         additionalPageTemplate: null
       });
+
+      /* We add a listener for when the user clicks on "Continue" */
+      $('.js-form').on('submit', this._onSubmit.bind(this));
+    },
+
+    /**
+     * Event handler for when the user clicks the submit button
+     * @param {object} e - event
+     */
+    _onSubmit: function () {
+      // We retrieve the position and the parentId of the draggable node
+      var position,
+        parentId;
+
+      var searchNode = function (currentNode, currentParentId, currentPosition) {
+        // If the current node is the one we search for, we save its position and
+        // parent ID and return true (meaning we found it)
+        if (currentNode.id === 0) {
+          position = currentPosition;
+          parentId = currentParentId;
+          return true;
+        }
+
+        // We search for the node in the children list
+        for (var i = 0, j = (currentNode.children && currentNode.children.length) || 0; i < j; i++) {
+          // If we found it, we return
+          if (searchNode(currentNode.children[i], currentNode.id, i)) {
+            return true;
+          }
+        }
+
+        // If we couldn't find it, we return false
+        return false;
+      };
+
+      if (!searchNode(this.treeStructureView.getTree(), null, 0)) {
+        // eslint-disable-next-line no-console
+        console.warn('Unable to find the dragged node in the tree');
+        return;
+      }
+
+      // We save the value to the hidden fields
+      $('.js-parent_id').val(parentId);
+      $('.js-position').val(position);
     },
 
     /**
@@ -47,7 +91,7 @@
         if (level === 0) {
           node.children.unshift({
             name: 'Drag this',
-            id: '-1',
+            id: 0,
             enabled: true,
             highlighted: true
           });

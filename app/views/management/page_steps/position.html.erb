@@ -8,15 +8,10 @@
     </div>
   </div>
 <% end %>
+
 <%= render partial: 'shared/navigation_header', locals: \
   {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
-
-<%= form_for(@page, url: wizard_path) do |f| %>
-  <%= f.hidden_field :position %>
-  <%= f.hidden_field :parent_id %>
-<% end %>
 
 <div class="l-page-creation -position">
   <div class="wrapper">
@@ -25,9 +20,9 @@
   </div>
 </div>
 
-<h1>POSITION</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla laoreet velit ante, ornare pretium sapien venenatis vel. Mauris nec nisi sit amet ex commodo sodales eget placerat metus.</p>
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for(@page, url: wizard_path, method: :put, html: { class: 'js-form'}) do |f| %>
+  <%= f.hidden_field :parent_id, class: 'js-parent_id' %>
+  <%= f.hidden_field :position, class: 'js-position' %>
   <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
 
