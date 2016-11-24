@@ -1,7 +1,3 @@
-<%= render partial: 'shared/navigation_header', locals: \
-  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
-invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
 <% content_for :extended_header do %>
   <div class="c-extended-header">
     <div class="wrapper">
@@ -12,10 +8,15 @@ invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
     </div>
   </div>
 <% end %>
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-
-
-<%= render partial: 'shared/navigation_header', locals: {form_steps: form_steps, id: @page.id, current_step: step} %>
+<%= form_for(@page, url: wizard_path) do |f| %>
+  <%= f.hidden_field :position %>
+  <%= f.hidden_field :parent_id %>
+<% end %>
 
 <div class="l-page-creation -position">
   <div class="wrapper">
