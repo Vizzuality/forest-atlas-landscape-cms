@@ -22,9 +22,9 @@ class Management::PageStepsController < ManagementController
   def new
     # TODO: change this when the pages are unified
     if params[:position] && params[:parent_id]
-      session[:page] =  {uri: "test-#{DateTime.new.to_id}", parent_id: params[:parent_id], position: params[:position]}
+      session[:page] =  {parent_id: params[:parent_id], position: params[:position]}
     else
-      session[:page] = {uri: "test-#{DateTime.new.to_i}", parent_id: @site.root.id, position: @site.site_pages.where(parent_id: @site.root.id).length}
+      session[:page] = {}
     end
 
     session[:dataset_setting] = {}
@@ -48,6 +48,10 @@ class Management::PageStepsController < ManagementController
       when 'position'
       when 'title'
       when 'type'
+        if @page.content_type
+          redirect_to wizard_path(wizard_steps[3])
+          return
+        end
 
       when 'dataset'
         @context_datasets = current_user.get_context_datasets
@@ -92,15 +96,31 @@ class Management::PageStepsController < ManagementController
     case step
       when 'position'
         set_current_page_state
-        redirect_to next_wizard_path
+        if @page.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
 
       when 'title'
         set_current_page_state
-        redirect_to next_wizard_path
+        if @page.valid?
+          if @page.content_type # If the user has selected the type of page already
+            redirect_to wizard_path(wizard_steps[3])
+          else
+            redirect_to next_wizard_path
+          end
+        else
+          render_wizard
+        end
 
       when 'type'
         set_current_page_state
-        redirect_to next_wizard_path
+        if @page.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
 
       # ANALYSIS DASHBOARD PATH
       when 'dataset'
@@ -276,7 +296,7 @@ class Management::PageStepsController < ManagementController
       steps = @page.form_steps
       self.steps = steps[:pages]
       self.steps_names = steps[:names]
-      invalid_steps = ['title']
+      invalid_steps = ['type']
     end
     set_invalid_steps invalid_steps
   end
