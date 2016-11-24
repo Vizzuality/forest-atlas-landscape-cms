@@ -35,8 +35,7 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    #redirect_to next_wizard_path
-    redirect_to management_site_site_page_page_step_path(page: params[:page_id], id: 'position')
+    redirect_to next_wizard_path
   end
 
   def show
@@ -219,7 +218,7 @@ class Management::PageStepsController < ManagementController
 
   def build_current_page_state
     # Verify if the manager is editing a page or creating a new one
-    @page = params[:page_id] ? SitePage.find(params[:page_id]) : (SitePage.new site_id: @site.id)
+    @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page] if session[:page]
