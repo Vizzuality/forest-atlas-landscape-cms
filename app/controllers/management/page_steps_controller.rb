@@ -3,7 +3,7 @@ class Management::PageStepsController < ManagementController
 
   # The order of prepend is the opposite of its declaration
   prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update]
+  prepend_before_action :build_current_page_state, only: [:show, :update, :edit]
   prepend_before_action :set_site, only: [:new, :edit, :show, :update]
   before_action :setup_wizard
 
@@ -28,10 +28,6 @@ class Management::PageStepsController < ManagementController
     end
 
     session[:dataset_setting] = {}
-
-    # TODO: The next line should be used. While developing this feature...
-    # ... there will be a direct jump to datasets
-    # redirect_to management_page_step_path(id: :position)
     redirect_to management_site_page_step_path(id: 'position')
   end
 
@@ -39,8 +35,8 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to next_wizard_path
-    #redirect_to management_site_page_step_path(page: params[:page_id], id: 'dataset')
+    #redirect_to next_wizard_path
+    redirect_to management_site_site_page_page_step_path(page: params[:page_id], id: 'position')
   end
 
   def show
@@ -175,19 +171,16 @@ class Management::PageStepsController < ManagementController
       when 'open_content'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        if @page.valid?
+        if @page.save
           redirect_to next_wizard_path
         else
           render_wizard
         end
 
       when 'open_content_preview'
-        # TODO : When validations are done, put this back
-        #if @page.save
-          redirect_to management_site_site_pages_path params[:site_slug]
-        #else
-        #  render_wizard
-        #end
+        @page.enabled = true
+        @page.save
+        redirect_to management_site_site_pages_path params[:site_slug]
 
       # DYNAMIC INDICATOR DASHBOARD PATH
       when 'widget'
