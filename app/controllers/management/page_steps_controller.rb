@@ -91,9 +91,11 @@ class Management::PageStepsController < ManagementController
   def update
     case step
       when 'position'
+        set_current_page_state
         redirect_to next_wizard_path
 
       when 'title'
+        set_current_page_state
         redirect_to next_wizard_path
 
       when 'type'
@@ -195,7 +197,7 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :content_type, content: [:url, :target_blank], dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+    params.require(:site_page).permit(:name, :description, :position, :parent_id, :content_type, content: [:url, :target_blank], dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
   end
 
   def set_site
