@@ -18,9 +18,10 @@ class Management::PageStepsController < ManagementController
   CONTINUE = 'CONTINUE'.freeze
   SAVE     = 'SAVE CHANGES'.freeze
 
+
+  # TODO : create a session for incorrect state and last step visited
   # This action cleans the session
   def new
-    # TODO: change this when the pages are unified
     if params[:position] && params[:parent_id]
       session[:page] =  {parent_id: params[:parent_id], position: params[:position]}
     else
@@ -60,7 +61,6 @@ class Management::PageStepsController < ManagementController
         build_current_dataset_setting
         @fields = @dataset_setting.get_fields
 
-      when 'customization'
       when 'preview'
         build_current_dataset_setting
         gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? {} : (JSON.parse @dataset_setting.columns_changeable)
@@ -80,14 +80,14 @@ class Management::PageStepsController < ManagementController
 
       end
 
-       # TODO: Is this supposed to have only page creation?
-      @breadcrumbs = ['Page creation']
+      @breadcrumbs = [@site.name, 'Page creation']
 
       render_wizard
   end
 
   # TODO: REFACTOR
   def update
+    @page.form_step = step
     case step
       when 'position'
         set_current_page_state
@@ -146,16 +146,6 @@ class Management::PageStepsController < ManagementController
           render_wizard
         end
 
-      when 'customization'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        set_current_page_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
-
       when 'preview'
         build_current_dataset_setting
         set_current_dataset_setting_state
@@ -168,8 +158,6 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
         if @page.save
           redirect_to next_wizard_path
         else
@@ -209,7 +197,9 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :position, :parent_id, :content_type, content: [:url, :target_blank], dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+    params.require(:site_page).permit(:name, :description, :position, :uri,
+                                      :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
+                                      dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
   end
 
   def set_site
