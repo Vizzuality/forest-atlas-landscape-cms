@@ -24,9 +24,9 @@
       max-width: 570px;
       border: 1px solid $color-7;
 
-      > label { display: none; }
+      label { display: none; }
 
-      > input {
+      input {
         display: block;
         width: 100%;
         height: 130px;
@@ -40,7 +40,7 @@
         line-height: 130px;
       }
 
-      > textarea {
+      textarea {
         width: 100%;
         margin: 0;
         padding: 35px 37px;
