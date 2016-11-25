@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   namespace :management do
     resources :sites, param: :slug, only: :none do
-      resources :site_pages do
+      resources :site_pages, only: [:index, :destroy] do
         member do
           put :toggle_enable
         end

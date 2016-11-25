@@ -10,9 +10,12 @@ class Admin::SiteStepsController < AdminController
   SAVE =                 'Save Changes'.freeze
   CONTINUE =             'Continue'.freeze
 
-  steps *Site.form_steps
+  steps *Site.form_steps[:pages]
+  attr_accessor :steps_names
   helper_method :disable_button?
   helper_method :active_button?
+
+  before_action :get_site_pages
 
   # This action cleans the session
   def new
@@ -171,5 +174,9 @@ class Admin::SiteStepsController < AdminController
 
   def save_button?
     params[:button].upcase == SAVE.upcase
+  end
+
+  def get_site_pages
+    self.steps_names = *Site.form_steps[:names]
   end
 end

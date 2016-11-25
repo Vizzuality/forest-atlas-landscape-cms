@@ -34,9 +34,11 @@ class Page < ApplicationRecord
   end
 
   def uri=(value)
-    value = value.gsub(/^[\/]+|[\/]+$/, '')
-    write_attribute(:uri, value)
-    regenerate_url
+    if value
+      value = value.gsub(/^[\/]+|[\/]+$/, '')
+      write_attribute(:uri, value)
+      regenerate_url
+    end
   end
 
   def links(port=80)

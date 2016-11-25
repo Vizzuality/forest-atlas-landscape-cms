@@ -25,7 +25,9 @@
     "SirTrevor": true,
     "gon": true,
     "Fuse": true,
-    "Jiminy": true
+    "Jiminy": true,
+    "PruneClusterForLeaflet": true,
+    "PruneCluster": true
   },
   "env": {
     "browser": true

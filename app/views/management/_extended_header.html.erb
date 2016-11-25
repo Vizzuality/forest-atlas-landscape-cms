@@ -3,8 +3,7 @@
       <div class="wrapper">
         <h1><%= @site.name %></h1>
         <ul class="action-buttons">
-          <li><%= link_to 'New page BETA', new_management_site_page_step_path, class: 'c-button -outline' %></li>
-          <li><%= link_to 'New page', new_management_site_site_page_path, class: 'c-button -outline' %></li>
+          <li><%= link_to 'New page', new_management_site_page_step_path, class: 'c-button -outline' %></li>
           <% if @url.present? %><li><a href="<%= @url %>" class="c-button">Go to site</a></li><% end %>
         </ul>
       </div>

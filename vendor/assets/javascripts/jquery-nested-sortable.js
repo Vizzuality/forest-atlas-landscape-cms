@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * jQuery UI Nested Sortable
  * v 2.1a / 2016-02-04
@@ -905,3 +906,4 @@
 		$.mjs.nestedSortable.prototype.options
 	);
 }));
+/* eslint-enable */

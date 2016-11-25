@@ -3,6 +3,56 @@
   // screen has a small height
   padding-bottom: 75px;
 
+  &.-position {
+    margin-top: 50px;
+  }
+
+  &.-title {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 300px);
+    padding-top: 50px;
+
+    > .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .inputs-container {
+      width: 100%;
+      max-width: 570px;
+      border: 1px solid $color-7;
+
+      label { display: none; }
+
+      input {
+        display: block;
+        width: 100%;
+        height: 130px;
+        margin: 0;
+        padding: 0 37px;
+        border: 0;
+        border-bottom: 1px solid $color-7;
+        color: $color-4;
+        font-size: $font-size-huge;
+        font-weight: $font-weight-light;
+        line-height: 130px;
+      }
+
+      textarea {
+        width: 100%;
+        margin: 0;
+        padding: 35px 37px;
+        border: 0;
+        color: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-s-normal;
+        line-height: 1.5;
+      }
+    }
+  }
+
   &.-type {
     display: flex;
     align-items: center;

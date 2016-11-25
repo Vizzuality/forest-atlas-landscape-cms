@@ -1,0 +1,39 @@
+.c-map-widget {
+
+  .cluster,
+  .dot {
+    border-radius: 100%;
+    background-color: $color-1;
+  }
+
+  .cluster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      color: $color-3;
+      font-family: $font-family-1;
+      font-size: $font-size-small;
+    }
+  }
+
+  .popup {
+    .row {
+      display: flex;
+      justify-content: space-between;
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-small;
+      line-height: 1.5;
+
+      > .name {
+        font-weight: $font-weight-bold;
+      }
+
+      > .value {
+        margin-left: 15px;
+      }
+    }
+  }
+}

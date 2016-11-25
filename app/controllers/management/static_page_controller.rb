@@ -15,7 +15,7 @@ class Management::StaticPageController < ManagementController
 
     respond_to do |format|
       format.html { render layout: "management" }
-      format.json { render json: @sites }
+      format.json { render json: @sites.map {|s| s.attributes} }
     end
   end
 end

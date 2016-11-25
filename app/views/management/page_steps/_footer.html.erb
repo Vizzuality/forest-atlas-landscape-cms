@@ -1,9 +1,13 @@
-<div class="form-group row">
-  <div class="col-sm-offset-2 col-sm-10">
-    <%= f.button 'CONTINUE', value: Management::PageStepsController::CONTINUE, type: 'submit', method: :put, class: 'btn btn-primary' %>
-    <% if @page.id %>
-        <%= f.button 'SAVE CHANGES', value: Management::PageStepsController::SAVE, type: 'submit', method: :put, class: 'btn btn-primary' %>
-    <% end %>
-    <%= link_to 'CANCEL', management_site_site_pages_path(@site.slug), class: 'btn btn-secondary' %>
+<div class="c-action-bar">
+  <div class="wrapper">
+    <%= link_to 'Cancel', management_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
+    <div>
+      <% unless local_assigns[:no_continue] %>
+        <%= f.button 'Continue', value: Management::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' %>
+      <% end %>
+      <% if @page.id %>
+        <%= f.button 'Save changes', value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button' %>
+      <% end %>
+    </div>
   </div>
 </div>
