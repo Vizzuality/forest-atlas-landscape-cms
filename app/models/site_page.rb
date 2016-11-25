@@ -66,6 +66,7 @@ class SitePage < Page
     if value
       value.gsub!(/[^a-zA-Z0-9\-]/,'')
       write_attribute(:uri, value)
+      regenerate_url
     end
   end
 
