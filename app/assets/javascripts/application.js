@@ -19,6 +19,7 @@
 //= require d3
 //= require vega
 //= require leaflet
+//= require PruneCluster/PruneCluster
 //= require handlebars
 //= require object-assign-polyfill
 //= require datalib
