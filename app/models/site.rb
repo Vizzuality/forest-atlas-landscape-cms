@@ -35,7 +35,8 @@ class Site < ApplicationRecord
   after_create :create_template_content
 
   cattr_accessor :form_steps do
-    %w[name users style settings finish]
+    { pages: %w[name users style settings finish],
+      names: %w[Name Users Style Settings Finish] }
   end
   attr_accessor :form_step
 
@@ -45,7 +46,7 @@ class Site < ApplicationRecord
 
     # All fields from previous steps are required if the
     # step parameter appears before or we are on the current step
-    return true if self.form_steps.index(step.to_s) <= self.form_steps.index(form_step)
+    return true if self.form_steps[:pages].index(step.to_s) <= self.form_steps[:pages].index(form_step)
   end
 
   def update_routes

@@ -10,6 +10,8 @@
       'site_pages/:id/edit(/)': 'PageEdition',
       'sites/:slug/structure(/)': 'Structure',
       'sites/:slug/widgets(/)': 'Widgets',
+      'sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
+      'sites/:slug/page_steps/open_content': 'OpenContentStep',
       'sites/:slug/page_steps/dataset': 'DatasetStep',
       'sites/:slug/page_steps/filters': 'FiltersStep',
       'sites/:slug/page_steps/preview': 'PreviewStep'

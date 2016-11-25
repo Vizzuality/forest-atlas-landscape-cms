@@ -2,7 +2,7 @@
   <ul {{#if firstCall}}class="js-tree-root"{{/if}}>
     {{#each pages}}
       <li
-        class="js-draggable"
+        class="js-draggable {{#if readonly}}js-readonly{{/if}}"
         {{#each this}}
           {{#if_eq @key 'id'}}
             id="page-{{this}}"
@@ -17,22 +17,22 @@
           {{/if_eq}}
         {{/each}}
       >
-        <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">
-          {{> pageTemplate}}
-        </div>
+        {{> pageTemplate}}
         {{#if children}}
-          {{> item pages=children firstCall=false}}
+          {{> item pages=children firstCall=false hasAdditionalPage=../hasAdditionalPage}}
         {{/if}}
       </li>
     {{/each}}
     {{#unless firstCall}}
-      <li class="js-not-nestable">
-        {{> additionalPageTemplate}}
-      </li>
+      {{#if hasAdditionalPage}}
+        <li class="js-not-nestable js-last-node mjs-nestedSortable-no-nesting">
+          {{> additionalPageTemplate}}
+        </li>
+      {{/if}}
     {{/unless}}
   </ul>
 {{/inline}}
 
-<div class="c-tree-structure">
-  {{> item pages=pages firstCall=true}}
+<div class="c-tree-structure {{#if readOnly}}-readonly{{/if}}">
+  {{> item pages=pages firstCall=true hasAdditionalPage=hasAdditionalPage}}
 </div>

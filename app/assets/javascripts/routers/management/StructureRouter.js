@@ -149,20 +149,22 @@
      */
     _getPageTemplate: function () {
       return '\
-        <span>{{name}}</span>\
-        <ul class="action-buttons">\
-          {{#if disableable}}\
-            {{#if enabled}}\
-                <li><button class="view-button js-disable">Disable</button></li>\
-            {{else}}\
-                <li><button class="view-button-slashed js-enable">Enable</button></li>\
+         <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">\
+          <span>{{name}}</span>\
+          <ul class="action-buttons">\
+            {{#if disableable}}\
+              {{#if enabled}}\
+                  <li><button class="view-button js-disable">Disable</button></li>\
+              {{else}}\
+                  <li><button class="view-button-slashed js-enable">Enable</button></li>\
+              {{/if}}\
             {{/if}}\
-          {{/if}}\
-          <li><a href="{{#if editUrl}}{{editUrl}}{{else}}{{editurl}}{{/if}}" class="edit-button">Edit</a></li>\
-          {{#if disableable}}\
-            <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button">Delete</a></li>\
-          {{/if}}\
-        </ul>\
+            <li><a href="{{#if editUrl}}{{editUrl}}{{else}}{{editurl}}{{/if}}" class="edit-button">Edit</a></li>\
+            {{#if disableable}}\
+              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button">Delete</a></li>\
+            {{/if}}\
+          </ul>\
+        </div>\
       ';
     },
 

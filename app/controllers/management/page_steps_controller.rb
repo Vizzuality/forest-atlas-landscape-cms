@@ -1,88 +1,126 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
 
-  before_action :set_site, only: [:new, :edit, :show, :update]
-  before_action :build_current_page_state, only: [:show, :update]
+  # The order of prepend is the opposite of its declaration
+  prepend_before_action :set_steps
+  prepend_before_action :build_current_page_state, only: [:show, :update, :edit]
+  prepend_before_action :set_site, only: [:new, :edit, :show, :update]
+  before_action :setup_wizard
+
+# TODO: Authenticate user per site
+# before_action :authenticate_user_for_site!, only: [:index, :new, :create]
+# before_action :set_content_type_variables, only: [:new, :edit]
+
+  helper_method :form_steps
+  attr_accessor :steps_names
+  attr_accessor :invalid_steps
 
   CONTINUE = 'CONTINUE'.freeze
   SAVE     = 'SAVE CHANGES'.freeze
 
-  # Steps for Analysis Dashboard
-  steps *SitePage.form_steps
 
-  # Common steps
-  # steps %w[position name type]
-
-  # Steps for Open Content
-  # steps %w[wysiwyg preview]
-
-  # Steps for Dynamic Indicator Dashboard
-  # steps %w[widgets style preview]
-
+  # TODO : create a session for incorrect state and last step visited
   # This action cleans the session
   def new
-    #session[:page] = {uri: 'test'}
-    # TODO: change this when the pages are unified
     if params[:position] && params[:parent_id]
-      session[:page] =  {uri: "test-#{DateTime.new.to_id}", parent_id: params[:parent_id], position: params[:position]}
+      session[:page] =  {parent_id: params[:parent_id], position: params[:position]}
     else
-      session[:page] = {uri: "test-#{DateTime.new.to_i}", parent_id: @site.root.id, position: @site.site_pages.where(parent_id: @site.root.id).length}
+      session[:page] = {}
     end
 
-
     session[:dataset_setting] = {}
-
-
-    # TODO: The next line should be used. While developing this feature...
-    # ... there will be a direct jump to datasets
-    # redirect_to management_page_step_path(id: :position)
-    redirect_to management_site_page_step_path(id: 'dataset')
+    redirect_to management_site_page_step_path(id: 'position')
   end
 
   # This action cleans the session
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to management_site_page_step_path(page: params[:page_id], id: 'dataset')
+    redirect_to next_wizard_path
   end
 
   def show
     case step
-    when 'dataset'
-      @context_datasets = current_user.get_context_datasets
+      when 'position'
+      when 'title'
+      when 'type'
+        if @page.content_type
+          redirect_to wizard_path(wizard_steps[3])
+          return
+        end
 
-    when 'filters'
-      build_current_dataset_setting
-      @fields = @dataset_setting.get_fields
-      gon.fields = @fields
+      when 'dataset'
+        @context_datasets = current_user.get_context_datasets
 
-    when 'columns'
-      build_current_dataset_setting
-      @fields = @dataset_setting.get_fields
+      when 'filters'
+        build_current_dataset_setting
+        @fields = @dataset_setting.get_fields
+        gon.fields = @fields
 
-    when 'customization'
-       build_current_page_state
-    when 'preview'
-      build_current_dataset_setting
-      gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? {} : (JSON.parse @dataset_setting.columns_changeable)
-      gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? {} : (JSON.parse @dataset_setting.default_graphs)
-      gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
-      gon.analysis_data = @dataset_setting.get_filtered_dataset
-      gon.analysis_timestamp = @dataset_setting.fields_last_modified
-    end
+      when 'columns'
+        build_current_dataset_setting
+        @fields = @dataset_setting.get_fields
 
-    @breadcrumbs = ['Page creation']
+      when 'preview'
+        build_current_dataset_setting
+        gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? {} : (JSON.parse @dataset_setting.columns_changeable)
+        gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? {} : (JSON.parse @dataset_setting.default_graphs)
+        gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
+        gon.analysis_data = @dataset_setting.get_filtered_dataset
+        gon.analysis_timestamp = @dataset_setting.fields_last_modified
 
-    render_wizard
+      # OPEN CONTENT PATH
+      when 'open_content'
+      when 'open_content_preview'
+
+      # DYNAMIC INDICATOR PATH
+      when 'widget'
+      when 'dynamic_indicator_dashboard'
+      when 'dynamic_indicator_dashboard_preview'
+
+      end
+
+      @breadcrumbs = [@site.name, 'Page creation']
+
+      render_wizard
   end
 
   # TODO: REFACTOR
   def update
+    @page.form_step = step
     case step
+      when 'position'
+        set_current_page_state
+        if @page.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
+
+      when 'title'
+        set_current_page_state
+        if @page.valid?
+          if @page.content_type # If the user has selected the type of page already
+            redirect_to wizard_path(wizard_steps[3])
+          else
+            redirect_to next_wizard_path
+          end
+        else
+          render_wizard
+        end
+
+      when 'type'
+        set_current_page_state
+        if @page.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
+
+      # ANALYSIS DASHBOARD PATH
       when 'dataset'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        # TODO : Apply validation (keep in mind that the controller is not called)
         if @page.valid?
           redirect_to next_wizard_path
         else
@@ -108,22 +146,46 @@ class Management::PageStepsController < ManagementController
           render_wizard
         end
 
-      when 'customization'
-        build_current_page_state
+      when 'preview'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        set_current_page_state
-        if @page.valid?
+        @page.dataset_setting = @dataset_setting
+        if @page.save
+          redirect_to management_site_site_pages_path params[:site_slug]
+        else
+          render_wizard
+        end
+
+      # OPEN CONTENT PATH
+      when 'open_content'
+        if @page.save
           redirect_to next_wizard_path
         else
           render_wizard
         end
 
-      when 'preview'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        build_current_page_state
-        @page.dataset_setting = @dataset_setting
+      when 'open_content_preview'
+        @page.enabled = true
+        @page.save
+        redirect_to management_site_site_pages_path params[:site_slug]
+
+      # DYNAMIC INDICATOR DASHBOARD PATH
+      when 'widget'
+        redirect_to next_wizard_path
+
+      when 'dynamic_indicator_dashboard'
+        redirect_to next_wizard_path
+
+      when 'dynamic_indicator_dashboard_preview'
+        # TODO: When the validations are done, put this back
+        #if @page.save
+          redirect_to management_site_site_pages_path params[:site_slug]
+        #else
+        #  render_wizard
+        #end
+
+      # LINK PATH
+      when 'link'
         if @page.save
           redirect_to management_site_site_pages_path params[:site_slug]
         else
@@ -135,7 +197,9 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+    params.require(:site_page).permit(:name, :description, :position, :uri,
+                                      :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
+                                      dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
   end
 
   def set_site
@@ -144,8 +208,7 @@ class Management::PageStepsController < ManagementController
 
   def build_current_page_state
     # Verify if the manager is editing a page or creating a new one
-    # TODO : For now, all the content type will be ANALYSIS_DASHBOARD
-    @page = params[:page_id] ? SitePage.find(params[:page_id]) : (SitePage.new site_id: @site.id, content_type: ContentType::ANALYSIS_DASHBOARD)
+    @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page] if session[:page]
@@ -202,5 +265,29 @@ class Management::PageStepsController < ManagementController
 
   def set_current_dataset_setting_state
     session[:dataset_setting] = @dataset_setting
+  end
+
+  def set_steps
+    invalid_steps = []
+    unless @page && @page.content_type
+      steps = { pages: %w[position title type],
+                names: %w[Position Title Type] }
+      self.steps = steps[:pages]
+      self.steps_names = steps[:names]
+    else
+      steps = @page.form_steps
+      self.steps = steps[:pages]
+      self.steps_names = steps[:names]
+      invalid_steps = ['type']
+    end
+    set_invalid_steps invalid_steps
+  end
+
+  def form_steps
+    self.steps
+  end
+
+  def set_invalid_steps(steps)
+    self.invalid_steps = steps
   end
 end

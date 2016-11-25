@@ -1,6 +1,6 @@
 class DatasetSetting < ApplicationRecord
   belongs_to :context
-  belongs_to :page
+  belongs_to :site_page, inverse_of: :dataset_setting
 
   validates_presence_of :dataset_id
   before_save :update_timestamp

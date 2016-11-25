@@ -2,13 +2,18 @@
   <div class="c-extended-header -high">
     <div class="wrapper">
       <div class="description">
-        <h1>Open Content</h1>
+        <h1>Static Content</h1>
         <p>Fill in the page's title, description and URI and start writing its content.</p>
       </div>
       <div></div>
     </div>
   </div>
 <% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <div class="l-page-creation -wysiwyg">
   <%= form_for(form_for_path, :html => { :class => 'js-form' }) do |f| %>
