@@ -18,7 +18,6 @@
       fields: {},
       // Options to be passed at the map instantiation
       mapOptions: {
-        scrollWheelZoom: false
       }
     },
 
