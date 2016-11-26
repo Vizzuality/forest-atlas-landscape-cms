@@ -91,10 +91,11 @@
 
     /**
      * Retrieve the dataset provided by the dashboard
+     * @param {{ unfiltered: boolean }} options
      * @returns {object[]} dataset
      */
-    _getDataset: function () {
-      return this.filteredDataset || (window.gon && gon.analysisData.data) || [];
+    _getDataset: function (options) {
+      return ((!options || !options.unfiltered) && this.filteredDataset) || (window.gon && gon.analysisData.data) || [];
     },
 
     /**
@@ -368,7 +369,7 @@
      * @returns {boolean} valid - true if valid
      */
     _checkStateValidity: function (state) {
-      var dataset = this._getDataset();
+      var dataset = this._getDataset({ unfiltered: true });
 
       // We check the validity of the charts
       var widgetToolbox = new App.Helper.WidgetToolbox(dataset);
