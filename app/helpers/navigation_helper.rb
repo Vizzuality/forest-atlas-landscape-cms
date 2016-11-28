@@ -8,10 +8,10 @@ module NavigationHelper
   # +invalid_steps+:: a List of steps that will always be disabled
   # +invalid_state+:: A boolean saying if the user is in an invalid state (therefore making all steps disabled)
   def disable_button? (steps, step_to_validate, step, id = false, invalid_steps, invalid_state)
+    # If it's the current step
+    return false if step_to_validate == step
     # If the state is invalid, all the buttons are disabled
-    if invalid_state
-      return true
-    end
+    return true if invalid_state
     # If the current step is on the list of invalid steps
     return true if invalid_steps && invalid_steps.include?(step_to_validate)
     # When is editing
