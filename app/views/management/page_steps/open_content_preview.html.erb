@@ -1,5 +1,16 @@
+<div class="c-content">
+  <div class="wrapper">
+    <%= @page.content['body'].html_safe unless @page.content.blank? || @page.content['body'].blank? %>
+  </div>
+</div>
+
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <%= render partial: 'finish_footer', locals: {f: f} %>
 <% end %>
+
+<script type="text/javascript">
+  window.route = 'OpenContent';
+</script>
+
 
 <%= console if Rails.env.development? %>

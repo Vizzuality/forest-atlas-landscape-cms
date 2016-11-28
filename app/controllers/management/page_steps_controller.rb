@@ -1,5 +1,6 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
+  include TreeStructureHelper
 
   # The order of prepend is the opposite of its declaration
   prepend_before_action :set_steps
@@ -20,16 +21,24 @@ class Management::PageStepsController < ManagementController
 
 
   # TODO : create a session for incorrect state and last step visited
+
+  
   # This action cleans the session
   def new
-    if params[:position] && params[:parent_id]
-      session[:page] =  {parent_id: params[:parent_id], position: params[:position]}
+    session[:dataset_setting] = {}
+    if params[:parent]
+      parent = Page.find(params[:parent])
+      if parent
+        position = parent.children.length
+        session[:page] =  {parent_id: params[:parent], position: position}
+        redirect_to management_site_page_step_path(id: 'title')
+      else
+        redirect_to management_site_page_step_path(id: 'position')
+      end
     else
       session[:page] = {}
+      redirect_to management_site_page_step_path(id: 'position')
     end
-
-    session[:dataset_setting] = {}
-    redirect_to management_site_page_step_path(id: 'position')
   end
 
   # This action cleans the session
@@ -42,6 +51,7 @@ class Management::PageStepsController < ManagementController
   def show
     case step
       when 'position'
+        assign_position
       when 'title'
       when 'type'
         if @page.content_type
@@ -296,6 +306,13 @@ class Management::PageStepsController < ManagementController
         render_wizard
       end
     end
+  end
+
+  # Gets the pages tree structure and sends it to gon
+  def assign_position
+    gon.structure = build_pages_tree
+    gon.position = @page.position
+    gon.parent_id = @page.parent_id
   end
 
 end
