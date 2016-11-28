@@ -96,16 +96,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward( @page.content_type ? wizard_path(wizard_steps[3]) : nil)
-        #if @page.valid?
-        #  if @page.content_type # If the user has selected the type of page already
-        #    redirect_to wizard_path(wizard_steps[3])
-        #  else
-        #    redirect_to next_wizard_path
-        #  end
-        #else
-        #  render_wizard
-        #end
+        move_forward(@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path)
 
       when 'type'
         move_forward
@@ -139,7 +130,7 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
-        move_forward nil, next_wizard_path
+        move_forward next_wizard_path, next_wizard_path
 
       when 'open_content_preview'
         @page.enabled = true
