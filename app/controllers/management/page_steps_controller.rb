@@ -222,8 +222,8 @@ class Management::PageStepsController < ManagementController
         name = field['name']
         from = field['from']
         to = field['to']
-        changeables << field['name'] if field['variable'] == 'true'
-        filters << "#{name} between #{from} and #{to}"
+        (changeables << field['name']) if name && field['variable'] == 'true'
+        (filters << "#{name} between #{from} and #{to}") if name && from && to
       end
       filters = filters.blank? ? '' : filters.to_json
       changeables = changeables.blank? ? '' : changeables.to_json
