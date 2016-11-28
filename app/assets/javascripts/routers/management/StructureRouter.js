@@ -121,6 +121,7 @@
       e.preventDefault();
       var node = $(e.target).closest('.js-draggable')[0];
       this.toggleEnable(node, true);
+      this._displaySaveWarning();
     },
 
     /**
@@ -131,6 +132,7 @@
       e.preventDefault();
       var node = $(e.target).closest('.js-draggable')[0];
       this.toggleEnable(node, false);
+      this._displaySaveWarning();
     },
 
     /**
