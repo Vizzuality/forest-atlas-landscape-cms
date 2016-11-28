@@ -99,6 +99,7 @@ class Management::PageStepsController < ManagementController
         move_forward(@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path)
 
       when 'type'
+        set_current_page_state
         move_forward
 
       # ANALYSIS DASHBOARD PATH
