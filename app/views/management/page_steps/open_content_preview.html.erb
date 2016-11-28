@@ -1,3 +1,5 @@
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <%= render partial: 'finish_footer', locals: {f: f} %>
 <% end %>
+
+<%= console if Rails.env.development? %>

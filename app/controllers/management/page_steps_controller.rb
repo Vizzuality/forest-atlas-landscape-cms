@@ -85,7 +85,6 @@ class Management::PageStepsController < ManagementController
       render_wizard
   end
 
-  # TODO: REFACTOR
   def update
     @page.form_step = step
     case step
@@ -131,6 +130,7 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
+        set_current_page_state
         move_forward next_wizard_path, next_wizard_path
 
       when 'open_content_preview'
