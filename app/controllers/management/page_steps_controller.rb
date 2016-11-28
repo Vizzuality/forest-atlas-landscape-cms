@@ -269,7 +269,8 @@ class Management::PageStepsController < ManagementController
 
   # Return true if the button pressed was save
   def save_button?
-    params[:button].upcase == SAVE.upcase
+    return false unless params[:button]
+    return params[:button].upcase == SAVE.upcase
   end
 
   # Saves the current state and goes to the next step
