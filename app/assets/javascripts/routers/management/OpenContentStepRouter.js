@@ -14,8 +14,7 @@
     index: function () {
       // We instantiate the wysiwyg editor
       this.wysiwygView = new App.View.WysiwygView({
-        el: '.js-content',
-        defaultBlocks: ['Title', 'Introduction']
+        el: '.js-content'
       });
 
       $('.js-submit').on('click', function () {
