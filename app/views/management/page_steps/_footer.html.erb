@@ -3,10 +3,10 @@
     <%= link_to 'Cancel', management_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
     <div>
       <% unless local_assigns[:no_continue] %>
-        <%= f.button 'Continue', value: Management::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' %>
+        <%= f.button Management::PageStepsController::CONTINUE, value: Management::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' %>
       <% end %>
       <% if @page.id %>
-        <%= f.button 'Save changes', value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button' %>
+        <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button' %>
       <% end %>
     </div>
   </div>
