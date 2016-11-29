@@ -218,6 +218,8 @@ class Management::PageStepsController < ManagementController
     @dataset_setting = nil
     if ds_params[:id]
       @dataset_setting = DatasetSetting.find(ds_params[:id])
+    elsif @page.dataset_setting
+      @dataset_setting = @page.dataset_setting
     else
       @dataset_setting = DatasetSetting.new
       @page.dataset_setting = @dataset_setting
