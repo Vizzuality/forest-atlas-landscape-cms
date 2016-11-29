@@ -21,7 +21,12 @@ class AuthController < ApplicationController
 
       # TODO: Validate the user type
       redirect_url = session.delete(:return_to)
-      redirect_to controller: redirect_url['controller'], action: redirect_url['action']
+      if redirect_url
+        redirect_to redirect_url
+      else # TODO: The user should be redirected to the admin or management page, according to his role
+        redirect_to admin_sites_path
+      end
+
     end
   end
 
