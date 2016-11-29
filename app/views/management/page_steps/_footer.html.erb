@@ -6,7 +6,7 @@
         <%= f.button Management::PageStepsController::CONTINUE, value: Management::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' %>
       <% end %>
       <% if @page.id || local_assigns[:always_save] %>
-        <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button' %>
+        <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button js-submit' %>
       <% end %>
     </div>
   </div>
