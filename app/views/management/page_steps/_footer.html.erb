@@ -8,6 +8,9 @@
       <% if @page.id || local_assigns[:always_save] %>
         <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button' %>
       <% end %>
+      <% if local_assigns[:publish] %>
+        <%= f.button Management::PageStepsController::PUBLISH, value: Management::PageStepsController::PUBLISH, type: 'submit', class: 'c-button' %>
+    <% end %>
     </div>
   </div>
 </div>

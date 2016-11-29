@@ -18,6 +18,7 @@ class Management::PageStepsController < ManagementController
 
   CONTINUE = 'CONTINUE'.freeze
   SAVE     = 'SAVE CHANGES'.freeze
+  PUBLISH  = 'PUBLISH'.freeze
 
 
   # TODO : create a session for incorrect state and last step visited
@@ -140,11 +141,17 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
-        set_current_page_state
-        move_forward next_wizard_path, next_wizard_path
+        if save_button?
+          set_current_page_state
+          move_forward next_wizard_path, next_wizard_path
+        else
+          @page.enabled = true
+          set_current_page_state
+          redirect_to management_site_site_pages_path params[:site_slug]
+        end
 
       when 'open_content_preview'
-        @page.enabled = true
+        @page.enabled = !@page.enabled
         @page.save
         redirect_to management_site_site_pages_path params[:site_slug]
 

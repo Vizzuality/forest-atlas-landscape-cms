@@ -40,6 +40,6 @@
       </div>
   </div>
 
-  <%= render partial: 'footer', locals: {f: f, no_continue: true, always_save: true} %>
+  <%= render partial: 'footer', locals: {f: f, no_continue: true, always_save: true, publish: !@page.enabled } %>
   <%= render partial: 'shared/errors', locals: { resource: @page } %>
 <% end %>
