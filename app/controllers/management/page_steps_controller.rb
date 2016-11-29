@@ -22,7 +22,7 @@ class Management::PageStepsController < ManagementController
 
   # TODO : create a session for incorrect state and last step visited
 
-  
+
   # This action cleans the session
   def new
     session[:dataset_setting] = {}
@@ -45,7 +45,7 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to next_wizard_path
+    redirect_to management_site_page_step_path(id: 'position')
   end
 
   def show
