@@ -45,7 +45,7 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to management_site_page_step_path(id: 'position')
+    redirect_to wizard_path('position')
   end
 
   def show
