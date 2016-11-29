@@ -59,7 +59,7 @@ module PermissionsHelper
   end
 
   def redirect_to_api_gateway
-    session[:return_to] = {controller: params[:controller], action: params[:action]}
+    session[:return_to] = params
     redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
   end
 end
