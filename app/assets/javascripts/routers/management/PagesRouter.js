@@ -80,8 +80,9 @@
         currentTab: 1,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
+          { name: 'Datasets', url: '/management/sites/' + this.slug + '/dataset_steps' },
           { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
-          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
+          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widget_steps' }
         ]
       });
 
