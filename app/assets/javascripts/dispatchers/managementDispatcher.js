@@ -12,9 +12,9 @@
       'sites/:slug/widgets(/)': 'Widgets',
       'sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
       'sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
-      'sites/:slug/page_steps/dataset': 'DatasetStep',
-      'sites/:slug/page_steps/filters': 'FiltersStep',
-      'sites/:slug/page_steps/preview': 'PreviewStep'
+      'sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
+      'sites/:slug/(site_pages/:id/)page_steps/filters': 'FiltersStep',
+      'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
     }
   });
 
