@@ -150,6 +150,14 @@
         var res = _.findWhere(this.options._filters, { name: filter.name });
         res.value = filter.value;
       }, this);
+
+      if (!filters.length) {
+        // eslint-disable-next-line no-underscore-dangle
+        this.options._filters.forEach(function (filter) {
+          filter.value = null;
+        });
+      }
+
       this._updateFilteredDataset();
     },
 

@@ -153,11 +153,7 @@
      * Create the chart and append it to the DOM
      */
     _renderChart: function () {
-      if (!this.options.data.length) {
-        // eslint-disable-next-line no-console
-        console.warn('The chart needs a JSON spec file to be rendered');
-        return;
-      }
+      // If no data, we render an empty chart
 
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration

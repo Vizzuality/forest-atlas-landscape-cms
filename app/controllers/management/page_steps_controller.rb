@@ -1,5 +1,6 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
+  include TreeStructureHelper
 
   # The order of prepend is the opposite of its declaration
   prepend_before_action :set_steps
@@ -17,31 +18,41 @@ class Management::PageStepsController < ManagementController
 
   CONTINUE = 'CONTINUE'.freeze
   SAVE     = 'SAVE CHANGES'.freeze
+  PUBLISH  = 'PUBLISH'.freeze
 
 
   # TODO : create a session for incorrect state and last step visited
+
+
   # This action cleans the session
   def new
-    if params[:position] && params[:parent_id]
-      session[:page] =  {parent_id: params[:parent_id], position: params[:position]}
+    session[:dataset_setting] = {}
+    if params[:parent]
+      parent = Page.find(params[:parent])
+      if parent
+        position = parent.children.length
+        session[:page] =  {parent_id: params[:parent], position: position}
+        redirect_to management_site_page_step_path(id: 'title')
+      else
+        redirect_to management_site_page_step_path(id: 'position')
+      end
     else
       session[:page] = {}
+      redirect_to management_site_page_step_path(id: 'position')
     end
-
-    session[:dataset_setting] = {}
-    redirect_to management_site_page_step_path(id: 'position')
   end
 
   # This action cleans the session
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
-    redirect_to next_wizard_path
+    redirect_to wizard_path('position')
   end
 
   def show
     case step
       when 'position'
+        assign_position
       when 'title'
       when 'type'
         if @page.content_type
@@ -85,37 +96,21 @@ class Management::PageStepsController < ManagementController
       render_wizard
   end
 
-  # TODO: REFACTOR
   def update
     @page.form_step = step
     case step
       when 'position'
         set_current_page_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
+        move_forward
 
       when 'title'
         set_current_page_state
-        if @page.valid?
-          if @page.content_type # If the user has selected the type of page already
-            redirect_to wizard_path(wizard_steps[3])
-          else
-            redirect_to next_wizard_path
-          end
-        else
-          render_wizard
-        end
+        # If the user has selected the type of page already it doesn't show the type page
+        move_forward(@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path)
 
       when 'type'
         set_current_page_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
+        move_forward
 
       # ANALYSIS DASHBOARD PATH
       when 'dataset'
@@ -131,41 +126,32 @@ class Management::PageStepsController < ManagementController
       when 'filters'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
+        move_forward
 
       when 'columns'
         build_current_dataset_setting
         set_current_dataset_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
+        move_forward
 
       when 'preview'
         build_current_dataset_setting
         set_current_dataset_setting_state
         @page.dataset_setting = @dataset_setting
-        if @page.save
-          redirect_to management_site_site_pages_path params[:site_slug]
-        else
-          render_wizard
-        end
+        move_forward management_site_site_pages_path params[:site_slug]
 
       # OPEN CONTENT PATH
       when 'open_content'
-        if @page.save
-          redirect_to next_wizard_path
+        if save_button?
+          set_current_page_state
+          move_forward next_wizard_path, next_wizard_path
         else
-          render_wizard
+          @page.enabled = true
+          set_current_page_state
+          redirect_to management_site_site_pages_path params[:site_slug]
         end
 
       when 'open_content_preview'
-        @page.enabled = true
+        @page.enabled = !@page.enabled
         @page.save
         redirect_to management_site_site_pages_path params[:site_slug]
 
@@ -186,11 +172,12 @@ class Management::PageStepsController < ManagementController
 
       # LINK PATH
       when 'link'
-        if @page.save
-          redirect_to management_site_site_pages_path params[:site_slug]
-        else
-          render_wizard
-        end
+        move_forward management_site_site_pages_path params[:site_slug]
+        #if @page.save
+        #  redirect_to management_site_site_pages_path params[:site_slug]
+        #else
+        #  render_wizard
+        #end
     end
   end
 
@@ -202,10 +189,12 @@ class Management::PageStepsController < ManagementController
                                       dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
   end
 
+  # Sets the current site from the url
   def set_site
     @site = Site.find_by({slug: params[:site_slug]})
   end
 
+  # Builds the current page state based on the database, session and params
   def build_current_page_state
     # Verify if the manager is editing a page or creating a new one
     @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
@@ -216,10 +205,12 @@ class Management::PageStepsController < ManagementController
 
   end
 
+  # Saves the current page state in session
   def set_current_page_state
     session[:page] = @page
   end
 
+  # Builds the current dataset setting based on the database, session and params
   def build_current_dataset_setting
     ds_params = {}
     ds_params = page_params.to_h[:dataset_setting] if params[:site_page] && page_params.to_h && page_params.to_h[:dataset_setting]
@@ -227,6 +218,8 @@ class Management::PageStepsController < ManagementController
     @dataset_setting = nil
     if ds_params[:id]
       @dataset_setting = DatasetSetting.find(ds_params[:id])
+    elsif @page.dataset_setting
+      @dataset_setting = @page.dataset_setting
     else
       @dataset_setting = DatasetSetting.new
       @page.dataset_setting = @dataset_setting
@@ -248,8 +241,8 @@ class Management::PageStepsController < ManagementController
         name = field['name']
         from = field['from']
         to = field['to']
-        changeables << field['name'] if field['variable'] == 'true'
-        filters << "#{name} between #{from} and #{to}"
+        (changeables << field['name']) if name && field['variable'] == 'true'
+        (filters << "#{name} between #{from} and #{to}") if name && from && to
       end
       filters = filters.blank? ? '' : filters.to_json
       changeables = changeables.blank? ? '' : changeables.to_json
@@ -260,13 +253,14 @@ class Management::PageStepsController < ManagementController
       columns_visible = fields.to_json
       @dataset_setting.columns_visible = columns_visible
     end
-
   end
 
+  # Saves the current data settings state in the session
   def set_current_dataset_setting_state
     session[:dataset_setting] = @dataset_setting
   end
 
+  # Sets the current steps
   def set_steps
     invalid_steps = []
     unless @page && @page.content_type
@@ -283,11 +277,51 @@ class Management::PageStepsController < ManagementController
     set_invalid_steps invalid_steps
   end
 
+  # Returns the current steps
   def form_steps
     self.steps
   end
 
+  # Sets the current list of invalid steps
   def set_invalid_steps(steps)
     self.invalid_steps = steps
   end
+
+  # Return true if the button pressed was save
+  def save_button?
+    return false unless params[:button]
+    return params[:button].upcase == SAVE.upcase
+  end
+
+  # Saves the current state and goes to the next step
+  # Params:
+  # +next_step+:: Next step on pressing continue
+  # +save_step+:: Next step on pressing save
+  def move_forward(next_step = next_wizard_path,
+                   save_step = management_site_site_pages_path(params[:site_slug]))
+    if save_button?
+
+      if @page.save
+        redirect_to save_step
+      else
+        render_wizard
+      end
+
+    else
+
+      if @page.valid?
+        redirect_to next_step
+      else
+        render_wizard
+      end
+    end
+  end
+
+  # Gets the pages tree structure and sends it to gon
+  def assign_position
+    gon.structure = build_pages_tree
+    gon.position = @page.position
+    gon.parent_id = @page.parent_id
+  end
+
 end

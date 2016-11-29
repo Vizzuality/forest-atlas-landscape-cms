@@ -30,6 +30,7 @@ class SitePage < Page
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
 
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
+  validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates_presence_of :site_id
   after_save :update_routes
 
