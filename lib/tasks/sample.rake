@@ -214,7 +214,7 @@ def add_analysis_dashboard
     columns_visible: %w[confidence bright_ti4 bright_ti5 latitude longitude track scan].to_json,
     filters: ['bright_ti5 between 300 and 400'].to_json,
     default_graphs: [{type: 'scatter', x: 'track', y: 'scan'}, {type: 'pie', x: 'confidence'}].to_json,
-    default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'scan'}.to_json,
+    default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'scan'}.to_json
   }
 
   @staging_demo_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting

@@ -23,7 +23,6 @@ class Page < ApplicationRecord
   extend EnumerateIt
 
   has_and_belongs_to_many :site_templates
-  has_one :dataset_setting
 
   has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true

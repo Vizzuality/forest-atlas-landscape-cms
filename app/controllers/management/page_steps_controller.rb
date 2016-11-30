@@ -161,23 +161,16 @@ class Management::PageStepsController < ManagementController
 
       when 'dynamic_indicator_dashboard'
         redirect_to next_wizard_path
+        # move_forward
 
       when 'dynamic_indicator_dashboard_preview'
         # TODO: When the validations are done, put this back
-        #if @page.save
-          redirect_to management_site_site_pages_path params[:site_slug]
-        #else
-        #  render_wizard
-        #end
+        # move_forward
+        redirect_to management_site_site_pages_path params[:site_slug]
 
       # LINK PATH
       when 'link'
         move_forward management_site_site_pages_path params[:site_slug]
-        #if @page.save
-        #  redirect_to management_site_site_pages_path params[:site_slug]
-        #else
-        #  render_wizard
-        #end
     end
   end
 

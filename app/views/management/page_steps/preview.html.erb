@@ -31,7 +31,7 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'footer', locals: {f: f} %>
+  <%= render partial: 'footer', locals: {f: f, always_save: true, no_continue: true } %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
+<%= render partial: 'shared/errors', locals: { resource: @page} %>
 <%= console if Rails.env.development? %>
