@@ -4,8 +4,8 @@ class Management::PageStepsController < ManagementController
 
   # The order of prepend is the opposite of its declaration
   prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update, :edit]
-  prepend_before_action :set_site, only: [:new, :edit, :show, :update]
+  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results]
+  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results]
   before_action :setup_wizard
 
 # TODO: Authenticate user per site
@@ -172,6 +172,30 @@ class Management::PageStepsController < ManagementController
       when 'link'
         move_forward management_site_site_pages_path params[:site_slug]
     end
+  end
+
+  # GET /management/sites/:slug/page_steps/:id/filtered_results
+  def filtered_results
+    saved_dataset_setting = session[:dataset_setting]
+    return unless saved_dataset_setting
+    filters = params[:filters]
+    temp_dataset_setting =
+      DatasetSetting.new(dataset_id: saved_dataset_setting['dataset_id'],
+          api_table_name: saved_dataset_setting['api_table_name'])
+    filter_array = []
+    filters.values.each do |filter|
+      if filter['to'] && filter['from']
+        filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
+      end
+      if filter['values']
+        filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
+      end
+    end
+    temp_dataset_setting.filters = filter_array.to_json
+    count = temp_dataset_setting.get_row_count
+    preview = temp_dataset_setting.get_preview
+    #render json: {count: count, rows: preview}.to_json
+    {count: count, rows: preview}.to_json
   end
 
   private

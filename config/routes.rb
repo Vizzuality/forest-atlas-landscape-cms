@@ -22,9 +22,19 @@ Rails.application.routes.draw do
         member do
           put :toggle_enable
         end
-        resources :page_steps, only: [:show, :update, :edit]
+        resources :page_steps, only: [:show, :update, :edit] do
+          member do
+            get :filtered_results,
+                constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+          end
+        end
       end
-      resources :page_steps, only: [:show, :update, :new]
+      resources :page_steps, only: [:show, :update, :new] do
+        member do
+          get :filtered_results,
+              constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+        end
+      end
       get '/structure', to: 'sites#structure'
       put :update_structure
     end
