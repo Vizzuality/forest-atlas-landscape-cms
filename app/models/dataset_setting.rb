@@ -6,7 +6,7 @@ class DatasetSetting < ApplicationRecord
   before_save :update_timestamp
 
   def get_fields
-    DatasetService.get_fields self.dataset_id
+    DatasetService.get_fields self.dataset_id, self.api_table_name
   end
 
   def get_filtered_dataset
