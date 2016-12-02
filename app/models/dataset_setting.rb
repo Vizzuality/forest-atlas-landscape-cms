@@ -26,10 +26,28 @@ class DatasetSetting < ApplicationRecord
         query += " #{selector} "
       end
       query += " from #{self.api_table_name} "
-       query += 'where ' + (JSON.parse self.filters).join(' AND ') if self.filters.length > 0
+      query += 'where ' + (JSON.parse self.filters).join(' AND ') if self.filters.length > 0
       query += " limit #{limit}"
       return DatasetService.get_filtered_dataset self.dataset_id, query
     end
+  end
+
+  # Sets the filters of the dataset_setting
+  # Params
+  # +filter_array+:: The array of filters to create the filters
+  def set_filters(filters)
+    filter_array = []
+    unless filters.blank?
+      filters.each do |filter|
+        if filter['to'] && filter['from']
+          filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
+        end
+        if filter['values']
+          filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
+        end
+      end
+    end
+    self.filters = filter_array.to_json
   end
 
   # Gets the number of rows for a query

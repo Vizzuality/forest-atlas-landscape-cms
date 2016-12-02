@@ -66,6 +66,7 @@ class Management::PageStepsController < ManagementController
       when 'filters'
         build_current_dataset_setting
         @fields = @dataset_setting.get_fields
+        @fields.each{ |f| f[:type] = 'number' if %w[double long].include?(f[:type])}
         gon.fields = @fields
 
       when 'columns'
@@ -187,18 +188,8 @@ class Management::PageStepsController < ManagementController
           api_table_name: @dataset_setting.api_table_name)
 
     filters = params[:filters]
-    filter_array = []
-    unless filters.blank?
-      filters.values.each do |filter|
-        if filter['to'] && filter['from']
-          filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
-        end
-        if filter['values']
-          filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
-        end
-      end
-    end
-    temp_dataset_setting.filters = filter_array.to_json
+    temp_dataset_setting.set_filters (filters.blank? ? nil : filters.values)
+
     begin
       count = temp_dataset_setting.get_row_count['data'].first.values.first
       preview = temp_dataset_setting.get_preview['data']
@@ -261,6 +252,7 @@ class Management::PageStepsController < ManagementController
       @dataset_setting.api_table_name = @dataset_setting.get_table_name
     end
 
+    # TODO: Refactor this to the model
     if fields = ds_params[:filters]
       fields = JSON.parse fields
       filters = []
