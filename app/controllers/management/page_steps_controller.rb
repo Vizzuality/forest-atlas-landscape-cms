@@ -194,8 +194,13 @@ class Management::PageStepsController < ManagementController
       end
     end
     temp_dataset_setting.filters = filter_array.to_json
-    count = temp_dataset_setting.get_row_count
-    preview = temp_dataset_setting.get_preview
+    begin
+      count = temp_dataset_setting.get_row_count['data'].first.values.first
+      preview = temp_dataset_setting.get_preview['data']
+    rescue
+      count = 0
+      preview = []
+    end
     render json: {count: count, rows: preview}.to_json
   end
 
