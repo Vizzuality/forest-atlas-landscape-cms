@@ -176,12 +176,17 @@ class Management::PageStepsController < ManagementController
 
   # GET /management/sites/:slug/page_steps/:id/filtered_results
   def filtered_results
-    saved_dataset_setting = session[:dataset_setting]
-    return unless saved_dataset_setting
-    filters = params[:filters]
+    build_current_dataset_setting
+    unless @dataset_setting && @dataset_setting.dataset_id && @dataset_setting.api_table_name
+      render json: {count: 0, rows: []}.to_json
+      return
+    end
+
     temp_dataset_setting =
-      DatasetSetting.new(dataset_id: saved_dataset_setting['dataset_id'],
-          api_table_name: saved_dataset_setting['api_table_name'])
+      DatasetSetting.new(dataset_id: @dataset_setting.dataset_id,
+          api_table_name: @dataset_setting.api_table_name)
+
+    filters = params[:filters]
     filter_array = []
     unless filters.blank?
       filters.values.each do |filter|
