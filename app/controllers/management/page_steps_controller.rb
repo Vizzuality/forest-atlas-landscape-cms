@@ -183,12 +183,14 @@ class Management::PageStepsController < ManagementController
       DatasetSetting.new(dataset_id: saved_dataset_setting['dataset_id'],
           api_table_name: saved_dataset_setting['api_table_name'])
     filter_array = []
-    filters.values.each do |filter|
-      if filter['to'] && filter['from']
-        filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
-      end
-      if filter['values']
-        filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
+    unless filters.blank?
+      filters.values.each do |filter|
+        if filter['to'] && filter['from']
+          filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
+        end
+        if filter['values']
+          filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
+        end
       end
     end
     temp_dataset_setting.filters = filter_array.to_json

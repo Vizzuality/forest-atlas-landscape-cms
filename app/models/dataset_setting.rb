@@ -15,7 +15,7 @@ class DatasetSetting < ApplicationRecord
   # +count+:: When true, it performs a count
   def get_filtered_dataset(count = false, limit = 10000)
     selector = count ? ' count(*) ' : ' * '
-    if self.filters.blank?
+    if self.filters.blank? || JSON.parse(self.filters).blank?
       query = "select #{selector} from #{self.api_table_name} limit #{limit}"
       return DatasetService.get_filtered_dataset self.dataset_id, query
     else
