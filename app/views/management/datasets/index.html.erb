@@ -1,3 +1,5 @@
 <%= render partial: 'management/extended_header'%>
 <%= include_gon %>
 <div class="js-tabs"></div>
+
+<%= link_to 'New Dataset', new_management_site_dataset_step_path(@site.slug)%>
