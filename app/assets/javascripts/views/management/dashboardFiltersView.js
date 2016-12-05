@@ -273,7 +273,7 @@
      * @returns {string} url
      */
     _getTableExtractURL: function () {
-      return '/management/sites/base-site/page_steps/filters/filtered_results.json' +
+      return this.options.endpointUrl +
       this.collection.toJSON().map(function (filter) {
         var res = Object.assign({}, filter);
         delete res.type;

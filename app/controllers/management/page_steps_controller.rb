@@ -68,6 +68,7 @@ class Management::PageStepsController < ManagementController
         @fields = @dataset_setting.get_fields
         @fields.each{ |f| f[:type] = 'number' if %w[double long].include?(f[:type])}
         gon.fields = @fields
+        gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
 
       when 'columns'
         build_current_dataset_setting
