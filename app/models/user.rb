@@ -40,6 +40,7 @@ class User < ApplicationRecord
     all_datasets.select {|ds| dataset_ids.include?(ds.id)}
   end
 
+  # Gets an array of datasets for each user context
   def get_context_datasets
     all_datasets = DatasetService.get_datasets
     context_datasets_ids = {}
@@ -58,4 +59,5 @@ class User < ApplicationRecord
 
     context_datasets
   end
+
 end

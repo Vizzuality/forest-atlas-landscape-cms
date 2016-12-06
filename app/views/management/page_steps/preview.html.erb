@@ -58,7 +58,8 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'footer', locals: {f: f, always_save: true, no_continue: true, wide: true } %>
+
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page} %>
 
