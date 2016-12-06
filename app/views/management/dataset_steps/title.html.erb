@@ -1,16 +1,29 @@
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Dataset title</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+    </div>
+  </div>
+</div>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
-<%= form_for @site, url: wizard_path, method: :put do |f| %>
+<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -name">
     <div class="wrapper">
-      <h1>Site name</h1>
-      <p class="intro">Please choose a name for the site and provide the list of all the URLs it can be accessed from.</p>
 
-      <div class="site-name">
-        <%= f.label :name, for: 'name' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Type here the site’s name' %>
+      <div class="dataset-title">
+        <%= f.label :title, for: 'title' %>
+        <%= f.text_field :name, id:'name', placeholder: 'Type here the dataset’s title' %>
       </div>
+
+      <div class="dataset-tags">
+        <%= f.label :tags, for: 'tags' %>
+        <%= f.text_field :tags, id:'tags', placeholder: 'Type here the dataset’s tags' %>
+      </div>
+
 
       <div class="js-urls"></div>
 

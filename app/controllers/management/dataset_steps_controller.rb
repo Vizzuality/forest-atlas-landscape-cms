@@ -3,7 +3,8 @@ class Management::DatasetStepsController < ManagementController
   include NavigationHelper
 
   before_action :set_site, only: [:new, :edit, :show, :update]
-  before_action :get_steps_names
+  before_action :build_dataset
+  before_action :steps_names
 
 
   steps *Dataset.form_steps[:pages]
@@ -43,6 +44,7 @@ class Management::DatasetStepsController < ManagementController
       when 'context'
       when 'finish'
     end
+    redirect_to next_wizard_path
   end
 
   private
@@ -51,7 +53,11 @@ class Management::DatasetStepsController < ManagementController
     @site = Site.find_by({slug: params[:site_slug]})
   end
 
-  def get_steps_names
-    self.steps_names = *Site.form_steps[:names]
+  def steps_names
+    self.steps_names = *Dataset.form_steps[:names]
+  end
+
+  def build_dataset
+    @dataset = Dataset.new
   end
 end
