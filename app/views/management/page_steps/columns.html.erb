@@ -8,8 +8,9 @@
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
     <% @fields.each do |field|%>
         <fieldset>
-          <%= field.name %>
-          <%= check_box_tag "site_page[dataset_setting][visible_fields][]", field.name %>
+          <%= field[:name] %>
+          <%= check_box_tag "site_page[dataset_setting][visible_fields][]", field[:name],
+              (JSON.parse(@dataset_setting.columns_visible)).include?(field[:name]) %>
         </fieldset>
     <% end %>
     <%= render partial: 'footer', locals: {f: f} %>

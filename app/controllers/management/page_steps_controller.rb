@@ -68,6 +68,13 @@ class Management::PageStepsController < ManagementController
         @fields = @dataset_setting.get_fields
         @fields.each{ |f| f[:type] = 'number' if %w[double long].include?(f[:type])}
         gon.fields = @fields
+        gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
+
+        # Saving all the possible visible fields for this dataset so that ...
+        # ... they can be used in the filtered_results
+        (@dataset_setting.columns_visible =
+          @fields.map{|f| f[:name]}.to_json) unless @dataset_setting.columns_visible
+        set_current_dataset_setting_state
 
       when 'columns'
         build_current_dataset_setting
@@ -185,7 +192,8 @@ class Management::PageStepsController < ManagementController
 
     temp_dataset_setting =
       DatasetSetting.new(dataset_id: @dataset_setting.dataset_id,
-          api_table_name: @dataset_setting.api_table_name)
+          api_table_name: @dataset_setting.api_table_name,
+          columns_visible: @dataset_setting.columns_visible)
 
     filters = params[:filters]
     temp_dataset_setting.set_filters (filters.blank? ? nil : filters.values)

@@ -25,6 +25,7 @@
 //= require fuse.js/fuse
 //= require object-assign-polyfill
 //= require jiminy
+//= require select2
 
 //= require_self
 

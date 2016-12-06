@@ -1,26 +1,110 @@
-<div class="c-filters">
+<div class="c-dashboard-filters">
   <input type="hidden" id="site_page_dataset_setting_filters" name="site_page[dataset_setting][filters]" value="{{json}}">
 
   {{#each filters}}
-    <div>
-      <label>Filter {{id}}</label>
-      <div>
-        <select id="filter-{{@index}}" data-id="{{@index}}" class="js-input-field">
-            <option value="" disabled="disabled" {{#unless name}}selected="selected"{{/unless}}>Choose a field</option>
-            {{#each ../fields}}
-              <option value="{{name}}" {{#if_eq name ../name}}selected="selected"{{/if_eq}}>{{name}}</option>
+    <div class="filter">
+      <select id="filter-{{@index}}" data-id="{{@index}}" data-placeholder="Choose a field" class="js-field" {{#if name}}disabled="disabled"{{/if}}>
+        <option></option>
+        {{#if name}}
+          <option value="{{name}}" selected="selected">{{name}}</option>
+        {{else}}
+          {{#each ../fields}}
+            <option value="{{name}}">{{name}}</option>
+          {{/each}}
+        {{/if}}
+      </select>
+
+      {{!-- Fields for the type "number" --}}
+      {{#if name}}
+        {{#if_eq type 'number'}}
+          <select class="js-from-value" data-id="{{@index}}" data-selector-type="from" data-placeholder="From">
+            <option></option>
+            {{#if to}}
+              {{#each_range min to step}}
+                <option value="{{this}}" {{#if_eq this ../from}}selected="selected"{{/if_eq}}>{{this}}</option>
+              {{/each_range}}
+            {{else}}
+              {{#each_range min max step}}
+                <option value="{{this}}" {{#if_eq this ../from}}selected="selected"{{/if_eq}}>{{this}}</option>
+              {{/each_range}}
+            {{/if}}
+          </select>
+          <select class="js-to-value" data-id="{{@index}}" data-selector-type="to" data-placeholder="To">
+            <option></option>
+            {{#if from}}
+              {{#each_range from max step}}
+                <option value="{{this}}" {{#if_eq this ../to}}selected="selected"{{/if_eq}}>{{this}}</option>
+              {{/each_range}}
+            {{else}}
+              {{#each_range min max step}}
+                <option value="{{this}}" {{#if_eq this ../to}}selected="selected"{{/if_eq}}>{{this}}</option>
+              {{/each_range}}
+            {{/if}}
+          </select>
+        {{/if_eq}}
+
+        {{!-- Fields for the type "date" --}}
+        {{#if_eq type 'date'}}
+          <input
+            type="date"
+            class="js-from-value"
+            data-id="{{@index}}"
+            data-selector-type="from"
+            data-min="{{format_date min}}"
+            {{#if to}}
+              data-max="{{format_date to}}"
+            {{else}}
+              data-max="{{format_date max}}"
+            {{/if}}
+            placeholder="From"
+            {{#if from}}
+              value="{{format_date from}}"
+            {{/if}}
+          />
+          <input
+            type="date"
+            class="js-to-value"
+            data-id="{{@index}}"
+            data-selector-type="to"
+            data-max="{{format_date max}}"
+            {{#if from}}
+              data-min="{{format_date from}}"
+            {{else}}
+              data-min="{{format_date min}}"
+            {{/if}}
+            placeholder="To"
+            {{#if to}}
+              value="{{format_date to}}"
+            {{/if}}
+          />
+        {{/if_eq}}
+
+        {{!-- Fields for the type "string" --}}
+        {{#if_eq type 'string'}}
+          <select class="values-selector js-values" data-id="{{@index}}" multiple data-placeholder="Select the values">
+            {{#each values}}
+              <option value="{{this}}" {{#if_contains ../selectedValues this}}selected="selected"{{/if_contains}}>{{this}}</option>
             {{/each}}
+          </select>
+        {{/if_eq}}
+
+        {{!-- Field to select if the filter is variable --}}
+        <select class="js-variable" data-id="{{@index}}">
+          <option value="0" {{#unless variable}}selected="selected"{{/unless}}>Not variable</option>
+          <option value="1" {{#if variable}}selected="selected"{{/if}}>Variable</option>
         </select>
-        <input type="text" id="from-{{@index}}" data-name="from" data-id="{{@index}}" class="js-input-filter" placeholder="From" value="{{from}}">
-        <input type="text" id="to-{{@index}}" data-name="to" data-id="{{@index}}" class="js-input-filter" placeholder="To" value="{{to}}">
-        <input type="checkbox" id="variable-{{@index}}" data-id="{{@index}}" class="js-input-variable" {{#if variable}}checked="checked"{{/if}}>
-        <label for="variable-{{@index}}">Variable</label>
-        <button type="button" id="remove-{{@index}}" data-id="{{@index}}" class="js-remove-filter">Remove Filter</button>
-      </div>
+      {{/if}}
+      {{#if type}}
+        <button type="button" id="remove-{{@index}}" data-id="{{@index}}" class="remove-button js-remove-filter" title="Remove filter">Remove filter</button>
+      {{/if}}
     </div>
   {{/each}}
 
-  <div>
-    <button type="button" class="add-filter js-add-filter">Add filter</button>
+  <div class="action-bar">
+      <button type="button" class="c-button -outline -dark-text {{#if canAddNewField}}js-add-filter{{else}}-disabled{{/if}}">Add filter</button>
+      <div>
+        <div class="js-row-count"></div>
+        <button type="button" class="c-button -outline -dark-text js-preview">Preview table</button>
+      </div>
   </div>
 </div>

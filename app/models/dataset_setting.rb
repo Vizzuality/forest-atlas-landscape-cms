@@ -14,17 +14,18 @@ class DatasetSetting < ApplicationRecord
   # Params
   # +count+:: When true, it performs a count
   def get_filtered_dataset(count = false, limit = 10000)
-    selector = count ? ' count(*) ' : ' * '
+    selector = if count
+               ' count(*) '
+               elsif self.columns_visible
+                 " #{JSON.parse(self.columns_visible).join(', ')} "
+               else
+                 ' * '
+               end
     if self.filters.blank? || JSON.parse(self.filters).blank?
       query = "select #{selector} from #{self.api_table_name} limit #{limit}"
       return DatasetService.get_filtered_dataset self.dataset_id, query
     else
-      query = 'select '
-      if self.columns_visible
-        query += (JSON.parse self.columns_visible).join(', ')
-      else
-        query += " #{selector} "
-      end
+      query = "select #{selector}"
       query += " from #{self.api_table_name} "
       query += 'where ' + (JSON.parse self.filters).join(' AND ') if self.filters.length > 0
       query += " limit #{limit}"
@@ -39,11 +40,11 @@ class DatasetSetting < ApplicationRecord
     filter_array = []
     unless filters.blank?
       filters.each do |filter|
-        if filter['to'] && filter['from']
+        if filter['to'] && filter['from'] && filter['field']
           filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
         end
-        if filter['values']
-          filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
+        if filter['values'] && filter['field']
+          filter_array << " #{filter['field']} in (#{filter['values']}) "
         end
       end
     end
