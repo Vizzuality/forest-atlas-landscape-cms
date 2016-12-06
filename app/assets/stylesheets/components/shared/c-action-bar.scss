@@ -12,6 +12,16 @@
     transform: translateX(-50%);
   }
 
+  &.-wide {
+    @media #{$mq-body-width} {
+      left: 0;
+      width: 100vw;
+      max-width: none;
+      padding: 0 calc((100vw - #{$body-max-width}) / 2);
+      transform: none;
+    }
+    }
+
   > .wrapper {
     display: flex;
     align-items: center;

@@ -24,8 +24,10 @@
 //= require sir-trevor
 //= require fuse.js/fuse
 //= require object-assign-polyfill
+//= require datalib
 //= require jiminy
 //= require select2
+//= require PruneCluster/PruneCluster
 
 //= require_self
 

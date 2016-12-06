@@ -1,37 +1,63 @@
+<% content_for :body_class do %>
+  class="-wide"
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: \
   {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
   nvalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
-
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
-
-  <% content_for :body_class do %>
-    class="-wide"
-  <% end %>
-
-  <div class="l-analysis-dashboard">
-    <div class="main-container">
-      <h2><%= @page.name %></h2>
-      <p class="description">
-        <%= @page.description %>
-      </p>
-      <div class="filters js-filters">
-        Filters coming soon
+  <input type="hidden" type="text" name="site_page[dataset_setting][default_graphs]" value="" class="js-charts-input" />
+  <input type="hidden" type="text" name="site_page[dataset_setting][default_maps]" value="" class="js-map-input" />
+  <div class="l-page-creation -dashboard-preview">
+    <div class="l-analysis-dashboard">
+      <div class="main-container">
+        <h2><%= @page.name %></h2>
+        <p class="description">
+          <%= @page.description %>
+        </p>
+        <div class="filters">
+          <% @analysis_user_filters.each do |filter| %>
+            <div  class="c-select">
+              <select>
+                <option value="" selected="selected">Filter by <%= filter %></option>
+              </select>
+            </div>
+          <% end %>
+        </div>
+        <div class="map js-map">
+        </div>
       </div>
-      <div class="map js-map">
-      </div>
-    </div>
-    <div class="secondary-container">
-      <div class="graph js-chart-1"></div>
-      <div class="graph js-chart-2"></div>
-      <div class="bookmarks">
-        Bookmarks
+      <div class="secondary-container">
+        <div class="graph js-chart-1"></div>
+        <div class="graph js-chart-2"></div>
+        <div class="bookmarks c-dashboard-bookmarks">
+          <header>
+            <h3>Bookmarks</h3>
+            <button type="button" class="c-button -outline -dark-text -normal-weight">Add state</button>
+          </header>
+          <ul class="bookmarks">
+            <li>
+              <span title="Click to edit the name" contenteditable="true">Bookmark #1</span>
+              <div class="buttons">
+                <button type="button" class="-apply" title="Apply state">Apply state<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg"><path d="M5.895 5.5a2.106 2.106 0 1 0 4.21 0 2.106 2.106 0 1 0-4.21 0zM16 5.5C14.467 2.768 11.461 0 8 0 4.547 0 1.533 2.768 0 5.5 1.533 8.232 4.547 11 8 11c3.461 0 6.467-2.768 8-5.5zM8 1.692c2.09 0 3.79 1.705 3.79 3.808 0 2.103-1.7 3.808-3.79 3.808S4.21 7.603 4.21 5.5c0-2.103 1.7-3.808 3.79-3.808z" fill="#555" fill-rule="evenodd"/></svg></button>
+                <button type="button" class="-delete" title="Delete bookmark">Delete bookmark<svg width="10" height="14" viewBox="0 0 10 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1V0H3v1H0v2h10V1H7zM1 14h8V4H1v10z" fill="#555" fill-rule="evenodd"/></svg></button>
+              </div>
+            </li>
+            <li>
+              <span title="Click to edit the name" contenteditable="true">Bookmark #2</span>
+              <div class="buttons">
+                <button type="button" class="-apply" title="Apply state">Apply state<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg"><path d="M5.895 5.5a2.106 2.106 0 1 0 4.21 0 2.106 2.106 0 1 0-4.21 0zM16 5.5C14.467 2.768 11.461 0 8 0 4.547 0 1.533 2.768 0 5.5 1.533 8.232 4.547 11 8 11c3.461 0 6.467-2.768 8-5.5zM8 1.692c2.09 0 3.79 1.705 3.79 3.808 0 2.103-1.7 3.808-3.79 3.808S4.21 7.603 4.21 5.5c0-2.103 1.7-3.808 3.79-3.808z" fill="#555" fill-rule="evenodd"/></svg></button>
+                <button type="button" class="-delete" title="Delete bookmark">Delete bookmark<svg width="10" height="14" viewBox="0 0 10 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1V0H3v1H0v2h10V1H7zM1 14h8V4H1v10z" fill="#555" fill-rule="evenodd"/></svg></button>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-  <%= render partial: 'footer', locals: {f: f, always_save: true, no_continue: true } %>
+  <%= render partial: 'footer', locals: {f: f, always_save: true, no_continue: true, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page} %>
-<%= console if Rails.env.development? %>

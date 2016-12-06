@@ -88,6 +88,8 @@ class Management::PageStepsController < ManagementController
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
 
+        @analysis_user_filters = gon.analysis_user_filters
+
       # OPEN CONTENT PATH
       when 'open_content'
       when 'open_content_preview'
