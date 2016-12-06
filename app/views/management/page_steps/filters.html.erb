@@ -1,3 +1,14 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Apply filters</h1>
+        <p>Filter the dataset and choose which columns the users will be able to filter themselves on the dashboard</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: \
   {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
