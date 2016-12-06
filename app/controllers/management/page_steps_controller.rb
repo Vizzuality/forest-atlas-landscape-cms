@@ -73,7 +73,7 @@ class Management::PageStepsController < ManagementController
         # Saving all the possible visible fields for this dataset so that ...
         # ... they can be used in the filtered_results
         (@dataset_setting.columns_visible =
-          @fields.map{|f| f[:name]}.join(', ')) unless @dataset_setting.columns_visible
+          @fields.map{|f| f[:name]}.to_json) unless @dataset_setting.columns_visible
         set_current_dataset_setting_state
 
       when 'columns'

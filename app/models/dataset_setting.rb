@@ -17,7 +17,7 @@ class DatasetSetting < ApplicationRecord
     selector = if count
                ' count(*) '
                elsif self.columns_visible
-                 " #{self.columns_visible} "
+                 " #{JSON.parse(self.columns_visible).join(', ')} "
                else
                  ' * '
                end
