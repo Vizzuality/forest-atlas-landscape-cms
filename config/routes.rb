@@ -29,10 +29,17 @@ Rails.application.routes.draw do
           end
         end
       end
-      resources :dataset_steps, only: [:index]
-      resources :widget_steps, only: [:index]
-      resources :widgets, only: [:index]
-      resources :datasets, only: [:index]
+
+      resources :datasets, only: :index do
+        resources :dataset_steps, only: [:edit, :update, :show]
+      end
+      resources :dataset_steps, only: [:new, :update, :show]
+
+      resources :widgets, only: [:index] do
+        resources :widget_steps, only: [:edit, :update, :show]
+      end
+      resources :widget_steps, only: [:new, :update, :show]
+
       resources :page_steps, only: [:show, :update, :new] do
         member do
           get :filtered_results,

@@ -7,6 +7,13 @@ class Dataset
 
   has_many :context_datasets
 
+  cattr_accessor :form_steps do
+    { pages: %w[title connector context finish],
+      names: %w[Place Connector Context Finish] }
+  end
+  attr_accessor :form_step
+
+
   def initialize(data = {})
     self.attributes = data unless data == {}
   end
