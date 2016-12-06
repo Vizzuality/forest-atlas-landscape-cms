@@ -33,6 +33,8 @@
       //   }
       // ]
       fields: [],
+      // API endpoint to fetch the table extract
+      endpointUrl: '',
       // State of the default filters
       defaultFilter: {
         name: null,
@@ -353,7 +355,7 @@
           count = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
           this.el.querySelector('.js-row-count').textContent = count;
         }.bind(this));
-    }, 500),
+    }, 1500),
 
     render: function () {
       var filters = this.collection.toJSON().map(function (filter, index) {

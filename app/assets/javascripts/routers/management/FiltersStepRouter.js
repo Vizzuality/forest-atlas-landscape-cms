@@ -39,7 +39,7 @@
       var dashboardFiltersView = new App.View.DashboardFiltersView({
         el: '.js-filters',
         fields: this._getFields(),
-        endpointUrl: window.gon.filtersEndpointUrl
+        endpointUrl: (window.gon && gon.filtersEndpointUrl) || null
       });
 
       $('.js-form').on('submit', function () {
