@@ -25,3 +25,5 @@
   <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
+
+<%= console if Rails.env.development? %>
