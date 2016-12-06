@@ -25,12 +25,7 @@ class DatasetSetting < ApplicationRecord
       query = "select #{selector} from #{self.api_table_name} limit #{limit}"
       return DatasetService.get_filtered_dataset self.dataset_id, query
     else
-      query = 'select '
-      if self.columns_visible
-        query += (JSON.parse self.columns_visible).join(', ')
-      else
-        query += " #{selector} "
-      end
+      query = "select #{selector}"
       query += " from #{self.api_table_name} "
       query += 'where ' + (JSON.parse self.filters).join(' AND ') if self.filters.length > 0
       query += " limit #{limit}"
