@@ -44,7 +44,7 @@ class DatasetSetting < ApplicationRecord
           filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
         end
         if filter['values'] && filter['field']
-          filter_array << " #{filter['field']} in (#{filter['values'].map{|x| " '#{x}' "}.join(', ')}) "
+          filter_array << " #{filter['field']} in (#{filter['values']}) "
         end
       end
     end
