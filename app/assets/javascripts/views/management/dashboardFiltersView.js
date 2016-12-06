@@ -106,7 +106,7 @@
       var index = +selector.dataset.id;
       var model = this.collection.at(index);
       var value = model.get('type') === 'date' ? selector.value : +selector.value;
-      var selectorType = selector.dataset['selector-type'];
+      var selectorType = selector.dataset.selectorType;
       var o = {};
       o[selectorType] = model.get('type') === 'date' ? new Date(value) : value;
       model.set(o);
