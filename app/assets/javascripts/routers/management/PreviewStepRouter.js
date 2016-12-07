@@ -144,12 +144,12 @@
      */
     _initMap: function () {
       var dataset = this._getDataset();
-      var type = (window.gon && gon.analysisMap.graphType) || null;
+      var type = (window.gon && gon.analysisMap && gon.analysisMap.graphType) || null;
       var center = [
-        (window.gon && gon.analysisMap.lat) || null,
-        (window.gon && gon.analysisMap.lon) || null
+        (window.gon && gon.analysisMap && gon.analysisMap.lat) || null,
+        (window.gon && gon.analysisMap && gon.analysisMap.lon) || null
       ];
-      var zoom = (window.gon && gon.analysisMap.zoom) || null;
+      var zoom = (window.gon && gon.analysisMap && gon.analysisMap.zoom) || null;
 
       var params = {
         el: document.querySelector('.js-map'),
