@@ -80,41 +80,10 @@
         var reader = new FileReader();
         reader.addEventListener('load', function () {
           this._addImage(reader.result);
+          this._hideSidebar();
         }.bind(this));
         reader.readAsDataURL(file);
       }.bind(this));
-    },
-
-    /**
-     * Event handler called when the mouse is over an image
-     * @param {object} e - event object
-     */
-    _onMouseoverImage: function (e) {
-      var image = e.target;
-      this.activeImage = image;
-      var top = image.offsetTop;
-      this.imageToolbar.style.top = top + 'px';
-      this._showImageToolbar();
-    },
-
-    /**
-     * Event handler called when the mouse leaves an image
-     * @param {object} e - event object
-     */
-    _onMouseoutImage: function (e) {
-      if ($(e.relatedTarget).closest(this.imageToolbar).length) return;
-      this._hideImageToolbar();
-      this.activeImage = null;
-    },
-
-    /**
-     * Event handler called when the mouse leaves the image toolbar
-     */
-    _onMouseoutImageToolbar: function (e) {
-      if (e.relatedTarget !== this.activeImage) {
-        this._hideImageToolbar();
-        this.activeImage = null;
-      }
     },
 
     /**
@@ -135,11 +104,6 @@
       this.editor.focus(); // The editor could loose the focuse
       var range = this.editor.getSelection();
       this.editor.insertEmbed(range.index, 'image', base64, 'user');
-
-      // We add the listeners on the image
-      var image = this.editor.selection.getNativeRange().start.node;
-      image.addEventListener('mouseover', this._onMouseoverImage.bind(this));
-      image.addEventListener('mouseout', this._onMouseoutImage.bind(this));
     },
 
     /**
@@ -173,21 +137,6 @@
     _toggleExpandSidebar: function () {
       this.sidebar.classList.toggle('-expanded');
     },
-
-    /**
-     * Hide the image toolbar
-     */
-    _hideImageToolbar: function () {
-      this.imageToolbar.classList.add('-hidden');
-    },
-
-    /**
-     * Show the image toolbar
-     */
-    _showImageToolbar: function () {
-      this.imageToolbar.classList.remove('-hidden');
-    },
-
     /**
      * Render the sidebar
      */
@@ -207,26 +156,6 @@
       this.editor.addContainer(this.sidebar);
     },
 
-    /**
-     * Render the image toolbar
-     */
-    _renderImageToolbar: function () {
-      // We create the element with the default state
-      this.imageToolbar = document.createElement('div');
-      this.el.parentNode.insertBefore(this.imageToolbar, this.el);
-      this.imageToolbar.classList.add('image-toolbar');
-      this._hideImageToolbar();
-
-      // We append its content
-      this.imageToolbar.innerHTML = this.imageToolbarTemplate();
-
-      // We tell the editor about the element
-      this.editor.addContainer(this.imageToolbar);
-
-      // We attache the event listeners
-      this.imageToolbar.addEventListener('mouseout', this._onMouseoutImageToolbar.bind(this));
-    },
-
     render: function () {
       // We update the wysiwyg's tooltip so it's displayed on above of the text
       var tooltip = Quill.import('ui/tooltip');
@@ -240,6 +169,7 @@
 
       // We register the custom blots
       Quill.register(App.Blot.IntroductionBlot);
+      Quill.register(App.Blot.ImageBlot);
 
       // We init the editor
       this.editor = new Quill(this.el, {
@@ -249,14 +179,14 @@
         }
       });
 
+      // We make the editor available globally so blocks can access it
+      window.editor = this.editor;
+
       // We update the placeholder of the link input
       this.editor.theme.tooltip.textbox.dataset.link = 'site.com';
 
       // We render the sidebar
       this._renderSidebar();
-
-      // We render the image edition toolbar
-      this._renderImageToolbar();
 
       // We attach the event listeners
       this.setElement(this.el);
