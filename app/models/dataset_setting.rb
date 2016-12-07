@@ -1,14 +1,108 @@
+# == Schema Information
+#
+# Table name: dataset_settings
+#
+#  id                   :integer          not null, primary key
+#  site_page_id         :integer
+#  context_id           :integer
+#  dataset_id           :string           not null
+#  filters              :json
+#  columns_visible      :json
+#  columns_changeable   :json
+#  default_graphs       :json
+#  default_map          :json
+#  api_table_name       :string
+#  fields_last_modified :string
+#
+
+# Filters: The filters that will be in the SQL WHERE clause. Stored in JSON
+# Columns Visible: The columns chosen on the SQL SELECT clause
+# Columns Changeable: The columns the user can filter from
+
 class DatasetSetting < ApplicationRecord
   belongs_to :context
   belongs_to :site_page, foreign_key: 'site_page_id', inverse_of: :dataset_setting
 
   validates_presence_of :dataset_id
   before_save :update_timestamp
+  validate :columns_changeable_must_be_formatted
+  validate :columns_visible_must_be_formatted
+  validate :filters_must_be_formatted
 
   # Gets the fields of this dataset
   def get_fields
     DatasetService.get_fields self.dataset_id, self.api_table_name
   end
+
+  # Sets the columns visible as JSON
+  def set_columns_visible(value)
+    self.write_attribute :columns_visible, value.to_json
+  end
+
+  # Sets the columns changeable as JSON
+  def set_columns_changeable(value)
+    self.write_attribute :columns_changeable, value.to_json
+  end
+
+  # Sets the filters as JSON
+  def set_filters(value)
+    self.write_attribute :filters, value.to_json
+  end
+
+  # Returns the changeable columns
+  def get_columns_changeable_string
+    if self.columns_changeable.blank?
+      return ''
+    else
+      return (JSON.parse self.columns_changeable).join(', ')
+    end
+  end
+
+  # Returns the SELECT part of the sql query (the visible fields)
+  def get_columns_visible_sql
+    if self.columns_visible.blank?
+      return ' * '
+    else
+      return (JSON.parse self.columns_visible).join(', ')
+    end
+  end
+
+  # Returns an array of changeable columns
+  def get_columns_changeable
+    if columns_changeable
+      return JSON.parse columns_changeable
+    else
+      return []
+    end
+  end
+
+  # Returns an array of visible columns
+  def get_columns_visible
+    if columns_visible
+      return JSON.parse columns_visible
+    else
+      return []
+    end
+  end
+
+  # Returns the WHERE part of the sql query (the filters)
+  def get_filters_sql
+    if self.filters.blank?
+      return ''
+    else
+      conditions = JSON.parse self.filters
+      sql_array = []
+      conditions.each do |condition|
+        if condition[:values]
+          sql_array << " #{condition['name']} in #{condition['values']}"
+        else
+          sql_array << " #{condition['name']} from #{condition['from']} to #{condition['to']}"
+        end
+      end
+      sql_array.join(' AND ')
+    end
+  end
+
 
   # Gets this dataset filtered
   # Params
@@ -16,39 +110,16 @@ class DatasetSetting < ApplicationRecord
   def get_filtered_dataset(count = false, limit = 10000)
     selector = if count
                ' count(*) '
-               elsif self.columns_visible
-                 " #{JSON.parse(self.columns_visible).join(', ')} "
                else
-                 ' * '
+                 get_columns_visible_sql
                end
-    if self.filters.blank? || JSON.parse(self.filters).blank?
-      query = "select #{selector} from #{self.api_table_name} limit #{limit}"
-      return DatasetService.get_filtered_dataset self.dataset_id, query
-    else
-      query = "select #{selector}"
-      query += " from #{self.api_table_name} "
-      query += 'where ' + (JSON.parse self.filters).join(' AND ') if self.filters.length > 0
-      query += " limit #{limit}"
-      return DatasetService.get_filtered_dataset self.dataset_id, query
-    end
-  end
 
-  # Sets the filters of the dataset_setting
-  # Params
-  # +filter_array+:: The array of filters to create the filters
-  def set_filters(filters)
-    filter_array = []
-    unless filters.blank?
-      filters.each do |filter|
-        if filter['to'] && filter['from'] && filter['field']
-          filter_array << " #{filter['field']} between '#{filter['from']}' and '#{filter['to']}' "
-        end
-        if filter['values'] && filter['field']
-          filter_array << " #{filter['field']} in (#{filter['values']}) "
-        end
-      end
-    end
-    self.filters = filter_array.to_json
+    query = "select #{selector}"
+    query += " from #{self.api_table_name} "
+    query += 'where ' + get_filters_sql unless self.filters.blank? || JSON.parse(self.filters).blank?
+    query += " limit #{limit}"
+
+    DatasetService.get_filtered_dataset self.dataset_id, query
   end
 
   # Gets the number of rows for a query
@@ -74,4 +145,61 @@ class DatasetSetting < ApplicationRecord
       columns_visible: self.columns_visible,
       filters: self.filters}.hash.to_s(36)[1..5]
   end
+
+  # Validates the format of filters
+  def filters_must_be_formatted
+    if filters
+      begin
+        formatted = JSON.format(filters)
+        formatted.each do |f|
+          unless f.is_a?(Hash)
+            errors.add(:filters, 'Incorrect format')
+          else
+            if f[:name].blank?
+              errors.add(:filters, 'No name defined')
+            else
+              if f[:values].blank? || (f[:to].blank? || f[:from].blank?)
+                errors.add(:filters, "Column #{f[:name]} has incorrect values")
+              end
+            end
+          end
+        end
+      rescue
+        errors.add(:filters, 'Error parsing the filters')
+      end
+    end
+  end
+
+  # Validates the format of columns_visible
+  def columns_visible_must_be_formatted
+    if columns_visible
+      begin
+        formatted = JSON.format(columns_visible)
+        formatted.each do |f|
+          unless f.is_a?(Number) || f.is_a?(String) || f.is_a?(Date)
+            errors.add(:columns_visible, "#{f} is not a number, string, nor date")
+          end
+        end
+      rescue
+        errors.add(:columns_visible, 'Error parsing the visible columns')
+      end
+    end
+  end
+
+  # Validates the format of columns_visible
+  def columns_changeable_must_be_formatted
+    if columns_changeable
+      begin
+        formatted = JSON.format(columns_visible)
+        formatted.each do |f|
+          unless f.is_a?(Number) || f.is_a?(String) || f.is_a?(Date)
+            errors.add(:columns_changeable, "#{f} is not a number, string, nor date")
+          end
+        end
+      rescue
+        errors.add(:columns_changeable, 'Error parsing the changeable columns')
+      end
+    end
+  end
+
 end

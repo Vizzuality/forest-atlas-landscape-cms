@@ -20,8 +20,10 @@
         <% @fields.each do |field|%>
           <div class="card -single-data">
             <label for="column-<%= field[:name] %>"><%= field[:name] %></label>
-            <%= check_box_tag "site_page[dataset_setting][visible_fields][]", field[:name],
-                (JSON.parse(@dataset_setting.columns_visible)).include?(field[:name]), id: 'column-' + field[:name] %>
+            <%= check_box_tag "site_page[dataset_setting][visible_fields][]",
+                              field[:name], @dataset_setting.get_columns_visible.include?(field[:name]),
+                              id: 'column-' + field[:name],
+                              disabled: @dataset_setting.get_columns_changeable.include?(field[:name]) %>
             <div class="content">
               <h3><%= field[:name] %></h3>
             </div>

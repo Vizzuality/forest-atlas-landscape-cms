@@ -6,6 +6,7 @@
   max-width: $body-max-width;
   height: 60px;
   background-color: $color-2;
+  z-index: 10;
 
   @media #{$mq-body-width} {
     left: 50%;

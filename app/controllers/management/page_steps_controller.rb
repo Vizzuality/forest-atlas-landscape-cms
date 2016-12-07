@@ -69,11 +69,16 @@ class Management::PageStepsController < ManagementController
         @fields.each{ |f| f[:type] = 'number' if %w[double long].include?(f[:type])}
         gon.fields = @fields
         gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
+        gon.filters_array = if @dataset_setting.filters
+                              JSON.parse @dataset_setting.filters
+                            else
+                              nil
+                            end
 
         # Saving all the possible visible fields for this dataset so that ...
         # ... they can be used in the filtered_results
-        (@dataset_setting.columns_visible =
-          @fields.map{|f| f[:name]}.to_json) unless @dataset_setting.columns_visible
+        (@dataset_setting.set_columns_visible(
+          @fields.map{|f| f[:name]} )) unless @dataset_setting.columns_visible
         set_current_dataset_setting_state
 
       when 'columns'
@@ -265,18 +270,12 @@ class Management::PageStepsController < ManagementController
     # TODO: Refactor this to the model
     if fields = ds_params[:filters]
       fields = JSON.parse fields
-      filters = []
-      changeables = []
-      fields.each do |field|
-        name = field['name']
-        from = field['from']
-        to = field['to']
-        (changeables << field['name']) if name && field['variable'] == 'true'
-        (filters << "#{name} between #{from} and #{to}") if name && from && to
-      end
-      filters = filters.blank? ? '' : filters.to_json
-      changeables = changeables.blank? ? '' : changeables.to_json
-      @dataset_setting.assign_attributes({filters: filters, columns_changeable: changeables})
+
+      # Removes the "variable" param and sets the filters
+      @dataset_setting.set_filters(fields.map{|h| h.select{|k| k != 'variable'}})
+
+      # Sets the changeable fields from the params
+      @dataset_setting.set_columns_changeable(fields.map{|h| h['name'] if h['variable'] == true}.compact)
     end
 
     if fields = ds_params[:visible_fields]
