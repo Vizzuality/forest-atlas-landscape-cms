@@ -46,7 +46,14 @@ class DatasetSetting < ApplicationRecord
 
   # Sets the filters as JSON
   def set_filters(value)
-    self.write_attribute :filters, value.to_json
+    valid = []
+    value.each do |filter|
+      if ((filter['field'] && filter['to'] && filter['from']) ||
+        (filter['field'] && filter['values']))
+        valid << filter
+      end
+    end
+    self.write_attribute :filters, valid.to_json
   end
 
   # Returns the changeable columns
@@ -94,9 +101,9 @@ class DatasetSetting < ApplicationRecord
       sql_array = []
       conditions.each do |condition|
         if condition[:values]
-          sql_array << " #{condition['name']} in #{condition['values']}"
+          sql_array << " #{condition['field']} in #{condition['values']}"
         else
-          sql_array << " #{condition['name']} from #{condition['from']} to #{condition['to']}"
+          sql_array << " #{condition['field']} between #{condition['from']} and #{condition['to']}"
         end
       end
       sql_array.join(' AND ')
@@ -155,11 +162,11 @@ class DatasetSetting < ApplicationRecord
           unless f.is_a?(Hash)
             errors.add(:filters, 'Incorrect format')
           else
-            if f[:name].blank?
-              errors.add(:filters, 'No name defined')
+            if f[:field].blank?
+              errors.add(:filters, 'No field defined')
             else
               if f[:values].blank? || (f[:to].blank? || f[:from].blank?)
-                errors.add(:filters, "Column #{f[:name]} has incorrect values")
+                errors.add(:filters, "Column #{f[:field]} has incorrect values")
               end
             end
           end

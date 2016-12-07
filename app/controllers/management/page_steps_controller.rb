@@ -203,7 +203,8 @@ class Management::PageStepsController < ManagementController
           columns_visible: @dataset_setting.columns_visible)
 
     filters = params[:filters]
-    temp_dataset_setting.set_filters (filters.blank? ? nil : filters.values)
+    #temp_dataset_setting.set_filters (filters.blank? ? nil : filters.values)
+    temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map{|h| h.select{|k| k != 'variable'}})
 
     begin
       count = temp_dataset_setting.get_row_count['data'].first.values.first
