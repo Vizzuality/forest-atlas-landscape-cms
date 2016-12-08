@@ -179,8 +179,11 @@
 
   // Styles of the content
   .ql-editor {
+    font-family: $font-family-1;
+    font-size: $font-size-normal;
+
     h1 {
-      margin-bottom: 10px;
+      margin-bottom: 25px;
       color: $color-4;
       font-size: $font-size-huge;
       font-weight: $font-weight-light;
@@ -188,8 +191,38 @@
     }
 
     p {
-      margin: 15px 0;
+      letter-spacing: .1px;
       line-height: 1.5;
+
+      & + p {
+        margin-top: 20px;
+      }
+
+      a {
+        // Do not set inline-block here otherwise the links will be forced to be on online line
+        padding: 0 3px;
+        background-color: rgba($color-1, .2);
+        color: currentColor;
+        text-decoration: none;
+      }
+    }
+
+    blockquote {
+      margin: 60px 0;
+      padding: 0;
+      border: 0;
+      font-size: $font-size-big;
+      font-weight: $font-weight-light;
+      letter-spacing: .2px;
+      line-height: 1.1;
+
+      &::before {
+        content: '“';
+      }
+
+      &::after {
+        content: '”';
+      }
     }
 
     .-image {
@@ -206,7 +239,7 @@
 
     .-intro {
       margin-bottom: 30px;
-      font-size: $font-size-medium;
+      font-size: $font-size-x-normal;
       font-weight: $font-weight-light;
       letter-spacing: .1px;
       line-height: 1.54;
@@ -214,85 +247,85 @@
   }
 
 
-  p {
-    margin: 0;
-    font-size: $font-size-s-normal;
+  // p {
+  //   margin: 0;
+  //   font-size: $font-size-s-normal;
 
-    &.-intro {
-      font-size: $font-size-x-normal;
-      font-weight: $font-weight-light;
+  //   &.-intro {
+  //     font-size: $font-size-x-normal;
+  //     font-weight: $font-weight-light;
 
-      &.-empty {
-        position: relative;
-        min-height: $font-size-x-normal;
+  //     &.-empty {
+  //       position: relative;
+  //       min-height: $font-size-x-normal;
 
-        &::after {
-          display: inline-block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          color: rgba($color-4, .3);
-          content: 'Introduction';
-        }
-      }
-    }
-  }
+  //       &::after {
+  //         display: inline-block;
+  //         position: absolute;
+  //         top: 0;
+  //         left: 0;
+  //         color: rgba($color-4, .3);
+  //         content: 'Introduction';
+  //       }
+  //     }
+  //   }
+  // }
 
-  .quote {
-    font-size: $font-size-x-normal;
-    font-style: italic;
+  // .quote {
+  //   font-size: $font-size-x-normal;
+  //   font-style: italic;
 
-    &::before {
-      content: '“';
-    }
+  //   &::before {
+  //     content: '“';
+  //   }
 
-    &::after {
-      content: '”';
-    }
+  //   &::after {
+  //     content: '”';
+  //   }
 
-    &.-empty {
-      position: relative;
-      min-height: $font-size-x-normal;
+  //   &.-empty {
+  //     position: relative;
+  //     min-height: $font-size-x-normal;
 
-      &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: rgba($color-4, .3);
-        content: '“Citation”';
-      }
+  //     &::before {
+  //       position: absolute;
+  //       top: 0;
+  //       left: 0;
+  //       color: rgba($color-4, .3);
+  //       content: '“Citation”';
+  //     }
 
-      &::after {
-        content: none;
-      }
-    }
-  }
+  //     &::after {
+  //       content: none;
+  //     }
+  //   }
+  // }
 
-  .st-block {
-    &[data-type='title'] {
-      margin: 40px 0 15px;
-    }
+  // .st-block {
+  //   &[data-type='title'] {
+  //     margin: 40px 0 15px;
+  //   }
 
-    &[data-type='introduction'] {
-      margin: 15px 0;
-    }
+  //   &[data-type='introduction'] {
+  //     margin: 15px 0;
+  //   }
 
-    &[data-type='quote'] {
-      margin: 15px 0;
+  //   &[data-type='quote'] {
+  //     margin: 15px 0;
 
-      > .st-block__inner {
-        margin: 0 110px;
-      }
-    }
+  //     > .st-block__inner {
+  //       margin: 0 110px;
+  //     }
+  //   }
 
-    &[data-type='text'] {
-      margin: 10px 0;
-    }
-  }
+  //   &[data-type='text'] {
+  //     margin: 10px 0;
+  //   }
+  // }
 
-  .st-block-replacer {
-    // Do not remove unless you make sure the "+" button doesn't overlap the action bar
-    z-index: 0;
-  }
+  // .st-block-replacer {
+  //   // Do not remove unless you make sure the "+" button doesn't overlap the action bar
+  //   z-index: 0;
+  // }
 
 }
