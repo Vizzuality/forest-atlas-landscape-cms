@@ -100,7 +100,7 @@ class DatasetSetting < ApplicationRecord
       conditions = JSON.parse self.filters
       sql_array = []
       conditions.each do |condition|
-        if condition[:values]
+        if condition['values']
           sql_array << " #{condition['field']} in #{condition['values']}"
         else
           sql_array << " #{condition['field']} between #{condition['from']} and #{condition['to']}"
@@ -157,15 +157,15 @@ class DatasetSetting < ApplicationRecord
   def filters_must_be_formatted
     if filters
       begin
-        formatted = JSON.format(filters)
+        formatted = JSON.parse(filters)
         formatted.each do |f|
           unless f.is_a?(Hash)
             errors.add(:filters, 'Incorrect format')
           else
-            if f[:field].blank?
+            if f['field'].blank?
               errors.add(:filters, 'No field defined')
             else
-              if f[:values].blank? || (f[:to].blank? || f[:from].blank?)
+              if f['values'].blank? && (f['to'].blank? || f['from'].blank?)
                 errors.add(:filters, "Column #{f[:field]} has incorrect values")
               end
             end
@@ -181,9 +181,9 @@ class DatasetSetting < ApplicationRecord
   def columns_visible_must_be_formatted
     if columns_visible
       begin
-        formatted = JSON.format(columns_visible)
+        formatted = JSON.parse(columns_visible)
         formatted.each do |f|
-          unless f.is_a?(Number) || f.is_a?(String) || f.is_a?(Date)
+          unless f.is_a?(Numeric) || f.is_a?(String) || f.is_a?(Date)
             errors.add(:columns_visible, "#{f} is not a number, string, nor date")
           end
         end
@@ -197,9 +197,9 @@ class DatasetSetting < ApplicationRecord
   def columns_changeable_must_be_formatted
     if columns_changeable
       begin
-        formatted = JSON.format(columns_visible)
+        formatted = JSON.parse(columns_changeable)
         formatted.each do |f|
-          unless f.is_a?(Number) || f.is_a?(String) || f.is_a?(Date)
+          unless f.is_a?(Numeric) || f.is_a?(String) || f.is_a?(Date)
             errors.add(:columns_changeable, "#{f} is not a number, string, nor date")
           end
         end
