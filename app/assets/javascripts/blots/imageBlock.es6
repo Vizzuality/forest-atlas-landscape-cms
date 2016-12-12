@@ -29,8 +29,8 @@ class ImageBlot extends Embed {
     // We attach the listeners
     this.image.addEventListener('mouseover',e => this._onMouseoverImage(e));
     this.image.addEventListener('mouseout', e => this._onMouseoutImage(e));
-
   }
+
   /**
    * Create the DOM node
    * @param {string} value - URL of the image (or base64)
@@ -177,11 +177,11 @@ class ImageBlot extends Embed {
     // We create the element with the default state
     this.toolbar = document.createElement('div');
     this.domNode.appendChild(this.toolbar);
-    this.toolbar.classList.add('image-toolbar');
+    this.toolbar.classList.add('toolbar');
     this._hideToolbar();
 
     // We append its content
-    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-image-toolbar']();
+    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']();
 
     // We attach the event listeners
     this.toolbar.addEventListener('mouseout', e => this._onMouseoutToolbar(e));

@@ -194,11 +194,11 @@
         // We create the element with the default state
         this.toolbar = document.createElement('div');
         this.domNode.appendChild(this.toolbar);
-        this.toolbar.classList.add('image-toolbar');
+        this.toolbar.classList.add('toolbar');
         this._hideToolbar();
 
         // We append its content
-        this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-image-toolbar']();
+        this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']();
 
         // We attach the event listeners
         this.toolbar.addEventListener('mouseout', function (e) {

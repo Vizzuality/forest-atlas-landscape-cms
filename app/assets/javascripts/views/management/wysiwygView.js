@@ -7,7 +7,6 @@
     className: 'c-wysiwyg',
 
     sidebarTemplate: HandlebarsTemplates['management/wysiwyg-sidebar'],
-    imageToolbarTemplate: HandlebarsTemplates['management/wysiwyg-image-toolbar'],
 
     defaults: {
       // Options for the tooltip
@@ -20,7 +19,8 @@
 
     events: {
       'click .js-toggle-expand-sidebar': '_onClickToggleExpandSidebar',
-      'click .js-add-image': '_onClickAddImage'
+      'click .js-add-image': '_onClickAddImage',
+      'click .js-add-widget': '_onClickAddWidget'
     },
 
     initialize: function (settings) {
@@ -63,7 +63,7 @@
     },
 
     /**
-     * Event handler called when the sidebar's add button is clicked
+     * Event handler called when the sidebar's add image button is clicked
      */
     _onClickAddImage: function () {
       // We contract the sidebar
@@ -84,6 +84,20 @@
         }.bind(this));
         reader.readAsDataURL(file);
       }.bind(this));
+    },
+
+    /**
+     * Event handler called when the sidbar's add widget button is clicked
+     */
+    _onClickAddWidget: function () {
+      // We contract the sidebar
+      this._toggleExpandSidebar();
+
+      var range = this.editor.getSelection();
+      this.editor.insertEmbed(range.index, 'widget', '', 'user');
+
+      // We hide the sidebar
+      this._hideSidebar();
     },
 
     /**
@@ -169,6 +183,7 @@
 
       // We register the custom blots
       Quill.register(App.Blot.IntroductionBlot);
+      Quill.register(App.Blot.WidgetBlot);
       Quill.register(App.Blot.ImageBlot);
 
       // We init the editor

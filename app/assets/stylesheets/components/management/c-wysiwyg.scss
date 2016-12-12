@@ -38,7 +38,7 @@
     }
   }
 
-  .image-toolbar {
+  .toolbar {
     display: flex;
     position: absolute;
     top: 0;
@@ -181,6 +181,13 @@
   .ql-editor {
     font-family: $font-family-1;
     font-size: $font-size-normal;
+    white-space: normal;
+
+    &::after { // clearfix for the floating elements
+      display: table;
+      clear: both;
+      content: '';
+    }
 
     h1 {
       margin-bottom: 25px;
@@ -243,6 +250,31 @@
       font-weight: $font-weight-light;
       letter-spacing: .1px;
       line-height: 1.54;
+    }
+
+    .-widget {
+      position: relative;
+      width: calc(100% + 390px);
+      margin: 35px -195px;
+      padding: 45px;
+      clear: both; // Prevents issue with another floated widget
+      border: 1px solid $color-7;
+      background-color: $color-3;
+
+      &.-half {
+        width: calc((100% + 390px) / 2 - 10px);
+        margin-right: 20px; // Margin with other content
+        float: left;
+        clear: none;
+
+        & + .-half {
+          transform: translateX(195px);
+        }
+      }
+
+      &:not(:hover) .toolbar {
+        display: none;
+      }
     }
   }
 
