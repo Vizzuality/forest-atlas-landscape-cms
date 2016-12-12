@@ -124,6 +124,7 @@ class Management::SitePagesController < ManagementController
 
   private
 
+  # TODO: Remove this
   def set_content_type_variables
     @site_page = SitePage.new(content_type: params['type'].to_i) if @site_page.nil?
     @is_creation = action_name == 'new'

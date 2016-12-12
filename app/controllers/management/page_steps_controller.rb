@@ -2,15 +2,15 @@ class Management::PageStepsController < ManagementController
   include Wicked::Wizard
   include TreeStructureHelper
 
+  before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results]
+
   # The order of prepend is the opposite of its declaration
+  prepend_before_action :load_wizard
   prepend_before_action :set_steps
   prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results]
   prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results]
-  before_action :setup_wizard
 
-# TODO: Authenticate user per site
-# before_action :authenticate_user_for_site!, only: [:index, :new, :create]
-# before_action :set_content_type_variables, only: [:new, :edit]
+  before_action :redirect_invalid_step
 
   helper_method :form_steps
   attr_accessor :steps_names
@@ -21,12 +21,13 @@ class Management::PageStepsController < ManagementController
   PUBLISH  = 'PUBLISH'.freeze
 
 
-  # TODO : create a session for incorrect state and last step visited
+  # TODO : create a session for incorrect state and last step visited (?)
 
 
   # This action cleans the session
   def new
     session[:dataset_setting] = {}
+    session[:invalid_steps] = %w[type title]
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
@@ -46,20 +47,21 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
+    session[:invalid_steps] = 'type'
     redirect_to wizard_path('position')
   end
 
   def show
+    if invalid_steps.include? step
+      redirect_to wizard_path(wizard_steps[0])
+      return
+    end
+
     case step
       when 'position'
         assign_position
       when 'title'
       when 'type'
-        if @page.content_type
-          redirect_to wizard_path(wizard_steps[3])
-          return
-        end
-
       when 'dataset'
         @context_datasets = current_user.get_context_datasets
 
@@ -112,6 +114,13 @@ class Management::PageStepsController < ManagementController
   end
 
   def update
+    # To avoid submitting forbidden data
+    if invalid_steps.include? step
+      redirect_to wizard_path(wizard_steps[0])
+      return
+    end
+    session[:invalid_steps] << 'type' if @page.content_type
+
     @page.form_step = step
     case step
       when 'position'
@@ -121,7 +130,10 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward(@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path)
+        move_forward(
+          (@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path),
+          nil,
+          (@page.content_type ? wizard_steps[3] : next_step))
 
       when 'type'
         set_current_page_state
@@ -203,7 +215,6 @@ class Management::PageStepsController < ManagementController
           columns_visible: @dataset_setting.columns_visible)
 
     filters = params[:filters]
-    #temp_dataset_setting.set_filters (filters.blank? ? nil : filters.values)
     temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map{|h| h.select{|k| k != 'variable'}})
 
     begin
@@ -261,14 +272,20 @@ class Management::PageStepsController < ManagementController
     end
     @dataset_setting.assign_attributes session[:dataset_setting] if session[:dataset_setting]
 
-    # If the user changed the id of the dataset, the entity is reset
     if ids = ds_params[:context_id_dataset_id]
       ids = ids.split(' ')
-      @dataset_setting = DatasetSetting.new(context_id: ids[0], dataset_id: ids[1])
+
+      # If the user changed the id of the dataset, the entity is reset
+      if @dataset_setting.dataset_id && @dataset_setting.dataset_id != ids[1]
+        session[:dataset_setting] = nil
+        session[:invalid_steps] = %w[type columns preview]
+        @dataset_setting.filters = @dataset_setting.columns_changeable = @dataset_setting.columns_visible = nil
+      end
+
+      @dataset_setting.assign_attributes(context_id: ids[0], dataset_id: ids[1])
       @dataset_setting.api_table_name = @dataset_setting.get_table_name
     end
 
-    # TODO: Refactor this to the model
     if fields = ds_params[:filters]
       fields = JSON.parse fields
 
@@ -299,11 +316,15 @@ class Management::PageStepsController < ManagementController
       self.steps = steps[:pages]
       self.steps_names = steps[:names]
     else
+      invalid_steps << 'type' if params[:id] != 'type'
       steps = @page.form_steps
       self.steps = steps[:pages]
       self.steps_names = steps[:names]
-      invalid_steps = ['type']
     end
+
+    invalid_steps << session[:invalid_steps] if session[:invalid_steps]
+    invalid_steps.flatten!
+    invalid_steps.uniq!
     set_invalid_steps invalid_steps
   end
 
@@ -325,14 +346,15 @@ class Management::PageStepsController < ManagementController
 
   # Saves the current state and goes to the next step
   # Params:
-  # +next_step+:: Next step on pressing continue
-  # +save_step+:: Next step on pressing save
-  def move_forward(next_step = next_wizard_path,
-                   save_step = management_site_site_pages_path(params[:site_slug]))
+  # +next_step_path+:: Path of the next step on pressing continue
+  # +save_step_path+:: Path of the next step on pressing save
+  def move_forward(next_step_path = next_wizard_path,
+                   save_step_path = management_site_site_pages_path(params[:site_slug]),
+                   next_step_name = next_step)
     if save_button?
 
       if @page.save
-        redirect_to save_step
+        redirect_to save_step_path
       else
         render_wizard
       end
@@ -340,7 +362,8 @@ class Management::PageStepsController < ManagementController
     else
 
       if @page.valid?
-        redirect_to next_step
+        session[:invalid_steps].delete(next_step_name)
+        redirect_to next_step_path
       else
         render_wizard
       end
@@ -354,4 +377,21 @@ class Management::PageStepsController < ManagementController
     gon.parent_id = @page.parent_id
   end
 
+  # Checks is the user is in an allowed step and if not ...
+  # ... redirects the user to the first step
+  def redirect_invalid_step
+    if invalid_steps.include? step
+      redirect_to wizard_path(wizard_steps[0])
+    end
+  end
+
+  # Calls the setup wizard and if the step is invalid ...
+  # ... redirects the user to the first step
+  def load_wizard
+    begin
+      setup_wizard
+    rescue InvalidStepError
+      redirect_to wizard_path(wizard_steps[0])
+    end
+  end
 end

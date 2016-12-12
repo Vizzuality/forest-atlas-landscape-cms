@@ -212,7 +212,7 @@ def add_analysis_dashboard
     api_table_name: 'index_299ff5ceaf9246169c095f3ca981eb65',
     columns_changeable: %w[track scan bright_ti4 confidence].to_json,
     columns_visible: %w[confidence bright_ti4 bright_ti5 latitude longitude track scan].to_json,
-    filters: [field: 'bright_ti5', from: '300', to: '400'].to_json,
+    filters: [name: 'bright_ti5', from: '380', to: '400'].to_json,
     default_graphs: [{type: 'scatter', x: 'track', y: 'scan'}, {type: 'pie', x: 'confidence'}].to_json,
     default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'scan'}.to_json
   }
@@ -352,7 +352,7 @@ def create_contexts
 #    %w[274b4818-be18-4890-9d10-eae56d2a82e5]
     %w[8611a1cb-9d24-4a64-9576-d267889cb822 6a18cd92-acd3-4107-b855-95fa2af24473 62520fd2-2dfb-4a13-840b-35ac88fc7aa4],
     %w[d44b5936-ecee-4361-8eac-4a50c8d3d3b6 bd61bb68-592b-42ff-90d6-b6a5d0006101 3feaf26c-42c8-43ce-b1b5-07a02a773c36],
-    %w[49ef62d6-eebe-4a52-800e-d48d3d15996d 299ff5ce-af92-4616-9c09-5f3ca981eb65]
+    %w[299ff5ce-af92-4616-9c09-5f3ca981eb65]
   ]
   datasets_array.each_with_index do |datasets, i|
     c = Context.create!(

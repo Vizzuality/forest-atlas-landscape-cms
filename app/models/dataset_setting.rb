@@ -48,8 +48,8 @@ class DatasetSetting < ApplicationRecord
   def set_filters(value)
     valid = []
     value.each do |filter|
-      if ((filter['field'] && filter['to'] && filter['from']) ||
-        (filter['field'] && filter['values']))
+      if ((filter['name'] && filter['to'] && filter['from']) ||
+        (filter['name'] && filter['values']))
         valid << filter
       end
     end
@@ -101,9 +101,9 @@ class DatasetSetting < ApplicationRecord
       sql_array = []
       conditions.each do |condition|
         if condition['values']
-          sql_array << " #{condition['field']} in #{condition['values']}"
+          sql_array << " #{condition['name']} in (#{condition['values'].join(',')})"
         else
-          sql_array << " #{condition['field']} between #{condition['from']} and #{condition['to']}"
+          sql_array << " #{condition['name']} between #{condition['from']} and #{condition['to']}"
         end
       end
       sql_array.join(' AND ')
@@ -162,11 +162,11 @@ class DatasetSetting < ApplicationRecord
           unless f.is_a?(Hash)
             errors.add(:filters, 'Incorrect format')
           else
-            if f['field'].blank?
+            if f['name'].blank?
               errors.add(:filters, 'No field defined')
             else
               if f['values'].blank? && (f['to'].blank? || f['from'].blank?)
-                errors.add(:filters, "Column #{f[:field]} has incorrect values")
+                errors.add(:filters, "Column #{f['name']} has incorrect values")
               end
             end
           end

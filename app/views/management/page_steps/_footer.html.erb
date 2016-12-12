@@ -5,7 +5,7 @@
       <% unless local_assigns[:no_continue] %>
         <%= f.button Management::PageStepsController::CONTINUE, value: Management::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' + ((@page.id || local_assigns[:always_save]) ? ' -outline -dark-text' : '') %>
       <% end %>
-      <% if @page.id || local_assigns[:always_save] %>
+      <% if (@page.id || local_assigns[:always_save]) && (local_assigns[:never_save] != true) %>
         <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button js-submit' %>
       <% end %>
       <% if local_assigns[:publish] %>

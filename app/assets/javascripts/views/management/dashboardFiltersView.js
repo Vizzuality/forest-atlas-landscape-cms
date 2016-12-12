@@ -285,7 +285,6 @@
       }).reduce(function (res, filter, index) {
         var serializedFilter = Object.keys(filter).reduce(function (str, key) {
           var name = key;
-          if (key === 'name') name = 'field';
 
           var value = filter[key];
           if (value instanceof Date) {
