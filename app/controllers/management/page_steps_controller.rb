@@ -226,7 +226,9 @@ class Management::PageStepsController < ManagementController
     # TODO: To have different permissions for different steps
     params.require(:site_page).permit(:name, :description, :position, :uri,
                                       :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
-                                      dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+                                      dataset_setting: [:context_id_dataset_id, :filters,
+                                                        :default_graphs, :default_map,
+                                                        visible_fields: []])
   end
 
   # Sets the current site from the url
@@ -291,9 +293,17 @@ class Management::PageStepsController < ManagementController
     end
 
     if fields = ds_params[:visible_fields]
-      columns_visible = fields.to_json
-      @dataset_setting.columns_visible = columns_visible
+      @dataset_setting.columns_visible = fields.to_json
     end
+
+    if fields = ds_params[:default_map]
+      @dataset_setting.default_map = fields
+    end
+
+    if fields = ds_params[:default_graphs]
+      @dataset_setting.default_graphs = fields
+    end
+
   end
 
   # Saves the current data settings state in the session
