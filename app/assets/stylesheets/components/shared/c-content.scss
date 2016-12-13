@@ -1,3 +1,6 @@
+// TODO: This file needs to be cleaned to remove the old markup that used classes
+// but before to do so, we need to make sure all the content have been moved, especially
+// the homepage
 .c-content {
   margin: 50px 0 60px;
 
@@ -5,16 +8,37 @@
     margin: 60px 0 90px;
   }
 
+  // Undoing some styles of the wysiwyg editor
+  .ql-disabled {
+    font-family: inherit;
+    font-size: inherit;
+
+    .ql-editor {
+      padding: 0;
+      line-height: inherit;
+      white-space: initial;
+    }
+
+    .ql-tooltip {
+      display: none;
+    }
+  }
+
   .content-title,
   .paragraph,
-  .quote {
+  .quote,
+  h1,
+  p,
+  blockquote,
+  .-intro {
     max-width: $content-max-width;
     margin: 0 auto;
   }
 
 
-  .content-title {
-    margin: 0 auto 25px;
+  .content-title,
+  h1 {
+    margin: 0 auto 15px;
     font-size: $font-size-big;
     letter-spacing: .3px;
 
@@ -37,23 +61,28 @@
     }
   }
 
-  .paragraph {
+  .paragraph,
+  p,
+  .-intro {
     letter-spacing: .1px;
 
-    &.-intro {
-      font-size: $font-size-x-normal;
-
-      @if $theme == 2 {
-        font-weight: $font-weight-light;
-      }
-    }
-
-    & + .paragraph {
+    & + .paragraph,
+    & + p,
+    & + .-intro {
       margin: 20px auto 0;
     }
   }
 
-  .quote {
+  .-intro {
+    font-size: $font-size-x-normal;
+
+    @if $theme == 2 {
+      font-weight: $font-weight-light;
+    }
+  }
+
+  .quote,
+  blockquote {
     margin: 30px auto;
     font-size: $font-size-medium;
     font-weight: $font-weight-light;
@@ -87,17 +116,34 @@
     }
   }
 
-  .image {
+  .image,
+  img {
     display: block;
     max-width: 100%;
-    margin: 35px 0 50px;
+    margin: 50px 0;
 
     @media #{$mq-mobile} {
-      margin: 65px auto 80px;
+      margin: 50px auto;
     }
 
     @media #{$mq-laptop} {
       max-width: $media-max-width;
+    }
+  }
+
+  .-widget {
+    max-width: 100%;
+    margin: 50px 0;
+    padding: 20px 20px 10px;
+    border: 1px solid $color-13;
+
+    @media #{$mq-mobile} {
+      margin: 50px auto;
+    }
+
+    @media #{$mq-laptop} {
+      max-width: $media-max-width;
+      padding: 60px 60px 40px;
     }
   }
 }

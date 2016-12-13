@@ -21,6 +21,8 @@ class WidgetBlot extends Embed {
   constructor(domNode, value) {
     super(domNode, value);
 
+    this.editor = window.editor;
+
     // We render the widget
     // Sample data
     // TODO: create the logic to retrieve a widget
@@ -41,8 +43,10 @@ class WidgetBlot extends Embed {
       enableChartSelector: false
     });
 
-    // We render the toolbar
-    this._renderToolbar();
+    if (!this.editor.options.readOnly) {
+      // We render the toolbar
+      this._renderToolbar();
+    }
 
     // Little trick to wait for the block to be appended to the DOM
     // before rendering the widget (which requires it)
@@ -101,8 +105,8 @@ class WidgetBlot extends Embed {
    */
   _onClickRemove() {
     const offset = this.offset();
-    window.editor.deleteText(offset, this.length());
-    window.editor.setSelection(offset);
+    this.editor.deleteText(offset, this.length());
+    this.editor.setSelection(offset);
   }
 
   /**

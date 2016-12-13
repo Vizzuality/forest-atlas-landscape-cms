@@ -22,13 +22,16 @@ class ImageBlot extends Embed {
     super(domNode, value);
 
     this.image = domNode.querySelector('.js-image');
+    this.editor = window.editor;
 
-    // We render the toolbar
-    this._renderToolbar();
+    if (!this.editor.options.readOnly) {
+      // We render the toolbar
+      this._renderToolbar();
 
-    // We attach the listeners
-    this.image.addEventListener('mouseover',e => this._onMouseoverImage(e));
-    this.image.addEventListener('mouseout', e => this._onMouseoutImage(e));
+      // We attach the listeners
+      this.image.addEventListener('mouseover',() => this._onMouseoverImage());
+      this.image.addEventListener('mouseout', e => this._onMouseoutImage(e));
+    }
   }
 
   /**
@@ -129,8 +132,8 @@ class ImageBlot extends Embed {
    */
   _onClickRemove() {
     const offset = this.offset();
-    window.editor.deleteText(offset, this.length());
-    window.editor.setSelection(offset);
+    this.editor.deleteText(offset, this.length());
+    this.editor.setSelection(offset);
   }
 
   /**

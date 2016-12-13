@@ -9,6 +9,10 @@
     sidebarTemplate: HandlebarsTemplates['management/wysiwyg-sidebar'],
 
     defaults: {
+      // Default serialized content of the wysiwyg
+      serializedContent: null,
+      // Set the wysiwyg as read only (i.e. a viewer)
+      readOnly: false,
       // Options for the tooltip
       toolbar: {
         container: [
@@ -107,7 +111,19 @@
       this.editor.on(Quill.events.EDITOR_CHANGE, this._onEditorChange.bind(this));
     },
 
-    saveHTML: function () {
+    /**
+     * Return the serialized content (delta) of the wysiwyg
+     * @returns {string} serializedContent
+     */
+    getSerializedContent: function () {
+      return this.editor.getContents();
+    },
+
+    /**
+     * Restore the content of the wysiwyg
+     */
+    _restoreContent: function () {
+      this.editor.setContents(this.options.serializedContent);
     },
 
     /**
@@ -151,6 +167,7 @@
     _toggleExpandSidebar: function () {
       this.sidebar.classList.toggle('-expanded');
     },
+
     /**
      * Render the sidebar
      */
@@ -171,16 +188,6 @@
     },
 
     render: function () {
-      // We update the wysiwyg's tooltip so it's displayed on above of the text
-      var tooltip = Quill.import('ui/tooltip');
-      tooltip.prototype.checkBounds = function () {};
-      tooltip.prototype.position = function (reference) {
-        var left = (reference.left + (reference.width / 2)) - (this.root.offsetWidth / 2);
-        var top = reference.top - this.root.offsetHeight - 20;
-        this.root.style.left = left + 'px';
-        this.root.style.top = top + 'px';
-      };
-
       // We register the custom blots
       Quill.register(App.Blot.IntroductionBlot);
       Quill.register(App.Blot.WidgetBlot);
@@ -188,6 +195,7 @@
 
       // We init the editor
       this.editor = new Quill(this.el, {
+        readOnly: this.options.readOnly,
         theme: 'bubble',
         modules: {
           toolbar: this.options.toolbar
@@ -197,15 +205,31 @@
       // We make the editor available globally so blocks can access it
       window.editor = this.editor;
 
-      // We update the placeholder of the link input
-      this.editor.theme.tooltip.textbox.dataset.link = 'site.com';
+      if (!this.options.readOnly) {
+        // We update the wysiwyg's tooltip so it's displayed on above of the text
+        var tooltip = Quill.import('ui/tooltip');
+        tooltip.prototype.checkBounds = function () {};
+        tooltip.prototype.position = function (reference) {
+          var left = (reference.left + (reference.width / 2)) - (this.root.offsetWidth / 2);
+          var top = reference.top - this.root.offsetHeight - 20;
+          this.root.style.left = left + 'px';
+          this.root.style.top = top + 'px';
+        };
 
-      // We render the sidebar
-      this._renderSidebar();
+        // We update the placeholder of the link input
+        this.editor.theme.tooltip.textbox.dataset.link = 'site.com';
 
-      // We attach the event listeners
-      this.setElement(this.el);
-      this._setListeners();
+        // We render the sidebar
+        this._renderSidebar();
+
+        // We attach the event listeners
+        this.setElement(this.el);
+        this._setListeners();
+      }
+
+      if (this.options.serializedContent) {
+        this._restoreContent();
+      }
     }
 
   });

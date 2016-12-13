@@ -12,6 +12,7 @@
       'sites/:slug/widgets(/)': 'Widgets',
       'sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
       'sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
+      'sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
       'sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
       'sites/:slug/(site_pages/:id/)page_steps/filters': 'FiltersStep',
       'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'

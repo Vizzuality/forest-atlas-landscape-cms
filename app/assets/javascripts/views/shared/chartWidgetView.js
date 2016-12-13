@@ -7,7 +7,7 @@
 
     defaults: {
       // Ratio between the height and the width (i.e. height = chartRatio * width)
-      chartRatio: 0.6,
+      chartRatio: 0.5,
       // Data to display on the chart
       data: [],
       // Name of the default chart type

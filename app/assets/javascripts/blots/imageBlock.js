@@ -21,8 +21,6 @@
 
   function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-  var Embed = Quill.import('blots/block/embed');
-
   var ImageBlot = function (_Embed) {
     _inherits(ImageBlot, _Embed);
 
@@ -40,20 +38,23 @@
       var _this = _possibleConstructorReturn(this, (ImageBlot.__proto__ || Object.getPrototypeOf(ImageBlot)).call(this, domNode, value));
 
       _this.image = domNode.querySelector('.js-image');
+      _this.editor = window.editor;
 
-      // We render the toolbar
-      _this._renderToolbar();
+      if (!_this.editor.options.readOnly) {
+        // We render the toolbar
+        _this._renderToolbar();
 
-      // We attach the listeners
-      _this.image.addEventListener('mouseover', function (e) {
-        return _this._onMouseoverImage(e);
-      });
-      _this.image.addEventListener('mouseout', function (e) {
-        return _this._onMouseoutImage(e);
-      });
-
+        // We attach the listeners
+        _this.image.addEventListener('mouseover', function () {
+          return _this._onMouseoverImage();
+        });
+        _this.image.addEventListener('mouseout', function (e) {
+          return _this._onMouseoutImage(e);
+        });
+      }
       return _this;
     }
+
     /**
      * Create the DOM node
      * @param {string} value - URL of the image (or base64)
@@ -130,8 +131,8 @@
       key: '_onClickRemove',
       value: function _onClickRemove() {
         var offset = this.offset();
-        window.editor.deleteText(offset, this.length());
-        window.editor.setSelection(offset);
+        this.editor.deleteText(offset, this.length());
+        this.editor.setSelection(offset);
       }
 
       /**

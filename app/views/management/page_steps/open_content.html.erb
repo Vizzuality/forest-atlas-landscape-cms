@@ -33,7 +33,8 @@
       <div class="wrapper">
         <div class="c-wysiwyg">
           <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
-              <div class="js-content">
+            <div class="js-content">
+              <% unless params[:page_id] %>
                 <h1>Title of the article</h1>
                 <div class="-intro">
                   Short description
@@ -43,8 +44,9 @@
                   <br/>
                   Quisquam et a sed et quo. Voluptatibus architecto ut quis. Perferendis quia alias molestiae. Et culpa sed et reiciendis sunt. Incidunt vel in saepe in rerum ea aut.
                 </p>
-              </div>
-              <%= ff.hidden_field :body, class: 'js-content' %>
+              <% end %>
+            </div>
+            <%= ff.hidden_field :json, class: 'js-json-content' %>
           <% end %>
         </div>
       </div>
