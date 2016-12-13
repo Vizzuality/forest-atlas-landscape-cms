@@ -179,10 +179,9 @@
       if (!this.options.filters) return;
       var defaultFilter = this.options.defaultFilter;
       this.collection.add(this.options.filters.map(function (filter) {
-        var o = Object.assign({}, defaultFilter, filter, { name: filter.field });
+        var o = Object.assign({}, defaultFilter, filter, { name: filter.name });
         if (o.from) o.from = +o.from;
         if (o.to) o.to = +o.to;
-        delete o.field;
         return o;
       }));
     },

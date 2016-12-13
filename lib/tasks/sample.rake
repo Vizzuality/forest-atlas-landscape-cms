@@ -212,7 +212,7 @@ def add_analysis_dashboard
     api_table_name: 'index_299ff5ceaf9246169c095f3ca981eb65',
     columns_changeable: %w[track scan bright_ti4 confidence].to_json,
     columns_visible: %w[confidence bright_ti4 bright_ti5 latitude longitude track scan].to_json,
-    filters: [name: 'bright_ti5', from: '380', to: '400'].to_json,
+    filters: [name: 'bright_ti5', from: '0', to: '330'].to_json,
     default_graphs: [{type: 'scatter', x: 'track', y: 'scan'}, {type: 'pie', x: 'confidence'}].to_json,
     default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'scan'}.to_json
   }

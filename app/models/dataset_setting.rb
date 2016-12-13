@@ -101,7 +101,7 @@ class DatasetSetting < ApplicationRecord
       sql_array = []
       conditions.each do |condition|
         if condition['values']
-          sql_array << " #{condition['name']} in (#{condition['values'].join(',')})"
+          sql_array << " #{condition['name']} in (#{condition['values']})"
         else
           sql_array << " #{condition['name']} between #{condition['from']} and #{condition['to']}"
         end
