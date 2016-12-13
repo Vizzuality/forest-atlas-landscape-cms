@@ -178,7 +178,7 @@
     _restoreFilters: function () {
       if (!this.options.filters) return;
       var defaultFilter = this.options.defaultFilter;
-      this.collection.add(this.options.filters.map(function (filter) {
+      this.collection.reset(this.options.filters.map(function (filter) {
         var o = Object.assign({}, defaultFilter, filter, { name: filter.name });
         if (o.from) o.from = +o.from;
         if (o.to) o.to = +o.to;
