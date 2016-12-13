@@ -33,6 +33,8 @@
       //   }
       // ]
       fields: [],
+      // Default filters
+      filters: [],
       // API endpoint to fetch the table extract
       endpointUrl: '',
       // State of the default filters
@@ -56,6 +58,7 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
+      this._restoreFilters();
       this._addFilter(); // Add a default filter and render
       this.activeRequestsCount = 0; // Number of active requests to get the table extract
       this.warningNotification = new App.View.NotificationView({
@@ -167,6 +170,21 @@
           }
         }.bind(this), 200);
       }
+    },
+
+    /**
+     * Restore the default filters if exist
+     */
+    _restoreFilters: function () {
+      if (!this.options.filters) return;
+      var defaultFilter = this.options.defaultFilter;
+      this.collection.add(this.options.filters.map(function (filter) {
+        var o = Object.assign({}, defaultFilter, filter, { name: filter.field });
+        if (o.from) o.from = +o.from;
+        if (o.to) o.to = +o.to;
+        delete o.field;
+        return o;
+      }));
     },
 
     /**

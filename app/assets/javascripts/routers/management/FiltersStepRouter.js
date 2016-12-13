@@ -39,6 +39,7 @@
       var dashboardFiltersView = new App.View.DashboardFiltersView({
         el: '.js-filters',
         fields: this._getFields(),
+        filters: (window.gon && gon.filtersArray) || null,
         endpointUrl: (window.gon && gon.filtersEndpointUrl) || null
       });
 
