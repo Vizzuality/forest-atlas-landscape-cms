@@ -189,6 +189,14 @@
       content: '';
     }
 
+    a {
+      // Do not set inline-block here otherwise the links will be forced to be on online line
+      padding: 0 3px;
+      background-color: rgba($color-1, .2);
+      color: currentColor;
+      text-decoration: none;
+    }
+
     h1 {
       margin-bottom: 25px;
       color: $color-4;
@@ -203,14 +211,6 @@
 
       & + p {
         margin-top: 20px;
-      }
-
-      a {
-        // Do not set inline-block here otherwise the links will be forced to be on online line
-        padding: 0 3px;
-        background-color: rgba($color-1, .2);
-        color: currentColor;
-        text-decoration: none;
       }
     }
 
