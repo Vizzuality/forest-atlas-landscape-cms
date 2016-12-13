@@ -130,10 +130,11 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward(
-          (@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path),
-          nil,
-          (@page.content_type ? wizard_steps[3] : next_step))
+        move_forward (@page.content_type ? skip_step : next_step)
+        #move_forward(
+        #  (@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path),
+        #  nil,
+        #  (@page.content_type ? wizard_steps[3] : next_step))
 
       when 'type'
         set_current_page_state
@@ -164,23 +165,16 @@ class Management::PageStepsController < ManagementController
         build_current_dataset_setting
         set_current_dataset_setting_state
         @page.dataset_setting = @dataset_setting
-        move_forward management_site_site_pages_path params[:site_slug]
+        move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
       when 'open_content'
-        if save_button?
-          set_current_page_state
-          move_forward next_wizard_path, next_wizard_path
-        else
-          @page.enabled = true
-          set_current_page_state
-          redirect_to management_site_site_pages_path params[:site_slug]
-        end
+        set_current_page_state
+        move_forward next_step, next_step, next_step
 
       when 'open_content_preview'
-        @page.enabled = !@page.enabled
-        @page.save
-        redirect_to management_site_site_pages_path params[:site_slug]
+        set_current_page_state
+        move_forward
 
       # DYNAMIC INDICATOR DASHBOARD PATH
       when 'widget'
@@ -193,11 +187,11 @@ class Management::PageStepsController < ManagementController
       when 'dynamic_indicator_dashboard_preview'
         # TODO: When the validations are done, put this back
         # move_forward
-        redirect_to management_site_site_pages_path params[:site_slug]
+        move_forward
 
       # LINK PATH
       when 'link'
-        move_forward management_site_site_pages_path params[:site_slug]
+        move_forward
     end
   end
 
@@ -338,32 +332,50 @@ class Management::PageStepsController < ManagementController
     self.invalid_steps = steps
   end
 
-  # Return true if the button pressed was save
+  # Returns true if the button pressed was save
   def save_button?
     return false unless params[:button]
     return params[:button].upcase == SAVE.upcase
   end
 
+  # Returns true if the button pressed was publish
+  def publish_button?
+    return false unless params[:button]
+    return params[:button].upcase == PUBLISH.upcase
+  end
+
   # Saves the current state and goes to the next step
   # Params:
-  # +next_step_path+:: Path of the next step on pressing continue
-  # +save_step_path+:: Path of the next step on pressing save
-  def move_forward(next_step_path = next_wizard_path,
-                   save_step_path = management_site_site_pages_path(params[:site_slug]),
-                   next_step_name = next_step)
+  # +next_step_name+:: Next step on pressing continue
+  # +save_step_name+:: Next step on pressing save
+  # +publish_step_name+:: Next step on pressing publish
+  def move_forward(next_step_name = next_step,
+                   save_step_name = Wicked::FINISH_STEP,
+                   publish_step_name = Wicked::FINISH_STEP)
+
     if save_button?
 
       if @page.save
-        redirect_to save_step_path
+        redirect_to wizard_path(save_step_name)
       else
         render_wizard
       end
 
-    else
+    elsif publish_button?
+
+      @page.enabled = !@page.enabled
+      if @page.save
+        session[:page][:enabled] = @page.enabled
+        redirect_to wizard_path(publish_step_name)
+      else
+        render_wizard
+      end
+
+    else # Continue button
 
       if @page.valid?
         session[:invalid_steps].delete(next_step_name)
-        redirect_to next_step_path
+        redirect_to wizard_path(next_step_name)
       else
         render_wizard
       end
@@ -393,5 +405,10 @@ class Management::PageStepsController < ManagementController
     rescue InvalidStepError
       redirect_to wizard_path(wizard_steps[0])
     end
+  end
+
+  # Defines the path the wizard will go when finished
+  def finish_wizard_path
+    management_site_site_pages_path params[:site_slug]
   end
 end
