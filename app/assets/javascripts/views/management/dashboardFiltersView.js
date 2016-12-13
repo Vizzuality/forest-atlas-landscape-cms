@@ -182,6 +182,7 @@
         var o = Object.assign({}, defaultFilter, filter, { name: filter.name });
         if (o.from) o.from = +o.from;
         if (o.to) o.to = +o.to;
+        if (o.values) o.values = o.values.split(',');
         return o;
       }));
     },
