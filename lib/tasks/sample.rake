@@ -174,6 +174,7 @@ def create_pages_templates
       description: 'Terms and privacy',
       uri: 'terms-and-privacy',
       parent: home,
+      show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
       site_templates: [@fa_template, @la_template],
       content: {body: '<p>Terms and privacy</p>'}
