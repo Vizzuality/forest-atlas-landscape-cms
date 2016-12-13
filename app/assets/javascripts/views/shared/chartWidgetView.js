@@ -135,7 +135,7 @@
 
       // We check if we need to automatically select the columns
       if (!this.options.columnX && !this.options.columnY) {
-        var columns = this.widgetToolbox.getRandomColumns(this.options.chart);
+        var columns = this.widgetToolbox.getChartRandomColumns(this.options.chart);
         this.options.columnX = columns.x;
         this.options.columnY = columns.y;
       }

@@ -4,6 +4,7 @@
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: flex-start;
+  overflow: hidden;
 
   .card {
     display: flex;
@@ -30,9 +31,11 @@
       height: 100%;
       text-indent: -10000px;
       cursor: pointer;
+      z-index: 1;
     }
 
     .content {
+      width: 100%;
       padding: 20px;
       transition: background .3s, color .1s, border-color .3s;
       border: 1px solid $color-7;
@@ -47,6 +50,49 @@
       p {
         font-size: $font-size-small;
         line-height: 1.5;
+      }
+    }
+
+
+    &.-single-data {
+      min-height: 85px;
+
+      .content {
+        display: flex;
+        position: relative;
+        align-items: center;
+
+        h3 {
+          width: 65%;
+          margin: 0;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          word-break: break-all;
+        }
+      }
+
+      input:checked + .content {
+        &::before {
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          width: 45px;
+          height: 8px;
+          transform: translateY(calc(-2px - 50%)) rotate(-45deg);
+          background-color: $color-3;
+          content: '';
+        }
+
+        &::after {
+          position: absolute;
+          top: calc(50% + 9px);
+          right: 53px;
+          width: 30px;
+          height: 8px;
+          transform: translateY(-50%) rotate(45deg);
+          background-color: $color-3;
+          content: '';
+        }
       }
     }
   }

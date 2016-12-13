@@ -6,7 +6,7 @@
 #  is_confirmed               :boolean
 #  is_dataset_default_context :boolean
 #  context_id                 :integer
-#  dataset_id                 :integer
+#  dataset_id                 :string
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #

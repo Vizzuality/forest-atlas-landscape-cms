@@ -175,7 +175,9 @@
      */
     _onClickOption: function (e) {
       e.stopPropagation(); // Need it so we don't call _onClickBody
-      var id = e.target.dataset.id;
+      // If we can't get the ID from the target it's probably because the user clicked
+      // the arrow, we then retrieve the option's ID which is the parent element
+      var id = e.target.dataset.id ? e.target.dataset.id : e.target.parentElement.dataset.id;
       this._navigateForward(id);
     },
 

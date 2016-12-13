@@ -2,15 +2,15 @@ class Management::PageStepsController < ManagementController
   include Wicked::Wizard
   include TreeStructureHelper
 
-  # The order of prepend is the opposite of its declaration
-  prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update, :edit]
-  prepend_before_action :set_site, only: [:new, :edit, :show, :update]
-  before_action :setup_wizard
+  before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results]
 
-# TODO: Authenticate user per site
-# before_action :authenticate_user_for_site!, only: [:index, :new, :create]
-# before_action :set_content_type_variables, only: [:new, :edit]
+  # The order of prepend is the opposite of its declaration
+  prepend_before_action :load_wizard
+  prepend_before_action :set_steps
+  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results]
+  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results]
+
+  before_action :redirect_invalid_step
 
   helper_method :form_steps
   attr_accessor :steps_names
@@ -21,12 +21,13 @@ class Management::PageStepsController < ManagementController
   PUBLISH  = 'PUBLISH'.freeze
 
 
-  # TODO : create a session for incorrect state and last step visited
+  # TODO : create a session for incorrect state and last step visited (?)
 
 
   # This action cleans the session
   def new
     session[:dataset_setting] = {}
+    session[:invalid_steps] = %w[type title]
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
@@ -46,27 +47,41 @@ class Management::PageStepsController < ManagementController
   def edit
     session[:page] = {}
     session[:dataset_setting] = {}
+    session[:invalid_steps] = 'type'
     redirect_to wizard_path('position')
   end
 
   def show
+    if invalid_steps.include? step
+      redirect_to wizard_path(wizard_steps[0])
+      return
+    end
+
     case step
       when 'position'
         assign_position
       when 'title'
       when 'type'
-        if @page.content_type
-          redirect_to wizard_path(wizard_steps[3])
-          return
-        end
-
       when 'dataset'
         @context_datasets = current_user.get_context_datasets
 
       when 'filters'
         build_current_dataset_setting
         @fields = @dataset_setting.get_fields
+        @fields.each{ |f| f[:type] = 'number' if %w[double long].include?(f[:type])}
         gon.fields = @fields
+        gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
+        gon.filters_array = if @dataset_setting.filters
+                              JSON.parse @dataset_setting.filters
+                            else
+                              nil
+                            end
+
+        # Saving all the possible visible fields for this dataset so that ...
+        # ... they can be used in the filtered_results
+        (@dataset_setting.set_columns_visible(
+          @fields.map{|f| f[:name]} )) unless @dataset_setting.columns_visible
+        set_current_dataset_setting_state
 
       when 'columns'
         build_current_dataset_setting
@@ -74,11 +89,13 @@ class Management::PageStepsController < ManagementController
 
       when 'preview'
         build_current_dataset_setting
-        gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? {} : (JSON.parse @dataset_setting.columns_changeable)
-        gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? {} : (JSON.parse @dataset_setting.default_graphs)
-        gon.analysis_map = @dataset_setting.default_map.blank? ? {} : (JSON.parse @dataset_setting.default_map)
+        gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
+        gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? nil : (JSON.parse @dataset_setting.default_graphs)
+        gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
+
+        @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 
       # OPEN CONTENT PATH
       when 'open_content'
@@ -97,6 +114,13 @@ class Management::PageStepsController < ManagementController
   end
 
   def update
+    # To avoid submitting forbidden data
+    if invalid_steps.include? step
+      redirect_to wizard_path(wizard_steps[0])
+      return
+    end
+    session[:invalid_steps] << 'type' if @page.content_type
+
     @page.form_step = step
     case step
       when 'position'
@@ -106,7 +130,11 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward(@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path)
+        move_forward (@page.content_type ? skip_step : next_step)
+        #move_forward(
+        #  (@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path),
+        #  nil,
+        #  (@page.content_type ? wizard_steps[3] : next_step))
 
       when 'type'
         set_current_page_state
@@ -137,23 +165,16 @@ class Management::PageStepsController < ManagementController
         build_current_dataset_setting
         set_current_dataset_setting_state
         @page.dataset_setting = @dataset_setting
-        move_forward management_site_site_pages_path params[:site_slug]
+        move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
       when 'open_content'
-        if save_button?
-          set_current_page_state
-          move_forward next_wizard_path, next_wizard_path
-        else
-          @page.enabled = true
-          set_current_page_state
-          redirect_to management_site_site_pages_path params[:site_slug]
-        end
+        set_current_page_state
+        move_forward next_step, next_step, next_step
 
       when 'open_content_preview'
-        @page.enabled = !@page.enabled
-        @page.save
-        redirect_to management_site_site_pages_path params[:site_slug]
+        set_current_page_state
+        move_forward
 
       # DYNAMIC INDICATOR DASHBOARD PATH
       when 'widget'
@@ -161,24 +182,43 @@ class Management::PageStepsController < ManagementController
 
       when 'dynamic_indicator_dashboard'
         redirect_to next_wizard_path
+        # move_forward
 
       when 'dynamic_indicator_dashboard_preview'
         # TODO: When the validations are done, put this back
-        #if @page.save
-          redirect_to management_site_site_pages_path params[:site_slug]
-        #else
-        #  render_wizard
-        #end
+        # move_forward
+        move_forward
 
       # LINK PATH
       when 'link'
-        move_forward management_site_site_pages_path params[:site_slug]
-        #if @page.save
-        #  redirect_to management_site_site_pages_path params[:site_slug]
-        #else
-        #  render_wizard
-        #end
+        move_forward
     end
+  end
+
+  # GET /management/sites/:slug/page_steps/:id/filtered_results
+  def filtered_results
+    build_current_dataset_setting
+    unless @dataset_setting && @dataset_setting.dataset_id && @dataset_setting.api_table_name
+      render json: {count: 0, rows: []}.to_json
+      return
+    end
+
+    temp_dataset_setting =
+      DatasetSetting.new(dataset_id: @dataset_setting.dataset_id,
+          api_table_name: @dataset_setting.api_table_name,
+          columns_visible: @dataset_setting.columns_visible)
+
+    filters = params[:filters]
+    temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map{|h| h.select{|k| k != 'variable'}})
+
+    begin
+      count = temp_dataset_setting.get_row_count['data'].first.values.first
+      preview = temp_dataset_setting.get_preview['data']
+    rescue
+      count = 0
+      preview = []
+    end
+    render json: {count: count, rows: preview}.to_json
   end
 
   private
@@ -186,7 +226,9 @@ class Management::PageStepsController < ManagementController
     # TODO: To have different permissions for different steps
     params.require(:site_page).permit(:name, :description, :position, :uri,
                                       :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
-                                      dataset_setting: [:context_id_dataset_id, :filters, visible_fields: []])
+                                      dataset_setting: [:context_id_dataset_id, :filters,
+                                                        :default_graphs, :default_map,
+                                                        visible_fields: []])
   end
 
   # Sets the current site from the url
@@ -226,33 +268,42 @@ class Management::PageStepsController < ManagementController
     end
     @dataset_setting.assign_attributes session[:dataset_setting] if session[:dataset_setting]
 
-    # If the user changed the id of the dataset, the entity is reset
     if ids = ds_params[:context_id_dataset_id]
       ids = ids.split(' ')
-      @dataset_setting = DatasetSetting.new(context_id: ids[0], dataset_id: ids[1])
+
+      # If the user changed the id of the dataset, the entity is reset
+      if @dataset_setting.dataset_id && @dataset_setting.dataset_id != ids[1]
+        session[:dataset_setting] = nil
+        session[:invalid_steps] = %w[type columns preview]
+        @dataset_setting.filters = @dataset_setting.columns_changeable = @dataset_setting.columns_visible = nil
+      end
+
+      @dataset_setting.assign_attributes(context_id: ids[0], dataset_id: ids[1])
       @dataset_setting.api_table_name = @dataset_setting.get_table_name
     end
 
     if fields = ds_params[:filters]
       fields = JSON.parse fields
-      filters = []
-      changeables = []
-      fields.each do |field|
-        name = field['name']
-        from = field['from']
-        to = field['to']
-        (changeables << field['name']) if name && field['variable'] == 'true'
-        (filters << "#{name} between #{from} and #{to}") if name && from && to
-      end
-      filters = filters.blank? ? '' : filters.to_json
-      changeables = changeables.blank? ? '' : changeables.to_json
-      @dataset_setting.assign_attributes({filters: filters, columns_changeable: changeables})
+
+      # Removes the "variable" param and sets the filters
+      @dataset_setting.set_filters(fields.map{|h| h.select{|k| k != 'variable'}})
+
+      # Sets the changeable fields from the params
+      @dataset_setting.set_columns_changeable(fields.map{|h| h['name'] if h['variable'] == true}.compact)
     end
 
     if fields = ds_params[:visible_fields]
-      columns_visible = fields.to_json
-      @dataset_setting.columns_visible = columns_visible
+      @dataset_setting.columns_visible = fields.to_json
     end
+
+    if fields = ds_params[:default_map]
+      @dataset_setting.default_map = fields
+    end
+
+    if fields = ds_params[:default_graphs]
+      @dataset_setting.default_graphs = fields
+    end
+
   end
 
   # Saves the current data settings state in the session
@@ -269,11 +320,15 @@ class Management::PageStepsController < ManagementController
       self.steps = steps[:pages]
       self.steps_names = steps[:names]
     else
+      invalid_steps << 'type' if params[:id] != 'type'
       steps = @page.form_steps
       self.steps = steps[:pages]
       self.steps_names = steps[:names]
-      invalid_steps = ['type']
     end
+
+    invalid_steps << session[:invalid_steps] if session[:invalid_steps]
+    invalid_steps.flatten!
+    invalid_steps.uniq!
     set_invalid_steps invalid_steps
   end
 
@@ -287,30 +342,50 @@ class Management::PageStepsController < ManagementController
     self.invalid_steps = steps
   end
 
-  # Return true if the button pressed was save
+  # Returns true if the button pressed was save
   def save_button?
     return false unless params[:button]
     return params[:button].upcase == SAVE.upcase
   end
 
+  # Returns true if the button pressed was publish
+  def publish_button?
+    return false unless params[:button]
+    return params[:button].upcase == PUBLISH.upcase
+  end
+
   # Saves the current state and goes to the next step
   # Params:
-  # +next_step+:: Next step on pressing continue
-  # +save_step+:: Next step on pressing save
-  def move_forward(next_step = next_wizard_path,
-                   save_step = management_site_site_pages_path(params[:site_slug]))
+  # +next_step_name+:: Next step on pressing continue
+  # +save_step_name+:: Next step on pressing save
+  # +publish_step_name+:: Next step on pressing publish
+  def move_forward(next_step_name = next_step,
+                   save_step_name = Wicked::FINISH_STEP,
+                   publish_step_name = Wicked::FINISH_STEP)
+
     if save_button?
 
       if @page.save
-        redirect_to save_step
+        redirect_to wizard_path(save_step_name)
       else
         render_wizard
       end
 
-    else
+    elsif publish_button?
+
+      @page.enabled = !@page.enabled
+      if @page.save
+        session[:page][:enabled] = @page.enabled
+        redirect_to wizard_path(publish_step_name)
+      else
+        render_wizard
+      end
+
+    else # Continue button
 
       if @page.valid?
-        redirect_to next_step
+        session[:invalid_steps].delete(next_step_name)
+        redirect_to wizard_path(next_step_name)
       else
         render_wizard
       end
@@ -324,4 +399,26 @@ class Management::PageStepsController < ManagementController
     gon.parent_id = @page.parent_id
   end
 
+  # Checks is the user is in an allowed step and if not ...
+  # ... redirects the user to the first step
+  def redirect_invalid_step
+    if invalid_steps.include? step
+      redirect_to wizard_path(wizard_steps[0])
+    end
+  end
+
+  # Calls the setup wizard and if the step is invalid ...
+  # ... redirects the user to the first step
+  def load_wizard
+    begin
+      setup_wizard
+    rescue InvalidStepError
+      redirect_to wizard_path(wizard_steps[0])
+    end
+  end
+
+  # Defines the path the wizard will go when finished
+  def finish_wizard_path
+    management_site_site_pages_path params[:site_slug]
+  end
 end

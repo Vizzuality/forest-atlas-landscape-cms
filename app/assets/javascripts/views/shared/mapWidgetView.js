@@ -8,7 +8,7 @@
       // Data to display on the chart
       data: [],
       // Name of the default representation (only "dots" for now)
-      type: null,
+      type: 'dots',
       // Center of the map
       center: [0, 0],
       // Zoom of the map

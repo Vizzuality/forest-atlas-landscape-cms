@@ -1,0 +1,58 @@
+// NOTE:
+// This component has been built for the management section, despite being in
+// the shared folder. As a consequence, it lacks responsive styles.
+
+.c-modal {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-5, .3);
+  z-index: 20;
+
+  > .container {
+    position: relative;
+    width: 100%;
+    max-width: 880px;
+    height: 100%;
+    max-height: 600px;
+    border-radius: 4px;
+    background-color: $color-3;
+
+    > .close-button {
+      display: block;
+      position: absolute;
+      top: -10px;
+      right: 0;
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      padding: 0;
+      transform: translateY(-100%);
+      border: 0;
+      background: transparent;
+      text-indent: -10000px;
+      cursor: pointer;
+
+      svg {
+        display: block;
+        path { fill: $color-3; }
+      }
+    }
+
+    > .content {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+
+  &.-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
