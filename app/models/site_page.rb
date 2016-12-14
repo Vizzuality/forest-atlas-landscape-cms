@@ -57,8 +57,11 @@ class SitePage < Page
         steps = { pages: %w[position title type link],
                   names: %w[Position Title Type Link]}
       when ContentType::STATIC_CONTENT
-        steps = { pages: %w[position title type static_content],
-                  names: ['Position', 'Title', 'Type', 'Static Content']}
+        steps = { pages: %w[position title type],
+                  names: %w[Position  Title Type]}
+      when ContentType::HOMEPAGE
+        steps = { pages: %w[open_content open_content_preview],
+                  names: ['Open Content', 'Open Content Preview']}
     end
     steps
   end
