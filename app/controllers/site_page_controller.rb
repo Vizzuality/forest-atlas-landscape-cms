@@ -66,9 +66,6 @@ class SitePageController < ApplicationController
     end
   end
 
-  def dynamic_indicator_dashboard
-  end
-
   def map_report
   end
 

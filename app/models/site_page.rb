@@ -50,9 +50,6 @@ class SitePage < Page
       when ContentType::ANALYSIS_DASHBOARD
         steps = { pages: %w[position title type dataset filters columns preview],
                   names: %w[Position Title Type Dataset Filters Columns Preview]}
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        steps = { pages: %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview],
-                  names: ['Position', 'Title',  'Type', 'Widget', 'Dynamic Indicator Dashboard', 'Preview']}
       when ContentType::LINK
         steps = { pages: %w[position title type link],
                   names: %w[Position Title Type Link]}

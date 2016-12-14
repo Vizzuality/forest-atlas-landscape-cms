@@ -38,8 +38,6 @@ class Management::SitePagesController < ManagementController
         @breadcrumbs = ['Page creation', 'Open Content']
       when ContentType::ANALYSIS_DASHBOARD
         @breadcrumbs = ['Page creation', 'Analysis Dashboard']
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @breadcrumbs = ['Page creation', 'Dynamic Indicator Dashboard']
       when ContentType::HOMEPAGE
         @breadcrumbs = ['Page creation', 'Homepage']
       when ContentType::LINK
@@ -136,9 +134,6 @@ class Management::SitePagesController < ManagementController
       when ContentType::ANALYSIS_DASHBOARD
         @partial = 'analysis_dashboard'
         @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Analysis Dashboard']
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        @partial = 'dynamic_indicator_dashboard'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Dynamic Indicator Dashboard']
       when ContentType::HOMEPAGE
         @partial = 'homepage'
         @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Homepage']
