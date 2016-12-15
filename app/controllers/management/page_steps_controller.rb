@@ -249,7 +249,7 @@ class Management::PageStepsController < ManagementController
 
   # Saves the current page state in session
   def set_current_page_state
-    session[:page] = @page
+    session[:page] = @page ? @page.attributes : nil
   end
 
   # Builds the current dataset setting based on the database, session and params
@@ -308,7 +308,7 @@ class Management::PageStepsController < ManagementController
 
   # Saves the current data settings state in the session
   def set_current_dataset_setting_state
-    session[:dataset_setting] = @dataset_setting
+    session[:dataset_setting] = @dataset_setting ? @dataset_setting.attributes : nil
   end
 
   # Sets the current steps

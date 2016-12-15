@@ -27,6 +27,9 @@ gem 'wicked' # Multi-steps form
 
 gem 'faraday', '~> 0.9.2'
 
+# Session management
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+
 # Assets Pipeline
 gem 'autoprefixer-rails'
 

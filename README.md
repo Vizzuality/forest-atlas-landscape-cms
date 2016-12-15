@@ -96,7 +96,18 @@ Also we have some custom rules you can check in `.eslintrc` and `.sass-lint`, re
 Have fun coding! 😁🌲
 
 
-## Environment variables description
+## Server Setup
+
+### Chronjob
+
+Add a chronjob to delete the old sessions from the database.
+This can be accomplish by settting the chronjob like this:
+
+    0 5 * * * cd /path/to/app/dir/ && rake RAILS_ENV=production sessions:trim > /dev/null 2>&1
+
+This will run at 5 AM every day and delete the old sessions.
+
+### Environment variables description
 
 #### API_URL
 
