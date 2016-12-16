@@ -99,6 +99,7 @@
       background: transparent;
       text-indent: -10000px; // For accessibility, we keep the text
       cursor: pointer;
+      overflow: hidden; // Needed for the negative text-indent
 
       &::after {
         display: block;
@@ -116,6 +117,15 @@
 
       > svg {
         display: block;
+
+        // I haven't been able to find why, but there's a 1px difference
+        // in the top position of the icon on FF
+        // This media query is a hack found on browserhacks that targets :only-child
+        // Firefox
+        @media screen and (-moz-images-in-menus: 0) {
+          position: relative;
+          top: -1px;
+        }
       }
     }
 
