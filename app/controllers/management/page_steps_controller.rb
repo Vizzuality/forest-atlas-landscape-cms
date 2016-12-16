@@ -101,11 +101,6 @@ class Management::PageStepsController < ManagementController
       when 'open_content'
       when 'open_content_preview'
 
-      # DYNAMIC INDICATOR PATH
-      when 'widget'
-      when 'dynamic_indicator_dashboard'
-      when 'dynamic_indicator_dashboard_preview'
-
       end
 
       @breadcrumbs = [@site.name, 'Page creation']
@@ -174,19 +169,6 @@ class Management::PageStepsController < ManagementController
 
       when 'open_content_preview'
         set_current_page_state
-        move_forward
-
-      # DYNAMIC INDICATOR DASHBOARD PATH
-      when 'widget'
-        redirect_to next_wizard_path
-
-      when 'dynamic_indicator_dashboard'
-        redirect_to next_wizard_path
-        # move_forward
-
-      when 'dynamic_indicator_dashboard_preview'
-        # TODO: When the validations are done, put this back
-        # move_forward
         move_forward
 
       # LINK PATH

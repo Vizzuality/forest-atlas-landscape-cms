@@ -4,9 +4,10 @@
   /* eslint-disable no-unused-vars */
   var OPEN_CONTENT = 1;
   var ANALYSIS_DASHBOARD = 2;
-  var DYNAMIC_INDICATOR = 3;
-  var LINK = 6;
-  var STATIC_CONTENT = 7;
+  var HOMEPAGE = 3;
+  var MAP = 4;
+  var LINK = 5;
+  var STATIC_CONTENT = 6;
   /* eslint-enable no-unused-vars */
 
   App.Router.ManagementPageEdition = Backbone.Router.extend({

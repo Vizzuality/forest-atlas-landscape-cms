@@ -45,7 +45,7 @@ class Page < ApplicationRecord
   end
 
   def disableable?
-    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::DYNAMIC_INDICATOR_DASHBOARD].include? self.content_type
+    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::STATIC_CONTENT].include? self.content_type
   end
 
   def visible?
