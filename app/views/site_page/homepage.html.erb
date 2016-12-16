@@ -8,39 +8,8 @@
 %>
 <div class="c-content">
   <div class="wrapper">
-    <h3 class="content-title">About the Atlas</h3>
-
-    <p class="paragraph -intro">The Interactive forest atlas of Cameroom is a living, dynamic forest
-      monitoring system that provides unbiased and up-to-date information on the
-      Cameroon's forest sector. Built on a geographic information system (GIS)
-      platform, the Atlas aims to strengthen forest management and land use
-      planning by bringing information on all major land use categories onto
-      the same standardized platform.
-    </p>
-
-    <img class="image" src="<%= asset_path('content-sample.jpg') %>" alt="content-sample">
-
-    <p class="paragraph">The underlying forest atlas database is supported and kept up-to-date by
-      the Ministry of Water, Forests, Hunting and Fishing and the World Resources
-      Institute (WRI), releasing new information as it becomes available via
-      this <a href="#">mapping application</a>. Other publications are released periodically
-      and can be found in the <a href="#">download section</a>.
-    </p>
-
-    <blockquote class="quote">
-      A key data challenge by integrating forest management classes with forest
-      cover extent and change data from GFW’s near-real-time monitoring system
-    </blockquote>
-
-    <p class="paragraph">Unless otherwise noted, Atlas data are licensed under a
-      <a href="#" target="_blank">Creative Commons Attribution 4.0</a>
-      International License. You are free to copy and redistribute
-      the material in any medium or format, and to transform and build upon the
-      material for any purpose, even commercially. You must give appropriate
-      credit, provide a link to the license, and indicate if changes were made.
-      When displaying and citing the data, use the appropriate credit as listed
-      for the corresponding dataset in the download section.
-    </p>
+    <div class="js-content"></div>
+    <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@site_page.content).json unless @site_page.content.blank? || OpenStruct.new(@site_page.content).json.blank? %>" />
   </div>
 
 </div>

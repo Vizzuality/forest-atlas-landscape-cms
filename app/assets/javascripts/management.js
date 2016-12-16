@@ -21,7 +21,6 @@
 //= require handlebars
 //= require jquery-ui
 //= require jquery-nested-sortable
-//= require sir-trevor
 //= require fuse.js/fuse
 //= require object-assign-polyfill
 //= require datalib
@@ -34,7 +33,7 @@
 // = require_tree ./helpers
 // = require_tree ./routers/management
 // = require_tree ./templates
-// = require_tree ./blocks
+// = require_tree ./blots
 // = require_tree ./views/shared
 // = require_tree ./views/management
 // = require dispatchers/managementDispatcher
@@ -48,6 +47,6 @@
     Model: {},
     Router: {},
     Helper: {},
-    Block: {}
+    Blot: {}
   };
 }).call(this);

@@ -1,107 +1,373 @@
 .c-wysiwyg {
-  padding: 20px 0;
-  border: 1px solid rgba($color-4, .3);
-  box-shadow: 0 2px 3px 0 rgba($color-4, .1);
+  position: relative;
+  max-width: 880px;
+  min-height: calc(100vh - 533px);
+  margin: 0 auto;
+  border: 1px solid $color-7;
 
-  p {
-    margin: 0;
-    font-size: $font-size-s-normal;
+  .ql-editor {
+    min-height: 100%;
+    padding: 30px 105px;
+    overflow: visible;
+  }
 
-    &.-intro {
-      font-size: $font-size-x-normal;
-      font-weight: $font-weight-light;
+  // TOOLTIP
+  .ql-bubble {
+    .ql-toolbar {
+      display: flex;
+      justify-content: center ;
+      padding-top: 5px;
 
-      &.-empty {
+      .ql-formats {
+        margin: 0;
+      }
+    }
+
+    .ql-tooltip {
+      height: 35px;
+      border-radius: 4px;
+      background-color: rgba($color-5, .8);
+      box-shadow: 0 1px 3px 0 rgba($color-5, .25);
+    }
+
+    .ql-tooltip-arrow {
+      top: auto;
+      bottom: -6px;
+      border-top: 6px solid rgba($color-5, .8);
+      border-bottom: 0;
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    width: 100%;
+    height: 45px;
+    transform: translateY(-50%);
+
+    > button {
+      position: relative;
+      width: 45px;
+      height: 45px;
+      margin: 0 10px;
+      border: 0;
+      border-radius: 100%;
+      background-color: $color-1;
+      text-indent: -10000px;
+      cursor: pointer;
+
+      svg {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &.-hidden {
+      display: none;
+    }
+  }
+
+  .sidebar {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: calc(100% - 50px - 105px);
+    height: 45px;
+    transform: translateY(-50%);
+    z-index: 1;
+
+    &.-hidden {
+      display: none;
+    }
+
+    > button {
+      position: relative;
+      top: 5px;
+      flex-basis: 44px;
+      flex-shrink: 0;
+      height: 35px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      text-indent: -10000px; // For accessibility, we keep the text
+      cursor: pointer;
+      overflow: hidden; // Needed for the negative text-indent
+
+      &::after {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 6px;
+        transition: transform .3s;
+        color: $color-3;
+        font-family: monospace;
+        font-size: $font-size-big;
+        line-height: 35px;
+        text-indent: 0;
+        content: '+';
+      }
+
+      > svg {
+        display: block;
+
+        // I haven't been able to find why, but there's a 1px difference
+        // in the top position of the icon on FF
+        // This media query is a hack found on browserhacks that targets :only-child
+        // Firefox
+        @media screen and (-moz-images-in-menus: 0) {
+          position: relative;
+          top: -1px;
+        }
+      }
+    }
+
+    > .blocks {
+      display: none;
+    }
+
+
+    &.-expanded {
+      > button {
+        &::after {
+          transform: rotate(-45deg);
+        }
+      }
+
+      > .blocks {
+        display: flex;
         position: relative;
-        min-height: $font-size-x-normal;
+        flex-grow: 1;
+        flex-shrink: 1;
+        justify-content: center;
+
+        button {
+          display: block;
+          position: relative;
+          width: 45px;
+          height: 45px;
+          margin: 0 10px;
+          padding: 0;
+          border: 0;
+          border-radius: 100%;
+          background-color: $color-1;
+          cursor: pointer;
+
+          > span {
+            display: block;
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            width: 100%;
+            color: rgba($color-4, .8);
+            font-size: $font-size-small;
+            text-align: center;
+          }
+        }
 
         &::after {
-          display: inline-block;
+          display: block;
           position: absolute;
-          top: 0;
+          top: 50%;
           left: 0;
-          color: rgba($color-4, .3);
-          content: 'Introduction';
+          width: 100%;
+          height: 1px;
+          background-color: $color-7;
+          content: '';
+          z-index: -1;
         }
       }
     }
   }
 
-  .content-title {
-    color: $color-4;
-    font-size: $font-size-big;
-    font-weight: $font-weight-bold;
+  // Styles of the content
+  .ql-editor {
+    font-family: $font-family-1;
+    font-size: $font-size-normal;
+    white-space: normal;
 
-    &.-empty {
-      position: relative;
-      min-height: $font-size-big;
+    &::after { // clearfix for the floating elements
+      display: table;
+      clear: both;
+      content: '';
+    }
 
-      &::after {
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: rgba($color-4, .3);
-        content: 'Title';
+    a {
+      // Do not set inline-block here otherwise the links will be forced to be on online line
+      padding: 0 3px;
+      background-color: rgba($color-1, .2);
+      color: currentColor;
+      text-decoration: none;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: $color-4;
+      font-size: $font-size-huge;
+      font-weight: $font-weight-light;
+      letter-spacing: .3px;
+    }
+
+    p {
+      letter-spacing: .1px;
+      line-height: 1.5;
+
+      & + p {
+        margin-top: 20px;
       }
     }
-  }
 
-  .quote {
-    font-size: $font-size-x-normal;
-    font-style: italic;
-
-    &::before {
-      content: '“';
-    }
-
-    &::after {
-      content: '”';
-    }
-
-    &.-empty {
-      position: relative;
-      min-height: $font-size-x-normal;
+    blockquote {
+      margin: 60px 0;
+      padding: 0;
+      border: 0;
+      font-size: $font-size-big;
+      font-weight: $font-weight-light;
+      letter-spacing: .2px;
+      line-height: 1.1;
 
       &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: rgba($color-4, .3);
-        content: '“Citation”';
+        content: '“';
       }
 
       &::after {
-        content: none;
+        content: '”';
+      }
+    }
+
+    .-image {
+      position: relative;
+
+      > img {
+        display: block;
+        width: calc(100% + 390px);
+        max-width: none;
+        margin: 35px -195px;
+        border-radius: 4px;
+      }
+    }
+
+    .-intro {
+      margin-bottom: 30px;
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-light;
+      letter-spacing: .1px;
+      line-height: 1.54;
+    }
+
+    .-widget {
+      position: relative;
+      width: calc(100% + 390px);
+      margin: 35px -195px;
+      padding: 45px;
+      clear: both; // Prevents issue with another floated widget
+      border: 1px solid $color-7;
+      background-color: $color-3;
+
+      &.-half {
+        width: calc((100% + 390px) / 2 - 10px);
+        margin-right: 20px; // Margin with other content
+        float: left;
+        clear: none;
+
+        & + .-half {
+          transform: translateX(195px);
+        }
+      }
+
+      &:not(:hover) .toolbar {
+        display: none;
       }
     }
   }
 
-  .st-block {
-    &[data-type='title'] {
-      margin: 40px 0 15px;
-    }
 
-    &[data-type='introduction'] {
-      margin: 15px 0;
-    }
+  // p {
+  //   margin: 0;
+  //   font-size: $font-size-s-normal;
 
-    &[data-type='quote'] {
-      margin: 15px 0;
+  //   &.-intro {
+  //     font-size: $font-size-x-normal;
+  //     font-weight: $font-weight-light;
 
-      > .st-block__inner {
-        margin: 0 110px;
-      }
-    }
+  //     &.-empty {
+  //       position: relative;
+  //       min-height: $font-size-x-normal;
 
-    &[data-type='text'] {
-      margin: 10px 0;
-    }
-  }
+  //       &::after {
+  //         display: inline-block;
+  //         position: absolute;
+  //         top: 0;
+  //         left: 0;
+  //         color: rgba($color-4, .3);
+  //         content: 'Introduction';
+  //       }
+  //     }
+  //   }
+  // }
 
-  .st-block-replacer {
-    // Do not remove unless you make sure the "+" button doesn't overlap the action bar
-    z-index: 0;
-  }
+  // .quote {
+  //   font-size: $font-size-x-normal;
+  //   font-style: italic;
+
+  //   &::before {
+  //     content: '“';
+  //   }
+
+  //   &::after {
+  //     content: '”';
+  //   }
+
+  //   &.-empty {
+  //     position: relative;
+  //     min-height: $font-size-x-normal;
+
+  //     &::before {
+  //       position: absolute;
+  //       top: 0;
+  //       left: 0;
+  //       color: rgba($color-4, .3);
+  //       content: '“Citation”';
+  //     }
+
+  //     &::after {
+  //       content: none;
+  //     }
+  //   }
+  // }
+
+  // .st-block {
+  //   &[data-type='title'] {
+  //     margin: 40px 0 15px;
+  //   }
+
+  //   &[data-type='introduction'] {
+  //     margin: 15px 0;
+  //   }
+
+  //   &[data-type='quote'] {
+  //     margin: 15px 0;
+
+  //     > .st-block__inner {
+  //       margin: 0 110px;
+  //     }
+  //   }
+
+  //   &[data-type='text'] {
+  //     margin: 10px 0;
+  //   }
+  // }
+
+  // .st-block-replacer {
+  //   // Do not remove unless you make sure the "+" button doesn't overlap the action bar
+  //   z-index: 0;
+  // }
 
 }
