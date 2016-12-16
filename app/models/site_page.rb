@@ -24,7 +24,7 @@ class SitePage < Page
   has_many :routes, through: :site
   has_one :site_template, through: :site
   has_many :users, through: :site
-  has_one :dataset_setting, dependent: :destroy, inverse_of: :site_page
+  has_one :dataset_setting, dependent: :destroy, inverse_of: :site_page, autosave: true
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
