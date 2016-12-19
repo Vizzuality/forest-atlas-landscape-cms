@@ -204,7 +204,7 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :position, :uri,
+    params.require(:site_page).permit(:name, :description, :position, :uri, :show_on_menu,
                                       :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
                                       dataset_setting: [:context_id_dataset_id, :filters,
                                                         :default_graphs, :default_map,

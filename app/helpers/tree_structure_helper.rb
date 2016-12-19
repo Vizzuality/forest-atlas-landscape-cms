@@ -5,7 +5,7 @@ module TreeStructureHelper
   def build_pages_tree
     # The hash_tree method returns a hash that for each node has a SitePage ...
     # ... as the key, and an array of hashes for values
-    tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position, :enabled, :content_type).hash_tree
+    tree = Page.where(site_id: @site.id).select(:id, :name, :parent_id, :position, :enabled, :content_type, :show_on_menu).hash_tree
     return format_tree tree.keys.first, tree.values.first
   end
 
@@ -18,7 +18,7 @@ module TreeStructureHelper
     unless node_value.blank?
       children = []
       node_value.each do |key, value|
-        children << format_tree(key,value)
+        children << format_tree(key,value) if key.show_on_menu
       end
       tree.merge!({children: children})
     end
