@@ -1,8 +1,7 @@
 class Management::SitePagesController < ManagementController
-  before_action :set_page, only: [:show, :edit, :update, :destroy, :toggle_enable]
-  before_action :set_site, only: [:index, :new, :create]
-  before_action :authenticate_user_for_site!, only: [:index, :new, :create]
-  before_action :set_content_type_variables, only: [:new, :edit]
+  before_action :set_page, only: [:destroy, :toggle_enable]
+  before_action :set_site, only: :index
+  before_action :authenticate_user_for_site!, only: :index
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
@@ -51,56 +50,6 @@ class Management::SitePagesController < ManagementController
     end
   end
 
-  # GET /management/pages/new
-  def new
-    session[:new_page_parent] = params[:parent] if params[:parent]
-  end
-
-  # GET /management/pages/1/edit
-  def edit
-  end
-
-  # POST /management/pages
-  # POST /management/pages.json
-  def create
-    @site_page = @site.site_pages.build(page_params)
-    @site_page.enabled = false
-
-    @site_page.parent_id = session[:new_page_parent]
-    session[:new_page_parent] = nil
-
-    if @site_page.parent_id.blank?
-      @site_page.parent_id = @site.site_pages.where(url: '/').first.id
-      @site_page.position = @site.site_pages.where(parent_id: @site_page.parent).length
-    elsif @site_page.position.blank?
-      @site_page.position = @site.site_pages.where(parent_id: @site_page.parent).length
-    end
-
-    respond_to do |format|
-      if @site_page.save
-        format.html { redirect_to management_site_page_path(@site_page) }
-        format.json { render :show, status: :created, location: @site_page }
-      else
-        format.html { render :new }
-        format.json { render json: @site_page.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /management/pages/1
-  # PATCH/PUT /management/pages/1.json
-  def update
-    respond_to do |format|
-      if @site_page.update(page_params)
-        format.html { redirect_to management_site_page_path(@site_page), notice: 'SitePage was successfully updated.' }
-        format.json { render :show, status: :ok, location: @site_page }
-      else
-        format.html { render :edit }
-        format.json { render json: @site_page.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /management/pages/1
   # DELETE /management/pages/1.json
   def destroy
@@ -121,36 +70,6 @@ class Management::SitePagesController < ManagementController
   end
 
   private
-
-  # TODO: Remove this
-  def set_content_type_variables
-    @site_page = SitePage.new(content_type: params['type'].to_i) if @site_page.nil?
-    @is_creation = action_name == 'new'
-
-    case @site_page.content_type
-      when ContentType::OPEN_CONTENT
-        @partial = 'open_content'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Open Content']
-      when ContentType::ANALYSIS_DASHBOARD
-        @partial = 'analysis_dashboard'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Analysis Dashboard']
-      when ContentType::HOMEPAGE
-        @partial = 'homepage'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Homepage']
-      when ContentType::LINK
-        @partial = 'link'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'External Link']
-      when ContentType::MAP
-        @partial = 'map'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Map']
-      when ContentType::STATIC_CONTENT
-        @partial = 'static_content'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition', 'Static Content']
-      else
-        @partial = 'select_type'
-        @breadcrumbs = [@is_creation ? 'Page creation': 'Page edition']
-    end
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_site
