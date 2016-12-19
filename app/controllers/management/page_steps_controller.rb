@@ -94,6 +94,7 @@ class Management::PageStepsController < ManagementController
         gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
+        gon.legend = @dataset_setting.legend
 
         @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 
@@ -258,7 +259,10 @@ class Management::PageStepsController < ManagementController
       end
 
       @dataset_setting.assign_attributes(context_id: ids[0], dataset_id: ids[1])
-      @dataset_setting.api_table_name = @dataset_setting.get_table_name
+      ds_metadata = @dataset_setting.get_metadata
+      @dataset_setting.api_table_name = ds_metadata.dig('data', 'attributes', 'tableName')
+      @dataset_setting.legend = ds_metadata.dig('data', 'attributes', 'legend')
+
     end
 
     if fields = ds_params[:filters]
