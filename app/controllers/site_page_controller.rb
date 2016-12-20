@@ -63,10 +63,9 @@ class SitePageController < ApplicationController
       gon.analysis_data = @setting.get_filtered_dataset
       # ... last modification of the fields
       gon.analysis_timestamp = @setting.fields_last_modified
+      # ... legend fields
+      gon.legend = @setting.legend
     end
-  end
-
-  def dynamic_indicator_dashboard
   end
 
   def map_report

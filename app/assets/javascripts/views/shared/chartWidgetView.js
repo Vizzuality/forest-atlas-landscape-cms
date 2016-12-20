@@ -7,7 +7,7 @@
 
     defaults: {
       // Ratio between the height and the width (i.e. height = chartRatio * width)
-      chartRatio: 0.6,
+      chartRatio: 0.5,
       // Data to display on the chart
       data: [],
       // Name of the default chart type
@@ -16,6 +16,8 @@
       columnX: null,
       // Name of the column y
       columnY: null,
+      // Enable the chart selector
+      enableChartSelector: true,
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
@@ -212,7 +214,7 @@
 
     render: function () {
       this._renderChart();
-      this._renderChartSelector();
+      if (this.options.enableChartSelector) this._renderChartSelector();
       return this.el;
     }
 

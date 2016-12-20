@@ -23,7 +23,8 @@
             <%= check_box_tag "site_page[dataset_setting][visible_fields][]",
                               field[:name], @dataset_setting.get_columns_visible.include?(field[:name]),
                               id: 'column-' + field[:name],
-                              disabled: @dataset_setting.get_columns_changeable.include?(field[:name]) %>
+                              disabled: @dataset_setting.get_columns_changeable.include?(field[:name]) ||
+                                          @dataset_setting.get_legend_hash.map {|k, v| v if %w[lat long country region].include?(k)}.include?(field[:name])%>
             <div class="content">
               <h3><%= field[:name] %></h3>
             </div>

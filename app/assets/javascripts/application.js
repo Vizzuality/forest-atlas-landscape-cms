@@ -30,6 +30,7 @@
 // = require_tree ./helpers
 // = require_tree ./routers/front
 // = require_tree ./templates
+// = require_tree ./blots
 // = require_tree ./views/shared
 // = require_tree ./views/front
 // = require dispatchers/frontDispatcher
@@ -42,6 +43,7 @@
     View: {},
     Model: {},
     Router: {},
-    Helper: {}
+    Helper: {},
+    Blot: {}
   };
 }).call(this);

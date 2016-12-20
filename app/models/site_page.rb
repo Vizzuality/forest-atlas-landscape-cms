@@ -24,7 +24,7 @@ class SitePage < Page
   has_many :routes, through: :site
   has_one :site_template, through: :site
   has_many :users, through: :site
-  has_one :dataset_setting, dependent: :destroy, inverse_of: :site_page
+  has_one :dataset_setting, dependent: :destroy, inverse_of: :site_page, autosave: true
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
@@ -50,15 +50,15 @@ class SitePage < Page
       when ContentType::ANALYSIS_DASHBOARD
         steps = { pages: %w[position title type dataset filters columns preview],
                   names: %w[Position Title Type Dataset Filters Columns Preview]}
-      when ContentType::DYNAMIC_INDICATOR_DASHBOARD
-        steps = { pages: %w[position title type widget dynamic_indicator_dashboard dynamic_indicator_dashboard_preview],
-                  names: ['Position', 'Title',  'Type', 'Widget', 'Dynamic Indicator Dashboard', 'Preview']}
       when ContentType::LINK
         steps = { pages: %w[position title type link],
                   names: %w[Position Title Type Link]}
       when ContentType::STATIC_CONTENT
-        steps = { pages: %w[position title type static_content],
-                  names: ['Position', 'Title', 'Type', 'Static Content']}
+        steps = { pages: %w[position title type],
+                  names: %w[Position  Title Type]}
+      when ContentType::HOMEPAGE
+        steps = { pages: %w[open_content open_content_preview],
+                  names: ['Open Content', 'Open Content Preview']}
     end
     steps
   end

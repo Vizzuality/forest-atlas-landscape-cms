@@ -94,17 +94,13 @@ class Management::PageStepsController < ManagementController
         gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
+        gon.legend = @dataset_setting.legend
 
         @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 
       # OPEN CONTENT PATH
       when 'open_content'
       when 'open_content_preview'
-
-      # DYNAMIC INDICATOR PATH
-      when 'widget'
-      when 'dynamic_indicator_dashboard'
-      when 'dynamic_indicator_dashboard_preview'
 
       end
 
@@ -131,10 +127,6 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
         move_forward (@page.content_type ? wizard_steps[3] : next_step)
-        #move_forward(
-        #  (@page.content_type ? wizard_path(wizard_steps[3]) : next_wizard_path),
-        #  nil,
-        #  (@page.content_type ? wizard_steps[3] : next_step))
 
       when 'type'
         set_current_page_state
@@ -176,21 +168,9 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward
 
-      # DYNAMIC INDICATOR DASHBOARD PATH
-      when 'widget'
-        redirect_to next_wizard_path
-
-      when 'dynamic_indicator_dashboard'
-        redirect_to next_wizard_path
-        # move_forward
-
-      when 'dynamic_indicator_dashboard_preview'
-        # TODO: When the validations are done, put this back
-        # move_forward
-        move_forward
-
       # LINK PATH
       when 'link'
+        set_current_page_state
         move_forward
     end
   end
@@ -224,7 +204,7 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :position, :uri,
+    params.require(:site_page).permit(:name, :description, :position, :uri, :show_on_menu,
                                       :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
                                       dataset_setting: [:context_id_dataset_id, :filters,
                                                         :default_graphs, :default_map,
@@ -249,7 +229,7 @@ class Management::PageStepsController < ManagementController
 
   # Saves the current page state in session
   def set_current_page_state
-    session[:page] = @page
+    session[:page] = @page ? @page.attributes : nil
   end
 
   # Builds the current dataset setting based on the database, session and params
@@ -279,7 +259,10 @@ class Management::PageStepsController < ManagementController
       end
 
       @dataset_setting.assign_attributes(context_id: ids[0], dataset_id: ids[1])
-      @dataset_setting.api_table_name = @dataset_setting.get_table_name
+      ds_metadata = @dataset_setting.get_metadata
+      @dataset_setting.api_table_name = ds_metadata.dig('data', 'attributes', 'tableName')
+      @dataset_setting.legend = ds_metadata.dig('data', 'attributes', 'legend')
+
     end
 
     if fields = ds_params[:filters]
@@ -308,7 +291,7 @@ class Management::PageStepsController < ManagementController
 
   # Saves the current data settings state in the session
   def set_current_dataset_setting_state
-    session[:dataset_setting] = @dataset_setting
+    session[:dataset_setting] = @dataset_setting ? @dataset_setting.attributes : nil
   end
 
   # Sets the current steps

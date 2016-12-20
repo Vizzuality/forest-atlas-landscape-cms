@@ -30,6 +30,8 @@ class DatasetService
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
+    return {} unless fieldsJSON
+
     fields = []
     fieldsJSON['fields'].each do |data|
       if %w[number date string long double].include? data.last['type']

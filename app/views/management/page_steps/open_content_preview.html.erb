@@ -1,6 +1,7 @@
 <div class="c-content">
   <div class="wrapper">
-    <%= @page.content['body'].html_safe unless @page.content.blank? || @page.content['body'].blank? %>
+    <div class="js-content"></div>
+    <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@page.content).json unless @page.content.blank? || OpenStruct.new(@page.content).json.blank? %>" />
   </div>
 </div>
 

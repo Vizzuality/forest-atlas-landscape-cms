@@ -20,6 +20,7 @@ class SiteCreator
           content: page.content,
           uri: page.uri,
           site: site,
+          show_on_menu: page.show_on_menu,
           content_type: page.content_type,
           enabled: true,
           parent: get_parent_content(page)

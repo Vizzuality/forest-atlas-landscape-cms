@@ -11,6 +11,7 @@
 #  columns_changeable   :json
 #  default_graphs       :json
 #  default_map          :json
+#  legend               :json
 #  api_table_name       :string
 #  fields_last_modified :string
 #
@@ -21,7 +22,7 @@
 
 class DatasetSetting < ApplicationRecord
   belongs_to :context
-  belongs_to :site_page, foreign_key: 'site_page_id', inverse_of: :dataset_setting
+  belongs_to :site_page, foreign_key: 'site_page_id', inverse_of: :dataset_setting, autosave: true
 
   validates_presence_of :dataset_id
   before_save :update_timestamp
@@ -139,9 +140,15 @@ class DatasetSetting < ApplicationRecord
     get_filtered_dataset false, 10
   end
 
-  # Gets this dataset's table name
-  def get_table_name
-    (DatasetService.get_dataset self.dataset_id).dig('data', 'attributes', 'tableName')
+  # Gets this dataset's metadata
+  def get_metadata
+    DatasetService.get_dataset self.dataset_id
+  end
+
+  # Returns a hash with the legend fields
+  def get_legend_hash
+    return {} unless legend
+    return legend
   end
 
   private
