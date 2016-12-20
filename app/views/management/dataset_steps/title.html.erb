@@ -11,19 +11,20 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
-  <div class="l-site-creation -name">
+  <div class="l-page-creation -title">
     <div class="wrapper">
 
-      <div class="dataset-title">
-        <%= f.label :title, for: 'title' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Type here the dataset’s title' %>
-      </div>
+      <div class="inputs-container">
+        <div class="dataset-title">
+          <%= f.label :title, for: 'title' %>
+          <%= f.text_field :name, id:'name', placeholder: 'Type here the dataset’s title' %>
+        </div>
 
-      <div class="dataset-tags">
-        <%= f.label :tags, for: 'tags' %>
-        <%= f.text_field :tags, id:'tags', placeholder: 'Type here the dataset’s tags' %>
+        <div class="dataset-tags">
+          <%= f.label :tags, for: 'tags' %>
+          <%= f.text_field :tags, id:'tags', placeholder: 'Type here the dataset’s tags' %>
+        </div>
       </div>
-
 
       <div class="js-urls"></div>
 

@@ -35,9 +35,11 @@ class Dataset
     @table_name = data[:attributes][:table_name]
     @tags = data[:attributes][:tags]
     @data_overwrite = data[:attributes][:data_overwrite]
+    @connector = data[:attributes][:connector]
+    @type = data[:attributes][:type]
   end
 
   attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
                 :attributes_path, :provider, :format, :layers, :connector_url,
-                :table_name, :tags, :data_overwrite
+                :table_name, :tags, :data_overwrite, :connector, :provider
 end

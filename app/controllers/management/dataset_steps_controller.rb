@@ -30,6 +30,7 @@ class Management::DatasetStepsController < ManagementController
     case step
       when 'title'
       when 'connector'
+        gon.collector_selected = nil
       when 'context'
       when 'finish'
     end
@@ -48,6 +49,11 @@ class Management::DatasetStepsController < ManagementController
   end
 
   private
+
+  def dataset_params
+    params.require(:dataset).permit(:name, :tags, :connector, :provider, :type, :connector_url)
+  end
+
   # Sets the current site from the url
   def set_site
     @site = Site.find_by({slug: params[:site_slug]})
