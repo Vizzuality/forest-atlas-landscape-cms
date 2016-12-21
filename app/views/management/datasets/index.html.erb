@@ -8,15 +8,17 @@
     <th>Context</th>
     <th>Connector Providers</th>
     <th>Edit</th>
-    <th>delete</th>
+    <th>Delete</th>
+    <th>Status</th>
   </tr>
-  <% @datasets.each do |dataset| %>
+  <% @metadata_array.each do |meta| %>
     <tr>
-      <td><%= dataset.name%></td>
-      <td><%= ContextDataset.where(dataset_id: dataset.id).map{|ds| ds.context.name}.join(', ')%></td>
-      <td><%= dataset.provider%></td>
-      <td><%= link_to 'Edit', edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, 1) %></td>
-      <td><%= link_to 'Delete', management_site_dataset_path(@site.slug, dataset.id) %></td>
+      <td><%= meta['data']['attributes']['name']%></td>
+      <td><%= ContextDataset.where(dataset_id: meta['data']['id']).map{|ds| ds.context.name}.join(', ')%></td>
+      <td><%= meta['data']['attributes']['provider']%></td>
+      <td><%= link_to 'Edit', edit_management_site_dataset_dataset_step_path(@site.slug, meta['data']['id'], 'title') %></td>
+      <td><%= link_to 'Delete', management_site_dataset_path(@site.slug, meta['data']['id']) %></td>
+      <td><%= meta['meta']['status']%></td>
     </tr>
   <% end %>
 

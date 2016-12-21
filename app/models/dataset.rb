@@ -18,6 +18,10 @@ class Dataset
 
   validate :step_validation
 
+  attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
+                :attributes_path, :provider, :format, :layers, :connector_url,
+                :table_name, :tags, :data_overwrite, :connector, :provider, :type
+
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -86,10 +90,9 @@ class Dataset
     }
   end
 
-
-  attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
-                :attributes_path, :provider, :format, :layers, :connector_url,
-                :table_name, :tags, :data_overwrite, :connector, :provider, :type
+  def get_metadata
+    DatasetService.get_dataset self.id
+  end
 
 
   # Uploads the dataset to the API

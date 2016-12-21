@@ -38,5 +38,10 @@ class Management::DatasetsController < ManagementController
   # Gets the datasets from the API and sets them to the member variable
   def set_datasets
     @datasets = current_user.get_datasets
+
+    @metadata_array = []
+    @datasets.each do |dataset|
+      @metadata_array << dataset.get_metadata
+    end
   end
 end
