@@ -53,13 +53,6 @@ group :development, :test do
   %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
     gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'master'
   end
-
-  # Deploy
-  gem 'capistrano', '3.7'
-  gem 'capistrano-rails'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rvm'
-  gem 'capistrano-passenger'
 end
 
 group :development do
@@ -69,6 +62,13 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'pry-rails'
+
+  # Deploy
+  gem 'capistrano', '3.7'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
+  gem 'capistrano-passenger'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
