@@ -68,6 +68,7 @@ class DatasetService
     end
   end
 
+  # TODO : Move this to the model
   # Gets the fields attributes for a dataset (name, type, min, max, and values)
   # Params:
   # +fields+:: The list of fields to the get the attributes for
@@ -100,5 +101,49 @@ class DatasetService
       end
     end
     fields
+  end
+
+  # Sends the dataset to the API
+  def self.upload(token, connectorType, connectorProvider, connectorUrl,
+                    applications, name, tags_array = nil, caption = {}, units = nil)
+
+    begin
+      res = @conn.post do |req|
+        req.url '/dataset'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body =
+          "{
+            \"dataset\": {
+              \"connectorType\": \"#{connectorType}\",
+              \"connectorProvider\": \"#{connectorProvider}\",
+              \"connectorUrl\": \"#{connectorUrl}\",
+              \"legend\": #{caption.to_json},
+              \"application\": #{applications.to_json},
+              \"name\": \"#{name}\",
+              \"tags\": #{tags_array.to_json}
+            }
+          }"
+      end
+
+      # TODO Make another request to dataset/:id/metadata
+      # body: {
+      #   application: ["a", "b"],
+      #   language: {"en"},
+      #   units: [{"a": "b"}, {"b": "c"}]
+      # }
+
+
+      #\"info\": {
+      #          \"units\" : #{units.to_json}
+      #          }
+      #        }
+
+
+    return JSON.parse(res.body)['data']['id']
+
+    rescue
+      return nil
+    end
   end
 end

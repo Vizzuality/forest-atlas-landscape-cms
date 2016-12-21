@@ -11,24 +11,14 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
-  <div class="l-site-creation -name">
+  <div class="l-page-creation">
     <div class="wrapper">
-
-      <div class="dataset-title">
-        <%= f.label :title, for: 'title' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Type here the dataset’s title' %>
-      </div>
-
-      <div class="dataset-tags">
-        <%= f.label :tags, for: 'tags' %>
-        <%= f.text_field :tags, id:'tags', placeholder: 'Type here the dataset’s tags' %>
-      </div>
-
-
-      <div class="js-urls"></div>
-
+      <% @user_contexts.each do |context|%>
+        <label for="context-<%= context.id%>"><%= context.name%></label>
+        <%= check_box_tag 'dataset[context_ids][]', "#{context.id}", false, id: "context-#{context.id}" %>
+      <% end %>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f} %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>

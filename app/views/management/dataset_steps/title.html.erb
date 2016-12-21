@@ -30,6 +30,6 @@
 
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f} %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>
