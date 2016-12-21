@@ -28,3 +28,6 @@ staging:
 production:
   <<: *default
   database: falcms_prod
+  username: <%= ENV['FA_CMS_DATABASE_USER'] %>
+  password: <%= ENV['FA_CMS_DATABASE_PASSWORD'] %>
+
