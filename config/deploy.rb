@@ -5,7 +5,7 @@ set :application, 'facms'
 set :repo_url, 'git@github.com:Vizzuality/forest-atlas-landscape-cms.git'
 set :deploy_user, 'ubuntu'
 set :rvm_ruby_version, '2.3.1'
-set :branch, 'capistrano_config'
+set :branch, 'master'
 set :keep_releases, 5
 set :use_sudo, true
 
