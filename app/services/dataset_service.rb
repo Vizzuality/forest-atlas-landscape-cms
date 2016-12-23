@@ -9,8 +9,10 @@ class DatasetService
   # Gets all the existing datasets
   # This was changed in the new version of the API, and now it's paginated...
   # ... so this will get the first 10000 records
-  def self.get_datasets
-    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000'}
+  # Params
+  # ++status++ the status of the dataset
+  def self.get_datasets(status = 'active')
+    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', 'status': status}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -116,7 +118,7 @@ class DatasetService
           "{
             \"dataset\": {
               \"connectorType\": \"#{connectorType}\",
-              \"connectorProvider\": \"#{connectorProvider}\",
+              \"provider\": \"#{connectorProvider}\",
               \"connectorUrl\": \"#{connectorUrl}\",
               \"legend\": #{caption.to_json},
               \"application\": #{applications.to_json},

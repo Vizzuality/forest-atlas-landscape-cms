@@ -28,8 +28,8 @@ class User < ApplicationRecord
   has_many :context_users
   has_many :contexts, through: :context_users
 
-  def get_datasets
-    all_datasets = DatasetService.get_datasets
+  def get_datasets(status = 'active')
+    all_datasets = DatasetService.get_datasets status
     dataset_ids = []
 
     self.contexts.each do |context|

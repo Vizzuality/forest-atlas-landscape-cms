@@ -35,6 +35,7 @@ class Management::DatasetStepsController < ManagementController
       when 'title'
       when 'connector'
         gon.collector_selected = nil
+      when 'labels'
       when 'context'
         select_contexts
     end
@@ -58,9 +59,22 @@ class Management::DatasetStepsController < ManagementController
         else
           render_wizard
         end
+      when 'labels'
+        if @dataset.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
       when 'context'
         if @dataset.valid?
           build_context_datasets
+          if @context_ids.count == 0
+            @dataset.errors['id'] << 'You must choose at least one context'
+            select_contexts
+            render_wizard
+            return
+          end
+
           ds_id = @dataset.upload session[:user_token]
           if ds_id != nil
             save_context_datasets ds_id
@@ -80,7 +94,8 @@ class Management::DatasetStepsController < ManagementController
 
   private
   def dataset_params
-    params.require(:dataset).permit(:name, :tags, :connector, :provider, :type, :connector_url, context_ids: [])
+    params.require(:dataset).permit(:name, :tags, :connector, :provider, :type, :connector_url,
+                                    context_ids: [], legend: [:lat, :lon, :country, :region])
   end
 
   # Sets the current site from the url
@@ -109,6 +124,7 @@ class Management::DatasetStepsController < ManagementController
     @dataset.application = ['forest-atlas'] unless @dataset.application
     @dataset.tags = ds_params.delete(:tags)
     @dataset.assign_attributes ds_params.except(:context_ids)
+    @dataset.legend = {} unless @dataset.legend
   end
 
   def set_current_dataset_state

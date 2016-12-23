@@ -11,16 +11,16 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv rwjson cartodb featureservice]
 
   cattr_accessor :form_steps do
-    { pages: %w[title connector context],
-      names: %w[Place Connector Context] }
+    { pages: %w[title connector labels context],
+      names: %w[Place Connector Labels Context] }
   end
   attr_accessor :form_step
 
   validate :step_validation
 
   attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
-                :attributes_path, :provider, :format, :layers, :connector_url,
-                :table_name, :tags, :data_overwrite, :connector, :provider, :type
+                :attributes_path, :provider, :format, :layers, :connector_url, :table_name,
+                :tags, :data_overwrite, :connector, :provider, :type, :legend
 
 
   def initialize(data = {})
@@ -47,6 +47,7 @@ class Dataset
     @data_overwrite = data[:attributes][:data_overwrite]
     @connector = data[:attributes][:connector]
     @type = data[:attributes][:type]
+    @legend = data[:attributes][:legend]
   end
 
   def set_attributes(data)
@@ -67,6 +68,7 @@ class Dataset
     @data_overwrite = data[:data_overwrite]
     @connector = data[:connector]
     @type = data[:type]
+    @legend = data[:legend]
   end
 
   def attributes
@@ -86,7 +88,8 @@ class Dataset
       tags: @tags,
       data_overwrite: @data_overwrite,
       connector: @connector,
-      type: @type
+      type: @type,
+      legend: @legend
     }
   end
 
@@ -119,6 +122,16 @@ class Dataset
       self.errors['connector_url'] << 'You must enter a valid url' unless self.connector_url unless self.connector_url && valid_url?(self.connector_url)
     end
 
+    if self.form_steps[:pages].index('labels') <= step_index
+      unless self.legend && self.legend.is_a?(Hash)
+        self.errors['legend'] << 'Labels not correctly defined'
+        return
+      end
+      self.errors['legend'] << 'Latitude and Longitude have to be filled together' if
+        self.legend[:lat].blank? ^ self.legend[:lon].blank?
+      self.errors['legend'] << 'Country and Region have to be filled together' if
+        self.legend[:country].blank? ^ self.legend[:region].blank?
+    end
   end
 
   # Returns the validity of a URL

@@ -31,13 +31,14 @@ class Management::DatasetsController < ManagementController
 
   # Gets a dataset from the API and sets it to the member variable
   def set_dataset
-    #@dataset = Data
+    # TODO
+    #@dataset = DatasetService.get_dataset
   end
 
   # TODO: Use cache for this
   # Gets the datasets from the API and sets them to the member variable
   def set_datasets
-    @datasets = current_user.get_datasets
+    @datasets = current_user.get_datasets 'all'
 
     @metadata_array = []
     @datasets.each do |dataset|
