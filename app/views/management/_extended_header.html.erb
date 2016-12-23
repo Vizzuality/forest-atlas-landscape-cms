@@ -3,7 +3,11 @@
       <div class="wrapper">
         <h1><%= @site.name %></h1>
         <ul class="action-buttons">
-          <li><%= link_to 'New page', new_management_site_page_step_path, class: 'c-button -outline' %></li>
+          <% if local_assigns[:type] == 'dataset' %>
+            <li><%= link_to 'New dataset', new_management_site_dataset_step_path, class: 'c-button -outline' %></li>
+          <% else %>
+            <li><%= link_to 'New page', new_management_site_page_step_path, class: 'c-button -outline' %></li>
+         <% end %>
           <% if @url.present? %><li><a href="<%= @url %>" class="c-button">Go to site</a></li><% end %>
         </ul>
       </div>

@@ -9,8 +9,10 @@ class DatasetService
   # Gets all the existing datasets
   # This was changed in the new version of the API, and now it's paginated...
   # ... so this will get the first 10000 records
-  def self.get_datasets
-    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000'}
+  # Params
+  # ++status++ the status of the dataset
+  def self.get_datasets(status = 'active')
+    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', 'status': status}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -60,7 +62,7 @@ class DatasetService
   # Params:
   # +dataset_id+:: The dataset for which to get the metadata
   def self.get_dataset(dataset_id)
-    request = @conn.get "/dataset/#{dataset_id}"
+    request = @conn.get "/dataset/#{dataset_id}?include=metadata"
     if request.body.blank?
       return {}
     else
@@ -68,6 +70,7 @@ class DatasetService
     end
   end
 
+  # TODO : Move this to the model
   # Gets the fields attributes for a dataset (name, type, min, max, and values)
   # Params:
   # +fields+:: The list of fields to the get the attributes for
@@ -100,5 +103,49 @@ class DatasetService
       end
     end
     fields
+  end
+
+  # Sends the dataset to the API
+  def self.upload(token, connectorType, connectorProvider, connectorUrl,
+                    applications, name, tags_array = nil, caption = {}, units = nil)
+
+    begin
+      res = @conn.post do |req|
+        req.url '/dataset'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body =
+          "{
+            \"dataset\": {
+              \"connectorType\": \"#{connectorType}\",
+              \"provider\": \"#{connectorProvider}\",
+              \"connectorUrl\": \"#{connectorUrl}\",
+              \"legend\": #{caption.to_json},
+              \"application\": #{applications.to_json},
+              \"name\": \"#{name}\",
+              \"tags\": #{tags_array.to_json}
+            }
+          }"
+      end
+
+      # TODO Make another request to dataset/:id/metadata
+      # body: {
+      #   application: ["a", "b"],
+      #   language: {"en"},
+      #   units: [{"a": "b"}, {"b": "c"}]
+      # }
+
+
+      #\"info\": {
+      #          \"units\" : #{units.to_json}
+      #          }
+      #        }
+
+
+    return JSON.parse(res.body)['data']['id']
+
+    rescue
+      return nil
+    end
   end
 end

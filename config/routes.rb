@@ -29,6 +29,17 @@ Rails.application.routes.draw do
           end
         end
       end
+
+      resources :datasets, only: [:index, :destroy] do
+        resources :dataset_steps, only: [:edit, :update, :show]
+      end
+      resources :dataset_steps, only: [:new, :update, :show]
+
+      resources :widgets, only: [:index, :destroy] do
+        resources :widget_steps, only: [:edit, :update, :show]
+      end
+      resources :widget_steps, only: [:new, :update, :show]
+
       resources :page_steps, only: [:show, :update, :new] do
         member do
           get :filtered_results,

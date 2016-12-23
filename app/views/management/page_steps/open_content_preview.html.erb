@@ -6,7 +6,7 @@
 </div>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
-  <%= render partial: 'finish_footer', locals: {f: f} %>
+  <%= render partial: 'management/steps_shared/finish_footer', locals: {f: f} %>
 <% end %>
 
 <script type="text/javascript">

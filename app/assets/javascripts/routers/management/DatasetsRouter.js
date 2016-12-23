@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.Router.ManagementWidgets = Backbone.Router.extend({
+  App.Router.ManagementDatasets = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'
@@ -15,7 +15,6 @@
       // We initialize the site switcher
       new App.View.SiteSwitcherView({
         el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/widgets',
         slug: this.slug
       });
 
@@ -23,7 +22,7 @@
       new App.View.TabView({
         el: $('.js-tabs'),
         redirect: true,
-        currentTab: 3,
+        currentTab: 1,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
           { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
@@ -32,6 +31,5 @@
         ]
       });
     }
-
   });
 })(this.App));

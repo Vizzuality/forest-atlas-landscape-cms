@@ -1,0 +1,27 @@
+<%= render partial: 'management/extended_header', locals: {type: 'dataset'} %>
+<%= include_gon %>
+<div class="js-tabs"></div>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Context</th>
+    <th>Connector Providers</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <th>Status</th>
+  </tr>
+  <% @metadata_array.each do |meta| %>
+    <tr>
+      <td><%= meta['data']['attributes']['name']%></td>
+      <td><%= ContextDataset.where(dataset_id: meta['data']['id']).map{|ds| ds.context.name}.join(', ')%></td>
+      <td><%= meta['data']['attributes']['provider']%></td>
+      <td><%= link_to 'Edit', edit_management_site_dataset_dataset_step_path(@site.slug, meta['data']['id'], 'title') %></td>
+      <td><%= link_to 'Delete', management_site_dataset_path(@site.slug, meta['data']['id']) %></td>
+      <td><%= meta['meta']['status']%></td>
+    </tr>
+  <% end %>
+
+</table>
+
+<%= link_to 'New Dataset', new_management_site_dataset_step_path(@site.slug)%>
