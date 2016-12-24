@@ -2,13 +2,13 @@ class Admin::SiteStepsController < AdminController
   include Wicked::Wizard
   include NavigationHelper
 
-  URL_CONTROLLER_ID =     'site_routes_attributes'.freeze
-  URL_CONTROLLER_NAME =   'site[routes_attributes]'.freeze
-  COLOR_CONTROLLER_ID =   'site_site_settings_attributes_3'.freeze
+  URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
+  URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
+  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
   COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
 
-  SAVE =                 'Save Changes'.freeze
-  CONTINUE =             'Continue'.freeze
+  SAVE = 'Save Changes'.freeze
+  CONTINUE = 'Continue'.freeze
 
   steps *Site.form_steps[:pages]
   attr_accessor :steps_names
@@ -30,11 +30,7 @@ class Admin::SiteStepsController < AdminController
   end
 
   def show
-    if current_site.id
-      @breadcrumbs << {name: 'Site edition'}
-    else
-      @breadcrumbs << {name: 'Site creation'}
-    end
+    @breadcrumbs << {name: current_site.id ? 'Editing "'+current_site.name+'"' : 'New Site'}
 
     if step == 'name'
       @site = current_site
@@ -52,7 +48,7 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_controller_name = COLOR_CONTROLLER_NAME
 
         color_array = @site.site_settings.where(name: 'flag').first
-        gon.global.color_array = color_array[:value].split(' ').map{ |x| {color: x }} if color_array
+        gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
         image = @site.site_settings.where(name: 'logo_image').first
         gon.global.logo_image = image.image_file_name if image
@@ -62,94 +58,94 @@ class Admin::SiteStepsController < AdminController
   end
 
   def update
-      case step
-        when 'name'
-          @site = current_site
+    case step
+      when 'name'
+        @site = current_site
 
-          # If the user pressed the save button
-          if save_button?
-            if @site.save
-              redirect_to admin_sites_path
-            else
-              render_wizard
-            end
+        # If the user pressed the save button
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path
           else
-            @site.form_step = 'name'
-            session[:site] = site_params.to_h
-
-            if @site.valid?
-              redirect_to next_wizard_path
-            else
-              render_wizard
-            end
-          end
-
-        when 'users'
-          @site = current_site
-          unless params[:site].blank?
-            if save_button?
-              if @site.save
-                redirect_to admin_sites_path
-              else
-                render_wizard
-              end
-            else
-              @site.form_step = 'users'
-
-              if @site.valid?
-                redirect_to next_wizard_path
-              else
-                render_wizard
-              end
-            end
-          else
-            @site = Site.new
-            @site.errors.add(:users, 'Site must have at least one user')
             render_wizard
           end
+        else
+          @site.form_step = 'name'
+          session[:site] = site_params.to_h
 
-        when 'style'
-          @site = current_site
-          if save_button?
-            if @site.save
-              redirect_to admin_sites_path
-            else
-              render_wizard
-            end
-          else
-            @site.form_step = 'style'
-
-            if @site.valid?
-              redirect_to next_wizard_path
-            else
-              render_wizard
-            end
-          end
-
-        # In this step, the site is always saved
-        when 'settings'
-          settings = site_params.to_h
-          @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site])
-
-          begin
-            # If the user is editing
-            if @site.id
-              @site.site_settings.each do |site_setting|
-                setting = settings[:site_settings_attributes].values.select {|s| s['id'] == site_setting.id.to_s}
-                site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
-              end
-            # If the user is creating a new site
-            else
-              settings[:site_settings_attributes].map {|s| @site.site_settings.build(s[1]) }
-              @site.form_step = 'settings'
-            end
-          end
-
-          if @site.save
+          if @site.valid?
             redirect_to next_wizard_path
           else
             render_wizard
           end
+        end
+
+      when 'users'
+        @site = current_site
+        unless params[:site].blank?
+          if save_button?
+            if @site.save
+              redirect_to admin_sites_path
+            else
+              render_wizard
+            end
+          else
+            @site.form_step = 'users'
+
+            if @site.valid?
+              redirect_to next_wizard_path
+            else
+              render_wizard
+            end
+          end
+        else
+          @site = Site.new
+          @site.errors.add(:users, 'Site must have at least one user')
+          render_wizard
+        end
+
+      when 'style'
+        @site = current_site
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'style'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
+
+      # In this step, the site is always saved
+      when 'settings'
+        settings = site_params.to_h
+        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site])
+
+        begin
+          # If the user is editing
+          if @site.id
+            @site.site_settings.each do |site_setting|
+              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
+              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            end
+            # If the user is creating a new site
+          else
+            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            @site.form_step = 'settings'
+          end
+        end
+
+        if @site.save
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
     end
   end
 
