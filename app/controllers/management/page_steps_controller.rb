@@ -106,7 +106,7 @@ class Management::PageStepsController < ManagementController
 
     @breadcrumbs = [
       {name: @site.name, url: url_for(controller: 'management/site_pages', action: 'index', site_slug: @site.slug)},
-      {name: params[:site_page_id] ? 'Page edition' : 'Page creation'}
+      {name: @page.id ? 'Editing "'+@page.name+'"' : 'New page'}
     ]
 
     render_wizard
