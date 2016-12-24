@@ -30,11 +30,10 @@ class Admin::SiteStepsController < AdminController
   end
 
   def show
-    @breadcrumbs = ['CMS']
     if current_site.id
-      @breadcrumbs << 'Site edition'
+      @breadcrumbs << {name: 'Site edition'}
     else
-      @breadcrumbs << 'Site creation'
+      @breadcrumbs << {name: 'Site creation'}
     end
 
     if step == 'name'

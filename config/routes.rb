@@ -12,8 +12,8 @@ Rails.application.routes.draw do
     resources :datasets, only: :index do
       get 'dataset'
     end
-    get '/', to: redirect('/admin/sites')
     resources :contexts
+    get '/', to: redirect('/admin/sites')
   end
 
   namespace :management do

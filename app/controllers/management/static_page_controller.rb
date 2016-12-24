@@ -11,10 +11,10 @@ class Management::StaticPageController < ManagementController
     @sites = @sites.paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
-    @breadcrumbs = ['Dashboard']
+    @breadcrumbs = [{name: 'Dashboard', url: management_path}]
 
     respond_to do |format|
-      format.html { render layout: "management" }
+      format.html { render layout: 'management' }
       format.json { render json: @sites.map {|s| s.attributes} }
     end
   end
