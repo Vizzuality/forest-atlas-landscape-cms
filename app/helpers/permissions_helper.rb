@@ -1,7 +1,9 @@
 module PermissionsHelper
+  include AuthHelper
+
   def ensure_user_can(action)
     unless current_user
-      redirect_to_api_gateway and return
+      redirect_to_api_gateway_login and return
     end
 
     unless user_can? action
@@ -27,7 +29,9 @@ module PermissionsHelper
   private
 
   def current_user
-    if session.key?('current_user')
+    return false unless session.key?(:current_user) and session[:current_user]['email']
+
+    if not session.key?(:api_validation_ttl) or session[:api_validation_ttl] <= Time.current
       connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
         faraday.request :url_encoded # form-encode POST params
         faraday.response :logger # log requests to STDOUT
@@ -39,11 +43,11 @@ module PermissionsHelper
       user_data = JSON.parse response.body
 
       session[:current_user] = user_data
-      email = user_data['email']
-      User.find_by!(:email => email)
-    else
-      return false
+      session[:api_validation_ttl] = Time.now + Rails.configuration.session_revalidate_timer
     end
+
+    email = session[:current_user]['email']
+    User.find_by!(:email => email)
   end
 
   def current_user_type
@@ -56,11 +60,5 @@ module PermissionsHelper
     #  user = JSON.parse session['current_user']
     #  return user['role']
     #end
-  end
-
-  def redirect_to_api_gateway
-    params.permit!
-    session[:return_to] = params
-    redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
   end
 end

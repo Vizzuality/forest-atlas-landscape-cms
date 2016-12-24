@@ -21,6 +21,6 @@ module ForestAtlasLandscapeCms
     end
     config.log_level = :debug
     config.exceptions_app = self.routes
-
+    config.session_revalidate_timer = 10.minutes
   end
 end
