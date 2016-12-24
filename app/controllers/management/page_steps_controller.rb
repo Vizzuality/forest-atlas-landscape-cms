@@ -17,8 +17,8 @@ class Management::PageStepsController < ManagementController
   attr_accessor :invalid_steps
 
   CONTINUE = 'CONTINUE'.freeze
-  SAVE     = 'SAVE CHANGES'.freeze
-  PUBLISH  = 'PUBLISH'.freeze
+  SAVE = 'SAVE CHANGES'.freeze
+  PUBLISH = 'PUBLISH'.freeze
 
 
   # TODO : create a session for incorrect state and last step visited (?)
@@ -32,7 +32,7 @@ class Management::PageStepsController < ManagementController
       parent = Page.find(params[:parent])
       if parent
         position = parent.children.length
-        session[:page] =  {parent_id: params[:parent], position: position}
+        session[:page] = {parent_id: params[:parent], position: position}
         redirect_to management_site_page_step_path(id: 'title')
       else
         redirect_to management_site_page_step_path(id: 'position')
@@ -68,7 +68,7 @@ class Management::PageStepsController < ManagementController
       when 'filters'
         build_current_dataset_setting
         @fields = @dataset_setting.get_fields
-        @fields.each{ |f| f[:type] = 'number' if %w[double long].include?(f[:type])}
+        @fields.each { |f| f[:type] = 'number' if %w[double long].include?(f[:type]) }
         gon.fields = @fields
         gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
         gon.filters_array = if @dataset_setting.filters
@@ -80,7 +80,7 @@ class Management::PageStepsController < ManagementController
         # Saving all the possible visible fields for this dataset so that ...
         # ... they can be used in the filtered_results
         (@dataset_setting.set_columns_visible(
-          @fields.map{|f| f[:name]} )) unless @dataset_setting.columns_visible
+          @fields.map { |f| f[:name] })) unless @dataset_setting.columns_visible
         set_current_dataset_setting_state
 
       when 'columns'
@@ -102,11 +102,14 @@ class Management::PageStepsController < ManagementController
       when 'open_content'
       when 'open_content_preview'
 
-      end
+    end
 
-      @breadcrumbs = [@site.name, 'Page creation']
+    @breadcrumbs = [
+      {name: @site.name, url: url_for(controller: 'management/site_pages', action: 'index', site_slug: @site.slug)},
+      {name: params[:site_page_id] ? 'Page edition' : 'Page creation'}
+    ]
 
-      render_wizard
+    render_wizard
   end
 
   def update
@@ -185,11 +188,11 @@ class Management::PageStepsController < ManagementController
 
     temp_dataset_setting =
       DatasetSetting.new(dataset_id: @dataset_setting.dataset_id,
-          api_table_name: @dataset_setting.api_table_name,
-          columns_visible: @dataset_setting.columns_visible)
+                         api_table_name: @dataset_setting.api_table_name,
+                         columns_visible: @dataset_setting.columns_visible)
 
     filters = params[:filters]
-    temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map{|h| h.select{|k| k != 'variable'}})
+    temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } })
 
     begin
       count = temp_dataset_setting.get_row_count['data'].first.values.first
@@ -269,10 +272,10 @@ class Management::PageStepsController < ManagementController
       fields = JSON.parse fields
 
       # Removes the "variable" param and sets the filters
-      @dataset_setting.set_filters(fields.map{|h| h.select{|k| k != 'variable'}})
+      @dataset_setting.set_filters(fields.map { |h| h.select { |k| k != 'variable' } })
 
       # Sets the changeable fields from the params
-      @dataset_setting.set_columns_changeable(fields.map{|h| h['name'] if h['variable'] == true}.compact)
+      @dataset_setting.set_columns_changeable(fields.map { |h| h['name'] if h['variable'] == true }.compact)
     end
 
     if fields = ds_params[:visible_fields]
@@ -298,8 +301,8 @@ class Management::PageStepsController < ManagementController
   def set_steps
     invalid_steps = []
     unless @page && @page.content_type
-      steps = { pages: %w[position title type],
-                names: %w[Position Title Type] }
+      steps = {pages: %w[position title type],
+               names: %w[Position Title Type]}
       self.steps = steps[:pages]
       self.steps_names = steps[:names]
     else

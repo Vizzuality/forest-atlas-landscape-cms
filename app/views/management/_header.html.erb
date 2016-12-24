@@ -4,8 +4,8 @@
       <div class="site-switcher js-site-switcher"></div>
       <% unless @breadcrumbs.blank? %>
         <ul class="breadcrumbs">
-          <% @breadcrumbs.each do |item| %>
-            <li><%= item %></li>
+          <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
+              <li><a href="<%= breadcrumb[:url] %>"><%= breadcrumb[:name] %></a></li>
           <% end %>
         </ul>
       <% end %>
