@@ -192,7 +192,7 @@
      * @returns {string} HTML
      */
     _renderPreviewTable: function () {
-      var res = '<table class="c-table"><tr class="header">';
+      var res = '<div class="c-table"><table><tr class="header">';
       res += this.options.fields.map(function (field) {
         return '<th>' + field.name + '</th>';
       }).join('');
@@ -205,6 +205,8 @@
           '</tr>';
       }).join('');
       res += '</table>';
+      res += '<div class="table-legend"><p>Table preview shows only 10 first rows</p></div>';
+      res += '</div>';
       return res;
     },
 
