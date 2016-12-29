@@ -291,6 +291,18 @@ def create_users
       name: 'Tiago Santos'
     }
   )
+  @jose_angel_user = User.create(
+    {
+      email: 'joseangel.parreno@vizzuality.com',
+      name: 'Jose Angel'
+    }
+  )
+  @clara_linos_user = User.create(
+    {
+      email: 'clara.linos@vizzuality.com',
+      name: 'Clara Linos'
+    }
+  )
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
