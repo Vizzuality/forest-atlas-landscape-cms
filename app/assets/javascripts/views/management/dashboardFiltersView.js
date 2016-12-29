@@ -366,12 +366,26 @@
     /**
      * Update the row count with the result of the query to the server
      */
+    _checkRowCount: function () {
+      this.countEl = this.el.querySelector('.js-row-count');
+      if (this.collection.toJSON().length) {
+        this.countEl.classList.add('loading');
+        this._updateRowCount();
+      } else {
+        this.countEl.classList.remove('loading');
+      }
+    },
+
+    /**
+     * Get the row count with the result of the query to the server
+     */
     _updateRowCount: _.debounce(function () {
       this._fetchTableExtract()
         .done(function () {
           var count = this.tableExtract && this.tableExtract.count;
           count = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
-          this.el.querySelector('.js-row-count').textContent = count;
+          this.countEl.classList.remove('loading');
+          this.countEl.textContent = count;
         }.bind(this));
     }, 1500),
 
@@ -409,7 +423,7 @@
 
       this._enhanceSelectors();
 
-      this._updateRowCount();
+      this._checkRowCount();
     }
   });
 })(this.App));
