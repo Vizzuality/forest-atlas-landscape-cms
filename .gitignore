@@ -36,3 +36,6 @@
 /.env
 
 /falcms_test
+
+# Debug files
+/npm-debug.log
