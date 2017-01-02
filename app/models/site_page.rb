@@ -65,7 +65,7 @@ class SitePage < Page
 
   def uri=(value)
     if value
-      value.gsub!(/[^a-zA-Z0-9\-]/, '')
+      value.gsub!(/[^a-zA-Z0-9\-?=&]/, '')
       write_attribute(:uri, value)
       regenerate_url
     end

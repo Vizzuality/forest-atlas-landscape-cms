@@ -63,7 +63,6 @@ class Page < ApplicationRecord
   private
 
   def regenerate_url
-    return if self.content_type.eql? ContentType::LINK
     uri = self.uri || ''
     current_url = '/' + uri
     parent_url = (parent.nil? || parent.url.eql?('/')) ? '' : parent.url
