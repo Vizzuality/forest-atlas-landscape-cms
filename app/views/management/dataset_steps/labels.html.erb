@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="description">
       <h1>Labels</h1>
-      <p>Selection of the special fields of the dataset</p>
+      <p>If your dataset contains fields that can be associated to the following labels, please map them together.</p>
     </div>
   </div>
 </div>
@@ -13,31 +13,29 @@
 
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
-  <div class="l-page-creation -title">
+  <div class="l-dataset-creation -labels">
     <div class="wrapper">
 
       <div class="inputs-container">
-        <div class="dataset-title">
-          <%= f.label :latitude, for: 'Latitude' %>
-          <%= text_field_tag 'dataset[legend][lat]', f.object.legend[:lat], placeholder: 'Type the field for latitude' %>
+        <div>
+          <%= f.label :latitude, for: 'dataset_legend_lat' %>
+          <%= text_field_tag 'dataset[legend][lat]', f.object.legend[:lat], placeholder: 'Field to associate with latitude (optional)' %>
         </div>
 
-        <div class="dataset-tags">
-          <%= f.label :longitude, for: 'Longitude' %>
-          <%= text_field_tag 'dataset[legend][lon]', f.object.legend[:lon], placeholder: 'Type the field for longitude' %>
+        <div>
+          <%= f.label :longitude, for: 'dataset_legend_lon' %>
+          <%= text_field_tag 'dataset[legend][lon]', f.object.legend[:lon], placeholder: 'Field to associate with longitude (optional)' %>
         </div>
 
-        <div class="dataset-tags">
-          <%= f.label :country, for: 'Country' %>
-          <%= text_field_tag 'dataset[legend][country]', f.object.legend[:country], placeholder: 'Type the field for country' %>
+        <div>
+          <%= f.label :country, for: 'dataset_legend_country' %>
+          <%= text_field_tag 'dataset[legend][country]', f.object.legend[:country], placeholder: 'Field to associate with country (optional)' %>
         </div>
 
-      <div class="dataset-tags">
-        <%= f.label :region, for: 'Region' %>
-        <%= text_field_tag 'dataset[legend][region]', f.object.legend[:region], placeholder: 'Type the field for region' %>
+      <div>
+        <%= f.label :region, for: 'dataset_legend_region' %>
+        <%= text_field_tag 'dataset[legend][region]', f.object.legend[:region], placeholder: 'Field to associate with region (optional)' %>
       </div>
-
-      <div class="js-labels"></div>
 
     </div>
   </div>

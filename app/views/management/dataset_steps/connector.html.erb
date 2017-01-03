@@ -11,7 +11,7 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
-   <div class="l-page-creation">
+   <div class="l-dataset-creation -connector">
      <div class="wrapper">
        <div class="js-connector"></div>
      </div>
