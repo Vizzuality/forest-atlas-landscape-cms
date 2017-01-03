@@ -9,7 +9,19 @@ class Management::DatasetsController < ManagementController
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index
-    gon.datasets = @datasets
+    gon.datasets = @datasets.map do |dataset|
+      metadata = dataset.get_metadata
+      {
+        'title' => {'value' => dataset.name, 'searchable' => true, 'sortable' => true},
+        'contexts' => {'value' => ContextDataset.where(dataset_id: dataset.id).map{|ds| ds.context.name}.join(', '), 'searchable' => true, 'sortable' => false},
+        'connector' => {'value' => dataset.provider, 'searchable' => true, 'sortable' => true},
+        'tags' => {'value' => dataset.tags, 'searchable' => true, 'sortable' => false},
+        'status' => {'value' => metadata['meta']['status'], 'searchable' => true, 'sortable' => true},
+        # TODO: once both actions work properly, restore buttons
+        # 'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, 'title'), 'method' => 'get'},
+        # 'delete' => {'value' => management_site_dataset_path(@site.slug, dataset.id), 'method' => 'delete'}
+      }
+    end
   end
 
   # TODO: What should happen when we destroy a dataset??

@@ -10,29 +10,11 @@
         <%= link_to 'New Dataset', new_management_site_dataset_step_path(@site.slug), class: 'c-button' %>
       </ul>
       <ul class="filters">
+        <li><div class="c-input-search js-table-search"></div></li>
       </ul>
     </div>
 
-    <table class="c-table" role="grid" aria-readonly="true">
-      <tr class="header js-header" role="rowheader">
-        <th>Title</th>
-        <th>Context</th>
-        <th>Connector Providers</th>
-        <th>Edit</th>
-        <th>Delete</th>
-        <th>Status</th>
-      </tr>
-      <% @metadata_array.each do |meta| %>
-        <tr role="row">
-          <td role="gridcell" width="40%"><%= meta['data']['attributes']['name']%></td>
-          <td role="gridcell"><%= ContextDataset.where(dataset_id: meta['data']['id']).map{|ds| ds.context.name}.join(', ')%></td>
-          <td role="gridcell"><%= meta['data']['attributes']['provider']%></td>
-          <td role="gridcell"><%= link_to 'Edit', edit_management_site_dataset_dataset_step_path(@site.slug, meta['data']['id'], 'title'), class: 'c-table-action-button -edit' %></td>
-          <td role="gridcell"><%= link_to 'Delete', management_site_dataset_path(@site.slug, meta['data']['id']), class: 'c-table-action-button -delete' %></td>
-          <td role="gridcell"><%= meta['meta']['status']%></td>
-        </tr>
-      <% end %>
-    </table>
+    <div class="js-table"></div>
 
   </div>
 </div>

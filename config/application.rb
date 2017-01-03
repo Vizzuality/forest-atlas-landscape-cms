@@ -22,5 +22,16 @@ module ForestAtlasLandscapeCms
     config.log_level = :debug
     config.exceptions_app = self.routes
     config.session_revalidate_timer = 10.minutes
+
+    # Next lines borrowed from: http://stackoverflow.com/a/8380400
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+      class_attr_index = html_tag.index 'class="'
+
+      if class_attr_index
+        html_tag.insert class_attr_index+7, 'error '
+      else
+        html_tag.insert html_tag.index('>'), ' class="error"'
+      end
+    }
   end
 end

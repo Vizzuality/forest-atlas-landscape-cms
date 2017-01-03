@@ -9,6 +9,10 @@
       this.slug = params[0] || null;
     },
 
+    /**
+     * Get the list of connectors
+     * @returns {{ connector: string, provider: string, type: string}[]}
+     */
     _getConnectors: function () {
       return [
         { connector: 'cartodb', provider: 'cartodb', type: 'rest' },
@@ -19,17 +23,16 @@
     },
 
     index: function () {
-      var connectorSelectorView = new App.View.ConnectorSelectorView({
+      var datasetConnectorsView = new App.View.DatasetConnectorsView({
         el: '.js-connector',
         connectors: this._getConnectors(),
-        connectorSelected:
-          (window.gon && gon.connectorSelected) || { connector: 'cartodb', provider: 'cartodb', type: 'rest' }
+        connectorSelected: (window.gon && gon.connectorSelected) || null
       });
 
       $('.js-form').on('submit', function () {
         // When the view is rendered, a hidden field with the state of the filters is updated.
         // This way we make sure to have the latest changes.
-        connectorSelectorView.render();
+        datasetConnectorsView.render();
       });
     }
   });
