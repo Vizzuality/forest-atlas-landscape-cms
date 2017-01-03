@@ -16,9 +16,10 @@ class Management::DatasetsController < ManagementController
         'contexts' => {'value' => ContextDataset.where(dataset_id: dataset.id).map{|ds| ds.context.name}.join(', '), 'searchable' => true, 'sortable' => false},
         'connector' => {'value' => dataset.provider, 'searchable' => true, 'sortable' => true},
         'tags' => {'value' => dataset.tags, 'searchable' => true, 'sortable' => false},
-        'status' => {'value' => metadata['meta'] ['status'], 'searchable' => true, 'sortable' => true},
-        'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, 'title'), 'method' => 'get'},
-        'delete' => {'value' => management_site_dataset_path(@site.slug, dataset.id), 'method' => 'delete'}
+        'status' => {'value' => metadata['meta']['status'], 'searchable' => true, 'sortable' => true},
+        # TODO: once both actions work properly, restore buttons
+        # 'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, 'title'), 'method' => 'get'},
+        # 'delete' => {'value' => management_site_dataset_path(@site.slug, dataset.id), 'method' => 'delete'}
       }
     end
   end
