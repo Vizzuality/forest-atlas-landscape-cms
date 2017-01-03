@@ -1,0 +1,38 @@
+<div class="inputs-container">
+  <div>
+    <label for="connector">Connector:</label>
+    <select id="connector" name="dataset[connector]" data-placeholder="Choose a connector" class="js-connector">
+      <option></option>
+      {{#each connectors}}
+        <option value="{{connector}}" {{#if_eq connector ../selected.connector}}selected="selected"{{/if_eq}}>{{this.connector}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div>
+    <label for="provider">Connector provider:</label>
+    <select id="provider" class="js-provider" data-placeholder="-"  disabled="disabled">
+      <option></option>
+      {{#each connectors}}
+        <option value="{{provider}}" {{#if_eq provider ../selected.provider}}selected="selected"{{/if_eq}}>{{provider}}</option>
+      {{/each}}
+    </select>
+    <input type="hidden" name="dataset[provider]" value="{{selected.provider}}">
+  </div>
+
+  <div>
+    <label for="type">Connector type:</label>
+    <select id="type" class="js-type" data-placeholder="-" disabled="disabled">
+      <option></option>
+      {{#each connectors}}
+        <option value="{{type}}" {{#if_eq type ../selected.type}}selected="selected"{{/if_eq}}>{{type}}</option>
+      {{/each}}
+    </select>
+    <input type="hidden" name="dataset[type]" value="{{selected.type}}">
+  </div>
+
+  <div>
+    <label for="url">URL:</label>
+    <input id="url" name="dataset[connector_url]" class="js-url" placeholder="Dataset URL" />
+  </div>
+</div>

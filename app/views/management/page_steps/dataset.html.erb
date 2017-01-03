@@ -22,7 +22,8 @@
     <div class="wrapper">
         <% @context_datasets.each do |context_id, datasets| %>
           <%# TODO: Remove the DB query from the view %>
-          <h3 class="context"><%= ::Context.find(context_id).name %></h3>
+          <h3 class="context">
+            <%= ::Context.find(context_id).name %></h3>
           <div class="c-cards-list">
             <% datasets.each do |dataset| %>
               <div class="card">
@@ -39,7 +40,7 @@
         <% end %>
       </div>
     </div>
-    <%= render partial: 'footer', locals: {f: f, never_save: true} %>
+    <%= render partial: 'management/steps_shared/footer', locals: {f: f, never_save: true} %>
 <% end %>
 
 <%= render partial: 'shared/errors', locals: { resource: @page } %>

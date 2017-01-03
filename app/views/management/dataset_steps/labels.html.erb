@@ -1,0 +1,44 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Labels</h1>
+      <p>If your dataset contains fields that can be associated to the following labels, please map them together.</p>
+    </div>
+  </div>
+</div>
+
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+
+<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+  <div class="l-dataset-creation -labels">
+    <div class="wrapper">
+
+      <div class="inputs-container">
+        <div>
+          <%= f.label :latitude, for: 'dataset_legend_lat' %>
+          <%= text_field_tag 'dataset[legend][lat]', f.object.legend[:lat], placeholder: 'Field to associate with latitude (optional)' %>
+        </div>
+
+        <div>
+          <%= f.label :longitude, for: 'dataset_legend_lon' %>
+          <%= text_field_tag 'dataset[legend][lon]', f.object.legend[:lon], placeholder: 'Field to associate with longitude (optional)' %>
+        </div>
+
+        <div>
+          <%= f.label :country, for: 'dataset_legend_country' %>
+          <%= text_field_tag 'dataset[legend][country]', f.object.legend[:country], placeholder: 'Field to associate with country (optional)' %>
+        </div>
+
+      <div>
+        <%= f.label :region, for: 'dataset_legend_region' %>
+        <%= text_field_tag 'dataset[legend][region]', f.object.legend[:region], placeholder: 'Field to associate with region (optional)' %>
+      </div>
+
+    </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>

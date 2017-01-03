@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="card -footer-at-bottom">
-          <h3 class="title">External link</h3>
+          <h3 class="title">Link</h3>
           <p class="description">Add a link to appear in the menus.</p>
           <div class="footer">
             <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::LINK}, class: 'c-button'  %>
@@ -48,5 +48,5 @@
     <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
     <a class="c-button -disabled">Continue</a>
   <% end %>
-  <%= render partial: 'footer', locals: {f: f, no_continue: true} %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, no_continue: true} %>
 <% end %>

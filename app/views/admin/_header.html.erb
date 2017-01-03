@@ -2,11 +2,17 @@
   <div class="wrapper">
     <div>
       <% unless @breadcrumbs.blank? %>
-        <ul class="breadcrumbs">
-          <% @breadcrumbs.each do |item| %>
-            <li><%= item %></li>
-          <% end %>
-        </ul>
+          <ul class="breadcrumbs">
+            <% @breadcrumbs.each do |breadcrumb| -%>
+                <li>
+                  <% if breadcrumb[:url] -%>
+                      <a href="<%= breadcrumb[:url] %>"><%= breadcrumb[:name] %></a>
+                  <% else %>
+                      <%= breadcrumb[:name] %>
+                  <% end %>
+                </li>
+            <% end %>
+          </ul>
       <% end %>
     </div>
     <ul class="menu">

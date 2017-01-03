@@ -77,11 +77,12 @@
       new App.View.TabView({
         el: $('.js-tabs'),
         redirect: true,
-        currentTab: 1,
+        currentTab: 2,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
-          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' }
-          // { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
+          { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
+          { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
+          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]
       });
 

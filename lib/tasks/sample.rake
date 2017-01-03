@@ -266,6 +266,18 @@ def create_heroku_staging_site_routes
   puts 'Routes for staging site created successfully'
 end
 
+def create_vizzuality_staging_site_routes
+  routes = [
+    {
+      host: 'http://facms.vizzuality.com',
+      site: @staging_demo_site
+    }
+  ]
+
+  Route.create(routes)
+  puts 'Routes for staging site created successfully'
+end
+
 def create_users
   @tiago_garcia_user = User.create(
     {
@@ -277,6 +289,18 @@ def create_users
     {
       email: 'tiago.santos@vizzuality.com',
       name: 'Tiago Santos'
+    }
+  )
+  @jose_angel_user = User.create(
+    {
+      email: 'joseangel.parreno@vizzuality.com',
+      name: 'Jose Angel'
+    }
+  )
+  @clara_linos_user = User.create(
+    {
+      email: 'clara.linos@vizzuality.com',
+      name: 'Clara Linos'
     }
   )
   @clement_prodhomme_user = User.create(
@@ -419,6 +443,7 @@ namespace :db do
     create_sites
     create_base_site_routes
     create_heroku_staging_site_routes
+    create_vizzuality_staging_site_routes
     create_users
     create_user_sites
     create_contexts

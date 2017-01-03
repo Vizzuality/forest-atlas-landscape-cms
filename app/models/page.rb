@@ -26,8 +26,7 @@ class Page < ApplicationRecord
 
   has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
-  before_validation :regenerate_url, :unless => Proc.new { |page| page.content_type.eql? ContentType::LINK }
-
+  before_validation :regenerate_url
 
   def url=(value)
   end
@@ -41,7 +40,7 @@ class Page < ApplicationRecord
   end
 
   def links(port=80)
-    self.routes.map {|route| route.link(port) + self.url }
+    self.routes.map { |route| route.link(port) + self.url }
   end
 
   def disableable?
@@ -52,6 +51,13 @@ class Page < ApplicationRecord
     return false if !enabled
     return enabled if parent_id == nil
     Page.find(parent_id).visible?
+  end
+
+  def has_visible_children?
+    self.children.each do |child|
+      return true if child.visible?
+    end
+    return false
   end
 
   private

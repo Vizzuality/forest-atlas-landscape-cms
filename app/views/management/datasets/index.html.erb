@@ -1,0 +1,20 @@
+<%= render partial: 'management/extended_header', locals: {type: 'dataset'} %>
+<%= include_gon %>
+<div class="js-tabs"></div>
+
+<div class="l-page-list">
+  <div class="wrapper">
+
+    <div class="c-action-toolbar">
+      <ul class="buttons">
+        <%= link_to 'New Dataset', new_management_site_dataset_step_path(@site.slug), class: 'c-button' %>
+      </ul>
+      <ul class="filters">
+        <li><div class="c-input-search js-table-search"></div></li>
+      </ul>
+    </div>
+
+    <div class="js-table"></div>
+
+  </div>
+</div>

@@ -23,9 +23,10 @@
       new App.View.TabView({
         el: $('.js-tabs'),
         redirect: true,
-        currentTab: 2,
+        currentTab: 3,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
+          { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
           { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
           { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]

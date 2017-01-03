@@ -12,6 +12,8 @@ class ManagementController < ActionController::Base
     raise Exception, 'User not authorized to access this site' unless @site.users.exists?(current_user)
   end
 
+  private
+
   def ensure_management_user
     ensure_user_can 'access_management'
   end

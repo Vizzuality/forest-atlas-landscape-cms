@@ -35,37 +35,37 @@ class SitePage < Page
   after_save :update_routes
 
   # TODO: Add validations for each of the steps
-   validate :step_validation
+  validate :step_validation
 
   attr_accessor :form_step
 
   def form_steps
-    steps = { pages: %w[position title type],
-              names: %w[Position Title Type]}
+    steps = {pages: %w[position title type],
+             names: %w[Position Title Type]}
 
     case self.content_type
       when ContentType::OPEN_CONTENT
-        steps = { pages: %w[position title type open_content open_content_preview],
-                  names: ['Position', 'Title', 'Type', 'Open Content', 'Open Content Preview']}
+        steps = {pages: %w[position title type open_content open_content_preview],
+                 names: ['Position', 'Title', 'Type', 'Open Content', 'Open Content Preview']}
       when ContentType::ANALYSIS_DASHBOARD
-        steps = { pages: %w[position title type dataset filters columns preview],
-                  names: %w[Position Title Type Dataset Filters Columns Preview]}
+        steps = {pages: %w[position title type dataset filters columns preview],
+                 names: %w[Position Title Type Dataset Filters Columns Preview]}
       when ContentType::LINK
-        steps = { pages: %w[position title type link],
-                  names: %w[Position Title Type Link]}
+        steps = {pages: %w[position title type link],
+                 names: %w[Position Title Type Link]}
       when ContentType::STATIC_CONTENT
-        steps = { pages: %w[position title type],
-                  names: %w[Position  Title Type]}
+        steps = {pages: %w[position title type],
+                 names: %w[Position  Title Type]}
       when ContentType::HOMEPAGE
-        steps = { pages: %w[open_content open_content_preview],
-                  names: ['Open Content', 'Open Content Preview']}
+        steps = {pages: %w[open_content open_content_preview],
+                 names: ['Open Content', 'Open Content Preview']}
     end
     steps
   end
 
   def uri=(value)
     if value
-      value.gsub!(/[^a-zA-Z0-9\-]/,'')
+      value.gsub!(/[^a-zA-Z0-9\-?=&]/, '')
       write_attribute(:uri, value)
       regenerate_url
     end
@@ -89,7 +89,7 @@ class SitePage < Page
   def construct_url
     if self.content['url']
       old_content = self.content
-      unless old_content['url'].starts_with? 'http://', 'https://'
+      unless old_content['url'].starts_with? 'http://', 'https://', '/', '?'
         old_content['url'] = 'http://' + old_content['url']
         self.content = old_content
       end
@@ -115,7 +115,7 @@ class SitePage < Page
     if self.form_steps[:pages].index('title') <= step_index
       self.errors['name'] << 'You must type a valid title for the page' if self.name.blank? || self.name.strip.blank?
       self.errors['description'] << 'You must type a valid description for the page' if self.description.blank? || self.description.strip.blank?
-      self.errors['uri'] << 'You must type a valid uri for the page' if self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/,'').blank?
+      self.errors['uri'] << 'You must type a valid uri for the page' if self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?
     end
 
     # Validate type
