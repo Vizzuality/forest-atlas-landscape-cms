@@ -12,7 +12,7 @@ class Dataset
 
   cattr_accessor :form_steps do
     { pages: %w[title connector labels context],
-      names: %w[Place Connector Labels Context] }
+      names: %w[Title Connector Labels Context] }
   end
   attr_accessor :form_step
 
