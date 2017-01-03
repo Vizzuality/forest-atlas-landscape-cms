@@ -80,7 +80,6 @@ If you are on a development environment, you might also want to load some sample
 
     docker-compose -f docker-compose.dev.yml run web rake db:sample
     
-
 ## Development
 
 ### Code Quality
@@ -96,12 +95,18 @@ Also we have some custom rules you can check in `.eslintrc` and `.sass-lint`, re
 Have fun coding! 😁🌲
 
 
+## Deployment
+
+We use [Capistrano](http://capistranorb.com/) as a deploy tool. To deploy to production, simply run:
+
+    cap production deploy
+
 ## Server Setup
 
-### Chronjob
+### Cronjob
 
-Add a chronjob to delete the old sessions from the database.
-This can be accomplish by settting the chronjob like this:
+Add a cronjob to delete the old sessions from the database.
+This can be accomplish by setting the cronjob like this:
 
     0 5 * * * cd /path/to/app/dir/ && rake RAILS_ENV=production sessions:trim > /dev/null 2>&1
 
