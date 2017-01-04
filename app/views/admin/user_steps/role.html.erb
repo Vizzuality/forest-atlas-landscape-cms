@@ -1,0 +1,26 @@
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @user.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<%= form_for @user, url: wizard_path, method: :put do |f| %>
+  <div class="l-user-creation -name">
+    <div class="wrapper">
+      <h1>User name</h1>
+      <p class="intro">Please choose a name for the user and an email.</p>
+
+      <div class="user-name">
+        <%= f.label :name, for: 'name' %>
+        <%= f.text_field :name, id:'name', placeholder: 'Type here the name' %>
+      </div>
+
+      <div class="user-email">
+        <%= f.label :email, for: 'email' %>
+        <%= f.text_field :email, id:'email', placeholder: 'Type here the email' %>
+      </div>
+
+      <div class="js-identity"></div>
+
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @user } %>
