@@ -4,13 +4,14 @@
 <%= form_for @user, url: wizard_path, method: :put do |f| %>
   <div class="l-user-creation -context">
     <div class="wrapper">
-      <h1>User context</h1>
-      <p class="intro">Please choose a context for the user.</p>
+      <h1>User name</h1>
+      <p class="intro">Please choose a name for the user and an email.</p>
 
       <div class="c-context-list">
         <% ::Context.all.each do |context| %>
           <div class="context">
             <label for="context-<%= context.id %>"><%= context.name %></label>
+            <%= check_box_tag "context[user_ids][]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s) %>
             <div class="content">
               <h3><%= context.name %></h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
