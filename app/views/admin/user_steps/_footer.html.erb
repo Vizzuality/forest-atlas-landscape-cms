@@ -1,0 +1,13 @@
+<div class="c-action-bar">
+  <div class="wrapper">
+    <%= link_to 'Cancel', admin_users_path, class: 'c-button -outline -dark-text js-cancel' %>
+    <div>
+      <% if @user.id %>
+        <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
+        <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
+      <% else %>
+        <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button' %>
+      <% end %>
+    </div>
+  </div>
+</div>

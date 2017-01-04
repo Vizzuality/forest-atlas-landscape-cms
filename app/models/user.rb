@@ -28,6 +28,13 @@ class User < ApplicationRecord
   has_many :context_users
   has_many :contexts, through: :context_users
 
+
+  cattr_accessor :form_steps do
+    { pages: %w[identity role sites contexts],
+      names: %w[Identity Role Sites Contexts] }
+  end
+  attr_accessor :form_step
+
   def get_datasets(status = 'active')
     all_datasets = DatasetService.get_datasets status
     dataset_ids = []

@@ -4,7 +4,11 @@ Rails.application.routes.draw do
       resources :site_steps, only: [:show, :update, :edit]
     end
     resources :site_steps, only: [:show, :update, :new]
-    resources :users
+    #resources :users, only: [:index, :destroy] do # TODO: Uncomment this
+    resources :users do # TODO: Remove this line
+      resources :user_steps, only: [:edit, :show, :update]
+    end
+    resources :user_steps, only: [:new, :show, :update]
     resources :routes
     resources :site_templates
     resources :page_templates
