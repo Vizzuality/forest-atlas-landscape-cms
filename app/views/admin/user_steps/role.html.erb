@@ -9,16 +9,16 @@
 
       <div class="c-role-list">
           <div class="role">
-            <label for="admin">admin</label>
-            <%= check_box_tag "site[user_ids][]", id: ('admin') %>
+            <label for="admin_true">admin</label>
+            <%= radio_button_tag 'admin', true, f.object.admin %>
             <div class="content">
               <h3>Admin</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
           </div>
           <div class="role">
-            <label for="admin">management</label>
-            <%= check_box_tag "site[user_ids][]", id: ('management') %>
+            <label for="admin_false">management</label>
+            <%= radio_button_tag 'admin', false, !f.object.admin %>
             <div class="content">
               <h3>management</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
