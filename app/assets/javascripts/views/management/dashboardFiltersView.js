@@ -111,7 +111,7 @@
       var value = model.get('type') === 'date' ? selector.value : +selector.value;
       var selectorType = selector.dataset.selectorType;
       var o = {};
-      o[selectorType] = model.get('type') === 'date' ? new Date(value) : value;
+      o[selectorType] = model.get('type') === 'date' ? App.Helper.Utils.parseUTCDate(value) : value;
       model.set(o);
 
       // We need to render to disable some values of the "to" selector
