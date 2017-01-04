@@ -4,15 +4,15 @@
 <%= form_for @user, url: wizard_path, method: :put do |f| %>
   <div class="l-user-creation -context">
     <div class="wrapper">
-      <h1>User name</h1>
-      <p class="intro">Please choose a name for the user and an email.</p>
+      <h1>User context</h1>
+      <p class="intro">Please choose a context for the user.</p>
 
       <div class="c-context-list">
-        <% Site.all.each do |site| %>
+        <% ::Context.all.each do |context| %>
           <div class="context">
-            <label for="site-<%= site.id %>"><%= site.name %></label>
+            <label for="context-<%= context.id %>"><%= context.name %></label>
             <div class="content">
-              <h3><%= site.name %></h3>
+              <h3><%= context.name %></h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
           </div>
