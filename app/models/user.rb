@@ -42,6 +42,11 @@ class User < ApplicationRecord
   end
   attr_accessor :form_step
 
+  def send_to_api(token)
+    role = self.admin ? 'MANAGER' : 'USER'
+    UserService.create(token, self.email, role)
+  end
+
   def get_datasets(status = 'active')
     all_datasets = DatasetService.get_datasets status
     dataset_ids = []
@@ -93,7 +98,7 @@ class User < ApplicationRecord
       end
     end
     if self.form_steps[:pages].index('role') <= step_index
-      self.errors['admin'] << 'You must select a user role' if self.admin.blank?
+      self.errors['admin'] << 'You must select a user role' unless [true, false].include?(self.admin)
     end
   end
 end
