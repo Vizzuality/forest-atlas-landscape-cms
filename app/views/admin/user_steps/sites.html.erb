@@ -11,7 +11,7 @@
         <% Site.all.each do |site| %>
           <div class="site">
             <label for="site-<%= site.id %>"><%= site.name %></label>
-            <%= check_box_tag "site[user_ids][]", site.id, f.object.users.include?(site), id: ('site-' + site.id.to_s) %>
+            <%= check_box_tag "user[site_ids][]", site.id, f.object.sites.include?(site), id: ('site-' + site.id.to_s) %>
             <div class="content">
               <h3><%= site.name %></h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
