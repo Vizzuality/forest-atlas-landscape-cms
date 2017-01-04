@@ -10,7 +10,7 @@ class Admin::UsersController < AdminController
       {
         'name' => {'value' => user.name, 'searchable' => true, 'sortable' => true},
         'email' => {'value' => user.email, 'searchable' => true, 'sortable' => true},
-        'edit' => {'value' => edit_admin_user_path(user), 'method' => 'get'},
+        'edit' => {'value' => edit_admin_user_user_step_path(user_id: user.id, id: 'identity'), 'method' => 'get'},
         'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
       }
     end

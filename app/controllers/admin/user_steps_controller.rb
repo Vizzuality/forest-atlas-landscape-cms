@@ -23,7 +23,7 @@ class Admin::UserStepsController < AdminController
   # This action clean the session
   def edit
     session[:user] = {}
-    redirect_to wizard_path(first_step)
+    redirect_to wizard_path(Wicked::FIRST_STEP)
   end
 
   def show
@@ -46,7 +46,7 @@ class Admin::UserStepsController < AdminController
   end
 
   def set_current_user
-    @user = params[:user_id] ? User.find_by(params[:user_id]) : User.new
+    @user = params[:user_id] ? User.find(params[:user_id]) : User.new
     session[:user].merge!(user_params) if params[:user] && user_params.to_h
     @user.assign_attributes session[:user] if session[:user]
   end
