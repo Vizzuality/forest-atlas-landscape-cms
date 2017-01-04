@@ -92,6 +92,8 @@ class User < ApplicationRecord
         self.errors['email'] << 'Email is not valid'
       end
     end
+    if self.form_steps[:pages].index('role') <= step_index
+      self.errors['admin'] << 'You must select a user role' if self.admin.blank?
+    end
   end
-
 end

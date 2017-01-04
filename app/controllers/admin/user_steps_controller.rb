@@ -27,18 +27,25 @@ class Admin::UserStepsController < AdminController
   end
 
   def show
+    if step == 'sites' && @user.admin
+      redirect_to next_wizard_path
+      return
+    end
     render_wizard
   end
 
   def update
     @user.form_step = step
     if @user.valid?
-      redirect_to next_wizard_path
+      if step == 'sites' && @user.admin # If the user is an admin
+        redirect_to wizard_path(wizard_steps[3])
+      else
+        redirect_to next_wizard_path
+      end
     else
       render_wizard
     end
   end
-
 
   private
   def user_params
@@ -53,5 +60,10 @@ class Admin::UserStepsController < AdminController
 
   def get_user_pages
     self.steps_names = *User.form_steps[:names]
+  end
+
+  # Defines the path the wizard will go when finished
+  def finish_wizard_path
+    admin_users_path
   end
 end
