@@ -9,17 +9,17 @@
   <%= stylesheet_link_tag 'front/application-theme-lsa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Landscape Application' %>
   <%= favicon_link_tag %>
   <%= yield :head %>
+  <script src="//cdn.quilljs.com/1.1.6/quill.js" type="text/javascript"></script>
+  <script>
+    window.template = '<%= (@site_page.site_template.name.eql? 'Forest Atlas') ? 'fa' : 'lsa' %>';
+  </script>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= yield :external_js %>
 </head>
 
 <body <%= yield :body_class %>>
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
   <%= yield %>
-  <script>
-    window.template = '<%= (@site_page.site_template.name.eql? 'Forest Atlas') ? 'fa' : 'lsa' %>';
-  </script>
-  <script src="//cdn.quilljs.com/1.1.6/quill.js" type="text/javascript"></script>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <%= yield :external_js %>
 </body>
 </html>
