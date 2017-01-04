@@ -2,19 +2,28 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @user, url: wizard_path, method: :put do |f| %>
-  <div class="l-user-creation -name">
+  <div class="l-user-creation -role">
     <div class="wrapper">
-      <h1>User name</h1>
-      <p class="intro">Please choose a name for the user and an email.</p>
+      <h1>User role</h1>
+      <p class="intro">Please choose a role for the user.</p>
 
-      <div class="user-name">
-        <%= f.label :name, for: 'name' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Type here the name' %>
-      </div>
-
-      <div class="user-email">
-        <%= f.label :email, for: 'email' %>
-        <%= f.text_field :email, id:'email', placeholder: 'Type here the email' %>
+      <div class="c-role-list">
+          <div class="role">
+            <label for="admin">admin</label>
+            <%= check_box_tag "site[user_ids][]", id: ('admin') %>
+            <div class="content">
+              <h3>Admin</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+            </div>
+          </div>
+          <div class="role">
+            <label for="admin">management</label>
+            <%= check_box_tag "site[user_ids][]", id: ('management') %>
+            <div class="content">
+              <h3>management</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+            </div>
+          </div>
       </div>
 
       <div class="js-identity"></div>

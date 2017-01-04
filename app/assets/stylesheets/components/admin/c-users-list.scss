@@ -1,11 +1,12 @@
-.c-users-list {
+.c-users-list,
+.c-role-list {
   display: flex;
   position: relative;
   flex-wrap: wrap;
   align-items: stretch;
-  justify-content: space-between;
 
-  .user {
+  .user,
+  .role {
     position: relative;
     flex-basis: calc(33.33% - 20px);
     margin: 10px;
@@ -48,4 +49,12 @@
       }
     }
   }
+}
+
+.c-user-list {
+  justify-content: space-between;
+}
+
+.c-role-list {
+  justify-content: center;
 }
