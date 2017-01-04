@@ -28,6 +28,13 @@ class User < ApplicationRecord
   has_many :context_users
   has_many :contexts, through: :context_users
 
+  accepts_nested_attributes_for :context_users
+  accepts_nested_attributes_for :user_site_associations
+
+  validates_uniqueness_of :name, :email
+  validate :step_validation
+
+
 
   cattr_accessor :form_steps do
     { pages: %w[identity role sites contexts],
@@ -65,6 +72,26 @@ class User < ApplicationRecord
     end
 
     context_datasets
+  end
+
+  private
+  def step_validation
+    step_index = form_steps[:pages].index(form_step)
+
+    if self.form_steps[:pages].index('identity') <= step_index
+      if self.name.blank?
+        self.errors['name'] << 'You must choose a name for the user'
+      elsif !/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u.match(self.name)
+        self.errors['name'] << 'The name you chose is not valid'
+      elsif self.name.length > 60
+        self.errors['name'] << 'Please selected a shorter name'
+      end
+      if self.email.blank?
+        self.errors['email'] << 'Email can\'t be blank'
+      elsif !/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.match(self.email)
+        self.errors['email'] << 'Email is not valid'
+      end
+    end
   end
 
 end

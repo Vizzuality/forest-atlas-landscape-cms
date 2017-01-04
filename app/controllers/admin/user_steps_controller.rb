@@ -31,13 +31,18 @@ class Admin::UserStepsController < AdminController
   end
 
   def update
-
+    @user.form_step = step
+    if @user.valid?
+      redirect_to next_wizard_path
+    else
+      render_wizard
+    end
   end
 
 
   private
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, :admin, sites_ids: [], context_ids: [])
   end
 
   def set_current_user

@@ -34,7 +34,6 @@ class SitePage < Page
   validates_presence_of :site_id
   after_save :update_routes
 
-  # TODO: Add validations for each of the steps
   validate :step_validation
 
   attr_accessor :form_step
