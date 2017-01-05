@@ -40,11 +40,12 @@ class Admin::UserStepsController < AdminController
       if step == 'sites' && @user.admin # If the user is an admin
         redirect_to wizard_path(wizard_steps[3])
       elsif step == 'contexts'
-        if @user.send_to_api(session[:user_token])
+        api_response = @user.send_to_api(session[:user_token])
+        if api_response[:valid]
           @user.save
           redirect_to next_wizard_path
         else
-          @user.errors['id'] << 'There was a problem connecting to the API'
+          @user.errors['id'] << 'API error: ' + api_response[:error].to_s
           render_wizard
         end
       else
@@ -57,7 +58,7 @@ class Admin::UserStepsController < AdminController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :admin, sites_ids: [], context_ids: [])
+    params.require(:user).permit(:name, :email, :admin, site_ids: [], context_ids: [])
   end
 
   def set_current_user

@@ -21,7 +21,13 @@ class UserService
         }"
     end
 
-    puts res.inspect
+    error = ''
+    begin
+      res_json = JSON.parse res.body
+      error = res_json['errors'].first['detail']
+    rescue
+    end
+    {valid: res.success?, error: error}
   end
 
 end
