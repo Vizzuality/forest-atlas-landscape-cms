@@ -13,6 +13,12 @@
       // Set the value -1 to disable the feature
       // Shouldn't be less than 5 (for accessibility)
       autoCloseTimer: -1,
+      // Whether to show the dialog buttons or not
+      dialogButtons: false,
+      // Callback exectuted when the user clicks the cancel button of the dialog
+      cancelCallback: function () {},
+      // Callback exectuted when the user clicks the continue button of the dialog
+      continueCallback: function () {},
       // Type of the notification, can be: 'success', 'warning' or 'error'
       // The type can't be changed after instantiation
       type: 'success',
@@ -23,7 +29,8 @@
     events: {
       'transitionend': '_onTransitionend',
       'click .js-close': '_onClickClose',
-      'keydown .js-close': '_onKeydownClose'
+      'keydown .js-close': '_onKeydownClose',
+      'click .js-dialog': '_onClickDialogButtons'
     },
 
     template: HandlebarsTemplates['shared/notification'],
@@ -135,18 +142,33 @@
     },
 
     /**
+     * Event handler called when a button of the dialog is clicked
+     * @param {Event} e - event
+     */
+    _onClickDialogButtons: function (e) {
+      if (!(e.target instanceof HTMLButtonElement)) return;
+
+      // We execute the callback
+      this.options[e.target.dataset.action + 'Callback']();
+
+      this.hide();
+    },
+
+    /**
      * Render the content of the notification
      */
     render: function () {
       this.isFocusSet = false; // Whether the focus has been set on the close button
       this.el.classList[this.options.visible ? 'add' : 'remove']('-visible');
+      this.el.classList[this.options.dialogButtons ? 'add' : 'remove']('-dialog');
       this.el.setAttribute('aria-hidden', !this.options.visible);
 
       // Render the content of the notification
       this.el.innerHTML = this.template({
         content: this.options.content,
         closeable: this.options.closeable,
-        visible: this.options.visible
+        visible: this.options.visible,
+        dialogButtons: this.options.dialogButtons
       });
       this.setElement(this.el);
     }

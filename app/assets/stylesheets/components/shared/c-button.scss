@@ -17,6 +17,12 @@
     background: rgba($color-1, .1);
   }
 
+  &.-monochrome {
+    border-color: $color-4;
+    background: $color-4;
+    &.-outline { color: $color-4; }
+  }
+
   &.-outline {
     background: transparent;
   }
