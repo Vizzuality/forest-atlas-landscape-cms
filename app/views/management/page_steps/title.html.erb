@@ -30,8 +30,10 @@
           <%= f.text_field :uri, placeholder: 'my-page' %>
         </div>
         <footer>
-          <%= f.check_box :show_on_menu %>
-          <%= f.label 'Show on navigation bar' %>
+          <div class="c-checkbox">
+            <%= f.check_box :show_on_menu %>
+            <%= f.label :show_on_menu, 'Show on navigation bar' %>
+          </div>
         </footer>
       </div>
     </div>
