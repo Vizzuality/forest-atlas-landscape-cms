@@ -81,6 +81,8 @@ class User < ApplicationRecord
 
   private
   def step_validation
+    # Added to insure all validations are run if there's no step
+    form_step = 'contexts' unless form_step
     step_index = form_steps[:pages].index(form_step)
 
     if self.form_steps[:pages].index('identity') <= step_index
