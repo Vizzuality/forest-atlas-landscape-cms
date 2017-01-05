@@ -17,9 +17,13 @@
           {{/if_eq}}
         {{/each}}
       >
-        {{> pageTemplate}}
+        {{> pageTemplate visible=../visible}}
         {{#if children}}
-          {{> item pages=children firstCall=false hasAdditionalPage=../hasAdditionalPage}}
+          {{#unless ../visible}}
+            {{> item pages=children visible=false firstCall=false hasAdditionalPage=../hasAdditionalPage}}
+          {{else}}
+            {{> item pages=children visible=enabled firstCall=false hasAdditionalPage=../hasAdditionalPage}}
+          {{/unless}}
         {{/if}}
       </li>
     {{/each}}
@@ -34,5 +38,5 @@
 {{/inline}}
 
 <div class="c-tree-structure {{#if readOnly}}-readonly{{/if}}">
-  {{> item pages=pages firstCall=true hasAdditionalPage=hasAdditionalPage}}
+  {{> item pages=pages firstCall=true visible=true hasAdditionalPage=hasAdditionalPage}}
 </div>

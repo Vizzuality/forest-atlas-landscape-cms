@@ -152,7 +152,7 @@
      */
     _getPageTemplate: function () {
       return '\
-         <div class="page {{#unless enabled}} -disabled {{/unless}} js-handle">\
+         <div class="page {{#unless enabled}} -disabled {{else}}{{#unless visible}} -disabled {{/unless}}{{/unless}} js-handle">\
           <span>{{name}}</span>\
           <ul class="action-buttons">\
             {{#if disableable}}\
@@ -284,19 +284,15 @@
     },
 
     /**
-     * Recursively, toggle the enabled attribute of the subtree whose root is designated
-     * If nodeId is null, toggle the attribute for all the nodes / subtree
-     * @param {object}   currentNode - the current node / subtree
-     * @param {number}   nodeId - id of the target node, can be null
-     * @param {array}    ancestorsVisibility - visibility of the direct ancestors (true = visible)
-     * @enable {boolean} enable - whether to enable or disable the subtree
+     * Recursively, toggle the enabled attribute of the specified node
+     * @param {object}   currentNode - the current node
+     * @param {number}   nodeId - id of the target node
+     * @param {boolean[]}    ancestorsVisibility - visibility of the direct ancestors (true = visible)
+     * @param {boolean} enable - whether to enable or disable the node
      */
     _toggleEnableRecursive: function (currentNode, nodeId, ancestorsVisibility, enable) {
       var newNode = currentNode;
-      // The current node is the targeted node if:
-      //  1/ We're not searching for a concrete node and we want do disable the pages
-      //  2/ It is effectively the targeted node :)
-      var isTargetedNode = (!nodeId && !enable) || (currentNode.id === nodeId);
+      var isTargetedNode = (currentNode.id === nodeId);
 
       if (isTargetedNode) {
         if (enable) {
@@ -317,7 +313,7 @@
       if (newNode.children) {
         var newAncestorsVisibility = ancestorsVisibility.concat([currentNode.enabled]);
         newNode.children = newNode.children.map(function (childNode) {
-          return this._toggleEnableRecursive(childNode, isTargetedNode ? null : nodeId, newAncestorsVisibility, enable);
+          return this._toggleEnableRecursive(childNode, nodeId, newAncestorsVisibility, enable);
         }, this);
       }
 
