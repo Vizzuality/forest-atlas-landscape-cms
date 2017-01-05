@@ -17,6 +17,7 @@
       'sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
       'sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
       'sites/:slug/(site_pages/:id/)page_steps/filters': 'FiltersStep',
+      'sites/:slug/(site_pages/:id/)widget_steps/filters': 'FiltersStep',
       'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
     }
   });

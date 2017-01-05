@@ -13,16 +13,16 @@
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
   <div class="l-dataset-creation -title">
     <div class="wrapper">
-      <div class="inputs-container">
-        <%= f.label :title, for: 'title' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Widget\'s title' %>
-
-        <%= f.label :description, for: 'description' %>
-        <%= f.text_field :description, id:'description', placeholder: 'Widget\'s description' %>
+      <div class="c-inputs-container">
+        <div class="container -big">
+          <%= f.label :title, for: 'title' %>
+          <%= f.text_field :name, id:'name', placeholder: 'My widget' %>
+        </div>
+        <div class="container">
+          <%= f.label :description, for: 'description' %>
+          <%= f.text_area :description, id:'description', placeholder: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' %>
+        </div>
       </div>
-
-      <div class="js-tags"></div>
-
     </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_widgets_path(@site.slug)} %>

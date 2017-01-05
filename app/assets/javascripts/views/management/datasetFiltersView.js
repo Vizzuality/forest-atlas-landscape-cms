@@ -1,9 +1,9 @@
 ((function (App) {
   'use strict';
 
-  App.View.DashboardFiltersView = Backbone.View.extend({
+  App.View.DatasetFiltersView = Backbone.View.extend({
 
-    template: HandlebarsTemplates['management/dashboard-filters'],
+    template: HandlebarsTemplates['management/dataset-filters'],
     collection: new Backbone.Collection(),
 
     defaults: {
@@ -188,12 +188,18 @@
      * @returns {string} HTML
      */
     _renderPreviewTable: function () {
+      var tableRows = (this.tableExtract && this.tableExtract.rows) || [];
+
+      if (!tableRows.length) {
+        return '<div class="c-table"><div class="table-legend"><p>No results were found</p></div></div>';
+      }
+
       var res = '<div class="c-table"><table><tr class="header">';
       res += this.options.fields.map(function (field) {
         return '<th>' + field.name + '</th>';
       }).join('');
       res += '</tr>';
-      res += this.tableExtract.rows.map(function (row) {
+      res += tableRows.map(function (row) {
         return '<tr>' +
           Object.keys(row).map(function (field) {
             return '<td>' + row[field] + '</td>';
@@ -421,7 +427,9 @@
 
       this._enhanceSelectors();
 
-      this._checkRowCount();
+      if (this.options.endpointUrl && this.options.endpointUrl.length) {
+        this._checkRowCount();
+      }
     }
   });
 })(this.App));
