@@ -43,7 +43,7 @@ class Admin::UserStepsController < AdminController
         api_response = @user.send_to_api(session[:user_token])
         if api_response[:valid]
           @user.save
-          redirect_to next_wizard_path
+          redirect_to next_wizard_path, notice: 'User was successfully created. Please check your email to login.'
         else
           @user.errors['id'] << 'API error: ' + api_response[:error].to_s
           render_wizard
