@@ -306,13 +306,15 @@ def create_users
   @tiago_garcia_user = User.create(
     {
       email: 'tiago.garcia@vizzuality.com',
-      name: 'Tiago Garcia'
+      name: 'Tiago Garcia',
+      admin: true
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
-      name: 'Tiago Santos'
+      name: 'Tiago Santos',
+      admin: true
     }
   )
   @jose_angel_user = User.create(
@@ -336,13 +338,15 @@ def create_users
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
-      name: 'Clément Prodhomme'
+      name: 'Clément Prodhomme',
+      admin: true
     }
   )
   @thomas_maschler_user = User.create(
     {
       email: 'tmaschler@wri.org',
-      name: 'Thomas Maschler'
+      name: 'Thomas Maschler',
+      admin: true
     }
   )
   @daniel_caso_user = User.create(
