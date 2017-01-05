@@ -18,8 +18,8 @@ class Widget < ApplicationRecord
 
 
   cattr_accessor :form_steps do
-    { pages: %w[title dataset visualization filters columns preview],
-      names: %w[Title Dataset Visualization Filters Columns Preview] }
+    { pages: %w[title dataset filters visualization],
+      names: %w[Title Dataset Filters Visualization] }
   end
   attr_accessor :form_step
 
