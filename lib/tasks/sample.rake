@@ -236,6 +236,30 @@ def clear
   puts 'Database clear'
 end
 
+def create_routes
+  create_real_routes
+  create_fake_routes
+end
+
+def create_real_routes
+  create_base_site_routes
+  create_heroku_staging_site_routes
+end
+
+def create_fake_routes
+  [@site_two, @site_three, @site_four].each_with_index do |site, i|
+    routes = [
+      {
+        host: "http://fake-site-#{i}.com",
+        site: site
+      }
+    ]
+
+    Route.create(routes)
+    puts "Routes for #{site.name} created successfully"
+  end
+end
+
 def create_base_site_routes
   routes = [
     {
@@ -453,8 +477,7 @@ namespace :db do
 
     create_pages_templates
     create_sites
-    create_base_site_routes
-    create_heroku_staging_site_routes
+    create_routes
     create_vizzuality_staging_site_routes
     create_users
     create_user_sites

@@ -63,7 +63,7 @@ class Admin::UserStepsController < AdminController
 
   def set_current_user
     @user = params[:user_id] ? User.find(params[:user_id]) : User.new
-    session[:user].merge!(user_params) if params[:user] && user_params.to_h
+    session[:user].merge!(user_params.to_h) if params[:user] && user_params.to_h
     @user.assign_attributes session[:user] if session[:user]
   end
 
