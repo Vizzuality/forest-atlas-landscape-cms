@@ -34,5 +34,6 @@ class Management::WidgetStepsController < ManagementController
 
     #TODO : CHANGE THIS!!!
     @context_datasets = current_user.get_context_datasets
+    @fields = @widget.get_fields
   end
 end

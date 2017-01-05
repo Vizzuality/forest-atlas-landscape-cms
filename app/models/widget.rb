@@ -22,4 +22,20 @@ class Widget < ApplicationRecord
       names: %w[Title Dataset Filters Columns Visualization Preview] }
   end
   attr_accessor :form_step
+
+  # Returns an array of visible columns
+  def get_columns_visible
+    if columns
+      return JSON.parse columns
+    else
+      return []
+    end
+  end
+
+  # Gets the fields of this dataset
+  # TODO: THIS IS HARDCODED
+  def get_fields
+    #DatasetService.get_fields self.dataset_id, self.api_table_name
+    DatasetService.get_fields '299ff5ce-af92-4616-9c09-5f3ca981eb65', 'index_299ff5ceaf9246169c095f3ca981eb65'
+  end
 end

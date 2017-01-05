@@ -10,12 +10,11 @@
 <% end %>
 
 <%= render partial: 'shared/navigation_header', locals: \
-  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
-  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+  {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 
-<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+<%= form_for(@widget, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
   <div class="l-page-creation -filters">
     <div class="wrapper">
       <div class="js-filters"></div>
