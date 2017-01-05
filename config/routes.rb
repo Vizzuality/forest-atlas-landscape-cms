@@ -4,8 +4,7 @@ Rails.application.routes.draw do
       resources :site_steps, only: [:show, :update, :edit]
     end
     resources :site_steps, only: [:show, :update, :new]
-    #resources :users, only: [:index, :destroy] do # TODO: Uncomment this
-    resources :users do # TODO: Remove this line
+    resources :users, only: [:index, :destroy] do
       resources :user_steps, only: [:edit, :show, :update]
     end
     resources :user_steps, only: [:new, :show, :update]
