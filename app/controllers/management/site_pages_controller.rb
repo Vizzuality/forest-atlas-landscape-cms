@@ -1,7 +1,7 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:destroy, :toggle_enable]
   before_action :set_site, only: :index
-  before_action :authenticate_user_for_site!, only: :index
+  before_action :authenticate_user_for_site!
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
@@ -12,15 +12,21 @@ class Management::SitePagesController < ManagementController
                .order(params[:order] || 'created_at ASC')
 
     gon.pages = @pages.map do |page|
-      {
+      res = {
         'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
         'enabled' => {'value' => page.enabled},
-        'enable' => {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'},
-        'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), 'method' => 'get'},
-        'delete' => {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'}
+        'enable' => page.disableable? ? \
+          {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'} : \
+          {'value' => nil},
+        'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), \
+                   'method' => 'get'},
+        'delete' => page.deletable? ? \
+          {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'} : {'value' => nil}
       }
+
+      res
     end
 
     respond_to do |format|
@@ -37,16 +43,20 @@ class Management::SitePagesController < ManagementController
   # DELETE /management/pages/1
   # DELETE /management/pages/1.json
   def destroy
+    return unless @site_page.deletable?
+
     site = @site_page.site
     @site_page.destroy
     respond_to do |format|
-      format.html { redirect_to({'controller' => 'management/site_pages', 'action' => 'index', 'site_slug' => site.slug}, {notice: 'SitePage was successfully destroyed.'}) }
+      format.html { redirect_to({'controller' => 'management/site_pages', 'action' => 'index', 'site_slug' => site.slug}, {notice: 'The page was successfully deleted.'}) }
       format.json { head :no_content }
     end
   end
 
 
   def toggle_enable
+    return unless @site_page.disableable
+
     @site_page.enabled = !@site_page.enabled
     @site_page.save
 

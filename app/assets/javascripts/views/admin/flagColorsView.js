@@ -56,6 +56,7 @@
       var position = $(e.target).data('id');
       var model = this.collection.at(position);
       model.set({ color: color });
+      this.render();
     },
 
     /**

@@ -5,7 +5,7 @@
       <h1>Users</h1>
       <p class="intro">Choose which user can manage the site.</p>
         <div class="c-users-list">
-          <% User.all.each do |user| %>
+          <% @users.each do |user| %>
             <div class="user">
               <label for="user-<%= user.id %>"><%= user.name %></label>
               <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user), id: ('user-' + user.id.to_s) %>

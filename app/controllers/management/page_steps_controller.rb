@@ -175,6 +175,11 @@ class Management::PageStepsController < ManagementController
       when 'link'
         set_current_page_state
         move_forward
+
+      # MAP PATH
+      when 'map'
+        set_current_page_state
+        move_forward
     end
   end
 

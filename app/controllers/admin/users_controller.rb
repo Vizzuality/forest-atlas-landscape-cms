@@ -1,5 +1,5 @@
 class Admin::UsersController < AdminController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: :destroy
 
   # GET /users
   # GET /users.json
@@ -10,63 +10,16 @@ class Admin::UsersController < AdminController
       {
         'name' => {'value' => user.name, 'searchable' => true, 'sortable' => true},
         'email' => {'value' => user.email, 'searchable' => true, 'sortable' => true},
-        'edit' => {'value' => edit_admin_user_path(user), 'method' => 'get'},
-        'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
+        'Role' => {'value' => user.admin ? 'Admin' : 'Manager', 'searchable' => true, 'sortable' => true},
+        'Sites' => {'value' => !user.admin ? user.sites.map{|x| x.name}.join(', ') : '-', 'searchable' => true, 'sortable' => true},
+        # 'edit' => {'value' => edit_admin_user_user_step_path(user_id: user.id, id: 'identity'), 'method' => 'get'},
+        # 'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
       }
     end
 
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @users }
-    end
-  end
-
-  # GET /users/1
-  # GET /users/1.json
-  def show
-    respond_to do |format|
-      format.html { render :show }
-      format.json { render json: @user }
-    end
-
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to admin_user_path(@user), notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to admin_user_path(@user), notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
     end
   end
 

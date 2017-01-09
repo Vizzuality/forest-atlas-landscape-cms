@@ -5,7 +5,7 @@ class Management::DatasetsController < ManagementController
   before_action :set_datasets, only: [:index]
 
   # Validate if user can modify the dataset
-  #before_action :authenticate_user_for_site!, only: [:index, :new, :create]
+  before_action :authenticate_user_for_site!
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index

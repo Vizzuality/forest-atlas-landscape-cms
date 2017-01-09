@@ -1,6 +1,6 @@
 class Management::WidgetsController < ManagementController
   before_action :set_site, only: [:index, :new, :create]
-  #before_action :authenticate_user_for_site!, only: [:index, :new, :create]
+  before_action :authenticate_user_for_site!
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index
