@@ -87,16 +87,6 @@ class SitePage < Page
     end
   end
 
-  # Return whether the page can be deleted
-  def deleteable
-    return (not (self.content_type.eql? ContentType::HOMEPAGE or self.content_type.eql? ContentType::MAP or self.content_type.eql? ContentType::STATIC_CONTENT))
-  end
-
-   # Return whether the page can be disabled
-  def disableable
-    return (not (self.content_type.eql? ContentType::HOMEPAGE))
-  end
-
   private
   def construct_url
     if self.content['url']

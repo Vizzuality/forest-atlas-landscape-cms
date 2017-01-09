@@ -16,22 +16,15 @@ class Management::SitePagesController < ManagementController
         'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
-        'enabled' => {'value' => page.enabled}
+        'enabled' => {'value' => page.enabled},
+        'enable' => page.disableable? ? \
+          {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'} : \
+          {'value' => nil},
+        'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), \
+                   'method' => 'get'},
+        'delete' => page.deletable? ? \
+          {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'} : {'value' => nil}
       }
-
-      if (not page.disableable)
-        res[:enable] = {'value' => nil}
-      else
-        res[:enable] = {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'}
-      end
-
-      res[:edit] = {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), 'method' => 'get'}
-
-      if (not page.deleteable)
-        res[:delete] = {'value' => nil}
-      else
-        res[:delete] = {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'}
-      end
 
       res
     end
@@ -50,7 +43,7 @@ class Management::SitePagesController < ManagementController
   # DELETE /management/pages/1
   # DELETE /management/pages/1.json
   def destroy
-    return if (not @site_page.deleteable)
+    return unless @site_page.deletable?
 
     site = @site_page.site
     @site_page.destroy
@@ -62,7 +55,7 @@ class Management::SitePagesController < ManagementController
 
 
   def toggle_enable
-    return if (not @site_page.disableable)
+    return unless @site_page.disableable
 
     @site_page.enabled = !@site_page.enabled
     @site_page.save

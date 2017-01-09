@@ -43,8 +43,12 @@ class Page < ApplicationRecord
     self.routes.map { |route| route.link(port) + self.url }
   end
 
+  def deletable?
+    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD].include? self.content_type
+  end
+
   def disableable?
-    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::STATIC_CONTENT].include? self.content_type
+    self.content_type != ContentType::HOMEPAGE
   end
 
   def visible?
