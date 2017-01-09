@@ -16,6 +16,8 @@
               return {};
 
             case /(enable|edit|delete)/.test(key):
+              if (!row[key].value) return '';
+
               // eslint-disable-next-line no-shadow
               var res = {
                 name: null,
@@ -25,7 +27,7 @@
               // We need extra attributes when making a put or delete request
               var extraAttributes = '';
               var method = row[key].method;
-              if (method === 'delete' || method === 'put') {
+              if (method === 'delete' || method === 'put') {
                 extraAttributes = 'rel="nofollow" data-method="' + method + '"';
               }
 
@@ -91,7 +93,8 @@
         el: $('.js-table'),
         collection: new TableCollection(gon.pages, { parse: true }),
         tableName: 'List of pages',
-        searchFieldContainer: $('.js-table-search')[0]
+        searchFieldContainer: $('.js-table-search')[0],
+        sortColumnIndex: 1
       });
 
       // We attach a dialog notification to the delete buttons
