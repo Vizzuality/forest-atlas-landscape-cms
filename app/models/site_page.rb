@@ -34,7 +34,6 @@ class SitePage < Page
   validates_presence_of :site_id
   after_save :update_routes
 
-  # TODO: Add validations for each of the steps
   validate :step_validation
 
   attr_accessor :form_step
@@ -103,6 +102,7 @@ class SitePage < Page
   def step_validation
     step_index = form_steps[:pages].index(form_step)
 
+    # TODO: Change this. Toggle shouldn't check the validations
     return unless step_index # For operations where there are no steps, like toggle_enable
 
     # Validate Position & Parent Id

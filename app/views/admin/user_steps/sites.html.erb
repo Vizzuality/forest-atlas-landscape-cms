@@ -1,0 +1,29 @@
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @user.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<%= form_for @user, url: wizard_path, method: :put do |f| %>
+  <div class="l-user-creation -sites">
+    <div class="wrapper">
+      <h1>User sites</h1>
+      <p class="intro">Please choose a sites for the user.</p>
+
+      <div class="c-site-list">
+        <% Site.all.each do |site| %>
+          <div class="site">
+            <label for="site-<%= site.id %>"><%= site.name %></label>
+            <%= check_box_tag "user[site_ids][]", site.id, f.object.sites.include?(site), id: ('site-' + site.id.to_s) %>
+            <div class="content">
+              <h3><%= site.name %></h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="js-identity"></div>
+
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @user } %>
