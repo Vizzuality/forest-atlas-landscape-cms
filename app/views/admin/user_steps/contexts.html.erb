@@ -1,15 +1,24 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>User contexts</h1>
+        <p>Please choose which contexts the user belongs to</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @user.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @user, url: wizard_path, method: :put do |f| %>
-  <div class="l-user-creation -context">
+  <div class="l-user-creation -contexts">
     <div class="wrapper">
-      <h1>Contexts</h1>
-      <p class="intro">Please select the contexts of the user.</p>
 
-      <div class="c-context-list">
+      <div class="c-cards-list">
         <% ::Context.all.each do |context| %>
-          <div class="context">
+          <div class="card">
             <label for="context-<%= context.id %>"><%= context.name %></label>
             <%= check_box_tag "user[context_ids][]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s) %>
             <div class="content">
