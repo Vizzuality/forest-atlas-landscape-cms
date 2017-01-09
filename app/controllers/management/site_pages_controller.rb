@@ -16,10 +16,16 @@ class Management::SitePagesController < ManagementController
         'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
-        'enabled' => {'value' => page.enabled},
-        'enable' => {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'},
-        'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), 'method' => 'get'}
+        'enabled' => {'value' => page.enabled}
       }
+
+      if (not page.disableable)
+        res[:enable] = {'value' => nil}
+      else
+        res[:enable] = {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'}
+      end
+
+      res[:edit] = {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), 'method' => 'get'}
 
       if (not page.deleteable)
         res[:delete] = {'value' => nil}
@@ -56,6 +62,8 @@ class Management::SitePagesController < ManagementController
 
 
   def toggle_enable
+    return if (not @site_page.disableable)
+
     @site_page.enabled = !@site_page.enabled
     @site_page.save
 
