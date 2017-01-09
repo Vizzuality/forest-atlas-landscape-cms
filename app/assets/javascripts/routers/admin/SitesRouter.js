@@ -31,7 +31,8 @@
               }
 
               res.html = '<a href="' + row[key].value + '" class="c-table-action-button -' +
-                key + '" title="' + App.Helper.Utils.toTitleCase(key) + '" ' + extraAttributes + '>' +
+                key + ((method === 'delete') ? ' js-confirm' : '') +
+                '" title="' + App.Helper.Utils.toTitleCase(key) + '" ' + extraAttributes + '>' +
                 App.Helper.Utils.toTitleCase(key) + '</a>';
 
               return res;
@@ -75,6 +76,27 @@
         collection: new TableCollection(gon.sites, { parse: true }),
         tableName: 'List of sites',
         searchFieldContainer: $('.js-table-search')[0]
+      });
+
+      // We attach a dialog notification to the delete buttons
+      var dialogNotification = new App.View.NotificationView({
+        type: 'warning',
+        content: 'Are you sure you want to permanently delete this site?',
+        dialogButtons: true,
+        closeable: false
+      });
+
+      $('.js-confirm').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation(); // Prevents rails to automatically delete the site
+
+        // Callback executed when the user clicks the continue button
+        dialogNotification.options.continueCallback = function () {
+          $.rails.handleMethod($(e.target));
+        };
+
+        // We show the dialog
+        dialogNotification.show();
       });
     }
   });
