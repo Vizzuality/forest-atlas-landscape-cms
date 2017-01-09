@@ -39,6 +39,9 @@ class Admin::SiteStepsController < AdminController
       gon.global.url_array = @site.routes.to_a
     else
       @site = current_site
+      if step == 'users'
+        @users = User.where('admin is not true')
+      end
       if step == 'style'
         SiteSetting.create_color_settings @site
       end
