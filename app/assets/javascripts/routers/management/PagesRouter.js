@@ -25,9 +25,8 @@
               // We need extra attributes when making a put or delete request
               var extraAttributes = '';
               var method = row[key].method;
-              if (method === 'delete' || method === 'put') {
+              if (method === 'delete' || method === 'put') {
                 extraAttributes = 'rel="nofollow" data-method="' + method + '"';
-                if (method === 'delete') extraAttributes += ' data-confirm="Are you sure?"';
               }
 
               var label = key;
@@ -36,7 +35,8 @@
               }
 
               res.html = '<a href="' + row[key].value + '" class="c-table-action-button -' +
-                label + '" title="' + App.Helper.Utils.toTitleCase(label) + '" ' + extraAttributes + '>' +
+                label + ((method === 'delete') ? ' js-confirm' : '') +
+                '" title="' + App.Helper.Utils.toTitleCase(label) + '" ' + extraAttributes + '>' +
                 App.Helper.Utils.toTitleCase(label) + '</a>';
 
               return res;
@@ -92,6 +92,27 @@
         collection: new TableCollection(gon.pages, { parse: true }),
         tableName: 'List of pages',
         searchFieldContainer: $('.js-table-search')[0]
+      });
+
+      // We attach a dialog notification to the delete buttons
+      var dialogNotification = new App.View.NotificationView({
+        type: 'warning',
+        content: 'Are you sure you want to permanently delete this page?',
+        dialogButtons: true,
+        closeable: false
+      });
+
+      $('.js-confirm').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation(); // Prevents rails to automatically delete the page
+
+        // Callback executed when the user clicks the continue button
+        dialogNotification.options.continueCallback = function () {
+          $.rails.handleMethod($(e.target));
+        };
+
+        // We show the dialog
+        dialogNotification.show();
       });
     }
 

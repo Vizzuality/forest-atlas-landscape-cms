@@ -40,7 +40,7 @@ class Management::SitePagesController < ManagementController
     site = @site_page.site
     @site_page.destroy
     respond_to do |format|
-      format.html { redirect_to({'controller' => 'management/site_pages', 'action' => 'index', 'site_slug' => site.slug}, {notice: 'SitePage was successfully destroyed.'}) }
+      format.html { redirect_to({'controller' => 'management/site_pages', 'action' => 'index', 'site_slug' => site.slug}, {notice: 'The page was successfully deleted.'}) }
       format.json { head :no_content }
     end
   end
