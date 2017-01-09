@@ -55,6 +55,9 @@ class SitePage < Page
       when ContentType::STATIC_CONTENT
         steps = {pages: %w[position title type],
                  names: %w[Position  Title Type]}
+      when ContentType::MAP
+        steps = {pages: %w[position title type map],
+                 names: %w[Position  Title Type Map]}
       when ContentType::HOMEPAGE
         steps = {pages: %w[open_content open_content_preview],
                  names: ['Open Content', 'Open Content Preview']}
@@ -151,6 +154,11 @@ class SitePage < Page
 
     # Validate steps for Static Content
     if self.content_type == ContentType::STATIC_CONTENT
+
+    end
+
+    # Validate steps for Map
+    if self.content_type == ContentType::MAP
 
     end
 
