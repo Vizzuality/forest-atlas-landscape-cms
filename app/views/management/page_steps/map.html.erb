@@ -15,15 +15,14 @@
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-<div class="l-page-creation -map">
-  <div class="wrapper">
-    <%= form_for(form_for_path, :html => {:class => 'js-form'}) do |f| %>
-        <% if site_page.errors.any? %>
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <div class="l-page-creation -map">
+    <div class="wrapper">
+        <% if @page.errors.any? %>
             <div id="error_explanation">
-              <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
-
+              <h2><%= pluralize(@page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
               <ul>
-                <% site_page.errors.full_messages.each do |message| %>
+                <% @page.errors.full_messages.each do |message| %>
                     <li><%= message %></li>
                 <% end %>
               </ul>
@@ -31,17 +30,14 @@
         <% end %>
 
         <div class="c-fieldset">
-          <%= f.fields_for :content, OpenStruct.new(site_page.content) do |ff| %>
+          <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
               <%= ff.text_area :settings, class: 'settings' %>
               <%= ff.label 'Map settings', class: 'col-sm-2 form-control-label' %>
           <% end %>
         </div>
-
-    <% end %>
+    </div>
   </div>
-</div>
 
-<% content_for :action_bar do %>
-    <%= link_to 'Back', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
-    <button type="submit" class="c-button js-submit">Update</button>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, no_continue: true, always_save: true, publish: !@page.enabled} %>
+  <%= render partial: 'shared/errors', locals: { resource: @page } %>
 <% end %>
