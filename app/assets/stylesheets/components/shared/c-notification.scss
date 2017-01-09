@@ -1,27 +1,55 @@
 .c-notification {
   position: fixed;
-  top: -66px;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 66px;
+  padding: 15px 25px;
+  transform: translateY(-100%);
   transition: transform .3s ease-in-out;
   background-color: rgba($color-1, .9);
   z-index: 10;
 
-  &.-visible {
-    transform: translateY(100%);
+  @media #{$mq-tablet} {
+    height: 66px;
+    padding: 0;
   }
 
-  > p {
+  &.-visible {
+    transform: translateY(0%);
+  }
+
+  &.-dialog {
+    padding-left: 0;
+
+    > .wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dialog-buttons {
+      margin-top: 15px;
+
+      @media #{$mq-tablet} {
+        margin-top: 0;
+      }
+    }
+  }
+
+  p {
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
     color: $color-3;
     font-size: $font-size-s-normal;
-    line-height: 66px;
     text-align: center;
+
+    @media #{$mq-tablet} {
+      line-height: 66px;
+    }
   }
 
-  > .close-button {
+  .close-button {
     position: absolute;
     top: 50%;
     right: 15px;
@@ -43,11 +71,11 @@
   &.-warning {
     background-color: rgba($color-11, .9);
 
-    > p {
+    p {
       color: $color-4;
     }
 
-    > .close-button {
+    .close-button {
       path {
         fill: $color-4;
       }

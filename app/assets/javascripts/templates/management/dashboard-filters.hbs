@@ -90,8 +90,8 @@
 
         {{!-- Field to select if the filter is variable --}}
         <select class="js-variable" data-id="{{@index}}">
-          <option value="0" {{#unless variable}}selected="selected"{{/unless}}>Not variable</option>
-          <option value="1" {{#if variable}}selected="selected"{{/if}}>Variable</option>
+          <option value="0" {{#unless variable}}selected="selected"{{/unless}}>Not user configurable</option>
+          <option value="1" {{#if variable}}selected="selected"{{/if}}>User configurable</option>
         </select>
       {{/if}}
       {{#if type}}

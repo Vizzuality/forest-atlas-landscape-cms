@@ -1,9 +1,18 @@
-<p id="notification-content">{{content}}</p>
+<div class="wrapper">
+  <p id="notification-content">{{content}}</p>
 
-{{#if closeable}}
-  <button class="close-button js-close" aria-label="Close" title="Close" tabindex="{{#if visible}}0{{else}}-1{{/if}}">
-    <svg viewBox="0 0 25 25">
-      <path d="M 5 19 L 19 5 L 21 7 L 7 21 L 5 19 ZM 7 5 L 21 19 L 19 21 L 5 7 L 7 5 Z"></path>
-    </svg>
-  </button>
-{{/if}}
+  {{#if dialogButtons}}
+    <div class="dialog-buttons js-dialog">
+      <button type="button" class="c-button -monochrome -outline" data-action="cancel">Cancel</button>
+      <button type="button" class="c-button -monochrome" data-action="continue">Continue</button>
+    </div>
+  {{/if}}
+
+  {{#if closeable}}
+    <button class="close-button js-close" aria-label="Close" title="Close" tabindex="{{#if visible}}0{{else}}-1{{/if}}">
+      <svg viewBox="0 0 25 25">
+        <path d="M 5 19 L 19 5 L 21 7 L 7 21 L 5 19 ZM 7 5 L 21 19 L 19 21 L 5 7 L 7 5 Z"></path>
+      </svg>
+    </button>
+  {{/if}}
+</div>

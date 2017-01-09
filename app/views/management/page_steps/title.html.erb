@@ -16,15 +16,25 @@
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <div class="l-page-creation -title">
     <div class="wrapper">
-      <div class="inputs-container">
-        <%= f.label :name %>
-        <%= f.text_field :name, placeholder: 'Page\'s title' %>
-        <%= f.label :description %>
-        <%= f.text_area :description, placeholder: 'Description' %>
-        <%= f.label :uri %>
-        <%= f.text_field :uri, placeholder: 'URI' %>
-        <%= f.label 'Show on navigation bar' %>
-        <%= f.check_box :show_on_menu %>
+      <div class="c-inputs-container">
+        <div class="container -big">
+          <%= f.label :name, 'Page title' %>
+          <%= f.text_field :name, placeholder: 'My page' %>
+        </div>
+        <div class="container">
+          <%= f.label :description %>
+          <%= f.text_area :description, placeholder: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' %>
+        </div>
+        <div class="container">
+          <%= f.label :uri %>
+          <%= f.text_field :uri, placeholder: 'my-page' %>
+        </div>
+        <footer>
+          <div class="c-checkbox">
+            <%= f.check_box :show_on_menu %>
+            <%= f.label :show_on_menu, 'Show on navigation bar' %>
+          </div>
+        </footer>
       </div>
     </div>
   </div>
