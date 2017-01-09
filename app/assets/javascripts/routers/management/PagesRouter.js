@@ -93,7 +93,8 @@
         el: $('.js-table'),
         collection: new TableCollection(gon.pages, { parse: true }),
         tableName: 'List of pages',
-        searchFieldContainer: $('.js-table-search')[0]
+        searchFieldContainer: $('.js-table-search')[0],
+        sortColumnIndex: 1
       });
 
       // We attach a dialog notification to the delete buttons
