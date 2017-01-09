@@ -37,6 +37,8 @@ class Management::SitePagesController < ManagementController
   # DELETE /management/pages/1
   # DELETE /management/pages/1.json
   def destroy
+    return if (not @site_page.deleteable)
+
     site = @site_page.site
     @site_page.destroy
     respond_to do |format|
