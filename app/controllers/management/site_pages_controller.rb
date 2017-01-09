@@ -1,7 +1,7 @@
 class Management::SitePagesController < ManagementController
   before_action :set_page, only: [:destroy, :toggle_enable]
   before_action :set_site, only: :index
-  before_action :authenticate_user_for_site!, only: :index
+  before_action :authenticate_user_for_site!
 
   # GET /management/:site_slug
   # GET /management/:site_slug.json
