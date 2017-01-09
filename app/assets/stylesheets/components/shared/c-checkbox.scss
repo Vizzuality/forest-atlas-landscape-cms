@@ -32,6 +32,14 @@
     left: -100000px; // Can't change the top property otherwise the browser scrolls when the user clicks the label
     opacity: 0;
 
+    &:focus {
+      + label {
+        &::before {
+          border-color: $color-1;
+        }
+      }
+    }
+
     &:checked {
       + label {
         &::after {
