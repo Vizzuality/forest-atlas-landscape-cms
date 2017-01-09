@@ -12,15 +12,22 @@ class Management::SitePagesController < ManagementController
                .order(params[:order] || 'created_at ASC')
 
     gon.pages = @pages.map do |page|
-      {
+      res = {
         'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
         'enabled' => {'value' => page.enabled},
         'enable' => {'value' => toggle_enable_management_site_site_page_path(page.site.slug, page), 'method' => 'put'},
-        'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), 'method' => 'get'},
-        'delete' => {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'}
+        'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), 'method' => 'get'}
       }
+
+      if (not page.deleteable)
+        res[:delete] = {'value' => nil}
+      else
+        res[:delete] = {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'}
+      end
+
+      res
     end
 
     respond_to do |format|
