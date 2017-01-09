@@ -42,9 +42,13 @@ class User < ApplicationRecord
   end
   attr_accessor :form_step
 
-  def send_to_api(token)
-    role = self.admin ? 'MANAGER' : 'USER'
-    UserService.create(token, self.email, role)
+  def send_to_api(token, url)
+    #TODO : Redirect to the proper url
+    if self.admin
+      UserService.create(token, self.email, 'MANAGER', url)
+    else
+      UserService.create(token, self.email, 'USER', url)
+    end
   end
 
   def get_datasets(status = 'active')
