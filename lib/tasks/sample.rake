@@ -236,6 +236,30 @@ def clear
   puts 'Database clear'
 end
 
+def create_routes
+  create_real_routes
+  create_fake_routes
+end
+
+def create_real_routes
+  create_base_site_routes
+  create_heroku_staging_site_routes
+end
+
+def create_fake_routes
+  [@site_two, @site_three, @site_four].each_with_index do |site, i|
+    routes = [
+      {
+        host: "http://fake-site-#{i}.com",
+        site: site
+      }
+    ]
+
+    Route.create(routes)
+    puts "Routes for #{site.name} created successfully"
+  end
+end
+
 def create_base_site_routes
   routes = [
     {
@@ -282,13 +306,15 @@ def create_users
   @tiago_garcia_user = User.create(
     {
       email: 'tiago.garcia@vizzuality.com',
-      name: 'Tiago Garcia'
+      name: 'Tiago Garcia',
+      admin: true
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
-      name: 'Tiago Santos'
+      name: 'Tiago Santos',
+      admin: true
     }
   )
   @jose_angel_user = User.create(
@@ -312,13 +338,15 @@ def create_users
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
-      name: 'Clément Prodhomme'
+      name: 'Clément Prodhomme',
+      admin: true
     }
   )
   @thomas_maschler_user = User.create(
     {
       email: 'tmaschler@wri.org',
-      name: 'Thomas Maschler'
+      name: 'Thomas Maschler',
+      admin: true
     }
   )
   @daniel_caso_user = User.create(
@@ -453,8 +481,7 @@ namespace :db do
 
     create_pages_templates
     create_sites
-    create_base_site_routes
-    create_heroku_staging_site_routes
+    create_routes
     create_vizzuality_staging_site_routes
     create_users
     create_user_sites

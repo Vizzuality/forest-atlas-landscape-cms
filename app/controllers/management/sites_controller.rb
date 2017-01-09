@@ -2,6 +2,7 @@ class Management::SitesController < ManagementController
   include TreeStructureHelper
   before_action :set_site, only: [:structure, :update_structure]
   before_action :get_pages, only: [:structure, :update_structure]
+  before_action :authenticate_user_for_site!
 
   # GET /management/sites
   # GET /management/sites.json

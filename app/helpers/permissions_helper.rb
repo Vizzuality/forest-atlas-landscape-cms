@@ -47,18 +47,12 @@ module PermissionsHelper
     end
 
     email = session[:current_user]['email']
-    User.find_by!(:email => email)
+    user = User.find_by!(:email => email)
+    (session[:current_user]['cms_role'] = user.admin ? 'ADMIN' : 'MANAGER') if user
+    return user
   end
 
   def current_user_type
-    return 'ADMIN'
-
-    # TODO Should implement a local user management system with different roles
-    # (use a decorator on the user that is sent by the API)
-
-    #if session['current_user']
-    #  user = JSON.parse session['current_user']
-    #  return user['role']
-    #end
+    session[:current_user]['cms_role']
   end
 end
