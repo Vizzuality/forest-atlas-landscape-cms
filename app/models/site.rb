@@ -12,11 +12,11 @@
 
 class Site < ApplicationRecord
   belongs_to :site_template, optional: :true
-  has_many :routes
-  has_many :site_pages
+  has_many :routes,  dependent: :destroy
+  has_many :site_pages, dependent: :destroy
   has_many :user_site_associations, dependent: :destroy
   has_many :users, through: :user_site_associations
-  has_many :context_sites
+  has_many :context_sites,  dependent: :destroy
   has_many :contexts, through: :context_sites
   has_many :site_settings, dependent: :destroy, inverse_of: :site
 
