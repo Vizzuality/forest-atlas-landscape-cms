@@ -22,7 +22,7 @@
            when 'logo_image' %>
           <%= settings_form.hidden_field :position, value: '2'%>
           <%= settings_form.hidden_field :name, value: 'logo_image'%>
-          <% if @logo_image.image_file_name %>
+          <% if !@logo_image.nil? && @logo_image.image_file_name %>
             <div class="c-centered-input">
               <label>Current logo</label>
               <div>
@@ -31,7 +31,7 @@
             </div>
           <% end %>
           <div class="c-centered-input">
-            <% label_value = @logo_image.image_file_name ? 'Change logo image' : 'Logo image' %>
+            <% label_value = !@logo_image.nil? && @logo_image.image_file_name ? 'Change logo image' : 'Logo image' %>
             <%= settings_form.label :image, value: label_value, for: 'logo' %>
             <div class="js-file-input">
               <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
