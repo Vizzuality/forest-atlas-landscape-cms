@@ -2,8 +2,8 @@
 
   'use strict';
 
-  if (Parsley || window.Parsley) {
-    Parsley.addValidator('json', {
+  if (window.Parsley) {
+    window.Parsley.addValidator('json', {
       requirementType: 'string',
       validateString: function(value) {
         var isValid = true;
