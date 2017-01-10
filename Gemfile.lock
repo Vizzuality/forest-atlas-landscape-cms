@@ -253,6 +253,8 @@ GEM
     rails-assets-jquery-ui (1.12.1)
       rails-assets-jquery (>= 1.6)
     rails-assets-leaflet (1.0.1)
+    rails-assets-parsleyjs (2.6.2)
+      rails-assets-jquery (> 1.8)
     rails-assets-select2 (4.0.3)
     rails-assets-underscore (1.8.3)
     rails-assets-vega (2.6.3)
@@ -359,6 +361,7 @@ DEPENDENCIES
   rails-assets-fuse.js!
   rails-assets-jquery-ui!
   rails-assets-leaflet (= 1.0.1)!
+  rails-assets-parsleyjs (= 2.6.2)!
   rails-assets-select2 (= 4.0.3)!
   rails-assets-vega (~> 2.6.3)!
   rspec-core!

@@ -18,7 +18,13 @@
       'sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
       'sites/:slug/(site_pages/:id/)page_steps/filters': 'FiltersStep',
       'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
+    },
+
+    initialize: function() {
+      // Adding extra capabilities to forms
+      new App.View.Form({ el: 'form' });
     }
+
   });
 
   var init = function () {

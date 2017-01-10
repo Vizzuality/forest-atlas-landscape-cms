@@ -43,6 +43,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datalib', '1.7.3'
   gem 'rails-assets-SINTEF-9012--PruneCluster', '1.1.0'
   gem 'rails-assets-select2', '4.0.3'
+  gem 'rails-assets-parsleyjs', '2.6.2'
 end
 
 # Use ActiveModel has_secure_password
