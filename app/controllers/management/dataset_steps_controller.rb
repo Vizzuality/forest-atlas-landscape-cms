@@ -2,8 +2,6 @@ class Management::DatasetStepsController < ManagementController
   include Wicked::Wizard
   include NavigationHelper
 
-  before_action :authenticate_user_for_site!
-
   before_action :set_site, only: [:new, :edit, :show, :update]
   before_action :steps_names
   before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
