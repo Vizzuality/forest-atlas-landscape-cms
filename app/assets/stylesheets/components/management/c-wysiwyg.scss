@@ -31,10 +31,10 @@
     }
 
     .ql-tooltip-arrow {
-      top: auto;
+      top: auto !important;
       bottom: -6px;
       border-top: 6px solid rgba($color-5, .8);
-      border-bottom: 0;
+      border-bottom: 0 !important;
     }
   }
 
