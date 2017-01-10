@@ -1,11 +1,20 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Style</h1>
+        <p>Choose one of the two templates below and its main color</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
 <%= include_gon %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -style">
     <div class="wrapper">
-      <h1>Style</h1>
-      <p class="intro">Choose one of the two templates below and its main color.</p>
 
       <div class="templates">
         <% SiteTemplate.all.each do |template| %>

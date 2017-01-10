@@ -3,6 +3,12 @@
   // screen has a small height
   padding-bottom: 75px;
 
+  hr {
+    margin: 30px 0;
+    border: 0;
+    border-bottom: 1px solid $color-7;
+  }
+
   &.-name {
     display: flex;
     align-items: center;
@@ -21,6 +27,10 @@
   }
 
   &.-style {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 300px);
+    padding-top: 50px;
 
     .templates {
       display: flex;
@@ -37,6 +47,10 @@
 
           &:not(:checked) + .content {
             opacity: .3;
+          }
+
+          &:focus + .content img{
+            border-color: $color-1;
           }
         }
 
