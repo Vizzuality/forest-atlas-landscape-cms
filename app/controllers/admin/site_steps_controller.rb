@@ -90,6 +90,7 @@ class Admin::SiteStepsController < AdminController
             if @site.save
               redirect_to admin_sites_path
             else
+              @users = User.where('admin is not true')
               render_wizard
             end
           else
@@ -98,12 +99,14 @@ class Admin::SiteStepsController < AdminController
             if @site.valid?
               redirect_to next_wizard_path
             else
+              @users = User.where('admin is not true')
               render_wizard
             end
           end
         else
           @site = Site.new
           @site.errors.add(:users, 'Site must have at least one user')
+          @users = User.where('admin is not true')
           render_wizard
         end
 
