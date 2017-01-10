@@ -20,7 +20,7 @@
       'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
     },
 
-    initialize: function() {
+    initCommonActions: function() {
       // Adding extra capabilities to forms
       new App.View.Form({ el: 'form' });
     }
@@ -35,8 +35,10 @@
       var Router = App.Router['Management' + routeName];
 
       if (Router) {
-        new Router(params.slice(0, params.length - 1));
-
+        var instancedRouter = new Router(params.slice(0, params.length - 1));
+        if (instancedRouter && typeof instancedRouter === 'function') {
+          initCommonActions();
+        }
         Backbone.history.start({ pushState: false });
       }
     });
