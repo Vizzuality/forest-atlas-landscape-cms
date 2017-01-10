@@ -28,6 +28,8 @@ class Management::DatasetStepsController < ManagementController
 
   # Wicked Wizard's Show
   def show
+    @breadcrumbs << {name: 'New Dataset'}
+
     @dataset.form_step = step
     case step
       when 'title'

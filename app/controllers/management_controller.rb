@@ -3,6 +3,7 @@ class ManagementController < ActionController::Base
   include PermissionsHelper
 
   before_action :ensure_management_user
+  before_action :set_management_base_breadcrumbs
   layout 'management'
 
   def authenticate_user_for_site!
@@ -18,5 +19,9 @@ class ManagementController < ActionController::Base
 
   def ensure_management_user
     ensure_user_can 'access_management'
+  end
+
+  def set_management_base_breadcrumbs
+    @breadcrumbs = [{name: 'CMS', url: management_site_site_pages_path}]
   end
 end

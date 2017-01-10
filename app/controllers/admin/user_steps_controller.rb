@@ -27,6 +27,8 @@ class Admin::UserStepsController < AdminController
   end
 
   def show
+    @breadcrumbs << {name: 'New User'}
+
     if step == 'sites' && @user.admin
       redirect_to next_wizard_path
       return
