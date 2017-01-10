@@ -23,6 +23,10 @@
     font-weight: $font-weight-light;
     line-height: 44px;
 
+    &:focus {
+      border-color: $color-1;
+    }
+
     &[type="color"] {
       max-width: 100px;
 

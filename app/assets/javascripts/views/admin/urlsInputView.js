@@ -7,10 +7,11 @@
 
     defaults: {
     },
+
     events: {
       'click .js-add-url': '_addUrl',
       'click .js-remove-url': '_removeUrl',
-      'blur input': '_updateUrl'
+      'blur .js-input': '_updateUrl'
     },
 
     initialize: function (settings) {
@@ -18,40 +19,61 @@
       this.render();
     },
 
+    /**
+     * Event handler executed when the user clicks the add URL button
+     */
     _addUrl: function () {
       this.render();
     },
 
-    /*
-
+    /**
+     * Event hanlder executed when the user removes a URL
+     * @param {Event} e - event
      */
     _removeUrl: function (e) {
       if (this._canRemoveUrl()) {
-        var index = +e.target.dataset.id,
-          model = this.collection.at(index);
+        var index = +e.target.dataset.id;
+        var model = this.collection.at(index);
         this.collection.remove(model);
         this.render();
       }
     },
 
+    /**
+     * Event handler executed when an URL input is blurred
+     * @param {Event} e - event
+     */
     _updateUrl: function (e) {
       var input = e.target;
-      var position = +input.dataset.id || this.collection.length;
+      var position = input.dataset ? +input.dataset.id : this.collection.length;
       var model = this.collection.at(position);
 
       if (!model) {
-        this.collection.push({ url: input.value });
+        if (input.value.length) this.collection.push({ url: input.value });
       } else {
         model.set({ url: input.value });
       }
     },
 
+    /**
+     * Return whether the user can delete a URL input
+     * @returns {boolean}
+     */
     _canRemoveUrl: function () {
       return (this.collection.length > 0);
     },
 
     render: function () {
-      this.$el.html(this.template({
+      // We add the component's class name to the elemetn
+      this.$el.addClass(this.className);
+
+      // We remove all of the previous rendered nodes
+      var children = Array.prototype.slice.apply(this.$el[0].children);
+      for (var i = 1, j = children.length; i < j; i++) {
+        this.$el[0].removeChild(children[i]);
+      }
+
+      this.$el.append(this.template({
         urls: this.collection.toJSON(),
         inputId: (window.gon && gon.global && gon.global.urlControllerId) || '',
         inputName: (window.gon && gon.global && gon.global.urlControllerName) || ''

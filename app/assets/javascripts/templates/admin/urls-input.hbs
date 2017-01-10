@@ -1,17 +1,18 @@
-<div class="c-urls-input">
-  {{#each urls}}
-    <div>
-      {{#if id}}
-        <input type="hidden" value="{{id}}" name="{{../inputName}}[{{@index}}][id]">
-      {{/if}}
-      <label for="url-{{../urls.length}}">{{#if @index}}Additional URL{{else}}Main URL{{/if}}</label>
-      <input type="url" value="{{url}}" placeholder="https://www.my-site.com" data-id="{{@index}}" name="{{../inputName}}[{{@index}}][host]" id="url-{{../urls.length}}">
-      <button type="button" class="remove-url js-remove-url" data-id="{{@index}}">Remove</button>
-    </div>
-  {{/each}}
-  <div>
-    <label for="url-0">{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}</label>
-    <input type="url" value="" placeholder="{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}" name="{{inputName}}[{{urls.length}}][host]" id="url-0">
+{{#each urls}}
+  <div class="container">
+    {{#if id}}
+      <input type="hidden" value="{{id}}" name="{{../inputName}}[{{@index}}][id]">
+    {{/if}}
+    <label for="url-{{../urls.length}}">{{#if @index}}Additional URL{{else}}Main URL{{/if}}</label>
+    <input type="url" value="{{url}}" class="js-input" placeholder="https://www.my-site.com" data-id="{{@index}}" name="{{../inputName}}[{{@index}}][host]" id="url-{{../urls.length}}">
+    <button type="button" class="remove-url js-remove-url" data-id="{{@index}}">Remove</button>
   </div>
-  <button type="button" class="add-url js-add-url">ADD URL</button>
+{{/each}}
+<div class="container">
+  <label for="url-0">{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}</label>
+  <input type="url" value="" class="js-input" placeholder="{{#if urls.length}}https://www.my-site.com{{else}}https://www.mysite.com{{/if}}" name="{{inputName}}[{{urls.length}}][host]" id="url-0">
 </div>
+<footer>
+  <button type="button" class="add-url js-add-url">Add URL</button>
+</footer>
+{{!--</div>--}}
