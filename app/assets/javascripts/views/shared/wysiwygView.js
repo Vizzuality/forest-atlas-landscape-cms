@@ -16,7 +16,7 @@
       // Options for the tooltip
       toolbar: {
         container: [
-          ['bold', 'italic', 'underline', { header: 1 }, { header: 2 }, 'blockquote', 'link']
+          ['bold', 'italic', 'underline', { header: 1 }, { header: 2 }, 'intro', 'blockquote', 'link']
         ]
       }
     },
