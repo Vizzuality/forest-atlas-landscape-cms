@@ -89,6 +89,11 @@
   }
 
   &.-settings {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 300px);
+    padding-top: 50px;
+
     .c-centered-input {
       justify-content: space-between;
       width: 400px;

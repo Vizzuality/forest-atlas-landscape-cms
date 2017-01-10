@@ -7,6 +7,10 @@
     background: transparent;
     text-indent: -10000px; // We still need the text for accessibility
     cursor: pointer;
+
+    &:focus {
+      border-color: $color-1;
+    }
   }
 
   .remove-color {
@@ -19,5 +23,9 @@
     background: asset-url('icons/close-icon.svg') no-repeat center center;
     text-indent: -10000px; // For accessibility, we should keep the text
     cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $color-1;
+    }
   }
 }
