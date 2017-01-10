@@ -2,8 +2,8 @@
 
   'use strict';
 
-  Parsley
-    .addValidator('json', {
+  if (Parsley || window.Parsley) {
+    Parsley.addValidator('json', {
       requirementType: 'string',
       validateString: function(value) {
         var isValid = true;
@@ -20,6 +20,7 @@
         en: 'This value should be a valid JSON'
       }
     });
+  }
 
   App.View.Form = Backbone.View.extend({
 
