@@ -1,24 +1,30 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>User identity</h1>
+        <p>Please fill in the user's name and email</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @user.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @user, url: wizard_path, method: :put do |f| %>
   <div class="l-user-creation -name">
     <div class="wrapper">
-      <h1>User name</h1>
-      <p class="intro">Please choose a name and email for the user.</p>
-
-      <div class="user-name">
-        <%= f.label :name, for: 'name' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Type here the name' %>
+      <div class="c-inputs-container">
+        <div class="container -big">
+          <%= f.label :name, for: 'name' %>
+          <%= f.text_field :name, id:'name', placeholder: 'John Smith' %>
+        </div>
+        <div class="container">
+          <%= f.label :email, for: 'email' %>
+          <%= f.email_field :email, id:'email', placeholder: 'john.smith@gmail.com' %>
+        </div>
       </div>
-
-      <div class="user-email">
-        <%= f.label :email, for: 'email' %>
-        <%= f.text_field :email, id:'email', placeholder: 'Type here the email' %>
-      </div>
-
-      <div class="js-identity"></div>
-
     </div>
   </div>
   <%= render partial: 'footer', locals: { f: f} %>

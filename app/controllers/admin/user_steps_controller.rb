@@ -40,7 +40,8 @@ class Admin::UserStepsController < AdminController
       if step == 'sites' && @user.admin # If the user is an admin
         redirect_to wizard_path(wizard_steps[3])
       elsif step == 'contexts'
-        api_response = @user.send_to_api(session[:user_token])
+        url = @user.admin ? admin_sites_url : management_url
+        api_response = @user.send_to_api(session[:user_token], url)
         if api_response[:valid]
           @user.save
           redirect_to next_wizard_path, notice: 'User was successfully created. Please check your email to login.'

@@ -6,7 +6,7 @@ class UserService
     faraday.adapter Faraday.default_adapter
   end
 
-  def self.create(token, email, role)
+  def self.create(token, email, role, callbackUrl)
     res = @conn.post do |req|
       req.url '/auth/user'
       req.headers['Authorization'] = "Bearer #{token}"
@@ -17,7 +17,8 @@ class UserService
           \"role\": \"#{role}\",
           \"extraUserData\": {
               \"apps\": [\"forest-atlas\"]
-          }
+          },
+          \"callbackUrl\": \"#{callbackUrl}\"
         }"
     end
 

@@ -1,32 +1,38 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>User role</h1>
+        <p>Please choose a role for the user</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @user.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @user, url: wizard_path, method: :put do |f| %>
   <div class="l-user-creation -role">
     <div class="wrapper">
-      <h1>User role</h1>
-      <p class="intro">Please choose a role for the user.</p>
-
-      <div class="c-role-list">
-          <div class="role">
+      <div class="c-cards-list">
+          <div class="card">
             <label for="user_admin_true">admin</label>
             <%= radio_button_tag 'user[admin]', true, f.object.admin %>
             <div class="content">
               <h3>Admin</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+              <p>An admin can create, edit and delete any users, any sites and any pages</p>
             </div>
           </div>
-          <div class="role">
+          <div class="card">
             <label for="user_admin_false">management</label>
             <%= radio_button_tag 'user[admin]', false, !f.object.admin %>
             <div class="content">
-              <h3>management</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+              <h3>Manager</h3>
+              <p>A manager has only access to some sites to create, edit and delete their pages</p>
             </div>
           </div>
       </div>
-
-      <div class="js-identity"></div>
 
     </div>
   </div>

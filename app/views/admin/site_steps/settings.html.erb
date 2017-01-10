@@ -1,12 +1,20 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Customize</h1>
+        <p>Get the most out of these last settings to customize your site</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -settings">
     <div class="wrapper">
-      <h1>Customize</h1>
-      <p class="intro">Get the most out of these last settings to customize your site.</p>
 
       <%= f.fields_for :site_settings, f.object.site_settings do |settings_form| %>
         <% setting = settings_form.object %>

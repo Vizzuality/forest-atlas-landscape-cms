@@ -1,12 +1,21 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Managers</h1>
+        <p>Choose which user can manage the site</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -users">
     <div class="wrapper">
-      <h1>Users</h1>
-      <p class="intro">Choose which user can manage the site.</p>
-        <div class="c-users-list">
+        <div class="c-cards-list">
           <% @users.each do |user| %>
-            <div class="user">
+            <div class="card">
               <label for="user-<%= user.id %>"><%= user.name %></label>
               <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user), id: ('user-' + user.id.to_s) %>
               <div class="content">

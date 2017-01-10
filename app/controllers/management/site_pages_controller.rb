@@ -55,7 +55,7 @@ class Management::SitePagesController < ManagementController
 
 
   def toggle_enable
-    return unless @site_page.disableable
+    return unless @site_page.disableable?
 
     @site_page.enabled = !@site_page.enabled
     @site_page.save

@@ -342,6 +342,7 @@ def create_users
       admin: true
     }
   )
+=begin
   @thomas_maschler_user = User.create(
     {
       email: 'tmaschler@wri.org',
@@ -349,6 +350,7 @@ def create_users
       admin: true
     }
   )
+=end
   @daniel_caso_user = User.create(
     {
       email: 'daniel.caso@vizzuality.com',
@@ -380,39 +382,6 @@ end
 def create_user_sites
   user_sites = [
     {
-      user: @tiago_garcia_user,
-      site: @base_site
-    }, {
-      user: @tiago_garcia_user,
-      site: @site_two
-    }, {
-      user: @tiago_garcia_user,
-      site: @site_three
-    }, {
-      user: @tiago_garcia_user,
-      site: @site_four
-    }, {
-      user: @tiago_santos_user,
-      site: @staging_demo_site
-    }, {
-      user: @tiago_santos_user,
-      site: @site_two
-    }, {
-      user: @tiago_santos_user,
-      site: @site_three
-    }, {
-      user: @tiago_santos_user,
-      site: @site_four
-    }, {
-      user: @clement_prodhomme_user,
-      site: @site_two
-    }, {
-      user: @clement_prodhomme_user,
-      site: @site_three
-    }, {
-      user: @clement_prodhomme_user,
-      site: @site_four
-    }, {
       user: @daniel_caso_user,
       site: @staging_demo_site
     }, {
