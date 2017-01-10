@@ -22,6 +22,6 @@ class ManagementController < ActionController::Base
   end
 
   def set_management_base_breadcrumbs
-    @breadcrumbs = [{name: 'CMS', url: management_site_site_pages_path}]
+    @breadcrumbs = [{name: 'CMS', url: management_path}]
   end
 end
