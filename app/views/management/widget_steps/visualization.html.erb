@@ -13,8 +13,8 @@
   locals: {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
 
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f} %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, cancel: management_site_widgets_path(@site.slug) } %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @widget } %>
+<%= render partial: 'shared/errors', locals: { resource: @widget} %>
 
 <%= console if Rails.env.development? %>

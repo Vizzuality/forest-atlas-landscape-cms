@@ -39,7 +39,7 @@
       <% end %>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f, never_save: true} %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, never_save: true, cancel: management_site_widgets_path(@site.slug)} %>
 <% end %>
 
 <%= render partial: 'shared/errors', locals: { resource: @widget } %>

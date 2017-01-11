@@ -15,7 +15,9 @@
 #
 
 class Widget < ApplicationRecord
+  belongs_to :dataset
 
+  validate :step_validation
 
   cattr_accessor :form_steps do
     { pages: %w[title dataset filters visualization],
@@ -35,7 +37,10 @@ class Widget < ApplicationRecord
   # Gets the fields of this dataset
   # TODO: THIS IS HARDCODED
   def get_fields
-    #DatasetService.get_fields self.dataset_id, self.api_table_name
-    DatasetService.get_fields '299ff5ce-af92-4616-9c09-5f3ca981eb65', 'index_299ff5ceaf9246169c095f3ca981eb65'
+    DatasetService.get_fields self.dataset_id, self.api_table_name
+    #DatasetService.get_fields '299ff5ce-af92-4616-9c09-5f3ca981eb65', 'index_299ff5ceaf9246169c095f3ca981eb65'
+  end
+
+  def step_validation
   end
 end

@@ -18,22 +18,95 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def show
+    case step
+      when 'title'
+      when 'dataset'
+        get_datasets
+      when 'filters'
+        get_fields
+        gon.fields = @fields
+        gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
+        gon.filters_array = if @widget.filters
+                              JSON.parse @widget.filters
+                            else
+                              nil
+                            end
+
+      when 'visualization'
+
+    end
     render_wizard
   end
 
   def update
-    redirect_to next_wizard_path
+    set_widget_state
+    case step
+      when 'title'
+        if @widget.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
+      when 'dataset'
+        if @widget.valid?
+          redirect_to next_wizard_path
+        else
+          get_datasets
+          render_wizard
+        end
+      when 'filters'
+        if @widget.valid?
+          redirect_to next_wizard_path
+        else
+          get_fields
+          render_wizard
+        end
+      when 'visualization'
+
+    end
+
+  end
+
+  # TODO : Move this to a service
+  def filtered_results
+    render json: {count: 0, rows: []}.to_json
   end
 
   private
+  def widget_params
+    params.require(:widget).permit(:name, :description, :dataset_id,
+                                   :api_table_name, :legend, :filters, :columns, :visualization )
+  end
+
   def build_widget
-    @site = Site.find_by(slug: params[:site_slug])
-    @widget = Widget.new
+    @site = Site.find_by(slug: params[:site_slug]) # Used because the widgets are still inside the site
+    @widget = params[:widget_id] ? Widget.find(params[:widget_id]) : Widget.new
+
+    # Update the widget with the info saved on the session and sent by params
+    @widget.assign_attributes session[:widget] if session[:widget]
+    if params[:widget] && widget_params
+      @widget.assign_attributes widget_params.to_h
+      if widget_params[:dataset_id]
+        ds_metadata = DatasetService.get_dataset widget_params[:dataset_id]
+        @widget.api_table_name = ds_metadata.dig('data', 'attributes', 'tableName')
+        @widget.legend = ds_metadata.dig('data', 'attributes', 'legend')
+      end
+    end
 
     self.steps_names= @widget.form_steps[:names]
+    @widget.form_step = step
 
-    #TODO : CHANGE THIS!!!
+  end
+
+  def get_datasets
     @context_datasets = current_user.get_context_datasets
+  end
+
+  def get_fields
     @fields = @widget.get_fields
+  end
+
+  def set_widget_state
+    session[:widget] = @widget ? @widget.attributes : nil
   end
 end

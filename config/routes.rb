@@ -39,9 +39,19 @@ Rails.application.routes.draw do
       resources :dataset_steps, only: [:new, :update, :show]
 
       resources :widgets, only: [:index, :destroy] do
-        resources :widget_steps, only: [:edit, :update, :show]
+        resources :widget_steps, only: [:edit, :update, :show] do
+          member do
+            get :filtered_results,
+                constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+          end
+        end
       end
-      resources :widget_steps, only: [:new, :update, :show]
+      resources :widget_steps, only: [:new, :update, :show] do
+        member do
+          get :filtered_results,
+              constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+        end
+      end
 
       resources :page_steps, only: [:show, :update, :new] do
         member do

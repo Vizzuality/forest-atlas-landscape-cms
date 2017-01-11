@@ -20,6 +20,6 @@
       <div class="js-filters"></div>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f} %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, cancel: management_site_widgets_path(@site.slug)} %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
+<%= render partial: 'shared/errors', locals: { resource: @widget } %>
