@@ -23,6 +23,19 @@
     align-items: flex-start;
     justify-content: space-between;
     height: 50px;
+    // The padding is the same as the one of the wrapper but needs
+    // to be repeated as the styles included with the standalone map
+    // interferes
+    padding: 0 $wrapper-mobile-padding;
+    overflow: visible;
+
+    @media #{$mq-mobile} {
+      padding: 0 $wrapper-tablet-padding;
+    }
+
+    @media #{$mq-tablet} {
+      padding: 0 $wrapper-padding;
+    }
 
     @if $theme == 2 {
       background-color: $color-7;
