@@ -80,3 +80,14 @@ a {
 .app-header {
   display: none !important;
 }
+
+@media (max-width:950px) {
+  .map-container{
+    top: 55px !important;
+    position: fixed !important;
+  }
+}
+
+.tab-buttons__tab.mobile-show[data-value="MORE"] {
+  display: none !important;
+}
