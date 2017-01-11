@@ -53,8 +53,7 @@ class Admin::SiteStepsController < AdminController
         color_array = @site.site_settings.where(name: 'flag').first
         gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
-        image = @site.site_settings.where(name: 'logo_image').first
-        gon.global.logo_image = image.image_file_name if image
+        @logo_image = @site.site_settings.where(name: 'logo_image').first
       end
     end
     render_wizard
