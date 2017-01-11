@@ -45,11 +45,12 @@
      */
     open: function () {
       var renderRes = this.render();
-      if (typeof renderRes === 'string') {
+
+      if (renderRes instanceof Backbone.View) {
+        this.contentContainer.innerHTML = '';
+        this.contentContainer.appendChild(renderRes.el);
+      } else {
         this.contentContainer.innerHTML = renderRes;
-      } else if (renderRes instanceof Backbone.View) {
-        // eslint-disable-next-line new-cap
-        new renderRes({ el: this.contentContainer });
       }
 
       this.el.classList.remove('-hidden');

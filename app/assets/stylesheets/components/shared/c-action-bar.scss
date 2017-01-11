@@ -20,12 +20,21 @@
       padding: 0 calc((100vw - #{$body-max-width}) / 2);
       transform: none;
     }
-    }
+  }
 
   > .wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100%;
+  }
+
+  &.-embed {
+    position: static;
+    transform: none;
+
+    > .wrapper {
+      padding: 0 45px;
+    }
   }
 }

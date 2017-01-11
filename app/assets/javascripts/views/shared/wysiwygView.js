@@ -97,8 +97,29 @@
       // We contract the sidebar
       this._toggleExpandSidebar();
 
-      var range = this.editor.getSelection();
-      this.editor.insertEmbed(range.index, 'widget', '', 'user');
+      // We save the position of the cursor within the wysiwyg
+      // var range = this.editor.getSelection();
+
+
+      var modal = new App.View.ModalView();
+
+      // If exists, we delete the previous modal
+      if (this.widgetsModalView) this.widgetsModalView.remove();
+
+      this.widgetsModalView = new App.View.WidgetsModalView({
+        cancelCallback: function () { modal.close(); },
+        continueCallback: function (widgetId) {
+          alert(widgetId); // TODO
+          modal.close();
+        }
+      });
+
+      modal.render = this.widgetsModalView.render;
+
+
+      modal.open();
+
+      // this.editor.insertEmbed(range.index, 'widget', '', 'user');
 
       // We hide the sidebar
       this._hideSidebar();
