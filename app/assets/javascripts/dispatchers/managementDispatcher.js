@@ -19,7 +19,8 @@
       'sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
       'sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
       'sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
-      'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
+      'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',
+      'sites/:slug/(site_pages/:id/)page_steps/map': 'MapStep'
     }
   });
 
