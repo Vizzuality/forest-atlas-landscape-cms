@@ -43,7 +43,7 @@ class DatasetService
 
     fields = []
     fieldsJSON['fields'].each do |data|
-      if %w[number date string long double].include? data.last['type']
+      if %w[number date string long double int].any? {|x| data.last['type'].downcase.include?(x)}
         fields << {name: data.first, type: data.last['type']}
       end
     end
@@ -99,7 +99,7 @@ class DatasetService
   def self.get_fields_attributes fields, api_table_name, dataset_id
     query = 'select '
     field_names = []
-    fields.select{|f| %w[number date long double].include?(f[:type])}.each do |field|
+    fields.select{|f| %w[number date long double].any?{|x| f[:type].downcase.include?(x)}  }.each do |field|
       field_names << " min(#{field[:name]}) as min_#{field[:name]} , max(#{field[:name]}) as max_#{field[:name]} "
     end
     query += field_names.join(', ')
@@ -108,7 +108,7 @@ class DatasetService
     number_dataset = get_filtered_dataset dataset_id, query unless field_names.blank?
 
     string_datasets = {}
-    fields.select {|f| f[:type] == 'string'}.each do |field|
+    fields.select {|f| f[:type].downcase.include?('string')}.each do |field|
       query = "select count(*) from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
@@ -142,13 +142,14 @@ class DatasetService
         req.url '/dataset'
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
+        #              \"legend\": #{caption.to_json},
         req.body =
           "{
             \"dataset\": {
               \"connectorType\": \"#{connectorType}\",
               \"provider\": \"#{connectorProvider}\",
               \"connectorUrl\": \"#{connectorUrl}\",
-              \"legend\": #{caption.to_json},
+
               \"application\": #{applications.to_json},
               \"name\": \"#{name}\",
               \"tags\": #{tags_array.to_json}
