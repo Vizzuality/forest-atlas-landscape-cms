@@ -94,7 +94,7 @@ class Dataset
   end
 
   def get_metadata
-    DatasetService.get_dataset self.id
+    DatasetService.get_metadata self.id
   end
 
 
@@ -103,7 +103,12 @@ class Dataset
   # +token+:: The authentication for the API
   def upload(token)
     DatasetService.upload token, type, provider, connector_url,
-                          application, name, tags
+                          application, name, tags, legend
+  end
+
+
+  def self.get_metadata_list(dataset_ids)
+    DatasetService.get_metadata_list(dataset_ids)
   end
 
 

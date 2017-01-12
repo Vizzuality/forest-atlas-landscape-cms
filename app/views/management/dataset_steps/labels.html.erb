@@ -32,11 +32,12 @@
           <%= text_field_tag 'dataset[legend][country]', f.object.legend[:country], placeholder: 'Field to associate with country (optional)' %>
         </div>
 
-      <div>
-        <%= f.label :region, for: 'dataset_legend_region' %>
-        <%= text_field_tag 'dataset[legend][region]', f.object.legend[:region], placeholder: 'Field to associate with region (optional)' %>
-      </div>
+        <div>
+          <%= f.label :region, for: 'dataset_legend_region' %>
+          <%= text_field_tag 'dataset[legend][region]', f.object.legend[:region], placeholder: 'Field to associate with region (optional)' %>
+        </div>
 
+      </div>
     </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>

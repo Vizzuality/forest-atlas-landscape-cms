@@ -17,6 +17,7 @@ class DatasetService
     datasets = []
 
     datasetsJSON['data'].each do |data|
+      # TODO: Refactor!!! The service can't depend on the model
       dataset = Dataset.new data
       datasets.push dataset
     end
@@ -61,8 +62,21 @@ class DatasetService
   # Gets the metadata of a dataset
   # Params:
   # +dataset_id+:: The dataset for which to get the metadata
-  def self.get_dataset(dataset_id)
+  def self.get_metadata(dataset_id)
     request = @conn.get "/dataset/#{dataset_id}?include=metadata"
+    if request.body.blank?
+      return {}
+    else
+      return JSON.parse request.body
+    end
+  end
+
+  # Gets the metadata of a list of datasets
+  # Params:
+  # +dataset_id+:: A list of datasets' ids
+  def self.get_metadata_list(dataset_ids)
+    return [] if dataset_ids.blank?
+    request = @conn.get "/dataset?ids=#{dataset_ids.join(',')}", {'page[number]': '1', 'page[size]': '10000', 'status': 'all'}
     if request.body.blank?
       return {}
     else
@@ -85,7 +99,7 @@ class DatasetService
     query += field_names.join(', ')
     query += " from #{api_table_name}"
 
-    number_dataset = get_filtered_dataset dataset_id, query
+    number_dataset = get_filtered_dataset dataset_id, query unless field_names.blank?
 
     string_datasets = {}
     fields.select {|f| f[:type] == 'string'}.each do |field|
@@ -109,6 +123,14 @@ class DatasetService
   def self.upload(token, connectorType, connectorProvider, connectorUrl,
                     applications, name, tags_array = nil, caption = {}, units = nil)
 
+    # Converting the caption[country] and caption[region] to JSON
+    begin
+      caption['country'] = caption['country'].split(' ')
+      caption['region'] = caption['region'].split(' ')
+    rescue
+    end
+
+
     begin
       res = @conn.post do |req|
         req.url '/dataset'
@@ -129,6 +151,7 @@ class DatasetService
       end
 
       # TODO Make another request to dataset/:id/metadata
+      # ... to put the units
       # body: {
       #   application: ["a", "b"],
       #   language: {"en"},
