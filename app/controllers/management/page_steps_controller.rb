@@ -71,11 +71,20 @@ class Management::PageStepsController < ManagementController
         @fields.each { |f| f[:type] = 'number' if %w[double long].include?(f[:type]) }
         gon.fields = @fields
         gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
-        gon.filters_array = if @dataset_setting.filters
-                              JSON.parse @dataset_setting.filters
-                            else
-                              nil
-                            end
+
+        filters = @dataset_setting.filters ? JSON.parse(@dataset_setting.filters) : []
+        changeables = @dataset_setting.columns_changeable ? JSON.parse(@dataset_setting.columns_changeable) : []
+
+        gon_filters = []
+        filters.each do |filter|
+          if changeables.include?(filter['name'])
+            filter['variable'] = true
+          else
+            filter['variable'] = false
+          end
+          gon_filters << filter
+        end
+        gon.filters_array = gon_filters.blank? ? nil : gon_filters
 
         # Saving all the possible visible fields for this dataset so that ...
         # ... they can be used in the filtered_results

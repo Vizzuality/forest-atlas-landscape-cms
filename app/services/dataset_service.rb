@@ -16,10 +16,16 @@ class DatasetService
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
-    datasetsJSON['data'].each do |data|
-      # TODO: Refactor!!! The service can't depend on the model
-      dataset = Dataset.new data
-      datasets.push dataset
+    begin
+      datasetsJSON['data'].each do |data|
+        # TODO: Refactor!!! The service can't depend on the model
+        dataset = Dataset.new data
+        datasets.push dataset
+      end
+    rescue Exception => e
+      # TODO All this methods should throw an exception caught in the controller...
+      # ... to render a different page
+      logger.error "::DatasetService.get_datasets: #{e}"
     end
 
     datasets
