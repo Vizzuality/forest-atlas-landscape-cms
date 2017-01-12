@@ -9,8 +9,7 @@
       end
     %>
     <script>
-     new App.View.NotificationView({
-      visible: true,
+    App.notifications.broadcast({
       closeable: true,
       autoCloseTimer: <%= key == 'alert' ? '-1' : '5' %>,
       type: '<%= key %>',

@@ -12,19 +12,18 @@
     },
 
     index: function () {
-      var dialogNotification = new App.View.NotificationView(App.Helper.Notifications.page.datasetRegistration);
-
       // Disable the register button and show a notification
       $('.js-register-dataset').on('click', function (e) {
         e.preventDefault();
 
-        // Callback executed when the user clicks the continue button
-        dialogNotification.options.continueCallback = function () {
-          Turbolinks.visit(e.target.href);
-        };
-
-        // We show the dialog
-        dialogNotification.show();
+        App.notifications.broadcast(Object.assign({},
+          App.Helper.Notifications.page.datasetRegistration,
+          {
+            continueCallback: function () {
+              Turbolinks.visit(e.target.href);
+            }
+          }
+        ));
       });
     }
 

@@ -36,28 +36,23 @@
       update: {
         content: 'The structure has been successfully saved!',
         closeable: false,
-        autoCloseTimer: 5,
-        visible: true
+        autoCloseTimer: 5
       },
       saving: {
         content: 'Saving the structure...',
-        closeable: false,
-        visible: true
+        closeable: false
       },
       error: {
         content: 'The changes couldn\'t be saved',
-        type: 'error',
-        visible: true
+        type: 'error'
       },
       saveReminder: {
         content: 'Don\'t forget to save the changes before leaving the page!',
-        type: 'warning',
-        visible: true
+        type: 'warning'
       },
       visibilityReminder: {
         content: 'This page won\'t be visible to the users until all of its ancestors are enabled!',
-        type: 'warning',
-        visible: true
+        type: 'warning'
       }
     },
 

@@ -25,13 +25,6 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-
-      // These notifications are later used to display feedback
-      // By creating them now, we avoid to layer them on top of another if several notifications
-      // need to be displayed at once
-      this.successNotification = new App.View.NotificationView(App.Helper.Notifications.dashboard.bookmarks.deletion);
-      this.errorNotification = new App.View.NotificationView({ type: 'error' });
-
       this.render();
     },
 
@@ -88,8 +81,7 @@
         localStorage.removeItem(this.options.storageID);
 
         // We display an error
-        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.corrupted);
-        this.errorNotification.show();
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmarks.corrupted);
       }
 
       return bookmarks || [];
@@ -116,8 +108,7 @@
         localStorage.setItem(this.options.storageID, JSON.stringify(bookmarks));
       } catch (err) {
         // We display an error
-        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.saveError);
-        this.errorNotification.show();
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmarks.saveError);
       }
     },
 
@@ -134,8 +125,7 @@
         localStorage.setItem(this.options.storageID, JSON.stringify(bookmarks));
       } catch (err) {
         // We display an error
-        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.updateError);
-        this.errorNotification.show();
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmarks.updateError);
       }
     },
 
@@ -153,12 +143,11 @@
         couldSave = true;
       } catch (err) {
         // We display an error
-        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.deleteError);
-        this.errorNotification.show();
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmarks.deleteError);
       }
 
       if (couldSave) {
-        this.successNotification.show();
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmarks.deletion);
       }
     },
 

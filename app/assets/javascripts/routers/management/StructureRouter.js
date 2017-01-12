@@ -50,7 +50,7 @@
 
       // If the tree has been saved successfully, we display a notification
       if (state && state === 'success') {
-        new App.View.NotificationView(App.Helper.Notifications.structure.update);
+        App.notifications.broadcast(App.Helper.Notifications.structure.update);
 
         this.navigate('/', { replace: true });
       }
@@ -179,12 +179,7 @@
      * clicking any button that would leave the page
      */
     _displaySaveWarning: function () {
-      if (this.saveNotification) {
-        this.saveNotification.show();
-        return;
-      }
-
-      this.saveNotification = new App.View.NotificationView(App.Helper.Notifications.structure.saveReminder);
+      this.saveWarningNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.saveReminder);
     },
 
     /**
@@ -192,8 +187,8 @@
      * the page
      */
     _hideSaveWarning: function () {
-      if (this.saveNotification) {
-        this.saveNotification.hide();
+      if (this.saveWarningNotificationId) {
+        App.notifications.hide(this.saveWarningNotificationId);
       }
     },
 
@@ -202,12 +197,7 @@
      * that as disabled ancestors, it won't be visible until they are all enabled
      */
     _displayVisibilityWarning: function () {
-      if (this.visibilityNotification) {
-        this.visibilityNotification.show();
-        return;
-      }
-
-      this.visibilityNotification = new App.View.NotificationView(App.Helper.Notifications.structure.visibilityReminder);
+      this.visibilityWarningNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.visibilityReminder);
     },
 
     /**
@@ -215,8 +205,8 @@
      * that as disabled ancestors, it won't be visible until they are all enabled
      */
     _hideVisibilityWarning: function () {
-      if (this.visibilityNotification) {
-        this.visibilityNotification.hide();
+      if (this.visibilityWarningNotificationId) {
+        App.notifications.hide(this.visibilityWarningNotificationId);
       }
     },
 
@@ -224,20 +214,15 @@
      * Display a notification to inform the user the tree is saving
      */
     _displaySavingNotification: function () {
-      if (this.savingNotification) {
-        this.savingNotification.show();
-        return;
-      }
-
-      this.savingNotification = new App.View.NotificationView(App.Helper.Notifications.structure.saving);
+      this.savingNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.saving);
     },
 
     /**
      * Hide the notification to inform the user the tree is saving
      */
     _hideSavingNotification: function () {
-      if (this.savingNotification) {
-        this.savingNotification.hide();
+      if (this.savingNotificationId) {
+        App.notifications.hide(this.savingNotificationId);
       }
     },
 
@@ -245,20 +230,15 @@
      * Display an error if the structure couldn't be saved in the backend
      */
     _displayErrorNotification: function () {
-      if (this.errorNotification) {
-        this.errorNotification.show();
-        return;
-      }
-
-      this.errorNotification = new App.View.NotificationView(App.Helper.Notifications.structure.error);
+      this.errorNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.error);
     },
 
     /**
      * Hide the error telling the user the structure couldn't be saved
      */
     _hideErrorNotification: function () {
-      if (this.errorNotification) {
-        this.errorNotification.hide();
+      if (this.errorNotificationId) {
+        App.notifications.hide(this.errorNotificationId);
       }
     },
 

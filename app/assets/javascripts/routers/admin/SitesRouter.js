@@ -79,19 +79,18 @@
       });
 
       // We attach a dialog notification to the delete buttons
-      var dialogNotification = new App.View.NotificationView(App.Helper.Notifications.site.deletion);
-
       $('.js-confirm').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation(); // Prevents rails to automatically delete the site
 
-        // Callback executed when the user clicks the continue button
-        dialogNotification.options.continueCallback = function () {
-          $.rails.handleMethod($(e.target));
-        };
-
-        // We show the dialog
-        dialogNotification.show();
+        App.notifications.broadcast(Object.assign({},
+          App.Helper.Notifications.site.deletion,
+          {
+            continueCallback: function () {
+              $.rails.handleMethod($(e.target));
+            }
+          }
+        ));
       });
     }
   });

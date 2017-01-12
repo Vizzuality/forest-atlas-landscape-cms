@@ -61,7 +61,6 @@
       this._restoreFilters();
       this._addFilter(); // Add a default filter and render
       this.activeRequestsCount = 0; // Number of active requests to get the table extract
-      this.warningNotification = new App.View.NotificationView(App.Helper.Notifications.page.datasetPreview);
     },
 
     /**
@@ -156,12 +155,13 @@
       if (this.activeRequestsCount === 0) {
         this.previewModal.open();
       } else {
-        this.warningNotification.show();
+        var notificationId = App.notifications.broadcast(App.Helper.Notifications.page.datasetPreview);
+
         this.previewTimer = setInterval(function () {
           if (this.activeRequestsCount === 0) {
             clearInterval(this.previewTimer);
             this.previewTimer = null;
-            this.warningNotification.hide();
+            App.notifications.hide(notificationId);
             this.previewModal.open();
           }
         }.bind(this), 200);
