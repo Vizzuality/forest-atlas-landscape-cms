@@ -1,5 +1,11 @@
 <div class="wrapper">
-  <p id="notification-content">{{content}}</p>
+  <p id="notification-content">
+    {{#if additionalContent}}
+      <strong>{{content}}</strong><br />{{additionalContent}}
+    {{else}}
+      {{content}}
+    {{/if}}
+  </p>
 
   {{#if dialogButtons}}
     <div class="dialog-buttons js-dialog">

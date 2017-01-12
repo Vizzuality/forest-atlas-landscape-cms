@@ -26,6 +26,15 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
+
+      @media #{$mq-tablet} {
+        height: 100%;
+      }
+    }
+
+    p {
+      line-height: 1.5;
+      text-align: left;
     }
 
     .dialog-buttons {

@@ -24,6 +24,9 @@
       type: 'success',
       // Content of the notification, HTML will not be interpreted
       content: '',
+      // If not empty, the main content will be highlighted and this will be put below;
+      // again, no HTML
+      additionalContent: '',
       // Callback executed after the notification has been hidden (after the animation)
       afterHide: function () {},
       // Visibility of the notification (internal)
@@ -167,6 +170,7 @@
       // Render the content of the notification
       this.el.innerHTML = this.template({
         content: this.options.content,
+        additionalContent: this.options.additionalContent,
         closeable: this.options.closeable,
         // eslint-disable-next-line no-underscore-dangle
         visible: this.options._visible,
