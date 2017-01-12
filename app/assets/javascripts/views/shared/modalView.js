@@ -49,6 +49,7 @@
       if (renderRes instanceof Backbone.View) {
         this.contentContainer.innerHTML = '';
         this.contentContainer.appendChild(renderRes.el);
+        if (renderRes.afterRender) renderRes.afterRender();
       } else {
         this.contentContainer.innerHTML = renderRes;
       }
