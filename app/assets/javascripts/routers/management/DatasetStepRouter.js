@@ -12,12 +12,7 @@
     },
 
     index: function () {
-      var dialogNotification = new App.View.NotificationView({
-        type: 'warning',
-        content: 'If you proceed to the dataset registration, the page\'s information you just entered will be lost.',
-        dialogButtons: true,
-        closeable: false
-      });
+      var dialogNotification = new App.View.NotificationView(App.Helper.Notifications.page.datasetRegistration);
 
       // Disable the register button and show a notification
       $('.js-register-dataset').on('click', function (e) {

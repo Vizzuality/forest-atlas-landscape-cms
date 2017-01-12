@@ -45,7 +45,7 @@
 
       // We create instances of the notifications so we reuse them to avoid duplicates
       // of the exact same one layered on top one of another
-      this.warningNotification = new App.View.NotificationView({ type: 'warning' });
+      this.warningNotification = new App.View.NotificationView(App.Helper.Notifications.dashboard.changed);
       this.errorNotification = new App.View.NotificationView({ type: 'error' });
 
       // We start the router
@@ -394,7 +394,6 @@
 
       if (!isStateUpToDate) {
         this.errorNotification.hide();
-        this.warningNotification.options.content = 'The dashboard configuration has been updated and it might affect the visualizations';
         this.warningNotification.show();
       }
 
@@ -402,7 +401,7 @@
 
       if (!isStateValid) {
         this.warningNotification.hide();
-        this.errorNotification.options.content = 'The dashboard\'s state couldn\'t be restored, probably because of changes of the data';
+        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.invalid);
         this.errorNotification.show();
 
         // We don't forget to still show the interface
@@ -485,7 +484,7 @@
       // If the decoded state is empty, it's because it failed
       if (!decodedState) {
         this.warningNotification.hide();
-        this.errorNotification.options.content = 'The URL you’ve been shared is corrupted. Here is the default dashboard.';
+        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.corrupted);
         this.errorNotification.show();
         return;
       }

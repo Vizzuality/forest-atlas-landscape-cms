@@ -61,10 +61,7 @@
       this._restoreFilters();
       this._addFilter(); // Add a default filter and render
       this.activeRequestsCount = 0; // Number of active requests to get the table extract
-      this.warningNotification = new App.View.NotificationView({
-        type: 'warning',
-        closeable: false
-      });
+      this.warningNotification = new App.View.NotificationView(App.Helper.Notifications.page.datasetPreview);
     },
 
     /**
@@ -159,7 +156,6 @@
       if (this.activeRequestsCount === 0) {
         this.previewModal.open();
       } else {
-        this.warningNotification.options.content = 'The preview is loading. Please wait...';
         this.warningNotification.show();
         this.previewTimer = setInterval(function () {
           if (this.activeRequestsCount === 0) {

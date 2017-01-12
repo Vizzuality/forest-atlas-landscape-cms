@@ -98,12 +98,7 @@
       });
 
       // We attach a dialog notification to the delete buttons
-      var dialogNotification = new App.View.NotificationView({
-        type: 'warning',
-        content: 'Are you sure you want to permanently delete this page?',
-        dialogButtons: true,
-        closeable: false
-      });
+      var dialogNotification = new App.View.NotificationView(App.Helper.Notifications.page.deletion);
 
       $('.js-confirm').on('click', function (e) {
         e.preventDefault();

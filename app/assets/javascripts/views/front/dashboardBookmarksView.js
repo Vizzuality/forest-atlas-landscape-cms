@@ -29,7 +29,7 @@
       // These notifications are later used to display feedback
       // By creating them now, we avoid to layer them on top of another if several notifications
       // need to be displayed at once
-      this.successNotification = new App.View.NotificationView({ autoCloseTimer: 5 });
+      this.successNotification = new App.View.NotificationView(App.Helper.Notifications.dashboard.bookmarks.deletion);
       this.errorNotification = new App.View.NotificationView({ type: 'error' });
 
       this.render();
@@ -88,7 +88,7 @@
         localStorage.removeItem(this.options.storageID);
 
         // We display an error
-        this.errorNotification.options.content = 'The bookmarks have been corrupted and can\'t be retrieved';
+        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.corrupted);
         this.errorNotification.show();
       }
 
@@ -116,7 +116,7 @@
         localStorage.setItem(this.options.storageID, JSON.stringify(bookmarks));
       } catch (err) {
         // We display an error
-        this.errorNotification.options.content = 'The bookmark couldn\'t be saved properly';
+        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.saveError);
         this.errorNotification.show();
       }
     },
@@ -134,7 +134,7 @@
         localStorage.setItem(this.options.storageID, JSON.stringify(bookmarks));
       } catch (err) {
         // We display an error
-        this.errorNotification.options.content = 'The name of the bookmark couldn\'t be updated';
+        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.updateError);
         this.errorNotification.show();
       }
     },
@@ -153,12 +153,11 @@
         couldSave = true;
       } catch (err) {
         // We display an error
-        this.errorNotification.options.content = 'The bookmark couldn\'t be deleted';
+        this.errorNotification.options = Object.assign({}, this.errorNotification.options, App.Helper.Notifications.dashboard.bookmarks.deleteError);
         this.errorNotification.show();
       }
 
       if (couldSave) {
-        this.successNotification.options.content = 'The bookmark has been successfully deleted!';
         this.successNotification.show();
       }
     },

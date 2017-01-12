@@ -50,12 +50,7 @@
 
       // If the tree has been saved successfully, we display a notification
       if (state && state === 'success') {
-        new App.View.NotificationView({
-          content: 'The structure has been successfully saved!',
-          closeable: false,
-          autoCloseTimer: 5,
-          visible: true
-        });
+        new App.View.NotificationView(App.Helper.Notifications.structure.update);
 
         this.navigate('/', { replace: true });
       }
@@ -189,11 +184,7 @@
         return;
       }
 
-      this.saveNotification = new App.View.NotificationView({
-        content: 'Don\'t forget to save the changes before leaving the page!',
-        type: 'warning',
-        visible: true
-      });
+      this.saveNotification = new App.View.NotificationView(App.Helper.Notifications.structure.saveReminder);
     },
 
     /**
@@ -216,11 +207,7 @@
         return;
       }
 
-      this.visibilityNotification = new App.View.NotificationView({
-        content: 'This page won\'t be visible to the users until all of its ancestors are enabled!',
-        type: 'warning',
-        visible: true
-      });
+      this.visibilityNotification = new App.View.NotificationView(App.Helper.Notifications.structure.visibilityReminder);
     },
 
     /**
@@ -242,11 +229,7 @@
         return;
       }
 
-      this.savingNotification = new App.View.NotificationView({
-        content: 'Saving the structure...',
-        closeable: false,
-        visible: true
-      });
+      this.savingNotification = new App.View.NotificationView(App.Helper.Notifications.structure.saving);
     },
 
     /**
@@ -267,11 +250,7 @@
         return;
       }
 
-      this.errorNotification = new App.View.NotificationView({
-        content: 'The changes couldn\'t be saved',
-        type: 'error',
-        visible: true
-      });
+      this.errorNotification = new App.View.NotificationView(App.Helper.Notifications.structure.error);
     },
 
     /**
