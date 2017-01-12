@@ -106,6 +106,7 @@
     _onRenderTree: function () {
       $(this.treeContainer).find('.js-enable').on('click', this._onClickEnable.bind(this));
       $(this.treeContainer).find('.js-disable').on('click', this._onClickDisable.bind(this));
+      $(this.treeContainer).find('.js-delete').on('click', this._onClickDelete.bind(this));
       $(this.treeContainer).find('.js-add').on('click', this._onClickAddPage.bind(this));
     },
 
@@ -129,6 +130,24 @@
       var node = $(e.target).closest('.js-draggable')[0];
       this.toggleEnable(node, false);
       this._displaySaveWarning();
+    },
+
+    /**
+     * Event listener for when the deltee button is clicked on a node
+     * @param {object} e - event object
+     */
+    _onClickDelete: function (e) {
+      e.preventDefault();
+      e.stopPropagation(); // Prevents rails to automatically delete the page
+
+      App.notifications.broadcast(Object.assign({},
+        App.Helper.Notifications.page.deletion,
+        {
+          continueCallback: function () {
+            $.rails.handleMethod($(e.target));
+          }
+        }
+      ));
     },
 
     /**
@@ -159,7 +178,7 @@
             {{/if}}\
             <li><a href="{{#if editUrl}}{{editUrl}}{{else}}{{editurl}}{{/if}}" class="edit-button">Edit</a></li>\
             {{#if disableable}}\
-              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button">Delete</a></li>\
+              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button js-delete">Delete</a></li>\
             {{/if}}\
           </ul>\
         </div>\
