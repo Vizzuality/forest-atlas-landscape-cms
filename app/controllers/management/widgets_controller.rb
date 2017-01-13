@@ -1,5 +1,5 @@
 class Management::WidgetsController < ManagementController
-  before_action :set_site, only: [:index, :new, :create]
+  before_action :set_site
   before_action :authenticate_user_for_site!
   #before_action :set_content_type_variables, only: [:new, :edit]
 
@@ -25,6 +25,12 @@ class Management::WidgetsController < ManagementController
       end
     rescue
     end
+  end
+
+  def destroy
+    @widget = Widget.find(params[:id])
+    @widget.destroy
+    redirect_to management_site_widgets_path
   end
 
   private
