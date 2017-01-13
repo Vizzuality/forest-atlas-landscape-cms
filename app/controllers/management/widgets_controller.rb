@@ -21,7 +21,7 @@ class Management::WidgetsController < ManagementController
       end
     rescue
     end
-    gon.widgets = gon.widgets
+    gon.widgets = gon_widgets
   end
 
   private
