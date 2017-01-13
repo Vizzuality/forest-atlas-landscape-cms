@@ -109,7 +109,7 @@
       // We attach a dialog notification to the delete buttons
       $('.js-confirm').on('click', function (e) {
         e.preventDefault();
-        e.stopPropagation(); // Prevents rails to automatically delete the page
+        e.stopPropagation(); // Prevents rails to automatically delete the widget
 
         App.notifications.broadcast(Object.assign({},
           App.Helper.Notifications.widget.deletion,

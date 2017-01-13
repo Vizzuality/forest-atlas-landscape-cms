@@ -15,7 +15,7 @@ class Management::WidgetsController < ManagementController
 
       widgets = Widget.where(dataset_id: dataset_ids)
 
-      gon_widgets = nil
+      gon_widgets = []
       if widgets.any?
         gon_widgets = widgets.map do |widget|
           {
