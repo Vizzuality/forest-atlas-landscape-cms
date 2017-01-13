@@ -102,6 +102,16 @@
         type: 'warning',
         content: 'Remote CSV files served over an encrypted network (HTTPS) are not supported yet!'
       }
+    },
+
+    widget: {
+      deletion: {
+        type: 'warning',
+        content: 'Are you sure you want to permanently delete this widget?',
+        additionalContent: 'This may break Open Content pages that are using it.',
+        dialogButtons: true,
+        closeable: false
+      }
     }
 
   };

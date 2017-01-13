@@ -4,7 +4,6 @@ class Management::WidgetsController < ManagementController
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index
-    gon_widgets = []
     begin
       dataset_ids = []
       @site.contexts.each do |context|
@@ -15,13 +14,17 @@ class Management::WidgetsController < ManagementController
       dataset_ids.uniq!
 
       widgets = Widget.where(dataset_id: dataset_ids)
-      widgets.each do |widget|
-        gon_widgets << {id: widget.id, name: widget.name,
-                         description: widget.description, visualization: widget.visualization}
+      gon.widgets = widgets.map do |widget|
+        {
+          'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
+          'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
+          'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
+          # 'edit' => {'value' => management_site_widget_path(page.site.slug, widget.id), \
+          #          'method' => 'get'},
+        }
       end
     rescue
     end
-    gon.widgets = gon_widgets
   end
 
   private
