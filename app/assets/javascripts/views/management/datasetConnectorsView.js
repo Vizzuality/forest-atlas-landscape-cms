@@ -4,7 +4,7 @@
   App.View.DatasetConnectorsView = Backbone.View.extend({
     template: HandlebarsTemplates['management/dataset-connectors'],
     collection: new Backbone.Collection(),
-    // Current selected connecto
+    // Current selected connector
     selectedConnector: { connector: 'cartodb', provider: 'cartodb', type: 'rest' },
 
     events: {
@@ -27,6 +27,16 @@
       if (model) {
         this.options.selectedConnector = model.attributes;
         this.render();
+
+        // If we had a previous warning, we hide it
+        if (this.notificationId !== null && this.notificationId !== undefined) {
+          App.notifications.hide(this.notificationId);
+          this.notificationId = null;
+        }
+
+        if (connector === 'csv') {
+          this.notificationId = App.notifications.broadcast(App.Helper.Notifications.dataset.csv);
+        }
       }
     },
 

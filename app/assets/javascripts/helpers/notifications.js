@@ -95,6 +95,13 @@
           content: 'The bookmark couldn\'t be deleted!'
         }
       }
+    },
+
+    dataset: {
+      csv: {
+        type: 'warning',
+        content: 'Remote CSV files served over an encrypted network (HTTPS) are not supported yet!'
+      }
     }
 
   };
