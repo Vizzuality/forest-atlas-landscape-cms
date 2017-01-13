@@ -39,7 +39,7 @@ class DatasetService
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
-    return {} unless fieldsJSON
+    return {} unless fieldsJSON and fieldsJSON['fields']
 
     fields = []
     fieldsJSON['fields'].each do |data|
