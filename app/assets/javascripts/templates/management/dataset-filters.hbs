@@ -1,4 +1,4 @@
-<div class="c-dataset-filters">
+<div class="c-dataset-filters {{#unless canBeVariable}}-wide-select{{/unless}}">
   <input type="hidden" id="site_page_dataset_setting_filters" name="site_page[dataset_setting][filters]" value="{{json}}">
 
   {{#each filters}}
@@ -88,11 +88,13 @@
           </select>
         {{/if_eq}}
 
-        {{!-- Field to select if the filter is variable --}}
-        <select class="js-variable" data-id="{{@index}}">
-          <option value="0" {{#unless variable}}selected="selected"{{/unless}}>Not user configurable</option>
-          <option value="1" {{#if variable}}selected="selected"{{/if}}>User configurable</option>
-        </select>
+        {{#if ../canBeVariable}}
+          {{!-- Field to select if the filter is variable --}}
+          <select class="js-variable" data-id="{{@index}}">
+            <option value="0" {{#unless variable}}selected="selected"{{/unless}}>Not user configurable</option>
+            <option value="1" {{#if variable}}selected="selected"{{/if}}>User configurable</option>
+          </select>
+        {{/if}}
       {{/if}}
       {{#if type}}
         <button type="button" id="remove-{{@index}}" data-id="{{@index}}" class="remove-button js-remove-filter" title="Remove filter">Remove filter</button>

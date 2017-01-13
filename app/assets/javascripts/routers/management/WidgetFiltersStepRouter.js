@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.Router.ManagementFiltersStep = Backbone.Router.extend({
+  App.Router.ManagementWidgetFiltersStep = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'
@@ -40,7 +40,8 @@
         el: '.js-filters',
         fields: this._getFields(),
         filters: (window.gon && gon.filtersArray) || [],
-        endpointUrl: (window.gon && gon.filtersEndpointUrl) || ''
+        endpointUrl: (window.gon && gon.filtersEndpointUrl) || '',
+        canBeVariable: false
       });
 
       $('.js-form').on('submit', function () {

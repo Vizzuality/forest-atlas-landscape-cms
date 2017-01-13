@@ -104,6 +104,20 @@
     }
   }
 
+  &.-wide-select {
+    > .filter {
+      > input,
+      > select,
+      > .select2 {
+        flex-basis: calc((100% / 3) - 18px);
+      }
+
+      > input {
+        width: calc((100% / 3) - 18px);
+      }
+    }
+  }
+
   .action-bar {
     display: flex;
     align-items: center;

@@ -42,7 +42,9 @@
         name: null,
         type: null,
         variable: false
-      }
+      },
+      // Whether the filters can be variable or not
+      canBeVariable: true
     },
 
     events: {
@@ -421,7 +423,8 @@
         fields: this._getUnusedFields(),
         filters: filters,
         json: this._getSerializeFilters(),
-        canAddNewField: !!this._getUnusedFields().length && !this._isThereUnspecifiedFilter()
+        canAddNewField: !!this._getUnusedFields().length && !this._isThereUnspecifiedFilter(),
+        canBeVariable: this.options.canBeVariable
       }));
       this.setElement(this.el);
 
