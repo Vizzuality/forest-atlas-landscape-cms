@@ -14,15 +14,23 @@ class Management::WidgetsController < ManagementController
       dataset_ids.uniq!
 
       widgets = Widget.where(dataset_id: dataset_ids)
-      gon.widgets = widgets.map do |widget|
-        {
-          'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
-          'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
-          'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
-          # 'edit' => {'value' => management_site_widget_path(page.site.slug, widget.id), \
-          #          'method' => 'get'},
-        }
+
+      gon_widgets = nil
+      if widgets.any?
+        gon_widgets = widgets.map do |widget|
+          {
+            'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
+            'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
+            'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
+            'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
+                      'method' => 'get'},
+            'delete' =>  {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
+          }
+        end
       end
+
+      gon.widgets = gon_widgets
+
     rescue
     end
   end
