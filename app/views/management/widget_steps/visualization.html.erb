@@ -11,9 +11,13 @@
 
 <%= render partial: 'shared/navigation_header', \
   locals: {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
 
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f, cancel: management_site_widgets_path(@site.slug) } %>
+  <%= render partial: 'management/steps_shared/footer',
+             locals: {f: f, cancel: management_site_widgets_path(@site.slug), \
+                always_save: true, no_continue: true, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @widget} %>
 

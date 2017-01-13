@@ -33,7 +33,10 @@ class Management::WidgetStepsController < ManagementController
                             end
 
       when 'visualization'
-
+        gon.data = @widget.get_filtered_dataset
+        gon.legend = @widget.legend
+        gon.analysis_timestamp = @widget.fields_last_modified
+        gon.visualization = @widget.visualization
     end
     render_wizard
   end
@@ -62,7 +65,11 @@ class Management::WidgetStepsController < ManagementController
           render_wizard
         end
       when 'visualization'
-
+        if @widget.save
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
     end
 
   end
