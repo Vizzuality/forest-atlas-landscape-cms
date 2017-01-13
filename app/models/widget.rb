@@ -17,13 +17,13 @@
 class Widget < ApplicationRecord
   belongs_to :dataset
 
-  validate :step_validation
-
   cattr_accessor :form_steps do
     { pages: %w[title dataset filters visualization],
       names: %w[Title Dataset Filters Visualization] }
   end
   attr_accessor :form_step
+
+  validate :step_validation
 
   # Returns an array of visible columns
   def get_columns_visible
@@ -112,12 +112,35 @@ class Widget < ApplicationRecord
 
 
   # Gets the fields of this dataset
-  # TODO: THIS IS HARDCODED
   def get_fields
     DatasetService.get_fields self.dataset_id, self.api_table_name
-    #DatasetService.get_fields '299ff5ce-af92-4616-9c09-5f3ca981eb65', 'index_299ff5ceaf9246169c095f3ca981eb65'
   end
 
   def step_validation
-  end
+    step_index = form_steps[:pages].index(form_step)
+
+    if self.form_steps[:pages].index('title') <= step_index
+      self.errors['name'] << 'You must enter a title for the widget' if self.name.blank? || self.name.strip.blank?
+      self.errors['description'] << 'You must enter a description for the widget' if self.description.blank? || self.description.strip.blank?
+    end
+
+    if self.form_steps[:pages].index('dataset') <= step_index
+      self.errors['dataset_id'] << 'You must select a dataset' if self.dataset_id.blank?
+      self.errors['api_table_name'] << 'You must select a dataset' if self.api_table_name.blank?
+    end
+
+    if self.form_steps[:pages].index('filters') <= step_index
+      self.errors['columns'] << 'There was an error saving the filters. Please try again' if self.columns.blank?
+    end
+
+    if self.form_steps[:pages].index('visualization') <= step_index
+      if self.visualization.blank?
+        self.errors['visualization'] << 'You must choose a graph type and its columns'
+      elsif self.visualization['name'].blank?
+        self.errors['visualization'] << 'You must choose a graph type'
+        # TODO: Put the graph logic here. Ask Clement about this
+      end
+    end
+
+    end
 end
