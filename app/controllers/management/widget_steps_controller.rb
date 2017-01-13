@@ -69,7 +69,27 @@ class Management::WidgetStepsController < ManagementController
 
   # TODO : Move this to a service
   def filtered_results
-    render json: {count: 0, rows: []}.to_json
+    unless @widget && @widget.dataset_id && @widget.api_table_name
+      render json: {count: 0, rows: []}.to_json
+      return
+    end
+
+    temp_widget =
+      Widget.new(dataset_id: @widget.dataset_id,
+                         api_table_name: @widget.api_table_name)
+
+    filters = params[:filters]
+    temp_widget.set_filters (filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } })
+
+    begin
+      count = temp_widget.get_row_count['data'].first.values.first
+      preview = temp_widget.get_preview['data']
+    rescue
+      count = 0
+      preview = []
+    end
+    render json: {count: count, rows: preview}.to_json
+
   end
 
   private
@@ -87,7 +107,7 @@ class Management::WidgetStepsController < ManagementController
     if params[:widget] && widget_params
       @widget.assign_attributes widget_params.to_h
       if widget_params[:dataset_id]
-        ds_metadata = DatasetService.get_dataset widget_params[:dataset_id]
+        ds_metadata = DatasetService.get_metadata widget_params[:dataset_id]
         @widget.api_table_name = ds_metadata.dig('data', 'attributes', 'tableName')
         @widget.legend = ds_metadata.dig('data', 'attributes', 'legend')
       end
