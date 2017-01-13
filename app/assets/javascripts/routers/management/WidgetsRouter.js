@@ -44,9 +44,15 @@
               return res;
 
             case /chart/.test(key):
+              var chart = '';
+              try {
+                var chartConfig = JSON.parse(row[key].value);
+                chart = App.Helper.Utils.toTitleCase(chartConfig.type);
+              } catch (e) {} // eslint-disable-line no-empty
+
               return {
                 name: key,
-                value: App.Helper.Utils.toTitleCase(JSON.parse(row[key].value).type),
+                value: chart,
                 searchable: row[key].searchable,
                 sortable: row[key].sortable
               };
