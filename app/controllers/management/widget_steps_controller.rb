@@ -72,8 +72,17 @@ class Management::WidgetStepsController < ManagementController
         end
       when 'visualization'
         if @widget.save
-          redirect_to management_site_widget_path
+          redirect_to management_site_widgets_path
         else
+          # TODO put this in a method
+          get_fields
+          gon.fields = @fields
+          gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
+          gon.filters_array = if @widget.filters
+                                JSON.parse @widget.filters
+                              else
+                                nil
+                              end
           render_wizard
         end
     end

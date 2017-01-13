@@ -136,8 +136,8 @@ class Widget < ApplicationRecord
     if self.form_steps[:pages].index('visualization') <= step_index
       if self.visualization.blank?
         self.errors['visualization'] << 'You must choose a graph type and its columns'
-      elsif self.visualization['name'].blank?
-        self.errors['visualization'] << 'You must choose a graph type'
+      elsif self.visualization['type'].blank?
+        self.errors['type'] << 'You must choose a graph type'
         # TODO: Put the graph logic here. Ask Clement about this
       end
     end
