@@ -32,6 +32,12 @@ class Management::WidgetStepsController < ManagementController
                               nil
                             end
 
+        # Saving all the possible visible fields for this widget so that ...
+        # ... they can be used in the filtered_results
+        (@widget.set_columns_visible(
+          @fields.map { |f| f[:name] })) unless @widget.columns
+        set_widget_state
+
       when 'visualization'
         gon.data = @widget.get_filtered_dataset
         gon.legend = @widget.legend
@@ -66,7 +72,7 @@ class Management::WidgetStepsController < ManagementController
         end
       when 'visualization'
         if @widget.save
-          redirect_to next_wizard_path
+          redirect_to management_site_widget_path
         else
           render_wizard
         end
@@ -131,6 +137,8 @@ class Management::WidgetStepsController < ManagementController
 
   def get_fields
     @fields = @widget.get_fields
+    @fields.each { |f| f[:type] = 'number' if %w[double long int].any? {|x| f[:type].downcase.include?(x)} }
+    @fields.each { |f| f[:type] = 'date' if f[:type].downcase.include?('date')}
   end
 
   def set_widget_state

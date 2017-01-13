@@ -34,6 +34,11 @@ class Widget < ApplicationRecord
     end
   end
 
+  # Sets the columns visible as JSON
+  def set_columns_visible(value)
+    self.write_attribute :columns, value.to_json
+  end
+
   # Sets the filters as JSON
   def set_filters(value)
     valid = []
@@ -46,6 +51,16 @@ class Widget < ApplicationRecord
     self.write_attribute :filters, valid.to_json
   end
 
+  # Returns the SELECT part of the sql query (the visible fields)
+  def get_columns_visible_sql
+    if self.columns.blank?
+      return ' * '
+    else
+      return (JSON.parse self.columns).join(', ')
+    end
+  end
+
+
   # Gets this dataset filtered
   # Params
   # +count+:: When true, it performs a count
@@ -53,7 +68,7 @@ class Widget < ApplicationRecord
     selector = if count
                  ' count(*) '
                else
-                 ' * '
+                 get_columns_visible_sql
                end
 
     query = "select #{selector}"
