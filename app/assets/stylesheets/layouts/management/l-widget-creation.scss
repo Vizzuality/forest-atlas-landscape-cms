@@ -1,0 +1,19 @@
+.l-widget-creation {
+  // We make sure the fixed c-action-bar doesn't cover the content if the
+  // screen has a small height
+  padding-bottom: 75px;
+
+  &.-visualization {
+    padding-top: 50px;
+
+    > .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .graph {
+        width: 400px;
+      }
+    }
+  }
+}

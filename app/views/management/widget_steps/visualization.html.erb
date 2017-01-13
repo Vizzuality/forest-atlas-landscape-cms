@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="description">
         <h1>Select visualization</h1>
-        <p>Select the visualization</p>
+        <p>Please use the selector below the chart to change its type and choose the columns you want to use</p>
       </div>
     </div>
   </div>
@@ -18,7 +18,12 @@
   <%= render partial: 'management/steps_shared/footer',
              locals: {f: f, cancel: management_site_widgets_path(@site.slug), \
                 always_save: true, no_continue: true, wide: true } %>
+
+  <div class="l-widget-creation -visualization">
+    <div class="wrapper">
+      <div class="graph js-chart"></div>
+      <input type="hidden" name="widget[visualization]" class="js-chart-input" value="" />
+    </div>
+  </div>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @widget} %>
-
-<%= console if Rails.env.development? %>
