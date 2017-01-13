@@ -1,3 +1,7 @@
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
 <div class="c-content">
   <div class="wrapper">
     <div class="js-content"></div>
