@@ -17,7 +17,7 @@
   {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
 
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
-  <div class="l-page-creation -dataset">
+  <div class="l-widget-creation -dataset">
     <div class="wrapper">
       <% @context_datasets.each do |context_id, datasets| %>
         <%# TODO: Remove the DB query from the view %>
