@@ -111,7 +111,9 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
+        gon.widgets = get_widgets_list
       when 'open_content_preview'
+        gon.widgets = get_widgets_list
 
     end
 
@@ -422,5 +424,15 @@ class Management::PageStepsController < ManagementController
   # Defines the path the wizard will go when finished
   def finish_wizard_path
     management_site_site_pages_path params[:site_slug]
+  end
+
+  # Returns the list of widgets for this site
+  # TODO: Check if we should see all the contexts
+  def get_widgets_list
+    dataset_array = []
+    @site.contexts.each {|c| c.context_datasets.each {|d| dataset_array << d.dataset_id}}
+    dataset_array.uniq!
+    widgets = Widget.where(dataset_id: dataset_array)
+    widgets.map{|w| {id: w.id, name: w.name, visualization: w.visualization, description: w.description}}
   end
 end
