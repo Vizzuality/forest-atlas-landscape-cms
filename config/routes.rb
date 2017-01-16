@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     get '/', to: 'static_page#dashboard'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
+  get '/widget_data', to: 'static_page#widget_data'
 
   # Auth
   get 'auth/login', to: 'auth#login'
