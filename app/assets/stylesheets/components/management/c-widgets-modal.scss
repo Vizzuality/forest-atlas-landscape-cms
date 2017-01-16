@@ -29,12 +29,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     .widget {
       position: relative;
       flex-basis: calc((100% / 3) - ((2 * 20px) / 3));
-      margin: 25px 0;
+      margin: 25px 10px;
 
       label {
         position: absolute;
