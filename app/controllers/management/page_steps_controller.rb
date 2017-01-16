@@ -228,8 +228,13 @@ class Management::PageStepsController < ManagementController
     widget = Widget.find(params[:widget_id])
     datasets = []
     @site.contexts.each {|c| c.context_datasets.each {|cd| datasets << cd.dataset_id}}
-    if datasets.include? widget.dataset_id
-      render json: widget.to_json
+    if datasets.include? widget.dataset_id # To get only a widget for a dataset for this site
+      data = widget.get_filtered_dataset false, 10000
+      render json: {id: widget.id,
+                    visualization: widget.visualization,
+                    name: widget.name,
+                    description: widget.description,
+                    data: data}.to_json
     else
       render json: {}
     end
