@@ -2,6 +2,9 @@
   <h1>Select a widget</h1>
 
   <div class="widgets-list">
+    {{#unless widgets}}
+      <p class="no-data">There isn't any widget available yet.</p>
+    {{/unless}}
     {{#each widgets}}
       <div class="widget">
         <label for="widget-{{id}}"></label>

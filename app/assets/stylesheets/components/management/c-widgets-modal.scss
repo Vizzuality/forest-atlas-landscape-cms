@@ -18,6 +18,13 @@
     }
   }
 
+  .no-data {
+    display: block;
+    width: 100%;
+    margin-top: 60px;
+    text-align: center;
+  }
+
   .widgets-list {
     display: flex;
     flex-wrap: wrap;
