@@ -7,6 +7,9 @@ class Management::WidgetStepsController < ManagementController
 
   attr_accessor :steps_names
 
+  CONTINUE = 'CONTINUE'.freeze
+  SAVE = 'SAVE CHANGES'.freeze
+
   def new
     session[:widget] = {}
     redirect_to management_site_widget_step_path(id: 'title')
@@ -23,14 +26,7 @@ class Management::WidgetStepsController < ManagementController
       when 'dataset'
         get_datasets
       when 'filters'
-        get_fields
-        gon.fields = @fields
-        gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
-        gon.filters_array = if @widget.filters
-                              JSON.parse @widget.filters
-                            else
-                              nil
-                            end
+        set_gon_filters
 
         # Saving all the possible visible fields for this widget so that ...
         # ... they can be used in the filtered_results
@@ -51,38 +47,62 @@ class Management::WidgetStepsController < ManagementController
     set_widget_state
     case step
       when 'title'
-        if @widget.valid?
-          redirect_to next_wizard_path
+
+        if save_button?
+          if @widget.save
+            redirect_to management_site_widgets_path
+          else
+            render_wizard
+          end
         else
-          render_wizard
+          if @widget.valid?
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
         end
+
       when 'dataset'
-        if @widget.valid?
-          redirect_to next_wizard_path
+
+        if save_button?
+          if @widget.save
+            redirect_to management_site_widgets_path
+          else
+            get_datasets
+            render_wizard
+          end
         else
-          get_datasets
-          render_wizard
+          if @widget.valid?
+            redirect_to next_wizard_path
+          else
+            get_datasets
+            render_wizard
+          end
         end
+
       when 'filters'
-        if @widget.valid?
-          redirect_to next_wizard_path
+
+        if save_button?
+          if @widget.save
+            redirect_to management_site_widgets_path
+          else
+            get_fields
+            render_wizard
+          end
         else
-          get_fields
-          render_wizard
+          if @widget.valid?
+            redirect_to next_wizard_path
+          else
+            get_fields
+            render_wizard
+          end
         end
+
       when 'visualization'
         if @widget.save
           redirect_to management_site_widgets_path
         else
-          # TODO put this in a method
-          get_fields
-          gon.fields = @fields
-          gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
-          gon.filters_array = if @widget.filters
-                                JSON.parse @widget.filters
-                              else
-                                nil
-                              end
+          set_gon_filters
           render_wizard
         end
     end
@@ -152,5 +172,21 @@ class Management::WidgetStepsController < ManagementController
 
   def set_widget_state
     session[:widget] = @widget ? @widget.attributes : nil
+  end
+
+  def set_gon_filters
+    get_fields
+    gon.fields = @fields
+    gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
+    gon.filters_array = if @widget.filters
+                          JSON.parse @widget.filters
+                        else
+                          nil
+                        end
+  end
+
+  def save_button?
+    return false unless params[:button]
+    return params[:button].upcase == SAVE.upcase
   end
 end
