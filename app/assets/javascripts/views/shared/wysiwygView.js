@@ -18,7 +18,9 @@
         container: [
           ['bold', 'italic', 'underline', { header: 1 }, { header: 2 }, 'intro', 'blockquote', 'link']
         ]
-      }
+      },
+      // List of widgets for the sidebar's widget option
+      widgets: []
     },
 
     events: {
@@ -97,8 +99,38 @@
       // We contract the sidebar
       this._toggleExpandSidebar();
 
+      // We save the position of the cursor within the wysiwyg
       var range = this.editor.getSelection();
-      this.editor.insertEmbed(range.index, 'widget', '', 'user');
+
+      var modal = new App.View.ModalView();
+
+      // If exists, we delete the previous modal
+      if (this.widgetsModalView) this.widgetsModalView.remove();
+
+      this.widgetsModalView = new App.View.WidgetsModalView({
+        cancelCallback: function () { modal.close(); },
+        continueCallback: function (widgetId) {
+          modal.close();
+
+          // var model = new (Backbone.Model.extend({
+          //   url: 'TODO'
+          // }))();
+
+          // model.fetch()
+          //   .done(function () {
+              this.editor.insertEmbed(range.index, 'widget', widgetId, 'user');
+            // })
+            // .fail(function () {
+            //   App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
+            // });
+        }.bind(this),
+        widgets: this.options.widgets
+      });
+
+      modal.render = this.widgetsModalView.render;
+
+
+      modal.open();
 
       // We hide the sidebar
       this._hideSidebar();

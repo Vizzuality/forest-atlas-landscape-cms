@@ -9,6 +9,7 @@
   </div>
 </div>
 
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <%= render partial: 'management/steps_shared/finish_footer', locals: {f: f} %>
 <% end %>

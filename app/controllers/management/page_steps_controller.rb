@@ -2,13 +2,13 @@ class Management::PageStepsController < ManagementController
   include Wicked::Wizard
   include TreeStructureHelper
 
-  before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results]
+  before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
   # The order of prepend is the opposite of its declaration
   prepend_before_action :load_wizard
   prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results]
-  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results]
+  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
+  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
   before_action :redirect_invalid_step
 
@@ -111,7 +111,9 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
+        gon.widgets = get_widgets_list
       when 'open_content_preview'
+        gon.widgets = get_widgets_list
 
     end
 
@@ -220,11 +222,29 @@ class Management::PageStepsController < ManagementController
     render json: {count: count, rows: preview}.to_json
   end
 
+  # Gets the data of a widget
+  # GET /management/sites/:slug/page_steps/:id/widget_data
+  def widget_data
+    widget = Widget.find(params[:widget_id])
+    datasets = []
+    @site.contexts.each {|c| c.context_datasets.each {|cd| datasets << cd.dataset_id}}
+    if datasets.include? widget.dataset_id # To get only a widget for a dataset for this site
+      data = widget.get_filtered_dataset false, 10000
+      render json: {id: widget.id,
+                    visualization: widget.visualization,
+                    name: widget.name,
+                    description: widget.description,
+                    data: data['data']}.to_json
+    else
+      render json: {}
+    end
+  end
+
   private
   def page_params
     # TODO: To have different permissions for different steps
     params.require(:site_page).permit(:name, :description, :position, :uri, :show_on_menu,
-                                      :parent_id, :content_type, content: [:url, :target_blank, :body, :json],
+                                      :parent_id, :content_type, content: [:url, :target_blank, :body, :json, :settings],
                                       dataset_setting: [:context_id_dataset_id, :filters,
                                                         :default_graphs, :default_map,
                                                         visible_fields: []])
@@ -422,5 +442,15 @@ class Management::PageStepsController < ManagementController
   # Defines the path the wizard will go when finished
   def finish_wizard_path
     management_site_site_pages_path params[:site_slug]
+  end
+
+  # Returns the list of widgets for this site
+  # TODO: Check if we should see all the contexts
+  def get_widgets_list
+    dataset_array = []
+    @site.contexts.each {|c| c.context_datasets.each {|d| dataset_array << d.dataset_id}}
+    dataset_array.uniq!
+    widgets = Widget.where(dataset_id: dataset_array)
+    widgets.map{|w| {id: w.id, name: w.name, visualization: w.visualization, description: w.description}}
   end
 end

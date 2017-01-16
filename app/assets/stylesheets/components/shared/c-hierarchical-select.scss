@@ -66,10 +66,11 @@
     top: 40px;
     left: 0;
     width: 100%;
+    max-height: 140px;
     border-top: 1px solid rgba($color-4, .3);
     background-color: $color-3;
     box-shadow: 0 2px 3px 0 rgba($color-4, .3);
-    overflow: hidden;
+    overflow: auto;
 
     &.-hidden {
       display: none;

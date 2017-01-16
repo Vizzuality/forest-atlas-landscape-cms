@@ -16,7 +16,9 @@
       'sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
       'sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
       'sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
-      'sites/:slug/(site_pages/:id/)page_steps/filters': 'FiltersStep',
+      'sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
+      'sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
+      'sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
       'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
     }
   });

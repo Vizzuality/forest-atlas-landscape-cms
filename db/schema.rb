@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219105913) do
+ActiveRecord::Schema.define(version: 20170104173913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,6 +173,18 @@ ActiveRecord::Schema.define(version: 20161219105913) do
     t.boolean  "admin",                  default: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "widgets", force: :cascade do |t|
+    t.string   "dataset_id"
+    t.string   "api_table_name"
+    t.json     "filters"
+    t.string   "visualization"
+    t.datetime "fields_last_modified"
+    t.json     "legend"
+    t.json     "columns"
+    t.string   "name"
+    t.string   "description"
   end
 
 end

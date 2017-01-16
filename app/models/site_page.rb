@@ -48,7 +48,7 @@ class SitePage < Page
                  names: ['Position', 'Title', 'Type', 'Open Content', 'Open Content Preview']}
       when ContentType::ANALYSIS_DASHBOARD
         steps = {pages: %w[position title type dataset filters columns preview],
-                 names: %w[Position Title Type Dataset Filters Columns Preview]}
+          names: %w[Position Title Type Dataset Filters Columns Preview]}
       when ContentType::LINK
         steps = {pages: %w[position title type link],
                  names: %w[Position Title Type Link]}
@@ -103,26 +103,32 @@ class SitePage < Page
   end
 
   def step_validation
-    step_index = form_steps[:pages].index(form_step)
+    steps_list = form_steps
+    # Add the 3 first steps for when they don't exist
+    steps_list[:pages].unshift(%w[position title type]).flatten! unless steps_list[:pages].include?('position')
+
+    step_index = steps_list[:pages].index(form_step)
 
     # TODO: Change this. Toggle shouldn't check the validations
     return unless step_index # For operations where there are no steps, like toggle_enable
 
     # Validate Position & Parent Id
-    if self.form_steps[:pages].index('position') <= step_index
+    if steps_list[:pages].index('position') <= step_index
       self.errors['position'] << 'You must select a position for the page' unless self.position
-      self.errors['parent_id'] << 'You must select a parent for the current page' unless self.parent
+      self.errors['parent_id'] << 'You must select a parent for the current page' \
+        unless (self.parent || self.content_type == ContentType::HOMEPAGE)
     end
 
     # Validate Name & Description & URI
-    if self.form_steps[:pages].index('title') <= step_index
+    if steps_list[:pages].index('title') <= step_index
       self.errors['name'] << 'You must type a valid title for the page' if self.name.blank? || self.name.strip.blank?
       self.errors['description'] << 'You must type a valid description for the page' if self.description.blank? || self.description.strip.blank?
-      self.errors['uri'] << 'You must type a valid uri for the page' if self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?
+      self.errors['uri'] << 'You must type a valid uri for the page' \
+        if (self.content_type != ContentType::HOMEPAGE) && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
     end
 
     # Validate type
-    if self.form_steps[:pages].index('type') <= step_index
+    if steps_list[:pages].index('type') <= step_index
       self.errors['content_type'] << 'Please select a valid type' unless self.content_type > 0 && self.content_type <= ContentType.length
     end
 

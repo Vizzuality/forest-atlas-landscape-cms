@@ -14,38 +14,6 @@
       flex-direction: column;
       align-items: center;
     }
-
-    .inputs-container {
-      width: 100%;
-      max-width: 570px;
-      border: 1px solid $color-7;
-
-      label { display: none; }
-
-      input {
-        display: block;
-        width: 100%;
-        margin: 0;
-        padding: 0 37px;
-        border: 0;
-        border-bottom: 1px solid $color-7;
-        color: $color-4;
-
-        &:first-of-type {
-          height: 130px;
-          font-size: $font-size-huge;
-          font-weight: $font-weight-light;
-          line-height: 130px;
-        }
-
-        &:last-of-type {
-          height: 70px;
-          border-bottom: 0;
-          font-size: $font-size-s-normal;
-          line-height: 70px;
-        }
-      }
-    }
   }
 
   &.-connector,

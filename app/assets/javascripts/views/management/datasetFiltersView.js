@@ -1,9 +1,9 @@
 ((function (App) {
   'use strict';
 
-  App.View.DashboardFiltersView = Backbone.View.extend({
+  App.View.DatasetFiltersView = Backbone.View.extend({
 
-    template: HandlebarsTemplates['management/dashboard-filters'],
+    template: HandlebarsTemplates['management/dataset-filters'],
     collection: new Backbone.Collection(),
 
     defaults: {
@@ -37,12 +37,15 @@
       filters: [],
       // API endpoint to fetch the table extract
       endpointUrl: '',
+      hiddenInputName: '',
       // State of the default filters
       defaultFilter: {
         name: null,
         type: null,
         variable: false
-      }
+      },
+      // Whether the filters can be variable or not
+      canBeVariable: true
     },
 
     events: {
@@ -188,12 +191,18 @@
      * @returns {string} HTML
      */
     _renderPreviewTable: function () {
+      var tableRows = (this.tableExtract && this.tableExtract.rows) || [];
+
+      if (!tableRows.length) {
+        return '<div class="c-table"><div class="table-legend"><p>No results were found</p></div></div>';
+      }
+
       var res = '<div class="c-table"><table><tr class="header">';
       res += this.options.fields.map(function (field) {
         return '<th>' + field.name + '</th>';
       }).join('');
       res += '</tr>';
-      res += this.tableExtract.rows.map(function (row) {
+      res += tableRows.map(function (row) {
         return '<tr>' +
           Object.keys(row).map(function (field) {
             return '<td>' + row[field] + '</td>';
@@ -367,10 +376,10 @@
     _checkRowCount: function () {
       this.countEl = this.el.querySelector('.js-row-count');
       if (this.collection.toJSON().length) {
-        this.countEl.classList.add('loading');
+        this.countEl.classList.add('c-loading-spinner');
         this._updateRowCount();
       } else {
-        this.countEl.classList.remove('loading');
+        this.countEl.classList.remove('c-loading-spinner');
       }
     },
 
@@ -382,7 +391,7 @@
         .done(function () {
           var count = this.tableExtract && this.tableExtract.count;
           count = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
-          this.countEl.classList.remove('loading');
+          this.countEl.classList.remove('c-loading-spinner');
           this.countEl.textContent = count;
         }.bind(this));
     }, 1500),
@@ -415,13 +424,17 @@
         fields: this._getUnusedFields(),
         filters: filters,
         json: this._getSerializeFilters(),
-        canAddNewField: !!this._getUnusedFields().length && !this._isThereUnspecifiedFilter()
+        canAddNewField: !!this._getUnusedFields().length && !this._isThereUnspecifiedFilter(),
+        canBeVariable: this.options.canBeVariable,
+        hiddenInputName: this.options.hiddenInputName
       }));
       this.setElement(this.el);
 
       this._enhanceSelectors();
 
-      this._checkRowCount();
+      if (this.options.endpointUrl && this.options.endpointUrl.length) {
+        this._checkRowCount();
+      }
     }
   });
 })(this.App));

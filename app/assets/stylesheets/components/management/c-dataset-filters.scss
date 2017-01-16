@@ -1,4 +1,4 @@
-.c-dashboard-filters {
+.c-dataset-filters {
   max-width: 700px;
   margin: 0 auto;
 
@@ -101,6 +101,20 @@
       background: asset-url('icons/close-icon.svg') no-repeat center center;
       text-indent: -10000px;
       cursor: pointer;
+    }
+  }
+
+  &.-wide-select {
+    > .filter {
+      > input,
+      > select,
+      > .select2 {
+        flex-basis: calc((100% / 3) - 18px);
+      }
+
+      > input {
+        width: calc((100% / 3) - 18px);
+      }
     }
   }
 

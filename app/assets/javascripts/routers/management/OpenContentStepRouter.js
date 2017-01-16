@@ -17,7 +17,8 @@
       // We instantiate the wysiwyg editor
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
-        serializedContent: serializedContent.length ? JSON.parse(serializedContent) : null
+        serializedContent: serializedContent.length ? JSON.parse(serializedContent) : null,
+        widgets: window.gon && gon.widgets
       });
 
       $('.js-form').on('submit', function () {
