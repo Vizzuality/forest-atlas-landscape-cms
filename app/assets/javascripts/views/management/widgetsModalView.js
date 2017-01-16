@@ -1,6 +1,32 @@
 ((function (App) {
   'use strict';
 
+  // Sample data used to have visual representation of each chart
+  /* eslint-disable */
+  var sampleData = [
+    {"x": 5,  "y": 28, "date": "01/01/2000", "val": "low"},
+    {"x": 4,  "y": 55, "date": "01/01/2001", "val": "high"},
+    {"x": 3,  "y": 43, "date": "01/01/2002", "val": "average"},
+    {"x": 4,  "y": 91, "date": "01/01/2003", "val": "high"},
+    {"x": 5,  "y": 81, "date": "01/01/2004", "val": "average"},
+    {"x": 6,  "y": 53, "date": "01/01/2005", "val": "low"},
+    {"x": 7,  "y": 19, "date": "01/01/2006", "val": "high"},
+    {"x": 8,  "y": 87, "date": "01/01/2007", "val": "average"},
+    {"x": 9,  "y": 52, "date": "01/01/2008", "val": "average"},
+    {"x": 5,  "y": 48, "date": "01/01/2009", "val": "high"},
+    {"x": 10, "y": 24, "date": "01/01/2010", "val": "average"},
+    {"x": 7,  "y": 49, "date": "01/01/2011", "val": "low"},
+    {"x": 3,  "y": 87, "date": "01/01/2012", "val": "high"},
+    {"x": 4,  "y": 66, "date": "01/01/2013", "val": "average"},
+    {"x": 5,  "y": 17, "date": "01/01/2014", "val": "high"},
+    {"x": 6,  "y": 27, "date": "01/01/2015", "val": "average"},
+    {"x": 7,  "y": 68, "date": "01/01/2016", "val": "low"},
+    {"x": 8,  "y": 16, "date": "01/01/2017", "val": "high"},
+    {"x": 9,  "y": 49, "date": "01/01/2018", "val": "average"},
+    {"x": 0,  "y": 15, "date": "01/01/2019", "val": "average"}
+  ];
+  /* eslint-enable */
+
   App.View.WidgetsModalView = Backbone.View.extend({
     className: 'c-widgets-modal',
     template: HandlebarsTemplates['management/widgets-modal'],
@@ -10,7 +36,16 @@
       cancelCallback: function () {},
       // Callback executed when the user clicks the continue button
       // Takes as parameter the id of the selected widget
-      continueCallback: function () {}
+      continueCallback: function () {},
+      // List of available widgets
+      // Structure of a widget:
+      // {
+      //   id: 3,
+      //   name: "My widget,
+      //   description: "This is a widget about...",
+      //   visualization: "{\"type\": \"pie\"}"
+      // }
+      widgets: []
     },
 
     events: {
@@ -44,37 +79,50 @@
     },
 
     /**
+     * Return the widgets list
+     * NOTE: this is needed to properly parse the visualization attribute
+     * @returns {object[]}
+     */
+    _getWidgetsList: function () {
+      return this.options.widgets
+        .map(function (widget) {
+          try {
+            return {
+              id: widget.id,
+              name: widget.name,
+              description: widget.description,
+              type: JSON.parse(widget.visualization).type
+            };
+          } catch (e) {
+            return null;
+          }
+        }).filter(function (widget) {
+          return !!widget;
+        });
+    },
+
+    /**
      * Render the vega charts
      */
     _renderCharts: function () {
       var chartsContainer = this.el.querySelectorAll('.js-chart');
       Array.prototype.slice.call(chartsContainer).forEach(function (chartContainer) {
-        // TODO: get the data according to the id
-        // var id = chartContainer.dataset.id;
+        var chartType = chartContainer.dataset.type;
 
         (new App.View.ChartWidgetView({
           el: chartContainer,
-          /* eslint-disable */
-          data: [ // TODO: use real data
-            {"x": 1,  "y": 28}, {"x": 2,  "y": 55},
-            {"x": 3,  "y": 43}, {"x": 4,  "y": 91},
-            {"x": 5,  "y": 81}, {"x": 6,  "y": 53},
-            {"x": 7,  "y": 19}, {"x": 8,  "y": 87},
-            {"x": 9,  "y": 52}, {"x": 10, "y": 48},
-            {"x": 11, "y": 24}, {"x": 12, "y": 49},
-            {"x": 13, "y": 87}, {"x": 14, "y": 66},
-            {"x": 15, "y": 17}, {"x": 16, "y": 27},
-            {"x": 17, "y": 68}, {"x": 18, "y": 16},
-            {"x": 19, "y": 49}, {"x": 20, "y": 15}
-          ],
-          /* eslint-enable */
-          enableChartSelector: false
+          data: sampleData,
+          enableChartSelector: false,
+          chart: chartType,
+          chartRatio: 0.61 // This should be updated whenever the size changes
         })).render();
       });
     },
 
     render: function () {
-      this.el.innerHTML = this.template();
+      this.el.innerHTML = this.template({
+        widgets: this._getWidgetsList()
+      });
       this.setElement(this.el);
       return this;
     },

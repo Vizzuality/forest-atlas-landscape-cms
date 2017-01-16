@@ -2,42 +2,17 @@
   <h1>Select a widget</h1>
 
   <div class="widgets-list">
-    <div class="widget">
-      <label for="widget-1"></label>
-      <input type="radio" id="widget-1" name="widget" value="1" />
-      <div class="content">
-        <div class="graph js-chart" data-id="1"></div>
-        <h3>Widget 1 name</h3>
-        <p>Widget's description that can be up to several lines long</p>
+    {{#each widgets}}
+      <div class="widget">
+        <label for="widget-{{id}}"></label>
+        <input type="radio" id="widget-{{id}}" name="widget" value="{{id}}" />
+        <div class="content">
+          <div class="graph js-chart" data-id="{{id}}" data-type="{{type}}"></div>
+          <h3>{{name}}</h3>
+          <p>{{description}}</p>
+        </div>
       </div>
-    </div>
-    <div class="widget">
-      <label for="widget-2"></label>
-      <input type="radio" id="widget-2" name="widget" value="2" />
-      <div class="content">
-        <div class="graph js-chart" data-id="2"></div>
-        <h3>Widget 2 name</h3>
-        <p>Widget's description that can be up to several lines long</p>
-      </div>
-    </div>
-    <div class="widget">
-      <label for="widget-3"></label>
-      <input type="radio" id="widget-3" name="widget" value="3" />
-      <div class="content">
-        <div class="graph js-chart" data-id="3"></div>
-        <h3>Widget 3 name</h3>
-        <p>Widget's description that can be up to several lines long</p>
-      </div>
-    </div>
-    <div class="widget">
-      <label for="widget-4"></label>
-      <input type="radio" id="widget-4" name="widget" value="4" />
-      <div class="content">
-        <div class="graph js-chart" data-id="4"></div>
-        <h3>Widget 4 name</h3>
-        <p>Widget's description that can be up to several lines long</p>
-      </div>
-    </div>
+    {{/each}}
   </div>
 </div>
 

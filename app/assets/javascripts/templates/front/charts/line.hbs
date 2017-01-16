@@ -1,19 +1,19 @@
 {
   "width": {{{width}}},
   "height": {{{height}}},
-  "padding": {
-    "top": 10,
-    "left": 30,
-    "bottom": 30,
-    "right": 10
-  },
+  "padding": "strict",
   "data": [{
     "name": "table",
-    "values": {{{data}}}
+    "values": {{{data}}},
+    "format": {
+      "parse": {
+        {{{xColumn}}}: "date"
+      }
+    }
   }],
   "scales": [{
     "name": "x",
-    "type": "linear",
+    "type": "time",
     "range": "width",
     "zero": false,
     "domain": {
@@ -33,7 +33,7 @@
   "axes": [{
     "type": "x",
     "scale": "x",
-    "ticks": 20
+    "ticks": 6
   }, {
     "type": "y",
     "scale": "y"
@@ -45,9 +45,6 @@
     },
     "properties": {
       "enter": {
-        "interpolate": {
-          "value": "monotone"
-        },
         "x": {
           "scale": "x",
           "field": {{{xColumn}}}

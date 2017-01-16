@@ -18,7 +18,9 @@
         container: [
           ['bold', 'italic', 'underline', { header: 1 }, { header: 2 }, 'intro', 'blockquote', 'link']
         ]
-      }
+      },
+      // List of widgets for the sidebar's widget option
+      widgets: []
     },
 
     events: {
@@ -111,7 +113,8 @@
         continueCallback: function (widgetId) {
           alert(widgetId); // TODO
           modal.close();
-        }
+        },
+        widgets: this.options.widgets
       });
 
       modal.render = this.widgetsModalView.render;
