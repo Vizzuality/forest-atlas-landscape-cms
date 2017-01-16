@@ -2,7 +2,7 @@ class Management::PageStepsController < ManagementController
   include Wicked::Wizard
   include TreeStructureHelper
 
-  before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results]
+  before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
   # The order of prepend is the opposite of its declaration
   prepend_before_action :load_wizard
@@ -220,6 +220,19 @@ class Management::PageStepsController < ManagementController
       preview = []
     end
     render json: {count: count, rows: preview}.to_json
+  end
+
+  # Gets the data of a widget
+  # GET /management/sites/:slug/page_steps/:id/widget_data
+  def widget_data
+    widget = Widget.find(params[:widget_id])
+    datasets = []
+    @site.contexts.each {|c| c.context_datasets.each {|cd| datasets << cd.dataset_id}}
+    if datasets.include? widget.dataset_id
+      render json: widget.to_json
+    else
+      render json: {}
+    end
   end
 
   private

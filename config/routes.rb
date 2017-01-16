@@ -29,6 +29,7 @@ Rails.application.routes.draw do
           member do
             get :filtered_results,
                 constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+            get :widget_data
           end
         end
       end
