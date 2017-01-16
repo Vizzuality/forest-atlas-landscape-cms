@@ -29,7 +29,9 @@ Rails.application.routes.draw do
           member do
             get :filtered_results,
                 constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
-            get 'widget_data/:widget_id', to: 'page_steps#widget_data'
+            #get 'widget_data/:widget_id', to: 'page_steps#widget_data'
+            get :widget_data,
+                constraints: lambda { |req| req.format == :json }
           end
         end
       end
@@ -58,6 +60,8 @@ Rails.application.routes.draw do
         member do
           get :filtered_results,
               constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+          get :widget_data,
+              constraints: lambda { |req| req.format == :json }
         end
       end
       get '/structure', to: 'sites#structure'

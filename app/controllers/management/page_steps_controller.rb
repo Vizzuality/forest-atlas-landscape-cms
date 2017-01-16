@@ -7,8 +7,8 @@ class Management::PageStepsController < ManagementController
   # The order of prepend is the opposite of its declaration
   prepend_before_action :load_wizard
   prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results]
-  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results]
+  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
+  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
   before_action :redirect_invalid_step
 
