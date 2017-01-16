@@ -27,6 +27,7 @@
 //= require jiminy
 //= require select2
 //= require PruneCluster/PruneCluster
+//= require parsleyjs
 
 //= require_self
 
@@ -49,4 +50,5 @@
     Helper: {},
     Blot: {}
   };
+
 }).call(this);

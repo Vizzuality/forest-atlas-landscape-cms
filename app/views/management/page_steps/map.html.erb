@@ -19,20 +19,20 @@
   <div class="l-page-creation -map">
     <div class="wrapper">
         <% if @page.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
-              <ul>
-                <% @page.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
+          <div id="error_explanation">
+            <h2><%= pluralize(@page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
+            <ul>
+              <% @page.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
 
         <div class="c-fieldset">
           <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
-              <%= ff.text_area :settings, class: 'settings' %>
-              <%= ff.label 'Map settings', class: 'col-sm-2 form-control-label' %>
+            <%= ff.text_area :settings, class: 'settings', 'data-parsley-required': true, 'data-parsley-json': true %>
+            <%= ff.label 'Map settings', class: 'form-control-label' %>
           <% end %>
         </div>
     </div>

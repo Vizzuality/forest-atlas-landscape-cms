@@ -20,7 +20,17 @@
       'sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
       'sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
       'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep'
+    },
+
+    initialize: function() {
+      this.initCommonActions();
+    },
+
+    initCommonActions: function() {
+      // Adding extra capabilities to forms
+      new App.View.Form({ el: 'form' });
     }
+
   });
 
   var init = function () {
@@ -32,7 +42,6 @@
 
       if (Router) {
         new Router(params.slice(0, params.length - 1));
-
         Backbone.history.start({ pushState: false });
       }
     });
