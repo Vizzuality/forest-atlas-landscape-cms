@@ -66,7 +66,11 @@
      * @returns {object[]} charts
      */
     _getChart: function () {
-      return (window.gon && gon.visualization) || [{}, {}];
+      try {
+        return (window.gon && gon.visualization && JSON.parse(gon.visualization)) || {};
+      } catch (e) {
+        return {};
+      }
     },
 
     /**
