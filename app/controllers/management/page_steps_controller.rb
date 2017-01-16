@@ -234,7 +234,7 @@ class Management::PageStepsController < ManagementController
                     visualization: widget.visualization,
                     name: widget.name,
                     description: widget.description,
-                    data: data}.to_json
+                    data: data['data']}.to_json
     else
       render json: {}
     end
