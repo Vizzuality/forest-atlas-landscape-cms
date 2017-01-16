@@ -102,8 +102,15 @@ var WidgetBlot = function (_Embed) {
     value: function _fetchWidget() {
       var id = WidgetBlot.value(this.domNode);
 
+      var url = '/widget_data.json?widget_id=' + id;
+      if (this.editor.options.readOnly) {
+        url = window.location.origin + url;
+      } else {
+        url = window.location.pathname + url;
+      }
+
       this.model = new (Backbone.Model.extend({
-        url: window.location.pathname + '/widget_data.json?widget_id=' + id
+        url: url
       }))();
 
       return this.model.fetch();
