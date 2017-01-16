@@ -390,7 +390,7 @@
         .done(function () {
           var count = this.tableExtract && this.tableExtract.count;
           count = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
-          this.countEl.classList.remove('loading');
+          this.countEl.classList.remove('c-loading-spinner');
           this.countEl.textContent = count;
         }.bind(this));
     }, 1500),
