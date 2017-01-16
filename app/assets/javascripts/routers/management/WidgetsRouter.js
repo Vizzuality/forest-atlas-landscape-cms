@@ -103,29 +103,36 @@
         ]
       });
 
-      // We initialize the table
-      new App.View.TableView({
-        el: $('.js-table'),
-        collection: new TableCollection(gon.widgets, { parse: true }),
-        tableName: 'List of widgets',
-        searchFieldContainer: $('.js-table-search')[0],
-        sortColumnIndex: 1
-      });
+      var tableCollection = new TableCollection(gon.widgets, { parse: true });
+      var tableContainer = $('.js-table');
 
-      // We attach a dialog notification to the delete buttons
-      $('.js-confirm').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation(); // Prevents rails to automatically delete the widget
+      if (tableCollection.length === 0) {
+        tableContainer.append('<p class="no-data">There isn\'t any widget to display yet.</p>');
+      } else {
+        // We initialize the table
+        new App.View.TableView({
+          el: tableContainer,
+          collection: tableCollection,
+          tableName: 'List of widgets',
+          searchFieldContainer: $('.js-table-search')[0],
+          sortColumnIndex: 1
+        });
 
-        App.notifications.broadcast(Object.assign({},
-          App.Helper.Notifications.widget.deletion,
-          {
-            continueCallback: function () {
-              $.rails.handleMethod($(e.target));
+        // We attach a dialog notification to the delete buttons
+        $('.js-confirm').on('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation(); // Prevents rails to automatically delete the widget
+
+          App.notifications.broadcast(Object.assign({},
+            App.Helper.Notifications.widget.deletion,
+            {
+              continueCallback: function () {
+                $.rails.handleMethod($(e.target));
+              }
             }
-          }
-        ));
-      });
+          ));
+        });
+      }
     }
 
   });

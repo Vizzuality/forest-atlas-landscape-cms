@@ -101,6 +101,10 @@
 
       if (this.options.collection.length > 0) {
         done.call(this);
+      } else if (!this.options.collection.url) {
+        // eslint-disable-next-line no-console
+        console.warn('The table has been instanciated with an empty collection and no url to fetch the data has been provided.');
+        return;
       } else {
         this.options.collection.fetch()
           .done(done.bind(this))
