@@ -4,7 +4,7 @@ $spinner-color: $color-6;
 $spinner-bg-color: $color-5;
 $spinner-velocity: 0.6s;
 
-.loading {
+.c-loading-spinner {
   position: relative;
   min-width: $spinner-size;
   min-height: $spinner-size;

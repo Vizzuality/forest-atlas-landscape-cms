@@ -31,6 +31,11 @@
         type: 'warning',
         content: 'The preview is loading. Please wait...',
         closeable: false
+      },
+      widgetError: {
+        type: 'error',
+        content: 'The widget\'s data couldn\'t be retrieved!',
+        additionalContent: 'After a second try, if the error keeps on happening, please insert it later.'
       }
     },
 
@@ -111,6 +116,10 @@
         additionalContent: 'This may break Open Content pages that are using it.',
         dialogButtons: true,
         closeable: false
+      },
+      loadingWarning: {
+        type: 'warning',
+        content: 'A chart on this page couldn\'t be loaded properly!'
       }
     }
 

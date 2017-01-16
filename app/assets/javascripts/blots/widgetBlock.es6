@@ -23,34 +23,67 @@ class WidgetBlot extends Embed {
 
     this.editor = window.editor;
 
-    // We render the widget
-    // Sample data
-    // TODO: create the logic to retrieve a widget
-    this.widget = new App.View.ChartWidgetView({
-      el: domNode,
-      data: [
-        {"x": 1,  "y": 28}, {"x": 2,  "y": 55},
-        {"x": 3,  "y": 43}, {"x": 4,  "y": 91},
-        {"x": 5,  "y": 81}, {"x": 6,  "y": 53},
-        {"x": 7,  "y": 19}, {"x": 8,  "y": 87},
-        {"x": 9,  "y": 52}, {"x": 10, "y": 48},
-        {"x": 11, "y": 24}, {"x": 12, "y": 49},
-        {"x": 13, "y": 87}, {"x": 14, "y": 66},
-        {"x": 15, "y": 17}, {"x": 16, "y": 27},
-        {"x": 17, "y": 68}, {"x": 18, "y": 16},
-        {"x": 19, "y": 49}, {"x": 20, "y": 15}
-      ],
-      enableChartSelector: false
-    });
+    this.domNode.innerHTML = '<div class="c-loading-spinner"></div>';
 
-    if (!this.editor.options.readOnly) {
-      // We render the toolbar
-      this._renderToolbar();
-    }
+    this._fetchWidget()
+      .done(function () {
+        var chart = this.model.toJSON();
 
-    // Little trick to wait for the block to be appended to the DOM
-    // before rendering the widget (which requires it)
-    setTimeout(() => this.widget.render(), 0);
+        // We retrieve the chart's configuration
+        var config;
+        try {
+          config = JSON.parse(chart.visualization);
+        } catch (e) {
+          config = {
+            type: null,
+            x: null,
+            y: null
+          };
+        }
+
+        // We render the widget
+        this.widget = new App.View.ChartWidgetView({
+          el: domNode,
+          data: chart.data,
+          chart: config.type,
+          columnX: config.x,
+          columnY: config.y,
+          enableChartSelector: false
+        });
+
+        if (!this.editor.options.readOnly) {
+          // We render the toolbar
+          this._renderToolbar();
+        }
+
+        // Little trick to wait for the block to be appended to the DOM
+        // before rendering the widget (which requires it)
+        setTimeout(() => this.widget.render(), 0);
+      }.bind(this))
+      .fail(function () {
+        if (!this.editor.options.readOnly) {
+          App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
+          this._onClickRemove();
+        } else {
+          App.notifications.broadcast(App.Helper.Notifications.widget.loadingWarning);
+        }
+
+        this.domNode.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
+      }.bind(this));
+  }
+
+  /**
+   * Fetch the data associated to the widget
+   * @returns {any} jQuery deferred object
+   */
+  _fetchWidget () {
+    var id = WidgetBlot.value(this.domNode);
+
+    this.model = new (Backbone.Model.extend({
+      url: window.location.pathname + '/widget_data.json?widget_id=' + id
+    }))();
+
+    return this.model.fetch();
   }
 
   /**
@@ -60,6 +93,9 @@ class WidgetBlot extends Embed {
    */
   static create(value) {
     let node = super.create();
+
+    // We save the id of the widget into the DOM
+    node.dataset.id = value;
 
     // We don't want the user to be able to edit the widget
     node.setAttribute('contenteditable', false);
@@ -71,11 +107,11 @@ class WidgetBlot extends Embed {
    * Return the attributes describing the widget
    * @static
    * @param {HTMLElement} node
-   * @returns {any}
+   * @returns {number}
    * @memberOf WidgetBlot
    */
   static value(node) {
-    return null;
+    return +node.dataset.id;
   }
 
   /**
@@ -86,7 +122,9 @@ class WidgetBlot extends Embed {
    * @memberOf WidgetBlot
    */
   static formats(node) {
-    return null;
+    return {
+      id: +node.dataset.id
+    };
   }
 
   /**
@@ -96,7 +134,11 @@ class WidgetBlot extends Embed {
    * @memberOf WidgetBlot
    */
   format(name, value) {
-    super.format(name, value);
+    if (name === 'id') {
+      this.domNode.dataset.id = value;
+    } else {
+      super.format(name, value);
+    }
   }
 
   /**
@@ -110,13 +152,6 @@ class WidgetBlot extends Embed {
   }
 
   /**
-   * Event handler called when the user clicks the change image button
-   * @memberOf WidgetBlot
-   */
-  _onClickChange() {
-  }
-
-  /**
    * Render the toolbar
    * @memberOf WidgetBlot
    */
@@ -127,11 +162,12 @@ class WidgetBlot extends Embed {
     this.toolbar.classList.add('toolbar');
 
     // We append its content
-    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']();
+    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
+      hideChangeBtn: true
+    });
 
     // We attach the event listeners
     this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
-    this.toolbar.querySelector('.js-change').addEventListener('click', () => this._onClickChange());
   }
 }
 

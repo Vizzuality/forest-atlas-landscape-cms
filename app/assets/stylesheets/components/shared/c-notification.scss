@@ -22,14 +22,7 @@
     padding-left: 0;
 
     > .wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-
-      @media #{$mq-tablet} {
-        height: 100%;
-      }
     }
 
     p {
@@ -46,16 +39,24 @@
     }
   }
 
+  > .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    @media #{$mq-tablet} {
+      height: 100%;
+    }
+  }
+
   p {
     margin: 0;
     padding: 0;
     color: $color-3;
     font-size: $font-size-s-normal;
+    line-height: 1.5;
     text-align: center;
-
-    @media #{$mq-tablet} {
-      line-height: 66px;
-    }
   }
 
   .close-button {

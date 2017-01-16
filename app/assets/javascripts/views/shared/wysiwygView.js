@@ -100,8 +100,7 @@
       this._toggleExpandSidebar();
 
       // We save the position of the cursor within the wysiwyg
-      // var range = this.editor.getSelection();
-
+      var range = this.editor.getSelection();
 
       var modal = new App.View.ModalView();
 
@@ -111,9 +110,20 @@
       this.widgetsModalView = new App.View.WidgetsModalView({
         cancelCallback: function () { modal.close(); },
         continueCallback: function (widgetId) {
-          alert(widgetId); // TODO
           modal.close();
-        },
+
+          // var model = new (Backbone.Model.extend({
+          //   url: 'TODO'
+          // }))();
+
+          // model.fetch()
+          //   .done(function () {
+              this.editor.insertEmbed(range.index, 'widget', widgetId, 'user');
+            // })
+            // .fail(function () {
+            //   App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
+            // });
+        }.bind(this),
         widgets: this.options.widgets
       });
 
@@ -121,8 +131,6 @@
 
 
       modal.open();
-
-      // this.editor.insertEmbed(range.index, 'widget', '', 'user');
 
       // We hide the sidebar
       this._hideSidebar();

@@ -375,10 +375,10 @@
     _checkRowCount: function () {
       this.countEl = this.el.querySelector('.js-row-count');
       if (this.collection.toJSON().length) {
-        this.countEl.classList.add('loading');
+        this.countEl.classList.add('c-loading-spinner');
         this._updateRowCount();
       } else {
-        this.countEl.classList.remove('loading');
+        this.countEl.classList.remove('c-loading-spinner');
       }
     },
 
