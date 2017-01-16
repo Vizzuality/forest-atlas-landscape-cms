@@ -74,7 +74,7 @@ class Widget < ApplicationRecord
     query = "select #{selector}"
     query += " from #{self.api_table_name} "
     query += 'where ' + get_filters_sql unless self.filters.blank? || JSON.parse(self.filters).blank?
-    query += " limit #{limit}"
+    query += " limit #{limit}" if limit
 
     DatasetService.get_filtered_dataset self.dataset_id, query
   end
