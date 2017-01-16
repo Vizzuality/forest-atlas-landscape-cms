@@ -40,7 +40,8 @@
         el: '.js-filters',
         fields: this._getFields(),
         filters: (window.gon && gon.filtersArray) || [],
-        endpointUrl: (window.gon && gon.filtersEndpointUrl) || ''
+        endpointUrl: (window.gon && gon.filtersEndpointUrl) || '',
+        hiddenInputName: 'site_page[dataset_setting][filters]'
       });
 
       $('.js-form').on('submit', function () {

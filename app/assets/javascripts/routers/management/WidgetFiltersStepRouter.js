@@ -41,6 +41,7 @@
         fields: this._getFields(),
         filters: (window.gon && gon.filtersArray) || [],
         endpointUrl: (window.gon && gon.filtersEndpointUrl) || '',
+        hiddenInputName: 'widget[filters]',
         canBeVariable: false
       });
 

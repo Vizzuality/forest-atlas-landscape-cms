@@ -37,6 +37,7 @@
       filters: [],
       // API endpoint to fetch the table extract
       endpointUrl: '',
+      hiddenInputName: '',
       // State of the default filters
       defaultFilter: {
         name: null,
@@ -424,7 +425,8 @@
         filters: filters,
         json: this._getSerializeFilters(),
         canAddNewField: !!this._getUnusedFields().length && !this._isThereUnspecifiedFilter(),
-        canBeVariable: this.options.canBeVariable
+        canBeVariable: this.options.canBeVariable,
+        hiddenInputName: this.options.hiddenInputName
       }));
       this.setElement(this.el);
 

@@ -1,5 +1,5 @@
 <div class="c-dataset-filters {{#unless canBeVariable}}-wide-select{{/unless}}">
-  <input type="hidden" id="site_page_dataset_setting_filters" name="site_page[dataset_setting][filters]" value="{{json}}">
+  <input type="hidden" id="site_page_dataset_setting_filters" name="{{hiddenInputName}}" value="{{json}}">
 
   {{#each filters}}
     <div class="filter">
