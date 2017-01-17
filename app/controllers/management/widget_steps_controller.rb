@@ -100,7 +100,9 @@ class Management::WidgetStepsController < ManagementController
 
       when 'visualization'
         if @widget.save
-          redirect_to management_site_widgets_path
+          respond_to do |format|
+            format.html { redirect_to management_site_widgets_path, notice: 'The widget has been successfully created.' }
+          end
         else
           set_gon_filters
           render_wizard
