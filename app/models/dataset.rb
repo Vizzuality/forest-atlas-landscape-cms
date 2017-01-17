@@ -124,7 +124,8 @@ class Dataset
     if self.form_steps[:pages].index('connector') <= step_index
       self.errors['type'] << 'You must enter a connector type' unless CONNECTOR_TYPES.include? self.type
       self.errors['provider'] << 'You must enter a connector provider' unless CONNECTOR_PROVIDERS.include? self.provider
-      self.errors['connector_url'] << 'You must enter a valid url' unless self.connector_url unless self.connector_url && valid_url?(self.connector_url)
+      self.errors['connector_url'] << 'You must enter a valid url' \
+        unless self.connector_url && !self.connector_url.blank? && valid_url?(self.connector_url)
     end
 
     if self.form_steps[:pages].index('labels') <= step_index
