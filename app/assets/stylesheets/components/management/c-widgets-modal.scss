@@ -33,7 +33,7 @@
 
     .widget {
       position: relative;
-      flex-basis: calc((100% / 3) - ((2 * 20px) / 3));
+      flex-basis: calc((100% / 3) - (2 * 10px));
       margin: 25px 10px;
 
       label {
