@@ -1,8 +1,10 @@
+<% variables.each do |property, value| %>
+  $<%= property %>: <%= value %>;
+<% end %>
+
 @import
 'leaflet',
 'icons',
-// 'settings-theme-fa',
-// 'base-theme-fa',
 '../layouts/shared/*',
 '../layouts/front/*',
 '../components/shared/**/*',
@@ -157,11 +159,11 @@ a {
 }
 
 ::selection {
-  background: rgba($color-1, .2);
+  background: $background-color-1;
 }
 
 ::-moz-selection {
-  background: rgba($color-1, .2);
+  background: $background-color-1;
 }
 
 // We hide the map header

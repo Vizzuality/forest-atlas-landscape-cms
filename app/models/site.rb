@@ -40,6 +40,7 @@ class Site < ApplicationRecord
   before_validation :generate_slug
   after_create :create_context
   after_save :update_routes
+  after_save :apply_settings
   after_create :create_template_content
 
   cattr_accessor :form_steps do
@@ -138,5 +139,60 @@ class Site < ApplicationRecord
 
   def generate_slug
     write_attribute(:slug, self.name.parameterize)
+  end
+
+  def apply_settings
+    compile_css
+
+    #system "rake site:apply_settings[#{@site.id}] &"
+
+    #Thread.new {
+    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
+    #}.join
+  end
+
+  def variables
+    color = self.site_settings.find_by(name: 'color')
+    {'color-1': color.value}
+  end
+
+  def compile_erb
+    if self.site_template.name.eql? 'Forest Atlas'
+      template = 'front/template-fa.css'
+    else
+      template = 'front/template-lsa.css'
+    end
+    a = ActionView::Base.new(
+      ForestAtlasLandscapeCms::Application.assets.paths).render({
+         partial: template,
+         locals: { variables: variables },
+         formats: :scss
+       })
+    a
+  end
+
+  def compile_scss
+    sass_engine = Sass::Engine.new(compile_erb, {
+      syntax: :scss,
+      style: Rails.env.development? ? :nested : :compressed,
+      load_paths: ForestAtlasLandscapeCms::Application.assets.paths
+    })
+    sass_engine.render
+  end
+
+  def compile_css
+    require 'tempfile'
+    file = Tempfile.open ["#{id}.css"]
+    begin
+      file.write compile_scss
+      file.flush
+      #self.css = file
+      File.open(BUILD_DIR + "public/assets/front/#{id}.css") do |f|
+        f.write file
+      end
+    ensure
+      file.close
+      file.unlink
+    end
   end
 end

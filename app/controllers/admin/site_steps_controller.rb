@@ -75,7 +75,6 @@ class Admin::SiteStepsController < AdminController
         # If the user pressed the save button
         if save_button?
           if @site.save
-            Rake::Task['site:apply_settings'].invoke(@site.id)
             apply_settings
             redirect_to admin_sites_path
           else
@@ -204,12 +203,5 @@ class Admin::SiteStepsController < AdminController
 
   def get_site_pages
     self.steps_names = *Site.form_steps[:names]
-  end
-
-  def apply_settings
-    system "rake site:apply_settings[#{@site.id}] &"
-    #Thread.new {
-    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
-    #}.join
   end
 end
