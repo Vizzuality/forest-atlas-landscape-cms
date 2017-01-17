@@ -162,17 +162,17 @@ class Site < ApplicationRecord
     else
       template = 'front/template-lsa.css'
     end
-    a = ActionView::Base.new(
+    ActionView::Base.new(
       ForestAtlasLandscapeCms::Application.assets.paths).render({
          partial: template,
          locals: { variables: variables },
          formats: :scss
        })
-    a
   end
 
   def compile_scss
-    sass_engine = Sass::Engine.new(compile_erb, {
+    scss_file = compile_erb
+    sass_engine = Sass::Engine.new(scss_file, {
       syntax: :scss,
       style: Rails.env.development? ? :nested : :compressed,
       load_paths: ForestAtlasLandscapeCms::Application.assets.paths
