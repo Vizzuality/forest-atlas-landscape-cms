@@ -203,12 +203,15 @@
       }).join('');
       res += '</tr>';
       res += tableRows.map(function (row) {
-        return '<tr>' +
-          Object.keys(row).map(function (field) {
-            return '<td>' + row[field] + '</td>';
-          }).join('') +
-          '</tr>';
-      }).join('');
+        var rows = this.options.fields.map(function (field) {
+          var res; // eslint-disable-line no-shadow
+          if (row[field.name] !== null && row[field.name] !== undefined) res = row[field.name];
+          else res = '–';
+          return '<td>' + res + '</td>';
+        });
+
+        return '<tr>' + rows.join('') + '</tr>';
+      }, this).join('');
       res += '</table>';
       res += '<div class="table-legend"><p>Table preview shows only 10 first rows</p></div>';
       res += '</div>';
