@@ -1,0 +1,27 @@
+<div class="content">
+  <h1>Select a widget</h1>
+
+  <div class="widgets-list">
+    {{#unless widgets}}
+      <p class="no-data">There isn't any widget available yet.</p>
+    {{/unless}}
+    {{#each widgets}}
+      <div class="widget">
+        <label for="widget-{{id}}"></label>
+        <input type="radio" id="widget-{{id}}" name="widget" value="{{id}}" />
+        <div class="content">
+          <div class="graph js-chart" data-id="{{id}}" data-type="{{type}}"></div>
+          <h3>{{name}}</h3>
+          <p>{{description}}</p>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<div class="c-action-bar -embed">
+  <div class="wrapper">
+    <button type="button" class="c-button -outline -dark-text js-cancel">Cancel</button>
+    <button type="submit" class="c-button js-continue">Ok</button>
+  </div>
+</div>

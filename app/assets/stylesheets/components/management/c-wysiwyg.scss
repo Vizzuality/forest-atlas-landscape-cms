@@ -20,6 +20,24 @@
 
       .ql-formats {
         margin: 0;
+
+        button {
+          width: 34px !important;
+          margin: 0;
+          padding: 0 !important;
+          border-left: 1px solid $color-4;
+          text-align: center;
+
+          &.ql-active svg path {
+            fill: $color-1;
+          }
+
+          svg {
+            display: inline-block;
+            float: none;
+            stroke: none !important;
+          }
+        }
       }
     }
 
@@ -31,10 +49,10 @@
     }
 
     .ql-tooltip-arrow {
-      top: auto;
+      top: auto !important;
       bottom: -6px;
       border-top: 6px solid rgba($color-5, .8);
-      border-bottom: 0;
+      border-bottom: 0 !important;
     }
   }
 
@@ -271,19 +289,12 @@
       border: 1px solid $color-7;
       background-color: $color-3;
 
-      &.-half {
-        width: calc((100% + 390px) / 2 - 10px);
-        margin-right: 20px; // Margin with other content
-        float: left;
-        clear: none;
-
-        & + .-half {
-          transform: translateX(195px);
-        }
-      }
-
       &:not(:hover) .toolbar {
         display: none;
+      }
+
+      .error {
+        text-align: center;
       }
     }
   }

@@ -65,14 +65,16 @@
   }
 
   &.-map {
-    margin-top: 20px;
+    padding-top: 50px;
 
-    .c-fieldset {
-      height: calc(100vh - 360px);
+    > .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-      textarea {
-        font-family: monospace;
-      }
+    .CodeMirror {
+      height: calc(100vh - 502px);
     }
   }
 

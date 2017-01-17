@@ -22,6 +22,12 @@
            when 'logo_image' %>
           <%= settings_form.hidden_field :position, value: '2'%>
           <%= settings_form.hidden_field :name, value: 'logo_image'%>
+          <% if !@logo_image.nil? && @logo_image.image_file_name %>
+            <div class="c-centered-input">
+              <label>Logo preview</label>
+              <%= image_tag @logo_image.image.url %>
+            </div>
+          <% end %>
           <div class="c-centered-input">
             <%= settings_form.label :image, value: 'Logo image', for: 'logo' %>
             <div class="js-file-input">

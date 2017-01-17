@@ -39,7 +39,10 @@
       new App.View.FlagColorsView({ el: '.js-flag-colors' });
 
       // We "upgrade" the file input
-      new App.View.FileInputView({ el: '.js-file-input' });
+      new App.View.FileInputView({
+        el: '.js-file-input',
+        label: 'Change file'
+      });
     }
   });
 })(this.App));

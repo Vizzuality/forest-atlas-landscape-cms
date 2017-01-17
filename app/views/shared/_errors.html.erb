@@ -1,11 +1,10 @@
 <% if resource && resource.errors.any? %>
   <script>
-    new App.View.NotificationView({
-    visible: true,
-    closeable: true,
-    autoCloseTimer: -1,
-    type: 'error',
-    content: '<%== j pluralize(resource.errors.count, "error") %> occurred: <% resource.errors.full_messages.each do |message| %><%== j message + (message == resource.errors.full_messages.last ? '' : ', ') %> <% end %>'
+    App.notifications.broadcast({
+      closeable: true,
+      autoCloseTimer: -1,
+      type: 'error',
+      content: '<%== j pluralize(resource.errors.count, "error") %> occurred: <% resource.errors.full_messages.each do |message| %><%== j message + (message == resource.errors.full_messages.last ? '' : ', ') %> <% end %>'
     });
   </script>
 <% end %>

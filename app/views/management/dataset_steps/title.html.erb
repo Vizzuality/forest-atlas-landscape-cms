@@ -13,12 +13,15 @@
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
   <div class="l-dataset-creation -title">
     <div class="wrapper">
-      <div class="inputs-container">
-        <%= f.label :title, for: 'title' %>
-        <%= f.text_field :name, id:'name', placeholder: 'Dataset’s title' %>
-
-        <%= f.label :tags, for: 'tags' %>
-        <%= f.text_field :tags, id:'tags', placeholder: 'Dataset’s tags' %>
+      <div class="c-inputs-container">
+        <div class="container">
+          <%= f.label :title, for: 'title' %>
+          <%= f.text_field :name, id:'name', placeholder: 'Dataset’s title' %>
+        </div>
+        <div class="container">
+          <%= f.label :tags, for: 'tags' %>
+          <%= f.text_field :tags, id:'tags', placeholder: 'Dataset’s tags' %>
+        </div>
       </div>
 
       <div class="js-tags"></div>

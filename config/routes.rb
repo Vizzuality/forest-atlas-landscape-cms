@@ -29,6 +29,9 @@ Rails.application.routes.draw do
           member do
             get :filtered_results,
                 constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+            #get 'widget_data/:widget_id', to: 'page_steps#widget_data'
+            get :widget_data,
+                constraints: lambda { |req| req.format == :json }
           end
         end
       end
@@ -39,14 +42,26 @@ Rails.application.routes.draw do
       resources :dataset_steps, only: [:new, :update, :show]
 
       resources :widgets, only: [:index, :destroy] do
-        resources :widget_steps, only: [:edit, :update, :show]
+        resources :widget_steps, only: [:edit, :update, :show] do
+          member do
+            get :filtered_results,
+                constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+          end
+        end
       end
-      resources :widget_steps, only: [:new, :update, :show]
+      resources :widget_steps, only: [:new, :update, :show] do
+        member do
+          get :filtered_results,
+              constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+        end
+      end
 
       resources :page_steps, only: [:show, :update, :new] do
         member do
           get :filtered_results,
               constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+          get :widget_data,
+              constraints: lambda { |req| req.format == :json }
         end
       end
       get '/structure', to: 'sites#structure'
@@ -55,6 +70,7 @@ Rails.application.routes.draw do
     get '/', to: 'static_page#dashboard'
   end
   get '/no-permissions', to: 'static_page#no_permissions'
+  get '/widget_data', to: 'static_page#widget_data'
 
   # Auth
   get 'auth/login', to: 'auth#login'

@@ -50,12 +50,7 @@
 
       // If the tree has been saved successfully, we display a notification
       if (state && state === 'success') {
-        new App.View.NotificationView({
-          content: 'The structure has been successfully saved!',
-          closeable: false,
-          autoCloseTimer: 5,
-          visible: true
-        });
+        App.notifications.broadcast(App.Helper.Notifications.structure.update);
 
         this.navigate('/', { replace: true });
       }
@@ -111,6 +106,7 @@
     _onRenderTree: function () {
       $(this.treeContainer).find('.js-enable').on('click', this._onClickEnable.bind(this));
       $(this.treeContainer).find('.js-disable').on('click', this._onClickDisable.bind(this));
+      $(this.treeContainer).find('.js-delete').on('click', this._onClickDelete.bind(this));
       $(this.treeContainer).find('.js-add').on('click', this._onClickAddPage.bind(this));
     },
 
@@ -134,6 +130,24 @@
       var node = $(e.target).closest('.js-draggable')[0];
       this.toggleEnable(node, false);
       this._displaySaveWarning();
+    },
+
+    /**
+     * Event listener for when the deltee button is clicked on a node
+     * @param {object} e - event object
+     */
+    _onClickDelete: function (e) {
+      e.preventDefault();
+      e.stopPropagation(); // Prevents rails to automatically delete the page
+
+      App.notifications.broadcast(Object.assign({},
+        App.Helper.Notifications.page.deletion,
+        {
+          continueCallback: function () {
+            $.rails.handleMethod($(e.target));
+          }
+        }
+      ));
     },
 
     /**
@@ -164,7 +178,7 @@
             {{/if}}\
             <li><a href="{{#if editUrl}}{{editUrl}}{{else}}{{editurl}}{{/if}}" class="edit-button">Edit</a></li>\
             {{#if disableable}}\
-              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button">Delete</a></li>\
+              <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button js-delete">Delete</a></li>\
             {{/if}}\
           </ul>\
         </div>\
@@ -184,16 +198,7 @@
      * clicking any button that would leave the page
      */
     _displaySaveWarning: function () {
-      if (this.saveNotification) {
-        this.saveNotification.show();
-        return;
-      }
-
-      this.saveNotification = new App.View.NotificationView({
-        content: 'Don\'t forget to save the changes before leaving the page!',
-        type: 'warning',
-        visible: true
-      });
+      this.saveWarningNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.saveReminder);
     },
 
     /**
@@ -201,8 +206,8 @@
      * the page
      */
     _hideSaveWarning: function () {
-      if (this.saveNotification) {
-        this.saveNotification.hide();
+      if (this.saveWarningNotificationId) {
+        App.notifications.hide(this.saveWarningNotificationId);
       }
     },
 
@@ -211,16 +216,7 @@
      * that as disabled ancestors, it won't be visible until they are all enabled
      */
     _displayVisibilityWarning: function () {
-      if (this.visibilityNotification) {
-        this.visibilityNotification.show();
-        return;
-      }
-
-      this.visibilityNotification = new App.View.NotificationView({
-        content: 'This page won\'t be visible to the users until all of its ancestors are enabled!',
-        type: 'warning',
-        visible: true
-      });
+      this.visibilityWarningNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.visibilityReminder);
     },
 
     /**
@@ -228,8 +224,8 @@
      * that as disabled ancestors, it won't be visible until they are all enabled
      */
     _hideVisibilityWarning: function () {
-      if (this.visibilityNotification) {
-        this.visibilityNotification.hide();
+      if (this.visibilityWarningNotificationId) {
+        App.notifications.hide(this.visibilityWarningNotificationId);
       }
     },
 
@@ -237,24 +233,15 @@
      * Display a notification to inform the user the tree is saving
      */
     _displaySavingNotification: function () {
-      if (this.savingNotification) {
-        this.savingNotification.show();
-        return;
-      }
-
-      this.savingNotification = new App.View.NotificationView({
-        content: 'Saving the structure...',
-        closeable: false,
-        visible: true
-      });
+      this.savingNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.saving);
     },
 
     /**
      * Hide the notification to inform the user the tree is saving
      */
     _hideSavingNotification: function () {
-      if (this.savingNotification) {
-        this.savingNotification.hide();
+      if (this.savingNotificationId) {
+        App.notifications.hide(this.savingNotificationId);
       }
     },
 
@@ -262,24 +249,15 @@
      * Display an error if the structure couldn't be saved in the backend
      */
     _displayErrorNotification: function () {
-      if (this.errorNotification) {
-        this.errorNotification.show();
-        return;
-      }
-
-      this.errorNotification = new App.View.NotificationView({
-        content: 'The changes couldn\'t be saved',
-        type: 'error',
-        visible: true
-      });
+      this.errorNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.error);
     },
 
     /**
      * Hide the error telling the user the structure couldn't be saved
      */
     _hideErrorNotification: function () {
-      if (this.errorNotification) {
-        this.errorNotification.hide();
+      if (this.errorNotificationId) {
+        App.notifications.hide(this.errorNotificationId);
       }
     },
 

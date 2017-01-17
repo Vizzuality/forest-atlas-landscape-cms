@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-  App.Router.ManagementFiltersStep = Backbone.Router.extend({
+  App.Router.ManagementDatasetFiltersStep = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'
@@ -12,13 +12,13 @@
     },
 
     /**
-     * Return the fields used by the dashboardFiltersView
+     * Return the fields used by the datasetFiltersView
      * TODO: most of it needs to be removed when the back end returns
      * the correct values
      * @returns {object[]} fields
      */
     _getFields: function () {
-      return (window.gon && gon.fields).map(function (field) {
+      return ((window.gon && gon.fields) || []).map(function (field) {
         if (field.type === 'date') {
           field.min = new Date(field.min);
           field.max = new Date(field.max);
@@ -36,17 +36,18 @@
     },
 
     index: function () {
-      var dashboardFiltersView = new App.View.DashboardFiltersView({
+      var datasetFiltersView = new App.View.DatasetFiltersView({
         el: '.js-filters',
         fields: this._getFields(),
-        filters: (window.gon && gon.filtersArray) || null,
-        endpointUrl: (window.gon && gon.filtersEndpointUrl) || null
+        filters: (window.gon && gon.filtersArray) || [],
+        endpointUrl: (window.gon && gon.filtersEndpointUrl) || '',
+        hiddenInputName: 'site_page[dataset_setting][filters]'
       });
 
       $('.js-form').on('submit', function () {
         // When the view is rendered, a hidden field with the state of the filters is updated.
         // This way we make sure to have the latest changes.
-        dashboardFiltersView.render();
+        datasetFiltersView.render();
       });
     }
   });

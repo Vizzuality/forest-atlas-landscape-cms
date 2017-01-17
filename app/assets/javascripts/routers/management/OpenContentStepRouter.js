@@ -17,10 +17,11 @@
       // We instantiate the wysiwyg editor
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
-        serializedContent: serializedContent.length ? JSON.parse(serializedContent) : null
+        serializedContent: serializedContent.length ? JSON.parse(serializedContent) : null,
+        widgets: window.gon && gon.widgets
       });
 
-      $('.js-submit').on('click', function () {
+      $('.js-form').on('submit', function () {
         if (this.wysiwygView) {
           var content = this.wysiwygView.getSerializedContent();
           document.querySelector('.js-json-content').value = JSON.stringify(content);

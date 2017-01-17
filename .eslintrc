@@ -27,7 +27,8 @@
     "Fuse": true,
     "Jiminy": true,
     "PruneClusterForLeaflet": true,
-    "PruneCluster": true
+    "PruneCluster": true,
+    "CodeMirror": true
   },
   "env": {
     "browser": true

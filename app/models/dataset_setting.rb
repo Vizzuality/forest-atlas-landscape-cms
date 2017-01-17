@@ -123,9 +123,9 @@ class DatasetSetting < ApplicationRecord
                end
 
     query = "select #{selector}"
-    query += " from #{self.api_table_name} "
-    query += 'where ' + get_filters_sql unless self.filters.blank? || JSON.parse(self.filters).blank?
-    query += " limit #{limit}"
+    query += " from #{self.api_table_name}"
+    query += ' where ' + get_filters_sql unless self.filters.blank? || JSON.parse(self.filters).blank?
+    query += " limit #{limit}" if limit
 
     DatasetService.get_filtered_dataset self.dataset_id, query
   end
@@ -142,13 +142,18 @@ class DatasetSetting < ApplicationRecord
 
   # Gets this dataset's metadata
   def get_metadata
-    DatasetService.get_dataset self.dataset_id
+    DatasetService.get_metadata self.dataset_id
   end
 
   # Returns a hash with the legend fields
   def get_legend_hash
     return {} unless legend
     return legend
+  end
+
+  # Returns the metadata for a list of datasets
+  def self.get_metadata ids
+    DatasetService.get_datasets id
   end
 
   private

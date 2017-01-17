@@ -94,7 +94,7 @@ class Dataset
   end
 
   def get_metadata
-    DatasetService.get_dataset self.id
+    DatasetService.get_metadata self.id
   end
 
 
@@ -103,7 +103,12 @@ class Dataset
   # +token+:: The authentication for the API
   def upload(token)
     DatasetService.upload token, type, provider, connector_url,
-                          application, name, tags
+                          application, name, tags, legend
+  end
+
+
+  def self.get_metadata_list(dataset_ids)
+    DatasetService.get_metadata_list(dataset_ids)
   end
 
 
@@ -119,7 +124,8 @@ class Dataset
     if self.form_steps[:pages].index('connector') <= step_index
       self.errors['type'] << 'You must enter a connector type' unless CONNECTOR_TYPES.include? self.type
       self.errors['provider'] << 'You must enter a connector provider' unless CONNECTOR_PROVIDERS.include? self.provider
-      self.errors['connector_url'] << 'You must enter a valid url' unless self.connector_url unless self.connector_url && valid_url?(self.connector_url)
+      self.errors['connector_url'] << 'You must enter a valid url' \
+        unless self.connector_url && !self.connector_url.blank? && valid_url?(self.connector_url)
     end
 
     if self.form_steps[:pages].index('labels') <= step_index

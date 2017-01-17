@@ -5,11 +5,11 @@
 
 
     defaults: {
-      // (Default) visibility of the notification
-      visible: false,
-      // Whether the notification has a close button
+      // Whether the notification can be closed by the user and can be automatically
+      // closed by the JS without the user's input (should be displayed at least 5s)
       closeable: true,
       // Time for the notification to close automatically in seconds
+      // The notification won't be automatically closed by the JS before this time
       // Set the value -1 to disable the feature
       // Shouldn't be less than 5 (for accessibility)
       autoCloseTimer: -1,
@@ -23,7 +23,14 @@
       // The type can't be changed after instantiation
       type: 'success',
       // Content of the notification, HTML will not be interpreted
-      content: ''
+      content: '',
+      // If not empty, the main content will be highlighted and this will be put below;
+      // again, no HTML
+      additionalContent: '',
+      // Callback executed after the notification has been hidden (after the animation)
+      afterHide: function () {},
+      // Visibility of the notification (internal)
+      _visible: false
     },
 
     events: {
@@ -42,18 +49,6 @@
       this.timer = null;
 
       this._createEl();
-
-      // This double rAF pattern is enables the animation of the notification right
-      // after it is appended to the DOM in case this.options.visible is set to true
-      requestAnimationFrame(function () {
-        this.render();
-
-        requestAnimationFrame(function () {
-          if (this.options.visible) {
-            this.show();
-          }
-        }.bind(this));
-      }.bind(this));
     },
 
     /**
@@ -73,7 +68,8 @@
      * Show the notification
      */
     show: function () {
-      this.options.visible = true;
+      // eslint-disable-next-line no-underscore-dangle
+      this.options._visible = true;
       this.render();
 
       // We cancel any running timeout before setting a new one
@@ -88,7 +84,8 @@
      * Hide the notification
      */
     hide: function () {
-      this.options.visible = false;
+      // eslint-disable-next-line no-underscore-dangle
+      this.options._visible = false;
       this.timer = null;
       this.render();
     },
@@ -97,7 +94,8 @@
      * Toggle the visibility of the notification
      */
     toggle: function () {
-      if (this.options.visible) this.show();
+      // eslint-disable-next-line no-underscore-dangle
+      if (this.options._visible) this.show();
       else this.hide();
     },
 
@@ -106,7 +104,8 @@
      */
     _setFocus: function () {
       if (!this.isFocusSet) {
-        this.el.querySelector('.js-close').focus();
+        if (this.options.closeable) this.el.querySelector('.js-close').focus();
+        if (this.options.dialogButtons) this.el.querySelector('.js-dialog button[data-action="continue"]').focus();
         this.isFocusSet = true;
       }
     },
@@ -136,8 +135,11 @@
      * Event handler called when the notification stops animating
      */
     _onTransitionend: function () {
-      if (this.options.closeable && this.options.visible) {
+      // eslint-disable-next-line no-underscore-dangle
+      if (this.options._visible) {
         this._setFocus();
+      } else {
+        this.options.afterHide();
       }
     },
 
@@ -159,15 +161,19 @@
      */
     render: function () {
       this.isFocusSet = false; // Whether the focus has been set on the close button
-      this.el.classList[this.options.visible ? 'add' : 'remove']('-visible');
+      // eslint-disable-next-line no-underscore-dangle
+      this.el.classList[this.options._visible ? 'add' : 'remove']('-visible');
       this.el.classList[this.options.dialogButtons ? 'add' : 'remove']('-dialog');
-      this.el.setAttribute('aria-hidden', !this.options.visible);
+      // eslint-disable-next-line no-underscore-dangle
+      this.el.setAttribute('aria-hidden', !this.options._visible);
 
       // Render the content of the notification
       this.el.innerHTML = this.template({
         content: this.options.content,
+        additionalContent: this.options.additionalContent,
         closeable: this.options.closeable,
-        visible: this.options.visible,
+        // eslint-disable-next-line no-underscore-dangle
+        visible: this.options._visible,
         dialogButtons: this.options.dialogButtons
       });
       this.setElement(this.el);
