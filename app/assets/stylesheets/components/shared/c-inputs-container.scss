@@ -2,6 +2,10 @@
   width: 100%;
   max-width: 570px;
 
+  &.-large {
+    max-width: 880px;
+  }
+
   > .container {
     padding: 25px 35px;
     border-top: 1px solid;
@@ -45,7 +49,7 @@
       font-weight: $font-weight-light;
     }
 
-    textarea {
+    > textarea {
       width: 100%;
       margin: 0;
       padding: 0;
