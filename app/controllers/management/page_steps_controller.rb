@@ -386,9 +386,9 @@ class Management::PageStepsController < ManagementController
                    publish_step_name = Wicked::FINISH_STEP)
 
     if save_button?
-
+      notice_text = @page.id ? 'saved' : 'created'
       if @page.save
-        redirect_to wizard_path(save_step_name)
+        redirect_to wizard_path(save_step_name), notice: 'Page successfully ' + notice_text
       else
         render_wizard
       end
@@ -396,9 +396,10 @@ class Management::PageStepsController < ManagementController
     elsif publish_button?
 
       @page.enabled = !@page.enabled
+      notice_text = @page.enabled ? 'published' : 'unpublished'
       if @page.save
         session[:page][:enabled] = @page.enabled
-        redirect_to wizard_path(publish_step_name)
+        redirect_to wizard_path(publish_step_name), notice: 'Page successfully ' + notice_text
       else
         render_wizard
       end
