@@ -21,6 +21,8 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def show
+    @breadcrumbs << {name: 'New Widget'}
+
     case step
       when 'title'
       when 'dataset'
