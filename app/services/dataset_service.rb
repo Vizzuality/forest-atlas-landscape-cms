@@ -109,16 +109,16 @@ class DatasetService
 
     string_datasets = {}
     fields.select {|f| f[:type].downcase.include?('string')}.each do |field|
-      query = "select count(*) from #{api_table_name} group by #{field[:name]}"
+      query = "select count(*), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
 
     fields.each do |field|
       case field[:type]
-        when 'number', 'date', 'long', 'double'
+        when /number/, /date/, /long/, /double/
           field[:min] = number_dataset['data'][0]["min_#{field[:name]}"]
           field[:max] = number_dataset['data'][0]["max_#{field[:name]}"]
-        when 'string'
+        when /string/
           field[:values] = string_datasets[field[:name]]['data'].map{|x| x[field[:name]]}
       end
     end
