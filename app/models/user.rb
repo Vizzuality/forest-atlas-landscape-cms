@@ -43,7 +43,7 @@ class User < ApplicationRecord
   attr_accessor :form_step
 
   def send_to_api(token, url)
-    role = self.admin ? 'MANAGER' : 'USER'
+    role = self.admin ? 'ADMIN' : 'MANAGER'
     UserService.create(token, self.email, role, url)
   end
 
