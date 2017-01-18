@@ -13,6 +13,8 @@
   <script>
     window.template = '<%= (@site_page.site_template.name.eql? 'Forest Atlas') ? 'fa' : 'lsa' %>';
   </script>
+  <script type="text/javascript">window.liveSettings={api_key:"a81c84348fa34de097781e4017e1a944"};</script>
+  <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= yield :external_js %>
 </head>
