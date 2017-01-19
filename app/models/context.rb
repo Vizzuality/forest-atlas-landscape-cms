@@ -18,6 +18,13 @@ class Context < ApplicationRecord
   has_many :context_sites
   has_many :sites, through: :context_sites
 
+  cattr_accessor :form_steps do
+    { pages: %w[title sites users datasets],
+      names: %w[Title Sites Users Datasets] }
+  end
+  attr_accessor :form_step
+
+
   def is_site_default_context
     context_sites.each do |context_site|
       return true if context_site.is_site_default_context

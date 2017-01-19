@@ -51,6 +51,7 @@ class User < ApplicationRecord
     all_datasets = DatasetService.get_datasets status
     dataset_ids = []
 
+    # TODO: This should use user.get_contexts
     self.contexts.each do |context|
       context.context_datasets.each {|cd| dataset_ids << cd.dataset_id}
     end
@@ -65,6 +66,7 @@ class User < ApplicationRecord
     context_datasets_ids = {}
     context_datasets = {}
 
+    # TODO: This should use user.get_context
     self.contexts.each do |context|
       context_datasets_ids[context.id] = []
       context.context_datasets.each {|cd| context_datasets_ids[context.id] << cd.dataset_id}
@@ -77,6 +79,19 @@ class User < ApplicationRecord
     end
 
     context_datasets
+  end
+
+  def get_contexts(readable: false)
+    if self.admin
+      return Context.all
+    end
+
+    contexts = self.contexts
+
+    if readable
+      self.sites.each{|s| s.contexts.each{|c| contexts << c}}
+    end
+    contexts.uniq!
   end
 
   private
