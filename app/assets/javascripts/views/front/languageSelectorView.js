@@ -36,6 +36,13 @@
           }.bind(this), 1000);
         }
 
+        // If the URL doesn't contain the language query parameter, we add it so it
+        // can be shareable
+        if (!/\?(.*)?lang=[a-z]{2}/.test(location.search)) {
+          var url = (!location.search.length ? '?' : '&') + 'lang=' + currentLanguageCode;
+          history.replaceState(null, '', url);
+        }
+
         this.render();
       }.bind(this));
     },
@@ -48,6 +55,10 @@
     _onLanguageChange: function (languageCode) {
       Transifex.live.translateTo(languageCode, true);
       this._setMapLanguage(languageCode);
+
+      // We update the URL with the new language choice
+      var search = location.search.replace(/lang=[a-z]{2}/, 'lang=' + languageCode);
+      history.replaceState(null, '', search);
     },
 
     /**
