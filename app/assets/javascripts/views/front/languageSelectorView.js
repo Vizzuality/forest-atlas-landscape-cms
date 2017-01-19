@@ -27,6 +27,15 @@
         var currentLanguageCode = Transifex.live.getSelectedLanguageCode();
         this.options.currentLanguage = _.findWhere(this.options.languages, { code: currentLanguageCode });
 
+        // If the user is seeing the standalone map, we need to update its language
+        // Nevertheless, it seems the map doesn't have any API so we're doing kind of
+        // a trick here
+        if (window.route === 'Map') {
+          setTimeout(function () {
+            this._setMapLanguage(currentLanguageCode);
+          }.bind(this), 1000);
+        }
+
         this.render();
       }.bind(this));
     },
@@ -38,6 +47,7 @@
      */
     _onLanguageChange: function (languageCode) {
       Transifex.live.translateTo(languageCode, true);
+      this._setMapLanguage(languageCode);
     },
 
     /**
@@ -63,6 +73,15 @@
         name: this.options.currentLanguage.name,
         shortName: this.options.currentLanguage.code.toUpperCase()
       };
+    },
+
+    /**
+     * Set the language of the standalone map
+     * @param {string} languageCode
+     */
+    _setMapLanguage: function (languageCode) {
+      var languagePicker = document.querySelector('.app-header__language[data-lang="' + languageCode + '"]');
+      if (languagePicker) languagePicker.click();
     },
 
     render: function () {
