@@ -39,7 +39,7 @@ class DatasetService
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
-    return {} unless fieldsJSON
+    return {} unless fieldsJSON || fieldsRequest.status != 200
 
     fields = []
     fieldsJSON['fields'].each do |data|
@@ -57,8 +57,11 @@ class DatasetService
   def self.get_filtered_dataset(dataset_id, query)
     full_query = "/query/#{dataset_id}?sql=#{query}"
 
+    Rails.logger.info "Going to make a Filtered Request: #{full_query}"
+
     filteredRequest = @conn.get full_query
     if filteredRequest.body.blank?
+      Rails.logger.warn "There was a problem with the response from the API: #{filteredRequest}"
       return {}
     else
       return JSON.parse filteredRequest.body
