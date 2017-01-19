@@ -15,7 +15,7 @@
   "includeMyGFWLogin": false,
   "navLinksInNewTab": false,
   "language": "en",
-  "useAlternativeLanguage": false,
+  "useAlternativeLanguage": true,
   "alternativeWebmap": "",
   "alternativeLanguage": "fr",
   "alternativeLanguageTitle": "GFW Mapbuilder",
