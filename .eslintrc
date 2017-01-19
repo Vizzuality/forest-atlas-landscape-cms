@@ -28,7 +28,8 @@
     "Jiminy": true,
     "PruneClusterForLeaflet": true,
     "PruneCluster": true,
-    "CodeMirror": true
+    "CodeMirror": true,
+    "Transifex": true
   },
   "env": {
     "browser": true
