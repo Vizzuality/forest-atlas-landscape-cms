@@ -129,32 +129,37 @@ class DatasetService
   def self.upload(token, connectorType, connectorProvider, connectorUrl,
                     applications, name, tags_array = nil, caption = {}, units = nil)
 
-    # Converting the caption[country] and caption[region] to JSON
+    formatted_caption = caption.dup
+    # Converting the caption[country] JSON
     begin
-      caption['country'] = caption['country'].split(' ')
-      caption['region'] = caption['region'].split(' ')
+      formatted_caption['country'] = formatted_caption['country'].split(' ')
+      formatted_caption['region'] = formatted_caption['region'].split(' ')
+      formatted_caption['date'] = formatted_caption['date'].split(' ')
     rescue
     end
 
 
     begin
-      res = @conn.post do |req|
-        req.url '/dataset'
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        #              \"legend\": #{caption.to_json},
-        req.body =
-          "{
+      body = "{
             \"dataset\": {
               \"connectorType\": \"#{connectorType}\",
               \"provider\": \"#{connectorProvider}\",
               \"connectorUrl\": \"#{connectorUrl}\",
-
+              \"legend\": #{formatted_caption.to_json},
               \"application\": #{applications.to_json},
               \"name\": \"#{name}\",
               \"tags\": #{tags_array.to_json}
             }
           }"
+
+      Rails.logger.info 'Creating Dataset in the API.'
+      Rails.logger.info "Body: #{body}"
+
+      res = @conn.post do |req|
+        req.url '/dataset'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = body
       end
 
       # TODO Make another request to dataset/:id/metadata
@@ -171,10 +176,12 @@ class DatasetService
       #          }
       #        }
 
+      Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
 
     return JSON.parse(res.body)['data']['id']
 
-    rescue
+    rescue Exception => e
+      Rails.logger.error "Error creating new dataset in the API: #{e}"
       return nil
     end
   end
