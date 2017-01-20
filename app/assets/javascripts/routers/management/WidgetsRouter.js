@@ -104,10 +104,10 @@
       });
 
       var tableCollection = new TableCollection(gon.widgets, { parse: true });
-      var tableContainer = $('.js-table');
+      var tableContainer = document.querySelector('.js-table');
 
       if (tableCollection.length === 0) {
-        tableContainer.append('<p class="no-data">There aren\'t any widget to display yet.</p>');
+        tableContainer.innerHTML = '<p class="no-data">There aren\'t any widget to display yet.</p>';
       } else {
         // We initialize the table
         new App.View.TableView({
