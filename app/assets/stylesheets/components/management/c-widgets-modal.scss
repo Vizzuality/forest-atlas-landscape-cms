@@ -18,6 +18,11 @@
     }
   }
 
+  .c-input-search {
+    width: calc(100% - 20px);
+    margin: 30px 0 0 10px;
+  }
+
   .no-data {
     display: block;
     width: 100%;

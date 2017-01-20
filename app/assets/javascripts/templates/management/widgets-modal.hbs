@@ -1,9 +1,16 @@
 <div class="content">
   <h1>Select a widget</h1>
 
-  <div class="widgets-list">
+  {{#if widgets}}
+    <div class="c-input-search">
+      <input type="text" placeholder="Search" class="js-search-input" value="" />
+      <button type="button" class="js-search-btn">Search</button>
+    </div>
+  {{/if}}
+
+  <div class="widgets-list js-widgets-list">
     {{#unless widgets}}
-      <p class="no-data">There isn't any widget available yet.</p>
+      <p class="no-data">There isn't any widget available.</p>
     {{/unless}}
     {{#each widgets}}
       <div class="widget">
