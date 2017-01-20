@@ -68,6 +68,13 @@ class Site < ApplicationRecord
     SitePage.find_by site_id: self.id, uri: ''
   end
 
+  # Gets the datasets available for a site
+  def get_datasets
+    datasets = []
+    self.contexts.each{|c| c.context_datasets.each{|d| datasets << d.dataset_id}}
+    datasets.uniq!
+  end
+
   private
 
   def generate_slug

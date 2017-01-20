@@ -28,6 +28,18 @@
 </div>
 
 <table>
-  <th>Name</th>
-  <tr></tr>
+  <tr>
+    <th>Name</th>
+    <th>Sites</th>
+    <th>Owners</th>
+    <th>Writers</th>
+  </tr>
+  <% @contexts.each do |context| %>
+    <tr>
+      <td><%= context.name%></td>
+      <td><%= context.sites.map{|s| s.name}.join(', ')%></td>
+      <td><%= context.owners.map{|o| o.name}.join(', ') %></td>
+      <td><%= context.writers.map{|w| w.name}.join(', ') %></td>
+    </tr>
+  <% end %>
 </table>

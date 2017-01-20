@@ -165,7 +165,7 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def get_datasets
-    @context_datasets = current_user.get_context_datasets
+    @context_datasets = @site.get_datasets
   end
 
   def get_fields
