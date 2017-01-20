@@ -157,18 +157,20 @@
     _renderChart: function () {
       // If no data, we render an empty chart
 
+      vg.parse
+        .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
+          this.chart = chart({ el: this.chartContainer }).update();
+        }.bind(this));
+
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration
+      // NOTE: We need to make sure in case the view hasn't been instanciated with
+      // a chart configuration that it's set by the toolbox before triggering
       this.trigger('state:change', {
         type: this.options.chart,
         x: this.options.columnX,
         y: this.options.columnY
       });
-
-      vg.parse
-        .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
-          this.chart = chart({ el: this.chartContainer }).update();
-        }.bind(this));
     },
 
     /**
