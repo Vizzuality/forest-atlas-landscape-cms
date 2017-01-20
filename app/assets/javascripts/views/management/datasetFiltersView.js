@@ -289,14 +289,13 @@
     _getSerializeFilters: function () {
       var serializedFilters = this.collection.toJSON().map(function (filter) {
         var res = Object.assign({}, filter);
-        if (res.values) res.values = res.values.join(',');
         delete res.type;
         return res;
       }).filter(function (filter) {
         return filter.name;
       });
 
-      return JSON.stringify(serializedFilters);
+      return JSON.stringify({ filters: serializedFilters });
     },
 
     /**
