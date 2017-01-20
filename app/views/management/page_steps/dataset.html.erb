@@ -27,9 +27,9 @@
           <div class="c-cards-list">
             <% datasets.each do |dataset| %>
               <div class="card">
-                <label for="dataset-<%= dataset.id %>"><%= dataset.name %></label>
+                <label for="dataset-<%= context_id %>-<%= dataset.id %>"><%= dataset.name %></label>
                 <%= radio_button_tag 'site_page[dataset_setting][context_id_dataset_id]', \
-                  [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.dataset_id == dataset.id) : nil, id: 'dataset-' + dataset.id %>
+                  [context_id.to_s, dataset.id], f.object.dataset_setting ? (f.object.dataset_setting.dataset_id == dataset.id) : nil, id: 'dataset-' + context_id.to_s + '-' + dataset.id %>
                 <div class="content">
                   <h3><%= dataset.name %></h3>
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
