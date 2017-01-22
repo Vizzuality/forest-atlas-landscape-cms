@@ -15,10 +15,10 @@
   <div class="l-dataset-creation -context">
     <div class="wrapper">
       <div class="c-cards-list">
-        <% Site.all.each do |site|%>
+        <% @permitted_sites.all.each do |site| %>
           <div class="card -single-data">
-            <label for="context-<%= site.id%>"><%= site.name%></label>
-            <%= check_box_tag 'context[dataset_ids][]', "#{site.id}", false, id: "site-#{site.id}" %>
+            <label for="site-<%= site.id%>"><%= site.name%></label>
+            <%= check_box_tag 'context[site_ids][]', "#{site.id}", false, id: "site-#{site.id}" %>
             <div class="content">
               <h3><%= site.name %></h3>
             </div>
@@ -30,3 +30,4 @@
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: context_path} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @context } %>
+<%= console if Rails.env.development? %>

@@ -15,9 +15,9 @@
   <div class="l-dataset-creation -context">
     <div class="wrapper">
       <div class="c-cards-list">
-        <% User.all.each do |user|%>
+        <% @permitted_users.all.each do |user|%>
           <div class="card -single-data">
-            <label for="context-<%= user.id%>"><%= user.name%></label>
+            <label for="user-<%= user.id%>"><%= user.name%></label>
             <%= check_box_tag 'context[dataset_ids][]', "#{user.id}", false, id: "user-#{user.id}" %>
             <div class="content">
               <h3><%= user.name %></h3>
@@ -30,3 +30,4 @@
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: context_path} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @context } %>
+<%= console if Rails.env.development? %>
