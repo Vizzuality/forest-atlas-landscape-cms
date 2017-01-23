@@ -15,10 +15,10 @@
   <div class="l-dataset-creation -context">
     <div class="wrapper">
       <div class="c-cards-list">
-        <% @permitted_users.all.each do |user|%>
+        <% @permitted_writers.all.each do |user|%>
           <div class="card -single-data">
             <label for="user-<%= user.id%>"><%= user.name%></label>
-            <%= check_box_tag 'context[dataset_ids][]', "#{user.id}", false, id: "user-#{user.id}" %>
+            <%= check_box_tag 'context[user_ids][]', "#{user.id}", false, id: "user-#{user.id}" %>
             <div class="content">
               <h3><%= user.name %></h3>
             </div>

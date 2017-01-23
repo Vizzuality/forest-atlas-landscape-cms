@@ -1,0 +1,33 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Sites</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+    </div>
+  </div>
+</div>
+
+<%= render partial: 'shared/navigation_header', \
+  locals: {form_steps: wizard_steps, id: @context.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<%= form_for @context, url: wizard_path, method: :put do |f| %>
+  <div class="l-dataset-creation -context">
+    <div class="wrapper">
+      <div class="c-cards-list">
+        <% @permitted_owners.all.each do |user|%>
+          <div class="card -single-data">
+            <label for="owner-<%= user.id%>"><%= user.name%></label>
+            <%= check_box_tag 'context[owner_ids][]', "#{user.id}", false, id: "owner-#{user.id}" %>
+            <div class="content">
+              <h3><%= user.name %></h3>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: context_path} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @context } %>
+<%= console if Rails.env.development? %>

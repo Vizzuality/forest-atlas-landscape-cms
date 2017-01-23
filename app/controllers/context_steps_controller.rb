@@ -35,7 +35,7 @@ class ContextStepsController < ManagementController
 
   private
   def context_params
-    params.require(:context).permit(:id, :name, dataset_ids: [], user_ids: [], site_ids: [] )
+    params.require(:context).permit(:id, :name, dataset_ids: [], user_ids: [], owner_ids:[], site_ids: [] )
   end
 
   def reset_context
@@ -49,12 +49,19 @@ class ContextStepsController < ManagementController
       @context = Context.new
     end
     @context.form_step = step
-    @context.assign_attributes session[:context] if session[:context]
-    @context.assign_attributes context_params if params[:context]
+    @context = session[:context] if session[:context]
+
+    if params[:context] && context_params['owner_ids']
+      context_params['owner_ids'].each do |user_id|
+        @context.context_owners << ContextUser.new(user_id: user_id, role: UserRole::OWNER)
+      end
+    end
+    #@context.assign_attributes context_params if session[:context]
+    @context.assign_attributes context_params.except('owner_ids', 'writer_ids') if params[:context]
   end
 
   def save_context
-    session[:context] = @context.attributes
+    session[:context] = @context
   end
 
   def steps_names
@@ -110,12 +117,18 @@ class ContextStepsController < ManagementController
   end
 
   # Created a list of users that are not admins
-  def permitted_users
-    @permitted_users = User.where(admin: false)
+  def permitted_owners
+    @permitted_owners = User.where(admin: false)
+  end
+
+  def permitted_writers
+    @permitted_writers = User.where(admin: false)
+    @permitted_writers.where{|user| !@context.owners.include?(user)}
   end
 
   def build_steps_data
     permitted_sites if step == 'sites'
-    permitted_users if step == 'users'
+    permitted_owners if step == 'owners'
+    permitted_writers if step == 'writers'
   end
 end

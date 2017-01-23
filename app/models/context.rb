@@ -24,8 +24,8 @@ class Context < ApplicationRecord
 
 
   cattr_accessor :form_steps do
-    { pages: %w[title sites users datasets],
-      names: %w[Title Sites Users Datasets] }
+    { pages: %w[title sites owners writers datasets],
+      names: %w[Title Sites Owners Writers Datasets] }
   end
   attr_accessor :form_step
 
@@ -57,7 +57,11 @@ class Context < ApplicationRecord
     end
 
     # No validations for now
-    if self.form_steps[:pages].index('users') <= step_index
+    if self.form_steps[:pages].index('owners') <= step_index
+    end
+
+    # No validations for now
+    if self.form_steps[:pages].index('writers') <= step_index
     end
 
     # Not validations for now
