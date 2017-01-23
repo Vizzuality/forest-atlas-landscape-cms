@@ -82,6 +82,7 @@
     },
 
     template: HandlebarsTemplates['shared/table'],
+    modalTemplate: HandlebarsTemplates['shared/table-modal'],
 
     initialize: function (settings) {
       this.options = _.extend(this.defaults, settings);
@@ -183,9 +184,20 @@
      * @param {Event} e - event
      */
     _onClickMore: function (e) {
-      // var tooltipContainer = e.target;
-      // var title = App.Helper.Utils.toTitleCase(tooltipContainer.dataset.name);
-      // var values = tooltipContainer.dataset.values.split(',');
+      var tooltipContainer = e.target;
+      var title = App.Helper.Utils.toTitleCase(tooltipContainer.dataset.name);
+      var values = tooltipContainer.dataset.values.split(',');
+
+      var modal = new (App.View.ModalView.extend({
+        render: function () {
+          return this.modalTemplate({
+            title: title,
+            values: values
+          });
+        }.bind(this)
+      }))();
+
+      modal.open();
     },
 
     /**

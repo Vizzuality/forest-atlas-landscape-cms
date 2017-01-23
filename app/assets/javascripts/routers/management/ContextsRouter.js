@@ -76,8 +76,7 @@
           collection: tableCollection,
           tableName: 'List of contexts',
           searchFieldContainer: $('.js-table-search')[0],
-          sortColumnIndex: 0,
-          valuesPerCell: 5
+          sortColumnIndex: 0
         });
       }
     }

@@ -28,7 +28,7 @@
               {{#is_array value}}
                 {{#each_slice value ../../valuesPerCell}}
                   {{#if @last_sliced_item}}
-                    {{this}} <button type="button" class="more-button js-more" data-name="{{../../name}}" data-values="{{../../value}}">and more</button>
+                    {{this}} <button type="button" class="more-button js-more" data-name="{{../name}}" data-values="{{../value}}">and more</button>
                   {{else}}
                     {{#if @last_item}}
                       {{this}}
