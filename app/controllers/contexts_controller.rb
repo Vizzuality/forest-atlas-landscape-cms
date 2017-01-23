@@ -19,8 +19,13 @@ class ContextsController < ManagementController
     @gon_contexts = []
 
     @contexts.each do |context|
-      edit_link = context.owners.include?(current_user) || current_user.admin ? \
+      delete_link = context.owners.include?(current_user) || current_user.admin ? \
             context_path(context.id) : nil
+      edit_link = context.owners.include?(current_user) || current_user.admin ? \
+            context_context_step_path(id: 'title', context_id: context.id) : nil
+      datasets_api = DatasetService.get_metadata_list context.context_datasets.map{|cd| cd.dataset_id}
+      datasets = datasets_api['data'].map{|d| d.dig('attributes', 'name')}.join(', ') \
+          unless datasets_api.blank? || datasets_api['data'].blank?
 
       gon_context = {
         'name' => {'value' => context.name, 'searchable' => true, 'sortable' => true},
@@ -28,7 +33,8 @@ class ContextsController < ManagementController
         'owners' =>  {'value' => context.owners.map{|o| o.name}, 'searchable' => true, 'sortable' => true},
         'writers' => {'value' => context.writers.map{|w| w.name}, 'searchable' => true, 'sortable' => true},
         'edit' => {'value' => edit_link, 'method' => 'get'},
-        'delete' => {'value' => edit_link, 'method' => 'delete'}
+        'delete' => {'value' => delete_link, 'method' => 'delete'},
+        'datasets' => {'value' => datasets, 'searchable' => true, 'sortable' => true}
       }
 
       @gon_contexts << gon_context
