@@ -49,6 +49,9 @@ class Context < ApplicationRecord
   def steps_validation
     step_index = form_steps[:pages].index(form_step)
 
+    # To make sure all the validations run when the context isn't created through text
+    step_index = form_steps[:pages].length unless step_index
+
     if self.form_steps[:pages].index('title') <= step_index
       self.errors['name'] << 'You must enter a name for the context' if self.name.blank? || self.name.strip.blank?
     end
