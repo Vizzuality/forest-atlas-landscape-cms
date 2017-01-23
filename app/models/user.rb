@@ -63,7 +63,11 @@ class User < ApplicationRecord
     all_datasets.select {|ds| dataset_ids.include?(ds.id)}
   end
 
-  def get_contexts(readable: false)
+  # Returns the contexts of a user
+  # If the user is a manager, all are sent
+  # If he's ab admin, the contexts he owns/writes are sent
+  # If readable is true, the contexts he can read are also sent
+  def get_contexts(readable = false)
     if self.admin
       return Context.all
     end
