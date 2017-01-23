@@ -21,15 +21,17 @@ class ContextsController < ManagementController
     @contexts.each do |context|
       edit_link = context.owners.include?(current_user) || current_user.admin ? \
             context_path(context.id) : nil
-      gon_context =
-        { name: context.name,
-          sites: context.sites.map{|s| s.name}.join(','),
-          owners: context.owners.map{|o| o.name}.join(','),
-          writers: context.writers.map{|w| w.name}.join(','),
-          delete_link: edit_link,
-          edit_link: edit_link
-        }
-        @gon_contexts << gon_context
+
+      gon_context = {
+        'name' => {'value' => context.name, 'searchable' => true, 'sortable' => true},
+        'sites' => {'value' => context.sites.map{|s| s.name}, 'searchable' => true, 'sortable' => true},
+        'owners' =>  {'value' => context.owners.map{|o| o.name}, 'searchable' => true, 'sortable' => true},
+        'writers' => {'value' => context.writers.map{|w| w.name}, 'searchable' => true, 'sortable' => true},
+        'edit' => {'value' => edit_link, 'method' => 'get'},
+        'delete' => {'value' => edit_link, 'method' => 'delete'}
+      }
+
+      @gon_contexts << gon_context
     end
 
   end

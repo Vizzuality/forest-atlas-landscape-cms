@@ -10,11 +10,9 @@
 <% end %>
 
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
-<div class="js-tabs"></div>
 
-<div class="l-page-list">
+<div class="l-contexts-list">
   <div class="wrapper">
-
     <div class="c-action-toolbar">
       <ul class="buttons">
       </ul>
@@ -26,20 +24,3 @@
     <div class="js-table"></div>
   </div>
 </div>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Sites</th>
-    <th>Owners</th>
-    <th>Writers</th>
-  </tr>
-  <% @contexts.each do |context| %>
-    <tr>
-      <td><%= context.name%></td>
-      <td><%= context.sites.map{|s| s.name}.join(', ')%></td>
-      <td><%= context.owners.map{|o| o.name}.join(', ') %></td>
-      <td><%= context.writers.map{|w| w.name}.join(', ') %></td>
-    </tr>
-  <% end %>
-</table>
