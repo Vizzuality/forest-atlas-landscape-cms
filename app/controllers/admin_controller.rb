@@ -13,6 +13,6 @@ class AdminController < ActionController::Base
   end
 
   def set_admin_base_breadcrumbs
-    @breadcrumbs = [{name: 'CMS', url: admin_sites_path}]
+    @breadcrumbs = []
   end
 end

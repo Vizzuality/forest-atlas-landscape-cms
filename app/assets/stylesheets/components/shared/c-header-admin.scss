@@ -61,6 +61,14 @@
     .breadcrumbs {
       color: rgba($color-3, .5);
     }
+
+    .quick-links .c-dropdown-selector {
+      color: $color-3;
+
+      .active-option::before {
+        border-color: $color-3;
+      }
+    }
   }
 
   .menu {
