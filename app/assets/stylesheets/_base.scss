@@ -53,12 +53,6 @@ input {
   font-family: $font-family-1;
 }
 
-a, button, input, select {
-  &:focus {
-    outline: 0;
-  }
-}
-
 .wrapper {
   max-width: $body-max-width;
   width: 100%;

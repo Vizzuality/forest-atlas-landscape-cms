@@ -46,7 +46,7 @@
             default:
               return {
                 name: key,
-                value: (typeof row[key].value === 'object') ? row[key].value.join(', ') : row[key].value,
+                value: row[key].value,
                 searchable: row[key].searchable,
                 sortable: row[key].sortable
               };
@@ -64,14 +64,22 @@
     },
 
     index: function () {
-      // We initialize the table
-      new App.View.TableView({
-        el: $('.js-table'),
-        collection: new TableCollection(gon.contexts, { parse: true }),
-        tableName: 'List of contexts',
-        searchFieldContainer: $('.js-table-search')[0],
-        sortColumnIndex: 0
-      });
+      var tableCollection = new TableCollection(gon.contexts, { parse: true });
+      var tableContainer = document.querySelector('.js-table');
+
+      if (tableCollection.length === 0) {
+        tableContainer.innerHTML = '<p class="no-data">There aren\'t any context to display yet.</p>';
+      } else {
+        // We initialize the table
+        new App.View.TableView({
+          el: tableContainer,
+          collection: tableCollection,
+          tableName: 'List of contexts',
+          searchFieldContainer: $('.js-table-search')[0],
+          sortColumnIndex: 0,
+          valuesPerCell: 5
+        });
+      }
     }
   });
 })(this.App));

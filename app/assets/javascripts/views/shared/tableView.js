@@ -75,7 +75,10 @@
       // If let to null, the search feature will be disabled
       searchFieldContainer: null,
       // Search query. Do not set from outside.
-      searchQuery: null
+      searchQuery: null,
+      // Number of values displayed by cell
+      // Once the number is reached, a button lets the user see the rest of the list
+      valuesPerCell: 15
     },
 
     template: HandlebarsTemplates['shared/table'],
@@ -132,6 +135,8 @@
       }.bind(this));
 
       this.$('.js-header').on('keydown', this._onKeydownHeader.bind(this));
+
+      this.$('.js-more').on('click', this._onClickMore.bind(this));
     },
 
     /**
@@ -174,6 +179,16 @@
     },
 
     /**
+     * Listener for the click on the "and more" buttons
+     * @param {Event} e - event
+     */
+    _onClickMore: function (e) {
+      // var tooltipContainer = e.target;
+      // var title = App.Helper.Utils.toTitleCase(tooltipContainer.dataset.name);
+      // var values = tooltipContainer.dataset.values.split(',');
+    },
+
+    /**
      * Focus on the header at the specified index
      * @param {Number} index
      */
@@ -193,9 +208,19 @@
 
         var cellA = _.findWhere(modelA.attributes.row, { name: comparator });
         var cellB = _.findWhere(modelB.attributes.row, { name: comparator });
-        if (!cellA || !cellB) return 0; // Arbitrary value
 
-        return cellA.value.localeCompare(cellB.value, [], { sensitivity: 'base' }) * this.options.sortOrder;
+        var valA = Array.isArray(cellA.value) ? cellA.value[0] : cellA.value;
+        var valB = Array.isArray(cellB.value) ? cellB.value[0] : cellB.value;
+
+        if ((valA === undefined || valA === null) && (valB === undefined || valB === null)) {
+          return 0;
+        } else if ((valA === undefined || valB === null) && valB) {
+          return -1 * this.options.sortOrder;
+        } else if (valA && (valB === undefined || valB === null)) {
+          return 1 * this.options.sortOrder;
+        }
+
+        return valA.localeCompare(valB, [], { sensitivity: 'base' }) * this.options.sortOrder;
       }.bind(this);
 
       this.options.collection.sort();
@@ -307,6 +332,17 @@
       this.render();
     },
 
+    /**
+     * Return the list of rows, ready for being rendered
+     * @returns {object[]} rows
+     */
+    _getRenderableRows: function () {
+      return this.options.collection.toJSON()
+        .map(function (row) {
+          return row.row;
+        });
+    },
+
     render: function () {
       var sortColumn = this.options.headers.at(this.options.sortColumnIndex).attributes.name;
 
@@ -326,17 +362,15 @@
           }, this);
       }
 
-      var rows = this.options.collection.toJSON()
-        .map(function (row) { return row.row; });
-
       this.$el.html(this.template({
         tableName: this.options.tableName,
         headers: headers,
-        rows: rows,
+        rows: this._getRenderableRows(),
         sortColumn: sortColumn,
         sortOrder: this.options.sortOrder === 1 ? 'ascending' : 'descending',
         error: this.error,
-        isSearchResult: this.options.searchQuery && !!this.options.searchQuery.length
+        isSearchResult: this.options.searchQuery && !!this.options.searchQuery.length,
+        valuesPerCell: this.options.valuesPerCell
       }));
 
       this._setVars();

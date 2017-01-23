@@ -21,7 +21,33 @@
     {{#each rows}}
       <tr role="row">
         {{#each this}}
-          <td role="gridcell">{{#if html}}{{{html}}}{{else}}{{value}}{{/if}}</td>
+          <td role="gridcell">
+            {{#if html}}
+              {{{html}}}
+            {{else}}
+              {{#is_array value}}
+                {{#each_slice value ../../valuesPerCell}}
+                  {{#if @last_sliced_item}}
+                    {{this}} <button type="button" class="more-button js-more" data-name="{{../../name}}" data-values="{{../../value}}">and more</button>
+                  {{else}}
+                    {{#if @last_item}}
+                      {{this}}
+                    {{else}}
+                      {{this}},
+                    {{/if}}
+                  {{/if}}
+                {{else}}
+                  –
+                {{/each_slice}}
+              {{else}}
+                {{#if value}}
+                  {{value}}
+                {{else}}
+                  –
+                {{/if}}
+              {{/is_array}}
+            {{/if}}
+          </td>
         {{/each}}
       </tr>
     {{else}}
