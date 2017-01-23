@@ -13,7 +13,15 @@
   <script>
     window.template = '<%= (@site_page.site_template.name.eql? 'Forest Atlas') ? 'fa' : 'lsa' %>';
   </script>
-  <script type="text/javascript">window.liveSettings={api_key:"a81c84348fa34de097781e4017e1a944"};</script>
+  <script type="text/javascript">
+    window.liveSettings = {
+      api_key: 'a81c84348fa34de097781e4017e1a944',
+      detectlang: function () {
+        var match = location.search.match(/\?(?:.*)?l=([a-z]{2})/);
+        return (match && match.length) > 1 ? match[1]: 'en';
+      }
+    };
+  </script>
   <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= yield :external_js %>
