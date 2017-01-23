@@ -34,9 +34,13 @@ class Site < ApplicationRecord
   after_save :update_routes
   after_create :create_template_content
 
+#  cattr_accessor :form_steps do
+#    { pages: %w[name users contexts default_context style settings finish],
+#      names: ['Name', 'Users', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
+#  end
   cattr_accessor :form_steps do
     { pages: %w[name users style settings finish],
-      names: %w[Name Users Style Settings Finish] }
+      names: ['Name', 'Users', 'Style', 'Settings', 'Finish'] }
   end
   attr_accessor :form_step
 

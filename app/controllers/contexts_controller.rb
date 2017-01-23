@@ -6,7 +6,9 @@ class ContextsController < ManagementController
   end
 
   def destroy
-
+    context = Context.find(params[:id])
+    context.destroy
+    redirect_to contexts_path, notice: 'Context successfully removed'
   end
 
   private

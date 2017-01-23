@@ -17,8 +17,8 @@
       <div class="c-cards-list">
         <% @permitted_writers.each do |user|%>
           <div class="card -single-data">
-            <label for="user-<%= user.id%>"><%= user.name%></label>
-            <%= check_box_tag 'context[user_ids][]', "#{user.id}", false, id: "user-#{user.id}" %>
+            <label for="writer-<%= user.id%>"><%= user.name%></label>
+            <%= check_box_tag 'context[writer_ids][]', "#{user.id}", f.object.writers.include?(user), id: "writer-#{user.id}" %>
             <div class="content">
               <h3><%= user.name %></h3>
             </div>

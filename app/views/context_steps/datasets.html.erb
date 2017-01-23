@@ -18,7 +18,8 @@
         <% @datasets.each do |dataset|%>
           <div class="card -single-data">
             <label for="dataset-<%= dataset.id%>"><%= dataset.name%></label>
-            <%= check_box_tag 'context[dataset_ids][]', "#{dataset.id}", false, id: "dataset-#{dataset.id}" %>
+            <%= check_box_tag 'context[dataset_ids][]', "#{dataset.id}", \
+              @context.context_datasets.any?{|d| d.dataset_id == dataset.id}, id: "dataset-#{dataset.id}" %>
             <div class="content">
               <h3><%= dataset.name %></h3>
             </div>

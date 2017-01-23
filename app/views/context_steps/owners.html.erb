@@ -18,7 +18,7 @@
         <% @permitted_owners.all.each do |user|%>
           <div class="card -single-data">
             <label for="owner-<%= user.id%>"><%= user.name%></label>
-            <%= check_box_tag 'context[owner_ids][]', "#{user.id}", false, id: "owner-#{user.id}" %>
+            <%= check_box_tag 'context[owner_ids][]', "#{user.id}", f.object.owners.include?(user), id: "owner-#{user.id}" %>
             <div class="content">
               <h3><%= user.name %></h3>
             </div>

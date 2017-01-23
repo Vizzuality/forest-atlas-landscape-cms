@@ -22,7 +22,11 @@ class Context < ApplicationRecord
   has_many :sites, through: :context_sites
 
   validate :steps_validation
+#  validates_uniqueness_of :users, scope: :context_id, \
+#    message: 'You cannot have duplicated users, even for different roles' if Proc.new{|x| x.users.any?}
 
+  accepts_nested_attributes_for :owners
+  accepts_nested_attributes_for :writers
 
   cattr_accessor :form_steps do
     { pages: %w[title sites owners writers datasets],
@@ -71,5 +75,10 @@ class Context < ApplicationRecord
     # Not validations for now
     if self.form_steps[:pages].index('datasets') <= step_index
     end
+
+    # General validations
+
+    # List of owners and writers can't overlap
+
   end
 end

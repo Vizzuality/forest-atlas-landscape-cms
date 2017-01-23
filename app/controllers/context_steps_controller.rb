@@ -35,7 +35,7 @@ class ContextStepsController < ManagementController
 
   private
   def context_params
-    params.require(:context).permit(:id, :name, dataset_ids: [], user_ids: [], owner_ids:[], site_ids: [] )
+    params.require(:context).permit(:id, :name, dataset_ids: [], writer_ids:[], owner_ids:[], site_ids: [] )
   end
 
   def reset_context
@@ -50,6 +50,13 @@ class ContextStepsController < ManagementController
     end
     @context.form_step = step
     @context = session[:context] if session[:context]
+
+    # To guarantee that changing the owners, the writers are not duplicated
+    if params[:context] && context_params['owners']
+      context_params['owners'].each do |owner|
+        @context.writers.delete_if{|w| w.id == owner}
+      end
+    end
 
     if params[:context] && context_params['dataset_ids']
       context_params['dataset_ids'].each do |dataset_id|
