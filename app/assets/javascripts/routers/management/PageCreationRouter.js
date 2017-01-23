@@ -28,13 +28,6 @@
     index: function () {
       var pageType = this._getPageType();
 
-      // We initialize the site switcher
-      new App.View.SiteSwitcherView({
-        el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/site_pages/new' + window.location.search,
-        slug: this.slug
-      });
-
       if (pageType === OPEN_CONTENT) {
         // We instantiate the wysiwyg editor
         this.wysiwygView = new App.View.WysiwygView({

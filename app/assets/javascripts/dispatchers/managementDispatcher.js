@@ -4,7 +4,7 @@
   var Dispatcher = Backbone.Router.extend({
 
     routes: {
-      '(/)': 'Index',
+      'management(/)': 'Index',
       // Management
       'management/sites/:slug/site_pages(/)': 'Pages',
       'management/sites/:slug/site_pages/new(/)': 'PageCreation',
@@ -12,12 +12,20 @@
       'management/sites/:slug/structure(/)': 'Structure',
       'management/sites/:slug/widgets(/)': 'Widgets',
       'management/sites/:slug/datasets(/)': 'Datasets',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/title': 'Index',
       'management/sites/:slug/(datasets/:id/)dataset_steps/connector': 'ConnectorStep',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/labels': 'Index',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/context': 'Index',
       'management/sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/title': 'Index',
+      'management/sites/:slug/(site_pages/:id/)page_steps/type': 'Index',
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/columns': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/title': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/dataset': 'Index',
       'management/sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
       'management/sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',
@@ -40,9 +48,9 @@
         Backbone.history.start({ pushState: false });
 
         // We instantiate the Quick links component
-        new App.View.QuickLinksView({
-          activeLink: params[0]
-        });
+        var quickLinksParams = {};
+        if (params.length && params[0]) quickLinksParams.activeLink = params[0];
+        new App.View.QuickLinksView(quickLinksParams);
       }
     });
 

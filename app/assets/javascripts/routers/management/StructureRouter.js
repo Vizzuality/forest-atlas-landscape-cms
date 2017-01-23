@@ -12,13 +12,6 @@
     },
 
     index: function (state) {
-      // We initialize the site switcher
-      new App.View.SiteSwitcherView({
-        el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/structure',
-        slug: this.slug
-      });
-
       // We initialize the tabs
       new App.View.TabView({
         el: $('.js-tabs'),

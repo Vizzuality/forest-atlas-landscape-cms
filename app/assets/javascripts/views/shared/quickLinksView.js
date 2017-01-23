@@ -17,12 +17,18 @@
     collection: new Collection(),
 
     defaults: {
-      // List of links (follow the syntax of the options of the dropdown component)
+      // List of links
+      // NOTE: follow the syntax of the options of the dropdown component but
+      // add an attribute with the actual URL
       links: [
-        { id: 'admin', name: 'Admin' }
+        { id: 'management', name: 'Management', url: '/management' },
+        { id: 'admin', name: 'Admin', url: '/admin' }
       ],
       // id of the active link
-      activeLink: null
+      activeLink: 'management',
+      // Format of the site URL
+      // NOTE: ":slug" will be replaced
+      siteUrlFormat: '/management/sites/:slug/site_pages'
     },
 
     initialize: function (settings) {
@@ -40,6 +46,15 @@
     },
 
     /**
+     * Event handler executed when the active option of the dropdown is changed
+     * @param {string} id - active option's id
+     */
+    _onChangeDropdown: function (id) {
+      var link = _.findWhere(this.options.links, { id: id });
+      Turbolinks.visit(link.url);
+    },
+
+    /**
      * Return the list of links related to the sites
      * @returns {object[]}
      */
@@ -47,19 +62,18 @@
       return this.collection.toJSON().map(function (site) {
         return {
           id: site.slug,
-          name: site.name
+          name: site.name,
+          url: this.options.siteUrlFormat.replace(':slug', site.slug)
         };
-      });
+      }, this);
     },
 
     render: function () {
       new App.View.DropdownSelectorView({
         el: '.js-quick-links',
         options: this.options.links,
-        activeOption: _.findWhere(this.options.links, { id: this.options.activeLink }), // TODO
-        onChangeCallback: function () {
-          console.log('do something'); // TODO
-        },
+        activeOption: _.findWhere(this.options.links, { id: this.options.activeLink }),
+        onChangeCallback: this._onChangeDropdown.bind(this),
         arrowPosition: 'left',
         fixedWidth: true
       });

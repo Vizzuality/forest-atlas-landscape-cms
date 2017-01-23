@@ -31,11 +31,6 @@
     display: inline-block;
     height: 100%;
 
-    &::after {
-      margin: 0 2px 0 5px;
-      content: '/';
-    }
-
     .c-dropdown-selector {
       height: 100%;
       color: $color-1;
@@ -48,14 +43,8 @@
 
   .breadcrumbs {
     > li {
-      &::after {
+      &::before {
         content: ' /';
-      }
-
-      &:last-of-type {
-        &::after {
-          content: none;
-        }
       }
     }
   }
