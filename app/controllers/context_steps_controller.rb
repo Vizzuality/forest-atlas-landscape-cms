@@ -51,13 +51,13 @@ class ContextStepsController < ManagementController
     @context.form_step = step
     @context = session[:context] if session[:context]
 
-    if params[:context] && context_params['owner_ids']
-      context_params['owner_ids'].each do |user_id|
-        @context.context_owners << ContextUser.new(user_id: user_id, role: UserRole::OWNER)
+    if params[:context] && context_params['dataset_ids']
+      context_params['dataset_ids'].each do |dataset_id|
+        # TODO: This has to be done in another way
+        @context.context_datasets << ContextDataset.new(dataset_id: dataset_id)
       end
     end
-    #@context.assign_attributes context_params if session[:context]
-    @context.assign_attributes context_params.except('owner_ids', 'writer_ids') if params[:context]
+    @context.assign_attributes context_params.except('dataset_ids') if params[:context]
   end
 
   def save_context
@@ -91,7 +91,7 @@ class ContextStepsController < ManagementController
                    save_step_name = Wicked::FINISH_STEP)
 
     if save_button?
-      notice_text = @page.id ? 'saved' : 'created'
+      notice_text = @context.id ? 'saved' : 'created'
       if @context.save
         redirect_to wizard_path(save_step_name), notice: 'Context successfully ' + notice_text
       else
@@ -104,6 +104,11 @@ class ContextStepsController < ManagementController
         render_wizard
       end
     end
+  end
+
+  # Defines the path the wizard will go when finished
+  def finish_wizard_path
+    contexts_path
   end
 
   # Creates a list of sites available for that user
@@ -122,13 +127,18 @@ class ContextStepsController < ManagementController
   end
 
   def permitted_writers
-    @permitted_writers = User.where(admin: false)
-    @permitted_writers.where{|user| !@context.owners.include?(user)}
+    permitted_users = User.where(admin: false)
+    @permitted_writers = permitted_users.to_a.delete_if{|user| @context.owners.include?(user)}
+  end
+
+  def get_datasets
+    @datasets = DatasetService.get_datasets
   end
 
   def build_steps_data
     permitted_sites if step == 'sites'
     permitted_owners if step == 'owners'
     permitted_writers if step == 'writers'
+    get_datasets if step == 'datasets'
   end
 end

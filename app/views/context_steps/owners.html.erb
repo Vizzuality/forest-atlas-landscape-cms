@@ -27,7 +27,7 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: context_path} %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: contexts_path} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @context } %>
 <%= console if Rails.env.development? %>

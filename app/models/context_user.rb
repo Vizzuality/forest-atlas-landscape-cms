@@ -15,9 +15,12 @@ class ContextUser < ApplicationRecord
   belongs_to :context
   belongs_to :user
 
-  scope :owner, -> { where(role: UserRole::OWNER) }
-  scope :writer, -> { where(role: UserRole::WRITER) }
+  #scope :owner, -> { where(role: UserRole::OWNER) }
+  #scope :writer, -> { where(role: UserRole::WRITER) }
+
+  scope :owner, -> { where(role: 1) }
+  scope :writer, -> { where(role: 2) }
 
   validates_presence_of :role
-  validates_inclusion_of :role, in: UserRole
+  #validates_inclusion_of :role, in: UserRole
 end
