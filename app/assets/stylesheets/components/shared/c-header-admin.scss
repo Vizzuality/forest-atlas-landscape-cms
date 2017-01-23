@@ -1,6 +1,6 @@
 .c-header-admin {
   height: 50px;
-  border-bottom: 1px solid $color-9;
+  border-bottom: 1px solid $color-15;
   background-color: $color-6;
   color: rgba($color-3, .5);
   font-weight: bold;
@@ -20,11 +20,30 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
+
+    > div {
+      height: 100%;
+      line-height: 50px;
+    }
   }
 
-  .site-switcher {
+  .quick-links {
     display: inline-block;
-    margin-right: 10px;
+    height: 100%;
+
+    &::after {
+      margin: 0 2px 0 5px;
+      content: '/';
+    }
+
+    .c-dropdown-selector {
+      height: 100%;
+      color: $color-1;
+
+      .active-option::before {
+        border-color: $color-1;
+      }
+    }
   }
 
   .breadcrumbs {

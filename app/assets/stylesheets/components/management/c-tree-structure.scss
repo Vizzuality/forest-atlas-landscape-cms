@@ -13,7 +13,7 @@
       left: 15px;
       width: 1px;
       height: calc(100% - 21px); // 21 is half of the height of .add-page-button
-      background-color: $color-7;
+      background-color: $color-13;
       content: '';
       z-index: -1;
     }
@@ -58,7 +58,7 @@
     justify-content: space-between;
     min-width: 260px;
     padding: 10px 15px;
-    border: 1px solid $color-7;
+    border: 1px solid $color-13;
     border-radius: 4px;
     background-color: $color-3;
     cursor: -webkit-grab;
@@ -73,7 +73,7 @@
       width: 40px;
       height: 1px;
       transform: translateY(-50%);
-      background-color: $color-7;
+      background-color: $color-13;
       content: '';
     }
 
@@ -106,7 +106,7 @@
       border-style: dashed;
 
       &.-invalid {
-        border-color: $color-8;
+        border-color: $color-14;
       }
     }
 
@@ -221,7 +221,7 @@
       width: 42px;
       height: 1px;
       transform: translateY(-50%);
-      background-color: $color-7;
+      background-color: $color-13;
       content: '';
     }
 

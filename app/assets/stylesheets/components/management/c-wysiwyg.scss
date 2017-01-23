@@ -3,7 +3,7 @@
   max-width: 880px;
   min-height: calc(100vh - 533px);
   margin: 0 auto;
-  border: 1px solid $color-7;
+  border: 1px solid $color-13;
 
   .ql-editor {
     min-height: 100%;
@@ -197,7 +197,7 @@
           left: 0;
           width: 100%;
           height: 1px;
-          background-color: $color-7;
+          background-color: $color-13;
           content: '';
           z-index: -1;
         }
@@ -286,7 +286,7 @@
       margin: 35px -195px;
       padding: 45px;
       clear: both; // Prevents issue with another floated widget
-      border: 1px solid $color-7;
+      border: 1px solid $color-13;
       background-color: $color-3;
 
       &:not(:hover) .toolbar {

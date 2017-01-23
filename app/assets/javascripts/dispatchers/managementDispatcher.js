@@ -38,6 +38,11 @@
         new Router(params.slice(0, params.length - 1));
 
         Backbone.history.start({ pushState: false });
+
+        // We instantiate the Quick links component
+        new App.View.QuickLinksView({
+          activeLink: params[0]
+        });
       }
     });
 

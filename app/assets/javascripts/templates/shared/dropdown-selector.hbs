@@ -1,4 +1,4 @@
-<div class="c-dropdown-selector -{{align}}">
+<div class="c-dropdown-selector -{{align}} -arrow-{{arrowPosition}} {{#if fixedWidth}}-fixed-width{{/if}}">
   <div class="active-option js-list-btn" tabindex="0" aria-label="Open list of languages" aria-controls="language-selector">{{#if useShortName}}{{activeOption.shortName}}{{else}}{{activeOption.name}}{{/if}}</div>
   <ul id="language-selector" class="options js-dropdown" role="listbox" aria-expanded="false">
     {{#each options}}

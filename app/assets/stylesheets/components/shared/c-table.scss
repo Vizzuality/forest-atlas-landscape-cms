@@ -14,7 +14,7 @@
 
   tr {
     td {
-      border-bottom: 1px dashed $color-7;
+      border-bottom: 1px dashed $color-13;
     }
 
     &:hover td {
@@ -26,7 +26,7 @@
     border-bottom: 0;
 
     & > th {
-      border-bottom: 1px solid $color-7;
+      border-bottom: 1px solid $color-13;
       background-color: $color-2;
       font-weight: $font-weight-normal;
       text-align: left;
