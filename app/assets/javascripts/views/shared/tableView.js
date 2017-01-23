@@ -185,13 +185,13 @@
      */
     _onClickMore: function (e) {
       var tooltipContainer = e.target;
-      var title = App.Helper.Utils.toTitleCase(tooltipContainer.dataset.name);
+      var columnName = tooltipContainer.dataset.column;
       var values = tooltipContainer.dataset.values.split(',');
 
       var modal = new (App.View.ModalView.extend({
         render: function () {
           return this.modalTemplate({
-            title: title,
+            columnName: columnName,
             values: values
           });
         }.bind(this)
