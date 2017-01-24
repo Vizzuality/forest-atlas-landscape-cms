@@ -31,7 +31,9 @@
       'management/sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/map': 'MapStep',
       // Contexts
-      'contexts': 'Contexts'
+      'contexts': 'Contexts',
+      'contexts/(:id)/context_steps/(:step)': 'Index',
+      'context_steps/(:step)': 'Index'
     }
   });
 
@@ -49,7 +51,13 @@
 
         // We instantiate the Quick links component
         var quickLinksParams = {};
-        if (params.length && params[0]) quickLinksParams.activeLink = params[0];
+
+        if (/^\/contexts?/.test(location.pathname)) {
+          quickLinksParams.activeLink = 'contexts';
+        } else if (params.length && params[0]) {
+          quickLinksParams.activeLink = params[0];
+        }
+
         new App.View.QuickLinksView(quickLinksParams);
       }
     });

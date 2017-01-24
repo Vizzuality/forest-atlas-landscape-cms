@@ -24,7 +24,8 @@
       // at their modification in the initialize method
       links: [
         { id: 'management', name: 'Management', url: '/management' },
-        { id: 'admin', name: 'Admin', url: '/admin' }
+        { id: 'admin', name: 'Admin', url: '/admin' },
+        { id: 'contexts', name: 'Contexts', url: '/contexts' }
       ],
       // id of the active link
       activeLink: 'management',
