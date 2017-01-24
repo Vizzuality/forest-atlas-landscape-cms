@@ -1,0 +1,52 @@
+.l-error-page {
+  max-width: 900px;
+  min-height: calc(100vh - 445px);
+  margin: 0 auto;
+
+  h1 {
+    max-width: 600px;
+    margin: 25px 0;
+    font-size: $font-size-big;
+    font-weight: $font-weight-light;
+    line-height: 1.2;
+
+    @media #{$mq-tablet} {
+      margin: 90px 0 25px;
+      font-size: $font-size-huge;
+    }
+  }
+
+  p {
+    margin-bottom: 0;
+
+    @media #{$mq-tablet} {
+      margin-bottom: 15px;
+    }
+  }
+
+  .sitemap {
+    margin-bottom: 25px;
+
+    @media #{$mq-tablet} {
+      margin-top: 15px;
+    }
+
+    li {
+      display: block;
+      font-size: $font-size-s-normal;
+      line-height: 2.4;
+
+      @media #{$mq-tablet} {
+        display: inline-block;
+        margin-right: 50px;
+        font-size: $font-size-medium;
+        line-height: 1.4;
+      }
+
+      a {
+        background-color: transparent;
+        color: $color-1;
+      }
+    }
+  }
+}

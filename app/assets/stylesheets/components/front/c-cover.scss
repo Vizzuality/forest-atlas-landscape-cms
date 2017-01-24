@@ -18,6 +18,12 @@
     padding: 0;
   }
 
+  &.-short {
+    @media #{$mq-tablet} {
+      height: 250px;
+    }
+  }
+
   &::after {
     display: block;
     position: absolute;
