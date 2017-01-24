@@ -63,7 +63,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
       when 'type'
       when 'dataset'
-        @context_datasets = current_user.get_context_datasets
+        @context_datasets = @site.get_datasets
 
       when 'filters'
         build_current_dataset_setting
@@ -155,7 +155,7 @@ class Management::PageStepsController < ManagementController
         if @page.valid?
           redirect_to next_wizard_path
         else
-          @context_datasets = current_user.get_context_datasets
+          @context_datasets = @site.get_dataset
           render_wizard
         end
 

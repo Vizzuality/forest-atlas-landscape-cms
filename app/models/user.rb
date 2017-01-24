@@ -47,10 +47,14 @@ class User < ApplicationRecord
     UserService.create(token, self.email, role, url)
   end
 
+  # TODO: Should we have a way to list all the datasets of the users?
+  # Params
+  # +status+:: The status of the datasets to get
   def get_datasets(status = 'active')
     all_datasets = DatasetService.get_datasets status
     dataset_ids = []
 
+    # TODO: This should use user.get_contexts
     self.contexts.each do |context|
       context.context_datasets.each {|cd| dataset_ids << cd.dataset_id}
     end
@@ -59,24 +63,18 @@ class User < ApplicationRecord
     all_datasets.select {|ds| dataset_ids.include?(ds.id)}
   end
 
-  # Gets an array of datasets for each user context
-  def get_context_datasets
-    all_datasets = DatasetService.get_datasets
-    context_datasets_ids = {}
-    context_datasets = {}
-
-    self.contexts.each do |context|
-      context_datasets_ids[context.id] = []
-      context.context_datasets.each {|cd| context_datasets_ids[context.id] << cd.dataset_id}
+  # Returns the contexts of a user
+  # If the user is a manager, all are sent
+  # If he's ab admin, the contexts he owns/writes are sent
+  # If readable is true, the contexts he can read are also sent
+  def get_contexts(readable = false)
+    if self.admin
+      return Context.all
     end
 
-    # TODO: Change this to request to ask info for each dataset ...
-    # ... this might be to heavy. Talk to RA to ask which is faster
-    context_datasets_ids.each do |k, v|
-      context_datasets[k] =all_datasets.select {|ds| v.include?(ds.id)}
-    end
-
-    context_datasets
+    contexts = self.contexts
+    self.sites.each{|s| s.contexts.each{|c| contexts << c}} if readable
+    contexts.uniq!
   end
 
   private

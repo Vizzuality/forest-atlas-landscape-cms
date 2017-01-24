@@ -7,10 +7,6 @@
     display: none;
   }
 
-  caption {
-    display: none;
-  }
-
   th,
   td {
     padding: 18px 20px;
@@ -72,6 +68,16 @@
   > .table-legend {
     padding: 40px 0;
     text-align: center;
+  }
+
+  .more-button {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    color: $color-1;
+    font-family: $font-family-1;
+    font-size: $font-size-normal;
+    cursor: pointer;
   }
 }
 

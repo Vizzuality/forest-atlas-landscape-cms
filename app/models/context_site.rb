@@ -13,4 +13,5 @@
 class ContextSite < ApplicationRecord
   belongs_to :context
   belongs_to :site
+
 end
