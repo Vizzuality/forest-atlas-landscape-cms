@@ -63,7 +63,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
       when 'type'
       when 'dataset'
-        @context_datasets = @site.get_datasets
+        @context_datasets = @site.get_context_datasets
 
       when 'filters'
         build_current_dataset_setting
