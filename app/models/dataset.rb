@@ -134,7 +134,7 @@ class Dataset
         return
       end
       self.errors['legend'] << 'Latitude and Longitude have to be filled together' if
-        self.legend[:lat].blank? ^ self.legend[:lon].blank?
+        self.legend[:lat].blank? ^ self.legend[:long].blank?
       self.errors['legend'] << 'Country and Region have to be filled together' if
         self.legend[:country].blank? ^ self.legend[:region].blank?
     end

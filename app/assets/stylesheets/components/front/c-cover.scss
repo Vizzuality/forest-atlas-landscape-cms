@@ -1,15 +1,13 @@
-
 .c-cover {
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
-  padding: 50px 0 30px 0;
+  padding: 50px 0 30px;
   // image sample. This property should be injected through javascript
   background-image: asset-url('cover.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: -1;
 
   @media #{$mq-mobile} {
     padding: 100px 0;
@@ -20,6 +18,12 @@
     padding: 0;
   }
 
+  &.-short {
+    @media #{$mq-tablet} {
+      height: 250px;
+    }
+  }
+
   &::after {
     display: block;
     position: absolute;
@@ -28,13 +32,16 @@
     width: 100%;
     height: 100%;
     content: '';
-    z-index: -1;
 
     @if $theme == 2 {
       background-color: rgba($color-5, .3);
     } @else {
       background-color: rgba($color-1, .4);
     }
+  }
+
+  > .wrapper {
+    z-index: 1;
   }
 
   .cover-title {

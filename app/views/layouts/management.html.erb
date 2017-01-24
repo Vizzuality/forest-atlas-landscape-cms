@@ -14,6 +14,7 @@
   <%= favicon_link_tag %>
 </head>
 <body <%= yield :body_class %>>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
   <%= render 'management/header' %>
   <%= render 'shared/messages' %>
   <%= yield :extended_header %>

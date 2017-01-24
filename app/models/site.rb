@@ -34,9 +34,13 @@ class Site < ApplicationRecord
   after_save :update_routes
   after_create :create_template_content
 
+#  cattr_accessor :form_steps do
+#    { pages: %w[name users contexts default_context style settings finish],
+#      names: ['Name', 'Users', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
+#  end
   cattr_accessor :form_steps do
     { pages: %w[name users style settings finish],
-      names: %w[Name Users Style Settings Finish] }
+      names: ['Name', 'Users', 'Style', 'Settings', 'Finish'] }
   end
   attr_accessor :form_step
 
@@ -60,12 +64,26 @@ class Site < ApplicationRecord
   def create_context
     return nil unless self.contexts.empty?
 
-    context = Context.create!({name: self.name})
+    #context = Context.new({name: self.name})
+    #context.sites << self
+    #context.save!
+
+
+    context = Context.new({name: self.name})
+    context.save!(validate: false)
+    #context = Context.create!({name: self.name})
     self.context_sites.create(context_id: context.id, is_site_default_context: true)
   end
 
   def root
     SitePage.find_by site_id: self.id, uri: ''
+  end
+
+  # Gets the datasets available for a site
+  def get_datasets
+    datasets = []
+    self.contexts.each{|c| c.context_datasets.each{|d| datasets << d.dataset_id}}
+    datasets.uniq!
   end
 
   private

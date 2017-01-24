@@ -42,7 +42,7 @@
       width: 100%;
       padding: 20px;
       transition: background .3s, color .1s, border-color .3s;
-      border: 1px solid $color-7;
+      border: 1px solid $color-13;
       border-radius: 7px;
 
       h3 {
@@ -76,25 +76,15 @@
       }
 
       input:checked + .content {
-        &::before {
-          position: absolute;
-          top: 50%;
-          right: 20px;
-          width: 45px;
-          height: 8px;
-          transform: translateY(calc(-2px - 50%)) rotate(-45deg);
-          background-color: $color-3;
-          content: '';
-        }
-
         &::after {
           position: absolute;
-          top: calc(50% + 9px);
-          right: 53px;
-          width: 30px;
-          height: 8px;
-          transform: translateY(-50%) rotate(45deg);
-          background-color: $color-3;
+          top: calc(50%);
+          right: 30px;
+          width: 60px;
+          height: 50px;
+          transform: translateY(-50%);
+          background: asset-url('icons/large-check-icon.svg') no-repeat center center;
+          background-size: contain;
           content: '';
         }
       }

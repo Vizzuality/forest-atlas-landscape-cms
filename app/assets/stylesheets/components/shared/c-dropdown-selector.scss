@@ -1,0 +1,159 @@
+.c-dropdown-selector {
+  display: inline-block;
+  position: relative;
+
+  > .active-option {
+    cursor: pointer;
+
+    &::after {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-left: 12px;
+      transform: translateY(-3px) rotate(135deg);
+      border-bottom: 0;
+      border-left: 0;
+      content: '';
+
+      @if $theme == 1 {
+        border-top: 2px solid $color-1;
+        border-right: 2px solid $color-1;
+      } @else {
+        border-top: 2px solid $color-3;
+        border-right: 2px solid $color-3;
+      }
+    }
+  }
+
+  > .options {
+    position: absolute;
+    bottom: -3px;
+    left: calc(50% - 27px);
+    width: auto;
+    padding: 0;
+    transform: translateY(100%);
+    transition: opacity .2s, pointer-events 0 .2s;
+    border-radius: 2px;
+    background-color: $color-3;
+    font-weight: $font-weight-normal;
+    box-shadow: 0 1px 3px 0 rgba($color-5, .25);
+    opacity: 0;
+    pointer-events: none;
+
+    &::before {
+      display: block;
+      position: absolute;
+      top: -6px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      transform: rotate(45deg);
+      background-color: $color-3;
+      content: '';
+      z-index: -1;
+    }
+
+    &.-visible {
+      transition: opacity .2s;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .option {
+      display: block;
+      padding: 12px 20px;
+      border-bottom: 1px solid $color-9;
+      color: $color-4;
+      line-height: 1.3;
+      cursor: pointer;
+
+      &:first-of-type {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+
+      &:last-of-type {
+        border-bottom: 0;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+
+      &:hover,
+      &:focus {
+        outline: none;
+
+        @if $theme == 2 {
+          background-color: $color-8;
+        } @else {
+          background-color: rgba($color-1, .1);
+        }
+      }
+
+      &.-active {
+        position: relative;
+        color: $color-1;
+
+        &::before {
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 5px;
+          width: 8px;
+          height: 8px;
+          transform: translateY(-50%) rotate(45deg);
+          border-top: 2px solid $color-1;
+          border-right: 2px solid $color-1;
+          border-bottom: 0;
+          border-left: 0;
+          content: '';
+        }
+      }
+    }
+  }
+
+  &.-right {
+    > .options {
+      right: calc(50% - 27px);
+      left: auto;
+
+      &::before {
+        right: 20px;
+        left: auto;
+      }
+    }
+  }
+
+  &.-fixed-width {
+    > .options {
+      width: 250px;
+    }
+  }
+
+  &.-arrow-left {
+    > .active-option {
+      &::before {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 12px;
+        transform: translateY(-3px) rotate(135deg);
+        border-bottom: 0;
+        border-left: 0;
+        content: '';
+
+        @if $theme == 1 {
+          border-top: 2px solid $color-1;
+          border-right: 2px solid $color-1;
+        } @else {
+          border-top: 2px solid $color-3;
+          border-right: 2px solid $color-3;
+        }
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+}

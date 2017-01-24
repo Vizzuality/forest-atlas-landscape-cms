@@ -83,13 +83,6 @@
     },
 
     index: function () {
-      // We initialize the site switcher
-      new App.View.SiteSwitcherView({
-        el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/widgets',
-        slug: this.slug
-      });
-
       // We initialize the tabs
       new App.View.TabView({
         el: $('.js-tabs'),
@@ -97,17 +90,17 @@
         currentTab: 3,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
-          { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
           { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
+          { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
           { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]
       });
 
       var tableCollection = new TableCollection(gon.widgets, { parse: true });
-      var tableContainer = $('.js-table');
+      var tableContainer = document.querySelector('.js-table');
 
       if (tableCollection.length === 0) {
-        tableContainer.append('<p class="no-data">There aren\'t any widget to display yet.</p>');
+        tableContainer.innerHTML = '<p class="no-data">There aren\'t any widget to display yet.</p>';
       } else {
         // We initialize the table
         new App.View.TableView({

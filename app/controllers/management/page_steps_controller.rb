@@ -63,7 +63,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
       when 'type'
       when 'dataset'
-        @context_datasets = current_user.get_context_datasets
+        @context_datasets = @site.get_datasets
 
       when 'filters'
         build_current_dataset_setting
@@ -118,7 +118,6 @@ class Management::PageStepsController < ManagementController
     end
 
     @breadcrumbs = [
-      {name: @site.name, url: url_for(controller: 'management/site_pages', action: 'index', site_slug: @site.slug)},
       {name: @page.id ? 'Editing "'+@page.name+'"' : 'New page'}
     ]
 
@@ -155,7 +154,7 @@ class Management::PageStepsController < ManagementController
         if @page.valid?
           redirect_to next_wizard_path
         else
-          @context_datasets = current_user.get_context_datasets
+          @context_datasets = @site.get_dataset
           render_wizard
         end
 
@@ -386,9 +385,9 @@ class Management::PageStepsController < ManagementController
                    publish_step_name = Wicked::FINISH_STEP)
 
     if save_button?
-
+      notice_text = @page.id ? 'saved' : 'created'
       if @page.save
-        redirect_to wizard_path(save_step_name)
+        redirect_to wizard_path(save_step_name), notice: 'Page successfully ' + notice_text
       else
         render_wizard
       end
@@ -396,9 +395,10 @@ class Management::PageStepsController < ManagementController
     elsif publish_button?
 
       @page.enabled = !@page.enabled
+      notice_text = @page.enabled ? 'published' : 'unpublished'
       if @page.save
         session[:page][:enabled] = @page.enabled
-        redirect_to wizard_path(publish_step_name)
+        redirect_to wizard_path(publish_step_name), notice: 'Page successfully ' + notice_text
       else
         render_wizard
       end

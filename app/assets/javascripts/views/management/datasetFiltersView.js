@@ -393,9 +393,15 @@
       this._fetchTableExtract()
         .done(function () {
           var count = this.tableExtract && this.tableExtract.count;
-          count = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
+          var formattedCount = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
           this.countEl.classList.remove('c-loading-spinner');
-          this.countEl.textContent = count;
+          this.countEl.textContent = formattedCount;
+
+          if (count && count > 10000) {
+            this.rowCountNotificationId = App.notifications.broadcast(App.Helper.Notifications.dataset.rowCount);
+          } else {
+            App.notifications.hide(this.rowCountNotificationId);
+          }
         }.bind(this));
     }, 1500),
 

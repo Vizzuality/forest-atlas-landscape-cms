@@ -23,8 +23,8 @@
         </div>
 
         <div>
-          <%= f.label :longitude, for: 'dataset_legend_lon' %>
-          <%= text_field_tag 'dataset[legend][lon]', f.object.legend[:lon], placeholder: 'Field to associate with longitude (optional)' %>
+          <%= f.label :longitude, for: 'dataset_legend_long' %>
+          <%= text_field_tag 'dataset[legend][long]', f.object.legend[:long], placeholder: 'Field to associate with longitude (optional)' %>
         </div>
 
         <div>
@@ -35,6 +35,11 @@
         <div>
           <%= f.label :region, for: 'dataset_legend_region' %>
           <%= text_field_tag 'dataset[legend][region]', f.object.legend[:region], placeholder: 'Field to associate with region (optional)' %>
+        </div>
+
+        <div>
+          <%= f.label :dates, for: 'dataset_legend_dates' %>
+          <%= text_field_tag 'dataset[legend][date]', f.object.legend[:date], placeholder: 'Field to associate with date fields (optional)' %>
         </div>
 
       </div>

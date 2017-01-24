@@ -1,0 +1,3 @@
+class ContextsController < ManagementController
+
+end

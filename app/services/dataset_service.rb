@@ -12,7 +12,8 @@ class DatasetService
   # Params
   # ++status++ the status of the dataset
   def self.get_datasets(status = 'active')
-    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', 'status': status}
+    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', \
+      'status': status, 'app': 'forest-atlas'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -39,7 +40,7 @@ class DatasetService
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
-    return {} unless fieldsJSON
+    return {} unless fieldsJSON || fieldsRequest.status != 200
 
     fields = []
     fieldsJSON['fields'].each do |data|
@@ -57,8 +58,11 @@ class DatasetService
   def self.get_filtered_dataset(dataset_id, query)
     full_query = "/query/#{dataset_id}?sql=#{query}"
 
+    Rails.logger.info "Going to make a Filtered Request: #{full_query}"
+
     filteredRequest = @conn.get full_query
     if filteredRequest.body.blank?
+      Rails.logger.warn "There was a problem with the response from the API: #{filteredRequest}"
       return {}
     else
       return JSON.parse filteredRequest.body
@@ -109,16 +113,16 @@ class DatasetService
 
     string_datasets = {}
     fields.select {|f| f[:type].downcase.include?('string')}.each do |field|
-      query = "select count(*) from #{api_table_name} group by #{field[:name]}"
+      query = "select count(*), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
 
     fields.each do |field|
       case field[:type]
-        when 'number', 'date', 'long', 'double'
+        when /number/, /date/, /long/, /double/
           field[:min] = number_dataset['data'][0]["min_#{field[:name]}"]
           field[:max] = number_dataset['data'][0]["max_#{field[:name]}"]
-        when 'string'
+        when /string/
           field[:values] = string_datasets[field[:name]]['data'].map{|x| x[field[:name]]}
       end
     end
@@ -129,32 +133,37 @@ class DatasetService
   def self.upload(token, connectorType, connectorProvider, connectorUrl,
                     applications, name, tags_array = nil, caption = {}, units = nil)
 
-    # Converting the caption[country] and caption[region] to JSON
+    formatted_caption = caption.dup
+    # Converting the caption[country] JSON
     begin
-      caption['country'] = caption['country'].split(' ')
-      caption['region'] = caption['region'].split(' ')
+      formatted_caption['country'] = formatted_caption['country'].split(' ')
+      formatted_caption['region'] = formatted_caption['region'].split(' ')
+      formatted_caption['date'] = formatted_caption['date'].split(' ')
     rescue
     end
 
 
     begin
-      res = @conn.post do |req|
-        req.url '/dataset'
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        #              \"legend\": #{caption.to_json},
-        req.body =
-          "{
+      body = "{
             \"dataset\": {
               \"connectorType\": \"#{connectorType}\",
               \"provider\": \"#{connectorProvider}\",
               \"connectorUrl\": \"#{connectorUrl}\",
-
+              \"legend\": #{formatted_caption.to_json},
               \"application\": #{applications.to_json},
               \"name\": \"#{name}\",
               \"tags\": #{tags_array.to_json}
             }
           }"
+
+      Rails.logger.info 'Creating Dataset in the API.'
+      Rails.logger.info "Body: #{body}"
+
+      res = @conn.post do |req|
+        req.url '/dataset'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = body
       end
 
       # TODO Make another request to dataset/:id/metadata
@@ -171,10 +180,12 @@ class DatasetService
       #          }
       #        }
 
+      Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
 
     return JSON.parse(res.body)['data']['id']
 
-    rescue
+    rescue Exception => e
+      Rails.logger.error "Error creating new dataset in the API: #{e}"
       return nil
     end
   end

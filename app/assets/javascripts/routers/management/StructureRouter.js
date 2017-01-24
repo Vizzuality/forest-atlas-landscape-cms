@@ -12,13 +12,6 @@
     },
 
     index: function (state) {
-      // We initialize the site switcher
-      new App.View.SiteSwitcherView({
-        el: $('.js-site-switcher'),
-        urlFormat: '/management/sites/:slug/structure',
-        slug: this.slug
-      });
-
       // We initialize the tabs
       new App.View.TabView({
         el: $('.js-tabs'),
@@ -26,8 +19,8 @@
         currentTab: 0,
         tabs: [
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
-          { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
           { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
+          { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
           { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
         ]
       });

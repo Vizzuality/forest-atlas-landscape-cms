@@ -6,7 +6,7 @@
   hr {
     margin: 30px 0;
     border: 0;
-    border-bottom: 1px solid $color-7;
+    border-bottom: 1px solid $color-13;
   }
 
   &.-name {
@@ -74,7 +74,7 @@
           transition: .3s opacity;
 
           img {
-            border: 1px solid $color-7;
+            border: 1px solid $color-13;
             border-radius: 7px;
           }
 

@@ -1,0 +1,26 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <h1>Contexts</h1>
+      <ul class="action-buttons">
+        <li><%= link_to 'New context', new_context_step_path, class: 'c-button -outline' %></li>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<div class="l-contexts-list">
+  <div class="wrapper">
+    <div class="c-action-toolbar">
+      <ul class="buttons">
+      </ul>
+      <ul class="filters">
+        <li><div class="c-input-search js-table-search"></div></li>
+      </ul>
+    </div>
+
+    <div class="js-table"></div>
+  </div>
+</div>

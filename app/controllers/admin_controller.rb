@@ -4,6 +4,7 @@ class AdminController < ActionController::Base
   # skip_before_action :verify_authenticity_token, raise: false
   before_action :ensure_admin_user
   before_action :set_admin_base_breadcrumbs
+  before_action :set_gon
   layout 'admin'
 
   private
@@ -13,6 +14,14 @@ class AdminController < ActionController::Base
   end
 
   def set_admin_base_breadcrumbs
-    @breadcrumbs = [{name: 'CMS', url: admin_sites_path}]
+    @breadcrumbs = []
+  end
+
+  def set_gon
+    gon.global.admin = if current_user
+                         current_user.admin
+                       else
+                         false
+                       end
   end
 end

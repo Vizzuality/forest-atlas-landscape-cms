@@ -159,8 +159,8 @@
         // Once gon is updated, we should retrieve the real names of the fields used to position
         // the dots
         fields: {
-          lat: 'latitude' || null,
-          lng: 'longitude' || null
+          lat: (window.gon && gon.legend.lat) || null,
+          lng: (window.gon && gon.legend.long) || null
         }
       };
 

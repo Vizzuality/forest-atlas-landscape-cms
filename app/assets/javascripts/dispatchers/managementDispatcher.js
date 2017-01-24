@@ -4,23 +4,36 @@
   var Dispatcher = Backbone.Router.extend({
 
     routes: {
-      '(/)': 'Index',
-      'sites/:slug/site_pages(/)': 'Pages',
-      'sites/:slug/site_pages/new(/)': 'PageCreation',
-      'site_pages/:id/edit(/)': 'PageEdition',
-      'sites/:slug/structure(/)': 'Structure',
-      'sites/:slug/widgets(/)': 'Widgets',
-      'sites/:slug/datasets(/)': 'Datasets',
-      'sites/:slug/(datasets/:id/)dataset_steps/connector': 'ConnectorStep',
-      'sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
-      'sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
-      'sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
-      'sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
-      'sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
-      'sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
-      'sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
-      'sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',
-      'sites/:slug/(site_pages/:id/)page_steps/map': 'MapStep'
+      'management(/)': 'Index',
+      // Management
+      'management/sites/:slug/site_pages(/)': 'Pages',
+      'management/sites/:slug/site_pages/new(/)': 'PageCreation',
+      'management/site_pages/:id/edit(/)': 'PageEdition',
+      'management/sites/:slug/structure(/)': 'Structure',
+      'management/sites/:slug/widgets(/)': 'Widgets',
+      'management/sites/:slug/datasets(/)': 'Datasets',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/title': 'Index',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/connector': 'ConnectorStep',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/labels': 'Index',
+      'management/sites/:slug/(datasets/:id/)dataset_steps/context': 'Index',
+      'management/sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/title': 'Index',
+      'management/sites/:slug/(site_pages/:id/)page_steps/type': 'Index',
+      'management/sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/columns': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/title': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/dataset': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
+      'management/sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/map': 'MapStep',
+      // Contexts
+      'contexts': 'Contexts',
+      'contexts/(:id)/context_steps/(:step)': 'Index',
+      'context_steps/(:step)': 'Index'
     }
   });
 
@@ -35,6 +48,17 @@
         new Router(params.slice(0, params.length - 1));
 
         Backbone.history.start({ pushState: false });
+
+        // We instantiate the Quick links component
+        var quickLinksParams = {};
+
+        if (/^\/contexts?/.test(location.pathname)) {
+          quickLinksParams.activeLink = 'contexts';
+        } else if (params.length && params[0]) {
+          quickLinksParams.activeLink = params[0];
+        }
+
+        new App.View.QuickLinksView(quickLinksParams);
       }
     });
 
@@ -43,7 +67,7 @@
     Backbone.history.stop();
 
     // We need this to detect router pathname
-    Backbone.history.start({ pushState: true, root: '/management' });
+    Backbone.history.start({ pushState: true });
   };
 
   // We need for the DOM to be ready

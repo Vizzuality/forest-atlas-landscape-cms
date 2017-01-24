@@ -50,11 +50,13 @@
 
     events: {
       'click .js-cancel': '_onClickCancel',
-      'click .js-continue': '_onClickContinue'
+      'click .js-continue': '_onClickContinue',
+      'input .js-search-input': '_onInputSearchInput'
     },
 
     initialize: function (settings) {
       this.options = $.extend(true, {}, this.defaults, settings);
+      this._initSearch();
       this.render = this.render.bind(this);
     },
 
@@ -76,6 +78,65 @@
       if (!widget) return;
 
       this.options.continueCallback(widget.value);
+    },
+
+    /**
+     * Event handler executed when the user types in the search input
+     * @param {Event} e - event
+     */
+    _onInputSearchInput: _.throttle(function (e) {
+      var keyword = e.target.value;
+      var widgets = !keyword.length ? this.options.widgets : this._search(keyword);
+
+      // Once we get the list of widgets, we don't want to rerender the full
+      // view because otherwise we'll lose the focus on the search field
+      // The solution is to render the view but to keep the result in a variable
+      // so we can just update the list of widgets
+
+      // We render the full view into a variable
+      var view = document.createElement('div');
+      var html = this.template({
+        widgets: widgets
+      });
+      view.innerHTML = html;
+
+      // We get the DOM element corresponding to the widgets list container
+      var widgetsList = view.querySelector('.js-widgets-list');
+
+      // We create a fragment to avoid appending each widget to the DOM
+      // Instead, we append them to the fragment and append it once to the
+      // DOM
+      var fragment = document.createDocumentFragment();
+      for (var i = 0, j = widgetsList.children.length; i < j; i++) {
+        fragment.appendChild(widgetsList.children[0]);
+      }
+
+      // We finally append the fragment to the DOM and render the charts
+      this.el.querySelector('.js-widgets-list').innerHTML = '';
+      this.el.querySelector('.js-widgets-list').appendChild(fragment);
+      this._renderCharts();
+    }, 300),
+
+    /**
+     * Init Fuse
+     */
+    _initSearch: function () {
+      this.fuse = new Fuse(this.options.widgets, {
+        keys: ['name', 'description'],
+        tokenize: true,
+        threshold: 0,
+        shouldSort: false
+      });
+    },
+
+    /**
+     * Search for a keyword and filter the widgets list
+     * NOTE: Only the name and description of the widgets will be searched
+     * @param {string} keyword
+     * @returns {object[]} filteredWidgets
+     */
+    _search: function (keyword) {
+      return this.fuse.search(keyword);
     },
 
     /**

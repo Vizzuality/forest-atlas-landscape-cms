@@ -17,6 +17,8 @@
 
       // NOTE: Don't forget to start Backbone.history in the router
 
+      // This component is in charge of the translation selector
+      new App.View.LanguageSelectorView();
     } else {
       // eslint-disable-next-line no-console
       console.warn('The route ' + window.route + ' doesn\'t have any associated router.');
