@@ -64,7 +64,10 @@ class Site < ApplicationRecord
   def create_context
     return nil unless self.contexts.empty?
 
-    context = Context.create!({name: self.name})
+    context = Context.new({name: self.name})
+    context.sites << self
+    context.create!
+    #context = Context.create!({name: self.name})
     self.context_sites.create(context_id: context.id, is_site_default_context: true)
   end
 

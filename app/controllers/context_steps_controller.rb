@@ -6,7 +6,7 @@ class ContextStepsController < ManagementController
   before_action :check_user_permissions
   before_action :reset_context, only: [:new, :edit]
   before_action :build_context, only: [:update, :show]
-  before_action :save_context, only: :update
+  #after_action :save_context, only: :update
   before_action :build_steps_data, only: [:update, :show]
 
   steps *Context.form_steps[:pages]
@@ -39,10 +39,27 @@ class ContextStepsController < ManagementController
   end
 
   def reset_context
-    session[:context] = nil
+    session[:context] = {}
   end
 
   def build_context
+    @context = params[:context_id] ? Context.find(params[:context_id]) : Context.new
+    session[:context].merge!(context_params.to_h.except('dataset_ids')) if params[:context] && context_params.to_h.except('dataset_ids')
+
+    if params[:context] && context_params['dataset_ids']
+      session[:context]['context_datasets'] = []
+      context_params['dataset_ids'].each do |dataset_id|
+        # TODO: This has to be done in another way
+        session[:context]['context_datasets'] << ContextDataset.new(dataset_id: dataset_id)
+      end
+    end
+
+    @context.assign_attributes session[:context] if session[:context]
+    @context.form_step = step
+
+
+=begin
+
     if params[:context_id]
       @context = Context.find(params[:context_id])
     else
@@ -77,6 +94,7 @@ class ContextStepsController < ManagementController
       @context.writer_ids = context_params['writer_ids']
     end
     #@context.assign_attributes context_params.except('dataset_ids') if params[:context]
+=end
   end
 
   def save_context
