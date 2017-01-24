@@ -4,7 +4,7 @@ class ContextStepsController < ManagementController
   before_action :steps_names
   before_action :build_context
   before_action :check_user_permissions
-  before_action :reset_session, only: [:new, :edit]
+  before_action :reset_context, only: [:new, :edit]
   before_action :build_context, only: [:update, :show]
   before_action :save_context, only: :update
   before_action :build_steps_data, only: [:update, :show]
@@ -39,7 +39,7 @@ class ContextStepsController < ManagementController
   end
 
   def reset_context
-    session[:context] = {}
+    session[:context] = nil
   end
 
   def build_context
@@ -58,13 +58,25 @@ class ContextStepsController < ManagementController
       end
     end
 
+    if params[:context] && context_params['name']
+      @context.name = context_params['name']
+    end
     if params[:context] && context_params['dataset_ids']
       context_params['dataset_ids'].each do |dataset_id|
         # TODO: This has to be done in another way
         @context.context_datasets << ContextDataset.new(dataset_id: dataset_id)
       end
     end
-    @context.assign_attributes context_params.except('dataset_ids') if params[:context]
+    if params[:context] && context_params['site_ids']
+      @context.site_ids = context_params['site_ids']
+    end
+    if params[:context] && context_params['owner_ids']
+      @context.owner_ids = context_params['owner_ids']
+    end
+    if params[:context] && context_params['writer_ids']
+      @context.writer_ids = context_params['writer_ids']
+    end
+    #@context.assign_attributes context_params.except('dataset_ids') if params[:context]
   end
 
   def save_context
@@ -100,6 +112,7 @@ class ContextStepsController < ManagementController
     if save_button?
       notice_text = @context.id ? 'saved' : 'created'
       if @context.save
+        reset_context
         redirect_to wizard_path(save_step_name), notice: 'Context successfully ' + notice_text
       else
         render_wizard

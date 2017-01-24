@@ -9,16 +9,16 @@
 #
 
 class Context < ApplicationRecord
-  has_many :context_datasets
+  has_many :context_datasets, dependent: :destroy
   has_many :datasets, through: :context_datasets
-  has_many :dataset_settings
-  has_many :context_users
-  has_many :users, through: :context_users
-  has_many :context_owners, -> {owner}, class_name: 'ContextUser'
+  has_many :dataset_settings, dependent: :destroy
+  #has_many :context_users
+  #has_many :users, through: :context_users
+  has_many :context_owners, -> {owner}, class_name: 'ContextUser', dependent: :destroy
   has_many :owners, source: :user, through: :context_owners
-  has_many :context_writers, -> {writer}, class_name: 'ContextUser'
+  has_many :context_writers, -> {writer}, class_name: 'ContextUser', dependent: :destroy
   has_many :writers, source: :user, through: :context_writers
-  has_many :context_sites
+  has_many :context_sites, dependent: :destroy
   has_many :sites, through: :context_sites
 
   validate :steps_validation
