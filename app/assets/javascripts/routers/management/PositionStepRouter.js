@@ -75,8 +75,8 @@
     _getTreeStructure: function () {
       // Position of the "Drag this" item if editing a page
       var draggable = {
-        position: (window.gon && gon.position) || null,
-        parentId: (window.gon && gon.parentId) || null
+        position: (window.gon && gon.position !== null && gon.position !== undefined) ? gon.position : null,
+        parentId: (window.gon && gon.parentId !== null && gon.parentId !== undefined) ? gon.parentId : null
       };
 
       /**
@@ -102,7 +102,7 @@
         }
 
         // We insert as first page our draggable node if not editing
-        if (!draggable.position && level === 0) {
+        if (draggable.position === null && level === 0) {
           node.children.unshift({
             name: 'Drag this',
             id: 0,
