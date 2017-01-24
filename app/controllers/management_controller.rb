@@ -4,6 +4,7 @@ class ManagementController < ActionController::Base
 
   before_action :ensure_management_user
   before_action :set_management_base_breadcrumbs
+  before_action :set_gon
   layout 'management'
 
   def authenticate_user_for_site!
@@ -23,5 +24,13 @@ class ManagementController < ActionController::Base
 
   def set_management_base_breadcrumbs
     @breadcrumbs = []
+  end
+
+  def set_gon
+    gon.global.admin = if current_user
+                         current_user.admin
+                       else
+                         false
+                       end
   end
 end
