@@ -20,6 +20,8 @@
       // List of links
       // NOTE: follow the syntax of the options of the dropdown component but
       // add an attribute with the actual URL
+      // NOTE: if you plan to change the default links, please take care
+      // at their modification in the initialize method
       links: [
         { id: 'management', name: 'Management', url: '/management' },
         { id: 'admin', name: 'Admin', url: '/admin' }
@@ -33,6 +35,11 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
+
+      // If the user isn't an admin, we remove the admin option
+      if (!window.gon || !gon.global || !gon.global.admin) {
+        this.options.links.splice(1, 1);
+      }
 
       this.collection.fetch()
         .done(function () {
