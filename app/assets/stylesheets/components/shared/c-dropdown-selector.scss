@@ -1,4 +1,5 @@
 .c-dropdown-selector {
+  display: inline-block;
   position: relative;
 
   > .active-option {
@@ -34,6 +35,7 @@
     transition: opacity .2s, pointer-events 0 .2s;
     border-radius: 2px;
     background-color: $color-3;
+    font-weight: $font-weight-normal;
     box-shadow: 0 1px 3px 0 rgba($color-5, .25);
     opacity: 0;
     pointer-events: none;
@@ -59,10 +61,10 @@
 
     .option {
       display: block;
-      padding: 0 20px;
+      padding: 12px 20px;
       border-bottom: 1px solid $color-9;
       color: $color-4;
-      line-height: 2.5;
+      line-height: 1.3;
       cursor: pointer;
 
       &:first-of-type {
@@ -117,6 +119,39 @@
       &::before {
         right: 20px;
         left: auto;
+      }
+    }
+  }
+
+  &.-fixed-width {
+    > .options {
+      width: 250px;
+    }
+  }
+
+  &.-arrow-left {
+    > .active-option {
+      &::before {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 12px;
+        transform: translateY(-3px) rotate(135deg);
+        border-bottom: 0;
+        border-left: 0;
+        content: '';
+
+        @if $theme == 1 {
+          border-top: 2px solid $color-1;
+          border-right: 2px solid $color-1;
+        } @else {
+          border-top: 2px solid $color-3;
+          border-right: 2px solid $color-3;
+        }
+      }
+
+      &::after {
+        content: none;
       }
     }
   }

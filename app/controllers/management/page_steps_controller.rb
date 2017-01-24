@@ -118,7 +118,6 @@ class Management::PageStepsController < ManagementController
     end
 
     @breadcrumbs = [
-      {name: @site.name, url: url_for(controller: 'management/site_pages', action: 'index', site_slug: @site.slug)},
       {name: @page.id ? 'Editing "'+@page.name+'"' : 'New page'}
     ]
 

@@ -31,6 +31,11 @@
 
     // We need this to detect router pathname
     Backbone.history.start({ pushState: true, root: '/admin' });
+
+    // We instantiate the Quick links component
+    new App.View.QuickLinksView({
+      activeLink: 'admin'
+    });
   };
 
   // We need for the DOM to be ready

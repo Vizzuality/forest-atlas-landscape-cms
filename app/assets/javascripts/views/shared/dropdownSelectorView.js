@@ -19,6 +19,7 @@
       // The shortName option is optional
       options: [],
       // Active option (from the list above)
+      // NOTE: This is mandatory
       activeOption: null,
       // Use the short name for the active option when the selector is closed
       useShortName: false,
@@ -27,6 +28,8 @@
       arrowPosition: 'right',
       // Towards which direction the selector should be aligned
       align: 'left',
+      // Whether the width of the component is fixed or automatic
+      fixedWidth: false,
       // Callback executed when the active option is changed
       // It's passed the id of the new active option
       onChangeCallback: function () {}
@@ -205,7 +208,9 @@
         options: this.options.options,
         activeOption: this.options.activeOption,
         useShortName: this.options.useShortName,
-        align: this.options.align
+        align: this.options.align,
+        arrowPosition: this.options.arrowPosition,
+        fixedWidth: this.options.fixedWidth
       });
 
       this.dropdown = this.el.querySelector('.js-dropdown');

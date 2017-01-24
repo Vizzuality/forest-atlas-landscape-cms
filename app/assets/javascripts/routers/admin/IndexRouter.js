@@ -1,6 +1,10 @@
 ((function (App) {
   'use strict';
 
+  // DO NOT DELETE THIS ROUTER
+  // It may be used to instantiate (indirectly through the dispatcher)
+  // the quick links component
+
   App.Router.AdminIndex = Backbone.Router.extend({
 
     routes: {

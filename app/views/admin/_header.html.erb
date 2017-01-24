@@ -1,6 +1,7 @@
 <div class="c-header-admin -bright">
   <div class="wrapper">
     <div>
+    <div class="quick-links js-quick-links"></div>
       <% unless @breadcrumbs.blank? %>
           <ul class="breadcrumbs">
             <% @breadcrumbs.each do |breadcrumb| -%>
@@ -16,7 +17,6 @@
       <% end %>
     </div>
     <ul class="menu">
-      <li><%= link_to 'Content Management ', management_path, class: '-highlight' %></li>
       <li><%= link_to 'Logout', auth_logout_path, {class: 'nav-link', :method => :post} %></li>
     </ul>
   </div>
