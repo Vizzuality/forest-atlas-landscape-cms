@@ -3,4 +3,8 @@
   // We make sure the fixed c-action-bar doesn't cover the content if the
   // screen has a small height
   padding-bottom: 75px;
+
+  .no-data {
+    text-align: center;
+  }
 }

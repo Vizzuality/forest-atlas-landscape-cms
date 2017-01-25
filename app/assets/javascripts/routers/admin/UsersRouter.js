@@ -69,13 +69,20 @@
         ]
       });
 
-      // We initialize the table
-      new App.View.TableView({
-        el: $('.js-table'),
-        collection: new TableCollection(gon.users, { parse: true }),
-        tableName: 'List of users',
-        searchFieldContainer: $('.js-table-search')[0]
-      });
+      var tableCollection = new TableCollection(gon.users, { parse: true });
+      var tableContainer = document.querySelector('.js-table');
+
+      if (tableCollection.length === 0) {
+        tableContainer.innerHTML = '<p class="no-data">There aren\'t any user to display yet.</p>';
+      } else {
+        // We initialize the table
+        new App.View.TableView({
+          el: tableContainer,
+          collection: tableCollection,
+          tableName: 'List of users',
+          searchFieldContainer: $('.js-table-search')[0]
+        });
+      }
     }
   });
 })(this.App));
