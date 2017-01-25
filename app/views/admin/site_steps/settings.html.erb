@@ -16,7 +16,7 @@
   <div class="l-site-creation -settings">
     <div class="wrapper">
 
-      <%= f.fields_for :site_settings, f.object.site_settings do |settings_form| %>
+      <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
         <% setting = settings_form.object %>
         <% case setting.name
            when 'logo_image' %>
