@@ -78,7 +78,7 @@
       searchQuery: null,
       // Number of values displayed by cell
       // Once the number is reached, a button lets the user see the rest of the list
-      valuesPerCell: 15
+      valuesPerCell: 5
     },
 
     template: HandlebarsTemplates['shared/table'],
