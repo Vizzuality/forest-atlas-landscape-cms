@@ -13,6 +13,12 @@
   }
 
   tr {
+
+    &.no-data,
+    &.no-result {
+      text-align: center;
+    }
+
     td {
       border-bottom: 1px dashed $color-13;
 
@@ -22,8 +28,10 @@
       }
     }
 
-    &:hover td {
-      background-color: $color-2;
+    &:not(.no-data):not(.no-result):hover {
+      td {
+        background-color: $color-2;
+      }
     }
   }
 

@@ -382,6 +382,7 @@
       this.$el.html(this.template({
         tableName: this.options.tableName,
         headers: headers,
+        columnCount: headers.length,
         rows: this._getRenderableRows(),
         sortColumn: sortColumn,
         sortOrder: this.options.sortOrder === 1 ? 'ascending' : 'descending',

@@ -57,11 +57,11 @@
     {{else}}
       {{#if isSearchResult}}
         <tr class="no-result" role="row">
-          <td role="gridcell">No result</td>
+          <td role="gridcell" colspan="{{columnCount}}">No result</td>
         </tr>
       {{else}}
         <tr class="no-data" role="row">
-          <td role="gridcell">No data</td>
+          <td role="gridcell" colspan="{{columnCount}}">No data</td>
         </tr>
       {{/if}}
     {{/each}}
