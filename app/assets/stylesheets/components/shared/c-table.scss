@@ -15,6 +15,11 @@
   tr {
     td {
       border-bottom: 1px dashed $color-13;
+
+      a {
+        color: $color-4;
+        &:hover { color: $color-1; }
+      }
     }
 
     &:hover td {

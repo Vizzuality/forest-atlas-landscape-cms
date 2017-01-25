@@ -41,6 +41,7 @@
               return {
                 name: key,
                 value: row[key].value,
+                link: row[key].link,
                 searchable: row[key].searchable,
                 sortable: row[key].sortable
               };

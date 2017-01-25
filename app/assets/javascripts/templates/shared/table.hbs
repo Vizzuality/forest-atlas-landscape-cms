@@ -41,7 +41,11 @@
                 {{/each_slice}}
               {{else}}
                 {{#if value}}
-                  {{value}}
+                  {{#if link}}
+                    <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a>
+                  {{else}}
+                    {{value}}
+                  {{/if}}
                 {{else}}
                   –
                 {{/if}}

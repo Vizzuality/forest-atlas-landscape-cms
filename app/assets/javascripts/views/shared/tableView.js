@@ -49,14 +49,19 @@
       // Current pagination index
       paginationIndex: 0,
       // Collection representing the table
-      // Each row can contain the name of the column, the value of the cell or an html content, and
-      // a attribute to tell if the column can be searchable / sortable
+      // Each row can contain the name of the column, the value of the cell or an html content,
+      // a, attribute to tell if the column can be searchable and another to tell if it's sortable
+      // The value attribute can have an array of strings
+      // An optional link attribute can be present, it contains its url and an attribute to tell
+      // if the link is external or not (this is not built for multi-value cells)
       // An example of the format can be:
       // [
       //   {
       //     row: [
       //       { name: 'Price', value: '$3', searchable: true },
-      //       { name: null, html: '<button type="button">Delete</button>', searchable: false }
+      //       { name: 'Countries', value: ['Spain', 'France'], searchable: true, sortable: false },
+      //       { name: null, html: '<button type="button">Delete</button>', searchable: false },
+      //       { name: Device, value: 'iPhone 6', link: { url: 'https://www.apple.com', external: true }, searchable: false }
       //     ]
       //   }
       // ]
