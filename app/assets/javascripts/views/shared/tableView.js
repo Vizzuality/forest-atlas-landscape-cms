@@ -85,7 +85,7 @@
     modalTemplate: HandlebarsTemplates['shared/table-modal'],
 
     initialize: function (settings) {
-      this.options = _.extend(this.defaults, settings);
+      this.options = Object.assign({}, this.defaults, settings);
 
       if (!this.options.collection) {
         throw new Error('Please provide to the table component a collection to fetch.');
