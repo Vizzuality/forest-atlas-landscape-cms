@@ -51,7 +51,7 @@
           new Router(params.slice(0, params.length - 1));
           Backbone.history.start({ pushState: false });
         } catch (e) {
-          // In case of error, add something here
+          throw new Error(e);
         } finally {
           // We instantiate the Quick links component
           var quickLinksParams = {};
