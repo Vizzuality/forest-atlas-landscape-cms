@@ -26,7 +26,7 @@ class ContextsController < ManagementController
       edit_link = context.owners.include?(current_user) || current_user.admin ? \
             edit_context_context_step_path(id: 'title', context_id: context.id) : nil
       datasets_api = DatasetService.get_metadata_list context.context_datasets.map{|cd| cd.dataset_id}
-      datasets = datasets_api['data'].map{|d| d.dig('attributes', 'name')}.join(', ') \
+      datasets = datasets_api['data'].map{|d| d.dig('attributes', 'name')} \
           unless datasets_api.blank? || datasets_api['data'].blank?
 
       gon_context = {
