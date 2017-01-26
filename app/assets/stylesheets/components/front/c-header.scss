@@ -1,7 +1,7 @@
 .c-header {
   position: relative;
   font-family: $font-family-1; // Needed as the map CSS overrides it
-  z-index: 5;
+  z-index: 8;
 
   @if $theme == 2 {
     color: $color-3;
