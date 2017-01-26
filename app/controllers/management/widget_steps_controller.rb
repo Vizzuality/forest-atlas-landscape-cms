@@ -21,7 +21,7 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def show
-    breadcrumbs = @widget.id ? {name: "Editing #{@widget.name}"} : {name: 'New Widget'}
+    breadcrumbs = @widget.id ? {name: "Editing \"#{@widget.name}\""} : {name: 'New Widget'}
     @breadcrumbs << breadcrumbs
 
     case step
