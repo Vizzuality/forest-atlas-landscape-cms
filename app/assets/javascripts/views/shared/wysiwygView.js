@@ -20,7 +20,12 @@
         ]
       },
       // List of widgets for the sidebar's widget option
-      widgets: []
+      widgets: [],
+      // Maximum size of the uploaded images
+      maxImageSize: {
+        width: 1060,
+        height: 600
+      }
     },
 
     events: {
@@ -75,21 +80,16 @@
       // We contract the sidebar
       this._toggleExpandSidebar();
 
-      // We open a file explorer
-      var input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.click();
-
-      input.addEventListener('change', function () {
-        var file = input.files[0];
-        var reader = new FileReader();
-        reader.addEventListener('load', function () {
-          this._addImage(reader.result);
+      this._getBase64Image()
+        .done(function (base64) {
+          this._addImage(base64);
+        }.bind(this))
+        .fail(function () {
+          App.notifications.broadcast(App.Helper.Notifications.page.imageUploadError);
+        })
+        .always(function () {
           this._hideSidebar();
         }.bind(this));
-        reader.readAsDataURL(file);
-      }.bind(this));
     },
 
     /**
@@ -111,18 +111,7 @@
         cancelCallback: function () { modal.close(); },
         continueCallback: function (widgetId) {
           modal.close();
-
-          // var model = new (Backbone.Model.extend({
-          //   url: 'TODO'
-          // }))();
-
-          // model.fetch()
-          //   .done(function () {
-              this.editor.insertEmbed(range.index, 'widget', widgetId, 'user');
-            // })
-            // .fail(function () {
-            //   App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
-            // });
+          this.editor.insertEmbed(range.index, 'widget', widgetId, 'user');
         }.bind(this),
         widgets: this.options.widgets
       });
@@ -141,6 +130,88 @@
      */
     _setListeners: function () {
       this.editor.on(Quill.events.EDITOR_CHANGE, this._onEditorChange.bind(this));
+    },
+
+    /**
+     * Return a deferred of an optimized version of the image passed as a
+     * base64 string. The image is rescaled to fit within the viewport box
+     * described by this.options.maxImageSize
+     * @param {string} base64
+     * @returns {object} deferred - $.Deferred
+     */
+    _getOptimizedBase64: function (base64) {
+      // We create the deferred object
+      var deferred = $.Deferred(); // eslint-disable-line new-cap
+
+      // We create the image
+      var image = document.createElement('img');
+
+      image.addEventListener('load', function () {
+        // We compute the necessary scales on both the axis
+        var scales = {
+          x: this.options.maxImageSize.width / image.width,
+          y: this.options.maxImageSize.height / image.height
+        };
+
+        // Final scale
+        var scale = scales.x < scales.y ? scales.x : scales.y;
+
+        // We the image doesn't need to be rescaled, we return
+        if (scale > 1) {
+          return deferred.resolve(base64);
+        }
+
+        // We create the canvas
+        var canvas = document.createElement('canvas');
+        canvas.width = image.width * scale;
+        canvas.height = image.height * scale;
+
+        var context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0, image.width * scale, image.height * scale);
+
+        return deferred.resolve(canvas.toDataURL());
+      }.bind(this));
+
+      image.addEventListener('error', deferred.reject);
+
+      // We give the image its content
+      image.src = base64;
+
+      return deferred;
+    },
+
+    /**
+     * Ask the user for an image and return its optimized base64 representation
+     * through a jQuery Deferred object
+     * @returns {object} $.Deferred
+     */
+    _getBase64Image: function () {
+      var deferred = $.Deferred(); // eslint-disable-line new-cap
+
+      // We open a file explorer
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.click();
+
+      input.addEventListener('change', function () {
+        var file = input.files[0];
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+          this._getOptimizedBase64(reader.result)
+            .done(function (base64) {
+              deferred.resolve(base64);
+            })
+            .fail(deferred.reject);
+        }.bind(this));
+
+        reader.addEventListener('error', deferred.reject);
+
+        reader.readAsDataURL(file);
+      }.bind(this));
+
+      return deferred;
     },
 
     /**
