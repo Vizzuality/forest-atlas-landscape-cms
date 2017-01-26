@@ -76,14 +76,13 @@
     </ul>
   </div>
 
-  <div class="flag-border">
-    <!--  Add here a list of div with background color to display the flag -->
-    <div style="background-color: #002d84;"></div>
-    <div style="background-color: white;"></div>
-    <div style="background-color: #20981e;"></div>
-    <div style="background-color: #ffcf00;"></div>
-    <div style="background-color: #d4062f;"></div>
-  </div>
+  <% if @flag.size > 0 %>
+    <div class="flag-border">
+      <% @flag.each do |flag| %>
+        <div style="background-color: <%= flag %>;"></div>
+      <% end %>
+    </div>
+  <% end %>
 
   <% if @site_page.depth > 0 %>
     <div class="sub-menu">
