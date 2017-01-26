@@ -48,6 +48,9 @@ class ImageBlot extends Embed {
 
     node.appendChild(image);
 
+    // We don't want the user to be able to add text within the container
+    node.setAttribute('contenteditable', false);
+
     return node;
   }
 
