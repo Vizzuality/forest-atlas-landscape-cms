@@ -219,7 +219,7 @@
 
         var image = document.createElement('img');
         image.classList.add('js-image');
-        image.setAttribute('src', value);
+        if (typeof value === 'string') image.setAttribute('src', value);
 
         node.appendChild(image);
 

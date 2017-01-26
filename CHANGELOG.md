@@ -1,4 +1,5 @@
 ### 31 Jan 2017
+- Fixed an issue with the wysiwyg that would fetch a non-existing image
 - Made the flag colors available/visible in the public sites
 - Fixed an issue where the language selector would be behind the standalone map controls
 - Added links to the actual sites in the list of sites (admin)

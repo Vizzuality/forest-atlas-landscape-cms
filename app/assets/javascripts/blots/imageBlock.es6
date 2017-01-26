@@ -36,7 +36,7 @@ class ImageBlot extends Embed {
 
   /**
    * Create the DOM node
-   * @param {string} value - URL of the image (or base64)
+   * @param {any} value - URL of the image (or base64)
    * @returns {HTMLElement} node
    */
   static create(value) {
@@ -44,7 +44,7 @@ class ImageBlot extends Embed {
 
     const image = document.createElement('img');
     image.classList.add('js-image');
-    image.setAttribute('src', value);
+    if (typeof value === 'string') image.setAttribute('src', value);
 
     node.appendChild(image);
 
