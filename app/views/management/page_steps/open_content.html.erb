@@ -25,15 +25,7 @@
           <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
             <div class="js-content">
               <% unless params[:page_id] %>
-                <h1>Title of the article</h1>
-                <div class="-intro">
-                  Short description
-                </div>
-                <p>
-                  Eligendi natus et delectus. Aliquid iure inventore officia ipsam est doloremque. Ab omnis qui quod. Vel voluptatibus molestiae velit omnis.
-                  <br/>
-                  Quisquam et a sed et quo. Voluptatibus architecto ut quis. Perferendis quia alias molestiae. Et culpa sed et reiciendis sunt. Incidunt vel in saepe in rerum ea aut.
-                </p>
+                <p><em>Write here the content of the page.</em></p>
               <% end %>
             </div>
             <%= ff.hidden_field :json, class: 'js-json-content' %>
