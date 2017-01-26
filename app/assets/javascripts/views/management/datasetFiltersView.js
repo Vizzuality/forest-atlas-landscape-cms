@@ -317,6 +317,8 @@
           var value = filter[key];
           if (value instanceof Date) {
             value = value.toISOString();
+          } else if (Array.isArray(value)) {
+            value = JSON.stringify(value);
           }
 
           return str + (str.length ? '&' : '') + 'filters[' + index + '][' + name + ']=' + value;
