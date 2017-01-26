@@ -262,12 +262,13 @@
 
     .-image {
       position: relative;
+      width: calc(100% + 390px);
+      margin: 35px -195px;
 
       > img {
         display: block;
-        width: calc(100% + 390px);
-        max-width: none;
-        margin: 35px -195px;
+        max-width: 100%;
+        margin: 0 auto;
         border-radius: 4px;
       }
     }
