@@ -4,6 +4,7 @@ class SitePageController < ApplicationController
   before_action :load_breadcrumbs
   before_action :get_active_menu_item
   before_action :load_logo_image
+  before_action :load_flag
   before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable]
   protect_from_forgery except: :map_resources
 
@@ -33,6 +34,16 @@ class SitePageController < ApplicationController
     image_setting = SiteSetting.logo_image(@site_page.site.id)
     @image_url = '/'
     @image_url = image_setting.image if !image_setting.blank? && !image_setting.image_file_name.blank?
+  end
+
+  def load_flag
+    begin
+    @flag = SiteSetting.flag_colors(@site_page.site.id)
+    @flag = @flag.value.split(' ')
+    rescue Exception => e
+      @flag = []
+      logger.error("Error when accessing the flag colors for site: #{@site_page.site.name}: #{e}")
+    end
   end
 
   def homepage
