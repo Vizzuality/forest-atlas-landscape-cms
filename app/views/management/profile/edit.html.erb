@@ -1,0 +1,33 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>User Profile</h1>
+    </div>
+  </div>
+</div>
+
+<%= link_to 'Logout', auth_logout_url, {:method => :post} %>
+
+<%= form_for @user, url: management_profile_path, method: :put do |f| %>
+
+  <div class="l-dataset-creation -title">
+    <div class="wrapper">
+      <div class="c-inputs-container">
+        <div class="container">
+          <%= f.label :name, for: 'name' %>
+          <%= f.text_field :name, placeholder: 'Your name' %>
+        </div>
+        <div class="container">
+          <%= f.label :email, for: 'email' %>
+          <%= f.text_field :email, disabled: true %>
+        </div>
+        <%= link_to 'Recover password', 'www.google.com' %>
+        <br>
+        Remove this account
+        <%= check_box_tag 'REMOVE'%>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_path, no_continue: true} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>
