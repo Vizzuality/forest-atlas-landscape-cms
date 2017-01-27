@@ -33,7 +33,15 @@ class WidgetBlot extends Embed {
     this.widgetContainer.innerHTML = '<div class="c-loading-spinner"></div>';
 
     this._fetchWidget()
-      .done(() => this._initWidget())
+      .done(() => {
+        this._initWidget();
+
+        // If wanted, we set the widget's description as default text
+        // of the caption
+        if (this.caption.dataset.defaultCaption) {
+          this.caption.textContent = this.model.toJSON().description;
+        }
+      })
       .fail(function () {
         if (!this.editor.options.readOnly) {
           App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
@@ -51,7 +59,7 @@ class WidgetBlot extends Embed {
    * @returns {any} jQuery deferred object
    */
   _fetchWidget () {
-    var id = WidgetBlot.value(this.domNode);
+    var id = WidgetBlot.value(this.domNode).id;
 
     var url = '/widget_data.json?widget_id=' + id;
     if (this.editor.options.readOnly) {
@@ -107,18 +115,24 @@ class WidgetBlot extends Embed {
 
   /**
    * Create the DOM node
-   * @param {any} value - attributes describing the widget
+   * @param {any} obj - attributes describing the widget
    * @returns {HTMLElement} node
    */
-  static create(value) {
+  static create(obj) {
     let node = super.create();
+
+    // On the next line we need to check the type of obj because the widget's value (obj)
+    // was saved differently in the past and we need to ensure the compatibility with the
+    // previous widgets
+    const id = typeof obj === 'object' ? obj.id : obj;
+    const defaultCaption = obj.defaultCaption || false;
 
     const widgetContainer = document.createElement('div');
     widgetContainer.classList.add('widget-container', 'js-widget-container');
     node.appendChild(widgetContainer);
 
     // We save the id of the widget into the DOM
-    node.dataset.id = value;
+    node.dataset.id = id;
 
     // We don't want the user to be able to edit the widget
     node.setAttribute('contenteditable', false);
@@ -126,6 +140,7 @@ class WidgetBlot extends Embed {
     // We add the caption container
     const captionContainer = document.createElement('p');
     captionContainer.classList.add('caption', 'js-caption');
+    if (defaultCaption) captionContainer.dataset.defaultCaption = 'true';
 
     node.appendChild(captionContainer);
 
@@ -155,11 +170,13 @@ class WidgetBlot extends Embed {
    * Return the attributes describing the widget
    * @static
    * @param {HTMLElement} node
-   * @returns {number}
+   * @returns {object}
    * @memberOf WidgetBlot
    */
   static value(node) {
-    return +node.dataset.id;
+    return {
+      id: +node.dataset.id
+    };
   }
 
   /**

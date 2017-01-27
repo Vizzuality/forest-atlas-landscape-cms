@@ -11,7 +11,9 @@
   // ".js" and read how to proceed.
 
   /* eslint-disable */
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
@@ -49,7 +51,13 @@ var WidgetBlot = function (_Embed) {
     _this.widgetContainer.innerHTML = '<div class="c-loading-spinner"></div>';
 
     _this._fetchWidget().done(function () {
-      return _this._initWidget();
+      _this._initWidget();
+
+      // If wanted, we set the widget's description as default text
+      // of the caption
+      if (_this.caption.dataset.defaultCaption) {
+        _this.caption.textContent = _this.model.toJSON().description;
+      }
     }).fail(function () {
       if (!this.editor.options.readOnly) {
         App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
@@ -72,7 +80,7 @@ var WidgetBlot = function (_Embed) {
   _createClass(WidgetBlot, [{
     key: '_fetchWidget',
     value: function _fetchWidget() {
-      var id = WidgetBlot.value(this.domNode);
+      var id = WidgetBlot.value(this.domNode).id;
 
       var url = '/widget_data.json?widget_id=' + id;
       if (this.editor.options.readOnly) {
@@ -135,7 +143,7 @@ var WidgetBlot = function (_Embed) {
 
     /**
      * Create the DOM node
-     * @param {any} value - attributes describing the widget
+     * @param {any} obj - attributes describing the widget
      * @returns {HTMLElement} node
      */
 
@@ -203,15 +211,21 @@ var WidgetBlot = function (_Embed) {
     }
   }], [{
     key: 'create',
-    value: function create(value) {
+    value: function create(obj) {
       var node = _get(WidgetBlot.__proto__ || Object.getPrototypeOf(WidgetBlot), 'create', this).call(this);
+
+      // On the next line we need to check the type of obj because the widget's value (obj)
+      // was saved differently in the past and we need to ensure the compatibility with the
+      // previous widgets
+      var id = (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' ? obj.id : obj;
+      var defaultCaption = obj.defaultCaption || false;
 
       var widgetContainer = document.createElement('div');
       widgetContainer.classList.add('widget-container', 'js-widget-container');
       node.appendChild(widgetContainer);
 
       // We save the id of the widget into the DOM
-      node.dataset.id = value;
+      node.dataset.id = id;
 
       // We don't want the user to be able to edit the widget
       node.setAttribute('contenteditable', false);
@@ -219,6 +233,7 @@ var WidgetBlot = function (_Embed) {
       // We add the caption container
       var captionContainer = document.createElement('p');
       captionContainer.classList.add('caption', 'js-caption');
+      if (defaultCaption) captionContainer.dataset.defaultCaption = 'true';
 
       node.appendChild(captionContainer);
 
@@ -248,14 +263,16 @@ var WidgetBlot = function (_Embed) {
      * Return the attributes describing the widget
      * @static
      * @param {HTMLElement} node
-     * @returns {number}
+     * @returns {object}
      * @memberOf WidgetBlot
      */
 
   }, {
     key: 'value',
     value: function value(node) {
-      return +node.dataset.id;
+      return {
+        id: +node.dataset.id
+      };
     }
 
     /**
