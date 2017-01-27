@@ -111,7 +111,7 @@
         cancelCallback: function () { modal.close(); },
         continueCallback: function (widgetId) {
           modal.close();
-          this.editor.insertEmbed(range.index, 'widget', widgetId, 'user');
+          this.editor.insertEmbed(range.index, 'widget', { id: widgetId, defaultCaption: true }, 'user');
         }.bind(this),
         widgets: this.options.widgets
       });

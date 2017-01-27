@@ -1,13 +1,16 @@
+$wysiwyg-width: 880px;
+$wysiwyg-lateral-padding: 105px;
+
 .c-wysiwyg {
   position: relative;
-  max-width: 880px;
+  max-width: $wysiwyg-width;
   min-height: calc(100vh - 533px);
   margin: 0 auto;
   border: 1px solid $color-13;
 
   .ql-editor {
     min-height: 100%;
-    padding: 30px 105px;
+    padding: 30px $wysiwyg-lateral-padding;
     overflow: visible;
   }
 
@@ -271,6 +274,22 @@
         margin: 0 auto;
         border-radius: 4px;
       }
+
+      > .caption {
+        display: block;
+        width: 100%;
+        max-width: #{$wysiwyg-width - 2 * $wysiwyg-lateral-padding};
+        margin: 12px auto 0;
+        font-style: italic;
+        text-align: right;
+
+        &:empty {
+          &::before {
+            color: rgba($color-4, .5);
+            content: 'Edit me to add a caption to the image';
+          }
+        }
+      }
     }
 
     .-intro {
@@ -285,10 +304,6 @@
       position: relative;
       width: calc(100% + 390px);
       margin: 35px -195px;
-      padding: 45px;
-      clear: both; // Prevents issue with another floated widget
-      border: 1px solid $color-13;
-      background-color: $color-3;
 
       &:not(:hover) .toolbar {
         display: none;
@@ -296,6 +311,29 @@
 
       .error {
         text-align: center;
+      }
+
+      > .widget-container {
+        padding: 45px;
+        border: 1px solid $color-13;
+        border-radius: 4px;
+        background-color: $color-3;
+      }
+
+      > .caption {
+        display: block;
+        width: 100%;
+        max-width: #{$wysiwyg-width - 2 * $wysiwyg-lateral-padding};
+        margin: 12px auto 0;
+        font-style: italic;
+        text-align: right;
+
+        &:empty {
+          &::before {
+            color: rgba($color-4, .5);
+            content: 'Edit me to add a caption to the widget';
+          }
+        }
       }
     }
   }

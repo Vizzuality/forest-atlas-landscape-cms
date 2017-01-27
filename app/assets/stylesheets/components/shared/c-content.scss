@@ -24,9 +24,6 @@
     }
   }
 
-  .content-title,
-  .paragraph,
-  .quote,
   h1,
   p,
   blockquote,
@@ -35,8 +32,6 @@
     margin: 0 auto;
   }
 
-
-  .content-title,
   h1 {
     margin: 0 auto 15px;
     font-size: $font-size-big;
@@ -61,7 +56,6 @@
     }
   }
 
-  .paragraph,
   p,
   .-intro {
     letter-spacing: .1px;
@@ -81,7 +75,6 @@
     }
   }
 
-  .quote,
   blockquote {
     margin: 30px auto;
     font-size: $font-size-medium;
@@ -101,9 +94,9 @@
     }
 
     @if $theme == 2 {
-      line-height: 1.1;
       color: $color-4;
       letter-spacing: .2px;
+      line-height: 1.1;
     } @else {
       color: $color-1;
       font-family: $font-family-2;
@@ -116,26 +109,50 @@
     }
   }
 
-  .image,
-  img {
-    display: block;
-    max-width: 100%;
+  .-image {
     margin: 50px 0;
 
-    @media #{$mq-mobile} {
-      margin: 50px auto;
+    img {
+      display: block;
+      max-width: 100%;
+
+      @media #{$mq-mobile} {
+        margin: 0 auto;
+      }
+
+      @media #{$mq-laptop} {
+        max-width: $media-max-width;
+      }
     }
 
-    @media #{$mq-laptop} {
-      max-width: $media-max-width;
+    .caption {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin-top: 12px;
+      font-size: $font-size-s-normal;
+      font-style: italic;
+      font-weight: $font-weight-light;
+      text-align: right;
+
+      @if $theme == 1 {
+        font-family: $font-family-2;
+      }
+
+      @media #{$mq-mobile} {
+        margin: 0 auto;
+        margin-top: 12px;
+      }
+
+      @media #{$mq-laptop} {
+        max-width: $media-max-width;
+      }
     }
   }
 
   .-widget {
     max-width: 100%;
     margin: 50px 0;
-    padding: 20px 20px 10px;
-    border: 1px solid $color-13;
 
     @media #{$mq-mobile} {
       margin: 50px auto;
@@ -143,11 +160,43 @@
 
     @media #{$mq-laptop} {
       max-width: $media-max-width;
-      padding: 60px 60px 40px;
     }
 
-    .error {
-      text-align: center;
+    .widget-container {
+      padding: 20px 20px 10px;
+      border: 1px solid $color-13;
+
+      @media #{$mq-laptop} {
+        padding: 60px 60px 40px;
+      }
+
+      .error {
+        text-align: center;
+      }
+    }
+
+    .caption {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin-top: 12px;
+      font-size: $font-size-s-normal;
+      font-style: italic;
+      font-weight: $font-weight-light;
+      text-align: right;
+
+      @if $theme == 1 {
+        font-family: $font-family-2;
+      }
+
+      @media #{$mq-mobile} {
+        margin: 0 auto;
+        margin-top: 12px;
+      }
+
+      @media #{$mq-laptop} {
+        max-width: $media-max-width;
+      }
     }
   }
 }
