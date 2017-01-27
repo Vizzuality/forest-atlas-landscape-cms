@@ -48,7 +48,7 @@ class Management::PageStepsController < ManagementController
     session[:page] = {}
     session[:dataset_setting] = {}
     session[:invalid_steps] = 'type'
-    redirect_to wizard_path('position')
+    redirect_to wizard_path(steps[0])
   end
 
   def show
