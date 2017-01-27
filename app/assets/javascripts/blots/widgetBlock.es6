@@ -22,44 +22,18 @@ class WidgetBlot extends Embed {
     super(domNode, value);
 
     this.editor = window.editor;
+    this.caption = domNode.querySelector('.js-caption');
+    this.widgetContainer = this.domNode.querySelector('.js-widget-container');
 
-    this.domNode.innerHTML = '<div class="c-loading-spinner"></div>';
+    if (!this.editor.options.readOnly) {
+      // We make the caption editable
+      this.caption.setAttribute('contenteditable', true);
+    }
+
+    this.widgetContainer.innerHTML = '<div class="c-loading-spinner"></div>';
 
     this._fetchWidget()
-      .done(function () {
-        var chart = this.model.toJSON();
-
-        // We retrieve the chart's configuration
-        var config;
-        try {
-          config = JSON.parse(chart.visualization);
-        } catch (e) {
-          config = {
-            type: null,
-            x: null,
-            y: null
-          };
-        }
-
-        // We render the widget
-        this.widget = new App.View.ChartWidgetView({
-          el: domNode,
-          data: chart.data,
-          chart: config.type,
-          columnX: config.x,
-          columnY: config.y,
-          enableChartSelector: false
-        });
-
-        if (!this.editor.options.readOnly) {
-          // We render the toolbar
-          this._renderToolbar();
-        }
-
-        // Little trick to wait for the block to be appended to the DOM
-        // before rendering the widget (which requires it)
-        setTimeout(() => this.widget.render(), 0);
-      }.bind(this))
+      .done(() => this._initWidget())
       .fail(function () {
         if (!this.editor.options.readOnly) {
           App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
@@ -68,7 +42,7 @@ class WidgetBlot extends Embed {
           App.notifications.broadcast(App.Helper.Notifications.widget.loadingWarning);
         }
 
-        this.domNode.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
+        this.widgetContainer.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
       }.bind(this));
   }
 
@@ -94,6 +68,44 @@ class WidgetBlot extends Embed {
   }
 
   /**
+   * Init the widget
+   */
+  _initWidget () {
+    var chart = this.model.toJSON();
+
+    // We retrieve the chart's configuration
+    var config;
+    try {
+      config = JSON.parse(chart.visualization);
+    } catch (e) {
+      config = {
+        type: null,
+        x: null,
+        y: null
+      };
+    }
+
+    // We render the widget
+    this.widget = new App.View.ChartWidgetView({
+      el: this.domNode.querySelector('.js-widget-container'),
+      data: chart.data,
+      chart: config.type,
+      columnX: config.x,
+      columnY: config.y,
+      enableChartSelector: false
+    });
+
+    if (!this.editor.options.readOnly) {
+      // We render the toolbar
+      this._renderToolbar();
+    }
+
+    // Little trick to wait for the block to be appended to the DOM
+    // before rendering the widget (which requires it)
+    setTimeout(() => this.widget.render(), 0);
+  }
+
+  /**
    * Create the DOM node
    * @param {any} value - attributes describing the widget
    * @returns {HTMLElement} node
@@ -101,11 +113,40 @@ class WidgetBlot extends Embed {
   static create(value) {
     let node = super.create();
 
+    const widgetContainer = document.createElement('div');
+    widgetContainer.classList.add('widget-container', 'js-widget-container');
+    node.appendChild(widgetContainer);
+
     // We save the id of the widget into the DOM
     node.dataset.id = value;
 
     // We don't want the user to be able to edit the widget
     node.setAttribute('contenteditable', false);
+
+    // We add the caption container
+    const captionContainer = document.createElement('p');
+    captionContainer.classList.add('caption', 'js-caption');
+
+    node.appendChild(captionContainer);
+
+    // If we don't disable the "content editable" feature of the editor
+    // when the user writes in the caption container, the browsers
+    // jump to the top as it considers it as the element we're editing
+    captionContainer.addEventListener('focusin', function () {
+      window.editor.root.setAttribute('contenteditable', false);
+    });
+
+    captionContainer.addEventListener('focusout', function () {
+      window.editor.root.setAttribute('contenteditable', true);
+    });
+
+    captionContainer.addEventListener('blur', function () {
+      // If the user deleted the whole content, we want the default
+      // text to appear, nevertheless a br tag is inserted so we delete it
+      if (!this.textContent.length && this.innerHTML.length) {
+        this.innerHTML = '';
+      }
+    });
 
     return node;
   }
@@ -129,9 +170,16 @@ class WidgetBlot extends Embed {
    * @memberOf WidgetBlot
    */
   static formats(node) {
-    return {
+    const res = {
       id: +node.dataset.id
     };
+
+    const caption = node.querySelector('.js-caption');
+    if (caption && caption.textContent) {
+      res.caption = caption.textContent;
+    }
+
+    return res;
   }
 
   /**
@@ -143,6 +191,12 @@ class WidgetBlot extends Embed {
   format(name, value) {
     if (name === 'id') {
       this.domNode.dataset.id = value;
+    } else if (name === 'caption') {
+      if (value) {
+        this.caption.textContent = value;
+      } else {
+        this.caption.parentElement.removeChild(this.caption);
+      }
     } else {
       super.format(name, value);
     }

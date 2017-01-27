@@ -304,10 +304,6 @@ $wysiwyg-lateral-padding: 105px;
       position: relative;
       width: calc(100% + 390px);
       margin: 35px -195px;
-      padding: 45px;
-      clear: both; // Prevents issue with another floated widget
-      border: 1px solid $color-13;
-      background-color: $color-3;
 
       &:not(:hover) .toolbar {
         display: none;
@@ -315,6 +311,29 @@ $wysiwyg-lateral-padding: 105px;
 
       .error {
         text-align: center;
+      }
+
+      > .widget-container {
+        padding: 45px;
+        border: 1px solid $color-13;
+        border-radius: 4px;
+        background-color: $color-3;
+      }
+
+      > .caption {
+        display: block;
+        width: 100%;
+        max-width: #{$wysiwyg-width - 2 * $wysiwyg-lateral-padding};
+        margin: 12px auto 0;
+        font-style: italic;
+        text-align: right;
+
+        &:empty {
+          &::before {
+            color: rgba($color-4, .5);
+            content: 'Edit me to add a caption to the widget';
+          }
+        }
       }
     }
   }

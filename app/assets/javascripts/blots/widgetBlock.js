@@ -38,47 +38,19 @@ var WidgetBlot = function (_Embed) {
     var _this = _possibleConstructorReturn(this, (WidgetBlot.__proto__ || Object.getPrototypeOf(WidgetBlot)).call(this, domNode, value));
 
     _this.editor = window.editor;
+    _this.caption = domNode.querySelector('.js-caption');
+    _this.widgetContainer = _this.domNode.querySelector('.js-widget-container');
 
-    _this.domNode.innerHTML = '<div class="c-loading-spinner"></div>';
+    if (!_this.editor.options.readOnly) {
+      // We make the caption editable
+      _this.caption.setAttribute('contenteditable', true);
+    }
+
+    _this.widgetContainer.innerHTML = '<div class="c-loading-spinner"></div>';
 
     _this._fetchWidget().done(function () {
-      var _this2 = this;
-
-      var chart = this.model.toJSON();
-
-      // We retrieve the chart's configuration
-      var config;
-      try {
-        config = JSON.parse(chart.visualization);
-      } catch (e) {
-        config = {
-          type: null,
-          x: null,
-          y: null
-        };
-      }
-
-      // We render the widget
-      this.widget = new App.View.ChartWidgetView({
-        el: domNode,
-        data: chart.data,
-        chart: config.type,
-        columnX: config.x,
-        columnY: config.y,
-        enableChartSelector: false
-      });
-
-      if (!this.editor.options.readOnly) {
-        // We render the toolbar
-        this._renderToolbar();
-      }
-
-      // Little trick to wait for the block to be appended to the DOM
-      // before rendering the widget (which requires it)
-      setTimeout(function () {
-        return _this2.widget.render();
-      }, 0);
-    }.bind(_this)).fail(function () {
+      return _this._initWidget();
+    }).fail(function () {
       if (!this.editor.options.readOnly) {
         App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
         this._onClickRemove();
@@ -86,7 +58,7 @@ var WidgetBlot = function (_Embed) {
         App.notifications.broadcast(App.Helper.Notifications.widget.loadingWarning);
       }
 
-      this.domNode.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
+      this.widgetContainer.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
     }.bind(_this));
     return _this;
   }
@@ -117,6 +89,51 @@ var WidgetBlot = function (_Embed) {
     }
 
     /**
+     * Init the widget
+     */
+
+  }, {
+    key: '_initWidget',
+    value: function _initWidget() {
+      var _this2 = this;
+
+      var chart = this.model.toJSON();
+
+      // We retrieve the chart's configuration
+      var config;
+      try {
+        config = JSON.parse(chart.visualization);
+      } catch (e) {
+        config = {
+          type: null,
+          x: null,
+          y: null
+        };
+      }
+
+      // We render the widget
+      this.widget = new App.View.ChartWidgetView({
+        el: this.domNode.querySelector('.js-widget-container'),
+        data: chart.data,
+        chart: config.type,
+        columnX: config.x,
+        columnY: config.y,
+        enableChartSelector: false
+      });
+
+      if (!this.editor.options.readOnly) {
+        // We render the toolbar
+        this._renderToolbar();
+      }
+
+      // Little trick to wait for the block to be appended to the DOM
+      // before rendering the widget (which requires it)
+      setTimeout(function () {
+        return _this2.widget.render();
+      }, 0);
+    }
+
+    /**
      * Create the DOM node
      * @param {any} value - attributes describing the widget
      * @returns {HTMLElement} node
@@ -135,6 +152,12 @@ var WidgetBlot = function (_Embed) {
     value: function format(name, value) {
       if (name === 'id') {
         this.domNode.dataset.id = value;
+      } else if (name === 'caption') {
+        if (value) {
+          this.caption.textContent = value;
+        } else {
+          this.caption.parentElement.removeChild(this.caption);
+        }
       } else {
         _get(WidgetBlot.prototype.__proto__ || Object.getPrototypeOf(WidgetBlot.prototype), 'format', this).call(this, name, value);
       }
@@ -183,11 +206,40 @@ var WidgetBlot = function (_Embed) {
     value: function create(value) {
       var node = _get(WidgetBlot.__proto__ || Object.getPrototypeOf(WidgetBlot), 'create', this).call(this);
 
+      var widgetContainer = document.createElement('div');
+      widgetContainer.classList.add('widget-container', 'js-widget-container');
+      node.appendChild(widgetContainer);
+
       // We save the id of the widget into the DOM
       node.dataset.id = value;
 
       // We don't want the user to be able to edit the widget
       node.setAttribute('contenteditable', false);
+
+      // We add the caption container
+      var captionContainer = document.createElement('p');
+      captionContainer.classList.add('caption', 'js-caption');
+
+      node.appendChild(captionContainer);
+
+      // If we don't disable the "content editable" feature of the editor
+      // when the user writes in the caption container, the browsers
+      // jump to the top as it considers it as the element we're editing
+      captionContainer.addEventListener('focusin', function () {
+        window.editor.root.setAttribute('contenteditable', false);
+      });
+
+      captionContainer.addEventListener('focusout', function () {
+        window.editor.root.setAttribute('contenteditable', true);
+      });
+
+      captionContainer.addEventListener('blur', function () {
+        // If the user deleted the whole content, we want the default
+        // text to appear, nevertheless a br tag is inserted so we delete it
+        if (!this.textContent.length && this.innerHTML.length) {
+          this.innerHTML = '';
+        }
+      });
 
       return node;
     }
@@ -217,9 +269,16 @@ var WidgetBlot = function (_Embed) {
   }, {
     key: 'formats',
     value: function formats(node) {
-      return {
+      var res = {
         id: +node.dataset.id
       };
+
+      var caption = node.querySelector('.js-caption');
+      if (caption && caption.textContent) {
+        res.caption = caption.textContent;
+      }
+
+      return res;
     }
   }]);
 
