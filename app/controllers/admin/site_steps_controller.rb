@@ -54,6 +54,9 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
         @logo_image = @site.site_settings.where(name: 'logo_image').first
+        @main_image = @site.site_settings.where(name: 'main_image').first
+        @alternative_image = @site.site_settings.where(name: 'alternative_image').first
+        @favico = @site.site_settings.where(name: 'favico').first
       end
     end
     render_wizard
