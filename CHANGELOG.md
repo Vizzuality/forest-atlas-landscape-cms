@@ -1,4 +1,5 @@
 ### 31 Jan 2017
+- Added new alignment, indentation and list options to the wysiwyg
 - Added the possibility to add a caption to the images and widgets
 - Fixed an issue where the default dashboard would not load if the URL was corrupted
 - Improved the performance of the wysiwyg by scaling down the images (could eventually cause a crash)
