@@ -31,4 +31,28 @@ class UserService
     {valid: res.success?, error: error}
   end
 
+  # Updated the name of the user
+  # Params
+  # +token+:: The token to authenticate at the API
+  # +id+:: The user id at the API
+  # +name+ The new name of the user in the api
+  def update_name(token, id, name)
+    res = @conn.patch do |req|
+      req.url '/auth/user/' + id
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body =
+       ""
+    end
+
+    error = ''
+    begin
+      res_json = JSON.parse res.body
+      error = res_json['errors'].first['detail']
+    rescue
+    end
+    {valid: res.success?, error: error}
+
+  end
+
 end

@@ -47,6 +47,10 @@ class User < ApplicationRecord
     UserService.create(token, self.email, role, url)
   end
 
+  def update_api_name(token)
+    UserService.update_name(token, self.name)
+  end
+
   # TODO: Should we have a way to list all the datasets of the users?
   # Params
   # +status+:: The status of the datasets to get
