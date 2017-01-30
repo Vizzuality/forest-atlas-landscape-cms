@@ -20,7 +20,7 @@ class ChangeUsersRoles < ActiveRecord::Migration[5.0]
 
     # Sets the values as they were before
     User.where(role: 1).update_all admin: true
-    User.where('role is not 1').update_all admin: false
+    User.where('role <> 1').update_all admin: false
 
     # Remove new column
     remove_columns :users, :role
