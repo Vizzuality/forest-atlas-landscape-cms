@@ -36,6 +36,9 @@
     new App.View.QuickLinksView({
       activeLink: 'admin'
     });
+
+    // We instantiate the User links component
+    new App.View.UserLinksView();
   };
 
   // We need for the DOM to be ready

@@ -32,5 +32,7 @@ class ManagementController < ActionController::Base
                        else
                          false
                        end
+
+    gon.global.user = { 'name' => current_user.name, 'profile' => edit_management_profile_path(current_user.id), 'logout' => auth_logout_url } if current_user
   end
 end

@@ -67,6 +67,9 @@
           }
 
           new App.View.QuickLinksView(quickLinksParams);
+
+          // We instantiate the User links component
+          new App.View.UserLinksView();
         }
       }
     });
