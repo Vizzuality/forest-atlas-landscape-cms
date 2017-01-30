@@ -12,4 +12,7 @@
 class UserSiteAssociation < ApplicationRecord
   belongs_to :site
   belongs_to :user
+
+  #scope :manager, -> { where(role: UserType::MANAGER)}
+  #scope :publisher, -> { where(role: UserType::PUBLISH)}
 end

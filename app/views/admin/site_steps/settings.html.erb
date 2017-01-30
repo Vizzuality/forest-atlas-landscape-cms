@@ -64,7 +64,7 @@
               <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*' %>
             </div>
           </div>
-        <% when 'Favico' %>
+        <% when 'favico' %>
           <%= settings_form.hidden_field :position, value: '5'%>
           <%= settings_form.hidden_field :name, value: 'favico'%>
           <% if !@favico.nil? && @favico.image_file_name %>
@@ -89,4 +89,4 @@
   <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-
+<%= console if Rails.env.development? %>
