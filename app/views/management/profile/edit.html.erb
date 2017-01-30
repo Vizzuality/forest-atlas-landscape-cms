@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<%= form_for @user, url: management_profile_path, method: :put do |f| %>
+<%= form_for(@user, url: management_profile_path, method: :put, html: { class: 'js-form'}) do |f| %>
 
   <div class="l-dataset-creation -title">
     <div class="wrapper">
@@ -22,7 +22,7 @@
         </div>
         <footer>
           <div class="c-checkbox">
-            <%= check_box_tag 'REMOVE' %>
+            <%= check_box_tag 'REMOVE', 'yes', false, class: 'js-remove-checkbox' %>
             <label for="REMOVE">Remove my account</label>
           </div>
           <br/><br/>

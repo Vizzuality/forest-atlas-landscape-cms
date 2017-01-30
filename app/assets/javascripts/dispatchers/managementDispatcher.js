@@ -35,7 +35,7 @@
       'contexts/(:id)/context_steps/(:step)': 'Index',
       'context_steps/(:step)': 'Index',
       // Profile
-      'management/profile/:id/edit': 'Index'
+      'management/profile/:id/edit': 'Profile'
     }
   });
 
