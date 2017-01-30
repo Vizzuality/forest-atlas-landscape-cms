@@ -9,6 +9,7 @@ class Admin::UserStepsController < AdminController
 
   before_action :set_current_user
   before_action :get_user_pages
+  before_action :set_breadcrumbs
 
   SAVE = 'Save Changes'.freeze
   CONTINUE = 'Continue'.freeze
@@ -27,8 +28,6 @@ class Admin::UserStepsController < AdminController
   end
 
   def show
-    @breadcrumbs << {name: 'New User'}
-
     if step == 'sites' && @user.admin
       redirect_to next_wizard_path
       return
@@ -79,4 +78,11 @@ class Admin::UserStepsController < AdminController
     admin_users_path
   end
 
+  def set_breadcrumbs
+    if @user.id
+      @breadcrumbs << {name: "Editing user \"#{@user.name}\""}
+    else
+      @breadcrumbs << {name: 'New User'}
+    end
+  end
 end

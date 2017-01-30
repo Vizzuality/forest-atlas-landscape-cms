@@ -77,6 +77,12 @@ Rails.application.routes.draw do
     get '/', to: 'static_page#dashboard'
   end
 
+  namespace :publish do
+
+  end
+
+
+
   resources :contexts, only: [:index, :destroy] do
     resources :context_steps, only: [:edit, :show, :update]
   end
