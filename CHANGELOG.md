@@ -1,4 +1,6 @@
 ### 31 Jan 2017
+- Added the possibility to choose the cover images and a site icon (admin)
+- Removed the background color option (admin)
 - Added a page where the users can edit there profile
 - Added new alignment, indentation and list options to the wysiwyg
 - Added the possibility to add a caption to the images and widgets
