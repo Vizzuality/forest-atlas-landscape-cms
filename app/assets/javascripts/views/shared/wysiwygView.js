@@ -16,7 +16,23 @@
       // Options for the tooltip
       toolbar: {
         container: [
-          ['bold', 'italic', 'underline', { header: 1 }, { header: 2 }, 'intro', 'blockquote', 'link']
+          [
+            'bold',
+            'italic',
+            'underline',
+            { header: 1 },
+            { header: 2 },
+            'intro',
+            'blockquote',
+            'link',
+            { 'align': '' },
+            { align: 'center' },
+            { align: 'right' },
+            { indent: '+1' },
+            { indent: '-1' },
+            { list: 'bullet' },
+            { list: 'ordered' }
+          ]
         ]
       },
       // List of widgets for the sidebar's widget option
@@ -307,6 +323,13 @@
       icons.blockquote = '<svg width="11" height="10" viewBox="0 0 11 10" xmlns="http://www.w3.org/2000/svg"><path d="M4.568 6.963c0-.754-.319-1.334-.841-1.682L4.771.757H2.77L.885 4.701C.363 5.774.218 6.354.218 6.963c0 1.189.928 2.088 2.175 2.088 1.218 0 2.175-.899 2.175-2.088zm5.684 0c0-.754-.348-1.334-.87-1.682L10.455.757h-2.03L6.54 4.701c-.493 1.073-.638 1.653-.638 2.262 0 1.189.928 2.088 2.146 2.088s2.204-.899 2.204-2.088z" fill="#FFF" fill-rule="evenodd"/></svg>';
       icons.link = '<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.089c.81-.81 1.79-1.21 2.942-1.201 1.15.009 2.131.418 2.941 1.229.81.81 1.22 1.79 1.23 2.941C15.121 6.21 14.72 7.19 13.91 8l-2.375 2.375-1.133-1.132 2.375-2.375a2.48 2.48 0 0 0 .746-1.823 2.48 2.48 0 0 0-.746-1.823 2.48 2.48 0 0 0-1.823-.746 2.48 2.48 0 0 0-1.823.746L6.757 5.597 5.625 4.464 8 2.09zm-1.768 8.839l-1.16-1.16 4.696-4.696 1.16 1.16-4.696 4.696zm-3.01 1.85a2.48 2.48 0 0 0 1.823.746 2.48 2.48 0 0 0 1.823-.746l2.375-2.375 1.132 1.133L8 13.91c-.81.81-1.79 1.21-2.942 1.201-1.15-.009-2.131-.418-2.941-1.229-.81-.81-1.22-1.79-1.23-2.941C.879 9.79 1.28 8.81 2.09 8l2.375-2.375 1.133 1.132-2.375 2.375a2.48 2.48 0 0 0-.746 1.823c0 .719.248 1.326.746 1.823z" fill="#FFF" fill-rule="evenodd"/></svg';
       icons.intro = '<svg width="18" height="12" viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg"><path d="M8.095 12H6.424l-.528-1.92H3.124L2.596 12H.94l2.628-8.292h1.956l2.571 8.188L11.566.944h2.608L17.646 12h-2.272l-.704-2.56h-3.696L10.27 12H8.095zM4.492 5.028h.048L5.596 8.88H3.424l1.068-3.852zm8.306-2.324h.064L14.27 7.84h-2.896l1.424-5.136z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.align[''] = '<svg width="15" height="13" viewBox="0 0 15 13" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h15v1H0V0zm0 4h7v1H0V4zm0 8h7v1H0v-1zm0-4h15v1H0V8z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.align.center = '<svg width="15" height="13" viewBox="0 0 15 13" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h15v1H0V0zm4 4h7v1H4V4zm0 8h7v1H4v-1zM0 8h15v1H0V8z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.align.right = '<svg width="15" height="13" viewBox="0 0 15 13" xmlns="http://www.w3.org/2000/svg"><path d="M8 12h7v1H8v-1zM0 0h15v1H0V0zm8 4h7v1H8V4zM0 8h15v1H0V8z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.indent['+1'] = '<svg width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><path d="M4 13.375V1.625L13 7.5l-9 5.875zM14 15V0h1v15h-1zM0 9V6h4v3H0z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.indent['-1'] = '<svg width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><path d="M11 1.625v11.75L2 7.5l9-5.875zM1 0v15H0V0h1zm14 6v3h-4V6h4z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.list.bullet = '<svg width="16" height="14" viewBox="0 0 16 14" xmlns="http://www.w3.org/2000/svg"><path d="M8 2h8v1H8V2zm0 9h8v1H8v-1zM2.5 5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 9a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="#FFF" fill-rule="evenodd"/></svg>';
+      icons.list.ordered = '<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M4.41 7H3.004V2.338l-1.287.783-.639-.954L3.131.916H4.41V7zm.526 4.554c0 .918-.46 1.656-2.358 3.348h2.484L4.918 16H.94v-1.017c2.043-1.98 2.52-2.565 2.52-3.294 0-.504-.306-.801-.774-.801-.441 0-.747.198-1.098.63l-.846-.675C1.228 10.204 1.92 9.79 2.83 9.79c1.368 0 2.106.792 2.106 1.764zM8 4h8v1H8V4zm0 9h8v1H8v-1z" fill="#FFF" fill-rule="evenodd"/></svg>';
       /* eslint-enable max-len */
 
       // We init the editor

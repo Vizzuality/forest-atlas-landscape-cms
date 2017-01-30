@@ -27,6 +27,8 @@
   h1,
   p,
   blockquote,
+  ul,
+  ol,
   .-intro {
     max-width: $content-max-width;
     margin: 0 auto;
@@ -72,6 +74,21 @@
 
     @if $theme == 2 {
       font-weight: $font-weight-light;
+    }
+  }
+
+  ul,
+  ol {
+    display: block;
+    margin-top: .5em;
+    margin-bottom: .5em;
+
+    li {
+      display: list-item;
+
+      &::before {
+        font-family: $font-family-1;
+      }
     }
   }
 
