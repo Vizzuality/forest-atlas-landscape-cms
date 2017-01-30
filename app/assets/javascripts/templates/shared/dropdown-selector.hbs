@@ -1,10 +1,18 @@
-<div class="c-dropdown-selector -{{align}} -arrow-{{arrowPosition}} {{#if fixedWidth}}-fixed-width{{/if}}">
+<div class="c-dropdown-selector -{{align}} {{#if arrowPosition}}-arrow-{{arrowPosition}}{{/if}} {{#if fixedWidth}}-fixed-width{{/if}}">
   <div class="active-option js-list-btn" tabindex="0" aria-label="Open list of languages" aria-controls="language-selector">{{#if useShortName}}{{activeOption.shortName}}{{else}}{{activeOption.name}}{{/if}}</div>
   <ul id="language-selector" class="options js-dropdown" role="listbox" aria-expanded="false">
     {{#each options}}
-      <li role="option" tabindex="{{#if_eq id ../activeOption.id}}0{{else}}-1{{/if_eq}}" class="option {{#if_eq id ../activeOption.id}}-active{{/if_eq}} js-option" data-id="{{id}}">
-        {{name}}
-      </li>
+      {{#if_eq id ../activeOption.id}}
+        {{#unless ../fixedOption}}
+          <li role="option" tabindex="0" class="option -active js-option" data-id="{{id}}">
+            {{name}}
+          </li>
+        {{/unless}}
+      {{else}}
+        <li role="option" tabindex="-1" class="option js-option" data-id="{{id}}">
+          {{name}}
+        </li>
+      {{/if_eq}}
     {{/each}}
   </ul>
 </div>

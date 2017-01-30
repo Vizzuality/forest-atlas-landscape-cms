@@ -131,6 +131,15 @@
         type: 'warning',
         content: 'A chart on this page couldn\'t be loaded properly!'
       }
+    },
+
+    profile: {
+      deletion: {
+        type: 'warning',
+        content: 'Are you sure you want to permanently delete your account?',
+        dialogButtons: true,
+        closeable: false
+      }
     }
 
   };

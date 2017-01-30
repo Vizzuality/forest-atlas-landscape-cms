@@ -429,7 +429,7 @@ def create_contexts
     c = Context.create!(
       {
         name: "Context #{i}",
-        user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id, @daniel_caso_user.id, @david_gonzalez_user.id, @david_inga_user.id, @jose_angel_user.id, @hector_arce_user.id],
+        owner_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id, @daniel_caso_user.id, @david_gonzalez_user.id, @david_inga_user.id, @jose_angel_user.id, @hector_arce_user.id],
         site_ids: [@base_site.id, @staging_demo_site.id]
       })
     datasets.each{|d| c.context_datasets.build(dataset_id: d)}

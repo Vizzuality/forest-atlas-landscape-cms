@@ -33,7 +33,9 @@
       // Contexts
       'contexts': 'Contexts',
       'contexts/(:id)/context_steps/(:step)': 'Index',
-      'context_steps/(:step)': 'Index'
+      'context_steps/(:step)': 'Index',
+      // Profile
+      'management/profile/:id/edit': 'Profile'
     }
   });
 
@@ -58,11 +60,16 @@
 
           if (/^\/contexts?/.test(location.pathname)) {
             quickLinksParams.activeLink = 'contexts';
+          } else if (/management\/profile/.test(location.pathname)) {
+            quickLinksParams.activeLink = 'management';
           } else if (params.length && params[0]) {
             quickLinksParams.activeLink = params[0];
           }
 
           new App.View.QuickLinksView(quickLinksParams);
+
+          // We instantiate the User links component
+          new App.View.UserLinksView();
         }
       }
     });

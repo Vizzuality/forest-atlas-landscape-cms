@@ -41,6 +41,12 @@
     }
   }
 
+  .user-links {
+    .c-dropdown-selector .option {
+      width: 130px;
+    }
+  }
+
   .breadcrumbs {
     > li {
       &::before {
@@ -67,16 +73,6 @@
 
       .active-option::before {
         border-color: $color-3;
-      }
-    }
-  }
-
-  .menu {
-    > li {
-      margin-right: 20px;
-
-      &:last-of-type {
-        margin-right: 0;
       }
     }
   }
