@@ -2,11 +2,10 @@
   <div class="wrapper">
     <div class="description">
       <h1>User Profile</h1>
+      <p>Here, you can edit your name, recover your password or delete your account</p>
     </div>
   </div>
 </div>
-
-<%= link_to 'Logout', auth_logout_url, {:method => :post} %>
 
 <%= form_for @user, url: management_profile_path, method: :put do |f| %>
 
@@ -21,10 +20,14 @@
           <%= f.label :email, for: 'email' %>
           <%= f.text_field :email, disabled: true %>
         </div>
-        <%= link_to 'Recover password', 'www.google.com' %>
-        <br>
-        Remove this account
-        <%= check_box_tag 'REMOVE'%>
+        <footer>
+          <div class="c-checkbox">
+            <%= check_box_tag 'REMOVE' %>
+            <label for="REMOVE">Remove my account</label>
+          </div>
+          <br/><br/>
+          <%= link_to 'Recover password', 'www.google.com' %>
+        </footer>
       </div>
     </div>
   </div>

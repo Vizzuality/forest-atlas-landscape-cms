@@ -33,7 +33,9 @@
       // Contexts
       'contexts': 'Contexts',
       'contexts/(:id)/context_steps/(:step)': 'Index',
-      'context_steps/(:step)': 'Index'
+      'context_steps/(:step)': 'Index',
+      // Profile
+      'management/profile/:id/edit': 'Index'
     }
   });
 
@@ -58,6 +60,8 @@
 
           if (/^\/contexts?/.test(location.pathname)) {
             quickLinksParams.activeLink = 'contexts';
+          } else if (/management\/profile/.test(location.pathname)) {
+            quickLinksParams.activeLink = 'management';
           } else if (params.length && params[0]) {
             quickLinksParams.activeLink = params[0];
           }
