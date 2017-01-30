@@ -307,6 +307,9 @@
     },
 
     render: function () {
+      // Disable the debug mode
+      Quill.debug(false);
+
       // We register the custom blots
       Quill.register(App.Blot.IntroductionBlot);
       Quill.register(App.Blot.WidgetBlot);
