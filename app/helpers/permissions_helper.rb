@@ -21,6 +21,8 @@ module PermissionsHelper
         return current_user_type == 'ADMIN'
       when 'access_management'
         return %w(ADMIN MANAGER).include? current_user_type
+      when 'access_publish'
+        return %w(ADMIN MANAGER PUBLISH).include? current_user_type
       else
         false
     end
@@ -48,7 +50,7 @@ module PermissionsHelper
 
     email = session[:current_user]['email']
     user = User.find_by!(:email => email)
-    (session[:current_user]['cms_role'] = user.admin ? 'ADMIN' : 'MANAGER') if user
+    session[:current_user]['cms_role'] = user.role if user
     return user
   end
 
