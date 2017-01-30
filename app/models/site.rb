@@ -16,6 +16,10 @@ class Site < ApplicationRecord
   has_many :site_pages, dependent: :destroy
   has_many :user_site_associations, dependent: :destroy
   has_many :users, through: :user_site_associations
+  has_many :site_managers, -> {manager}, class_name: 'UserSiteAssociation'
+  has_many :managers, source: :user, through: :site_managers
+  has_many :site_publishers, -> {publisher}, class_name: 'UserSiteAssociation'
+  has_many :publishers, source: :user, through: :site_publishers
   has_many :context_sites,  dependent: :destroy
   has_many :contexts, through: :context_sites
   has_many :site_settings, dependent: :destroy, inverse_of: :site
