@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="description">
         <h1>Customize</h1>
-        <p>Get the most out of these last settings to customize your site</p>
+        <p>Select a logo, two cover images – one for the homepage and the other for the Open Content pages – and an icon.</p>
       </div>
     </div>
   </div>
@@ -39,12 +39,12 @@
           <%= settings_form.hidden_field :name, value: 'main_image'%>
           <% if !@main_image.nil? && @main_image.image_file_name %>
             <div class="c-centered-input">
-              <label>Main image preview</label>
+              <label>Homepage cover preview</label>
               <%= image_tag @main_image.image.url %>
             </div>
           <% end %>
           <div class="c-centered-input">
-            <%= settings_form.label :image, value: 'Main image', for: 'main' %>
+            <%= settings_form.label :image, value: 'Homepage cover image', for: 'main' %>
             <div class="js-file-input">
               <%= settings_form.file_field :image, id: 'main', accept: 'image/*' %>
             </div>
@@ -54,12 +54,12 @@
           <%= settings_form.hidden_field :name, value: 'alternative_image'%>
           <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
             <div class="c-centered-input">
-              <label>Alternative image preview</label>
+              <label>Content cover preview</label>
               <%= image_tag @alternative_image.image.url %>
             </div>
           <% end %>
           <div class="c-centered-input">
-            <%= settings_form.label :image, value: 'Alternative image', for: 'alternative' %>
+            <%= settings_form.label :image, value: 'Content cover image', for: 'alternative' %>
             <div class="js-file-input">
               <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*' %>
             </div>
