@@ -22,10 +22,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  has_many :user_site_associations
+  has_many :user_site_associations, dependent: :destroy
   has_many :sites, through: :user_site_associations
 
-  has_many :context_users
+  has_many :context_users, dependent: :destroy
   has_many :contexts, through: :context_users
 
   accepts_nested_attributes_for :context_users
@@ -47,8 +47,8 @@ class User < ApplicationRecord
     UserService.create(token, self.email, role, url)
   end
 
-  def update_api_name(token)
-    UserService.update_name(token, self.name)
+  def delete_from_api(token, id)
+    UserService.delete(token, id)
   end
 
   # TODO: Should we have a way to list all the datasets of the users?
@@ -78,7 +78,8 @@ class User < ApplicationRecord
 
     contexts = self.contexts
     self.sites.each{|s| s.contexts.each{|c| contexts << c}} if readable
-    contexts.uniq!
+    contexts = contexts.uniq
+    contexts
   end
 
   private

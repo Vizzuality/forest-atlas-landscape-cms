@@ -2,11 +2,9 @@ class ContextStepsController < ManagementController
   include Wicked::Wizard
 
   before_action :steps_names
-  before_action :build_context
-  before_action :check_user_permissions
   before_action :reset_context, only: [:new, :edit]
-  before_action :build_context, only: [:update, :show]
-  #after_action :save_context, only: :update
+  before_action :build_context
+  before_action :check_user_permissions, only: [:update, :show]
   before_action :build_steps_data, only: [:update, :show]
 
   steps *Context.form_steps[:pages]
@@ -110,7 +108,8 @@ class ContextStepsController < ManagementController
     return if @current_user.admin
     if @context.id
       unless @context.context_owners.include? @current_user
-        redirect_to context_path, notice: 'You do not have permissions to edit this context'
+        redirect_to contexts_path, notice: 'You do not have permissions to edit this context'
+        return
       end
     end
   end

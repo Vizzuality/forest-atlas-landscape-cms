@@ -6,10 +6,15 @@ class Management::ProfileController < ManagementController
   end
 
   def update
+    if params['REMOVE'] == 'yes'
+      @user.delete_from_api(session[:user_token], session[:current_user]['id'])
+      @user.destroy!
+      redirect_to auth_logout_path
+      return
+    end
+
     @user.name = user_params[:name]
     if @user.save
-      # TODO check with the API what do do
-      #@user.update_api_name
       redirect_to management_path, notice: 'Name successfully updated'
     else
       render :edit
