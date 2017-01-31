@@ -1,3 +1,6 @@
+### 7 Feb 2017
+- Added links to the actual pages in the list of pages (management)
+
 ### 31 Jan 2017
 - Added the new publisher role
 - Added the possibility to choose the cover images and a site icon (admin)

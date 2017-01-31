@@ -47,7 +47,8 @@
                 name: key,
                 value: row[key].value,
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                link: row[key].link
               };
           }
         });
