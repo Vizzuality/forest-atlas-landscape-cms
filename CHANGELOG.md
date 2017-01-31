@@ -1,4 +1,5 @@
 ### 31 Jan 2017
+- Added the new publisher role
 - Added the possibility to choose the cover images and a site icon (admin)
 - Removed the background color option (admin)
 - Added a page where the users can edit there profile
