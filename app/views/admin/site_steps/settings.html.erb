@@ -34,6 +34,7 @@
               <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
             </div>
           </div>
+
         <% when 'main_image' %>
           <%= settings_form.hidden_field :position, value: '3'%>
           <%= settings_form.hidden_field :name, value: 'main_image'%>
@@ -49,6 +50,7 @@
               <%= settings_form.file_field :image, id: 'main', accept: 'image/*' %>
             </div>
           </div>
+
         <% when 'alternative_image' %>
           <%= settings_form.hidden_field :position, value: '4'%>
           <%= settings_form.hidden_field :name, value: 'alternative_image'%>
@@ -64,6 +66,7 @@
               <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*' %>
             </div>
           </div>
+
         <% when 'favico' %>
           <%= settings_form.hidden_field :position, value: '5'%>
           <%= settings_form.hidden_field :name, value: 'favico'%>
@@ -79,6 +82,7 @@
               <%= settings_form.file_field :image, id: 'favico', accept: 'image/*' %>
             </div>
           </div>
+
         <% when 'flag' %>
           <hr />
           <div class="js-flag-colors"></div>
