@@ -10,7 +10,7 @@ class Admin::UsersController < AdminController
       {
         'name' => {'value' => user.name, 'searchable' => true, 'sortable' => true},
         'email' => {'value' => user.email, 'searchable' => true, 'sortable' => true},
-        'Role' => {'value' => user.admin ? 'Admin' : 'Manager', 'searchable' => true, 'sortable' => true},
+        'Role' => {'value' => UserType.translate(UserType.key_for(user.role)), 'searchable' => true, 'sortable' => true},
         'Sites' => {'value' => !user.admin ? user.sites.map{|x| x.name} : nil, 'searchable' => true, 'sortable' => true},
         # 'edit' => {'value' => edit_admin_user_user_step_path(user_id: user.id, id: 'identity'), 'method' => 'get'},
         # 'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}

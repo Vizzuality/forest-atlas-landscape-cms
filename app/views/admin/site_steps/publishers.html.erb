@@ -1,0 +1,32 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Publishers</h1>
+        <p>Choose the publishers for the site</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -users">
+    <div class="wrapper">
+      <div class="c-cards-list">
+        <% @publishers.each do |user| %>
+          <div class="card">
+            <label for="user-<%= user.id %>"><%= user.name %></label>
+            <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user), id: ('user-' + user.id.to_s) %>
+            <div class="content">
+              <h3><%= user.name %></h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>

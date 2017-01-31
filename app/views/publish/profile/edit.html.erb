@@ -1,0 +1,36 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>User Profile</h1>
+      <p>Here, you can edit your name, recover your password or delete your account</p>
+    </div>
+  </div>
+</div>
+
+<%= form_for(@user, url: publish_profile_path, method: :put, html: { class: 'js-form'}) do |f| %>
+
+  <div class="l-dataset-creation -title">
+    <div class="wrapper">
+      <div class="c-inputs-container">
+        <div class="container">
+          <%= f.label :name, for: 'name' %>
+          <%= f.text_field :name, placeholder: 'Your name' %>
+        </div>
+        <div class="container">
+          <%= f.label :email, for: 'email' %>
+          <%= f.text_field :email, disabled: true %>
+        </div>
+        <footer>
+          <div class="c-checkbox">
+            <%= check_box_tag 'REMOVE', 'yes', false, class: 'js-remove-checkbox' %>
+            <label for="REMOVE">Remove my account</label>
+          </div>
+          <br/><br/>
+          <%= link_to 'Recover password', ENV.fetch("API_URL") + '/auth/reset-password'  %>
+        </footer>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'publish/steps_shared/footer', locals: { f: f, cancel: publish_path, no_continue: true} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @user } %>

@@ -1,0 +1,31 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Context</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+    </div>
+  </div>
+</div>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+  <div class="l-dataset-creation -context">
+    <div class="wrapper">
+      <div class="c-cards-list">
+        <% @user_contexts.each do |context|%>
+          <div class="card -single-data">
+            <label for="context-<%= context.id%>"><%= context.name%></label>
+            <%= check_box_tag 'dataset[context_ids][]', "#{context.id}", false, id: "context-#{context.id}" %>
+            <div class="content">
+              <h3><%= context.name %></h3>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'publish/steps_shared/footer', locals: { f: f, cancel: publish_site_datasets_path(@site.slug)} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>

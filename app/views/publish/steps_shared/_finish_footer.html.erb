@@ -1,0 +1,8 @@
+<div class="c-action-bar">
+  <div class="wrapper">
+    <%= link_to 'Back to Pages', publish_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
+    <div>
+      <%= f.button (@page.enabled ? 'Unpublish' : 'Publish'), value: Publish::PageStepsController::PUBLISH, type: 'submit', class: 'c-button js-submit' %>
+    </div>
+  </div>
+</div>

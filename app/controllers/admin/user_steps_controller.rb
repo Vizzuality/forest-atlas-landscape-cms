@@ -7,9 +7,9 @@ class Admin::UserStepsController < AdminController
   helper_method :disable_button?
   helper_method :active_button?
 
-  before_action :set_current_user
+  before_action :set_current_user, only: [:show, :update]
   before_action :get_user_pages
-  before_action :set_breadcrumbs
+  before_action :set_breadcrumbs, only: [:show, :update]
 
   SAVE = 'Save Changes'.freeze
   CONTINUE = 'Continue'.freeze
@@ -60,7 +60,7 @@ class Admin::UserStepsController < AdminController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :admin, site_ids: [], context_ids: [])
+    params.require(:user).permit(:name, :email, :role, site_ids: [], context_ids: [])
   end
 
   def set_current_user

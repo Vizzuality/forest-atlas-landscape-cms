@@ -1,0 +1,30 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Widget title</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+    </div>
+  </div>
+</div>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<%= form_for @widget, url: wizard_path, method: :put do |f| %>
+  <div class="l-widget-creation -title">
+    <div class="wrapper">
+      <div class="c-inputs-container">
+        <div class="container -big">
+          <%= f.label :title, for: 'title' %>
+          <%= f.text_field :name, id:'name', placeholder: 'My widget' %>
+        </div>
+        <div class="container">
+          <%= f.label :description, for: 'description' %>
+          <%= f.text_area :description, id:'description', placeholder: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'publish/steps_shared/footer', locals: { f: f, cancel: publish_site_widgets_path(@site.slug)} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @widget } %>

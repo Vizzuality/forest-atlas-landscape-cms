@@ -12,7 +12,7 @@ class Publish::StaticPageController < PublishController
                .order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
-      format.html { render layout: 'management' }
+      format.html { render layout: 'publish' }
       format.json { render json: @sites.map {|s| s.attributes} }
     end
   end

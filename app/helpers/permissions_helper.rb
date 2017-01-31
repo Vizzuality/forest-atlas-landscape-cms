@@ -18,11 +18,11 @@ module PermissionsHelper
     end
     case action
       when 'access_admin'
-        return current_user_type == 'ADMIN'
+        return current_user_type == UserType::ADMIN
       when 'access_management'
-        return %w(ADMIN MANAGER).include? current_user_type
+        return [UserType::ADMIN, UserType::MANAGER].include? current_user_type
       when 'access_publish'
-        return %w(ADMIN MANAGER PUBLISH).include? current_user_type
+        return [UserType::ADMIN, UserType::MANAGER, UserType::PUBLISHER].include? current_user_type
       else
         false
     end

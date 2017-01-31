@@ -1,0 +1,45 @@
+<div class="c-extended-header -high">
+  <div class="wrapper">
+    <div class="two-options">
+      <div class="description">
+        <h1>Select a Dataset</h1>
+        <p>Pick the dataset you want to use for the dashboard.</p>
+      </div>
+      <div class="description">
+        <h1>Register a Dataset</h1>
+        <p>You can also create a new dataset.</p>
+        <a href="" class="c-button -outline js-register-dataset">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
+
+<%= form_for @widget, url: wizard_path, method: :put do |f| %>
+  <div class="l-widget-creation -dataset">
+    <div class="wrapper">
+      <% @context_datasets.each do |context_id, datasets| %>
+        <%# TODO: Remove the DB query from the view %>
+        <h3 class="context">
+          <%= ::Context.find(context_id).name %></h3>
+        <div class="c-cards-list">
+          <% datasets.each do |dataset| %>
+            <div class="card">
+              <label for="dataset-<%= dataset.id %>"><%= dataset.name %></label>
+              <%= radio_button_tag 'widget[dataset_id]', \
+                  dataset.id, f.object.dataset_id ? (f.object.dataset_id == dataset.id) : nil, id: 'dataset-' + dataset.id %>
+              <div class="content">
+                <h3><%= dataset.name %></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%= render partial: 'publish/steps_shared/footer', locals: {f: f, never_save: true, cancel: publish_site_widgets_path(@site.slug)} %>
+<% end %>
+
+<%= render partial: 'shared/errors', locals: { resource: @widget } %>

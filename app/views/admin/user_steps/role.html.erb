@@ -18,23 +18,23 @@
       <div class="c-cards-list">
           <div class="card">
             <label for="user_role_admin">admin</label>
-            <%= radio_button_tag 'user[role]', UserType::ADMIN, f.object.role %>
+            <%= radio_button_tag 'user[role]', UserType::ADMIN, f.object.role , id: 'user_role_admin' %>
             <div class="content">
               <h3>Admin</h3>
               <p>An admin can create, edit and delete any users, any sites and any pages</p>
             </div>
           </div>
           <div class="card">
-            <label for="user_role_management">management</label>
-            <%= radio_button_tag 'user[role]', UserType::MANAGER, f.object.role %>
+            <label for="user_role_manager">management</label>
+            <%= radio_button_tag 'user[role]', UserType::MANAGER, f.object.role, id: 'user_role_manager' %>
             <div class="content">
               <h3>Manager</h3>
               <p>A manager has only access to some sites to create, edit and delete their pages</p>
             </div>
           </div>
           <div class="card">
-            <label for="user_role_publish">publish</label>
-            <%= radio_button_tag 'user[role]', UserType::PUBLISH, f.object.role %>
+            <label for="user_role_publisher">publish</label>
+            <%= radio_button_tag 'user[role]', UserType::PUBLISHER, f.object.role, id: 'user_role_publisher' %>
             <div class="content">
               <h3>Publisher</h3>
               <p>A publisher has only access to some sites to create their content</p>

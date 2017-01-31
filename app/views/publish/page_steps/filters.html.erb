@@ -1,0 +1,26 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Apply filters</h1>
+        <p>Filter the dataset and choose which columns the users will be able to filter themselves on the dashboard</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <div class="l-page-creation -filters">
+    <div class="wrapper">
+      <div class="js-filters"></div>
+    </div>
+  </div>
+  <%= render partial: 'publish/steps_shared/footer', locals: {f: f} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>

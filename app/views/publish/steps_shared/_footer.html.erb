@@ -1,0 +1,20 @@
+<div class="c-action-bar <%= local_assigns[:wide] ? '-wide' : '' %>">
+  <div class="wrapper">
+    <% if local_assigns[:cancel] %>
+      <%= link_to 'Cancel', local_assigns[:cancel], class: 'c-button -outline -dark-text' %>
+  <% else %>
+      <%= link_to 'Cancel', publish_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
+  <% end %>
+    <div>
+      <% unless local_assigns[:no_continue] %>
+        <%= f.button Publish::PageStepsController::CONTINUE, value: Publish::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' + ((f.object.id || local_assigns[:always_save]) ? ' -outline -dark-text' : '') %>
+      <% end %>
+      <% if (f.object.id || local_assigns[:always_save]) && (local_assigns[:never_save] != true) %>
+        <%= f.button Publish::PageStepsController::SAVE, value: Publish::PageStepsController::SAVE, type: 'submit', class: 'c-button js-submit' %>
+      <% end %>
+      <% if local_assigns[:publish] %>
+        <%= f.button Publish::PageStepsController::PUBLISH, value: Publish::PageStepsController::PUBLISH, type: 'submit', class: 'c-button' %>
+    <% end %>
+    </div>
+  </div>
+</div>

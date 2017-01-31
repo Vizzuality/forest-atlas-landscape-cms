@@ -1,0 +1,33 @@
+<% content_for :extended_header do %>
+    <div class="c-extended-header">
+      <div class="wrapper">
+        <div class="description">
+          <h1>Map</h1>
+          <p>Update this JSON to update the map's look and features.</p>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <div class="l-page-creation -map">
+    <div class="wrapper">
+        <div class="c-inputs-container -large">
+          <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
+            <div class="container">
+              <%= ff.label :settings, 'Map settings' %>
+              <%= ff.text_area :settings, class: 'js-editor' %>
+            </div>
+          <% end %>
+        </div>
+    </div>
+  </div>
+
+  <%= render partial: 'publish/steps_shared/footer', locals: {f: f, no_continue: true, always_save: true, publish: !@page.enabled} %>
+  <%= render partial: 'shared/errors', locals: { resource: @page } %>
+<% end %>
