@@ -78,7 +78,38 @@ Rails.application.routes.draw do
   end
 
   namespace :publish do
+    resources :profile, only: [:edit, :update]
 
+    resources :sites, param: :slug, only: :none do
+      resources :site_pages, only: :index do
+        member do
+          put :toggle_enable
+        end
+      end
+
+      resources :datasets, only: :index
+      resources :dataset_steps, only: [:new, :update, :show]
+
+      resources :widgets, only: [:index, :destroy]
+      resources :widget_steps, only: [:new, :update, :show] do
+        member do
+          get :filtered_results,
+              constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+        end
+      end
+
+      resources :page_steps, only: [:show, :update, :new] do
+        member do
+          get :filtered_results,
+              constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
+          get :widget_data,
+              constraints: lambda { |req| req.format == :json }
+        end
+      end
+      get '/structure', to: 'sites#structure'
+      put :update_structure
+    end
+    get '/', to: 'static_page#dashboard'
   end
 
 
