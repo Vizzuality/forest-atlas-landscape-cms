@@ -58,7 +58,7 @@ class SiteSetting < ApplicationRecord
   end
 
   def self.favico(site_id)
-    SiteSetting.find_by(name:,'favico', site_id: site_id)
+    SiteSetting.find_by(name: 'favico', site_id: site_id)
   end
 
   def self.color(site_id)
