@@ -327,13 +327,15 @@ def create_users
   @hector_arce_user = User.create(
     {
       email: 'hector.arce@vizzuality.com',
-      name: 'Hector Arce'
+      name: 'Hector Arce',
+      role: UserType::MANAGER
     }
   )
   @clara_linos_user = User.create(
     {
       email: 'clara.linos@vizzuality.com',
-      name: 'Clara Linos'
+      name: 'Clara Linos',
+      role: UserType::MANAGER
     }
   )
   @clement_prodhomme_user = User.create(

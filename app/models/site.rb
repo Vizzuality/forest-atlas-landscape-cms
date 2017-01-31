@@ -26,11 +26,15 @@ class Site < ApplicationRecord
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :managers
+  accepts_nested_attributes_for :publishers
   accepts_nested_attributes_for :routes, reject_if: proc {|r| r['host'].blank?}
 
   validates_presence_of :name, if: -> { required_for_step? :name }
   validates_presence_of :routes, if: -> { required_for_step? :name }
-  validates_presence_of :users, if: -> { required_for_step? :users }
+  # TODO Check if we still need managers/publishers
+  #validates_presence_of :managers, if: -> { required_for_step? :managers }
+  #validates_presence_of :publishers, if: -> { required_for_step? :publishers }
   validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   before_validation :generate_slug
