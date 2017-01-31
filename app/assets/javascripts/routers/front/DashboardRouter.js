@@ -476,6 +476,10 @@
       // If the decoded state is empty, it's because it failed
       if (!decodedState) {
         App.notifications.broadcast(App.Helper.Notifications.dashboard.corrupted);
+
+        // We load the dashboard as if there weren't any state in the URL
+        this.indexRoute();
+
         return;
       }
 

@@ -49,8 +49,10 @@ class DatasetSetting < ApplicationRecord
   def set_filters(value)
     valid = []
     value.each do |filter|
-      if ((filter['name'] && filter['to'] && filter['from']) ||
-        (filter['name'] && filter['values']))
+      if (filter['name'] && filter['to'] && filter['from'])
+        valid << filter
+      elsif (filter['name'] && filter['values'])
+        filter['values'] = JSON.parse(filter['values'])
         valid << filter
       end
     end
@@ -102,7 +104,8 @@ class DatasetSetting < ApplicationRecord
       sql_array = []
       conditions.each do |condition|
         if condition['values']
-          sql_array << " #{condition['name']} in (#{condition['values']})"
+          values = condition['values'].map{|x| "'#{x}'"}.join(',')
+          sql_array << " #{condition['name']} in (#{values})"
         else
           sql_array << " #{condition['name']} between #{condition['from']} and #{condition['to']}"
         end

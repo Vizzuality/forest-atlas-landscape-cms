@@ -16,17 +16,25 @@ class Site < ApplicationRecord
   has_many :site_pages, dependent: :destroy
   has_many :user_site_associations, dependent: :destroy
   has_many :users, through: :user_site_associations
+  has_many :site_managers, -> {manager}, class_name: 'UserSiteAssociation'
+  has_many :managers, source: :user, through: :site_managers
+  has_many :site_publishers, -> {publisher}, class_name: 'UserSiteAssociation'
+  has_many :publishers, source: :user, through: :site_publishers
   has_many :context_sites,  dependent: :destroy
   has_many :contexts, through: :context_sites
   has_many :site_settings, dependent: :destroy, inverse_of: :site
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :managers
+  accepts_nested_attributes_for :publishers
   accepts_nested_attributes_for :routes, reject_if: proc {|r| r['host'].blank?}
 
   validates_presence_of :name, if: -> { required_for_step? :name }
   validates_presence_of :routes, if: -> { required_for_step? :name }
-  validates_presence_of :users, if: -> { required_for_step? :users }
+  # TODO Check if we still need managers/publishers
+  #validates_presence_of :managers, if: -> { required_for_step? :managers }
+  #validates_presence_of :publishers, if: -> { required_for_step? :publishers }
   validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   before_validation :generate_slug
@@ -34,14 +42,16 @@ class Site < ApplicationRecord
   after_save :update_routes
   after_create :create_template_content
 
-#  cattr_accessor :form_steps do
-#    { pages: %w[name users contexts default_context style settings finish],
-#      names: ['Name', 'Users', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
-#  end
   cattr_accessor :form_steps do
-    { pages: %w[name users style settings finish],
-      names: ['Name', 'Users', 'Style', 'Settings', 'Finish'] }
+    { pages: %w[name managers publishers style settings finish],
+      names: ['Name', 'Managers', 'Publishers', 'Style', 'Settings', 'Finish'] }
   end
+  #cattr_accessor :form_steps do
+  #  { pages: %w[name managers publishers contexts default_context style settings finish],
+  #    names: ['Name', 'Managers', 'Publishers', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
+  #end
+
+
   attr_accessor :form_step
 
   def required_for_step?(step)

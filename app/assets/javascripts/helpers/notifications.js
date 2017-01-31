@@ -36,6 +36,11 @@
         type: 'error',
         content: 'The widget\'s data couldn\'t be retrieved!',
         additionalContent: 'After a second try, if the error keeps on happening, please insert it later.'
+      },
+      imageUploadError: {
+        type: 'error',
+        content: 'The image couldn\'t be correctly uploaded!',
+        additionalContent: 'If the issue keeps on happening, try to reduce its size.'
       }
     },
 
@@ -125,6 +130,15 @@
       loadingWarning: {
         type: 'warning',
         content: 'A chart on this page couldn\'t be loaded properly!'
+      }
+    },
+
+    profile: {
+      deletion: {
+        type: 'warning',
+        content: 'Are you sure you want to permanently delete your account?',
+        dialogButtons: true,
+        closeable: false
       }
     }
 

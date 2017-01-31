@@ -15,7 +15,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'dotenv-rails', '~> 2.1'
 
 gem 'closure_tree'
-gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'paperclip', '~> 5.0.0'
 gem 'will_paginate', '~> 3.1.0'
 gem 'active_model_serializers', '~> 0.10.0'

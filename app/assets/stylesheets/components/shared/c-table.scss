@@ -13,12 +13,25 @@
   }
 
   tr {
-    td {
-      border-bottom: 1px dashed $color-13;
+
+    &.no-data,
+    &.no-result {
+      text-align: center;
     }
 
-    &:hover td {
-      background-color: $color-2;
+    td {
+      border-bottom: 1px dashed $color-13;
+
+      a {
+        color: $color-4;
+        &:hover { color: $color-1; }
+      }
+    }
+
+    &:not(.no-data):not(.no-result):hover {
+      td {
+        background-color: $color-2;
+      }
     }
   }
 
@@ -77,6 +90,7 @@
     color: $color-1;
     font-family: $font-family-1;
     font-size: $font-size-normal;
+    text-align: left;
     cursor: pointer;
   }
 }

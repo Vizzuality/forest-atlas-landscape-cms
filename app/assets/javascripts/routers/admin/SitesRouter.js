@@ -41,6 +41,7 @@
               return {
                 name: key,
                 value: row[key].value,
+                link: row[key].link,
                 searchable: row[key].searchable,
                 sortable: row[key].sortable
               };
@@ -70,28 +71,35 @@
         ]
       });
 
-      // We initialize the table
-      new App.View.TableView({
-        el: $('.js-table'),
-        collection: new TableCollection(gon.sites, { parse: true }),
-        tableName: 'List of sites',
-        searchFieldContainer: $('.js-table-search')[0]
-      });
+      var tableCollection = new TableCollection(gon.sites, { parse: true });
+      var tableContainer = document.querySelector('.js-table');
 
-      // We attach a dialog notification to the delete buttons
-      $('.js-confirm').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation(); // Prevents rails to automatically delete the site
+      if (tableCollection.length === 0) {
+        tableContainer.innerHTML = '<p class="no-data">There aren\'t any site to display yet.</p>';
+      } else {
+        // We initialize the table
+        new App.View.TableView({
+          el: tableContainer,
+          collection: tableCollection,
+          tableName: 'List of sites',
+          searchFieldContainer: $('.js-table-search')[0]
+        });
 
-        App.notifications.broadcast(Object.assign({},
-          App.Helper.Notifications.site.deletion,
-          {
-            continueCallback: function () {
-              $.rails.handleMethod($(e.target));
+        // We attach a dialog notification to the delete buttons
+        $('.js-confirm').on('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation(); // Prevents rails to automatically delete the site
+
+          App.notifications.broadcast(Object.assign({},
+            App.Helper.Notifications.site.deletion,
+            {
+              continueCallback: function () {
+                $.rails.handleMethod($(e.target));
+              }
             }
-          }
-        ));
-      });
+          ));
+        });
+      }
     }
   });
 })(this.App));

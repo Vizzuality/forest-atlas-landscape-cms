@@ -54,10 +54,10 @@ input {
 }
 
 .wrapper {
-  max-width: $body-max-width;
   width: 100%;
-  padding: 0 $wrapper-mobile-padding;
+  max-width: $body-max-width;
   margin: 0 auto;
+  padding: 0 $wrapper-mobile-padding;
 
   @media #{$mq-mobile} {
     padding: 0 $wrapper-tablet-padding;
@@ -74,6 +74,10 @@ input {
 
 .turbolinks-progress-bar {
   background-color: $color-1;
+
+  @if $admin {
+    background-color: $color-3;
+  }
 }
 
 ::selection {

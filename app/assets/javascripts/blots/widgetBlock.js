@@ -11,7 +11,9 @@
   // ".js" and read how to proceed.
 
   /* eslint-disable */
-  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
@@ -38,10 +40,69 @@ var WidgetBlot = function (_Embed) {
     var _this = _possibleConstructorReturn(this, (WidgetBlot.__proto__ || Object.getPrototypeOf(WidgetBlot)).call(this, domNode, value));
 
     _this.editor = window.editor;
+    _this.caption = domNode.querySelector('.js-caption');
+    _this.widgetContainer = _this.domNode.querySelector('.js-widget-container');
 
-    _this.domNode.innerHTML = '<div class="c-loading-spinner"></div>';
+    if (!_this.editor.options.readOnly) {
+      // We make the caption editable
+      _this.caption.setAttribute('contenteditable', true);
+    }
+
+    _this.widgetContainer.innerHTML = '<div class="c-loading-spinner"></div>';
 
     _this._fetchWidget().done(function () {
+      _this._initWidget();
+
+      // If wanted, we set the widget's description as default text
+      // of the caption
+      if (_this.caption.dataset.defaultCaption) {
+        _this.caption.textContent = _this.model.toJSON().description;
+      }
+    }).fail(function () {
+      if (!this.editor.options.readOnly) {
+        App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
+        this._onClickRemove();
+      } else {
+        App.notifications.broadcast(App.Helper.Notifications.widget.loadingWarning);
+      }
+
+      this.widgetContainer.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
+    }.bind(_this));
+    return _this;
+  }
+
+  /**
+   * Fetch the data associated to the widget
+   * @returns {any} jQuery deferred object
+   */
+
+
+  _createClass(WidgetBlot, [{
+    key: '_fetchWidget',
+    value: function _fetchWidget() {
+      var id = WidgetBlot.value(this.domNode).id;
+
+      var url = '/widget_data.json?widget_id=' + id;
+      if (this.editor.options.readOnly) {
+        url = window.location.origin + url;
+      } else {
+        url = window.location.pathname + url;
+      }
+
+      this.model = new (Backbone.Model.extend({
+        url: url
+      }))();
+
+      return this.model.fetch();
+    }
+
+    /**
+     * Init the widget
+     */
+
+  }, {
+    key: '_initWidget',
+    value: function _initWidget() {
       var _this2 = this;
 
       var chart = this.model.toJSON();
@@ -60,7 +121,7 @@ var WidgetBlot = function (_Embed) {
 
       // We render the widget
       this.widget = new App.View.ChartWidgetView({
-        el: domNode,
+        el: this.domNode.querySelector('.js-widget-container'),
         data: chart.data,
         chart: config.type,
         columnX: config.x,
@@ -78,47 +139,11 @@ var WidgetBlot = function (_Embed) {
       setTimeout(function () {
         return _this2.widget.render();
       }, 0);
-    }.bind(_this)).fail(function () {
-      if (!this.editor.options.readOnly) {
-        App.notifications.broadcast(App.Helper.Notifications.page.widgetError);
-        this._onClickRemove();
-      } else {
-        App.notifications.broadcast(App.Helper.Notifications.widget.loadingWarning);
-      }
-
-      this.domNode.innerHTML = '<p class="error">This widget couldn\'t be loaded properly</p>';
-    }.bind(_this));
-    return _this;
-  }
-
-  /**
-   * Fetch the data associated to the widget
-   * @returns {any} jQuery deferred object
-   */
-
-
-  _createClass(WidgetBlot, [{
-    key: '_fetchWidget',
-    value: function _fetchWidget() {
-      var id = WidgetBlot.value(this.domNode);
-
-      var url = '/widget_data.json?widget_id=' + id;
-      if (this.editor.options.readOnly) {
-        url = window.location.origin + url;
-      } else {
-        url = window.location.pathname + url;
-      }
-
-      this.model = new (Backbone.Model.extend({
-        url: url
-      }))();
-
-      return this.model.fetch();
     }
 
     /**
      * Create the DOM node
-     * @param {any} value - attributes describing the widget
+     * @param {any} obj - attributes describing the widget
      * @returns {HTMLElement} node
      */
 
@@ -135,6 +160,12 @@ var WidgetBlot = function (_Embed) {
     value: function format(name, value) {
       if (name === 'id') {
         this.domNode.dataset.id = value;
+      } else if (name === 'caption') {
+        if (value) {
+          this.caption.textContent = value;
+        } else {
+          this.caption.parentElement.removeChild(this.caption);
+        }
       } else {
         _get(WidgetBlot.prototype.__proto__ || Object.getPrototypeOf(WidgetBlot.prototype), 'format', this).call(this, name, value);
       }
@@ -180,14 +211,50 @@ var WidgetBlot = function (_Embed) {
     }
   }], [{
     key: 'create',
-    value: function create(value) {
+    value: function create(obj) {
       var node = _get(WidgetBlot.__proto__ || Object.getPrototypeOf(WidgetBlot), 'create', this).call(this);
 
+      // On the next line we need to check the type of obj because the widget's value (obj)
+      // was saved differently in the past and we need to ensure the compatibility with the
+      // previous widgets
+      var id = (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' ? obj.id : obj;
+      var defaultCaption = obj.defaultCaption || false;
+
+      var widgetContainer = document.createElement('div');
+      widgetContainer.classList.add('widget-container', 'js-widget-container');
+      node.appendChild(widgetContainer);
+
       // We save the id of the widget into the DOM
-      node.dataset.id = value;
+      node.dataset.id = id;
 
       // We don't want the user to be able to edit the widget
       node.setAttribute('contenteditable', false);
+
+      // We add the caption container
+      var captionContainer = document.createElement('p');
+      captionContainer.classList.add('caption', 'js-caption');
+      if (defaultCaption) captionContainer.dataset.defaultCaption = 'true';
+
+      node.appendChild(captionContainer);
+
+      // If we don't disable the "content editable" feature of the editor
+      // when the user writes in the caption container, the browsers
+      // jump to the top as it considers it as the element we're editing
+      captionContainer.addEventListener('focusin', function () {
+        window.editor.root.setAttribute('contenteditable', false);
+      });
+
+      captionContainer.addEventListener('focusout', function () {
+        window.editor.root.setAttribute('contenteditable', true);
+      });
+
+      captionContainer.addEventListener('blur', function () {
+        // If the user deleted the whole content, we want the default
+        // text to appear, nevertheless a br tag is inserted so we delete it
+        if (!this.textContent.length && this.innerHTML.length) {
+          this.innerHTML = '';
+        }
+      });
 
       return node;
     }
@@ -196,14 +263,16 @@ var WidgetBlot = function (_Embed) {
      * Return the attributes describing the widget
      * @static
      * @param {HTMLElement} node
-     * @returns {number}
+     * @returns {object}
      * @memberOf WidgetBlot
      */
 
   }, {
     key: 'value',
     value: function value(node) {
-      return +node.dataset.id;
+      return {
+        id: +node.dataset.id
+      };
     }
 
     /**
@@ -217,9 +286,16 @@ var WidgetBlot = function (_Embed) {
   }, {
     key: 'formats',
     value: function formats(node) {
-      return {
+      var res = {
         id: +node.dataset.id
       };
+
+      var caption = node.querySelector('.js-caption');
+      if (caption && caption.textContent) {
+        res.caption = caption.textContent;
+      }
+
+      return res;
     }
   }]);
 

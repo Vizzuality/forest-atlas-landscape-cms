@@ -22,11 +22,15 @@ class ImageBlot extends Embed {
     super(domNode, value);
 
     this.image = domNode.querySelector('.js-image');
+    this.caption = domNode.querySelector('.js-caption');
     this.editor = window.editor;
 
     if (!this.editor.options.readOnly) {
       // We render the toolbar
       this._renderToolbar();
+
+      // We make the caption editable
+      this.caption.setAttribute('contenteditable', true);
 
       // We attach the listeners
       this.image.addEventListener('mouseover',() => this._onMouseoverImage());
@@ -36,7 +40,7 @@ class ImageBlot extends Embed {
 
   /**
    * Create the DOM node
-   * @param {string} value - URL of the image (or base64)
+   * @param {any} value - URL of the image (or base64)
    * @returns {HTMLElement} node
    */
   static create(value) {
@@ -44,9 +48,37 @@ class ImageBlot extends Embed {
 
     const image = document.createElement('img');
     image.classList.add('js-image');
-    image.setAttribute('src', value);
+    if (typeof value === 'string') image.setAttribute('src', value);
 
     node.appendChild(image);
+
+    // We don't want the user to be able to add text within the container
+    node.setAttribute('contenteditable', false);
+
+    // We add the caption container
+    const captionContainer = document.createElement('p');
+    captionContainer.classList.add('caption', 'js-caption');
+
+    node.appendChild(captionContainer);
+
+    // If we don't disable the "content editable" feature of the editor
+    // when the user writes in the caption container, the browsers
+    // jump to the top as it considers it as the element we're editing
+    captionContainer.addEventListener('focusin', function () {
+        window.editor.root.setAttribute('contenteditable', false);
+      });
+
+    captionContainer.addEventListener('focusout', function () {
+      window.editor.root.setAttribute('contenteditable', true);
+    });
+
+    captionContainer.addEventListener('blur', function () {
+      // If the user deleted the whole content, we want the default
+      // text to appear, nevertheless a br tag is inserted so we delete it
+      if (!this.textContent.length && this.innerHTML.length) {
+        this.innerHTML = '';
+      }
+    });
 
     return node;
   }
@@ -71,10 +103,17 @@ class ImageBlot extends Embed {
    */
   static formats(node) {
     let format = {};
+
     const image = node.querySelector('.js-image');
     if (image.hasAttribute('src')) {
       format.src = image.getAttribute('src');
     }
+
+    const caption = node.querySelector('.js-caption');
+    if (caption.textContent) {
+      format.caption = caption.textContent;
+    }
+
     return format;
   }
 
@@ -90,6 +129,12 @@ class ImageBlot extends Embed {
         this.image.setAttribute(name, value);
       } else {
         this.image.removeAttribute(name, value);
+      }
+    } else if (name === 'caption') {
+      if (value) {
+        this.caption.textContent = value;
+      } else {
+        this.caption.parentElement.removeChild(this.caption);
       }
     } else {
       super.format(name, value);

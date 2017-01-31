@@ -21,10 +21,15 @@
       // Active option (from the list above)
       // NOTE: This is mandatory
       activeOption: null,
+      // If true, the active option will always be the same
+      // When the user choose another one, only the callback will be executed
+      // The active option won't appear in the list of options
+      fixedOption: false,
       // Use the short name for the active option when the selector is closed
       useShortName: false,
       // Position of the arrow relatively to the active option's name
       // Choose between "right" and "left"
+      // Set to "null" if you don't want the arrow to appear
       arrowPosition: 'right',
       // Towards which direction the selector should be aligned
       align: 'left',
@@ -120,17 +125,20 @@
      */
     _setActiveOption: function (option) {
       var id = option.dataset.id;
-      var activeOption = this.el.querySelector('.js-option.-active');
 
-      activeOption.classList.remove('-active');
-      activeOption.setAttribute('tabindex', -1);
-      option.classList.add('-active');
+      if (!this.options.fixedOption) {
+        var activeOption = this.el.querySelector('.js-option.-active');
 
-      this.options.activeOption = _.findWhere(this.options.options, { id: id });
+        activeOption.classList.remove('-active');
+        activeOption.setAttribute('tabindex', -1);
+        option.classList.add('-active');
 
-      // We update the UI with the name of the new active option
-      var activeOptionName = this.options.activeOption[this.options.useShortName ? 'shortName' : 'name'];
-      this.el.querySelector('.js-list-btn').textContent = activeOptionName;
+        this.options.activeOption = _.findWhere(this.options.options, { id: id });
+
+        // We update the UI with the name of the new active option
+        var activeOptionName = this.options.activeOption[this.options.useShortName ? 'shortName' : 'name'];
+        this.el.querySelector('.js-list-btn').textContent = activeOptionName;
+      }
 
       this.options.onChangeCallback(id);
       this._hideDropdown();
@@ -186,7 +194,13 @@
      */
     _toggleDropdown: function () {
       var isOpened = this.dropdown.classList.toggle('-visible');
-      var activeOption = this.el.querySelector('.js-option.-active');
+
+      var activeOption;
+      if (this.options.fixedOption) {
+        activeOption = this.el.querySelector('.js-option');
+      } else {
+        activeOption = this.el.querySelector('.js-option.-active');
+      }
 
       if (isOpened) {
         this._setOptionFocus(activeOption);
@@ -207,6 +221,7 @@
       this.el.innerHTML = this.template({
         options: this.options.options,
         activeOption: this.options.activeOption,
+        fixedOption: this.options.fixedOption,
         useShortName: this.options.useShortName,
         align: this.options.align,
         arrowPosition: this.options.arrowPosition,

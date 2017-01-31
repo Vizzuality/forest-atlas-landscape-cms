@@ -307,39 +307,42 @@ def create_users
     {
       email: 'tiago.garcia@vizzuality.com',
       name: 'Tiago Garcia',
-      admin: true
+      role: UserType::ADMIN
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
       name: 'Tiago Santos',
-      admin: true
+      role: UserType::ADMIN
     }
   )
   @jose_angel_user = User.create(
     {
       email: 'joseangel.parreno@vizzuality.com',
       name: 'Jose Angel'
+
     }
   )
   @hector_arce_user = User.create(
     {
       email: 'hector.arce@vizzuality.com',
-      name: 'Hector Arce'
+      name: 'Hector Arce',
+      role: UserType::MANAGER
     }
   )
   @clara_linos_user = User.create(
     {
       email: 'clara.linos@vizzuality.com',
-      name: 'Clara Linos'
+      name: 'Clara Linos',
+      role: UserType::MANAGER
     }
   )
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
       name: 'Clément Prodhomme',
-      admin: true
+      role: UserType::ADMIN
     }
   )
 =begin
@@ -429,7 +432,7 @@ def create_contexts
     c = Context.create!(
       {
         name: "Context #{i}",
-        user_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id, @daniel_caso_user.id, @david_gonzalez_user.id, @david_inga_user.id, @jose_angel_user.id, @hector_arce_user.id],
+        owner_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id, @daniel_caso_user.id, @david_gonzalez_user.id, @david_inga_user.id, @jose_angel_user.id, @hector_arce_user.id],
         site_ids: [@base_site.id, @staging_demo_site.id]
       })
     datasets.each{|d| c.context_datasets.build(dataset_id: d)}

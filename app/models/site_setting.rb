@@ -19,7 +19,7 @@ class SiteSetting < ApplicationRecord
   belongs_to :site, inverse_of: :site_settings
   validates_presence_of :site
 
-  NAMES = %w[logo_image logo_background color flag]
+  NAMES = %w[logo_image main_image alternative_image favico color flag]
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
@@ -49,6 +49,18 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'logo_image', site_id: site_id)
   end
 
+  def self.main_image(site_id)
+    SiteSetting.find_by(name: 'main_image', site_id: site_id)
+  end
+
+  def self.alternative_image(site_id)
+    SiteSetting.find_by(name: 'alternative_image', site_id: site_id)
+  end
+
+  def self.favico(site_id)
+    SiteSetting.find_by(name: 'favico', site_id: site_id)
+  end
+
   def self.color(site_id)
     SiteSetting.find_by(name: 'color', site_id: site_id)
   end
@@ -76,8 +88,10 @@ class SiteSetting < ApplicationRecord
   def self.create_additional_settings site
     unless site.site_settings.length > 1
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
-      site.site_settings.new(name: 'logo_background', value: '#000000', position: 3)
-      site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'
+      site.site_settings.new(name: 'main_image', value: '', position: 3)
+      site.site_settings.new(name: 'alternative_image', value: '', position: 4)
+      site.site_settings.new(name: 'favico', value: '', position: 5)
+      site.site_settings.new(name: 'flag', value: '#000000', position: 6) if site.site_template.name == 'Forest Atlas'
     end
   end
 

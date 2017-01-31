@@ -3,10 +3,12 @@ Rails.application.routes.draw do
     resources :sites, param: :slug do
       resources :site_steps, only: [:show, :update, :edit]
     end
+
     resources :site_steps, only: [:show, :update, :new]
     resources :users, only: [:index, :destroy] do
       resources :user_steps, only: [:edit, :show, :update]
     end
+
     resources :user_steps, only: [:new, :show, :update]
     resources :routes
     resources :site_templates
@@ -15,11 +17,15 @@ Rails.application.routes.draw do
     resources :datasets, only: :index do
       get 'dataset'
     end
+
     resources :contexts
+
     get '/', to: redirect('/admin/sites')
   end
 
   namespace :management do
+    resources :profile, only: [:edit, :update]
+
     resources :sites, param: :slug, only: :none do
       resources :site_pages, only: [:index, :destroy] do
         member do
@@ -49,6 +55,7 @@ Rails.application.routes.draw do
           end
         end
       end
+
       resources :widget_steps, only: [:new, :update, :show] do
         member do
           get :filtered_results,
@@ -80,7 +87,7 @@ Rails.application.routes.draw do
 
   # Auth
   get 'auth/login', to: 'auth#login'
-  post 'auth/logout', to: 'auth#logout'
+  get 'auth/logout', to: 'auth#logout'
   get '/not_found', to: 'static_page#not_found'
 
   DynamicRouter.load

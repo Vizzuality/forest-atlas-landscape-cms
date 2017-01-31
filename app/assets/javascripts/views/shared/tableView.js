@@ -49,14 +49,19 @@
       // Current pagination index
       paginationIndex: 0,
       // Collection representing the table
-      // Each row can contain the name of the column, the value of the cell or an html content, and
-      // a attribute to tell if the column can be searchable / sortable
+      // Each row can contain the name of the column, the value of the cell or an html content,
+      // a, attribute to tell if the column can be searchable and another to tell if it's sortable
+      // The value attribute can have an array of strings
+      // An optional link attribute can be present, it contains its url and an attribute to tell
+      // if the link is external or not (this is not built for multi-value cells)
       // An example of the format can be:
       // [
       //   {
       //     row: [
       //       { name: 'Price', value: '$3', searchable: true },
-      //       { name: null, html: '<button type="button">Delete</button>', searchable: false }
+      //       { name: 'Countries', value: ['Spain', 'France'], searchable: true, sortable: false },
+      //       { name: null, html: '<button type="button">Delete</button>', searchable: false },
+      //       { name: Device, value: 'iPhone 6', link: { url: 'https://www.apple.com', external: true }, searchable: false }
       //     ]
       //   }
       // ]
@@ -78,14 +83,14 @@
       searchQuery: null,
       // Number of values displayed by cell
       // Once the number is reached, a button lets the user see the rest of the list
-      valuesPerCell: 15
+      valuesPerCell: 5
     },
 
     template: HandlebarsTemplates['shared/table'],
     modalTemplate: HandlebarsTemplates['shared/table-modal'],
 
     initialize: function (settings) {
-      this.options = _.extend(this.defaults, settings);
+      this.options = Object.assign({}, this.defaults, settings);
 
       if (!this.options.collection) {
         throw new Error('Please provide to the table component a collection to fetch.');
@@ -377,6 +382,7 @@
       this.$el.html(this.template({
         tableName: this.options.tableName,
         headers: headers,
+        columnCount: headers.length,
         rows: this._getRenderableRows(),
         sortColumn: sortColumn,
         sortOrder: this.options.sortOrder === 1 ? 'ascending' : 'descending',

@@ -33,7 +33,9 @@
       // Contexts
       'contexts': 'Contexts',
       'contexts/(:id)/context_steps/(:step)': 'Index',
-      'context_steps/(:step)': 'Index'
+      'context_steps/(:step)': 'Index',
+      // Profile
+      'management/profile/:id/edit': 'Profile'
     }
   });
 
@@ -45,20 +47,30 @@
       var Router = App.Router['Management' + routeName];
 
       if (Router) {
-        new Router(params.slice(0, params.length - 1));
+        // The try catch statement is used to ensure we always
+        // load the Quick links component
+        try {
+          new Router(params.slice(0, params.length - 1));
+          Backbone.history.start({ pushState: false });
+        } catch (e) {
+          throw new Error(e);
+        } finally {
+          // We instantiate the Quick links component
+          var quickLinksParams = {};
 
-        Backbone.history.start({ pushState: false });
+          if (/^\/contexts?/.test(location.pathname)) {
+            quickLinksParams.activeLink = 'contexts';
+          } else if (/management\/profile/.test(location.pathname)) {
+            quickLinksParams.activeLink = 'management';
+          } else if (params.length && params[0]) {
+            quickLinksParams.activeLink = params[0];
+          }
 
-        // We instantiate the Quick links component
-        var quickLinksParams = {};
+          new App.View.QuickLinksView(quickLinksParams);
 
-        if (/^\/contexts?/.test(location.pathname)) {
-          quickLinksParams.activeLink = 'contexts';
-        } else if (params.length && params[0]) {
-          quickLinksParams.activeLink = params[0];
+          // We instantiate the User links component
+          new App.View.UserLinksView();
         }
-
-        new App.View.QuickLinksView(quickLinksParams);
       }
     });
 

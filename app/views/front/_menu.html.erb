@@ -37,7 +37,9 @@
 
   <div class="mobile-menu wrapper">
     <div class="logo-container" href="/">
-      <a class="logo" href="/" style="background-image: url(<%= (@image_url && @image_url != '/')? asset_url(@image_url) : asset_url('logo')%>);"></a>
+      <a class="logo" href="/">
+        <%= image_tag((@image_url && @image_url != '/') ? @image_url : asset_path('logo.png')) %>
+      </a>
     </div>
     <div class="hamburger-menu js-mobile-menu">
       <div></div>
@@ -48,7 +50,9 @@
 
   <div class="desktop-menu wrapper">
     <div class="logo-container">
-      <a class="logo" href="/" style="background-image: url(<%= (@image_url && @image_url != '/')? @image_url : asset_path('logo.png')%>);"></a>
+      <a class="logo" href="/">
+        <%= image_tag((@image_url && @image_url != '/') ? @image_url : asset_path('logo.png')) %>
+      </a>
     </div>
     <ul>
       <% @menu_root.children.each do |child_page| -%>
@@ -76,14 +80,13 @@
     </ul>
   </div>
 
-  <div class="flag-border">
-    <!--  Add here a list of div with background color to display the flag -->
-    <div style="background-color: #002d84;"></div>
-    <div style="background-color: white;"></div>
-    <div style="background-color: #20981e;"></div>
-    <div style="background-color: #ffcf00;"></div>
-    <div style="background-color: #d4062f;"></div>
-  </div>
+  <% if @flag.size > 0 %>
+    <div class="flag-border">
+      <% @flag.each do |flag| %>
+        <div style="background-color: <%= flag %>;"></div>
+      <% end %>
+    </div>
+  <% end %>
 
   <% if @site_page.depth > 0 %>
     <div class="sub-menu">

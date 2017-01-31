@@ -1,8 +1,8 @@
 <div class="c-extended-header">
   <div class="wrapper">
     <div class="description">
-      <h1>Sites</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+      <h1>Owners</h1>
+      <p>Select the persons that will be owners of the context</p>
     </div>
   </div>
 </div>
@@ -30,4 +30,3 @@
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: contexts_path} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @context } %>
-<%= console if Rails.env.development? %>

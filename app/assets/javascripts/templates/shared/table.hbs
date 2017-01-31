@@ -41,7 +41,11 @@
                 {{/each_slice}}
               {{else}}
                 {{#if value}}
-                  {{value}}
+                  {{#if link}}
+                    <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a>
+                  {{else}}
+                    {{value}}
+                  {{/if}}
                 {{else}}
                   –
                 {{/if}}
@@ -53,11 +57,11 @@
     {{else}}
       {{#if isSearchResult}}
         <tr class="no-result" role="row">
-          <td role="gridcell">No result</td>
+          <td role="gridcell" colspan="{{columnCount}}">No result</td>
         </tr>
       {{else}}
         <tr class="no-data" role="row">
-          <td role="gridcell">No data</td>
+          <td role="gridcell" colspan="{{columnCount}}">No data</td>
         </tr>
       {{/if}}
     {{/each}}

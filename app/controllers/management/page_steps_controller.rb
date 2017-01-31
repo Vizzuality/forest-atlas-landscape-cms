@@ -48,7 +48,7 @@ class Management::PageStepsController < ManagementController
     session[:page] = {}
     session[:dataset_setting] = {}
     session[:invalid_steps] = 'type'
-    redirect_to wizard_path('position')
+    redirect_to wizard_path(steps[0])
   end
 
   def show
@@ -105,7 +105,8 @@ class Management::PageStepsController < ManagementController
         gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
-        gon.legend = @dataset_setting.legend
+        gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.legend
+        gon.test = @dataset_setting
 
         @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 

@@ -31,4 +31,25 @@ class UserService
     {valid: res.success?, error: error}
   end
 
+  # Updated the name of the user
+  # Params
+  # +token+:: The token to authenticate at the API
+  # +id+:: The user id at the API
+  def self.delete(token, id)
+    res = @conn.delete do |req|
+      req.url '/auth/user/' + id
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+    end
+
+    error = ''
+    begin
+      res_json = JSON.parse res.body
+      error = res_json['errors'].first['detail']
+    rescue
+    end
+    {valid: res.success?, error: error}
+
+  end
+
 end

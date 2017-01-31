@@ -4,8 +4,8 @@ class Admin::SiteStepsController < AdminController
 
   URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
-  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
-  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
+  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_5'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][5]'.freeze
 
   SAVE = 'Save Changes'.freeze
   CONTINUE = 'Continue'.freeze
@@ -39,8 +39,11 @@ class Admin::SiteStepsController < AdminController
       gon.global.url_array = @site.routes.to_a
     else
       @site = current_site
-      if step == 'users'
-        @users = User.where('admin is not true')
+      if step == 'managers'
+        @managers = User.where(role: UserType::MANAGER)
+      end
+      if step == 'publishers'
+        @publishers = User.where(role: UserType::PUBLISHER)
       end
       if step == 'style'
         SiteSetting.create_color_settings @site
@@ -54,6 +57,9 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
         @logo_image = @site.site_settings.where(name: 'logo_image').first
+        @main_image = @site.site_settings.where(name: 'main_image').first
+        @alternative_image = @site.site_settings.where(name: 'alternative_image').first
+        @favico = @site.site_settings.where(name: 'favico').first
       end
     end
     render_wizard
@@ -82,32 +88,48 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-      when 'users'
+      # TODO: REFACTOR THIS
+      when 'managers'
         @site = current_site
-        unless params[:site].blank?
-          if save_button?
-            if @site.save
-              redirect_to admin_sites_path
-            else
-              @users = User.where('admin is not true')
-              render_wizard
-            end
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path
           else
-            @site.form_step = 'users'
-
-            if @site.valid?
-              redirect_to next_wizard_path
-            else
-              @users = User.where('admin is not true')
-              render_wizard
-            end
+            @managers = User.where(role: UserType::MANAGER)
+            render_wizard
           end
         else
-          @site = Site.new
-          @site.errors.add(:users, 'Site must have at least one user')
-          @users = User.where('admin is not true')
-          render_wizard
+          @site.form_step = 'managers'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            @managers = User.where(role: UserType::MANAGER)
+            render_wizard
+          end
         end
+
+
+      when 'publishers'
+        @site = current_site
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path
+          else
+            @publishers = User.where(role: UserType::PUBLISHER)
+            render_wizard
+          end
+        else
+          @site.form_step = 'publishers'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            @publishers = User.where(role: UserType::PUBLISHER)
+            render_wizard
+          end
+        end
+
 
       when 'style'
         @site = current_site

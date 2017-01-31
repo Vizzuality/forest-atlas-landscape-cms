@@ -1,13 +1,16 @@
+$wysiwyg-width: 880px;
+$wysiwyg-lateral-padding: 105px;
+
 .c-wysiwyg {
   position: relative;
-  max-width: 880px;
+  max-width: $wysiwyg-width;
   min-height: calc(100vh - 533px);
   margin: 0 auto;
   border: 1px solid $color-13;
 
   .ql-editor {
     min-height: 100%;
-    padding: 30px 105px;
+    padding: 30px $wysiwyg-lateral-padding;
     overflow: visible;
   }
 
@@ -226,11 +229,19 @@
     }
 
     h1 {
-      margin-bottom: 25px;
+      margin: 40px auto 10px;
       color: $color-4;
       font-size: $font-size-huge;
       font-weight: $font-weight-light;
       letter-spacing: .3px;
+    }
+
+    h2 {
+      margin: 20px auto 5px;
+      color: $color-4;
+      font-size: $font-size-medium;
+      font-weight: $font-weight-bold;
+      letter-spacing: .2px;
     }
 
     p {
@@ -238,7 +249,7 @@
       line-height: 1.5;
 
       & + p {
-        margin-top: 20px;
+        margin-top: .9em;
       }
     }
 
@@ -260,15 +271,42 @@
       }
     }
 
+    ul,
+    ol {
+      display: block;
+      margin: .5em 0;
+
+      li {
+        display: list-item;
+      }
+    }
+
     .-image {
       position: relative;
+      width: calc(100% + 390px);
+      margin: 35px -195px;
 
       > img {
         display: block;
-        width: calc(100% + 390px);
-        max-width: none;
-        margin: 35px -195px;
+        max-width: 100%;
+        margin: 0 auto;
         border-radius: 4px;
+      }
+
+      > .caption {
+        display: block;
+        width: 100%;
+        max-width: #{$wysiwyg-width - 2 * $wysiwyg-lateral-padding};
+        margin: 12px auto 0;
+        font-style: italic;
+        text-align: right;
+
+        &:empty {
+          &::before {
+            color: rgba($color-4, .5);
+            content: 'Edit me to add a caption to the image';
+          }
+        }
       }
     }
 
@@ -284,10 +322,6 @@
       position: relative;
       width: calc(100% + 390px);
       margin: 35px -195px;
-      padding: 45px;
-      clear: both; // Prevents issue with another floated widget
-      border: 1px solid $color-13;
-      background-color: $color-3;
 
       &:not(:hover) .toolbar {
         display: none;
@@ -296,89 +330,29 @@
       .error {
         text-align: center;
       }
+
+      > .widget-container {
+        padding: 45px;
+        border: 1px solid $color-13;
+        border-radius: 4px;
+        background-color: $color-3;
+      }
+
+      > .caption {
+        display: block;
+        width: 100%;
+        max-width: #{$wysiwyg-width - 2 * $wysiwyg-lateral-padding};
+        margin: 12px auto 0;
+        font-style: italic;
+        text-align: right;
+
+        &:empty {
+          &::before {
+            color: rgba($color-4, .5);
+            content: 'Edit me to add a caption to the widget';
+          }
+        }
+      }
     }
   }
-
-
-  // p {
-  //   margin: 0;
-  //   font-size: $font-size-s-normal;
-
-  //   &.-intro {
-  //     font-size: $font-size-x-normal;
-  //     font-weight: $font-weight-light;
-
-  //     &.-empty {
-  //       position: relative;
-  //       min-height: $font-size-x-normal;
-
-  //       &::after {
-  //         display: inline-block;
-  //         position: absolute;
-  //         top: 0;
-  //         left: 0;
-  //         color: rgba($color-4, .3);
-  //         content: 'Introduction';
-  //       }
-  //     }
-  //   }
-  // }
-
-  // .quote {
-  //   font-size: $font-size-x-normal;
-  //   font-style: italic;
-
-  //   &::before {
-  //     content: '“';
-  //   }
-
-  //   &::after {
-  //     content: '”';
-  //   }
-
-  //   &.-empty {
-  //     position: relative;
-  //     min-height: $font-size-x-normal;
-
-  //     &::before {
-  //       position: absolute;
-  //       top: 0;
-  //       left: 0;
-  //       color: rgba($color-4, .3);
-  //       content: '“Citation”';
-  //     }
-
-  //     &::after {
-  //       content: none;
-  //     }
-  //   }
-  // }
-
-  // .st-block {
-  //   &[data-type='title'] {
-  //     margin: 40px 0 15px;
-  //   }
-
-  //   &[data-type='introduction'] {
-  //     margin: 15px 0;
-  //   }
-
-  //   &[data-type='quote'] {
-  //     margin: 15px 0;
-
-  //     > .st-block__inner {
-  //       margin: 0 110px;
-  //     }
-  //   }
-
-  //   &[data-type='text'] {
-  //     margin: 10px 0;
-  //   }
-  // }
-
-  // .st-block-replacer {
-  //   // Do not remove unless you make sure the "+" button doesn't overlap the action bar
-  //   z-index: 0;
-  // }
-
 }

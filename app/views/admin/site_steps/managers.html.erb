@@ -14,7 +14,7 @@
   <div class="l-site-creation -users">
     <div class="wrapper">
         <div class="c-cards-list">
-          <% @users.each do |user| %>
+          <% @managers.each do |user| %>
             <div class="card">
               <label for="user-<%= user.id %>"><%= user.name %></label>
               <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user), id: ('user-' + user.id.to_s) %>
