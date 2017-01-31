@@ -25,6 +25,7 @@
   }
 
   h1,
+  h2,
   p,
   blockquote,
   ul,
@@ -35,7 +36,7 @@
   }
 
   h1 {
-    margin: 0 auto 15px;
+    margin: 40px auto 10px;
     font-size: $font-size-big;
     letter-spacing: .3px;
 
@@ -55,6 +56,20 @@
       font-family: $font-family-2;
       font-weight: $font-weight-bold;
       line-height: 1.25;
+    }
+  }
+
+  h2 {
+    margin: 20px auto 5px;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+
+    @if $theme == 2 {
+      color: $color-4;
+      letter-spacing: .2px;
+    } @else {
+      color: $color-1;
+      letter-spacing: -.3px;
     }
   }
 
