@@ -49,6 +49,18 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'logo_image', site_id: site_id)
   end
 
+  def self.main_image(site_id)
+    SiteSetting.find_by(name: 'main_image', site_id: site_id)
+  end
+
+  def self.alternative_image(site_id)
+    SiteSetting.find_by(name: 'alternative_image', site_id: site_id)
+  end
+
+  def self.favico(site_id)
+    SiteSetting.find_by(name:,'favico', site_id: site_id)
+  end
+
   def self.color(site_id)
     SiteSetting.find_by(name: 'color', site_id: site_id)
   end
