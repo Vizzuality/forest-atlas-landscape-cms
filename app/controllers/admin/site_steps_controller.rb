@@ -43,7 +43,7 @@ class Admin::SiteStepsController < AdminController
         @managers = User.where(role: UserType::MANAGER)
       end
       if step == 'publishers'
-        @managers = User.where(role: UserType::PUBLISHER)
+        @publishers = User.where(role: UserType::PUBLISHER)
       end
       if step == 'style'
         SiteSetting.create_color_settings @site
@@ -91,57 +91,45 @@ class Admin::SiteStepsController < AdminController
       # TODO: REFACTOR THIS
       when 'managers'
         @site = current_site
-        unless params[:site].blank?
-          if save_button?
-            if @site.save
-              redirect_to admin_sites_path
-            else
-              @managers = User.where(role: UserType::MANAGER)
-              render_wizard
-            end
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path
           else
-            @site.form_step = 'users'
-
-            if @site.valid?
-              redirect_to next_wizard_path
-            else
-              @managers = User.where(role: UserType::MANAGER)
-              render_wizard
-            end
+            @managers = User.where(role: UserType::MANAGER)
+            render_wizard
           end
         else
-          @site = Site.new
-          @site.errors.add(:users, 'Site must have at least one user')
-          @managers = User.where(role: UserType::MANAGER)
-          render_wizard
+          @site.form_step = 'managers'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            @managers = User.where(role: UserType::MANAGER)
+            render_wizard
+          end
         end
+
 
       when 'publishers'
         @site = current_site
-        unless params[:site].blank?
-          if save_button?
-            if @site.save
-              redirect_to admin_sites_path
-            else
-              @publishers = User.where(role: UserType::PUBLISHER)
-              render_wizard
-            end
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path
           else
-            @site.form_step = 'users'
-
-            if @site.valid?
-              redirect_to next_wizard_path
-            else
-              @publishers = User.where(role: UserType::PUBLISHER)
-              render_wizard
-            end
+            @publishers = User.where(role: UserType::PUBLISHER)
+            render_wizard
           end
         else
-          @site = Site.new
-          @site.errors.add(:users, 'Site must have at least one user')
-          @publishers = User.where(role: UserType::PUBLISHER)
-          render_wizard
+          @site.form_step = 'publishers'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            @publishers = User.where(role: UserType::PUBLISHER)
+            render_wizard
+          end
         end
+
 
       when 'style'
         @site = current_site
