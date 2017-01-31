@@ -37,8 +37,11 @@
     initSettingsStep: function () {
       new App.View.FlagColorsView({ el: '.js-flag-colors' });
 
-      // We "upgrade" the file input
-      new App.View.FileInputView({ el: '.js-file-input' });
+      // We "upgrade" the file inputs
+      var fileInputs = document.querySelectorAll('.js-file-input');
+      for (var i = 0, j = fileInputs.length; i < j; i++) {
+        new App.View.FileInputView({ el: fileInputs[i] });
+      }
     }
   });
 })(this.App));

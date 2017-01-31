@@ -4,6 +4,8 @@
   <title><%= ForestAtlasLandscapeCms::Application.config.site_name %></title>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="<%= @favico %>" />
+  <link rel="apple-touch-icon" href="<%= @favico %>">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.6/quill.core.css">
   <%= stylesheet_link_tag 'front/application-theme-fa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Forest Atlas' %>
   <%= stylesheet_link_tag 'front/application-theme-lsa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Landscape Application' %>

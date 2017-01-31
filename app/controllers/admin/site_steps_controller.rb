@@ -4,8 +4,8 @@ class Admin::SiteStepsController < AdminController
 
   URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
-  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
-  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
+  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_5'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][5]'.freeze
 
   SAVE = 'Save Changes'.freeze
   CONTINUE = 'Continue'.freeze
@@ -54,6 +54,9 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
         @logo_image = @site.site_settings.where(name: 'logo_image').first
+        @main_image = @site.site_settings.where(name: 'main_image').first
+        @alternative_image = @site.site_settings.where(name: 'alternative_image').first
+        @favico = @site.site_settings.where(name: 'favico').first
       end
     end
     render_wizard

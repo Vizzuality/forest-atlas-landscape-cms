@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="description">
         <h1>Customize</h1>
-        <p>Get the most out of these last settings to customize your site</p>
+        <p>Select a logo, two cover images – one for the homepage and the other for the Open Content pages – and an icon.</p>
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
   <div class="l-site-creation -settings">
     <div class="wrapper">
 
-      <%= f.fields_for :site_settings, f.object.site_settings.order(:position) do |settings_form| %>
+      <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by{ |s| s.position}) do |settings_form| %>
         <% setting = settings_form.object %>
         <% case setting.name
            when 'logo_image' %>
@@ -34,13 +34,55 @@
               <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
             </div>
           </div>
-        <% when 'logo_background' %>
-          <%= settings_form.hidden_field :name, value: 'logo_background'%>
+
+        <% when 'main_image' %>
           <%= settings_form.hidden_field :position, value: '3'%>
+          <%= settings_form.hidden_field :name, value: 'main_image'%>
+          <% if !@main_image.nil? && @main_image.image_file_name %>
+            <div class="c-centered-input">
+              <label>Homepage cover preview</label>
+              <%= image_tag @main_image.image.url %>
+            </div>
+          <% end %>
           <div class="c-centered-input">
-            <%= settings_form.label :name, value: 'Logo background' %>
-            <%= settings_form.color_field :value %>
+            <%= settings_form.label :image, value: 'Homepage cover image', for: 'main' %>
+            <div class="js-file-input">
+              <%= settings_form.file_field :image, id: 'main', accept: 'image/*' %>
+            </div>
           </div>
+
+        <% when 'alternative_image' %>
+          <%= settings_form.hidden_field :position, value: '4'%>
+          <%= settings_form.hidden_field :name, value: 'alternative_image'%>
+          <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
+            <div class="c-centered-input">
+              <label>Content cover preview</label>
+              <%= image_tag @alternative_image.image.url %>
+            </div>
+          <% end %>
+          <div class="c-centered-input">
+            <%= settings_form.label :image, value: 'Content cover image', for: 'alternative' %>
+            <div class="js-file-input">
+              <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*' %>
+            </div>
+          </div>
+
+        <% when 'favico' %>
+          <%= settings_form.hidden_field :position, value: '5'%>
+          <%= settings_form.hidden_field :name, value: 'favico'%>
+          <% if !@favico.nil? && @favico.image_file_name %>
+            <div class="c-centered-input">
+              <label>Icon image preview</label>
+              <%= image_tag @favico.image.url %>
+            </div>
+          <% end %>
+          <div class="c-centered-input">
+            <%= settings_form.label :image, value: 'Icon image', for: 'favico' %>
+            <div class="js-file-input">
+              <%= settings_form.file_field :image, id: 'favico', accept: 'image/*' %>
+            </div>
+          </div>
+
         <% when 'flag' %>
           <hr />
           <div class="js-flag-colors"></div>
@@ -51,4 +93,4 @@
   <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-
+<%= console if Rails.env.development? %>
