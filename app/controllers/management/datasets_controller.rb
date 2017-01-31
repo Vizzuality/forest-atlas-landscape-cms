@@ -1,5 +1,6 @@
 class Management::DatasetsController < ManagementController
 
+  before_action :ensure_management_user, only: :destroy
   before_action :set_site, only: [:index, :new, :create]
   before_action :set_dataset, only: [:edit, :destroy]
   before_action :set_datasets, only: [:index]

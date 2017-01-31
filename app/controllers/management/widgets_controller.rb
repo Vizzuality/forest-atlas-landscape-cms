@@ -1,6 +1,7 @@
 class Management::WidgetsController < ManagementController
   before_action :set_site
   before_action :authenticate_user_for_site!
+  before_action :ensure_management_user, only: :destroy
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index
@@ -15,6 +16,7 @@ class Management::WidgetsController < ManagementController
 
       widgets = Widget.where(dataset_id: dataset_ids)
 
+      publisher = (current_user.role == UserType::PUBLISHER)
       gon_widgets = []
       if widgets.any?
         gon_widgets = widgets.map do |widget|
@@ -24,7 +26,7 @@ class Management::WidgetsController < ManagementController
             'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
             'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
                       'method' => 'get'},
-            'delete' =>  {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
+            'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
           }
         end
       end

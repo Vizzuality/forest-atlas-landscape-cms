@@ -307,20 +307,21 @@ def create_users
     {
       email: 'tiago.garcia@vizzuality.com',
       name: 'Tiago Garcia',
-      admin: true
+      role: UserType::ADMIN
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
       name: 'Tiago Santos',
-      admin: true
+      role: UserType::ADMIN
     }
   )
   @jose_angel_user = User.create(
     {
       email: 'joseangel.parreno@vizzuality.com',
       name: 'Jose Angel'
+
     }
   )
   @hector_arce_user = User.create(
@@ -339,7 +340,7 @@ def create_users
     {
       email: 'clement.prodhomme@vizzuality.com',
       name: 'Clément Prodhomme',
-      admin: true
+      role: UserType::ADMIN
     }
   )
 =begin

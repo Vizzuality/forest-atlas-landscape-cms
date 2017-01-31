@@ -16,6 +16,10 @@ class Site < ApplicationRecord
   has_many :site_pages, dependent: :destroy
   has_many :user_site_associations, dependent: :destroy
   has_many :users, through: :user_site_associations
+  has_many :site_managers, -> {manager}, class_name: 'UserSiteAssociation'
+  has_many :managers, source: :user, through: :site_managers
+  has_many :site_publishers, -> {publisher}, class_name: 'UserSiteAssociation'
+  has_many :publishers, source: :user, through: :site_publishers
   has_many :context_sites,  dependent: :destroy
   has_many :contexts, through: :context_sites
   has_many :site_settings, dependent: :destroy, inverse_of: :site
@@ -34,14 +38,16 @@ class Site < ApplicationRecord
   after_save :update_routes
   after_create :create_template_content
 
-#  cattr_accessor :form_steps do
-#    { pages: %w[name users contexts default_context style settings finish],
-#      names: ['Name', 'Users', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
-#  end
   cattr_accessor :form_steps do
-    { pages: %w[name users style settings finish],
-      names: ['Name', 'Users', 'Style', 'Settings', 'Finish'] }
+    { pages: %w[name managers publishers style settings finish],
+      names: ['Name', 'Managers', 'Publishers', 'Style', 'Settings', 'Finish'] }
   end
+  #cattr_accessor :form_steps do
+  #  { pages: %w[name managers publishers contexts default_context style settings finish],
+  #    names: ['Name', 'Managers', 'Publishers', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
+  #end
+
+
   attr_accessor :form_step
 
   def required_for_step?(step)

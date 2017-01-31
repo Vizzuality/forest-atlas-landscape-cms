@@ -31,10 +31,10 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :context_users
   accepts_nested_attributes_for :user_site_associations
 
+  has_enumeration_for :role, with: UserType, skip_validation: true
+
   validates_uniqueness_of :name, :email
   validate :step_validation
-
-
 
   cattr_accessor :form_steps do
     { pages: %w[identity role sites contexts],
@@ -43,8 +43,16 @@ class User < ApplicationRecord
   attr_accessor :form_step
 
   def send_to_api(token, url)
-    role = self.admin ? 'ADMIN' : 'MANAGER'
-    UserService.create(token, self.email, role, url)
+    api_role = case self.role
+                 when UserType::ADMIN
+                   'ADMIN'
+                 when UserType::MANAGER
+                   'MANAGER'
+                 when UserType::PUBLISHER
+                   'USER'
+               end
+
+    UserService.create(token, self.email, api_role, url)
   end
 
   def delete_from_api(token, id)
@@ -82,6 +90,11 @@ class User < ApplicationRecord
     contexts
   end
 
+  # Returns if the user is an admin
+  def admin
+    self.role == UserType::ADMIN
+  end
+
   private
   def step_validation
     # Added to insure all validations are run if there's no step
@@ -102,8 +115,8 @@ class User < ApplicationRecord
         self.errors['email'] << 'Email is not valid'
       end
     end
-    if self.form_steps[:pages].index('role') <= step_index
-      self.errors['admin'] << 'You must select a user role' unless [true, false].include?(self.admin)
-    end
+    #if self.form_steps[:pages].index('role') <= step_index
+    #  self.errors['admin'] << 'You must select a user role' unless [true, false].include?(self.admin)
+    #end
   end
 end

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= ForestAtlasLandscapeCms::Application.config.site_name %> - Content Management</title>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="//cdn.quilljs.com/1.2.0/quill.bubble.css">
+  <%= stylesheet_link_tag 'management/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <script src="//cdn.quilljs.com/1.2.0/quill.js" type="text/javascript"></script>
+  <%= javascript_include_tag 'management', 'data-turbolinks-track': 'reload' %>
+  <%= favicon_link_tag %>
+</head>
+<body <%= yield :body_class %>>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<%= render 'publish/header' %>
+<%= render 'shared/messages' %>
+<%= yield :extended_header %>
+<%= yield %>
+</body>
+</html>
