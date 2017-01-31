@@ -1,4 +1,5 @@
 class Management::SitePagesController < ManagementController
+  before_action :ensure_management_user, only: :destroy
   before_action :set_page, only: [:destroy, :toggle_enable]
   before_action :set_site, only: :index
   before_action :authenticate_user_for_site!
@@ -11,7 +12,18 @@ class Management::SitePagesController < ManagementController
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
+    publisher = (current_user.role == UserType::PUBLISHER)
     gon.pages = @pages.map do |page|
+      delete = if publisher
+                 {'value' => nil}
+               else
+                 if page.deletable?
+                   {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'}
+                 else
+                   {'value' => nil}
+                 end
+               end
+
       res = {
         'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
@@ -22,8 +34,7 @@ class Management::SitePagesController < ManagementController
           {'value' => nil},
         'edit' => {'value' => edit_management_site_site_page_page_step_path(page.site.slug, page, :position), \
                    'method' => 'get'},
-        'delete' => page.deletable? ? \
-          {'value' => management_site_site_page_path(page.site.slug, page), 'method' => 'delete'} : {'value' => nil}
+        'delete' => delete
       }
 
       res
