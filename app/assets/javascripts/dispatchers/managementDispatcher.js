@@ -25,7 +25,7 @@
       'management/sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/columns': 'Index',
       'management/sites/:slug/(widgets/:id/)widget_steps/title': 'Index',
-      'management/sites/:slug/(widgets/:id/)widget_steps/dataset': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/dataset': 'DatasetStep',
       'management/sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
       'management/sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',

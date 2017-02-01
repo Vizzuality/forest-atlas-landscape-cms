@@ -96,6 +96,7 @@ class Site < ApplicationRecord
     datasets.uniq!
   end
 
+  # returns an array of contexts, each with an array of their datasets
   def get_context_datasets
     all_datasets = DatasetService.get_datasets
     context_datasets_ids = {}
@@ -106,14 +107,32 @@ class Site < ApplicationRecord
       context.context_datasets.each {|cd| context_datasets_ids[context.id] << cd.dataset_id}
     end
 
-    # TODO: Change this to request to ask info for each dataset ...
-    # ... this might be to heavy. Talk to RA to ask which is faster
     context_datasets_ids.each do |k, v|
       context_datasets[k] =all_datasets.select {|ds| v.include?(ds.id)}
     end
 
     context_datasets
   end
+
+  # Returns an array of datasets with an array of contexts they belong to
+  def get_datasets_contexts
+    all_datasets = DatasetService.get_datasets
+    datasets_contexts = {}
+
+    self.contexts.each do |context|
+      context.context_datasets.each do |cd|
+        dataset = all_datasets.select {|ds| ds.id == cd.dataset_id}.first
+        if dataset
+          unless datasets_contexts["#{cd.dataset_id}"]
+            datasets_contexts["#{cd.dataset_id}"] = {dataset: dataset, contexts: []}
+          end
+          datasets_contexts["#{cd.dataset_id}"][:contexts] << context.name
+        end
+      end
+    end
+    datasets_contexts
+  end
+
 
   private
 
