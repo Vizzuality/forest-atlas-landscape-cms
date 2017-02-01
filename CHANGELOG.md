@@ -1,4 +1,5 @@
 ### 7 Feb 2017
+- Fixed an issue where the list of sites wouldn't load under certain circumstances when using the quick links component
 - Added links to the actual pages in the list of pages (management)
 
 ### 31 Jan 2017

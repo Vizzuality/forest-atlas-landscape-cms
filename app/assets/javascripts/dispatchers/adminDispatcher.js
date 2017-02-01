@@ -3,9 +3,8 @@
 
   var Dispatcher = Backbone.Router.extend({
     routes: {
-      '(/)': 'Index',
       'users(/)': 'Users',
-      'sites(/)': 'Sites',
+      '(sites)(/)': 'Sites',
       'site_steps/(:step)': 'SiteCreation',
       'sites/:slug/site_steps/:step(/)': 'SiteEdition'
     }
