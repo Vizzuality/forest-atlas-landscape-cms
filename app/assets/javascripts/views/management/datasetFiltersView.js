@@ -333,15 +333,18 @@
      * @returns {object} $.Deferred
      */
     _getTableExtract: function () {
-      // TODO query number
       var deferred = $.Deferred(); // eslint-disable-line new-cap
       var collection = new (Backbone.Collection.extend({
         url: this._getTableExtractURL()
       }))();
 
+      // We set the loading spinner
+      this.rowCountContainer.classList.add('c-loading-spinner');
+      this.rowCountContainer.textContent = '';
+
       collection.fetch()
-        .done(function (data) { deferred.resolve(data); })
-        .fail(function () { deferred.reject(); });
+        .done(deferred.resolve)
+        .fail(deferred.reject);
 
       return deferred;
     },
@@ -366,6 +369,12 @@
             if (id === requestsCount) this.tableExtract = null;
           }.bind(this)).always(function () {
             this.activeRequestsCount--;
+
+            // We remove the loading spinner if that was the last request
+            if (this.activeRequestsCount === 0) {
+              this.rowCountContainer.classList.remove('c-loading-spinner');
+            }
+
             if (id === requestsCount) deferred.resolve();
             else deferred.reject();
           }.bind(this));
@@ -375,19 +384,6 @@
     }()),
 
     /**
-     * Update the row count with the result of the query to the server
-     */
-    _checkRowCount: function () {
-      this.countEl = this.el.querySelector('.js-row-count');
-      if (this.collection.toJSON().length) {
-        this.countEl.classList.add('c-loading-spinner');
-        this._updateRowCount();
-      } else {
-        this.countEl.classList.remove('c-loading-spinner');
-      }
-    },
-
-    /**
      * Get the row count with the result of the query to the server
      */
     _updateRowCount: _.debounce(function () {
@@ -395,8 +391,7 @@
         .done(function () {
           var count = this.tableExtract && this.tableExtract.count;
           var formattedCount = (count !== null && count !== undefined) ? (count.toLocaleString('en-US') + ' rows') : '';
-          this.countEl.classList.remove('c-loading-spinner');
-          this.countEl.textContent = formattedCount;
+          this.rowCountContainer.textContent = formattedCount;
 
           if (count && count > 10000) {
             this.rowCountNotificationId = App.notifications.broadcast(App.Helper.Notifications.dataset.rowCount);
@@ -440,10 +435,15 @@
       }));
       this.setElement(this.el);
 
+      this.rowCountContainer = this.el.querySelector('.js-row-count');
+
       this._enhanceSelectors();
 
+      // We fetch the number of result only if we have an API endpoint
       if (this.options.endpointUrl && this.options.endpointUrl.length) {
-        this._checkRowCount();
+        this._updateRowCount();
+      } else {
+        this.rowCountContainer.classList.remove('c-loading-spinner');
       }
     }
   });
