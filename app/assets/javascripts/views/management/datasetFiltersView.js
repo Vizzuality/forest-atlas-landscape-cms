@@ -298,7 +298,7 @@
         return filter.name;
       });
 
-      return JSON.stringify({ filters: serializedFilters });
+      return JSON.stringify(serializedFilters);
     },
 
     /**
