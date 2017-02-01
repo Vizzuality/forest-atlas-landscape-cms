@@ -81,6 +81,9 @@
       var index = +$(e.target).data('id');
       var model = this.collection.at(index);
       this.collection.remove(model);
+
+      if (this.collection.length === 0) this._addFilter(); // Add a default
+
       this.render();
     },
 
