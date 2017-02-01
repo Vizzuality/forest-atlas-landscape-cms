@@ -305,7 +305,8 @@
           include: ['matches'],
           keys: searchableColumns,
           tokenize: true,
-          threshold: 0,
+          threshold: 0.1,
+          matchAllTokens: true,
           shouldSort: false
         });
 
