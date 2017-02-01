@@ -19,15 +19,22 @@
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
   <div class="l-widget-creation -dataset">
     <div class="wrapper">
+      <div class="c-action-toolbar">
+        <ul class="buttons">
+        </ul>
+        <ul class="filters">
+          <li><div class="c-input-search js-dataset-search"></div></li>
+        </ul>
+      </div>
       <div class="c-cards-list">
         <% @datasets_contexts.each do |id, dc|%>
-          <div class="card">
+          <div class="card js-dataset" data-id="<%= id %>" data-name="<%= dc[:dataset].name %>" data-contexts="<%= dc[:contexts].join(',') %>">
             <label for="dataset-<%= id %>"><%= dc[:dataset].name %></label>
             <%= radio_button_tag 'widget[dataset_id]', \
                   id, f.object.dataset_id ? (f.object.dataset_id == id) : nil, id: 'dataset-' + id %>
             <div class="content">
               <h3><%= dc[:dataset].name %></h3>
-              <p><%= dc[:contexts].join(' ') %></p>
+              <p>Contexts: <%= dc[:contexts].join(', ') %></p>
             </div>
           </div>
         <% end %>
