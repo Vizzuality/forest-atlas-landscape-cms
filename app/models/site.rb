@@ -187,7 +187,7 @@ class Site < ApplicationRecord
       file.write compile_scss
       file.flush
       #self.css = file
-      File.open(BUILD_DIR + "public/assets/front/#{id}.css") do |f|
+      File.open(Rails.root + "public/assets/front/#{id}.css") do |f|
         f.write file
       end
     ensure
