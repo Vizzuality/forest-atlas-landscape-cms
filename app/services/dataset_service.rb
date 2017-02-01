@@ -13,7 +13,7 @@ class DatasetService
   # ++status++ the status of the dataset
   def self.get_datasets(status = 'active')
     datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', \
-      'status': status, 'app': ['forest-atlas', 'gfw']}
+      'status': status, 'app': 'forest-atlas;gfw'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
