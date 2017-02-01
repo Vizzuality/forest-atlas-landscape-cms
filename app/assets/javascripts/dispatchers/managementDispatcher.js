@@ -53,7 +53,9 @@
           new Router(params.slice(0, params.length - 1));
           Backbone.history.start({ pushState: false });
         } catch (e) {
-          throw new Error(e);
+          // Better message to find the error
+          // eslint-disable-next-line no-console
+          console.error('File: ' + e.fileName + '\nLine: ' + e.lineNumber + '\nMessage: ' + e.message);
         } finally {
           // We instantiate the Quick links component
           var quickLinksParams = {};
