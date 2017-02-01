@@ -1,4 +1,5 @@
 ### 7 Feb 2017
+- Removed the warning to prevent the user from uploading a CSV dataset served over HTTPs
 - Fixed an issue where the favicon wouldn't work properly on Chrome and Firefox
 - Fixed an issue where the list of sites wouldn't load under certain circumstances when using the quick links component
 - Added links to the actual pages in the list of pages (management)
