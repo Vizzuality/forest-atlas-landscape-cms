@@ -20,17 +20,26 @@
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <div class="l-page-creation -dataset">
     <div class="wrapper">
-      <% @datasets_contexts.each do |id, dc|%>
-        <div class="card">
-          <label for="dataset-<%= id %>"><%= dc[:dataset].name %></label>
-          <%= radio_button_tag 'site_page[dataset_setting][dataset_id]', \
-                  id, f.object.dataset_setting ? (f.object.dataset_setting.dataset_id == id) : nil, id: 'dataset-' + id %>
-          <div class="content">
-            <h3><%= dc[:dataset].name %></h3>
-            <p><%= dc[:contexts].join(' ') %></p>
+      <div class="c-action-toolbar">
+        <ul class="buttons">
+        </ul>
+        <ul class="filters">
+          <li><div class="c-input-search js-dataset-search"></div></li>
+        </ul>
+      </div>
+      <div class="c-cards-list">
+        <% @datasets_contexts.each do |id, dc|%>
+          <div class="card js-dataset" data-id="<%= id %>" data-name="<%= dc[:dataset].name %>" data-contexts="<%= dc[:contexts].join(',') %>">
+            <label for="dataset-<%= id %>"><%= dc[:dataset].name %></label>
+            <%= radio_button_tag 'site_page[dataset_setting][dataset_id]', \
+                    id, f.object.dataset_setting ? (f.object.dataset_setting.dataset_id == id) : nil, id: 'dataset-' + id %>
+            <div class="content">
+              <h3><%= dc[:dataset].name %></h3>
+              <p>Contexts: <%= dc[:contexts].join(', ') %></p>
+            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, never_save: true} %>
