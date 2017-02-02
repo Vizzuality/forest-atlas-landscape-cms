@@ -1,4 +1,5 @@
 ### 7 Feb 2017
+- Added a pagination system for the tables accross the app
 - Fixed several issues with the dataset filtering: unable to set some string filters, misleading row count, unconsistent UI, etc.
 - Added GFW's datasets to the application
 - Improved the lists of datasets: removed the grouping by contexts (to avoid duplicates) and added a search field
