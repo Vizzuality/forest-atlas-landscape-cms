@@ -70,16 +70,18 @@
 
 <div class="action-bar">
   <div class="rows-per-page">
-    Rows per page:
-    <select class="js-results-per-page">
-      {{#each resultsPerPageOptions}}
-        <option value="{{this}}" {{#if_eq this ../resultsPerPage}}selected="selected"{{/if_eq}}>{{this}}</option>
-      {{/each}}
-    </select>
+    Rows per page
+    <div class="c-select -mini">
+      <select class="js-results-per-page">
+        {{#each resultsPerPageOptions}}
+          <option value="{{this}}" {{#if_eq this ../resultsPerPage}}selected="selected"{{/if_eq}}>{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
   <div class="paginator">
-    <button type="button" class="js-prev-page">Previous page</button>
+    <button type="button" class="c-button -mini -arrow-left js-prev-page">Previous page</button>
     {{firstResultIndex}}-{{lastResultIndex}} of {{totalResults}}
-    <button type="button" class="js-next-page">Next page</button>
+    <button type="button" class="c-button -mini -arrow-right js-next-page">Next page</button>
   </div>
 </div>

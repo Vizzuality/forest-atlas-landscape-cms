@@ -90,6 +90,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: 30px;
+    font-size: $font-size-small;
+
+    .rows-per-page {
+      .c-select {
+        display: inline-block;
+        margin-left: 5px;
+      }
+    }
+
+    .paginator {
+      .c-button.-arrow-left {
+        margin-right: 5px;
+      }
+
+      .c-button.-arrow-right {
+        margin-left: 5px;
+      }
+    }
   }
 
   .more-button {

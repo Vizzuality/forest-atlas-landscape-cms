@@ -39,4 +39,77 @@
     cursor: default;
     opacity: .3;
   }
+
+  &.-arrow-left {
+    position: relative;
+    text-indent: -10000px;
+
+    &::before {
+      display: block;
+      position: absolute;
+      top: calc(50% - 10px);
+      right: 50%;
+      width: 2px;
+      height: 8px;
+      transform: translate(0, 100%) rotate(-45deg) ;
+      background-color: $color-4;
+      content: '';
+    }
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: calc(50% + 2px);
+      right: 50%;
+      width: 2px;
+      height: 8px;
+      transform: translate(0, -100%) rotate(45deg);
+      background-color: $color-4;
+      content: '';
+    }
+  }
+
+  &.-arrow-right {
+    position: relative;
+    text-indent: -10000px;
+
+    &::before {
+      display: block;
+      position: absolute;
+      top: calc(50% - 10px);
+      right: 50%;
+      width: 2px;
+      height: 8px;
+      transform: translate(50%, 100%) rotate(45deg) ;
+      background-color: $color-4;
+      content: '';
+    }
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: calc(50% + 2px);
+      right: 50%;
+      width: 2px;
+      height: 8px;
+      transform: translate(50%, -100%) rotate(-45deg);
+      background-color: $color-4;
+      content: '';
+    }
+  }
+
+  &.-mini {
+    height: 24px;
+    padding: 0 10px;
+    border-color: $color-1;
+    background-color: lighten($color-1, 45%);
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+
+    &.-arrow-left,
+    &.-arrow-right {
+      padding: 0 15px;
+    }
+  }
 }
