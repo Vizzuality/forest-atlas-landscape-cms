@@ -86,6 +86,12 @@
     text-align: center;
   }
 
+  > .action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .more-button {
     padding: 0;
     border: 0;
