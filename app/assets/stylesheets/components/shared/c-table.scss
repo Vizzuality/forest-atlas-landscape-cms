@@ -1,7 +1,10 @@
-.c-table,
-.c-table table{
+.c-table {
   width: 100%;
-  border-spacing: 0;
+
+  > table {
+    width: 100%;
+    border-spacing: 0;
+  }
 
   caption {
     display: none;

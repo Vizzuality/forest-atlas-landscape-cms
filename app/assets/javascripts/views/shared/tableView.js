@@ -44,8 +44,9 @@
 
     defaults: {
       // Number of results per page
-      // TODO: implement the feature
       resultsPerPage: 10,
+      // Options for the results per page
+      resultsPerPageOptions: [10, 25, 50, 100],
       // Current pagination index
       paginationIndex: 0,
       // Collection representing the table
@@ -143,6 +144,8 @@
       this.$('.js-header').on('keydown', this._onKeydownHeader.bind(this));
 
       this.$('.js-more').on('click', this._onClickMore.bind(this));
+
+      this.$('.js-results-per-page').on('change', this._onChangeResultsPerPage.bind(this));
     },
 
     /**
@@ -203,6 +206,16 @@
       }))();
 
       modal.open();
+    },
+
+    /**
+     * Listener for the change of the "results per page" selector
+     * @param {Event} e - event
+     */
+    _onChangeResultsPerPage: function (e) {
+      var value = +e.target.selectedOptions[0].value;
+      this.options.resultsPerPage = value;
+      this.render();
     },
 
     /**
@@ -355,10 +368,14 @@
      * @returns {object[]} rows
      */
     _getRenderableRows: function () {
+      var start = this.options.resultsPerPage * this.options.paginationIndex;
+      var end = this.options.resultsPerPage * (this.options.paginationIndex + 1);
+
       return this.options.collection.toJSON()
         .map(function (row) {
           return row.row;
-        });
+        })
+        .slice(start, end);
     },
 
     render: function () {
@@ -380,10 +397,14 @@
           }, this);
       }
 
+      this.el.classList.add('c-table');
+
       this.$el.html(this.template({
         tableName: this.options.tableName,
         headers: headers,
         columnCount: headers.length,
+        resultsPerPage: this.options.resultsPerPage,
+        resultsPerPageOptions: this.options.resultsPerPageOptions,
         rows: this._getRenderableRows(),
         sortColumn: sortColumn,
         sortOrder: this.options.sortOrder === 1 ? 'ascending' : 'descending',
