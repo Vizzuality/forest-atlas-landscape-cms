@@ -44,8 +44,9 @@
 
     defaults: {
       // Number of results per page
-      // TODO: implement the feature
       resultsPerPage: 10,
+      // Options for the results per page
+      resultsPerPageOptions: [10, 25, 50, 100],
       // Current pagination index
       paginationIndex: 0,
       // Collection representing the table
@@ -136,6 +137,11 @@
      */
     _setListeners: function () {
       this.$('.js-header').on('click', function (e) {
+        // We need to move the user to the first page of results
+        // NOTE: it needs to be placed before the actual sort so that when the table
+        // is rendered, the page is resetted
+        this.options.paginationIndex = 0;
+
         var column = e.target.textContent;
         if (column) this._sortTable(column);
       }.bind(this));
@@ -143,6 +149,21 @@
       this.$('.js-header').on('keydown', this._onKeydownHeader.bind(this));
 
       this.$('.js-more').on('click', this._onClickMore.bind(this));
+
+      this.$('.js-results-per-page').on('change', this._onChangeResultsPerPage.bind(this));
+
+      this.$('.js-prev-page').on('click', function () {
+        this.options.paginationIndex = Math.max(this.options.paginationIndex - 1, 0);
+        this.render();
+      }.bind(this));
+
+      this.$('.js-next-page').on('click', function () {
+        this.options.paginationIndex = Math.min(
+          this.options.paginationIndex + 1,
+          Math.floor(this.options.collection.length / this.options.resultsPerPage)
+        );
+        this.render();
+      }.bind(this));
     },
 
     /**
@@ -155,6 +176,10 @@
       switch (e.keyCode) {
         case 13: // enter key
         case 32: // space key
+          // We need to move the user to the first page of results
+          // NOTE: it needs to be placed before the actual sort so that when the table
+          // is rendered, the page is resetted
+          this.options.paginationIndex = 0;
           this._sortTable(e.target.textContent);
           this._focusOnHeaderAtIndex(currentHeaderIndex);
           break;
@@ -203,6 +228,17 @@
       }))();
 
       modal.open();
+    },
+
+    /**
+     * Listener for the change of the "results per page" selector
+     * @param {Event} e - event
+     */
+    _onChangeResultsPerPage: function (e) {
+      var value = +e.target.selectedOptions[0].value;
+      this.options.resultsPerPage = value;
+      this.options.paginationIndex = 0;
+      this.render();
     },
 
     /**
@@ -256,9 +292,19 @@
 
       // We attach the event listeners
       searchField.addEventListener('input', function (e) {
+        // We need to move the user to the first page of results
+        // NOTE: it needs to be placed before the actual search so that when the table
+        // is rendered, the page is resetted
+        this.options.paginationIndex = 0;
+
         this._search(e.target.value);
       }.bind(this));
       searchButton.addEventListener('click', function () {
+        // We need to move the user to the first page of results
+        // NOTE: it needs to be placed before the actual search so that when the table
+        // is rendered, the page is resetted
+        this.options.paginationIndex = 0;
+
         this._search(searchField.value);
       }.bind(this));
 
@@ -355,10 +401,14 @@
      * @returns {object[]} rows
      */
     _getRenderableRows: function () {
+      var start = this.options.resultsPerPage * this.options.paginationIndex;
+      var end = this.options.resultsPerPage * (this.options.paginationIndex + 1);
+
       return this.options.collection.toJSON()
         .map(function (row) {
           return row.row;
-        });
+        })
+        .slice(start, end);
     },
 
     render: function () {
@@ -380,10 +430,17 @@
           }, this);
       }
 
+      this.el.classList.add('c-table');
+
       this.$el.html(this.template({
         tableName: this.options.tableName,
         headers: headers,
         columnCount: headers.length,
+        resultsPerPage: this.options.resultsPerPage,
+        resultsPerPageOptions: this.options.resultsPerPageOptions,
+        firstResultIndex: this.options.collection.toJSON().length ? (this.options.resultsPerPage * this.options.paginationIndex) + 1 : 0,
+        lastResultIndex: Math.min(this.options.resultsPerPage * (this.options.paginationIndex + 1), this.options.collection.toJSON().length),
+        totalResults: this.options.collection.toJSON().length,
         rows: this._getRenderableRows(),
         sortColumn: sortColumn,
         sortOrder: this.options.sortOrder === 1 ? 'ascending' : 'descending',
