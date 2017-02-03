@@ -35,6 +35,35 @@
       });
     },
 
+    initStyleStep: function () {
+      var themeColorContainer = document.querySelector('.js-theme-color');
+      var input = themeColorContainer.querySelector('input');
+      var colorLabel = themeColorContainer.querySelector('.js-label');
+      var preview = themeColorContainer.querySelector('.js-preview');
+
+      // We initialize the preview with the saved color
+      preview.style.backgroundColor = input.value;
+
+      input.addEventListener('change', function () {
+        preview.style.backgroundColor = input.value;
+      });
+
+      colorLabel.addEventListener('keydown', function (e) {
+        if (e.keyCode === 13 || e.keyCode === 32) {
+          this.click();
+        }
+      });
+
+      var templateLabels = document.querySelectorAll('.js-template-label');
+      for (var i = 0, j = templateLabels.length; i < j; i++) {
+        templateLabels[i].addEventListener('keydown', function (e) {
+          if (e.keyCode === 13 || e.keyCode === 32) {
+            this.click();
+          }
+        });
+      }
+    },
+
     initSettingsStep: function () {
       var fileInputs = document.querySelectorAll('input[type="file"]');
       // eslint-disable-next-line block-scoped-var
@@ -54,12 +83,6 @@
       }
 
       new App.View.FlagColorsView({ el: '.js-flag-colors' });
-
-      // // We "upgrade" the file inputs
-      // var fileInputs = document.querySelectorAll('.js-file-input');
-      // for (var i = 0, j = fileInputs.length; i < j; i++) {
-      //   new App.View.FileInputView({ el: fileInputs[i] });
-      // }
     },
 
     /**
