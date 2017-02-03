@@ -13,12 +13,16 @@
   }
 
   @media #{$mq-tablet} {
+    // If you update the height, don't forget to update the recommended size
+    // on the site settings
     height: 500px;
     padding: 0;
   }
 
   &.-short {
     @media #{$mq-tablet} {
+      // If you update the height, don't forget to update the recommended size
+      // on the site settings
       height: 250px;
     }
   }

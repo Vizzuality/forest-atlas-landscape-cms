@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="description">
         <h1>Customize</h1>
-        <p>Select a logo, two cover images – one for the homepage and the other for the Open Content pages – and an icon.</p>
+        <p>Select a logo, an icon and two cover images – one for the homepage and the other for the Open Content pages.</p>
       </div>
     </div>
   </div>
@@ -16,81 +16,117 @@
   <div class="l-site-creation -settings">
     <div class="wrapper">
 
-      <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by{ |s| s.position}) do |settings_form| %>
-        <% setting = settings_form.object %>
-        <% case setting.name
-           when 'logo_image' %>
-          <%= settings_form.hidden_field :position, value: '2'%>
-          <%= settings_form.hidden_field :name, value: 'logo_image'%>
-          <% if !@logo_image.nil? && @logo_image.image_file_name %>
-            <div class="c-centered-input">
-              <label>Logo preview</label>
-              <%= image_tag @logo_image.image.url %>
-            </div>
-          <% end %>
-          <div class="c-centered-input">
-            <%= settings_form.label :image, value: 'Logo image', for: 'logo' %>
-            <div class="js-file-input">
-              <%= settings_form.file_field :image, id: 'logo', accept: 'image/*' %>
-            </div>
-          </div>
+      <div class="settings">
+        <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by{ |s| s.position}) do |settings_form| %>
+          <% setting = settings_form.object %>
+          <% case setting.name
 
-        <% when 'main_image' %>
-          <%= settings_form.hidden_field :position, value: '3'%>
-          <%= settings_form.hidden_field :name, value: 'main_image'%>
-          <% if !@main_image.nil? && @main_image.image_file_name %>
-            <div class="c-centered-input">
-              <label>Homepage cover preview</label>
-              <%= image_tag @main_image.image.url %>
-            </div>
-          <% end %>
-          <div class="c-centered-input">
-            <%= settings_form.label :image, value: 'Homepage cover image', for: 'main' %>
-            <div class="js-file-input">
-              <%= settings_form.file_field :image, id: 'main', accept: 'image/*' %>
-            </div>
-          </div>
+            when 'logo_image' %>
+              <%= settings_form.hidden_field :position, value: '2'%>
+              <%= settings_form.hidden_field :name, value: 'logo_image'%>
 
-        <% when 'alternative_image' %>
-          <%= settings_form.hidden_field :position, value: '4'%>
-          <%= settings_form.hidden_field :name, value: 'alternative_image'%>
-          <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
-            <div class="c-centered-input">
-              <label>Content cover preview</label>
-              <%= image_tag @alternative_image.image.url %>
-            </div>
-          <% end %>
-          <div class="c-centered-input">
-            <%= settings_form.label :image, value: 'Content cover image', for: 'alternative' %>
-            <div class="js-file-input">
-              <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*' %>
-            </div>
-          </div>
+              <div class="logo">
+                <h3>Logo image</h3>
+                <%= settings_form.file_field :image, id: 'logo', accept: 'image/*', 'data-type': 'image' %>
+                <%= settings_form.label :image, value: 'Change logo image', for: 'logo', tabindex: '0' %>
+                <% if !@logo_image.nil? && @logo_image.image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @logo_image.image.url, alt: 'Logo image' %>
+                  </div>
+                <% elsif @site.site_template.name == 'Landscape Application' %>
+                  <div class="preview js-preview">
+                    <%= image_tag asset_path('logo.png'), alt: 'Logo image' %>
+                  </div>
+                <% else %>
+                  <div class="placeholder js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="restrictions js-restrictions">
+                  Max. size: 1MB
+                </div>
+              </div>
 
-        <% when 'favico' %>
-          <%= settings_form.hidden_field :position, value: '5'%>
-          <%= settings_form.hidden_field :name, value: 'favico'%>
-          <% if !@favico.nil? && @favico.image_file_name %>
-            <div class="c-centered-input">
-              <label>Icon image preview</label>
-              <%= image_tag @favico.image.url %>
-            </div>
-          <% end %>
-          <div class="c-centered-input">
-            <%= settings_form.label :image, value: 'Icon image', for: 'favico' %>
-            <div class="js-file-input">
-              <%= settings_form.file_field :image, id: 'favico', accept: 'image/*' %>
-            </div>
-          </div>
+            <% when 'favico' %>
+              <%= settings_form.hidden_field :position, value: '3'%>
+              <%= settings_form.hidden_field :name, value: 'favico'%>
 
-        <% when 'flag' %>
-          <hr />
-          <div class="js-flag-colors"></div>
+              <div class="icon">
+                <h3>Icon image</h3>
+                <%= settings_form.file_field :image, id: 'favico', accept: 'image/*', 'data-type': 'image' %>
+                <%= settings_form.label :image, value: 'Change icon image', for: 'favico', tabindex: '0' %>
+                <% if !@favico.nil? && @favico.image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @favico.image.url, alt: 'Icon image' %>
+                  </div>
+                <% else %>
+                  <div class="placeholder js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="restrictions js-restrictions">
+                  Recommended dimensions: 292x292<br />
+                  Max. size: 1MB
+                </div>
+              </div>
+              <% unless @site.site_template.name == 'Forest Atlas' %>
+                <hr/>
+              <% end %>
+
+            <% when 'flag' %>
+              <div class="flag-colors">
+                <h3>Flag colors</h3>
+                <div class="js-flag-colors"></div>
+              </div>
+              <hr/>
+
+            <% when 'main_image' %>
+              <%= settings_form.hidden_field :position, value: '5'%>
+              <%= settings_form.hidden_field :name, value: 'main_image'%>
+              <div class="homepage-cover">
+                <h3>Homepage cover image</h3>
+                <%= settings_form.file_field :image, id: 'main', accept: 'image/*', 'data-type': 'background' %>
+                <%= settings_form.label :image, value: 'Change homepage cover image', for: 'main', tabindex: '0' %>
+                <% if !@main_image.nil? && @main_image.image_file_name %>
+                  <div class="preview -high js-preview" style="background-image: url('<%= @main_image.image.url %>');">
+                  </div>
+                <% else %>
+                  <div class="placeholder -high js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="restrictions js-restrictions">
+                  Recommended dimensions: 1280x500<br />
+                  Max. size: 1MB
+                </div>
+              </div>
+
+            <% when 'alternative_image' %>
+              <%= settings_form.hidden_field :position, value: '6'%>
+              <%= settings_form.hidden_field :name, value: 'alternative_image'%>
+              <div class="content-cover">
+                <h3>Content cover image</h3>
+                <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
+                <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
+                <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
+                  <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
+                  </div>
+                <% else %>
+                  <div class="placeholder -high js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="restrictions js-restrictions">
+                  Recommended dimensions: 1280x250<br />
+                  Max. size: 1MB
+                </div>
+              </div>
+
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
   </div>
   <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-<%= console if Rails.env.development? %>

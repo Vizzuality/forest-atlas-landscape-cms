@@ -9,17 +9,17 @@ namespace :db do
           SiteSetting.delete_all(name: 'logo_background')
           puts 'Deleted all the logo background colors'
 
-          SiteSetting.where(name: 'flag').update_all(position: 6)
+          SiteSetting.where(name: 'flag').update_all(position: 4)
 
           Site.all.each do |site|
             unless site.site_settings.exists?(name: 'main_image')
-              site.site_settings.create!(name: 'main_image', value: '', position: 3)
+              site.site_settings.create!(name: 'main_image', value: '', position: 5)
             end
             unless site.site_settings.exists?(name: 'alternative_image')
-              site.site_settings.create!(name: 'alternative_image', value: '', position: 4)
+              site.site_settings.create!(name: 'alternative_image', value: '', position: 6)
             end
             unless site.site_settings.exists?(name: 'favico')
-              site.site_settings.create!(name: 'favico', value: '', position: 5)
+              site.site_settings.create!(name: 'favico', value: '', position: 3)
             end
             puts "... finished creation for site #{site.name}"
           end

@@ -4,6 +4,10 @@
   App.Helper.Notifications = {
 
     site: {
+      maxFileSize: {
+        type: 'warning',
+        content: 'Your file must weight less than 1MB!'
+      },
       deletion: {
         type: 'warning',
         content: 'Are you sure you want to permanently delete this site and all of its pages?',
