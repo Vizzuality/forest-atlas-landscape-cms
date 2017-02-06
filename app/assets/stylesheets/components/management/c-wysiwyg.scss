@@ -285,8 +285,13 @@ $wysiwyg-lateral-padding: 105px;
       position: relative;
       width: calc(100% + 390px);
       margin: 35px -195px;
+      text-align: center;
 
-      > img {
+      > div {
+        display: inline-block;
+      }
+
+      img {
         display: block;
         max-width: 100%;
         max-height: 600px;
@@ -294,7 +299,7 @@ $wysiwyg-lateral-padding: 105px;
         border-radius: 4px;
       }
 
-      > .caption {
+      .caption {
         display: block;
         width: 100%;
         max-width: #{$wysiwyg-width - 2 * $wysiwyg-lateral-padding};

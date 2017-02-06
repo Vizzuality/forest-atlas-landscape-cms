@@ -44,13 +44,16 @@ class ImageBlot extends Embed {
    * @returns {HTMLElement} node
    */
   static create(value) {
-    let node = super.create();
+    const node = super.create();
+
+    const container = document.createElement('div');
+    node.appendChild(container);
 
     const image = document.createElement('img');
     image.classList.add('js-image');
     if (typeof value === 'string') image.setAttribute('src', value);
 
-    node.appendChild(image);
+    container.appendChild(image);
 
     // We don't want the user to be able to add text within the container
     node.setAttribute('contenteditable', false);
@@ -59,7 +62,7 @@ class ImageBlot extends Embed {
     const captionContainer = document.createElement('p');
     captionContainer.classList.add('caption', 'js-caption');
 
-    node.appendChild(captionContainer);
+    container.appendChild(captionContainer);
 
     // If we don't disable the "content editable" feature of the editor
     // when the user writes in the caption container, the browsers
@@ -224,7 +227,7 @@ class ImageBlot extends Embed {
   _renderToolbar() {
     // We create the element with the default state
     this.toolbar = document.createElement('div');
-    this.domNode.appendChild(this.toolbar);
+    this.domNode.children[0].appendChild(this.toolbar);
     this.toolbar.classList.add('toolbar');
     this._hideToolbar();
 

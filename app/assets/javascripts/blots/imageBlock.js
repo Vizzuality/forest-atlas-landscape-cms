@@ -204,7 +204,7 @@ var ImageBlot = function (_Embed) {
 
       // We create the element with the default state
       this.toolbar = document.createElement('div');
-      this.domNode.appendChild(this.toolbar);
+      this.domNode.children[0].appendChild(this.toolbar);
       this.toolbar.classList.add('toolbar');
       this._hideToolbar();
 
@@ -227,11 +227,14 @@ var ImageBlot = function (_Embed) {
     value: function create(value) {
       var node = _get(ImageBlot.__proto__ || Object.getPrototypeOf(ImageBlot), 'create', this).call(this);
 
+      var container = document.createElement('div');
+      node.appendChild(container);
+
       var image = document.createElement('img');
       image.classList.add('js-image');
       if (typeof value === 'string') image.setAttribute('src', value);
 
-      node.appendChild(image);
+      container.appendChild(image);
 
       // We don't want the user to be able to add text within the container
       node.setAttribute('contenteditable', false);
@@ -240,7 +243,7 @@ var ImageBlot = function (_Embed) {
       var captionContainer = document.createElement('p');
       captionContainer.classList.add('caption', 'js-caption');
 
-      node.appendChild(captionContainer);
+      container.appendChild(captionContainer);
 
       // If we don't disable the "content editable" feature of the editor
       // when the user writes in the caption container, the browsers

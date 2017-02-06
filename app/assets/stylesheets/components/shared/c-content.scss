@@ -143,6 +143,11 @@
 
   .-image {
     margin: 50px 0;
+    text-align: center;
+
+    > div {
+      display: inline-block;
+    }
 
     img {
       display: block;
