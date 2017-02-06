@@ -1,4 +1,5 @@
 ### 7 Feb 2017
+- Added a new option to the images and widgets to let the user select their size between three options
 - Improved the quality of the scaled down images "uploaded" through the wysiwyg
 - Updated the map files
 - Added a pagination system for the tables accross the app

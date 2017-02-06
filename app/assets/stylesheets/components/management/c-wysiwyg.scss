@@ -1,5 +1,5 @@
-$wysiwyg-width: 880px;
 $wysiwyg-lateral-padding: 105px;
+$wysiwyg-width: $content-max-width + 2 * $wysiwyg-lateral-padding;
 
 .c-wysiwyg {
   position: relative;
@@ -283,9 +283,19 @@ $wysiwyg-lateral-padding: 105px;
 
     .-image {
       position: relative;
-      width: calc(100% + 390px);
-      margin: 35px -195px;
+      width: 100%;
+      margin: 35px 0;
       text-align: center;
+
+      &.-large {
+        width: calc(100% + #{$media-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)});
+        margin: 35px #{-1 * ($media-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)) / 2};
+      }
+
+      &.-cover {
+        width: calc(100% + #{$body-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)});
+        margin: 35px #{-1 * ($body-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)) / 2};
+      }
 
       > div {
         display: inline-block;
@@ -294,9 +304,17 @@ $wysiwyg-lateral-padding: 105px;
       img {
         display: block;
         max-width: 100%;
-        max-height: 600px;
+        max-height: $content-max-width * $image-ratio;
         margin: 0 auto;
         border-radius: 4px;
+      }
+
+      &.-large img {
+        max-height: $media-max-width * $image-ratio;
+      }
+
+      &.-cover img {
+        max-height: $body-max-width * $image-ratio;
       }
 
       .caption {
@@ -326,8 +344,18 @@ $wysiwyg-lateral-padding: 105px;
 
     .-widget {
       position: relative;
-      width: calc(100% + 390px);
-      margin: 35px -195px;
+      width: 100%;
+      margin: 35px 0;
+
+      &.-large {
+        width: calc(100% + #{$media-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)});
+        margin: 35px #{-1 * ($media-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)) / 2};
+      }
+
+      &.-cover {
+        width: calc(100% + #{$body-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)});
+        margin: 35px #{-1 * ($body-max-width - ($wysiwyg-width - 2 * $wysiwyg-lateral-padding)) / 2};
+      }
 
       &:not(:hover) .toolbar {
         display: none;

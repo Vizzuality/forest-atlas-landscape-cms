@@ -39,8 +39,8 @@
       widgets: [],
       // Maximum size of the uploaded images
       maxImageSize: {
-        width: 1060,
-        height: 600
+        width: 1280,
+        height: 853
       }
     },
 

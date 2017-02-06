@@ -17,6 +17,7 @@
       padding: 0;
       line-height: inherit;
       white-space: initial;
+      overflow: visible;
     }
 
     .ql-tooltip {
@@ -147,21 +148,53 @@
 
     > div {
       display: inline-block;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
 
       @media #{$mq-mobile} {
         margin: 0 auto;
       }
 
       @media #{$mq-laptop} {
+        max-width: $content-max-width;
+      }
+    }
+
+    &.-large > div {
+      @media #{$mq-laptop} {
         max-width: $media-max-width;
+      }
+    }
+
+    &.-cover {
+      width: $body-max-width;
+      margin-left: #{-1 * $wrapper-padding};
+
+      > div {
+        @media #{$mq-laptop} {
+          max-width: $body-max-width;
+        }
+      }
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+
+      @media #{$mq-laptop} {
         // If you update the next line, make sure to update the
         // default parameters of the wysiwyg view
-        max-height: 600px;
+        max-height: $content-max-width * $image-ratio;
+      }
+    }
+
+    &.-large img {
+      @media #{$mq-laptop} {
+        max-height: $media-max-width * $image-ratio;
+      }
+    }
+
+    &.-cover img {
+      @media #{$mq-laptop} {
+        max-height: $body-max-width * $image-ratio;
       }
     }
 
@@ -180,18 +213,13 @@
       }
 
       @media #{$mq-mobile} {
-        margin: 0 auto;
         margin-top: 12px;
-      }
-
-      @media #{$mq-laptop} {
-        max-width: $media-max-width;
       }
     }
   }
 
   .-widget {
-    max-width: 100%;
+    width: 100%;
     margin: 50px 0;
 
     @media #{$mq-mobile} {
@@ -199,7 +227,20 @@
     }
 
     @media #{$mq-laptop} {
-      max-width: $media-max-width;
+      width: $content-max-width;
+    }
+
+    &.-large {
+      @media #{$mq-laptop} {
+        width: $media-max-width;
+      }
+    }
+
+    &.-cover {
+      @media #{$mq-laptop} {
+        width: $body-max-width;
+        margin-left: #{-1 * $wrapper-padding};
+      }
     }
 
     .widget-container {

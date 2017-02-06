@@ -112,6 +112,14 @@ class ImageBlot extends Embed {
       format.src = image.getAttribute('src');
     }
 
+    if (node.classList.contains('-cover')) {
+      format.size = 'cover';
+    } else if (node.classList.contains('-large')) {
+      format.size = 'large';
+    } else {
+      format.size = 'normal';
+    }
+
     const caption = node.querySelector('.js-caption');
     if (caption.textContent) {
       format.caption = caption.textContent;
@@ -138,6 +146,17 @@ class ImageBlot extends Embed {
         this.caption.textContent = value;
       } else {
         this.caption.parentElement.removeChild(this.caption);
+      }
+    } else if (name === 'size') {
+      if (value === 'cover') {
+        this.domNode.classList.add('-cover');
+        this.domNode.classList.remove('-large');
+      } else if (value == 'large') {
+        this.domNode.classList.add('-large');
+        this.domNode.classList.remove('-cover');
+      } else {
+        this.domNode.classList.remove('-cover');
+        this.domNode.classList.remove('-large');
       }
     } else {
       super.format(name, value);
@@ -205,6 +224,27 @@ class ImageBlot extends Embed {
   }
 
   /**
+   * Event handler called when the user clicks the toggle size button
+   */
+  _onClickToggleSize() {
+    var formats = ImageBlot.formats(this.domNode);
+
+    switch (formats.size) {
+      case 'normal':
+        this.format('size', 'large');
+        break;
+
+      case 'large':
+        this.format('size', 'cover');
+        break;
+
+      case 'cover':
+        this.format('size', 'normal');
+        break;
+    }
+  }
+
+  /**
    * Hide the image toolbar
    * @memberOf ImageBlot
    */
@@ -232,12 +272,15 @@ class ImageBlot extends Embed {
     this._hideToolbar();
 
     // We append its content
-    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']();
+    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
+      showSizeBtn: true
+    });
 
     // We attach the event listeners
     this.toolbar.addEventListener('mouseout', e => this._onMouseoutToolbar(e));
     this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
     this.toolbar.querySelector('.js-change').addEventListener('click', () => this._onClickChange());
+    this.toolbar.querySelector('.js-toggle-size').addEventListener('click', () => this._onClickToggleSize());
   }
 }
 

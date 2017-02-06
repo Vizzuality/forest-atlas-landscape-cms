@@ -166,6 +166,17 @@ var WidgetBlot = function (_Embed) {
         } else {
           this.caption.parentElement.removeChild(this.caption);
         }
+      } else if (name === 'size') {
+        if (value === 'cover') {
+          this.domNode.classList.add('-cover');
+          this.domNode.classList.remove('-large');
+        } else if (value === 'large') {
+          this.domNode.classList.add('-large');
+          this.domNode.classList.remove('-cover');
+        } else {
+          this.domNode.classList.remove('-cover');
+          this.domNode.classList.remove('-large');
+        }
       } else {
         _get(WidgetBlot.prototype.__proto__ || Object.getPrototypeOf(WidgetBlot.prototype), 'format', this).call(this, name, value);
       }
@@ -185,6 +196,32 @@ var WidgetBlot = function (_Embed) {
     }
 
     /**
+     * Event handler called when the user clicks the toggle size button
+     */
+
+  }, {
+    key: '_onClickToggleSize',
+    value: function _onClickToggleSize() {
+      var formats = WidgetBlot.formats(this.domNode);
+
+      switch (formats.size) {
+        case 'normal':
+          this.format('size', 'large');
+          break;
+
+        case 'large':
+          this.format('size', 'cover');
+          break;
+
+        case 'cover':
+          this.format('size', 'normal');
+          break;
+      }
+
+      this.widget.render();
+    }
+
+    /**
      * Render the toolbar
      * @memberOf WidgetBlot
      */
@@ -201,12 +238,16 @@ var WidgetBlot = function (_Embed) {
 
       // We append its content
       this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
-        hideChangeBtn: true
+        hideChangeBtn: true,
+        showSizeBtn: true
       });
 
       // We attach the event listeners
       this.toolbar.querySelector('.js-remove').addEventListener('click', function () {
         return _this3._onClickRemove();
+      });
+      this.toolbar.querySelector('.js-toggle-size').addEventListener('click', function () {
+        return _this3._onClickToggleSize();
       });
     }
   }], [{
@@ -293,6 +334,14 @@ var WidgetBlot = function (_Embed) {
       var caption = node.querySelector('.js-caption');
       if (caption && caption.textContent) {
         res.caption = caption.textContent;
+      }
+
+      if (node.classList.contains('-cover')) {
+        res.size = 'cover';
+      } else if (node.classList.contains('-large')) {
+        res.size = 'large';
+      } else {
+        res.size = 'normal';
       }
 
       return res;
