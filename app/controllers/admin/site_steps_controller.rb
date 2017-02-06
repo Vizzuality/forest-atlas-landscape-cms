@@ -4,8 +4,8 @@ class Admin::SiteStepsController < AdminController
 
   URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
-  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_5'.freeze
-  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][5]'.freeze
+  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
 
   SAVE = 'Save Changes'.freeze
   CONTINUE = 'Continue'.freeze
