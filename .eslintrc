@@ -29,7 +29,8 @@
     "PruneClusterForLeaflet": true,
     "PruneCluster": true,
     "CodeMirror": true,
-    "Transifex": true
+    "Transifex": true,
+    "pica": true
   },
   "env": {
     "browser": true

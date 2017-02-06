@@ -154,6 +154,9 @@
 
       @media #{$mq-laptop} {
         max-width: $media-max-width;
+        // If you update the next line, make sure to update the
+        // default parameters of the wysiwyg view
+        max-height: 600px;
       }
     }
 

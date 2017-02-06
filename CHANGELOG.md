@@ -1,4 +1,5 @@
 ### 7 Feb 2017
+- Improved the quality of the scaled down images "uploaded" through the wysiwyg
 - Updated the map files
 - Added a pagination system for the tables accross the app
 - Fixed several issues with the dataset filtering: unable to set some string filters, misleading row count, unconsistent UI, etc.
