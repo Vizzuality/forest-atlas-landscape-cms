@@ -25,7 +25,7 @@ class Management::SitePagesController < ManagementController
                end
 
       res = {
-        'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true},
+        'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true, 'link' => { 'url' => page.site.routes.first.host + page.url, 'external' => true }},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
         'enabled' => {'value' => page.enabled},

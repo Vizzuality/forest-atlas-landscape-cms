@@ -27,16 +27,6 @@
       if (model) {
         this.options.selectedConnector = model.attributes;
         this.render();
-
-        // If we had a previous warning, we hide it
-        if (this.notificationId !== null && this.notificationId !== undefined) {
-          App.notifications.hide(this.notificationId);
-          this.notificationId = null;
-        }
-
-        if (connector === 'csv') {
-          this.notificationId = App.notifications.broadcast(App.Helper.Notifications.dataset.csv);
-        }
       }
     },
 

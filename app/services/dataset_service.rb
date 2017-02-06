@@ -13,7 +13,7 @@ class DatasetService
   # ++status++ the status of the dataset
   def self.get_datasets(status = 'active')
     datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', \
-      'status': status, 'app': 'forest-atlas'}
+      'status': status, 'app': 'forest-atlas,gfw'}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -26,7 +26,7 @@ class DatasetService
     rescue Exception => e
       # TODO All this methods should throw an exception caught in the controller...
       # ... to render a different page
-      logger.error "::DatasetService.get_datasets: #{e}"
+      Rails.logger.error "::DatasetService.get_datasets: #{e}"
     end
 
     datasets

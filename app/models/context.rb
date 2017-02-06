@@ -11,7 +11,7 @@
 class Context < ApplicationRecord
   has_many :context_datasets, dependent: :destroy
   has_many :datasets, through: :context_datasets
-  has_many :dataset_settings, dependent: :destroy
+  #has_many :dataset_settings, dependent: :destroy
   #has_many :context_users
   #has_many :users, through: :context_users
   has_many :context_owners, -> {owner}, class_name: 'ContextUser', dependent: :destroy

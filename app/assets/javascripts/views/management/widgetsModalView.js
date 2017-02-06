@@ -124,7 +124,8 @@
       this.fuse = new Fuse(this.options.widgets, {
         keys: ['name', 'description'],
         tokenize: true,
-        threshold: 0,
+        threshold: 0.1,
+        matchAllTokens: true,
         shouldSort: false
       });
     },

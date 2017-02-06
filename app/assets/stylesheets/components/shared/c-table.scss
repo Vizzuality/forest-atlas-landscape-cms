@@ -1,7 +1,10 @@
-.c-table,
-.c-table table{
+.c-table {
   width: 100%;
-  border-spacing: 0;
+
+  > table {
+    width: 100%;
+    border-spacing: 0;
+  }
 
   caption {
     display: none;
@@ -81,6 +84,31 @@
   > .table-legend {
     padding: 40px 0;
     text-align: center;
+  }
+
+  > .action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 30px;
+    font-size: $font-size-small;
+
+    .rows-per-page {
+      .c-select {
+        display: inline-block;
+        margin-left: 5px;
+      }
+    }
+
+    .paginator {
+      .c-button.-arrow-left {
+        margin-right: 5px;
+      }
+
+      .c-button.-arrow-right {
+        margin-left: 5px;
+      }
+    }
   }
 
   .more-button {

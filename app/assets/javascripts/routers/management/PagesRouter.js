@@ -10,11 +10,10 @@
       return data.map(function (row) {
         var res = {};
 
-        res.row = keys.map(function (key) {
+        res.row = keys.filter(function (key) {
+          return key !== 'enabled';
+        }).map(function (key) {
           switch (true) {
-            case /enabled/.test(key):
-              return {};
-
             case /(enable|edit|delete)/.test(key):
               if (!row[key].value) return '';
 
@@ -48,7 +47,8 @@
                 name: key,
                 value: row[key].value,
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                link: row[key].link
               };
           }
         });

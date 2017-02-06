@@ -21,7 +21,7 @@
 # Columns Changeable: The columns the user can filter from
 
 class DatasetSetting < ApplicationRecord
-  belongs_to :context
+  #belongs_to :context
   belongs_to :site_page, foreign_key: 'site_page_id', inverse_of: :dataset_setting, autosave: true
 
   validates_presence_of :dataset_id

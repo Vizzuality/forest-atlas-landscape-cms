@@ -112,10 +112,6 @@
         type: 'warning',
         content: 'The widget/dashboard won\'t use more than 10,000 rows.',
         additionalContent: 'Please make sure to filter the dataset to be below this limit.'
-      },
-      csv: {
-        type: 'warning',
-        content: 'Remote CSV files served over an encrypted network (HTTPS) are not supported yet!'
       }
     },
 

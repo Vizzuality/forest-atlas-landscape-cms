@@ -1,3 +1,14 @@
+### 7 Feb 2017
+- Updated the map files
+- Added a pagination system for the tables accross the app
+- Fixed several issues with the dataset filtering: unable to set some string filters, misleading row count, unconsistent UI, etc.
+- Added GFW's datasets to the application
+- Improved the lists of datasets: removed the grouping by contexts (to avoid duplicates) and added a search field
+- Removed the warning to prevent the user from uploading a CSV dataset served over HTTPs
+- Fixed an issue where the favicon wouldn't work properly on Chrome and Firefox
+- Fixed an issue where the list of sites wouldn't load under certain circumstances when using the quick links component
+- Added links to the actual pages in the list of pages (management)
+
 ### 31 Jan 2017
 - Added the new publisher role
 - Added the possibility to choose the cover images and a site icon (admin)

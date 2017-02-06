@@ -63,7 +63,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
       when 'type'
       when 'dataset'
-        @context_datasets = @site.get_context_datasets
+        @datasets_contexts = @site.get_datasets_contexts
 
       when 'filters'
         build_current_dataset_setting
@@ -155,7 +155,7 @@ class Management::PageStepsController < ManagementController
         if @page.valid?
           redirect_to next_wizard_path
         else
-          @context_datasets = @site.get_dataset
+          @datasets_contexts = @site.get_datasets_contexts
           render_wizard
         end
 
@@ -245,7 +245,7 @@ class Management::PageStepsController < ManagementController
     # TODO: To have different permissions for different steps
     params.require(:site_page).permit(:name, :description, :position, :uri, :show_on_menu,
                                       :parent_id, :content_type, content: [:url, :target_blank, :body, :json, :settings],
-                                      dataset_setting: [:context_id_dataset_id, :filters,
+                                      dataset_setting: [:dataset_id, :filters,
                                                         :default_graphs, :default_map,
                                                         visible_fields: []])
   end
@@ -287,17 +287,16 @@ class Management::PageStepsController < ManagementController
     end
     @dataset_setting.assign_attributes session[:dataset_setting] if session[:dataset_setting]
 
-    if ids = ds_params[:context_id_dataset_id]
-      ids = ids.split(' ')
+    if ds_id = ds_params[:dataset_id]
 
       # If the user changed the id of the dataset, the entity is reset
-      if @dataset_setting.dataset_id && @dataset_setting.dataset_id != ids[1]
+      if @dataset_setting.dataset_id && @dataset_setting.dataset_id != ds_id
         session[:dataset_setting] = nil
         session[:invalid_steps] = %w[type columns preview]
         @dataset_setting.filters = @dataset_setting.columns_changeable = @dataset_setting.columns_visible = nil
       end
 
-      @dataset_setting.assign_attributes(context_id: ids[0], dataset_id: ids[1])
+      @dataset_setting.assign_attributes(dataset_id: ds_id)
       ds_metadata = @dataset_setting.get_metadata
       @dataset_setting.api_table_name = ds_metadata.dig('data', 'attributes', 'tableName')
       @dataset_setting.legend = ds_metadata.dig('data', 'attributes', 'legend')

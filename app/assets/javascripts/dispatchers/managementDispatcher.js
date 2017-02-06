@@ -25,7 +25,7 @@
       'management/sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/columns': 'Index',
       'management/sites/:slug/(widgets/:id/)widget_steps/title': 'Index',
-      'management/sites/:slug/(widgets/:id/)widget_steps/dataset': 'Index',
+      'management/sites/:slug/(widgets/:id/)widget_steps/dataset': 'DatasetStep',
       'management/sites/:slug/(widgets/:id/)widget_steps/filters': 'WidgetFiltersStep',
       'management/sites/:slug/(widgets/:id/)widget_steps/visualization': 'VisualizationStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/preview': 'PreviewStep',
@@ -53,7 +53,9 @@
           new Router(params.slice(0, params.length - 1));
           Backbone.history.start({ pushState: false });
         } catch (e) {
-          throw new Error(e);
+          // Better message to find the error
+          // eslint-disable-next-line no-console
+          console.error('File: ' + e.fileName + '\nLine: ' + e.lineNumber + '\nMessage: ' + e.message);
         } finally {
           // We instantiate the Quick links component
           var quickLinksParams = {};

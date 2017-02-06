@@ -19,24 +19,26 @@
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
   <div class="l-widget-creation -dataset">
     <div class="wrapper">
-      <% @context_datasets.each do |context_id, datasets| %>
-        <%# TODO: Remove the DB query from the view %>
-        <h3 class="context">
-          <%= ::Context.find(context_id).name %></h3>
-        <div class="c-cards-list">
-          <% datasets.each do |dataset| %>
-            <div class="card">
-              <label for="dataset-<%= dataset.id %>"><%= dataset.name %></label>
-              <%= radio_button_tag 'widget[dataset_id]', \
-                  dataset.id, f.object.dataset_id ? (f.object.dataset_id == dataset.id) : nil, id: 'dataset-' + dataset.id %>
-              <div class="content">
-                <h3><%= dataset.name %></h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-              </div>
+      <div class="c-action-toolbar">
+        <ul class="buttons">
+        </ul>
+        <ul class="filters">
+          <li><div class="c-input-search js-dataset-search"></div></li>
+        </ul>
+      </div>
+      <div class="c-cards-list">
+        <% @datasets_contexts.each do |id, dc|%>
+          <div class="card js-dataset" data-id="<%= id %>" data-name="<%= dc[:dataset].name %>" data-contexts="<%= dc[:contexts].join(',') %>">
+            <label for="dataset-<%= id %>"><%= dc[:dataset].name %></label>
+            <%= radio_button_tag 'widget[dataset_id]', \
+                  id, f.object.dataset_id ? (f.object.dataset_id == id) : nil, id: 'dataset-' + id %>
+            <div class="content">
+              <h3><%= dc[:dataset].name %></h3>
+              <p>Contexts: <%= dc[:contexts].join(', ') %></p>
             </div>
-          <% end %>
-        </div>
-      <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, never_save: true, cancel: management_site_widgets_path(@site.slug)} %>
