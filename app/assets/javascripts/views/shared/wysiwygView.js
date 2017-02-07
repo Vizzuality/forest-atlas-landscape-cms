@@ -39,8 +39,8 @@
       widgets: [],
       // Maximum size of the uploaded images
       maxImageSize: {
-        width: 1060,
-        height: 600
+        width: 1280,
+        height: 853
       }
     },
 
@@ -149,54 +149,6 @@
     },
 
     /**
-     * Return a deferred of an optimized version of the image passed as a
-     * base64 string. The image is rescaled to fit within the viewport box
-     * described by this.options.maxImageSize
-     * @param {string} base64
-     * @returns {object} deferred - $.Deferred
-     */
-    _getOptimizedBase64: function (base64) {
-      // We create the deferred object
-      var deferred = $.Deferred(); // eslint-disable-line new-cap
-
-      // We create the image
-      var image = document.createElement('img');
-
-      image.addEventListener('load', function () {
-        // We compute the necessary scales on both the axis
-        var scales = {
-          x: this.options.maxImageSize.width / image.width,
-          y: this.options.maxImageSize.height / image.height
-        };
-
-        // Final scale
-        var scale = scales.x < scales.y ? scales.x : scales.y;
-
-        // We the image doesn't need to be rescaled, we return
-        if (scale > 1) {
-          return deferred.resolve(base64);
-        }
-
-        // We create the canvas
-        var canvas = document.createElement('canvas');
-        canvas.width = image.width * scale;
-        canvas.height = image.height * scale;
-
-        var context = canvas.getContext('2d');
-        context.drawImage(image, 0, 0, image.width * scale, image.height * scale);
-
-        return deferred.resolve(canvas.toDataURL());
-      }.bind(this));
-
-      image.addEventListener('error', deferred.reject);
-
-      // We give the image its content
-      image.src = base64;
-
-      return deferred;
-    },
-
-    /**
      * Ask the user for an image and return its optimized base64 representation
      * through a jQuery Deferred object
      * @returns {object} $.Deferred
@@ -210,16 +162,54 @@
       input.accept = 'image/*';
       input.click();
 
+      // We get the file and its base64
       input.addEventListener('change', function () {
         var file = input.files[0];
         var reader = new FileReader();
 
+        // We load the base64 into an image tag so we can later scale it down
         reader.addEventListener('load', function () {
-          this._getOptimizedBase64(reader.result)
-            .done(function (base64) {
-              deferred.resolve(base64);
-            })
-            .fail(deferred.reject);
+          var image = document.createElement('img');
+
+          // Once the image is loaded, we scale it down
+          image.addEventListener('load', function () {
+            var canvas = document.createElement('canvas');
+
+            // This factor is used so the image is sharp on retina displays
+            // With 1.5, we avoid too big images
+            var retinaFactor = 1.5;
+
+            var scales = {
+              x: (this.options.maxImageSize.width * retinaFactor) / image.width,
+              y: (this.options.maxImageSize.height * retinaFactor) / image.height
+            };
+
+            // Final scale
+            var scale = scales.x < scales.y ? scales.x : scales.y;
+
+            // We the image doesn't need to be rescaled, we return
+            if (scale > 1) {
+              deferred.resolve(reader.result);
+            } else {
+              canvas.width = Math.round(image.width * scale);
+              canvas.height = Math.round(image.height * scale);
+
+              pica.resizeCanvas(image, canvas, 3, function (err) {
+                if (err) deferred.reject(err);
+                else deferred.resolve(canvas.toDataURL());
+              });
+            }
+          }.bind(this));
+
+          image.addEventListener('error', deferred.reject);
+
+          image.src = reader.result;
+
+          // this._getOptimizedBase64(reader.result)
+          //   .done(function (base64) {
+          //     deferred.resolve(base64);
+          //   })
+          //   .fail(deferred.reject);
         }.bind(this));
 
         reader.addEventListener('error', deferred.reject);

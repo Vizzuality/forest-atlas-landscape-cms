@@ -1,4 +1,8 @@
 ### 7 Feb 2017
+- New sites now have only three default pages: homepage, map, terms & conditions
+- Redesigned the settings step of the site creation / edition
+- Added a new option to the images and widgets to let the user select their size between three options
+- Improved the quality of the scaled down images "uploaded" through the wysiwyg
 - Updated the map files
 - Added a pagination system for the tables accross the app
 - Fixed several issues with the dataset filtering: unable to set some string filters, misleading row count, unconsistent UI, etc.

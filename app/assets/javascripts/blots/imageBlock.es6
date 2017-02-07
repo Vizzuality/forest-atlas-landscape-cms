@@ -44,13 +44,16 @@ class ImageBlot extends Embed {
    * @returns {HTMLElement} node
    */
   static create(value) {
-    let node = super.create();
+    const node = super.create();
+
+    const container = document.createElement('div');
+    node.appendChild(container);
 
     const image = document.createElement('img');
     image.classList.add('js-image');
     if (typeof value === 'string') image.setAttribute('src', value);
 
-    node.appendChild(image);
+    container.appendChild(image);
 
     // We don't want the user to be able to add text within the container
     node.setAttribute('contenteditable', false);
@@ -59,7 +62,7 @@ class ImageBlot extends Embed {
     const captionContainer = document.createElement('p');
     captionContainer.classList.add('caption', 'js-caption');
 
-    node.appendChild(captionContainer);
+    container.appendChild(captionContainer);
 
     // If we don't disable the "content editable" feature of the editor
     // when the user writes in the caption container, the browsers
@@ -109,6 +112,14 @@ class ImageBlot extends Embed {
       format.src = image.getAttribute('src');
     }
 
+    if (node.classList.contains('-cover')) {
+      format.size = 'cover';
+    } else if (node.classList.contains('-large')) {
+      format.size = 'large';
+    } else {
+      format.size = 'normal';
+    }
+
     const caption = node.querySelector('.js-caption');
     if (caption.textContent) {
       format.caption = caption.textContent;
@@ -135,6 +146,17 @@ class ImageBlot extends Embed {
         this.caption.textContent = value;
       } else {
         this.caption.parentElement.removeChild(this.caption);
+      }
+    } else if (name === 'size') {
+      if (value === 'cover') {
+        this.domNode.classList.add('-cover');
+        this.domNode.classList.remove('-large');
+      } else if (value == 'large') {
+        this.domNode.classList.add('-large');
+        this.domNode.classList.remove('-cover');
+      } else {
+        this.domNode.classList.remove('-cover');
+        this.domNode.classList.remove('-large');
       }
     } else {
       super.format(name, value);
@@ -202,6 +224,27 @@ class ImageBlot extends Embed {
   }
 
   /**
+   * Event handler called when the user clicks the toggle size button
+   */
+  _onClickToggleSize() {
+    var formats = ImageBlot.formats(this.domNode);
+
+    switch (formats.size) {
+      case 'normal':
+        this.format('size', 'large');
+        break;
+
+      case 'large':
+        this.format('size', 'cover');
+        break;
+
+      case 'cover':
+        this.format('size', 'normal');
+        break;
+    }
+  }
+
+  /**
    * Hide the image toolbar
    * @memberOf ImageBlot
    */
@@ -224,17 +267,20 @@ class ImageBlot extends Embed {
   _renderToolbar() {
     // We create the element with the default state
     this.toolbar = document.createElement('div');
-    this.domNode.appendChild(this.toolbar);
+    this.domNode.children[0].appendChild(this.toolbar);
     this.toolbar.classList.add('toolbar');
     this._hideToolbar();
 
     // We append its content
-    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']();
+    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
+      showSizeBtn: true
+    });
 
     // We attach the event listeners
     this.toolbar.addEventListener('mouseout', e => this._onMouseoutToolbar(e));
     this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
     this.toolbar.querySelector('.js-change').addEventListener('click', () => this._onClickChange());
+    this.toolbar.querySelector('.js-toggle-size').addEventListener('click', () => this._onClickToggleSize());
   }
 }
 

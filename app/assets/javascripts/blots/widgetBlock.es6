@@ -196,6 +196,14 @@ class WidgetBlot extends Embed {
       res.caption = caption.textContent;
     }
 
+    if (node.classList.contains('-cover')) {
+      res.size = 'cover';
+    } else if (node.classList.contains('-large')) {
+      res.size = 'large'
+    } else {
+      res.size = 'normal';
+    }
+
     return res;
   }
 
@@ -214,6 +222,17 @@ class WidgetBlot extends Embed {
       } else {
         this.caption.parentElement.removeChild(this.caption);
       }
+    } else if (name === 'size') {
+      if (value === 'cover') {
+        this.domNode.classList.add('-cover');
+        this.domNode.classList.remove('-large');
+      } else if (value === 'large') {
+        this.domNode.classList.add('-large');
+        this.domNode.classList.remove('-cover');
+      } else {
+        this.domNode.classList.remove('-cover');
+        this.domNode.classList.remove('-large');
+      }
     } else {
       super.format(name, value);
     }
@@ -230,6 +249,29 @@ class WidgetBlot extends Embed {
   }
 
   /**
+   * Event handler called when the user clicks the toggle size button
+   */
+  _onClickToggleSize() {
+    var formats = WidgetBlot.formats(this.domNode);
+
+    switch (formats.size) {
+      case 'normal':
+        this.format('size', 'large');
+        break;
+
+      case 'large':
+        this.format('size', 'cover');
+        break;
+
+      case 'cover':
+        this.format('size', 'normal');
+        break;
+    }
+
+    this.widget.render();
+  }
+
+  /**
    * Render the toolbar
    * @memberOf WidgetBlot
    */
@@ -241,11 +283,13 @@ class WidgetBlot extends Embed {
 
     // We append its content
     this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
-      hideChangeBtn: true
+      hideChangeBtn: true,
+      showSizeBtn: true
     });
 
     // We attach the event listeners
     this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
+    this.toolbar.querySelector('.js-toggle-size').addEventListener('click', () => this._onClickToggleSize());
   }
 }
 
