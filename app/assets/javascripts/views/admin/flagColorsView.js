@@ -49,14 +49,34 @@
 
     /**
      * Update the color corresponding to the modified input
-     * @param {object} e - DOM input node
+     * @param {Event} e - DOM input node
      */
     _updateColor: function (e) {
-      var color = $(e.target).val();
-      var position = $(e.target).data('id');
+      var input = e.currentTarget;
+      var color = input.value;
+      var position = input.dataset.id;
       var model = this.collection.at(position);
+
       model.set({ color: color });
-      this.render();
+
+      // We can't just render here because otherwise, when the user is choosing a
+      // color in the color picker, Chrome will send the event while the user is
+      // still picking one. On FF, the event is sent only when the user closes the
+      // picker.
+      input.nextElementSibling.style.backgroundColor = color;
+
+      // We then manually update the hidden field
+      this.hiddenColorsInput.value = this._serializeColors();
+    },
+
+    /**
+     * Serialize the colors for the hidden input
+     * @returns {string}
+     */
+    _serializeColors: function () {
+      return this.collection.toJSON().reduce(function (eachRes, color) {
+        return eachRes + ' ' + color.color;
+      }, '');
     },
 
     /**
@@ -77,11 +97,11 @@
         addButtonVisible: this._canAddColor(),
         inputId: window.gon && gon.global && gon.global.colorControllerId,
         inputName: window.gon && gon.global && gon.global.colorControllerName,
-        colorsValue: this.collection.toJSON().reduce(function (eachRes, color) {
-          return eachRes + ' ' + color.color;
-        }, '')
+        colorsValue: this._serializeColors()
       }));
       this.setElement(this.el);
+
+      this.hiddenColorsInput = this.el.querySelector('.js-colors-input');
     }
   });
 })(this.App);

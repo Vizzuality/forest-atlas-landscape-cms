@@ -19,11 +19,11 @@
       <div class="templates">
         <% SiteTemplate.all.each do |template| %>
           <div class="template">
-            <%= f.label template.name, for: ('template-' + template.id.to_s) %>
+            <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
             <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), :id => ('template-' + template.id.to_s) %>
             <div class="content">
-              <%= image_tag (template.name == 'Forest Atlas' ? 'fa-preview.jpg' : 'lsa-preview.jpg'), alt: template.name %>
               <p><%= template.name %></p>
+              <%= image_tag (template.name == 'Forest Atlas' ? 'fa-preview.jpg' : 'lsa-preview.jpg'), alt: template.name %>
             </div>
           </div>
         <% end %>
@@ -35,9 +35,11 @@
           <%= color_form.hidden_field :id %>
           <%= color_form.hidden_field :name, value: 'color' %>
           <%= color_form.hidden_field :position, value: '1' %>
-          <div class="c-centered-input">
-            <label for="color">Theme color</label>
+          <div class="theme-color js-theme-color">
+            <p>Theme color</p>
             <%= color_form.color_field :value, id: 'color' %>
+            <label for="color" tabindex="0" class="js-label">Change theme color</label>
+            <div class="preview js-preview"></div>
           </div>
       <% end %>
 

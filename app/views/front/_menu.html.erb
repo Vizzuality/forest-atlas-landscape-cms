@@ -38,7 +38,11 @@
   <div class="mobile-menu wrapper">
     <div class="logo-container" href="/">
       <a class="logo" href="/">
-        <%= image_tag((@image_url && @image_url != '/') ? @image_url : asset_path('logo.png')) %>
+        <% if @image_url && @image_url != '/' %>
+          <%= image_tag(@image_url, alt: 'Logo') %>
+        <% elsif @site_page.site_template.name.eql? 'Landscape Application' %>
+          <%= image_tag(asset_path('logo.png'), alt: 'Logo') %>
+        <% end %>
       </a>
     </div>
     <div class="hamburger-menu js-mobile-menu">
@@ -51,7 +55,11 @@
   <div class="desktop-menu wrapper">
     <div class="logo-container">
       <a class="logo" href="/">
-        <%= image_tag((@image_url && @image_url != '/') ? @image_url : asset_path('logo.png')) %>
+        <% if @image_url && @image_url != '/' %>
+          <%= image_tag(@image_url, alt: 'Logo') %>
+        <% elsif @site_page.site_template.name.eql? 'Landscape Application' %>
+          <%= image_tag(asset_path('logo.png'), alt: 'Logo') %>
+        <% end %>
       </a>
     </div>
     <ul>
