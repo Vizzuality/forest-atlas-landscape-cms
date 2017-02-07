@@ -20,4 +20,5 @@
 #
 
 class PageTemplate < Page
+  has_many :page_site_templates, foreign_key: 'page_id',  dependent: :destroy
 end

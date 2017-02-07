@@ -1,4 +1,5 @@
 ### 7 Feb 2017
+- New sites now have only three default pages: homepage, map, terms & conditions
 - Redesigned the settings step of the site creation / edition
 - Added a new option to the images and widgets to let the user select their size between three options
 - Improved the quality of the scaled down images "uploaded" through the wysiwyg

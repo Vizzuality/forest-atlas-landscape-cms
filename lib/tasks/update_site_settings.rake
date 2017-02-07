@@ -32,7 +32,6 @@ namespace :db do
           puts 'Finished updating the position for the site settings'
         rescue Exception => e
           Rails.logger.error "Error updating the site settings: #{e.inspect}"
-          puts "E: #{e.inspect}"
           raise ActiveRecord::Rollback
         end
       end
