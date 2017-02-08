@@ -135,21 +135,6 @@ class Site < ApplicationRecord
   end
 
 
-  private
-
-  def generate_slug
-    write_attribute(:slug, self.name.parameterize)
-  end
-
-  def apply_settings
-    compile_css
-
-    #system "rake site:apply_settings[#{@site.id}] &"
-
-    #Thread.new {
-    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
-    #}.join
-  end
 
   def variables
     color = self.site_settings.find_by(name: 'color')
@@ -164,10 +149,9 @@ class Site < ApplicationRecord
     end
     ActionView::Base.new(
       ForestAtlasLandscapeCms::Application.assets.paths).render({
-         partial: template,
-         locals: { variables: variables },
-         formats: :scss
-       })
+          partial: template,
+          locals: { variables: variables },
+          formats: :scss})
   end
 
   def compile_scss
@@ -195,4 +179,22 @@ class Site < ApplicationRecord
       file.unlink
     end
   end
+
+  private
+
+  def generate_slug
+    write_attribute(:slug, self.name.parameterize)
+  end
+
+  def apply_settings
+    compile_css
+
+    #system "rake site:apply_settings[#{@site.id}] &"
+
+    #Thread.new {
+    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
+    #}.join
+  end
+
+
 end
