@@ -75,7 +75,6 @@ class Admin::SiteStepsController < AdminController
         # If the user pressed the save button
         if save_button?
           if @site.save
-            apply_settings
             redirect_to admin_sites_path
           else
             render_wizard

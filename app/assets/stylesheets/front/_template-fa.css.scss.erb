@@ -1,32 +1,35 @@
 <% variables.each do |property, value| %>
   $<%= property %>: <%= value %>;
 <% end %>
+//
+//@import
+//'leaflet',
+//'icons',
+//'../layouts/shared/*',
+//'../layouts/front/*',
+//'../components/shared/**/*',
+//'../components/front/**/*';
+//
+//@font-face {
+//  font-family: 'Fira Sans';
+//  font-weight: 300;
+//  src: font-url('fonts/FiraSansOT-Light.otf');
+//}
+//
+//@font-face {
+//  font-family: 'Fira Sans';
+//  font-weight: 400;
+//  src: font-url('fonts/FiraSansOT-Regular.otf');
+//}
+//
+//@font-face {
+//  font-family: 'Fira Sans';
+//  font-weight: 700;
+//  src: font-url('fonts/FiraSansOT-Medium.otf');
+//}
 
-@import
-'leaflet',
-'icons',
-'../layouts/shared/*',
-'../layouts/front/*',
-'../components/shared/**/*',
-'../components/front/**/*';
-
-@font-face {
-  font-family: 'Fira Sans';
-  font-weight: 300;
-  src: font-url('fonts/FiraSansOT-Light.otf');
-}
-
-@font-face {
-  font-family: 'Fira Sans';
-  font-weight: 400;
-  src: font-url('fonts/FiraSansOT-Regular.otf');
-}
-
-@font-face {
-  font-family: 'Fira Sans';
-  font-weight: 700;
-  src: font-url('fonts/FiraSansOT-Medium.otf');
-}
+//$color-10: darken(saturate($color-1, 10%), 5%) default;
+//$background-color-1: rgba($color-1, .2) default;
 
 // Font families
 $font-family-1: 'Fira Sans', sans-serif;
@@ -158,13 +161,13 @@ a {
   background-color: $color-1;
 }
 
-::selection {
-  background: $background-color-1;
-}
-
-::-moz-selection {
-  background: $background-color-1;
-}
+//::selection {
+//  background: $background-color-1;
+//}
+//
+//::-moz-selection {
+//  background: $background-color-1;
+//}
 
 // We hide the map header
 .app-header {

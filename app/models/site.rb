@@ -159,7 +159,9 @@ class Site < ApplicationRecord
     sass_engine = Sass::Engine.new(scss_file, {
       syntax: :scss,
       style: Rails.env.development? ? :nested : :compressed,
-      load_paths: ForestAtlasLandscapeCms::Application.assets.paths
+      #load_paths: ForestAtlasLandscapeCms::Application.assets.paths
+      cache: false,
+      read_cache: false
     })
     sass_engine.render
   end
@@ -168,11 +170,15 @@ class Site < ApplicationRecord
     require 'tempfile'
     file = Tempfile.open ["#{id}.css"]
     begin
-      file.write compile_scss
+      compiled = compile_scss
+      file.write compiled
       file.flush
       #self.css = file
-      File.open(Rails.root + "public/assets/front/#{id}.css") do |f|
-        f.write file
+      folder = Rails.root + 'public/stylesheets/front/sites'
+      FileUtils.mkdir_p(folder) unless File.directory?(folder)
+      File.open(folder + "#{id}.css", 'w+') do |f|
+        file.rewind
+        f.write file.read
       end
     ensure
       file.close
@@ -187,7 +193,7 @@ class Site < ApplicationRecord
   end
 
   def apply_settings
-    compile_css
+    #compile_css
 
     #system "rake site:apply_settings[#{@site.id}] &"
 

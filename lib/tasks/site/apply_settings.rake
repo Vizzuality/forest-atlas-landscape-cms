@@ -10,6 +10,9 @@ namespace :site do
 
     begin
       site = Site.find(args[:site_id])
+
+
+      site.compile_css
       puts ""
       puts ""
       puts "......................."
