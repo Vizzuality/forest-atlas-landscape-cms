@@ -10,5 +10,10 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 
+# Includes the folder for the temp css in the assets list
+Rails.application.config.assets.paths << Rails.root.join('tmp', 'compiled_css')
+
 Rails.application.config.assets.precompile += %w( management.js admin.js )
-Rails.application.config.assets.precompile += %w( admin/application.css management/application.css front/application-theme-fa.css front/application-theme-lsa.css )
+Rails.application.config.assets.precompile += %w( admin/application.css management/application.css)
+# The precompilation of the front assets is no longer needed
+#Rails.application.config.assets.precompile += %w( admin/application.css management/application.css front/application-theme-fa.css front/application-theme-lsa.css )

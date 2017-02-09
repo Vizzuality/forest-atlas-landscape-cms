@@ -1,4 +1,6 @@
 class Admin::SiteStepsController < AdminController
+  require 'rake'
+
   include Wicked::Wizard
   include NavigationHelper
 
@@ -73,7 +75,7 @@ class Admin::SiteStepsController < AdminController
         # If the user pressed the save button
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -93,7 +95,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @managers = User.where(role: UserType::MANAGER)
             render_wizard
@@ -114,7 +116,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @publishers = User.where(role: UserType::PUBLISHER)
             render_wizard
@@ -135,7 +137,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -169,7 +171,7 @@ class Admin::SiteStepsController < AdminController
         end
 
         if @site.save
-          redirect_to next_wizard_path
+          redirect_to next_wizard_path, notice: 'The site\'s main color might take a few minutes to be visible'
         else
           render_wizard
         end

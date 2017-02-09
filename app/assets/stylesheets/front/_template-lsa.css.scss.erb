@@ -1,0 +1,13 @@
+<% variables.each do |property, value| %>
+  $<%= property %>: <%= value %>;
+<% end %>
+
+
+@import
+'leaflet',
+'../../app/assets/stylesheets/front/settings-theme-lsa',
+'../../app/assets/stylesheets/front/base-theme-lsa',
+'../../app/assets/stylesheets/layouts/shared/*',
+'../../app/assets/stylesheets/layouts/front/*',
+'../../app/assets/stylesheets/components/shared/**/*',
+'../../app/assets/stylesheets/components/front/**/*';
