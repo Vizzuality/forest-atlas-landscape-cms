@@ -1,15 +1,735 @@
+@charset "UTF-8";
+/* required styles */
+/* line 3, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-map-pane svg,
+.leaflet-map-pane canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+/* line 17, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container {
+  overflow: hidden; }
+
+/* line 20, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none; }
+
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+/* line 29, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-safari .leaflet-tile {
+  image-rendering: -webkit-optimize-contrast; }
+
+/* hack that prevents hw layers "stretching" when loading new tiles */
+/* line 33, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-safari .leaflet-tile-container {
+  width: 1600px;
+  height: 1600px;
+  -webkit-transform-origin: 0 0; }
+
+/* line 38, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  display: block; }
+
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+/* line 44, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container .leaflet-overlay-pane svg,
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer {
+  max-width: none !important; }
+
+/* line 51, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container.leaflet-touch-zoom {
+  -ms-touch-action: pan-x pan-y;
+  touch-action: pan-x pan-y; }
+
+/* line 55, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container.leaflet-touch-drag {
+  -ms-touch-action: pinch-zoom; }
+
+/* line 58, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container.leaflet-touch-drag.leaflet-touch-drag {
+  -ms-touch-action: none;
+  touch-action: none; }
+
+/* line 62, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tile {
+  -webkit-filter: inherit;
+  filter: inherit;
+  visibility: hidden; }
+
+/* line 66, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tile-loaded {
+  visibility: inherit; }
+
+/* line 69, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-box {
+  width: 0;
+  height: 0;
+  box-sizing: border-box;
+  z-index: 800; }
+
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+/* line 77, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-overlay-pane svg {
+  -moz-user-select: none; }
+
+/* line 81, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-pane {
+  z-index: 400; }
+
+/* line 83, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tile-pane {
+  z-index: 200; }
+
+/* line 84, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-overlay-pane {
+  z-index: 400; }
+
+/* line 85, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-shadow-pane {
+  z-index: 500; }
+
+/* line 86, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-marker-pane {
+  z-index: 600; }
+
+/* line 87, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-pane {
+  z-index: 650; }
+
+/* line 88, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-pane {
+  z-index: 700; }
+
+/* line 90, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-map-pane canvas {
+  z-index: 100; }
+
+/* line 91, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-map-pane svg {
+  z-index: 200; }
+
+/* line 93, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-vml-shape {
+  width: 1px;
+  height: 1px; }
+
+/* line 97, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.lvml {
+  behavior: url(#default#VML);
+  display: inline-block;
+  position: absolute; }
+
+/* control positioning */
+/* line 106, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control {
+  position: relative;
+  z-index: 800;
+  pointer-events: visiblePainted;
+  /* IE 9-10 doesn't have auto */
+  pointer-events: auto; }
+
+/* line 112, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-top,
+.leaflet-bottom {
+  position: absolute;
+  z-index: 1000;
+  pointer-events: none; }
+
+/* line 118, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-top {
+  top: 0; }
+
+/* line 121, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-right {
+  right: 0; }
+
+/* line 124, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bottom {
+  bottom: 0; }
+
+/* line 127, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-left {
+  left: 0; }
+
+/* line 130, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control {
+  float: left;
+  clear: both; }
+
+/* line 134, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-right .leaflet-control {
+  float: right; }
+
+/* line 137, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-top .leaflet-control {
+  margin-top: 10px; }
+
+/* line 140, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bottom .leaflet-control {
+  margin-bottom: 10px; }
+
+/* line 143, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-left .leaflet-control {
+  margin-left: 10px; }
+
+/* line 146, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-right .leaflet-control {
+  margin-right: 10px; }
+
+/* zoom and fade animations */
+/* line 153, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-fade-anim .leaflet-tile {
+  will-change: opacity; }
+
+/* line 156, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-fade-anim .leaflet-popup {
+  opacity: 0;
+  -webkit-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear; }
+
+/* line 163, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+  opacity: 1; }
+
+/* line 166, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-animated {
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0; }
+
+/* line 171, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  will-change: transform; }
+
+/* line 174, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  -webkit-transition: -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+  transition: -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+  transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+  transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1), -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1); }
+
+/* line 180, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+  -webkit-transition: none;
+  transition: none; }
+
+/* line 188, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-anim .leaflet-zoom-hide {
+  visibility: hidden; }
+
+/* cursors */
+/* line 195, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-interactive {
+  cursor: pointer; }
+
+/* line 198, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-grab {
+  cursor: -webkit-grab;
+  cursor: -moz-grab; }
+
+/* line 202, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+  cursor: crosshair; }
+
+/* line 206, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-pane,
+.leaflet-control {
+  cursor: auto; }
+
+/* line 210, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+  cursor: move;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing; }
+
+/* marker & overlays interactivity */
+/* line 219, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+  pointer-events: none; }
+
+/* line 227, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive {
+  pointer-events: visiblePainted;
+  /* IE 9-10 doesn't have auto */
+  pointer-events: auto; }
+
+/* visual tweaks */
+/* line 236, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container {
+  background: #ddd;
+  outline: 0; }
+
+/* line 240, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container a {
+  color: #0078A8; }
+
+/* line 243, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container a.leaflet-active {
+  outline: 2px solid orange; }
+
+/* line 246, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-zoom-box {
+  border: 2px dotted #38f;
+  background: rgba(255, 255, 255, 0.5); }
+
+/* general typography */
+/* line 253, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container {
+  font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif; }
+
+/* general toolbar styles */
+/* line 260, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+  border-radius: 4px; }
+
+/* line 264, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: black; }
+
+/* line 276, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  display: block; }
+
+/* line 282, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar a:hover {
+  background-color: #f4f4f4; }
+
+/* line 285, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar a:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px; }
+
+/* line 289, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar a:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom: none; }
+
+/* line 294, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bar a.leaflet-disabled {
+  cursor: default;
+  background-color: #f4f4f4;
+  color: #bbb; }
+
+/* line 300, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-touch .leaflet-bar a {
+  width: 30px;
+  height: 30px;
+  line-height: 30px; }
+
+/* zoom control */
+/* line 309, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  font: bold 18px 'Lucida Console', Monaco, monospace;
+  text-indent: 1px; }
+
+/* line 314, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-zoom-out {
+  font-size: 20px; }
+
+/* line 318, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-touch .leaflet-control-zoom-in {
+  font-size: 22px; }
+
+/* line 321, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-touch .leaflet-control-zoom-out {
+  font-size: 24px; }
+
+/* layers control */
+/* line 328, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  background: #fff;
+  border-radius: 5px; }
+
+/* line 333, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers-toggle {
+  background-image: url(/assets/leaflet/dist/images/layers-1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6.png);
+  width: 36px;
+  height: 36px; }
+
+/* line 338, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-retina .leaflet-control-layers-toggle {
+  background-image: url(/assets/leaflet/dist/images/layers-2x-066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf.png);
+  background-size: 26px 26px; }
+
+/* line 342, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-touch .leaflet-control-layers-toggle {
+  width: 44px;
+  height: 44px; }
+
+/* line 346, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+  display: none; }
+
+/* line 350, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+  display: block;
+  position: relative; }
+
+/* line 354, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers-expanded {
+  padding: 6px 10px 6px 6px;
+  color: #333;
+  background: #fff; }
+
+/* line 359, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers-scrollbar {
+  overflow-y: scroll;
+  padding-right: 5px; }
+
+/* line 363, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers-selector {
+  margin-top: 2px;
+  position: relative;
+  top: 1px; }
+
+/* line 368, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers label {
+  display: block; }
+
+/* line 371, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-layers-separator {
+  height: 0;
+  border-top: 1px solid #ddd;
+  margin: 5px -10px 5px -6px; }
+
+/* Default icon URLs */
+/* line 378, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-default-icon-path {
+  background-image: url(/assets/leaflet/dist/images/marker-icon-574c3a5cca85f4114085b6841596d62f00d7c892c7b03f28cbfa301deb1dc437.png); }
+
+/* attribution and scale controls */
+/* line 385, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container .leaflet-control-attribution {
+  background: #fff;
+  background: rgba(255, 255, 255, 0.7);
+  margin: 0; }
+
+/* line 390, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+  padding: 0 5px;
+  color: #333; }
+
+/* line 395, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-attribution a {
+  text-decoration: none; }
+
+/* line 398, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-attribution a:hover {
+  text-decoration: underline; }
+
+/* line 401, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-scale {
+  font-size: 11px; }
+
+/* line 405, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-left .leaflet-control-scale {
+  margin-left: 5px; }
+
+/* line 408, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-bottom .leaflet-control-scale {
+  margin-bottom: 5px; }
+
+/* line 411, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-scale-line {
+  border: 2px solid #777;
+  border-top: none;
+  line-height: 1.1;
+  padding: 2px 5px 1px;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.5); }
+
+/* line 425, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-scale-line:not(:first-child) {
+  border-top: 2px solid #777;
+  border-bottom: none;
+  margin-top: -2px; }
+
+/* line 430, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+  border-bottom: 2px solid #777; }
+
+/* line 434, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  box-shadow: none; }
+
+/* line 439, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  background-clip: padding-box; }
+
+/* popup */
+/* line 448, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup {
+  position: absolute;
+  text-align: center;
+  margin-bottom: 20px; }
+
+/* line 453, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-content-wrapper {
+  padding: 1px;
+  text-align: left;
+  border-radius: 12px; }
+
+/* line 458, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-content {
+  margin: 13px 19px;
+  line-height: 1.4; }
+
+/* line 462, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-content p {
+  margin: 18px 0; }
+
+/* line 465, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-tip-container {
+  width: 40px;
+  height: 20px;
+  position: absolute;
+  left: 50%;
+  margin-left: -20px;
+  overflow: hidden;
+  pointer-events: none; }
+
+/* line 474, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-tip {
+  width: 17px;
+  height: 17px;
+  padding: 1px;
+  margin: -10px auto 0;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+/* line 487, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: white;
+  color: #333;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4); }
+
+/* line 493, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container a.leaflet-popup-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 4px 0 0;
+  border: none;
+  text-align: center;
+  width: 18px;
+  height: 14px;
+  font: 16px/14px Tahoma, Verdana, sans-serif;
+  color: #c3c3c3;
+  text-decoration: none;
+  font-weight: bold;
+  background: transparent; }
+
+/* line 508, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: #999; }
+
+/* line 511, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-popup-scrolled {
+  overflow: auto;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd; }
+
+/* line 517, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-oldie .leaflet-popup-content-wrapper {
+  zoom: 1; }
+
+/* line 520, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-oldie .leaflet-popup-tip {
+  width: 24px;
+  margin: 0 auto;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+  filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); }
+
+/* line 527, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-oldie .leaflet-popup-tip-container {
+  margin-top: -1px; }
+
+/* line 531, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+  border: 1px solid #999; }
+
+/* div icon */
+/* line 541, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-div-icon {
+  background: #fff;
+  border: 1px solid #666; }
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+/* line 549, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip {
+  position: absolute;
+  padding: 6px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  color: #222;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+
+/* line 564, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip.leaflet-clickable {
+  cursor: pointer;
+  pointer-events: auto; }
+
+/* line 568, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+  position: absolute;
+  pointer-events: none;
+  border: 6px solid transparent;
+  background: transparent;
+  content: ""; }
+
+/* Directions */
+/* line 581, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-bottom {
+  margin-top: 6px; }
+
+/* line 584, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-top {
+  margin-top: -6px; }
+
+/* line 587, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+  left: 50%;
+  margin-left: -6px; }
+
+/* line 592, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-top:before {
+  bottom: 0;
+  margin-bottom: -12px;
+  border-top-color: #fff; }
+
+/* line 597, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-bottom:before {
+  top: 0;
+  margin-top: -12px;
+  margin-left: -6px;
+  border-bottom-color: #fff; }
+
+/* line 603, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-left {
+  margin-left: -6px; }
+
+/* line 606, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-right {
+  margin-left: 6px; }
+
+/* line 609, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+  top: 50%;
+  margin-top: -6px; }
+
+/* line 614, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-left:before {
+  right: 0;
+  margin-right: -12px;
+  border-left-color: #fff; }
+
+/* line 619, /Users/tiagosantos/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/rails-assets-leaflet-1.0.1/app/assets/stylesheets/leaflet/leaflet.scss */
+.leaflet-tooltip-right:before {
+  left: 0;
+  margin-left: -12px;
+  border-right-color: #fff; }
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 300;
+  src: url(/assets/fonts/FiraSansOT-Light-744018cb3b877b7b9605cc509c216ad13db7ff7b3318d1afe6e01d69562767ac.otf); }
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 400;
+  src: url(/assets/fonts/FiraSansOT-Regular-469428b4cd346aa466155d4c28ce55cd2ee680363423f73854c0eef4f8348dfb.otf); }
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 700;
+  src: url(/assets/fonts/FiraSansOT-Medium-f061b1a12092df3a6e3cd4364b4ab63ed1c9ce3de7706e63e518bdf84a0ca5a9.otf); }
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 * {
   box-sizing: border-box; }
-  *::before, *::after {
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; }
 
+/* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+*::before, *::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+/* line 12, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 html,
 body {
   margin: 0;
   padding: 0; }
 
+/* line 18, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 body {
   max-width: 1280px;
   color: #555;
@@ -17,48 +737,2781 @@ body {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.7; }
-  @media screen and (min-width: 1280px) {
-    body {
-      margin: 0 auto; } }
-  body.-wide {
-    max-width: none; }
 
+@media screen and (min-width: 1280px) {
+  /* line 18, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+  body {
+    margin: 0 auto; } }
+/* line 30, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+body.-wide {
+  max-width: none; }
+
+/* line 35, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 ul {
   display: inline-block;
   margin: 0;
   padding: 0; }
-  ul > li {
-    display: inline-block;
-    list-style: none; }
 
+/* line 40, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+ul > li {
+  display: inline-block;
+  list-style: none; }
+
+/* line 46, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 a {
   padding: 0 3px;
   color: currentColor;
   text-decoration: none;
   background-color: rgba(151, 189, 61, 0.2); }
 
+/* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 .wrapper {
   width: 100%;
   padding: 0 15px; }
-  @media screen and (min-width: 425px) {
-    .wrapper {
-      padding: 0 30px; } }
-  @media screen and (min-width: 768px) {
-    .wrapper {
-      padding: 0 30px; } }
 
+@media screen and (min-width: 425px) {
+  /* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+  .wrapper {
+    padding: 0 30px; } }
+@media screen and (min-width: 768px) {
+  /* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+  .wrapper {
+    padding: 0 30px; } }
+/* line 67, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 .is-hidden {
   display: none; }
 
+/* line 71, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor; }
+
+/* line 80, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 .turbolinks-progress-bar {
   background-color: #97bd3d; }
 
+/* line 84, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+::-moz-selection {
+  background: rgba(151, 189, 61, 0.2); }
+
+::selection {
+  background: rgba(151, 189, 61, 0.2); }
+
+/* line 88, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
+::-moz-selection {
+  background: rgba(151, 189, 61, 0.2); }
+
+/* line 93, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 .app-header {
   display: none !important; }
 
 @media (max-width: 950px) {
+  /* line 98, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
   .map-container {
     top: 55px !important;
     position: fixed !important; } }
+/* line 104, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/front/_base-theme-fa.scss */
 .tab-buttons__tab.mobile-show[data-value="MORE"] {
   display: none !important; }
+
+/* line 3, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard {
+  margin-top: 25px; }
+
+@media screen and (min-width: 1024px) {
+  /* line 3, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    height: calc(100vh - 80px); } }
+/* line 13, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard h2 {
+  margin: 0 0 15px;
+  font-size: 47px;
+  letter-spacing: .3px;
+  line-height: 1.1;
+  font-weight: 300; }
+
+/* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard > .main-container {
+  padding: 15px; }
+
+@media screen and (min-width: 1024px) {
+  /* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard > .main-container {
+    -ms-flex-preferred-size: calc(100% - $secondary-container-initial-width);
+    flex-basis: calc(100% - $secondary-container-initial-width);
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+    padding: 15px 25px; } }
+/* line 39, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard > .secondary-container {
+  padding: 0 15px 15px;
+  border-left: 1px solid rgba(85, 85, 85, 0.1); }
+
+@media screen and (min-width: 1024px) {
+  /* line 39, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard > .secondary-container {
+    -ms-flex-preferred-size: 400px;
+    flex-basis: 400px;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    padding: 0 25px 15px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; } }
+/* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .description {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 300; }
+
+/* line 60, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .filters {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  margin-top: 20px; }
+
+@media screen and (min-width: 768px) {
+  /* line 60, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard .filters {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    height: 40px; } }
+/* line 72, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .filters > *:not(:last-of-type) {
+  margin-bottom: 15px; }
+
+@media screen and (min-width: 768px) {
+  /* line 72, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard .filters > *:not(:last-of-type) {
+    margin-bottom: 0;
+    margin-right: 17px; } }
+/* line 82, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .map {
+  height: 300px;
+  margin-top: 50px;
+  border: 1px solid rgba(85, 85, 85, 0.3); }
+
+@media screen and (min-width: 768px) {
+  /* line 82, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard .map {
+    height: 500px; } }
+@media screen and (min-width: 1024px) {
+  /* line 82, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+  .l-analysis-dashboard .map {
+    height: calc(100vh - 332px); } }
+/* line 95, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .map .leaflet-control-attribution {
+  color: #555; }
+
+/* line 98, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .map .leaflet-control-attribution a {
+  background-color: transparent;
+  color: #555; }
+
+/* line 104, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .map .leaflet-bar a {
+  color: #555; }
+
+/* line 109, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .graph {
+  position: relative;
+  left: -25px;
+  width: calc(100% + 50px);
+  padding: 15px 25px;
+  border-bottom: 1px solid rgba(85, 85, 85, 0.1); }
+
+/* line 117, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/shared/l-analysis-dashboard.scss */
+.l-analysis-dashboard .bookmarks {
+  padding: 15px 0; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+.l-error-page {
+  max-width: 900px;
+  min-height: calc(100vh - 445px);
+  margin: 0 auto; }
+
+/* line 6, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+.l-error-page h1 {
+  max-width: 600px;
+  margin: 25px 0;
+  font-size: 35px;
+  font-weight: 300;
+  line-height: 1.2; }
+
+@media screen and (min-width: 768px) {
+  /* line 6, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+  .l-error-page h1 {
+    margin: 90px 0 25px;
+    font-size: 47px; } }
+/* line 19, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+.l-error-page p {
+  margin-bottom: 0; }
+
+@media screen and (min-width: 768px) {
+  /* line 19, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+  .l-error-page p {
+    margin-bottom: 15px; } }
+/* line 27, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+.l-error-page .sitemap {
+  margin-bottom: 25px; }
+
+@media screen and (min-width: 768px) {
+  /* line 27, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+  .l-error-page .sitemap {
+    margin-top: 15px; } }
+/* line 34, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+.l-error-page .sitemap li {
+  display: block;
+  font-size: 15px;
+  line-height: 2.4; }
+
+@media screen and (min-width: 768px) {
+  /* line 34, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+  .l-error-page .sitemap li {
+    display: inline-block;
+    margin-right: 50px;
+    font-size: 21px;
+    line-height: 1.4; } }
+/* line 46, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/layouts/front/l-error-page.scss */
+.l-error-page .sitemap li a {
+  background-color: transparent;
+  color: #97bd3d; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-bar.scss */
+.c-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #f7f7f7;
+  z-index: 10; }
+
+@media screen and (min-width: 1280px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-bar.scss */
+  .c-action-bar {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%); } }
+@media screen and (min-width: 1280px) {
+  /* line 15, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-bar.scss */
+  .c-action-bar.-wide {
+    left: 0;
+    width: 100vw;
+    max-width: none;
+    padding: 0 calc((100vw - 1280px) / 2);
+    -webkit-transform: none;
+    transform: none; } }
+/* line 25, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-bar.scss */
+.c-action-bar > .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: 100%; }
+
+/* line 32, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-bar.scss */
+.c-action-bar.-embed {
+  position: static;
+  -webkit-transform: none;
+  transform: none; }
+
+/* line 36, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-bar.scss */
+.c-action-bar.-embed > .wrapper {
+  padding: 0 45px; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-toolbar.scss */
+.c-action-toolbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin: 30px 0; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-toolbar.scss */
+.c-action-toolbar > .buttons > li {
+  max-width: 230px; }
+
+/* line 12, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-toolbar.scss */
+.c-action-toolbar > .buttons > li:not(:last-of-type) {
+  margin-right: 40px; }
+
+/* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-toolbar.scss */
+.c-action-toolbar > .filters > li {
+  width: 230px; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-action-toolbar.scss */
+.c-action-toolbar > .filters > li:not(:last-of-type) {
+  margin-right: 40px; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button {
+  padding: 10px 25px;
+  border: 1px solid;
+  border-radius: 20px;
+  color: #fff;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border-color: #8cb52c;
+  background: #8cb52c;
+  text-transform: uppercase; }
+
+/* line 20, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-monochrome {
+  border-color: #555;
+  background: #555; }
+
+/* line 23, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-monochrome.-outline {
+  color: #555; }
+
+/* line 26, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-outline {
+  background: transparent; }
+
+/* line 30, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-dark-text {
+  color: #555; }
+
+/* line 34, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-normal-weight {
+  font-weight: 400; }
+
+/* line 38, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-disabled {
+  cursor: default;
+  opacity: .3; }
+
+/* line 43, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-arrow-left {
+  position: relative;
+  text-indent: -10000px; }
+
+/* line 47, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-arrow-left::before {
+  display: block;
+  position: absolute;
+  top: calc(50% - 10px);
+  right: 50%;
+  width: 2px;
+  height: 8px;
+  -webkit-transform: translate(0, 100%) rotate(-45deg);
+  transform: translate(0, 100%) rotate(-45deg);
+  background-color: #555;
+  content: ''; }
+
+/* line 59, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-arrow-left::after {
+  display: block;
+  position: absolute;
+  top: calc(50% + 2px);
+  right: 50%;
+  width: 2px;
+  height: 8px;
+  -webkit-transform: translate(0, -100%) rotate(45deg);
+  transform: translate(0, -100%) rotate(45deg);
+  background-color: #555;
+  content: ''; }
+
+/* line 72, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-arrow-right {
+  position: relative;
+  text-indent: -10000px; }
+
+/* line 76, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-arrow-right::before {
+  display: block;
+  position: absolute;
+  top: calc(50% - 10px);
+  right: 50%;
+  width: 2px;
+  height: 8px;
+  -webkit-transform: translate(50%, 100%) rotate(45deg);
+  transform: translate(50%, 100%) rotate(45deg);
+  background-color: #555;
+  content: ''; }
+
+/* line 88, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-arrow-right::after {
+  display: block;
+  position: absolute;
+  top: calc(50% + 2px);
+  right: 50%;
+  width: 2px;
+  height: 8px;
+  -webkit-transform: translate(50%, -100%) rotate(-45deg);
+  transform: translate(50%, -100%) rotate(-45deg);
+  background-color: #555;
+  content: ''; }
+
+/* line 101, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-mini {
+  height: 24px;
+  padding: 0 10px;
+  border-color: #97bd3d;
+  background-color: #f3f8e8;
+  color: #555;
+  font-size: 12px;
+  font-weight: 400; }
+
+/* line 110, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-button.scss */
+.c-button.-mini.-arrow-left, .c-button.-mini.-arrow-right {
+  width: 32px;
+  padding: 0; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  overflow: hidden; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -ms-flex-preferred-size: calc(33.33% - 20px);
+  flex-basis: calc(33.33% - 20px);
+  margin: 10px; }
+
+/* line 15, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card input {
+  position: absolute;
+  left: -10000px; }
+
+/* line 19, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card input:checked + .content {
+  border-color: #97bd3d;
+  background: #97bd3d;
+  color: #fff; }
+
+/* line 25, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card input:focus + .content {
+  border-color: #97bd3d; }
+
+/* line 30, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-indent: -10000px;
+  cursor: pointer;
+  z-index: 1; }
+
+/* line 41, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card .content {
+  width: 100%;
+  padding: 20px;
+  -webkit-transition: background .3s, color .1s, border-color .3s;
+  transition: background .3s, color .1s, border-color .3s;
+  border: 1px solid #dededd;
+  border-radius: 7px; }
+
+/* line 48, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card .content h3 {
+  margin: 0 0 7px;
+  font-size: 14px;
+  text-transform: uppercase; }
+
+/* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card .content p {
+  font-size: 12px;
+  line-height: 1.5; }
+
+/* line 61, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card.-single-data {
+  min-height: 85px; }
+
+/* line 64, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card.-single-data .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+
+/* line 69, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card.-single-data .content h3 {
+  width: 65%;
+  margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all; }
+
+/* line 79, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-cards-list.scss */
+.c-cards-list .card.-single-data input:checked + .content::after {
+  position: absolute;
+  top: calc(50%);
+  right: 30px;
+  width: 60px;
+  height: 50px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  background: url(/assets/icons/large-check-icon-034c67a858754cec1c1e908797ab0791cfe895a3b0321cc15b4cdc3e810b6609.svg) no-repeat center center;
+  background-size: contain;
+  content: ''; }
+
+/* line 2, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-checkbox.scss */
+.c-checkbox label {
+  display: inline-block;
+  position: relative;
+  padding-left: 40px;
+  cursor: pointer; }
+
+/* line 8, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-checkbox.scss */
+.c-checkbox label::before, .c-checkbox label::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  border: 1px solid #dededd;
+  border-radius: 4px;
+  content: ''; }
+
+/* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-checkbox.scss */
+.c-checkbox label::after {
+  border: 0;
+  background: url(/assets/icons/check-icon-d9ea6adc2309386d670b613c08c73361538d7ff28df13a044e0c9196e6265899.svg) no-repeat center center;
+  content: none; }
+
+/* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-checkbox.scss */
+.c-checkbox input {
+  position: absolute;
+  left: -100000px;
+  opacity: 0; }
+
+/* line 37, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-checkbox.scss */
+.c-checkbox input:focus + label::before {
+  border-color: #97bd3d; }
+
+/* line 45, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-checkbox.scss */
+.c-checkbox input:checked + label::after {
+  content: ''; }
+
+/* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content {
+  margin: 50px 0 60px; }
+
+@media screen and (min-width: 425px) {
+  /* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content {
+    margin: 60px 0 90px; } }
+/* line 12, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .ql-disabled {
+  font-family: inherit;
+  font-size: inherit; }
+
+/* line 16, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .ql-disabled .ql-editor {
+  padding: 0;
+  line-height: inherit;
+  white-space: initial;
+  overflow: visible; }
+
+/* line 23, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .ql-disabled .ql-tooltip {
+  display: none; }
+
+/* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content h1,
+.c-content h2,
+.c-content p,
+.c-content blockquote,
+.c-content ul,
+.c-content ol,
+.c-content .-intro {
+  max-width: 750px;
+  margin: 0 auto; }
+
+/* line 39, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content h1 {
+  margin: 40px auto 10px;
+  font-size: 35px;
+  letter-spacing: .3px;
+  color: #555;
+  font-weight: 300; }
+
+@media screen and (min-width: 425px) {
+  /* line 39, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content h1 {
+    font-size: 40px; } }
+@media screen and (min-width: 768px) {
+  /* line 39, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content h1 {
+    font-size: 47px; } }
+/* line 63, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content h2 {
+  margin: 20px auto 5px;
+  font-size: 21px;
+  font-weight: 700;
+  color: #555;
+  letter-spacing: .2px; }
+
+/* line 77, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content p,
+.c-content .-intro {
+  letter-spacing: .1px; }
+
+/* line 81, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content p + .paragraph, .c-content p + p, .c-content p + .-intro,
+.c-content .-intro + .paragraph,
+.c-content .-intro + p,
+.c-content .-intro + .-intro {
+  margin: 20px auto 0; }
+
+/* line 88, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-intro {
+  font-size: 19px;
+  font-weight: 300; }
+
+/* line 96, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content ul,
+.c-content ol {
+  display: block;
+  margin-top: .5em;
+  margin-bottom: .5em; }
+
+/* line 102, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content ul li,
+.c-content ol li {
+  display: list-item; }
+
+/* line 105, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content ul li::before,
+.c-content ol li::before {
+  font-family: "Fira Sans", sans-serif; }
+
+/* line 111, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content blockquote {
+  margin: 30px auto;
+  font-size: 21px;
+  font-weight: 300;
+  color: #555;
+  letter-spacing: .2px;
+  line-height: 1.1; }
+
+/* line 116, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content blockquote::before {
+  content: '“'; }
+
+/* line 120, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content blockquote::after {
+  content: '”'; }
+
+@media screen and (min-width: 425px) {
+  /* line 111, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content blockquote {
+    margin: 60px auto;
+    font-size: 35px; } }
+/* line 145, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-image {
+  margin: 50px 0;
+  text-align: center; }
+
+/* line 149, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-image > div {
+  display: inline-block; }
+
+@media screen and (min-width: 425px) {
+  /* line 149, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image > div {
+    margin: 0 auto; } }
+@media screen and (min-width: 1024px) {
+  /* line 149, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image > div {
+    max-width: 750px; } }
+@media screen and (min-width: 1024px) {
+  /* line 161, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image.-large > div {
+    max-width: 1060px; } }
+/* line 167, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-image.-cover {
+  width: 1280px;
+  margin-left: -30px; }
+
+@media screen and (min-width: 1024px) {
+  /* line 171, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image.-cover > div {
+    max-width: 1280px; } }
+/* line 178, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-image img {
+  display: block;
+  max-width: 100%; }
+
+@media screen and (min-width: 1024px) {
+  /* line 178, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image img {
+    max-height: 499.95px; } }
+@media screen and (min-width: 1024px) {
+  /* line 189, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image.-large img {
+    max-height: 706.596px; } }
+@media screen and (min-width: 1024px) {
+  /* line 195, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image.-cover img {
+    max-height: 853.248px; } }
+/* line 201, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-image .caption {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 12px;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 300;
+  text-align: right; }
+
+@media screen and (min-width: 425px) {
+  /* line 201, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-image .caption {
+    margin-top: 12px; } }
+/* line 221, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-widget {
+  width: 100%;
+  margin: 50px 0; }
+
+@media screen and (min-width: 425px) {
+  /* line 221, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget {
+    margin: 50px auto; } }
+@media screen and (min-width: 1024px) {
+  /* line 221, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget {
+    width: 750px; } }
+@media screen and (min-width: 1024px) {
+  /* line 233, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget.-large {
+    width: 1060px; } }
+@media screen and (min-width: 1024px) {
+  /* line 239, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget.-cover {
+    width: 1280px;
+    margin-left: -30px; } }
+/* line 246, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-widget .widget-container {
+  padding: 20px 20px 10px;
+  border: 1px solid #dededd; }
+
+@media screen and (min-width: 1024px) {
+  /* line 246, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget .widget-container {
+    padding: 60px 60px 40px; } }
+/* line 254, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-widget .widget-container .error {
+  text-align: center; }
+
+/* line 259, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+.c-content .-widget .caption {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 12px;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 300;
+  text-align: right; }
+
+@media screen and (min-width: 425px) {
+  /* line 259, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget .caption {
+    margin: 0 auto;
+    margin-top: 12px; } }
+@media screen and (min-width: 1024px) {
+  /* line 259, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-content.scss */
+  .c-content .-widget .caption {
+    max-width: 1060px; } }
+/* line 2, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks > header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin: 10px 0; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks h3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.7; }
+
+/* line 16, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks > .bookmarks {
+  display: block;
+  width: 100%; }
+
+/* line 20, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks > .bookmarks > li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(85, 85, 85, 0.1); }
+
+/* line 27, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks > .bookmarks > li.no-bookmark {
+  display: block;
+  width: 100%;
+  border-bottom-color: transparent;
+  text-align: center;
+  opacity: .5; }
+
+/* line 37, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons {
+  -ms-flex-negative: 0;
+  flex-shrink: 0; }
+
+/* line 40, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons button {
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  margin-left: 15px;
+  padding: 0;
+  -webkit-transition: opacity .3s;
+  transition: opacity .3s;
+  border: 0;
+  background-color: transparent;
+  text-indent: -10000px;
+  cursor: pointer;
+  opacity: .3; }
+
+/* line 53, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons button:hover {
+  opacity: 1; }
+
+/* line 63, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons button.-apply {
+  width: 16px;
+  height: 11px; }
+
+/* line 68, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons button.-delete {
+  width: 10px;
+  height: 14px; }
+
+/* line 73, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons button > svg {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+/* line 81, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dashboard-bookmarks.scss */
+.c-dashboard-bookmarks .buttons button > svg path {
+  -webkit-transition: fill .3s;
+  transition: fill .3s; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector {
+  display: inline-block;
+  position: relative; }
+
+/* line 5, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .active-option {
+  cursor: pointer; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options {
+  position: absolute;
+  bottom: -3px;
+  left: calc(50% - 27px);
+  width: auto;
+  padding: 0;
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: opacity .2s, pointer-events 0 .2s;
+  transition: opacity .2s, pointer-events 0 .2s;
+  border-radius: 2px;
+  background-color: #fff;
+  font-weight: 400;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  z-index: 15;
+  pointer-events: none; }
+
+/* line 25, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options::before {
+  display: block;
+  position: absolute;
+  top: -6px;
+  left: 20px;
+  width: 12px;
+  height: 12px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  background-color: #fff;
+  content: '';
+  z-index: -1; }
+
+/* line 38, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options.-visible {
+  -webkit-transition: opacity .2s;
+  transition: opacity .2s;
+  opacity: 1;
+  pointer-events: auto; }
+
+/* line 44, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options .option {
+  display: block;
+  padding: 12px 20px;
+  border-bottom: 1px solid #eceaea;
+  color: #555;
+  line-height: 1.3;
+  cursor: pointer; }
+
+/* line 52, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options .option:first-of-type {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px; }
+
+/* line 57, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options .option:last-of-type {
+  border-bottom: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px; }
+
+/* line 63, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options .option:hover, .c-dropdown-selector > .options .option:focus {
+  outline: none;
+  background-color: #f5f4f4; }
+
+/* line 74, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options .option.-active {
+  position: relative;
+  color: #97bd3d; }
+
+/* line 78, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector > .options .option.-active::before {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 8px;
+  height: 8px;
+  -webkit-transform: translateY(-50%) rotate(45deg);
+  transform: translateY(-50%) rotate(45deg);
+  border-top: 2px solid #97bd3d;
+  border-right: 2px solid #97bd3d;
+  border-bottom: 0;
+  border-left: 0;
+  content: ''; }
+
+/* line 97, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector.-right > .options {
+  right: calc(50% - 27px);
+  left: auto; }
+
+/* line 101, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector.-right > .options::before {
+  right: 20px;
+  left: auto; }
+
+/* line 109, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector.-fixed-width > .options {
+  width: 250px; }
+
+/* line 116, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector.-arrow-right > .active-option::after {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 12px;
+  -webkit-transform: translateY(-3px) rotate(135deg);
+  transform: translateY(-3px) rotate(135deg);
+  border-bottom: 0;
+  border-left: 0;
+  content: '';
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff; }
+
+/* line 139, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-dropdown-selector.scss */
+.c-dropdown-selector.-arrow-left > .active-option::before {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 12px;
+  -webkit-transform: translateY(-3px) rotate(135deg);
+  transform: translateY(-3px) rotate(135deg);
+  border-bottom: 0;
+  border-left: 0;
+  content: '';
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  min-height: 165px;
+  background-color: #333;
+  color: rgba(255, 255, 255, 0.5); }
+
+/* line 8, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header.-high {
+  min-height: 250px; }
+
+/* line 12, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header h1 {
+  color: #fff;
+  font-size: 47px;
+  font-weight: 300; }
+
+/* line 18, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header > .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .two-options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 100%; }
+
+/* line 31, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .two-options::after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: #404040;
+  content: ''; }
+
+/* line 42, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .two-options > .description {
+  -ms-flex-preferred-size: calc(50% - 70px);
+  flex-basis: calc(50% - 70px); }
+
+/* line 47, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .description {
+  max-width: 425px; }
+
+/* line 50, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .description > h1 {
+  margin: 0 0 10px; }
+
+/* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .description > p {
+  margin: 0;
+  line-height: 1.5; }
+
+/* line 59, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .description > .c-button {
+  display: inline-block;
+  margin-top: 22px; }
+
+/* line 65, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .action-buttons {
+  -ms-flex-negative: 0;
+  flex-shrink: 0; }
+
+/* line 68, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .action-buttons > li {
+  margin-right: 10px; }
+
+/* line 71, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-extended-header.scss */
+.c-extended-header .action-buttons > li:last-of-type {
+  margin-right: 0; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset {
+  position: relative;
+  padding-top: 15px; }
+
+/* line 5, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset label {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transition: opacity ease-out .3s;
+  transition: opacity ease-out .3s;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0; }
+
+/* line 16, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset input {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid rgba(85, 85, 85, 0.3);
+  outline: none;
+  color: #555;
+  font-size: 21px;
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(85, 85, 85, 0.1); }
+
+/* line 32, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset input + label {
+  opacity: 1; }
+
+/* line 33, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset input:placeholder-shown + label {
+  opacity: 0; }
+
+/* line 35, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset input:not(:placeholder-shown) + label {
+  opacity: 1; }
+
+/* line 39, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset input:focus {
+  border-color: #97bd3d;
+  box-shadow: 0 2px 3px 0 rgba(151, 189, 61, 0.1); }
+
+/* line 45, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset textarea {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border: 1px solid rgba(85, 85, 85, 0.3);
+  outline: none;
+  font-size: 12px;
+  box-shadow: 0 2px 3px 0 rgba(85, 85, 85, 0.1); }
+
+/* line 55, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset textarea:focus {
+  border-color: #97bd3d;
+  box-shadow: 0 2px 3px 0 rgba(151, 189, 61, 0.1); }
+
+/* line 59, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-fieldset.scss */
+.c-fieldset textarea:focus + label {
+  opacity: 1; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin {
+  height: 50px;
+  border-bottom: 1px solid #404040;
+  background-color: #333;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  text-transform: uppercase; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none; }
+
+/* line 13, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin a.-highlight {
+  color: #97bd3d; }
+
+/* line 18, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin > .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: 100%; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin > .wrapper > div {
+  height: 100%;
+  line-height: 50px; }
+
+/* line 30, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin .quick-links {
+  display: inline-block;
+  height: 100%; }
+
+/* line 34, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin .quick-links .c-dropdown-selector {
+  height: 100%;
+  color: #97bd3d; }
+
+/* line 38, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin .quick-links .c-dropdown-selector .active-option::before {
+  border-color: #97bd3d; }
+
+/* line 45, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin .user-links .c-dropdown-selector .option {
+  width: 130px; }
+
+/* line 52, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin .breadcrumbs > li::before {
+  content: ' /'; }
+
+/* line 58, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin.-bright {
+  background-color: #97bd3d;
+  color: #fff; }
+
+/* line 62, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin.-bright a {
+  color: #fff; }
+
+/* line 64, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin.-bright a.-highlight {
+  color: #fff; }
+
+/* line 67, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin.-bright .breadcrumbs {
+  color: rgba(255, 255, 255, 0.5); }
+
+/* line 71, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin.-bright .quick-links .c-dropdown-selector {
+  color: #fff; }
+
+/* line 74, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-header-admin.scss */
+.c-header-admin.-bright .quick-links .c-dropdown-selector .active-option::before {
+  border-color: #fff; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select {
+  position: relative;
+  width: 200px;
+  height: 40px;
+  z-index: 1; }
+
+/* line 7, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select > .label {
+  height: 40px;
+  padding: 0 15px;
+  line-height: 40px;
+  box-shadow: 0 2px 3px 0 rgba(85, 85, 85, 0.3);
+  cursor: pointer; }
+
+/* line 14, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select > .label > .arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  -webkit-transition: background-color .3s;
+  transition: background-color .3s;
+  background-color: rgba(151, 189, 61, 0.1); }
+
+/* line 23, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select > .label > .arrow::before {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 2px);
+  width: 12px;
+  height: 2px;
+  -webkit-transform: translate(-100%, 0) rotate(45deg);
+  transform: translate(-100%, 0) rotate(45deg);
+  background-color: #789631;
+  content: ''; }
+
+/* line 35, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select > .label > .arrow::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: calc(50% + 2px);
+  width: 12px;
+  height: 2px;
+  -webkit-transform: translate(100%, 0) rotate(-45deg);
+  transform: translate(100%, 0) rotate(-45deg);
+  background-color: #789631;
+  content: ''; }
+
+/* line 47, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select > .label > .arrow.-left {
+  display: inline-block;
+  position: relative;
+  right: auto;
+  left: -15px;
+  margin-right: 15px;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+  vertical-align: middle; }
+
+/* line 58, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select > .label:hover > .arrow {
+  background-color: rgba(151, 189, 61, 0.2); }
+
+/* line 63, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .steps-wrapper {
+  display: block;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  max-height: 140px;
+  border-top: 1px solid rgba(85, 85, 85, 0.3);
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(85, 85, 85, 0.3);
+  overflow: auto; }
+
+/* line 75, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .steps-wrapper.-hidden {
+  display: none; }
+
+/* line 80, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .steps {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  width: 100%;
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s, -webkit-transform .3s; }
+
+/* line 87, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .step {
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  border-top: 0; }
+
+/* line 93, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .options {
+  display: block; }
+
+/* line 97, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .option {
+  display: block;
+  position: relative;
+  height: 40px;
+  padding: 0 15px;
+  -webkit-transition: background-color .3s;
+  transition: background-color .3s;
+  outline: none;
+  line-height: 40px;
+  text-transform: capitalize;
+  cursor: pointer; }
+
+/* line 108, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .option > .arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  -webkit-transition: opacity .3s .1s;
+  transition: opacity .3s .1s;
+  background-color: rgba(151, 189, 61, 0.2);
+  opacity: 0; }
+
+/* line 118, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .option > .arrow::before {
+  display: block;
+  position: absolute;
+  top: calc(50% + 1px);
+  left: calc(50% - 2px);
+  width: 12px;
+  height: 2px;
+  -webkit-transform: rotate(45deg) translate(-50%, -100%);
+  transform: rotate(45deg) translate(-50%, -100%);
+  background-color: #789631;
+  content: ''; }
+
+/* line 130, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .option > .arrow::after {
+  display: block;
+  position: absolute;
+  bottom: calc(50% + 1px);
+  left: calc(50% - 2px);
+  width: 12px;
+  height: 2px;
+  -webkit-transform: rotate(-45deg) translate(-50%, 100%);
+  transform: rotate(-45deg) translate(-50%, 100%);
+  background-color: #789631;
+  content: ''; }
+
+/* line 143, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .option:hover, .c-hierarchical-select .option[aria-selected="true"] {
+  background-color: rgba(151, 189, 61, 0.1); }
+
+/* line 147, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-hierarchical-select.scss */
+.c-hierarchical-select .option:hover.-arrow > .arrow, .c-hierarchical-select .option[aria-selected="true"].-arrow > .arrow {
+  opacity: 1; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search {
+  position: relative; }
+
+/* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search > input {
+  width: 100%;
+  height: 40px;
+  padding: 0 35px 0 15px;
+  border: 1px solid #dededd;
+  border-radius: 4px;
+  color: #555;
+  font-size: 14px;
+  line-height: 40px; }
+
+/* line 14, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search > input::-webkit-input-placeholder {
+  color: #555;
+  opacity: 1; }
+
+/* line 19, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search > input:-moz-placeholder {
+  color: #555;
+  opacity: 1; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search > input::-moz-placeholder {
+  color: #555;
+  opacity: 1; }
+
+/* line 29, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search > input:-ms-input-placeholder {
+  color: #555;
+  opacity: 1; }
+
+/* line 35, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-input-search.scss */
+.c-input-search > button {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 15px;
+  height: 15px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  border: 0;
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+c2VhcmNoIGljb248L3RpdGxlPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTYuNSAxM2E2LjUgNi41IDAgMSAwIDAtMTMgNi41IDYuNSAwIDAgMCAwIDEzem0wLTJhNC41IDQuNSAwIDEgMCAwLTkgNC41IDQuNSAwIDAgMCAwIDl6IiBmaWxsPSIjNTU1Ii8+PHBhdGggZD0iTTEwLjUgMTAuNUwxNCAxNCIgc3Ryb2tlPSIjNTU1IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+") no-repeat;
+  text-indent: -10000px; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container {
+  width: 100%;
+  max-width: 570px; }
+
+/* line 5, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container.-large {
+  max-width: 880px; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container {
+  padding: 25px 35px;
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-left: 1px solid;
+  border-color: #dededd; }
+
+/* line 16, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container:first-of-type {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px; }
+
+/* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container:last-of-type {
+  border-bottom: 1px solid #dededd;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px; }
+
+/* line 27, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1px;
+  text-transform: uppercase; }
+
+/* line 36, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container input {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #555;
+  font-size: 15px;
+  line-height: 1.5; }
+
+/* line 47, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container.-big input {
+  font-size: 47px;
+  font-weight: 300; }
+
+/* line 52, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > .container > textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #555;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 15px;
+  line-height: 1.5; }
+
+/* line 64, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > footer {
+  padding-top: 20px; }
+
+/* line 67, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-inputs-container.scss */
+.c-inputs-container > footer a {
+  color: #555; }
+
+/* line 7, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-loading-spinner.scss */
+.c-loading-spinner {
+  position: relative;
+  min-width: 30px;
+  min-height: 30px; }
+
+/* line 12, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-loading-spinner.scss */
+.c-loading-spinner.-full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+/* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-loading-spinner.scss */
+.c-loading-spinner.-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.2); }
+
+/* line 33, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-loading-spinner.scss */
+.c-loading-spinner::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  -webkit-transform: translate(-50%, -50%) rotate(0deg);
+  transform: translate(-50%, -50%) rotate(0deg);
+  -webkit-animation: rotate 0.6s linear infinite;
+  animation: rotate 0.6s linear infinite;
+  border: 3px solid transparent;
+  border-top-color: #333;
+  border-right-color: #333;
+  border-radius: 50%; }
+
+/* line 48, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-loading-spinner.scss */
+.c-loading-spinner.-big::after {
+  border-width: 6px; }
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes rotate {
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg); } }
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget {
+  z-index: 0; }
+
+/* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget .cluster,
+.c-map-widget .dot {
+  border-radius: 100%;
+  background-color: #97bd3d; }
+
+/* line 10, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget .cluster {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+/* line 15, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget .cluster span {
+  color: #fff;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 12px; }
+
+/* line 23, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget .popup .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  color: #555;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 12px;
+  line-height: 1.5; }
+
+/* line 31, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget .popup .row > .name {
+  font-weight: 700; }
+
+/* line 35, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-map-widget.scss */
+.c-map-widget .popup .row > .value {
+  margin-left: 15px; }
+
+/* line 5, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 20; }
+
+/* line 17, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal > .container {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  height: 100%;
+  max-height: 600px;
+  border-radius: 4px;
+  background-color: #fff; }
+
+/* line 26, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal > .container > .close-button {
+  display: block;
+  position: absolute;
+  top: -10px;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  padding: 0;
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+  border: 0;
+  background: transparent;
+  text-indent: -10000px;
+  cursor: pointer; }
+
+/* line 41, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal > .container > .close-button svg {
+  display: block; }
+
+/* line 43, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal > .container > .close-button svg path {
+  fill: #fff; }
+
+/* line 47, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal > .container > .content {
+  height: 100%;
+  overflow: auto; }
+
+/* line 53, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-modal.scss */
+.c-modal.-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 25px;
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+  -webkit-transition: -webkit-transform .3s ease-in-out;
+  transition: -webkit-transform .3s ease-in-out;
+  transition: transform .3s ease-in-out;
+  transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
+  background-color: rgba(151, 189, 61, 0.9);
+  z-index: 10; }
+
+@media screen and (min-width: 768px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+  .c-notification {
+    height: 66px;
+    padding: 0; } }
+/* line 17, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-visible {
+  -webkit-transform: translateY(0%);
+  transform: translateY(0%); }
+
+/* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-dialog {
+  padding-left: 0; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-dialog > .wrapper {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+
+/* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-dialog p {
+  line-height: 1.5;
+  text-align: left; }
+
+/* line 33, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-dialog .dialog-buttons {
+  margin-top: 15px; }
+
+@media screen and (min-width: 768px) {
+  /* line 33, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+  .c-notification.-dialog .dialog-buttons {
+    margin-top: 0; } }
+/* line 42, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification > .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+@media screen and (min-width: 768px) {
+  /* line 42, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+  .c-notification > .wrapper {
+    height: 100%; } }
+/* line 53, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification p {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center; }
+
+/* line 62, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification .close-button {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -moz-appearance: none;
+  -webkit-appearance: none; }
+
+/* line 76, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification .close-button path {
+  fill: #fff; }
+
+/* line 81, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-warning {
+  background-color: rgba(255, 240, 14, 0.9); }
+
+/* line 84, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-warning p {
+  color: #555; }
+
+/* line 89, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-warning .close-button path {
+  fill: #555; }
+
+/* line 95, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-notification.scss */
+.c-notification.-error {
+  background-color: rgba(221, 62, 33, 0.9); }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select {
+  position: relative; }
+
+/* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select::before {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 8px;
+  height: 2px;
+  -webkit-transform: translate(-200%, 0) rotate(45deg);
+  transform: translate(-200%, 0) rotate(45deg);
+  background-color: #555;
+  content: ''; }
+
+/* line 16, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 17px;
+  width: 8px;
+  height: 2px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  background-color: #555;
+  content: ''; }
+
+/* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select > select {
+  width: 100%;
+  height: 40px;
+  padding: 0 37px 0 21px;
+  border-radius: 100px;
+  background: transparent;
+  color: #555;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: .1px;
+  line-height: 35px;
+  text-overflow: ellipsis;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #97bd3d;
+  text-transform: uppercase; }
+
+/* line 54, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select.-mini::before {
+  right: 2px; }
+
+/* line 58, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select.-mini::after {
+  right: 14px; }
+
+/* line 62, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-select.scss */
+.c-select.-mini > select {
+  height: 24px;
+  padding: 0 24px 0 8px;
+  background-color: #f3f8e8;
+  font-size: 12px;
+  line-height: 24px; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-steps-bar.scss */
+.c-steps-bar {
+  padding: 12px 0;
+  background-color: #404040; }
+
+/* line 5, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-steps-bar.scss */
+.c-steps-bar .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+/* line 10, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-steps-bar.scss */
+.c-steps-bar .steps {
+  border: 1px solid rgba(247, 247, 247, 0.3);
+  border-radius: 40px; }
+
+/* line 14, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-steps-bar.scss */
+.c-steps-bar .steps a {
+  display: block;
+  padding: 0 40px;
+  color: #fff;
+  line-height: 27px; }
+
+/* line 20, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-steps-bar.scss */
+.c-steps-bar .steps a.-active {
+  border-radius: 40px;
+  background: #fff;
+  color: #555;
+  pointer-events: none; }
+
+/* line 27, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-steps-bar.scss */
+.c-steps-bar .steps a.-disabled {
+  opacity: .3;
+  pointer-events: none; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-action-button.scss */
+.c-table-action-button {
+  display: inline-block;
+  text-indent: -10000px;
+  vertical-align: middle; }
+
+/* line 6, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-action-button.scss */
+.c-table-action-button.-enable {
+  width: 16px;
+  height: 16px;
+  background: url(/assets/icons/slashed-eye-icon-5282b6bb99ed89f9e4f57c2cad3eaf998e15fd9e00a240318ee6c726d2e2ff56.svg) no-repeat center center; }
+
+/* line 12, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-action-button.scss */
+.c-table-action-button.-disable {
+  width: 16px;
+  height: 11px;
+  background: url(/assets/icons/eye-icon-93c68f8174bdd1462964298db539e9affd14b0eddb2e6367e4f30aab9cb2bab6.svg) no-repeat center center; }
+
+/* line 18, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-action-button.scss */
+.c-table-action-button.-edit {
+  width: 16px;
+  height: 16px;
+  background: url(/assets/icons/pen-icon-0f8e022e32f109275a96d57659b0f8ed86bbe826a692680159bf6eef84632140.svg) no-repeat center center; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-action-button.scss */
+.c-table-action-button.-delete {
+  width: 10px;
+  height: 14px;
+  background: url(/assets/icons/bin-icon-d1af8a164a3b27c72bd8f3efa052e47345da22b67838d47601a9d071f4cbabb7.svg) no-repeat center center; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-modal.scss */
+.c-table-modal {
+  max-width: 515px;
+  margin: 0 auto;
+  padding: 45px;
+  font-size: 15px; }
+
+/* line 7, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-modal.scss */
+.c-table-modal h1 {
+  margin: 0 0 60px;
+  font-size: 47px;
+  font-weight: 300;
+  text-align: center; }
+
+/* line 14, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-modal.scss */
+.c-table-modal ul {
+  display: block;
+  margin: 30px 0; }
+
+/* line 18, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-modal.scss */
+.c-table-modal ul li {
+  display: list-item;
+  margin-bottom: 1em; }
+
+/* line 22, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table-modal.scss */
+.c-table-modal ul li:last-of-type {
+  margin-bottom: 0; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table {
+  width: 100%; }
+
+/* line 4, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table > table {
+  width: 100%;
+  border-spacing: 0; }
+
+/* line 9, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table caption {
+  display: none; }
+
+/* line 13, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table th,
+.c-table td {
+  padding: 18px 20px; }
+
+/* line 20, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table tr.no-data, .c-table tr.no-result {
+  text-align: center; }
+
+/* line 25, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table tr td {
+  border-bottom: 1px dashed #dededd; }
+
+/* line 28, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table tr td a {
+  color: #555; }
+
+/* line 30, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table tr td a:hover {
+  color: #97bd3d; }
+
+/* line 35, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table tr:not(.no-data):not(.no-result):hover td {
+  background-color: #f7f7f7; }
+
+/* line 41, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table .header {
+  border-bottom: 0; }
+
+/* line 44, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table .header > th {
+  border-bottom: 1px solid #dededd;
+  background-color: #f7f7f7;
+  font-weight: 400;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer; }
+
+/* line 53, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table .header > th.-order-ascending::after {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 12px;
+  -webkit-transform: translateY(3px) rotate(45deg);
+  transform: translateY(3px) rotate(45deg);
+  border-top: 4px solid currentColor;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 4px solid currentColor;
+  content: ''; }
+
+/* line 68, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table .header > th.-order-descending::after {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 12px;
+  -webkit-transform: translateY(-3px) rotate(-135deg);
+  transform: translateY(-3px) rotate(-135deg);
+  border-top: 4px solid currentColor;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 4px solid currentColor;
+  content: ''; }
+
+/* line 84, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table > .table-legend {
+  padding: 40px 0;
+  text-align: center; }
+
+/* line 89, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table > .action-bar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 30px;
+  font-size: 12px; }
+
+/* line 97, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table > .action-bar .rows-per-page .c-select {
+  display: inline-block;
+  margin-left: 5px; }
+
+/* line 104, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table > .action-bar .paginator .c-button.-arrow-left {
+  margin-right: 5px; }
+
+/* line 108, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table > .action-bar .paginator .c-button.-arrow-right {
+  margin-left: 5px; }
+
+/* line 114, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-table.scss */
+.c-table .more-button {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: #97bd3d;
+  font-family: "Fira Sans", sans-serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-tabs.scss */
+.c-tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 50px;
+  margin: 0;
+  padding: 0 15px;
+  background-color: #404040;
+  color: rgba(255, 255, 255, 0.5);
+  list-style: none; }
+
+@media screen and (min-width: 425px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-tabs.scss */
+  .c-tabs {
+    padding: 0 30px; } }
+@media screen and (min-width: 768px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-tabs.scss */
+  .c-tabs {
+    padding: 0 30px; } }
+/* line 19, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-tabs.scss */
+.c-tabs > .tab {
+  width: 200px;
+  line-height: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer; }
+
+/* line 26, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/shared/c-tabs.scss */
+.c-tabs > .tab[aria-selected='true'] {
+  background-color: #fff;
+  color: #555; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+.c-cover {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding: 50px 0 30px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover; }
+
+@media screen and (min-width: 425px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+  .c-cover {
+    padding: 100px 0; } }
+@media screen and (min-width: 768px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+  .c-cover {
+    height: 500px;
+    padding: 0; } }
+@media screen and (min-width: 768px) {
+  /* line 22, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+  .c-cover.-short {
+    height: 250px; } }
+/* line 30, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+.c-cover::after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background-color: rgba(0, 0, 0, 0.3); }
+
+/* line 46, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+.c-cover > .wrapper {
+  z-index: 1; }
+
+/* line 50, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-cover.scss */
+.c-cover .cover-title {
+  max-width: 750px;
+  margin: 0 auto;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  font-size: 40px;
+  letter-spacing: .7px;
+  text-transform: uppercase; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer {
+  padding: 15px 0;
+  background-color: #333; }
+
+@media screen and (min-width: 768px) {
+  /* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+  .c-footer {
+    height: 50px;
+    padding: 0; } }
+/* line 16, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer a {
+  display: inline;
+  padding: 0;
+  background-color: transparent; }
+
+/* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer > .wrapper {
+  height: 100%; }
+
+@media screen and (min-width: 768px) {
+  /* line 24, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+  .c-footer > .wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between; } }
+/* line 34, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .separator {
+  color: #555; }
+
+/* line 43, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .site-links-list > .site-link-item > .site-link {
+  color: #97bd3d;
+  font-weight: 300;
+  letter-spacing: .1px;
+  line-height: 1.7; }
+
+/* line 57, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin: 15px 0 0; }
+
+@media screen and (min-width: 768px) {
+  /* line 57, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+  .c-footer .share {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    margin: 0; } }
+/* line 67, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share > .share-text {
+  color: #fff;
+  font-weight: 300;
+  letter-spacing: .1px;
+  line-height: 1.7; }
+
+/* line 74, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share > .share-links-list {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  margin: 10px 0 0; }
+
+@media screen and (min-width: 768px) {
+  /* line 74, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+  .c-footer .share > .share-links-list {
+    margin: 0; } }
+/* line 82, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share > .share-links-list > .share-link-item {
+  height: 25px; }
+
+@media screen and (min-width: 768px) {
+  /* line 82, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+  .c-footer .share > .share-links-list > .share-link-item {
+    margin: 0 0 0 15px; } }
+/* line 89, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share > .share-links-list > .share-link-item + .share-link-item {
+  margin: 0 0 0 15px; }
+
+/* line 94, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share > .share-links-list > .share-link-item > .share-link {
+  height: 100%; }
+
+/* line 97, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-footer.scss */
+.c-footer .share > .share-links-list > .share-link-item > .share-link > .icon {
+  width: 25px;
+  height: 100%;
+  fill: #97bd3d; }
+
+/* line 1, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header {
+  position: relative;
+  font-family: "Fira Sans", sans-serif;
+  z-index: 8;
+  color: #fff; }
+
+/* line 13, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header a {
+  background-color: transparent; }
+
+/* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 15px;
+  overflow: visible;
+  background-color: #3b3b3b; }
+
+@media screen and (min-width: 425px) {
+  /* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+  .c-header > .mobile-menu {
+    padding: 0 30px; } }
+@media screen and (min-width: 768px) {
+  /* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+  .c-header > .mobile-menu {
+    padding: 0 30px; } }
+@media screen and (min-width: 768px) {
+  /* line 21, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+  .c-header > .mobile-menu {
+    display: none; } }
+/* line 50, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu > .logo-container {
+  max-width: calc(100% - 63px);
+  margin-right: 35px;
+  text-transform: uppercase;
+  z-index: 1; }
+
+/* line 56, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu > .logo-container .logo {
+  display: inline-block;
+  width: 100%;
+  height: 80px;
+  padding: 0; }
+
+/* line 62, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu > .logo-container .logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%; }
+
+/* line 70, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu .hamburger-menu {
+  position: relative;
+  top: 50%;
+  width: 28px;
+  height: 20px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 12; }
+
+/* line 79, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu .hamburger-menu > div {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  -webkit-transition: opacity .3s ease-out, -webkit-transform .3s ease-out;
+  transition: opacity .3s ease-out, -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out, opacity .3s ease-out;
+  transition: transform .3s ease-out, opacity .3s ease-out, -webkit-transform .3s ease-out;
+  background-color: #fff; }
+
+/* line 87, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu .hamburger-menu > div:first-of-type {
+  top: 0; }
+
+/* line 91, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu .hamburger-menu > div:nth-of-type(2) {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%); }
+
+/* line 96, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-menu .hamburger-menu > div:last-of-type {
+  bottom: 0; }
+
+/* line 103, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100vh;
+  padding-top: 30px;
+  -webkit-transition: -webkit-transform .3s ease-out;
+  transition: -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  color: #fff;
+  box-shadow: 1px 0 1px 0 rgba(85, 85, 85, 0.2);
+  z-index: 10;
+  will-change: transform;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: #3b3b3b; }
+
+@media screen and (min-width: 768px) {
+  /* line 103, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+  .c-header > .mobile-drawer {
+    display: none; } }
+/* line 131, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer a {
+  color: currentColor; }
+
+/* line 133, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer ul {
+  display: block;
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none; }
+
+/* line 139, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer ul:last-of-type {
+  margin-bottom: 0; }
+
+/* line 141, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer ul li {
+  display: block;
+  padding: 10px 0; }
+
+/* line 145, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer ul li ul {
+  padding-left: 15px; }
+
+/* line 152, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer.-opened {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%); }
+
+/* line 157, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer.-opened + .mobile-menu .hamburger-menu > div:first-of-type {
+  -webkit-transform: translateY(9px) rotate(-45deg);
+  transform: translateY(9px) rotate(-45deg);
+  -webkit-transform-origin: center;
+  transform-origin: center; }
+
+/* line 162, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer.-opened + .mobile-menu .hamburger-menu > div:nth-of-type(2) {
+  opacity: 0; }
+
+/* line 166, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .mobile-drawer.-opened + .mobile-menu .hamburger-menu > div:last-of-type {
+  -webkit-transform: translateY(-8px) rotate(45deg);
+  transform: translateY(-8px) rotate(45deg);
+  -webkit-transform-origin: center;
+  transform-origin: center; }
+
+/* line 175, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu {
+  display: none;
+  height: 50px;
+  background-color: #3b3b3b; }
+
+@media screen and (min-width: 768px) {
+  /* line 175, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+  .c-header > .desktop-menu {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start; } }
+/* line 192, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > .logo-container {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-right: 35px;
+  text-transform: uppercase;
+  z-index: 1;
+  pointer-events: none; }
+
+/* line 203, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > .logo-container .logo {
+  display: inline-block;
+  height: 80px;
+  padding: 0;
+  pointer-events: all; }
+
+/* line 209, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > .logo-container .logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%; }
+
+/* line 217, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+/* line 223, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li {
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  padding: 0 25px;
+  line-height: 50px;
+  text-transform: uppercase; }
+
+/* line 231, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.-active {
+  background-color: rgba(255, 255, 255, 0.1); }
+
+/* line 241, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li:last-of-type:not(:first-of-type) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1); }
+
+/* line 250, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item {
+  cursor: pointer;
+  z-index: 1; }
+
+/* line 254, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul {
+  position: absolute;
+  top: 0;
+  left: -15px;
+  width: calc(100% + 30px);
+  margin: 0;
+  padding: 0;
+  -webkit-transition: opacity .2s ease-out, visibility 0s .2s;
+  transition: opacity .2s ease-out, visibility 0s .2s;
+  background-color: #fff;
+  list-style: none;
+  box-shadow: 0 2px 3px 0 rgba(59, 59, 59, 0.3);
+  cursor: auto;
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity; }
+
+/* line 271, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul::after {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  content: '';
+  background-color: #3b3b3b; }
+
+/* line 287, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li {
+  display: block;
+  border-bottom: 1px solid #eceaea;
+  text-align: center;
+  color: #333; }
+
+/* line 297, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li:first-of-type {
+  height: 50px;
+  line-height: 50px;
+  cursor: pointer; }
+
+/* line 304, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li:nth-of-type(2) {
+  height: 55px;
+  padding-top: 5px; }
+
+/* line 309, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li:not(:first-of-type) {
+  line-height: 1.3;
+  text-transform: none; }
+
+/* line 313, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li:not(:first-of-type):hover {
+  background-color: #f5f4f4; }
+
+/* line 321, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li:not(:first-of-type) a {
+  padding: 15px 5px; }
+
+/* line 330, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li:last-of-type {
+  border: 0; }
+
+/* line 334, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item ul li a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 14px; }
+
+/* line 344, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item:hover > ul {
+  -webkit-transition: opacity .2s ease-out;
+  transition: opacity .2s ease-out;
+  opacity: 1;
+  visibility: visible; }
+
+/* line 354, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul > li.dropdown-item.-active > ul li:first-of-type {
+  background-color: rgba(255, 255, 255, 0.1); }
+
+/* line 363, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul:last-of-type {
+  margin: 0; }
+
+/* line 367, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .desktop-menu > ul:last-of-type > li:last-of-type {
+  padding-right: 0; }
+
+/* line 377, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .flag-border {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 5px;
+  z-index: -1;
+  background-color: #3b3b3b; }
+
+/* line 389, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .flag-border > div {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1; }
+
+/* line 398, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu {
+  display: none;
+  height: 0;
+  color: #fff;
+  font-size: 12px; }
+
+@media screen and (min-width: 768px) {
+  /* line 398, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+  .c-header > .sub-menu {
+    display: block; } }
+/* line 408, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu a {
+  color: #fff; }
+
+/* line 412, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu > .wrapper {
+  line-height: 25px;
+  height: 25px;
+  background-color: rgba(59, 59, 59, 0.7); }
+
+/* line 426, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-left: 90px;
+  height: 100%; }
+
+/* line 433, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content > .breadcrumbs {
+  height: 100%; }
+
+/* line 436, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content > .breadcrumbs li {
+  height: 100%;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+/* line 445, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content > .breadcrumbs li:not(:last-of-type):after {
+  content: ' > '; }
+
+/* line 451, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content > .sections {
+  display: inline-block;
+  height: 100%; }
+
+/* line 455, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content > .sections li {
+  height: 100%;
+  padding: 0 14px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: .1px; }
+
+/* line 465, /Users/tiagosantos/Development/Projects/forest-atlas-landscape-cms/app/assets/stylesheets/components/front/c-header.scss */
+.c-header > .sub-menu .content > .sections li:last-of-type {
+  padding-right: 0; }

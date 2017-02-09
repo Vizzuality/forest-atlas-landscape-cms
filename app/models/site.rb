@@ -147,16 +147,29 @@ class Site < ApplicationRecord
     else
       template = 'front/template-lsa.css'
     end
-    ActionView::Base.new(
-      ForestAtlasLandscapeCms::Application.assets.paths).render({
-          partial: template,
-          locals: { variables: variables },
-          formats: :scss})
+    body = ActionView::Base.new(
+            ForestAtlasLandscapeCms::Application.assets.paths).render({
+                partial: template,
+                locals: { variables: variables },
+                formats: :scss})
+
+    tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
+    FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
+    File.open(File.join(tmp_themes_path, "#{id}.scss"), 'w') { |f| f.write(body) }
+
+    env = if Rails.application.assets.is_a?(Sprockets::Index)
+            Rails.application.assets.instance_variable_get('@environment')
+          else
+            Rails.application.assets
+          end
+
+    env.find_asset(id)
+
   end
 
   def compile_scss
     scss_file = compile_erb
-    sass_engine = Sass::Engine.new(scss_file, {
+    sass_engine = Sass::Engine.new(scss_file.source, {
       syntax: :scss,
       style: Rails.env.development? ? :nested : :compressed,
       #load_paths: ForestAtlasLandscapeCms::Application.assets.paths
@@ -178,7 +191,9 @@ class Site < ApplicationRecord
       FileUtils.mkdir_p(folder) unless File.directory?(folder)
       File.open(folder + "#{id}.css", 'w+') do |f|
         file.rewind
-        f.write file.read
+        css_content = file.read
+        operation = f.write(css_content)
+        puts operation
       end
     ensure
       file.close
@@ -193,7 +208,7 @@ class Site < ApplicationRecord
   end
 
   def apply_settings
-    #compile_css
+    compile_css
 
     #system "rake site:apply_settings[#{@site.id}] &"
 
