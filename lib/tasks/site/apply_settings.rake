@@ -5,29 +5,21 @@ namespace :site do
     log = ActiveSupport::Logger.new('log/site_apply_settings.log')
     start_time = Time.now
 
-    log.info "Task started at #{start_time}"
-    log.info "Site: #{args[:site_id]}"
+    log.info "Task Apply Settings started at #{start_time} for site #{args[:site_id]}"
 
     begin
       site = Site.find(args[:site_id])
 
-
       site.compile_css
-      puts ""
-      puts ""
-      puts "......................."
-      puts "......................."
-      puts "......................."
-      puts "Site was: #{site.name}"
+
+      log.info "Finished applying settings for site #{site.id}"
     rescue Exception => e
       log.error "#{e.inspect}"
     end
 
-
-
     end_time = Time.now
     duration = (end_time - start_time) / 1.minute
-    log.info "Task finished at #{end_time} and last #{duration} minutes."
+    log.info "Task Apply Settings finished at #{end_time} and last #{duration} minutes."
     log.close
   end
 end

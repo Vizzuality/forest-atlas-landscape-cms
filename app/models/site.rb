@@ -135,23 +135,66 @@ class Site < ApplicationRecord
   end
 
 
+  # Compiles the site's css and creates a file with it
+  def compile_css
+    begin
+      Rails.logger.debug "Compiling assets for site #{self.id}"
+      compiled = compile_scss
+      Rails.logger.debug "Finished compiling assets for site #{self.id}"
+
+      folder = Rails.root + 'public/stylesheets/front/sites'
+      FileUtils.mkdir_p(folder) unless File.directory?(folder)
+      File.open(folder + "#{id}.css", 'w+') do |f|
+        f.write(compiled)
+      end
+      Rails.logger.debug "Finished saving the assets for site #{self.id}"
+    rescue Exception => e
+        Rails.logger.error("Error compiling the css for site #{site.id}: #{e.inspect}")
+    end
+  end
+
+  private
+
+  def generate_slug
+    write_attribute(:slug, self.name.parameterize)
+  end
+
+  def apply_settings
+    #compile_css
+
+    system "rake site:apply_settings[#{self.id}] &"
+
+    #Thread.new {
+    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
+    #}.join
+  end
+
+  ###################################################
+  # Methods to compile the css                      #
+  ###################################################
 
   def variables
     color = self.site_settings.find_by(name: 'color')
-    {'color-1': color.value}
+    if color
+      {'color-1': color.value}
+    else # Fallback color
+      {'color-1': '#97bd3d'}
+    end
   end
 
   def compile_erb
+    Rails.logger.debug "Compiling ERB for site #{self.id}"
+
     if self.site_template.name.eql? 'Forest Atlas'
       template = 'front/template-fa.css'
     else
       template = 'front/template-lsa.css'
     end
     body = ActionView::Base.new(
-            ForestAtlasLandscapeCms::Application.assets.paths).render({
-                partial: template,
-                locals: { variables: variables },
-                formats: :scss})
+      ForestAtlasLandscapeCms::Application.assets.paths).render({
+                                                                  partial: template,
+                                                                  locals: { variables: variables },
+                                                                  formats: :scss})
 
     tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
     FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
@@ -164,58 +207,18 @@ class Site < ApplicationRecord
           end
 
     env.find_asset(id)
-
   end
 
   def compile_scss
     scss_file = compile_erb
+    Rails.logger.debug "Finished compiling ERB for site #{self.id}"
+
     sass_engine = Sass::Engine.new(scss_file.source, {
       syntax: :scss,
       style: Rails.env.development? ? :nested : :compressed,
-      #load_paths: ForestAtlasLandscapeCms::Application.assets.paths
       cache: false,
       read_cache: false
     })
     sass_engine.render
   end
-
-  def compile_css
-    require 'tempfile'
-    file = Tempfile.open ["#{id}.css"]
-    begin
-      compiled = compile_scss
-      file.write compiled
-      file.flush
-      #self.css = file
-      folder = Rails.root + 'public/stylesheets/front/sites'
-      FileUtils.mkdir_p(folder) unless File.directory?(folder)
-      File.open(folder + "#{id}.css", 'w+') do |f|
-        file.rewind
-        css_content = file.read
-        operation = f.write(css_content)
-        puts operation
-      end
-    ensure
-      file.close
-      file.unlink
-    end
-  end
-
-  private
-
-  def generate_slug
-    write_attribute(:slug, self.name.parameterize)
-  end
-
-  def apply_settings
-    compile_css
-
-    #system "rake site:apply_settings[#{@site.id}] &"
-
-    #Thread.new {
-    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
-    #}.join
-  end
-
-
 end
