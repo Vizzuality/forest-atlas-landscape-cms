@@ -9,14 +9,14 @@
         {{label}}\
         <div class="arrow"></div>\
       </div>\
-      <div class="steps-wrapper -hidden js-steps-wrapper">\
+      <div id="steps-{{selectID}}" class="steps-wrapper -hidden js-steps-wrapper">\
         <div class="steps js-steps"></div>\
       </div>'),
     stepTemplate: Handlebars.compile('\
       <div class="step">\
-        <ul class="options" role="list-box" aria-labelledby="hierarchical-select-{{selectID}}">\
+        <ul class="options" role="menu" aria-labelledby="hierarchical-select-{{selectID}}">\
           {{#each options}}\
-            <li class="option {{#if options}}-arrow{{/if}} js-option" role="option" tabindex="0" aria-selected="false" data-id="{{id}}">\
+            <li class="option {{#if options}}-arrow{{/if}} js-option" role="menuitem" tabindex="0" aria-selected="false" data-id="{{id}}">\
               {{name}}\
               <div class="arrow"></div>\
             </li>\
@@ -382,8 +382,9 @@
 
       this.el.classList.add(this.className);
       this.el.setAttribute('tabindex', 0);
-      this.el.setAttribute('role', 'combobox');
-      this.el.setAttribute('aria-readonly', true);
+      this.el.setAttribute('role', 'popupbutton');
+      this.el.setAttribute('aria-haspopup', 'true');
+      this.el.setAttribute('aria-controls', 'steps-' + this.options.ID);
       this.el.setAttribute('aria-expanded', false);
       this.el.innerHTML = this.template({ label: this.options.hierarchy.label, selectID: this.options.ID });
 

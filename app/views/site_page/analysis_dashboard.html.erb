@@ -1,24 +1,37 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
-<% content_for :body_class do %>
-  class="-wide"
-<% end %>
+
+<%= render 'front/cover', image: @alternative_image, size: 'small' %>
 
 <div class="l-analysis-dashboard">
-  <div class="main-container">
-    <h2><%= @site_page.name %></h2>
-    <p class="description">
-      <%= @site_page.description %>
-    </p>
-    <div class="filters js-filters">
-    </div>
-    <div class="map js-map">
+  <div class="bookmarks">
+    <div class="wrapper">
+      <div class="js-bookmarks"></div>
     </div>
   </div>
-  <div class="secondary-container">
-    <div class="graph js-chart-1"></div>
-    <div class="graph js-chart-2"></div>
-    <div class="bookmarks js-bookmarks">
+
+  <div class="wrapper">
+    <div class="description">
+      <% if @site_page.description.length > 200 %>
+        <%= @site_page.description[0, 200].strip + '…' %><br/>
+        <button type="button" class="js-read-more">Read more</button>
+        <div class="full-description js-description">
+          <%= @site_page.description %>
+        </div>
+      <% else %>
+        <%= @site_page.description %>
+      <% end %>
     </div>
+    <div class="filters js-filters">
+    </div>
+
+    <div class="widgets">
+      <div class="large-widget js-map"></div>
+      <div class="widget js-chart-1"></div>
+      <div class="widget js-chart-2"></div>
+    </div>
+  </div>
+  <hr/>
+  <div class="table js-table">
   </div>
 </div>
 

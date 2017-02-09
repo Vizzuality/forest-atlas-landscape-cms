@@ -1,4 +1,4 @@
-<table role="grid" aria-readonly="true">
+<table role="grid" aria-readonly="true" aria-rowcount="{{totalResults}}">
   <caption>
     {{tableName}}, sorted by {{sortColumn}}: {{sortOrder}}
   </caption>
@@ -8,7 +8,7 @@
     </tr>
   {{else}}
     {{#if headers}}
-      <tr class="header js-header" role="rowheader">
+      <tr class="header js-header" role="row" aria-rowindex="1">
         {{#each headers}}
           <th class="-order-{{sort}}" aria-sort="{{#if sort}}{{sort}}{{else}}none{{/if}}" tabindex="{{#if sort}}0{{else}}-1{{/if}}" role="columnheader">{{name}}</th>
         {{/each}}
@@ -19,39 +19,42 @@
       </tr>
     {{/if}}
     {{#each rows}}
-      <tr role="row">
+      <tr role="row" aria-rowindex="{{rowIndex}}">
         {{#each this}}
-          <td role="gridcell">
-            {{#if html}}
-              {{{html}}}
-            {{else}}
-              {{#is_array value}}
-                {{#each_slice value ../../valuesPerCell}}
-                  {{#if @last_sliced_item}}
-                    {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
-                  {{else}}
-                    {{#if @last_item}}
-                      {{this}}
-                    {{else}}
-                      {{this}},
-                    {{/if}}
-                  {{/if}}
-                {{else}}
-                  –
-                {{/each_slice}}
+          {{#if_eq @key 'rowIndex'}}
+          {{else}}
+            <td role="gridcell" aria-rowindex="{{../rowIndex}}">
+              {{#if html}}
+                {{{html}}}
               {{else}}
-                {{#if value}}
-                  {{#if link}}
-                    <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a>
+                {{#is_array value}}
+                  {{#each_slice value ../../valuesPerCell}}
+                    {{#if @last_sliced_item}}
+                      {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
+                    {{else}}
+                      {{#if @last_item}}
+                        {{this}}
+                      {{else}}
+                        {{this}},
+                      {{/if}}
+                    {{/if}}
                   {{else}}
-                    {{value}}
-                  {{/if}}
+                    –
+                  {{/each_slice}}
                 {{else}}
-                  –
-                {{/if}}
-              {{/is_array}}
-            {{/if}}
-          </td>
+                  {{#if value}}
+                    {{#if link}}
+                      <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a>
+                    {{else}}
+                      {{value}}
+                    {{/if}}
+                  {{else}}
+                    –
+                  {{/if}}
+                {{/is_array}}
+              {{/if}}
+            </td>
+          {{/if_eq}}
         {{/each}}
       </tr>
     {{else}}
@@ -70,9 +73,9 @@
 
 <div class="action-bar">
   <div class="rows-per-page">
-    Rows per page
+    <label for="rows-per-page">Rows per page</label>
     <div class="c-select -mini">
-      <select class="js-results-per-page">
+      <select id="rows-per-page" class="js-results-per-page">
         {{#each resultsPerPageOptions}}
           <option value="{{this}}" {{#if_eq this ../resultsPerPage}}selected="selected"{{/if_eq}}>{{this}}</option>
         {{/each}}

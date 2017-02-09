@@ -1,6 +1,6 @@
 {{#each filters}}
-  <div  class="c-select js-filter">
-    <select data-id="{{@index}}">
+  <div  class="c-select -small js-filter">
+    <select data-id="{{@index}}" aria-label="Filter by {{name}}">
       <option value="" {{#unless value}}selected="selected"{{/unless}}>Filter by {{name}}</option>
       {{#each values}}
         <option value="{{this}}" {{#if_eq this ../value}}selected="selected"{{/if_eq}}>{{this}}</option>

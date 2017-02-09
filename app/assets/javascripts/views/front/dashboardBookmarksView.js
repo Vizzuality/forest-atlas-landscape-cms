@@ -16,11 +16,14 @@
     },
 
     events: {
-      'click .js-add-state': '_onClickAddState',
-      'keydown .js-name': '_onKeydownName',
-      'blur .js-name': '_onKeydownName',
+      'click .js-add-bookmark': '_onClickAddBookmark',
+      'focusin .js-bookmark': '_onFocusinBookmark',
+      'focusout .js-bookmark': '_onFocusoutBookmark',
       'click .js-apply': '_onClickApply',
-      'click .js-delete': '_onClickDelete'
+      'click .js-edit': '_onClickEdit',
+      'click .js-delete': '_onClickDelete',
+      'blur .js-name': '_onKeydownName',
+      'keydown .js-name': '_onKeydownName'
     },
 
     initialize: function (settings) {
@@ -29,10 +32,35 @@
     },
 
     /**
-     * Event handler for the click on the "add state" button
+     * Event handler for the (input) focus on the bookmark
+     * @param {Event} e - event
      */
-    _onClickAddState: function () {
-      this._saveBookmark(this.options.getState());
+    _onFocusinBookmark: function (e) {
+      e.currentTarget.classList.add('-active');
+    },
+
+    /**
+     * Event handler for the (output) focus on the bookmark
+     * @param {Event} e - event
+     */
+    _onFocusoutBookmark: function (e) {
+      var target = e.relatedTarget;
+      var bookmark = e.currentTarget;
+      var isActive = !!$(target).closest(bookmark).length;
+      bookmark.classList.toggle('-active', isActive);
+    },
+
+    /**
+     * Event handler for the click on the "add bookmark" button
+     */
+    _onClickAddBookmark: function () {
+      var bookmarks = this._getBookmarks();
+      var bookmark = this.options.getState();
+
+      var bookmarkName = 'Bookmark #' + (bookmarks.length + 1);
+      bookmark.name = bookmarkName;
+
+      this._saveBookmark(bookmark);
       this.render();
     },
 
@@ -42,13 +70,29 @@
     _onKeydownName: function (e) {
       if (e.keyCode && e.keyCode !== 13) return; // enter key
       e.preventDefault();
-      var id = +e.currentTarget.dataset.id;
-      this._editBookmark(id, { name: e.currentTarget.textContent });
-      e.currentTarget.blur();
+
+      var nameContainer = e.currentTarget;
+      var bookmark = $(nameContainer).closest('.js-bookmark')[0];
+      var id = +nameContainer.dataset.id;
+      var name = nameContainer.textContent;
+      if (!name.length) name = this.options.getState().name;
+
+      // We remove the editable attribute
+      nameContainer.setAttribute('contenteditable', false);
+
+      // We save the change
+      this._editBookmark(id, { name: name });
+
+      // We also update the name of the apply button
+      bookmark.querySelector('.js-apply').textContent = name;
+
+      // We make the element active again
+      bookmark.focus();
+      bookmark.classList.remove('-no-active');
     },
 
     /**
-     * Event handler for the click on the "apply state" buttons
+     * Event handler for the click on the "apply bookmark" button
      * @param {object} e - event object
      */
     _onClickApply: function (e) {
@@ -58,7 +102,23 @@
     },
 
     /**
-     * Event handler for the click on the "delete bookmark" buttons
+     * Event handler for the click on the "edit bookmark" button
+     * @param {object} e - event object
+     */
+    _onClickEdit: function (e) {
+      var bookmark = $(e.currentTarget).closest('.js-bookmark')[0];
+      var nameContainer = bookmark.querySelector('.js-name');
+
+      // We don't want the options to appear on top
+      bookmark.classList.add('-no-active');
+
+      // We make the name editable
+      nameContainer.setAttribute('contenteditable', true);
+      nameContainer.focus();
+    },
+
+    /**
+     * Event handler for the click on the "delete bookmark" button
      * @param {object} e - event object
      */
     _onClickDelete: function (e) {

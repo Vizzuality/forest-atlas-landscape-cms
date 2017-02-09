@@ -1,13 +1,34 @@
 ((function (App) {
   'use strict';
 
+  var TableCollection = Backbone.Collection.extend({
+    parse: function (data) {
+      var keys;
+      if (data.length) keys = Object.keys(data[0]);
+
+      return data.map(function (row) {
+        var res = {};
+
+        res.row = keys.map(function (key) {
+          return {
+            name: key,
+            value: row[key],
+            sortable: true
+          };
+        });
+
+        return res;
+      });
+    }
+  });
+
   App.Router.FrontDashboard = Backbone.Router.extend({
 
     // Global state of the dashboard
     // NOTE: If you update its structure, don't forget to update the _compressState and
     // _decompressState functions used to update the URL and restore the state from it
     state: {
-      name: 'New bookmark',
+      name: 'Untitled',
       version: null,
       config: {
         filters: [],
@@ -42,6 +63,8 @@
       new App.View.HeaderView({
         el: document.querySelector('.js-header')
       });
+
+      this._initDescription();
 
       // We start the router
       Backbone.history.start({ pushState: false });
@@ -79,6 +102,9 @@
           this.map.options.data = this._getDataset();
           this.map.render();
         }
+        if (this.table) {
+          this._initTable();
+        }
       });
 
       // We would do the same for the map
@@ -110,6 +136,34 @@
     },
 
     /**
+     * Init the description's "Read more" button
+     */
+    _initDescription: function () {
+      document.querySelector('.js-read-more').addEventListener('click', this._openDescriptionModal.bind(this));
+    },
+
+    /**
+     * Open the description modal
+     */
+    _openDescriptionModal: function () {
+      if (!this.descriptionModal) {
+        var description = document.querySelector('.js-description');
+
+        this.descriptionModal = new App.View.ModalView();
+
+        var descriptionDashboardModalView = new App.View.DescriptionDashboardModalView({
+          name: (window.gon && gon.pageName) || null,
+          description: description.innerHTML,
+          closeCallback: function () { this.descriptionModal.close(); }.bind(this)
+        });
+
+        this.descriptionModal.render = descriptionDashboardModalView.render;
+      }
+
+      this.descriptionModal.open();
+    },
+
+    /**
      * Init the filters
      */
     _initFilters: function () {
@@ -118,6 +172,25 @@
         el: document.querySelector('.js-filters'),
         data: dataset,
         filteringFields: (window.gon && gon.analysisUserFilters) || []
+      });
+    },
+
+    /**
+     * Return the table collection corresponding to the dataset
+     * @returns {object[]}
+     */
+    _getTableCollection: function () {
+      return new TableCollection(this._getDataset(), { parse: true });
+    },
+
+    /**
+     * Init the table
+     */
+    _initTable: function () {
+      this.table = new App.View.TableView({
+        el: document.querySelector('.js-table'),
+        collection: this._getTableCollection(),
+        tableName: 'Dashboard data'
       });
     },
 
@@ -182,7 +255,7 @@
     _initBookmarks: function () {
       new App.View.DashboardBookmarksView({
         el: document.querySelector('.js-bookmarks'),
-        getState: function () { return this.state; }.bind(this),
+        getState: function () {return this.state; }.bind(this),
         setState: this._restoreState.bind(this)
       });
     },
@@ -459,6 +532,7 @@
     indexRoute: function () {
       this._initFilters();
       this.filters.render();
+      this._initTable();
       this._initCharts();
       this._initMap();
       this._setListeners();
@@ -489,6 +563,7 @@
 
       // We init the filters, the charts and the map
       this._initFilters();
+      this._initTable();
       this._initCharts();
       this._initMap();
 

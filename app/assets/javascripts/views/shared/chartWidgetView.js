@@ -7,6 +7,7 @@
 
     defaults: {
       // Ratio between the height and the width (i.e. height = chartRatio * width)
+      // If you update this value, please update the .large-widget's height (l-analysis-dashboard)
       chartRatio: 0.5,
       // Data to display on the chart
       data: [],

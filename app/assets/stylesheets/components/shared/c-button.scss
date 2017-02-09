@@ -2,6 +2,8 @@
   padding: 10px 25px;
   border: 1px solid;
   border-radius: 20px;
+  border-color: $color-1;
+  background: $color-1;
   color: $color-3;
   font-family: $font-family-1; // Mandatory for button.c-button
   font-size: $font-size-normal; // Mandatory for button.c-button
@@ -9,12 +11,7 @@
   cursor: pointer;
 
   @if $theme == 2 {
-    border-color: $color-10;
-    background: $color-10;
     text-transform: uppercase;
-  } @else {
-    border-color: transparent;
-    background: rgba($color-1, .1);
   }
 
   &.-monochrome {
@@ -101,8 +98,7 @@
   &.-mini {
     height: 24px;
     padding: 0 10px;
-    border-color: $color-1;
-    background-color: lighten($color-1, 45%);
+    background-color: $color-16;
     color: $color-4;
     font-size: $font-size-small;
     font-weight: $font-weight-normal;
