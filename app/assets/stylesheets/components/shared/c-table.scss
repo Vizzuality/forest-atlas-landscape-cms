@@ -12,10 +12,29 @@
 
   th,
   td {
-    padding: 18px 20px;
+    padding: 5px $wrapper-mobile-padding;
+
+    @media #{$mq-tablet} {
+      padding: 18px 20px;
+    }
   }
 
   tr {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    &:nth-of-type(2n+1) {
+      background-color: $color-2;
+    }
+
+    @media #{$mq-tablet} {
+      display: table-row;
+
+      &:nth-of-type(2n+1) {
+        background-color: transparent;
+      }
+    }
 
     &.no-data,
     &.no-result {
@@ -23,7 +42,33 @@
     }
 
     td {
-      border-bottom: 1px dashed $color-13;
+      display: flex;
+      align-items: stretch;
+
+      &:first-of-type { padding-top: 20px; }
+      &:last-of-type { padding-bottom: 20px; }
+
+      @media #{$mq-tablet} {
+        display: table-cell;
+        border-bottom: 1px dashed $color-13;
+
+        &:first-of-type { padding-top: 18px; }
+        &:last-of-type { padding-bottom: 18px; }
+      }
+
+      .row-name {
+        flex-basis: 90px;
+        flex-shrink: 0;
+        margin-right: 20px;
+
+        @media #{$mq-tablet} {
+          display: none;
+        }
+      }
+
+      .row-content {
+        flex-grow: 1;
+      }
 
       a {
         color: $color-4;
@@ -32,14 +77,21 @@
     }
 
     &:not(.no-data):not(.no-result):hover {
-      td {
-        background-color: $color-2;
+      @media #{$mq-tablet} {
+        td {
+          background-color: $color-2;
+        }
       }
     }
   }
 
   .header {
+    display: none;
     border-bottom: 0;
+
+    @media #{$mq-tablet} {
+      display: table-row;
+    }
 
     & > th {
       border-bottom: 1px solid $color-13;
@@ -88,10 +140,17 @@
 
   > .action-bar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 30px;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    padding-top: 20px;
     font-size: $font-size-small;
+
+    @media #{$mq-tablet} {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 30px;
+    }
 
     .rows-per-page {
       .c-select {
@@ -101,6 +160,13 @@
     }
 
     .paginator {
+      align-self: center;
+      margin-bottom: 20px;
+
+      @media #{$mq-tablet} {
+        margin-bottom: 0;
+      }
+
       .c-button.-arrow-left {
         margin-right: 5px;
       }

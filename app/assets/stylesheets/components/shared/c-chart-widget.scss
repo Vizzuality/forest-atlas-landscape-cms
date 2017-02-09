@@ -7,6 +7,10 @@
   }
 
   > .c-hierarchical-select {
-    margin-top: 20px;
+    margin-top: 10px;
+
+    @media #{$mq-tablet} {
+      margin-top: 20px;
+    }
   }
 }

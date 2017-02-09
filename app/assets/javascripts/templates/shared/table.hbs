@@ -25,31 +25,34 @@
           {{else}}
             <td role="gridcell" aria-rowindex="{{../rowIndex}}">
               {{#if html}}
-                {{{html}}}
+                <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
               {{else}}
                 {{#is_array value}}
-                  {{#each_slice value ../../valuesPerCell}}
-                    {{#if @last_sliced_item}}
-                      {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
-                    {{else}}
-                      {{#if @last_item}}
-                        {{this}}
+                  <span class="row-name">{{name}}</span>
+                  <span class="row-content">
+                    {{#each_slice value ../../valuesPerCell}}
+                      {{#if @last_sliced_item}}
+                        {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
                       {{else}}
-                        {{this}},
+                        {{#if @last_item}}
+                          {{this}}
+                        {{else}}
+                          {{this}},
+                        {{/if}}
                       {{/if}}
-                    {{/if}}
-                  {{else}}
-                    –
-                  {{/each_slice}}
+                    {{else}}
+                      –
+                    {{/each_slice}}
+                  </span>
                 {{else}}
                   {{#if value}}
                     {{#if link}}
-                      <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a>
+                      <span class="row-name">{{name}}</span><span class="row-content"> <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a> </span>
                     {{else}}
-                      {{value}}
+                      <span class="row-name">{{name}}</span><span class="row-content"> {{value}} </span>
                     {{/if}}
                   {{else}}
-                    –
+                    <span class="row-name">{{name}}</span><span class="row-content"> – </span>
                   {{/if}}
                 {{/is_array}}
               {{/if}}
