@@ -1,4 +1,4 @@
-#lib/tasks/site/settings.rake
+#lib/tasks/site/apply_settings.rake
 namespace :site do
   desc 'Creates or updates the site settings stylesheets'
   task :apply_settings, [:site_id] => :environment do |t, args|
