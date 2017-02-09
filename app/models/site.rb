@@ -37,6 +37,8 @@ class Site < ApplicationRecord
   #validates_presence_of :publishers, if: -> { required_for_step? :publishers }
   validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
+  validate :template_not_changed
+
   before_validation :generate_slug
   after_create :create_context
   after_save :update_routes
@@ -220,5 +222,12 @@ class Site < ApplicationRecord
       read_cache: false
     })
     sass_engine.render
+  end
+
+  # Validates if the template was changed
+  def template_not_changed
+    if self.site_template_id_changed? && self.persisted?
+      self.errors << 'Cannot change the template of a site'
+    end
   end
 end

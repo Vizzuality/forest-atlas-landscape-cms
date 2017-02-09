@@ -191,6 +191,7 @@ class Admin::SiteStepsController < AdminController
 
   def current_site
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
+    session[:site].delete(:site_template_id) if site.id
     session[:site].merge!(site_params.to_h) if params[:site] && site_params.to_h
     site.assign_attributes session[:site] if session[:site]
     site

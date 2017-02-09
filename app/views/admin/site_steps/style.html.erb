@@ -20,7 +20,11 @@
         <% SiteTemplate.all.each do |template| %>
           <div class="template">
             <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
-            <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), :id => ('template-' + template.id.to_s) %>
+            <% if f.object.id %>
+              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), disabled: :true,  :id => ('template-' + template.id.to_s) %>
+          <% else %>
+              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), :id => ('template-' + template.id.to_s) %>
+          <% end %>
             <div class="content">
               <p><%= template.name %></p>
               <%= image_tag (template.name == 'Forest Atlas' ? 'fa-preview.jpg' : 'lsa-preview.jpg'), alt: template.name %>

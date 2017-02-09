@@ -1,3 +1,7 @@
+### 14 Feb 2017
+- Removed possibility to change the site's template
+- Site's color is now shown
+
 ### 7 Feb 2017
 - New sites now have only three default pages: homepage, map, terms & conditions
 - Redesigned the settings step of the site creation / edition
