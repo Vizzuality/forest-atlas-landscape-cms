@@ -1,9 +1,32 @@
 ((function (App) {
   'use strict';
 
+
+  var TableCollection = Backbone.Collection.extend({
+    parse: function (data) {
+      var keys;
+      if (data.length) keys = Object.keys(data[0]);
+
+      return data.map(function (row) {
+        var res = {};
+
+        res.row = keys.map(function (key) {
+          return {
+            name: key,
+            value: row[key],
+            sortable: true
+          };
+        });
+
+        return res;
+      });
+    }
+  });
+
   App.Router.ManagementPreviewStep = Backbone.Router.extend({
 
     state: {
+      name: 'Untitled',
       map: {
         lat: null,
         lng: null,
@@ -32,8 +55,10 @@
     },
 
     index: function () {
+      this._initDescription();
       this._initCharts();
       this._initMap();
+      this._initTable();
       this._setListeners();
 
       this.chart1.render();
@@ -53,6 +78,53 @@
       });
       this.listenTo(this.chart2, 'state:change', function (state) {
         this._saveState('chart2', state);
+      });
+    },
+
+    /**
+     * Init the description's "Read more" button
+     */
+    _initDescription: function () {
+      document.querySelector('.js-read-more').addEventListener('click', this._openDescriptionModal.bind(this));
+    },
+
+    /**
+     * Open the description modal
+     */
+    _openDescriptionModal: function () {
+      if (!this.descriptionModal) {
+        var description = document.querySelector('.js-description');
+
+        this.descriptionModal = new App.View.ModalView();
+
+        var descriptionDashboardModalView = new App.View.DescriptionDashboardModalView({
+          name: (window.gon && gon.pageName) || null,
+          description: description.innerHTML,
+          closeCallback: function () { this.descriptionModal.close(); }.bind(this)
+        });
+
+        this.descriptionModal.render = descriptionDashboardModalView.render;
+      }
+
+      this.descriptionModal.open();
+    },
+
+    /**
+     * Return the table collection corresponding to the dataset
+     * @returns {object[]}
+     */
+    _getTableCollection: function () {
+      return new TableCollection(this._getDataset(), { parse: true });
+    },
+
+    /**
+     * Init the table
+     */
+    _initTable: function () {
+      this.table = new App.View.TableView({
+        el: document.querySelector('.js-table'),
+        collection: this._getTableCollection(),
+        tableName: 'Dashboard data'
       });
     },
 
