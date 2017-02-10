@@ -10,9 +10,10 @@
     display: flex;
     position: relative;
     flex-basis: calc(33.33% - 20px);
+    flex-direction: column;
     margin: 10px;
 
-    input {
+    > input {
       position: absolute;
       left: -10000px;
 
@@ -22,12 +23,16 @@
         color: $color-3;
       }
 
-      &:focus +.content {
+      &:focus:not(:checked) +.content {
         border-color: $color-1;
+      }
+
+      &:focus:checked +.content {
+        border-color: $color-3;
       }
     }
 
-    label {
+    > label {
       position: absolute;
       top: 0;
       left: 0;
@@ -39,6 +44,7 @@
     }
 
     .content {
+      flex-grow: 1;
       width: 100%;
       padding: 20px;
       transition: background .3s, color .1s, border-color .3s;
@@ -55,6 +61,10 @@
         font-size: $font-size-small;
         line-height: 1.5;
       }
+    }
+
+    footer {
+      padding: 15px 0 20px;
     }
 
 
