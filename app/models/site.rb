@@ -41,6 +41,8 @@ class Site < ApplicationRecord
   validate :template_not_changed
 
   before_validation :generate_slug
+  before_save :create_default_context
+  before_save :update_default_context
   after_create :create_context
   after_save :update_routes
   after_save :apply_settings
@@ -228,9 +230,21 @@ class Site < ApplicationRecord
     end
   end
 
-  # TODO When saving a default context, remove all the other ones
   def update_default_context
-
+    self.context_sites.each do |cs|
+      if cs.changed? && cs.is_site_default_context
+        self.context_sites.update_all(is_site_default_context: :false)
+        cs.is_site_default_context = true
+      end
+    end
   end
+
+  def create_default_context
+    unless self.context_sites.any?
+      context = Context.create(name: "#{self.name} Context")
+      self.context_sites.build(context: context, is_site_default_context: true)
+    end
+  end
+
 
 end
