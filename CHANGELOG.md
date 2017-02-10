@@ -1,4 +1,5 @@
 ### 14 Feb 2017
+- Redesigned the analysis dashboard
 - Removed possibility to change the site's template
 - Site's color is now shown
 

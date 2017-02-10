@@ -100,6 +100,7 @@ class Management::PageStepsController < ManagementController
 
       when 'preview'
         build_current_dataset_setting
+        gon.page_name = @page.name
         gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
         gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? nil : (JSON.parse @dataset_setting.default_graphs)
         gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)

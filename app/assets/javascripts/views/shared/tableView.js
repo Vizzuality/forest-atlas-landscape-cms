@@ -270,7 +270,17 @@
         } else if ((valA === undefined || valB === null) && valB) {
           return -1 * this.options.sortOrder;
         } else if (valA && (valB === undefined || valB === null)) {
-          return 1 * this.options.sortOrder;
+          return this.options.sortOrder;
+        }
+
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          if (valA < valB) return -1 * this.options.sortOrder;
+          if (valA > valB) return this.options.sortOrder;
+          return 0;
+        } else if (typeof valA === 'number' && typeof valB !== 'number') {
+          return -1 * this.options.sortOrder;
+        } else if (typeof valA !== 'number' && typeof valB === 'number') {
+          return this.options.sortOrder;
         }
 
         return valA.localeCompare(valB, [], { sensitivity: 'base' }) * this.options.sortOrder;
@@ -405,8 +415,10 @@
       var end = this.options.resultsPerPage * (this.options.paginationIndex + 1);
 
       return this.options.collection.toJSON()
-        .map(function (row) {
-          return row.row;
+        .map(function (row, index) {
+          // The rowIndex value is used for accessibility
+          // The index needs to start at 2 because the header row is 1
+          return Object.assign({}, row.row, { rowIndex: index + 2 });
         })
         .slice(start, end);
     },

@@ -71,6 +71,7 @@
     background-color: $color-3;
     box-shadow: 0 2px 3px 0 rgba($color-4, .3);
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 
     &.-hidden {
       display: none;

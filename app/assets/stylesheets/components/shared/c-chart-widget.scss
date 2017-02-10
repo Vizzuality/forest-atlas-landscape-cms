@@ -1,0 +1,16 @@
+.c-chart-widget {
+  width: 100%;
+
+  > .chart {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  > .c-hierarchical-select {
+    margin-top: 10px;
+
+    @media #{$mq-tablet} {
+      margin-top: 20px;
+    }
+  }
+}
