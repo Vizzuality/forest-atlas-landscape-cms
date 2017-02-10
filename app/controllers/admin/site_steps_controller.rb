@@ -215,13 +215,16 @@ class Admin::SiteStepsController < AdminController
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
     session[:site].delete(:site_template_id) if site.id
 
+
+    session[:site].merge!(site_params.to_h.except(:default_context)) if params[:site] && site_params.to_h
+
     # Default context
     if params[:site] && site_params.to_h && site_params[:default_context]
       default_context_id = params[:site].delete :default_context
-      session[:site].merge!( {'context_sites_attributes' => {"#{default_context_id}" => {'is_site_default_context' => 'true'}}})
+      default_context = session[:site].dig('context_sites_attributes', "#{default_context_id}")
+      default_context['is_site_default_context'] = 'true' if default_context
     end
 
-    session[:site].merge!(site_params.to_h) if params[:site] && site_params.to_h
     site.assign_attributes session[:site] if session[:site]
     site
   end

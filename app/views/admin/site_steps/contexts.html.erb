@@ -15,10 +15,11 @@
     <div class="wrapper">
       <div class="c-cards-list">
         <% @contexts.each_with_index do |context, i| %>
+          <%= saved_context = ContextSite.find_by(site_id: @site.id, context_id: context.id)
+            hidden_field_tag("site[context_sites_attributes][#{i}][id]", saved_context.id ) if @site.id && saved_context %>
           <div class="card">
             <label for="context-<%= context.id %>"><%= context.name %></label>
             <%= check_box_tag "site[context_sites_attributes][#{i}][context_id]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s) %>
-            <%#= hidden_field_tag("site[context_sites_attributes][#{i}][id]") if @site.id && ContextSite.find_by(site_id: @site.id, context_id: context.id) %>
             <div class="content">
               <h3><%= context.name %></h3>
               <p>.......................</p>
@@ -26,7 +27,6 @@
           </div>
           <%= radio_button_tag "site[default_context]", i,\
             f.object.context_sites.find_by(context_id: context.id) && f.object.context_sites.find_by(context_id: context.id).is_site_default_context, id: 'context' %>
-
         <% end %>
       </div>
     </div>
