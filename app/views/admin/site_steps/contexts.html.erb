@@ -1,0 +1,36 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Contexts</h1>
+        <p>Choose the contexts and default context</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -users">
+    <div class="wrapper">
+      <div class="c-cards-list">
+        <% @contexts.each_with_index do |context, i| %>
+          <div class="card">
+            <label for="context-<%= context.id %>"><%= context.name %></label>
+            <%= check_box_tag "site[context_sites_attributes][#{i}][context_id]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s) %>
+            <%#= hidden_field_tag("site[context_sites_attributes][#{i}][id]") if @site.id && ContextSite.find_by(site_id: @site.id, context_id: context.id) %>
+            <div class="content">
+              <h3><%= context.name %></h3>
+              <p>.......................</p>
+            </div>
+          </div>
+          <%= radio_button_tag "site[default_context]", i,\
+            f.object.context_sites.find_by(context_id: context.id) && f.object.context_sites.find_by(context_id: context.id).is_site_default_context, id: 'context' %>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
