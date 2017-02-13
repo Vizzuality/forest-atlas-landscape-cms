@@ -20,11 +20,12 @@ class Site < ApplicationRecord
   has_many :managers, source: :user, through: :site_managers
   has_many :site_publishers, -> {publisher}, class_name: 'UserSiteAssociation'
   has_many :publishers, source: :user, through: :site_publishers
-  has_many :context_sites,  dependent: :destroy
+  has_many :context_sites, dependent: :destroy, inverse_of: :site
   has_many :contexts, through: :context_sites
   has_many :site_settings, dependent: :destroy, inverse_of: :site
 
   accepts_nested_attributes_for :site_settings
+  accepts_nested_attributes_for :context_sites, allow_destroy: true
   accepts_nested_attributes_for :users
   accepts_nested_attributes_for :managers
   accepts_nested_attributes_for :publishers
@@ -38,21 +39,20 @@ class Site < ApplicationRecord
   validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   validate :template_not_changed
+  validate :edition_has_one_context
 
   before_validation :generate_slug
+  before_save :create_default_context
+  before_save :update_default_context
   after_create :create_context
   after_save :update_routes
   after_save :apply_settings
   after_create :create_template_content
 
   cattr_accessor :form_steps do
-    { pages: %w[name managers publishers style settings finish],
-      names: ['Name', 'Managers', 'Publishers', 'Style', 'Settings', 'Finish'] }
+    { pages: %w[name managers publishers contexts style settings finish],
+      names: %w[Name Managers Publishers Contexts Style Settings Finish] }
   end
-  #cattr_accessor :form_steps do
-  #  { pages: %w[name managers publishers contexts default_context style settings finish],
-  #    names: ['Name', 'Managers', 'Publishers', 'Contexts', 'Default Contexts', 'Style', 'Settings', 'Finish'] }
-  #end
 
 
   attr_accessor :form_step
@@ -230,4 +230,27 @@ class Site < ApplicationRecord
       self.errors << 'Cannot change the template of a site'
     end
   end
+
+  def update_default_context
+    self.context_sites.each do |cs|
+      if cs.changed? && cs.is_site_default_context
+        self.context_sites.update_all(is_site_default_context: :false)
+        cs.is_site_default_context = true
+      end
+    end
+  end
+
+  def create_default_context
+    unless self.context_sites.any?
+      context = Context.create(name: "#{self.name} Context")
+      self.context_sites.build(context: context, is_site_default_context: true)
+    end
+  end
+
+  def edition_has_one_context
+    if self.persisted? && !self.context_sites.any?
+      self.errors['context_sites'] << 'You must select at least one context when editing a site'
+    end
+  end
+
 end
