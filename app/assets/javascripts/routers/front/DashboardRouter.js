@@ -32,24 +32,28 @@
       version: null,
       config: {
         filters: [],
-        map: {
-          lat: null,
-          lng: null,
-          zoom: null
-        },
-        charts: [
-          {
-            type: null,
-            x: null,
-            y: null
-          },
-          {
-            type: null,
-            x: null,
-            y: null
-          }
+        widgets: [
+          // Structure of a map widget
+          // {
+          //   type: 'map',
+          //   lat: null,
+          //   lng: null,
+          //   zoom: null
+          // },
+          // Structure of a chart widget
+          // {
+          //   type: 'chart',
+          //   chart: null,
+          //   x: null,
+          //   y: null
+          // }
         ]
       }
+    },
+
+    defaults: {
+      // Number of widgets of the dashboard
+      widgetsCount: 3
     },
 
     routes: {
@@ -57,7 +61,9 @@
       '*hash': 'restoreStateRoute'
     },
 
-    initialize: function () {
+    initialize: function (settings) {
+      this.options = Object.assign({}, this.defaults, settings);
+
       // Instantiate the common views here for the page, use the "routes" object to instantiate
       // per route views
       new App.View.HeaderView({
@@ -77,37 +83,33 @@
       this.listenTo(this.filters, 'filters:change', function (filters) {
         this._saveState('filters', filters);
       });
-      this.listenTo(this.map, 'state:change', function (state) {
-        this._saveState('map', state);
-      });
-      this.listenTo(this.chart1, 'state:change', function (state) {
-        this._saveState('chart1', state);
-      });
-      this.listenTo(this.chart2, 'state:change', function (state) {
-        this._saveState('chart2', state);
-      });
+
+      for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+        // We wrap the listener in an IIFE to copy the value of i
+        // eslint-disable-next-line no-loop-func, no-shadow
+        (function (i) {
+          this.listenTo(this['widget' + i], 'state:change', function (state) {
+            this._saveState('widget' + i, state);
+          });
+        }.call(this, i));
+      }
 
       // When the dataset is filtered, we need to update the components
       this.listenTo(this.filters, 'dataset:change', function (dataset) {
         this.filteredDataset = dataset;
-        if (this.chart1) {
-          this.chart1.options.data = this._getDataset();
-          this.chart1.render();
+
+        // eslint-disable-next-line no-shadow
+        for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+          if (this['widget' + i]) {
+            this['widget' + i].options.data = this._getDataset();
+            this['widget' + i].render();
+          }
         }
-        if (this.chart2) {
-          this.chart2.options.data = this._getDataset();
-          this.chart2.render();
-        }
-        if (this.map) {
-          this.map.options.data = this._getDataset();
-          this.map.render();
-        }
+
         if (this.table) {
           this._initTable();
         }
       });
-
-      // We would do the same for the map
     },
 
     /**
@@ -128,11 +130,31 @@
     },
 
     /**
-     * Retrieve the dashboard's charts
-     * @returns {object[]} charts
+     * Retrieve the list of widgets
+     * @returns {object[]} widgets
      */
-    _getDashboardCharts: function () {
-      return (window.gon && gon.analysisGraphs) || [{}, {}];
+    _getDashboardWidgets: function () {
+      // TODO: temporary code to support the old back end code
+      /**
+       * @type {object[]}
+       */
+      var widgets = ((window.gon && gon.analysisGraphs) || []).map(function (widget) {
+        return {
+          type: 'chart',
+          chart: widget.chart,
+          x: widget.x,
+          y: widget.y || null
+        };
+      });
+
+      widgets.unshift({
+        type: 'map',
+        lat: (window.gon && gon.analysisMap.lat) || null,
+        lng: (window.gon && gon.analysisMap.lon) || null,
+        zoom: (window.gon && gon.analysisMap.zoom) || null
+      });
+
+      return widgets;
     },
 
     /**
@@ -196,58 +218,37 @@
     },
 
     /**
-     * Init the charts
+     * Init the widgets
      */
-    _initCharts: function () {
+    _initWidgets: function () {
       var dataset = this._getDataset();
-      var charts = this._getDashboardCharts();
+      var widgets = this._getDashboardWidgets();
 
-      this.chart1 = new App.View.ChartWidgetView({
-        el: document.querySelector('.js-chart-1'),
-        data: dataset,
-        chart: charts[0].type || null,
-        columnX: charts[0].x || null,
-        columnY: charts[0].y || null
-      });
-
-      this.chart2 = new App.View.ChartWidgetView({
-        el: document.querySelector('.js-chart-2'),
-        data: dataset,
-        chart: charts[1].type || null,
-        columnX: charts[1].x || null,
-        columnY: charts[1].y || null
-      });
-    },
-
-    /**
-     * Init the map
-     */
-    _initMap: function () {
-      var dataset = this._getDataset();
-      var type = (window.gon && gon.analysisMap.graphType) || null;
-      var center = [
-        (window.gon && gon.analysisMap.lat) || null,
-        (window.gon && gon.analysisMap.lon) || null
-      ];
-      var zoom = (window.gon && gon.analysisMap.zoom) || null;
-
-      var params = {
-        el: document.querySelector('.js-map'),
-        data: dataset,
-        // TODO
-        // Once gon is updated, we should retrieve the real names of the fields used to position
-        // the dots
-        fields: {
-          lat: 'latitude' || null,
-          lng: 'longitude' || null
+      widgets.forEach(function (widget, index) {
+        if (widget.type === 'map') {
+          this['widget' + index] = new App.View.MapWidgetView({
+            el: document.querySelector('.js-widget-' + (index + 1)),
+            data: dataset,
+            // TODO
+            // Once gon is updated, we should retrieve the real names of the fields used to position
+            // the dots
+            fields: {
+              lat: 'latitude' || null,
+              lng: 'longitude' || null
+            },
+            center: [widget.lat, widget.lng],
+            zoom: widget.zoom
+          });
+        } else {
+          this['widget' + index] = new App.View.ChartWidgetView({
+            el: document.querySelector('.js-widget-' + (index + 1)),
+            data: dataset,
+            chart: widget.chart,
+            columnX: widget.x,
+            columnY: widget.y
+          });
         }
-      };
-
-      if (type) params.type = type;
-      if (center[0] && center[1]) params.center = center;
-      if (zoom) params.zoom = zoom;
-
-      this.map = new App.View.MapWidgetView(params);
+      }, this);
     },
 
     /**
@@ -256,14 +257,14 @@
     _initBookmarks: function () {
       new App.View.DashboardBookmarksView({
         el: document.querySelector('.js-bookmarks'),
-        getState: function () {return this.state; }.bind(this),
+        getState: function () { return this.state; }.bind(this),
         setState: this._restoreState.bind(this)
       });
     },
 
     /**
      * Save the state of the specified component into a global state object
-     * @param {string} component - "filters", "chart1", "chart2" or "map"
+     * @param {string} component - "filters", "widget0", "widget1" or "widget2"
      * @param {object} state - state to save
      */
     _saveState: function (component, state) {
@@ -273,19 +274,10 @@
           this.state.config.filters = state;
           break;
 
-        case 'map':
-          this.state.config.map = Object.assign({}, this.state.config.map, state);
-          break;
-
-        case 'chart1':
-          this.state.config.charts[0] = Object.assign({}, this.state.config.charts[0], state);
-          break;
-
-        case 'chart2':
-          this.state.config.charts[1] = Object.assign({}, this.state.config.charts[1], state);
-          break;
-
         default:
+          var index = +component.slice(-1);
+          this.state.config.widgets[index] = Object.assign({}, this.state.config.widgets[index], state);
+          break;
       }
 
       this._updateUrl();
@@ -293,7 +285,7 @@
 
     /**
      * Compress the state to reduce its footprint
-     * With the current structure of the state, we're able to compress it by about 44%
+     * With the current structure of the state, we're able to compress it by more than 30%
      * @param {object} state
      * @returns {object} compressedState
      */
@@ -301,19 +293,20 @@
       var compressedState = {
         v: state.version,
         f: state.config.filters.map(function (filter) { return [filter.name, filter.value]; }),
-        la: state.config.map.lat,
-        ln: state.config.map.lng,
-        z: state.config.map.zoom,
-        // We get rid of the charts that don't have any value
-        c: this.state.config.charts.map(function (chart) {
+        w: this.state.config.widgets.map(function (chart) {
           if (!chart.type) return null;
-          var res = {
-            t: chart.type,
-            x: chart.x,
-            y: chart.y
-          };
+          var res = { t: chart.type };
 
-          if (!res.y) delete res.y;
+          if (chart.type === 'map') {
+            res.la = chart.lat;
+            res.ln = chart.lng;
+            res.z = chart.zoom;
+          } else {
+            res.c = chart.chart;
+            res.x = chart.x;
+            if (chart.y) res.y = chart.y;
+          }
+
           return res;
         }).filter(function (o) {
           return !!o;
@@ -352,18 +345,23 @@
           }).filter(function (filter) {
             return !!filter;
           })) || [],
-          map: {
-            lat: compressedState.la || this.state.config.map.lat,
-            lng: compressedState.ln || this.state.config.map.lng,
-            zoom: compressedState.z || this.state.config.map.zoom
-          },
-          charts: compressedState.c.map(function (chart) {
+          widgets: compressedState.w && compressedState.w.map(function (widget) {
+            if (widget.t === 'map') {
+              return {
+                type: 'map',
+                lat: widget.la,
+                lng: widget.ln,
+                zoom: widget.z
+              };
+            }
+
             return {
-              type: chart.t || this.state.config.charts[0].type,
-              x: chart.x || this.state.config.charts[0].x,
-              y: chart.y || this.state.config.charts[0].y
+              type: 'chart',
+              chart: widget.c,
+              x: widget.x,
+              y: widget.y || null
             };
-          }, this) || this.state.config.charts
+          })
         }
       };
     },
@@ -444,6 +442,11 @@
     _checkStateValidity: function (state) {
       var dataset = this._getDataset({ unfiltered: true });
 
+      // We check we have all the widgets
+      if (!state.config || !state.config.widgets || state.config.widgets.length < this.options.widgetsCount) {
+        return false;
+      }
+
       // We check the validity of the charts
       var widgetToolbox = new App.Helper.WidgetToolbox(dataset);
       if (!widgetToolbox.checkStateValidity(state)) return false;
@@ -458,7 +461,7 @@
 
     /**
      * Restore the state of the dashboard
-     * NOTE: must be called after _renderCharts
+     * NOTE: must be called after _renderWidgets
      * @param {object} state
      * @returns {boolean} restored - true if the state could be restored
      */
@@ -476,8 +479,7 @@
 
         // We don't forget to still show the interface
         this.filters.render();
-        this._renderCharts();
-        this._renderMap();
+        this._renderWidgets();
 
         return false;
       }
@@ -486,49 +488,36 @@
       this.filters.setFilters(state.config.filters);
       this.filters.render();
 
-      // We restore the first chart
-      var chart1State = {
-        chart: state.config.charts[0].type,
-        columnX: state.config.charts[0].x,
-        columnY: state.config.charts[0].y
-      };
-      this.chart1.options = Object.assign({}, this.chart1.options, chart1State);
-
-      // We restore the second chart
-      var chart2State = {
-        chart: state.config.charts[1].type,
-        columnX: state.config.charts[1].x,
-        columnY: state.config.charts[1].y
-      };
-      this.chart2.options = Object.assign({}, this.chart2.options, chart2State);
-
-      // We restore the map
-      var mapState = {
-        center: [state.config.map.lat, state.config.map.lng],
-        zoom: state.config.map.zoom
-      };
-      this.map.options = Object.assign({}, this.map.options, mapState);
+      // We restore the widgets
+      for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+        var widget = state.config.widgets[i];
+        if (widget.type === 'map') {
+          this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
+            center: [widget.lat, widget.lng],
+            zoom: widget.zoom
+          });
+        } else {
+          this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
+            chart: widget.chart,
+            columnX: widget.x,
+            columnY: widget.y
+          });
+        }
+      }
 
       // We finally render the whole dashboard
-      this._renderCharts();
-      this._renderMap();
+      this._renderWidgets();
 
       return true;
     },
 
     /**
-     * Render the whole charts components
+     * Render the widgets
      */
-    _renderCharts: function () {
-      this.chart1.render();
-      this.chart2.render();
-    },
-
-    /**
-     * Render the map
-     */
-    _renderMap: function () {
-      this.map.render();
+    _renderWidgets: function () {
+      for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+        this['widget' + i].render();
+      }
     },
 
     /**
@@ -538,11 +527,9 @@
       this._initFilters();
       this.filters.render();
       this._initTable();
-      this._initCharts();
-      this._initMap();
+      this._initWidgets();
       this._setListeners();
-      this._renderCharts();
-      this._renderMap();
+      this._renderWidgets();
       this._initBookmarks();
     },
 
@@ -566,18 +553,17 @@
       // that if you modify it, you try to reach the dashboard without the state param,
       // and with the state param with and without the filters
 
-      // We init the filters, the charts and the map
+      // We init the filters, the table and the widgets
       this._initFilters();
       this._initTable();
-      this._initCharts();
-      this._initMap();
+      this._initWidgets();
 
       // We need to initialize the listeners before they start to trigger events
       this._setListeners();
 
       var state = this._decompressState(decodedState);
       if (this._restoreState(state)) {
-        // Even if when the charts will be render, they will emit an event with their state
+        // Even if when the widgets will be render, they will emit an event with their state
         // and thus this.state will be updated, the version number won't, that's why we need
         // to save the state before
         this.state = state;

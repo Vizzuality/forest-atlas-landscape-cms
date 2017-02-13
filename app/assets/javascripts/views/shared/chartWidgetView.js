@@ -168,7 +168,8 @@
       // NOTE: We need to make sure in case the view hasn't been instanciated with
       // a chart configuration that it's set by the toolbox before triggering
       this.trigger('state:change', {
-        type: this.options.chart,
+        type: 'chart',
+        chart: this.options.chart,
         x: this.options.columnX,
         y: this.options.columnY
       });

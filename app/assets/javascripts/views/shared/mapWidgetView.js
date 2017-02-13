@@ -43,6 +43,7 @@
      */
     _triggerState: function () {
       this.trigger('state:change', {
+        type: 'map',
         lat: this.options.center[0],
         lng: this.options.center[1],
         zoom: this.options.zoom

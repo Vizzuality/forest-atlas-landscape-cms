@@ -89,20 +89,22 @@
   };
 
   /**
-   * Check the validity of a chart regarding the data provided to the constructor
-   * @param {{ type: string, x: string, y: string | null}} chart
+   * Check the validity of a widget regarding the data provided to the constructor
+   * @param {{ type: string, x: string, y: string | null}} widget
    * @returns {boolean} validity - true if valid
    */
-  App.Helper.WidgetToolbox.prototype.checkChartValidity = function (chart) {
-    // If the chart hasn't a type, we consider it as valid
-    if (!chart.type) return true;
-    // If the chart can't be rendered with the current dataset
-    if (this.getAvailableCharts().indexOf(chart.type) === -1) return false;
+  App.Helper.WidgetToolbox.prototype.checkWidgetValidity = function (widget) {
+    // If the widget is a map, we return true
+    if (widget.type === 'map') return true;
+    // If the widget is an unknown chart, we consider it as valid
+    if (!widget.chart) return true;
+    // If the widget can't be rendered with the current dataset
+    if (this.getAvailableCharts().indexOf(widget.chart) === -1) return false;
     // If the x column can be chosen to render the chart
-    if (this.getAvailableXColumns(chart.type).indexOf(chart.x) === -1) return false;
+    if (this.getAvailableXColumns(widget.chart).indexOf(widget.x) === -1) return false;
     // If the y column can be chosen to render the chart with the x column
     // NOTE: not all the charts have two columns
-    if (this.getAvailableYColumns(chart.type, chart.x).length && (!chart.y || this.getAvailableYColumns(chart.type, chart.x).indexOf(chart.y) === -1)) return false;
+    if (this.getAvailableYColumns(widget.chart, widget.x).length && (!widget.y || this.getAvailableYColumns(widget.chart, widget.x).indexOf(widget.y) === -1)) return false;
     // If we reach this point, this particular chart is valid
     return true;
   };
@@ -114,8 +116,8 @@
    * @returns {boolean} validity - true if valid
    */
   App.Helper.WidgetToolbox.prototype.checkStateValidity = function (state) {
-    return state.config.charts.reduce(function (isValid, chart) {
-      return isValid && this.checkChartValidity(chart);
+    return state.config.widgets.reduce(function (isValid, widget) {
+      return isValid && this.checkWidgetValidity(widget);
     }.bind(this), true);
   };
 
