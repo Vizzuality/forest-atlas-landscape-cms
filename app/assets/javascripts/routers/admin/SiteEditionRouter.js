@@ -35,6 +35,35 @@
       });
     },
 
+    initContextsStep: function () {
+      // If the user sets as context by default a context that isn't selected, then we
+      // select it
+      var defaultContexts = document.querySelectorAll('.js-default-context');
+      Array.prototype.slice.call(defaultContexts).forEach(function (defaultContext) {
+        defaultContext.addEventListener('click', function (e) {
+          var card = $(e.currentTarget).closest('.js-card')[0];
+          var context = card.querySelector('.js-context');
+          var isChecked = context.checked;
+          if (!isChecked) context.checked = true;
+        });
+      });
+
+      // If the user tries to unselect a context set as default, then we prevent them to
+      // do so and display a warning
+      var contexts = document.querySelectorAll('.js-context');
+      Array.prototype.slice.call(contexts).forEach(function (context) {
+        context.addEventListener('click', function (e) {
+          if (e.currentTarget.checked) return;
+          var card = $(e.currentTarget).closest('.js-card')[0];
+          var isDefault = !!card.querySelector('.js-default-context:checked');
+          if (isDefault) {
+            App.notifications.broadcast(App.Helper.Notifications.site.deselectContext);
+            e.preventDefault();
+          }
+        });
+      });
+    },
+
     initStyleStep: function () {
       var themeColorContainer = document.querySelector('.js-theme-color');
       var input = themeColorContainer.querySelector('input');

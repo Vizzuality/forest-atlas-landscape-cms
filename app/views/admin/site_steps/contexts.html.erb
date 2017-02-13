@@ -17,16 +17,16 @@
         <% @contexts.each_with_index do |context, i| %>
           <%= saved_context = ContextSite.find_by(site_id: @site.id, context_id: context.id)
             hidden_field_tag("site[context_sites_attributes][#{i}][id]", saved_context.id ) if @site.id && saved_context %>
-          <div class="card -single-data">
+          <div class="card -single-data js-card">
             <label for="context-<%= context.id %>"><%= context.name %></label>
-            <%= check_box_tag "site[context_sites_attributes][#{i}][context_id]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s) %>
+            <%= check_box_tag "site[context_sites_attributes][#{i}][context_id]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s), class: 'js-context' %>
             <div class="content">
               <h3><%= context.name %></h3>
             </div>
             <footer>
               <div class="c-radio">
                 <%= radio_button_tag "site[default_context]", i,\
-                  f.object.context_sites.find_by(context_id: context.id) && f.object.context_sites.find_by(context_id: context.id).is_site_default_context, id: 'default-context-' + context.id.to_s %>
+                  f.object.context_sites.find_by(context_id: context.id) && f.object.context_sites.find_by(context_id: context.id).is_site_default_context, id: 'default-context-' + context.id.to_s, class: 'js-default-context' %>
                 <label for="default-context-<%= context.id %>" aria-label="<%= context.name %> as context by default">Context by default</label>
               </div>
             </footer>

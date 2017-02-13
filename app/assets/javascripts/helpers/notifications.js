@@ -14,6 +14,11 @@
         additionalContent: 'The change is irreversible.',
         dialogButtons: true,
         closeable: false
+      },
+      deselectContext: {
+        type: 'warning',
+        content: 'You can\'t unselect a context set as default!',
+        additionalContent: 'Set another one as default before trying to unselect it.'
       }
     },
 
