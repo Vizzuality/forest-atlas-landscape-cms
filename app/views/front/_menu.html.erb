@@ -101,7 +101,7 @@
             <ul class="sections">
               <% if @site_page.depth >= 2 %>
                   <ul>
-                    <% @site_page.children.each do |child_page| -%>
+                    <% (@site_page.depth == 2 ? @site_page.children : @site_page.parent.children).each do |child_page| -%>
                         <% if child_page.visible? %>
                           <li><%= page_link child_page %></li>
                         <% end%>
@@ -121,4 +121,5 @@
       <% end %>
     </div>
   <% end %>
+  <%= console %>
 </header>

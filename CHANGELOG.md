@@ -1,4 +1,5 @@
 ### 14 Feb 2017
+- Fixed an issue where the breadcrumbs wouldn't appear for third-level pages
 - Fixed an issue with the position of the breadcrumbs
 - Redesigned the analysis dashboard
 - Removed possibility to change the site's template
