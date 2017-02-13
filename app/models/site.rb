@@ -39,6 +39,7 @@ class Site < ApplicationRecord
   validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   validate :template_not_changed
+  validate :edition_has_one_context
 
   before_validation :generate_slug
   before_save :create_default_context
@@ -246,5 +247,10 @@ class Site < ApplicationRecord
     end
   end
 
+  def edition_has_one_context
+    if self.persisted? && !self.context_sites.any?
+      self.context_sites.errors << 'You must select at least one context when editing a site'
+    end
+  end
 
 end
