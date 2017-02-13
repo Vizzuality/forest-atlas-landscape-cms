@@ -184,16 +184,11 @@
 
     @media #{$mq-tablet} {
       display: flex;
-      flex-wrap: wrap;
       align-items: flex-start;
-      justify-content: flex-start;
+      justify-content: space-between;
     }
 
     > .logo-container {
-      // By using flex-grow and flex-shrink, we specify that we want the element
-      // to push the others to the right and that it can't be shrink when space
-      // is missing
-      flex-grow: 1;
       flex-shrink: 0;
       margin-right: 35px;
       text-transform: uppercase;
@@ -214,168 +209,272 @@
       }
     }
 
-    > ul {
-      height: 100%;
-      margin:  0;
-      padding: 0;
-      list-style: none;
+    > .menu-container {
+      display: flex;
+      flex-grow: 1;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-      > li {
-        display: inline-block;
-        position: relative;
+    .menu {
+      display: flex;
+      flex-basis: 100%;
+      justify-content: flex-end;
+
+      > ul {
         height: 100%;
-        padding: 0 25px;
-        line-height: 50px;
-        text-transform: uppercase;
+        margin:  0;
+        padding: 0;
+        list-style: none;
 
-        &.-active {
-          @if $theme == 2 {
-            background-color: rgba($color-3, .1);
-          } @else {
-            background-color: rgba($color-1, .1);
-          }
-        }
+        > li {
+          display: inline-block;
+          position: relative;
+          height: 100%;
+          padding: 0 25px;
+          line-height: 50px;
+          text-transform: uppercase;
 
-        // If the menu has just one element (such as the lang selector), we don't want the border
-        &:last-of-type {
-          &:not(:first-of-type) {
+          &.-active {
             @if $theme == 2 {
-              border-right: 1px solid rgba($color-3, .1);
+              background-color: rgba($color-3, .1);
             } @else {
-              border-right: 1px solid rgba($color-1, .1);
+              background-color: rgba($color-1, .1);
             }
           }
-        }
 
-        &.dropdown-item {
-          cursor: pointer;
-          z-index: 1; // On top of the breadcrumbs/section menu
-
-          ul {
-            position: absolute;
-            top: 0;
-            left: -15px;
-            width: calc(100% + 30px);
-            margin: 0;
-            padding: 0;
-            transition: opacity .2s ease-out, visibility 0s .2s;
-            background-color: $color-3;
-            list-style: none;
-            box-shadow: 0 2px 3px 0 rgba($color-7, .3);
-            cursor: auto;
-            opacity: 0;
-            visibility: hidden;
-            will-change: transform, opacity;
-
-            // Black border
-            &::after {
-              display:  block;
-              position: absolute;
-              top: 50px;
-              left: 0;
-              width:  100%;
-              height: 5px;
-              content: '';
-
+          // If the menu has just one element (such as the lang selector), we don't want the border
+          &:last-of-type {
+            &:not(:first-of-type) {
               @if $theme == 2 {
-                background-color: $color-7;
+                border-right: 1px solid rgba($color-3, .1);
               } @else {
-                background-color: $color-1;
+                border-right: 1px solid rgba($color-1, .1);
               }
             }
+          }
 
-            li {
-              display: block;
-              border-bottom: 1px solid $color-9;
-              text-align: center;
+          &.dropdown-item {
+            cursor: pointer;
+            z-index: 1; // On top of the breadcrumbs/section menu
 
-              @if $theme == 2 {
-                color: $color-6;
+            ul {
+              position: absolute;
+              top: 0;
+              left: -15px;
+              width: calc(100% + 30px);
+              margin: 0;
+              padding: 0;
+              transition: opacity .2s ease-out, visibility 0s .2s;
+              background-color: $color-3;
+              list-style: none;
+              box-shadow: 0 2px 3px 0 rgba($color-7, .3);
+              cursor: auto;
+              opacity: 0;
+              visibility: hidden;
+              will-change: transform, opacity;
+
+              // Black border
+              &::after {
+                display:  block;
+                position: absolute;
+                top: 50px;
+                left: 0;
+                width:  100%;
+                height: 5px;
+                content: '';
+
+                @if $theme == 2 {
+                  background-color: $color-7;
+                } @else {
+                  background-color: $color-1;
+                }
               }
 
-              // The first item isn't a sub-menu element but a copy of the parent element
-              &:first-of-type {
-                height: 50px;
-                line-height: 50px;
-                cursor: pointer;
-              }
+              li {
+                display: block;
+                border-bottom: 1px solid $color-9;
+                text-align: center;
 
-              // We need some extra space to put the black border
-              &:nth-of-type(2) {
-                height: 55px;
-                padding-top: 5px;
-              }
+                @if $theme == 2 {
+                  color: $color-6;
+                }
 
-              &:not(:first-of-type) {
-                line-height: 1.3;
-                text-transform: none;
+                // The first item isn't a sub-menu element but a copy of the parent element
+                &:first-of-type {
+                  height: 50px;
+                  line-height: 50px;
+                  cursor: pointer;
+                }
 
-                &:hover {
-                  @if $theme == 2 {
-                    background-color: $color-8;
-                  } @else {
-                    background-color: rgba($color-1, .1);
+                // We need some extra space to put the black border
+                &:nth-of-type(2) {
+                  height: 55px;
+                  padding-top: 5px;
+                }
+
+                &:not(:first-of-type) {
+                  line-height: 1.3;
+                  text-transform: none;
+
+                  &:hover {
+                    @if $theme == 2 {
+                      background-color: $color-8;
+                    } @else {
+                      background-color: rgba($color-1, .1);
+                    }
                   }
+
+                  a {
+                    padding: 15px 5px;
+
+                    @if $theme == 1 {
+                      color: $color-6;
+                    }
+                  }
+                }
+
+                &:last-of-type {
+                  border: 0;
                 }
 
                 a {
-                  padding: 15px 5px;
+                  display: block;
+                  width: 100%;
+                  height: 100%;
+                  padding: 0 14px;
+                }
+              }
+            }
 
-                  @if $theme == 1 {
-                    color: $color-6;
+            &:hover {
+              > ul {
+                transition: opacity .2s ease-out;
+                opacity: 1;
+                visibility: visible;
+              }
+            }
+
+            @if $theme == 2 {
+              &.-active {
+                > ul {
+                  li:first-of-type {
+                    background-color: rgba($color-3, .1);
                   }
                 }
               }
-
-              &:last-of-type {
-                border: 0;
-              }
-
-              a {
-                display: block;
-                width: 100%;
-                height: 100%;
-                padding: 0 14px;
-              }
-            }
-          }
-
-          &:hover {
-            > ul {
-              transition: opacity .2s ease-out;
-              opacity: 1;
-              visibility: visible;
-            }
-          }
-
-          @if $theme == 2 {
-            &.-active {
-              > ul {
-                li:first-of-type {
-                  background-color: rgba($color-3, .1);
-                }
-              }
             }
           }
         }
-      }
 
-      &:last-of-type {
-        margin: 0;
+        &:last-of-type {
+          margin: 0;
 
-        > li {
-          &:last-of-type {
-            padding-right: 0;
+          > li {
+            &:last-of-type {
+              padding-right: 0;
+            }
           }
         }
-      }
 
+      }
     }
 
+    .sub-menu {
+      display: none;
+      flex-basis: 100%;
+      height: 0; // Trick so the content will be on top of what's following
+      color: $color-3;
+      font-size: $font-size-small;
+
+      // Background of the sub-menu (breadcrumbs) menu
+      &::after {
+        display: block;
+        position: absolute;
+        top: 55px;
+        left: 0;
+        width: 100%;
+        content: '';
+
+        @if $theme == 2 {
+          height: 25px;
+          background-color: rgba($color-7, .7);
+        } @else {
+          top: 50px;
+          height: 30px;
+          background-color: rgba($color-1, .7);
+        }
+      }
+
+      @media #{$mq-tablet} {
+        display: block;
+      }
+
+      a {
+        color: $color-3;
+      }
+
+      .content {
+        display: flex;
+        position: relative;
+        top: 5px;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        z-index: 1;
+
+        @if $theme == 2 {
+          line-height: 25px;
+        } @else {
+          line-height: 17px;
+        }
+
+        > .breadcrumbs {
+          height: 100%;
+
+          li {
+            height: 100%;
+            font-weight: $font-weight-bold;
+            text-transform: uppercase;
+
+            @if $theme == 1 {
+              padding-top: 5px;
+            }
+
+            &:not(:last-of-type):after {
+              content: ' > ';
+            }
+          }
+        }
+
+        > .sections {
+          display: inline-block;
+          height: 100%;
+
+          li {
+            height: 100%;
+            padding: 0 14px;
+            border-left: 1px solid rgba($color-3, .2);
+            letter-spacing: .1px;
+
+            @if $theme == 1 {
+              padding-top: 5px;
+            }
+
+            &:last-of-type {
+              padding-right: 0;
+            }
+          }
+        }
+      }
+    }
   }
 
   > .flag-border {
     display: flex;
+    position: absolute;
+    top: 50px;
+    left: 0;
     width: 100%;
     height: 5px;
     z-index: -1;
@@ -394,80 +493,4 @@
       }
     }
   }
-
-  > .sub-menu {
-    display: none;
-    height: 0; // Trick so the content will be on top of what's following
-    color: $color-3;
-    font-size: $font-size-small;
-
-    @media #{$mq-tablet} {
-      display: block;
-    }
-
-    a {
-      color: $color-3;
-    }
-
-    > .wrapper {
-      line-height: 25px;
-
-      @if $theme == 2 {
-        height: 25px;
-        background-color: rgba($color-7, .7);
-      } @else {
-        position: relative;
-        top: -5px;
-        height: 30px;
-        background-color: rgba($color-1, .7);
-      }
-    }
-
-    .content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-left: 90px; // Width logo (80px) + padding (10px)
-      height: 100%;
-
-      > .breadcrumbs {
-        height: 100%;
-
-        li {
-          height: 100%;
-          font-weight: $font-weight-bold;
-          text-transform: uppercase;
-
-          @if $theme == 1 {
-            padding-top: 5px;
-          }
-
-          &:not(:last-of-type):after {
-            content: ' > ';
-          }
-        }
-      }
-
-      > .sections {
-        display: inline-block;
-        height: 100%;
-
-        li {
-          height: 100%;
-          padding: 0 14px;
-          border-left: 1px solid rgba($color-3, .2);
-          letter-spacing: .1px;
-
-          @if $theme == 1 {
-            padding-top: 5px;
-          }
-
-          &:last-of-type {
-            padding-right: 0;
-          }
-        }
-      }
-    }
-  }
-
 }
