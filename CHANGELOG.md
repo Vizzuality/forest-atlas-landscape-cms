@@ -1,4 +1,5 @@
 ### 14 Feb 2017
+- Fixed bug that was duplicating the routes
 - Added site's contexts and default contexts
 - Fixed an issue where the breadcrumbs wouldn't appear for third-level pages
 - Fixed an issue with the position of the breadcrumbs

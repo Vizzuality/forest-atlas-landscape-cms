@@ -209,7 +209,7 @@ class Admin::SiteStepsController < AdminController
     params.require(:site).
       permit(:name, :site_template_id, :default_context, user_ids: [],
              context_sites_attributes: [:context_id, :id],
-             routes_attributes: [:host],
+             routes_attributes: [:host, :id],
              site_settings_attributes: [:id, :position, :value, :name, :image])
   end
 
