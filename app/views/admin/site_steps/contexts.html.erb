@@ -19,7 +19,7 @@
             hidden_field_tag("site[context_sites_attributes][#{i}][id]", saved_context.id ) if @site.id && saved_context %>
           <div class="card -single-data js-card">
             <label for="context-<%= context.id %>"><%= context.name %></label>
-            <%= check_box_tag "site[context_sites_attributes][#{i}][context_id]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s), class: 'js-context' %>
+            <%= check_box_tag "site[context_sites_attributes][#{i}][context_id]", context.id, f.object.context_sites.any? {|c| c.context_id == context.id}, id: ('context-' + context.id.to_s), class: 'js-context' %>
             <div class="content">
               <h3><%= context.name %></h3>
             </div>

@@ -142,6 +142,7 @@ class Admin::SiteStepsController < AdminController
           if @site.save
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
+            @contexts = Context.all
             render_wizard
           end
         else
@@ -150,6 +151,7 @@ class Admin::SiteStepsController < AdminController
           if @site.valid?
             redirect_to next_wizard_path
           else
+            @contexts = Context.all
             render_wizard
           end
         end
@@ -215,15 +217,32 @@ class Admin::SiteStepsController < AdminController
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
     session[:site].delete(:site_template_id) if site.id
 
+    # Contexts listing
+    if !params[:site].blank? && site_params.to_h && step == 'contexts'
+      if site_params[:context_sites_attributes]
+        context_sites_attributes = {}
+        site_params[:context_sites_attributes].values.each_with_index do |context, i|
+          context['_destroy'] = true if context['context_id'].blank?
+          context_sites_attributes["#{i}"] = context
+        end
+        session[:site]['context_sites_attributes'] =  context_sites_attributes
+      else
+        session[:site]['context_sites_attributes'] = []
+      end
+    end
 
-    session[:site].merge!(site_params.to_h.except(:default_context)) if params[:site] && site_params.to_h
+    session[:site].merge!(site_params.to_h.except(:default_context, 'context_sites_attributes')) if params[:site] && site_params.to_h
 
     # Default context
     if params[:site] && site_params.to_h && site_params[:default_context]
       default_context_id = params[:site].delete :default_context
-      default_context = session[:site].dig('context_sites_attributes', "#{default_context_id}")
+      if session[:site] && !session[:site]['context_sites_attributes'].blank?
+        default_context = session[:site].dig('context_sites_attributes', "#{default_context_id}")
+      end
       default_context['is_site_default_context'] = 'true' if default_context
     end
+
+
 
     site.assign_attributes session[:site] if session[:site]
     site

@@ -25,7 +25,7 @@ class Site < ApplicationRecord
   has_many :site_settings, dependent: :destroy, inverse_of: :site
 
   accepts_nested_attributes_for :site_settings
-  accepts_nested_attributes_for :context_sites
+  accepts_nested_attributes_for :context_sites, allow_destroy: true
   accepts_nested_attributes_for :users
   accepts_nested_attributes_for :managers
   accepts_nested_attributes_for :publishers
@@ -249,7 +249,7 @@ class Site < ApplicationRecord
 
   def edition_has_one_context
     if self.persisted? && !self.context_sites.any?
-      self.context_sites.errors << 'You must select at least one context when editing a site'
+      self.errors['context_sites'] << 'You must select at least one context when editing a site'
     end
   end
 
