@@ -16,12 +16,24 @@
 
   > .container {
     position: relative;
+    top: 14px;
     width: 100%;
-    max-width: 880px;
+    max-width: calc(100% - #{2 * $wrapper-mobile-padding});
     height: 100%;
-    max-height: 600px;
+    max-height: calc(100% - #{3 * $wrapper-mobile-padding + 14px});
     border-radius: 4px;
     background-color: $color-3;
+
+    @media #{$mq-tablet} {
+      max-width: calc(100% - #{2 * $wrapper-tablet-padding});
+      max-height: calc(100% - #{3 * $wrapper-tablet-padding + 14px});
+    }
+
+    @media #{$mq-laptop} {
+      top: 0;
+      max-width: 880px;
+      max-height: 600px;
+    }
 
     > .close-button {
       display: block;

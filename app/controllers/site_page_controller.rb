@@ -68,6 +68,8 @@ class SitePageController < ApplicationController
   end
 
   def analysis_dashboard
+    gon.page_name = @site_page.name
+
     @setting = @site_page.dataset_setting
     if @setting
       # Query the API in the dataset_setting

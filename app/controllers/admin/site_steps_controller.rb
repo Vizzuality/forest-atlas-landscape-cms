@@ -1,4 +1,6 @@
 class Admin::SiteStepsController < AdminController
+  require 'rake'
+
   include Wicked::Wizard
   include NavigationHelper
 
@@ -45,6 +47,9 @@ class Admin::SiteStepsController < AdminController
       if step == 'publishers'
         @publishers = User.where(role: UserType::PUBLISHER)
       end
+      if step == 'contexts'
+        @contexts = Context.all
+      end
       if step == 'style'
         SiteSetting.create_color_settings @site
       end
@@ -73,7 +78,7 @@ class Admin::SiteStepsController < AdminController
         # If the user pressed the save button
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -93,7 +98,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @managers = User.where(role: UserType::MANAGER)
             render_wizard
@@ -114,7 +119,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @publishers = User.where(role: UserType::PUBLISHER)
             render_wizard
@@ -131,11 +136,31 @@ class Admin::SiteStepsController < AdminController
         end
 
 
+      when 'contexts'
+        @site = current_site
+        if save_button?
+          if @site.save
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+          else
+            @contexts = Context.all
+            render_wizard
+          end
+        else
+          @site.form_step = 'contexts'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            @contexts = Context.all
+            render_wizard
+          end
+        end
+
       when 'style'
         @site = current_site
         if save_button?
           if @site.save
-            redirect_to admin_sites_path
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -148,6 +173,7 @@ class Admin::SiteStepsController < AdminController
             render_wizard
           end
         end
+
 
       # In this step, the site is always saved
       when 'settings'
@@ -169,7 +195,7 @@ class Admin::SiteStepsController < AdminController
         end
 
         if @site.save
-          redirect_to next_wizard_path
+          redirect_to next_wizard_path, notice: 'The site\'s main color might take a few minutes to be visible'
         else
           render_wizard
         end
@@ -181,15 +207,43 @@ class Admin::SiteStepsController < AdminController
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
     params.require(:site).
-      permit(:name, :site_template_id,
-             user_ids: [],
-             routes_attributes: [:host],
+      permit(:name, :site_template_id, :default_context, user_ids: [],
+             context_sites_attributes: [:context_id, :id],
+             routes_attributes: [:host, :id],
              site_settings_attributes: [:id, :position, :value, :name, :image])
   end
 
   def current_site
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
-    session[:site].merge!(site_params.to_h) if params[:site] && site_params.to_h
+    session[:site].delete(:site_template_id) if site.id
+
+    # Contexts listing
+    if !params[:site].blank? && site_params.to_h && step == 'contexts'
+      if site_params[:context_sites_attributes]
+        context_sites_attributes = {}
+        site_params[:context_sites_attributes].values.each_with_index do |context, i|
+          context['_destroy'] = true if context['context_id'].blank?
+          context_sites_attributes["#{i}"] = context
+        end
+        session[:site]['context_sites_attributes'] =  context_sites_attributes
+      else
+        session[:site]['context_sites_attributes'] = []
+      end
+    end
+
+    session[:site].merge!(site_params.to_h.except(:default_context, 'context_sites_attributes')) if params[:site] && site_params.to_h
+
+    # Default context
+    if params[:site] && site_params.to_h && site_params[:default_context]
+      default_context_id = params[:site].delete :default_context
+      if session[:site] && !session[:site]['context_sites_attributes'].blank?
+        default_context = session[:site].dig('context_sites_attributes', "#{default_context_id}")
+      end
+      default_context['is_site_default_context'] = 'true' if default_context
+    end
+
+
+
     site.assign_attributes session[:site] if session[:site]
     site
   end

@@ -9,6 +9,9 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # To work with the new assets precompilation
+  config.serve_static_assets = true
+
   # Show full error reports.
   config.consider_all_requests_local = true
 
@@ -44,6 +47,9 @@ Rails.application.configure do
 
   # Mutes assets pipeline log messages
   config.assets.quiet = true
+
+  config.assets.precompile += %w( front/application-theme-fa.css front/application-theme-lsa.css )
+
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

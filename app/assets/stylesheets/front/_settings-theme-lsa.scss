@@ -52,7 +52,6 @@ $font-weight-normal: 400;
 $font-weight-bold:   700;
 
 // Colors
-$color-1:  #006a80; // Theme main color
 $color-2:  #f7f7f7;
 $color-3:  #fff;
 $color-4:  #555;
@@ -67,6 +66,7 @@ $color-12: #dd3e21;
 $color-13: #dededd;
 $color-14:  #ff706c;
 $color-15:  #404040;
+$color-16: tint($color-1, 85%);
 
 // General layout
 $body-max-width:         1280px;

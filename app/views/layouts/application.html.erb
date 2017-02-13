@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title><%= ForestAtlasLandscapeCms::Application.config.site_name %></title>
   <%= csrf_meta_tags %>
@@ -7,8 +7,11 @@
   <link rel="icon" type="image/png" href="<%= @favico %>" />
   <link rel="apple-touch-icon" href="<%= @favico %>">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.6/quill.core.css">
-  <%= stylesheet_link_tag 'front/application-theme-fa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Forest Atlas' %>
-  <%= stylesheet_link_tag 'front/application-theme-lsa', media: 'all', 'data-turbolinks-track': 'reload' if @site_page.site_template.name.eql? 'Landscape Application' %>
+
+  <%= stylesheet_link_tag 'front/application-theme-fa', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('Forest Atlas')) %>
+  <%= stylesheet_link_tag 'front/application-theme-lsa', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('Landscape Application')) %>
+  <%= stylesheet_link_tag "front/sites/#{@site_page.site.id}.css", media: 'all', 'data-turbolinks-track': 'reload' unless Rails.env.development?%>
+
   <%= favicon_link_tag unless @favico %>
   <%= yield :head %>
   <script src="//cdn.quilljs.com/1.1.6/quill.js" type="text/javascript"></script>

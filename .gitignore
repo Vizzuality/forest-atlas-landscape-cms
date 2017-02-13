@@ -26,8 +26,12 @@
 # Generated assets
 /vendor/bundle
 /public/assets
+/public/stylesheets
+/public/stylesheets/front
+/public/stylesheets/front/sites
 /public/uploads
 /public/system
+.sass-cache
 
 # NPM modules
 /node_modules

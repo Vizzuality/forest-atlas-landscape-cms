@@ -1,3 +1,12 @@
+### 14 Feb 2017
+- Fixed bug that was duplicating the routes
+- Added site's contexts and default contexts
+- Fixed an issue where the breadcrumbs wouldn't appear for third-level pages
+- Fixed an issue with the position of the breadcrumbs
+- Redesigned the analysis dashboard
+- Removed possibility to change the site's template
+- Site's color is now shown
+
 ### 7 Feb 2017
 - New sites now have only three default pages: homepage, map, terms & conditions
 - Redesigned the settings step of the site creation / edition

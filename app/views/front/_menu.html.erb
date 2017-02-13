@@ -62,32 +62,58 @@
         <% end %>
       </a>
     </div>
-    <ul>
-      <% @menu_root.children.each do |child_page| -%>
-          <% next unless (child_page.show_on_menu && child_page.visible?) %>
-          <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
-            <%= page_link child_page %>
-            <% if !child_page.children.nil? and !child_page.children.empty? %>
-                <ul>
-                  <li>
-                    <%= page_link child_page %>
-                  </li>
-                  <% child_page.children.each do |grandchild_page| -%>
-                      <% next unless (grandchild_page.show_on_menu && grandchild_page.visible?) %>
+    <div class="menu-container">
+      <div class="menu">
+        <ul>
+          <% @menu_root.children.each do |child_page| -%>
+              <% next unless (child_page.show_on_menu && child_page.visible?) %>
+              <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
+                <%= page_link child_page %>
+                <% if !child_page.children.nil? and !child_page.children.empty? %>
+                    <ul>
                       <li>
-                        <%= page_link grandchild_page %>
+                        <%= page_link child_page %>
                       </li>
-                  <% end -%>
-                </ul>
-            <% end -%>
-          </li>
-      <% end -%>
-    </ul>
-    <ul>
-      <li class="notranslate js-language-selector"></li>
-    </ul>
-  </div>
+                      <% child_page.children.each do |grandchild_page| -%>
+                          <% next unless (grandchild_page.show_on_menu && grandchild_page.visible?) %>
+                          <li>
+                            <%= page_link grandchild_page %>
+                          </li>
+                      <% end -%>
+                    </ul>
+                <% end -%>
+              </li>
+          <% end -%>
+        </ul>
+        <ul>
+          <li class="notranslate js-language-selector"></li>
+        </ul>
+      </div>
 
+      <% if @site_page.depth > 0 %>
+        <div class="sub-menu">
+          <div class="content">
+            <ul class="breadcrumbs">
+              <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
+                  <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
+              <% end %>
+            </ul>
+            <ul class="sections">
+              <% if @site_page.depth >= 2 %>
+                  <ul>
+                    <% (@site_page.depth == 2 ? @site_page.children : @site_page.parent.children).each do |child_page| -%>
+                        <% if child_page.visible? %>
+                          <li><%= page_link child_page %></li>
+                        <% end%>
+                    <% end %>
+                  </ul>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
   <% if @flag.size > 0 %>
     <div class="flag-border">
       <% @flag.each do |flag| %>
@@ -95,29 +121,5 @@
       <% end %>
     </div>
   <% end %>
-
-  <% if @site_page.depth > 0 %>
-    <div class="sub-menu">
-      <div class="wrapper">
-        <div class="content">
-          <ul class="breadcrumbs">
-            <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
-                <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
-            <% end %>
-          </ul>
-          <ul class="sections">
-            <% if @site_page.depth >= 2 %>
-                <ul>
-                  <% @site_page.children.each do |child_page| -%>
-                      <% if child_page.visible? %>
-                        <li><%= page_link child_page %></li>
-                      <% end%>
-                  <% end %>
-                </ul>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <%= console %>
 </header>

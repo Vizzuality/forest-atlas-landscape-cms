@@ -1,6 +1,9 @@
+// This file is used in development only
+$color-1:  #97bd3d;
+
 @import
 'leaflet',
-'icons',
+'../helpers',
 'settings-theme-lsa',
 'base-theme-lsa',
 '../layouts/shared/*',

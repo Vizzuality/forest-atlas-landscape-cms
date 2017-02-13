@@ -1,0 +1,47 @@
+.c-radio {
+  position: relative;
+
+  label {
+    display: inline-block;
+    position: relative;
+    padding-left: 22px;
+    cursor: pointer;
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 16px;
+      height: 16px;
+      transform: translateY(-50%);
+      border: 1px solid $color-13;
+      border-radius: 100%;
+      content: '';
+    }
+  }
+
+  input {
+    // For accessibility reasons (tabindex), the input cannot be just hidden
+    // using display: none;
+    position: absolute;
+    left: -100000px; // Can't change the top property otherwise the browser scrolls when the user clicks the label
+    opacity: 0;
+
+    &:focus {
+      + label {
+        &::before {
+          border-color: $color-1;
+        }
+      }
+    }
+
+    &:checked {
+      + label {
+        &::before {
+          border-color: $color-1;
+          background-color: $color-1;
+        }
+      }
+    }
+  }
+}
