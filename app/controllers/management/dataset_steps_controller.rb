@@ -109,7 +109,16 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def select_contexts
-    @user_contexts = current_user.contexts
+
+    user = current_user
+    @user_contexts = []
+    @site.contexts.each do |c|
+      if user.role == UserType::ADMIN || c.owners.include?(user) || c.managers.include?(user)
+        @user_contexts << c
+      end
+    end
+
+    @user_contexts = @site.contexts
     @dataset_context = @dataset.id ? dataset.id : []
   end
 
