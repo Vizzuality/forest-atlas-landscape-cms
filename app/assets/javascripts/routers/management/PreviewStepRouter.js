@@ -85,7 +85,8 @@
      * Init the description's "Read more" button
      */
     _initDescription: function () {
-      document.querySelector('.js-read-more').addEventListener('click', this._openDescriptionModal.bind(this));
+      var readModeBtn = document.querySelector('.js-read-more');
+      if (readModeBtn) readModeBtn.addEventListener('click', this._openDescriptionModal.bind(this));
     },
 
     /**
