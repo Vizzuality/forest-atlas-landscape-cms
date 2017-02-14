@@ -16,7 +16,7 @@ namespace :site do
 
       log.info 'Finished creating settings for all sites'
     rescue Exception => e
-      log.error "#{e.inspect}"
+      log.error "#{e.inspect} ---- #{e.backtrace}"
     end
 
     end_time = Time.now
