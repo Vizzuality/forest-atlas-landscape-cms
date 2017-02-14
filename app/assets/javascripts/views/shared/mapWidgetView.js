@@ -18,7 +18,11 @@
       fields: {},
       // Options to be passed at the map instantiation
       mapOptions: {
-      }
+      },
+      // Callback to execute when the switch button is pressed
+      // The switch button will only appear if switchCallback is a function
+      // The swith button let the user switch the map for a chart
+      switchCallback: null
     },
 
     initialize: function (settings) {
@@ -132,6 +136,45 @@
       this._triggerState();
     },
 
+    /**
+     * Render the switch button and attach an event listener to it
+     */
+    _renderSwitchButton: function () {
+      // We create the button
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.classList.add('c-button', 'switch-button');
+      button.textContent = 'Switch for chart';
+
+      // We attach the listener
+      button.addEventListener('click', this.options.switchCallback);
+
+      // We append the button to the DOM
+      this.el.appendChild(button);
+    },
+
+    /**
+     * Remove the changes the component implied to the container and all of
+     * its children
+     */
+    remove: function () {
+      // We delete the map instance
+      this.map.remove();
+
+      // We delete the widget's DOM element
+      this.el.innerHTML = '';
+
+      // We delete some classes
+      var classes = Array.prototype.slice.call(this.el.classList);
+      var classesToRemove = classes.filter(function (className) {
+        return /(map|leaflet)/.test(className);
+      });
+      this.el.classList.remove.apply(this.el.classList, classesToRemove);
+
+      // We delete additional attributes
+      this.el.removeAttribute('tabindex');
+    },
+
     render: function () {
       if (this.map) {
         this.map.setView(this.options.center, this.options.zoom);
@@ -149,6 +192,10 @@
 
         this._setListeners();
         this._renderData();
+
+        if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
+          this._renderSwitchButton();
+        }
       }
 
       return this.el;

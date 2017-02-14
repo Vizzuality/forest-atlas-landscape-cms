@@ -74,14 +74,27 @@
      * Set the listeners that don't depend on a DOM element
      */
     _setListeners: function () {
+      if (!this.widgetsStateHandler) {
+        this.widgetsStateHandler = Array(3).fill(null).map(function (value, index) {
+          return function (state) {
+            this._saveState('widget' + index, state);
+          }.bind(this);
+        }, this);
+      }
+
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-        // We wrap the listener in an IIFE to copy the value of i
-        // eslint-disable-next-line no-loop-func, no-shadow
-        (function (i) {
-          this.listenTo(this['widget' + i], 'state:change', function (state) {
-            this._saveState('widget' + i, state);
-          });
-        }.call(this, i));
+        this.listenTo(this['widget' + i], 'state:change', this.widgetsStateHandler[i]);
+      }
+    },
+
+    /**
+     * Remove the listeners that don't depend on a DOM element
+     */
+    _removeListeners: function () {
+      if (!this.widgetsStateHandler) return;
+
+      for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+        this.stopListening(this['widget' + i], 'state:change', this.widgetsStateHandler[i]);
       }
     },
 
@@ -222,7 +235,10 @@
               lng: 'longitude' || null
             },
             center: [widget.lat, widget.lng],
-            zoom: widget.zoom
+            zoom: widget.zoom,
+            switchCallback: function () {
+              this._switchWidget(index, 'chart');
+            }.bind(this)
           });
         } else {
           this['widget' + index] = new App.View.ChartWidgetView({
@@ -230,7 +246,10 @@
             data: dataset,
             chart: widget.chart,
             columnX: widget.x,
-            columnY: widget.y
+            columnY: widget.y,
+            switchCallback: function () {
+              this._switchWidget(index, 'map');
+            }.bind(this)
           });
         }
       }, this);
@@ -243,6 +262,51 @@
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         this['widget' + i].render();
       }
+    },
+
+    /**
+     * Switch the widget designated by its index for the widget of the specified type
+     * @param {number} index
+     * @param {string} type ('map' or 'chart')
+     */
+    _switchWidget: function (index, type) {
+      var instance = this['widget' + index];
+      var widgetContainer = instance.el;
+
+      // We remove the DOM changes implied by the widget's intance
+      instance.remove();
+
+      // We instanciate the new widget
+      var dataset = this._getDataset();
+
+      // We remove all the listeners
+      this._removeListeners();
+
+      if (type === 'chart') {
+        this['widget' + index] = new App.View.ChartWidgetView({
+          el: widgetContainer,
+          data: dataset,
+          switchCallback: function () { this._switchWidget(index, 'map'); }.bind(this)
+        });
+      } else {
+        this['widget' + index] = new App.View.MapWidgetView({
+          el: widgetContainer,
+          data: dataset,
+          // TODO
+          // Once gon is updated, we should retrieve the real names of the fields used to position
+          // the dots
+          fields: {
+            lat: 'latitude' || null,
+            lng: 'longitude' || null
+          },
+          switchCallback: function () { this._switchWidget(index, 'chart'); }.bind(this)
+        });
+      }
+
+      // We re-set the listeners
+      this._setListeners();
+
+      this['widget' + index].render();
     }
 
   });

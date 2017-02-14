@@ -19,6 +19,10 @@
       columnY: null,
       // Enable the chart selector
       enableChartSelector: true,
+      // Callback to execute when the switch button is pressed
+      // The switch button will only appear if switchCallback is a function
+      // The swith button let the user switch the chart for a map
+      switchCallback: null,
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
@@ -216,9 +220,37 @@
       });
     },
 
+    /**
+     * Render the switch button and attach an event listener to it
+     */
+    _renderSwitchButton: function () {
+      // We create the button
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.classList.add('c-button', 'switch-button');
+      button.textContent = 'Switch for map';
+
+      // We attach the listener
+      button.addEventListener('click', this.options.switchCallback);
+
+      // We append the button to the DOM
+      this.el.querySelector('.js-switch-button').appendChild(button);
+    },
+
+    /**
+     * Remove the changes the component implied to the container and all of
+     * its children
+     */
+    remove: function () {
+      this.el.innerHTML = '';
+    },
+
     render: function () {
       this._renderChart();
       if (this.options.enableChartSelector) this._renderChartSelector();
+      if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
+        this._renderSwitchButton();
+      }
       return this.el;
     }
 

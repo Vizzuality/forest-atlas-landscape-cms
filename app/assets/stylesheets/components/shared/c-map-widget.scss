@@ -37,4 +37,11 @@
       }
     }
   }
+
+  .switch-button {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    z-index: 400; // This value depends on the map's z-index
+  }
 }
