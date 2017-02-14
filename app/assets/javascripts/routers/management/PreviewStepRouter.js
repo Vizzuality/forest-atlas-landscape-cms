@@ -27,23 +27,29 @@
 
     state: {
       name: 'Untitled',
-      map: {
-        lat: null,
-        lng: null,
-        zoom: null
-      },
-      charts: [
-        {
-          type: null,
-          x: null,
-          y: null
-        },
-        {
-          type: null,
-          x: null,
-          y: null
-        }
-      ]
+      config: {
+        widgets: [
+          // Structure of a map widget
+          // {
+          //   type: 'map',
+          //   lat: null,
+          //   lng: null,
+          //   zoom: null
+          // },
+          // Structure of a chart widget
+          // {
+          //   type: 'chart',
+          //   chart: null,
+          //   x: null,
+          //   y: null
+          // }
+        ]
+      }
+    },
+
+    defaults: {
+      // Number of widgets of the dashboard
+      widgetsCount: 3
     },
 
     routes: {
@@ -54,31 +60,29 @@
       this.slug = params[0] || null;
     },
 
-    index: function () {
+    index: function (settings) {
+      this.options = Object.assign({}, this.defaults, settings);
+
       this._initDescription();
-      this._initCharts();
-      this._initMap();
+      this._initWidgets();
       this._initTable();
       this._setListeners();
-
-      this.chart1.render();
-      this.chart2.render();
-      this.map.render();
+      this._renderWidgets();
     },
 
     /**
      * Set the listeners that don't depend on a DOM element
      */
     _setListeners: function () {
-      this.listenTo(this.map, 'state:change', function (state) {
-        this._saveState('map', state);
-      });
-      this.listenTo(this.chart1, 'state:change', function (state) {
-        this._saveState('chart1', state);
-      });
-      this.listenTo(this.chart2, 'state:change', function (state) {
-        this._saveState('chart2', state);
-      });
+      for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+        // We wrap the listener in an IIFE to copy the value of i
+        // eslint-disable-next-line no-loop-func, no-shadow
+        (function (i) {
+          this.listenTo(this['widget' + i], 'state:change', function (state) {
+            this._saveState('widget' + i, state);
+          });
+        }.call(this, i));
+      }
     },
 
     /**
@@ -135,21 +139,8 @@
      * @param {object} state - state to save
      */
     _saveState: function (component, state) {
-      switch (component) {
-        case 'map':
-          this.state.map = Object.assign({}, this.state.map, state);
-          break;
-
-        case 'chart1':
-          this.state.charts[0] = Object.assign({}, this.state.charts[0], state);
-          break;
-
-        case 'chart2':
-          this.state.charts[1] = Object.assign({}, this.state.charts[1], state);
-          break;
-
-        default:
-      }
+      var index = +component.slice(-1);
+      this.state.config.widgets[index] = Object.assign({}, this.state.config.widgets[index], state);
 
       this._updateHiddenFields();
     },
@@ -159,14 +150,17 @@
      * the configuration
      */
     _updateHiddenFields: function () {
+      // TODO: update the method once the backend has been updated
       if (!this.chartsInput) {
         this.chartsInput = document.querySelector('.js-charts-input');
         this.mapInput = document.querySelector('.js-map-input');
       }
 
-      this.chartsInput.value = JSON.stringify(this.state.charts);
+      this.chartsInput.value = JSON.stringify(this.state.config.widgets.filter(function (widget) {
+        return widget.type === 'chart';
+      }));
 
-      var map = Object.assign({}, this.state.map);
+      var map = Object.assign({}, _.findWhere(this.state.config.widgets, { type: 'map' }));
       map.lon = map.lng;
       delete map.lng;
       this.mapInput.value = JSON.stringify(map);
@@ -181,67 +175,74 @@
     },
 
     /**
-     * Retrieve the dashboard's charts
-     * @returns {object[]} charts
+     * Retrieve the list of widgets
+     * @returns {object[]} widgets
      */
-    _getDashboardCharts: function () {
-      return (window.gon && gon.analysisGraphs) || [{}, {}];
+    _getDashboardWidgets: function () {
+      // TODO: temporary code to support the old back end code
+      /**
+       * @type {object[]}
+       */
+      var widgets = ((window.gon && gon.analysisGraphs) || []).map(function (widget) {
+        return {
+          type: 'chart',
+          chart: widget.chart,
+          x: widget.x,
+          y: widget.y || null
+        };
+      });
+
+      widgets.unshift({
+        type: 'map',
+        lat: (window.gon && gon.analysisMap.lat) || null,
+        lng: (window.gon && gon.analysisMap.lon) || null,
+        zoom: (window.gon && gon.analysisMap.zoom) || null
+      });
+
+      return widgets;
     },
 
     /**
-     * Init the charts
+     * Init the widgets
      */
-    _initCharts: function () {
+    _initWidgets: function () {
       var dataset = this._getDataset();
-      var charts = this._getDashboardCharts();
+      var widgets = this._getDashboardWidgets();
 
-      this.chart1 = new App.View.ChartWidgetView({
-        el: document.querySelector('.js-chart-1'),
-        data: dataset,
-        chart: charts[0].type || null,
-        columnX: charts[0].x || null,
-        columnY: charts[0].y || null
-      });
-
-      this.chart2 = new App.View.ChartWidgetView({
-        el: document.querySelector('.js-chart-2'),
-        data: dataset,
-        chart: charts[1].type || null,
-        columnX: charts[1].x || null,
-        columnY: charts[1].y || null
-      });
-    },
-
-    /**
-     * Init the map
-     */
-    _initMap: function () {
-      var dataset = this._getDataset();
-      var mapConfig = window.gon && gon.analysisMap;
-      var type = (mapConfig && mapConfig.graphType) || null;
-      var center = [
-        (mapConfig && mapConfig.lat) || null,
-        (mapConfig && mapConfig.lon) || null
-      ];
-      var zoom = (mapConfig && mapConfig.zoom) || null;
-
-      var params = {
-        el: document.querySelector('.js-map'),
-        data: dataset,
-        // TODO
-        // Once gon is updated, we should retrieve the real names of the fields used to position
-        // the dots
-        fields: {
-          lat: (window.gon && gon.legend.lat) || null,
-          lng: (window.gon && gon.legend.long) || null
+      widgets.forEach(function (widget, index) {
+        if (widget.type === 'map') {
+          this['widget' + index] = new App.View.MapWidgetView({
+            el: document.querySelector('.js-widget-' + (index + 1)),
+            data: dataset,
+            // TODO
+            // Once gon is updated, we should retrieve the real names of the fields used to position
+            // the dots
+            fields: {
+              lat: 'latitude' || null,
+              lng: 'longitude' || null
+            },
+            center: [widget.lat, widget.lng],
+            zoom: widget.zoom
+          });
+        } else {
+          this['widget' + index] = new App.View.ChartWidgetView({
+            el: document.querySelector('.js-widget-' + (index + 1)),
+            data: dataset,
+            chart: widget.chart,
+            columnX: widget.x,
+            columnY: widget.y
+          });
         }
-      };
+      }, this);
+    },
 
-      if (type) params.type = type;
-      if (center[0] && center[1]) params.center = center;
-      if (zoom) params.zoom = zoom;
-
-      this.map = new App.View.MapWidgetView(params);
+    /**
+     * Render the widgets
+     */
+    _renderWidgets: function () {
+      for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+        this['widget' + i].render();
+      }
     }
 
   });
