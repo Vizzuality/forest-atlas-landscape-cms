@@ -43,7 +43,7 @@ class Widget < ApplicationRecord
   def set_filters(value)
     valid = []
     value.each do |filter|
-      if (filter['name'] && filter['to'] && filter['from'])
+      if (!filter['name'].blank? && !filter['to'].blank? && !filter['from'].blank?)
         valid << filter
       elsif (filter['name'] && filter['values'])
         filter['values'] = JSON.parse(filter['values'])

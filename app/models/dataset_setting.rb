@@ -49,10 +49,15 @@ class DatasetSetting < ApplicationRecord
   def set_filters(value)
     valid = []
     value.each do |filter|
-      if (filter['name'] && filter['to'] && filter['from'])
+      if (!filter['name'].blank? && !filter['to'].blank? && !filter['from'].blank?)
         valid << filter
       elsif (filter['name'] && filter['values'])
-        filter['values'] = JSON.parse(filter['values'])
+        # Hack to accept both an array of values or a JSON
+        filter['values'] = if filter['values'].is_a? String
+                             JSON.parse(filter['values'])
+                           else
+                             filter['values']
+                           end
         valid << filter
       end
     end
