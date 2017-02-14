@@ -211,11 +211,15 @@ class Site < ApplicationRecord
       template = 'front/template-lsa.css'
     end
 
-    env = if Rails.application.assets.is_a?(Sprockets::Index)
-            Rails.application.assets.instance_variable_get('@environment')
-          else
-            Rails.application.assets
-          end
+    env = Rails.application.assets
+
+
+#    env = if Rails.application.config.assets.is_a?(Sprockets::Index)
+#            Rails.application.config.assets.instance_variable_get('@environment')
+#          else
+#            Rails.application.config.assets
+#          end
+
 
     body = ActionView::Base.new(
       env.paths).render({
