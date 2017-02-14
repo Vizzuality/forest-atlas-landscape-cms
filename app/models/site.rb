@@ -169,7 +169,7 @@ class Site < ApplicationRecord
       end
       Rails.logger.debug "Finished saving the assets for site #{self.id}"
     rescue Exception => e
-        Rails.logger.error("Error compiling the css for site #{site.id}: #{e.inspect}")
+        Rails.logger.error("Error compiling the css for site #{self.id}: #{e.inspect} -- #{e.backtrace}")
     end
   end
 
