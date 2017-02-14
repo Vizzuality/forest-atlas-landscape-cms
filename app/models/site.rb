@@ -93,13 +93,31 @@ class Site < ApplicationRecord
   end
 
   # Gets the datasets available for a site
-  def get_datasets
+  def get_datasets_ids
     datasets = []
     self.contexts.each{|c| c.context_datasets.each{|d| datasets << d.dataset_id}}
     datasets.uniq!
+    datasets
+  end
+
+  # Gets the datasets for this sites' contexts
+  def get_datasets
+    ids = get_datasets_ids
+    meta = DatasetService.get_metadata_list(ids)
+    datasets = []
+    begin
+      meta['data'].each do |ds|
+        datasets << Dataset.new(ds)
+      end
+      return datasets
+    rescue
+      return []
+    end
   end
 
   # returns an array of contexts, each with an array of their datasets
+  # TODO: This can now be refactored to get only the datasets of the context using ...
+  # TODO: ... DatasetService.get_metadata_list(id_list)
   def get_context_datasets
     all_datasets = DatasetService.get_datasets
     context_datasets_ids = {}
