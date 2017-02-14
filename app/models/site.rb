@@ -210,21 +210,22 @@ class Site < ApplicationRecord
     else
       template = 'front/template-lsa.css'
     end
-    body = ActionView::Base.new(
-      Rails.application.assets.paths).render({
-                                              partial: template,
-                                              locals: { variables: variables },
-                                              formats: :scss})
-
-    tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
-    FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
-    File.open(File.join(tmp_themes_path, "#{id}.scss"), 'w') { |f| f.write(body) }
 
     env = if Rails.application.assets.is_a?(Sprockets::Index)
             Rails.application.assets.instance_variable_get('@environment')
           else
             Rails.application.assets
           end
+
+    body = ActionView::Base.new(
+      env.paths).render({
+                          partial: template,
+                          locals: { variables: variables },
+                          formats: :scss})
+
+    tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
+    FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
+    File.open(File.join(tmp_themes_path, "#{id}.scss"), 'w') { |f| f.write(body) }
 
     env.find_asset(id)
   end
