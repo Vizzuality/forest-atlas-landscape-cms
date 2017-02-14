@@ -211,10 +211,10 @@ class Site < ApplicationRecord
       template = 'front/template-lsa.css'
     end
     body = ActionView::Base.new(
-      ForestAtlasLandscapeCms::Application.assets.paths).render({
-                                                                  partial: template,
-                                                                  locals: { variables: variables },
-                                                                  formats: :scss})
+      Rails.application.assets.paths).render({
+                                              partial: template,
+                                              locals: { variables: variables },
+                                              formats: :scss})
 
     tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
     FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
