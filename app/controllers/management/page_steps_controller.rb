@@ -9,6 +9,8 @@ class Management::PageStepsController < ManagementController
   prepend_before_action :set_steps
   prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
   prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
+  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
+
 
   before_action :redirect_invalid_step
 
@@ -26,28 +28,30 @@ class Management::PageStepsController < ManagementController
 
   # This action cleans the session
   def new
-    session[:dataset_setting] = {}
-    session[:invalid_steps] = %w[type title]
+    @page_id = :new
+    reset_session_key(:dataset_setting, @page_id, {})
+    reset_session_key(:invalid_steps, @page_id, %w[type title])
+    reset_session_key(:page, @page_id, {})
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
         position = parent.children.length
-        session[:page] = {parent_id: params[:parent], position: position}
+        session[:page][@page_id] = {parent_id: params[:parent], position: position}
         redirect_to management_site_page_step_path(id: 'title')
       else
         redirect_to management_site_page_step_path(id: 'position')
       end
     else
-      session[:page] = {}
       redirect_to management_site_page_step_path(id: 'position')
     end
   end
 
   # This action cleans the session
   def edit
-    session[:page] = {}
-    session[:dataset_setting] = {}
-    session[:invalid_steps] = 'type'
+    @page_id = @page.id
+    reset_session_key(:dataset_setting, @page_id, {})
+    reset_session_key(:invalid_steps, @page_id, %w[type])
+    reset_session_key(:page, @page_id, {})
     redirect_to wizard_path(steps[0])
   end
 
@@ -132,7 +136,8 @@ class Management::PageStepsController < ManagementController
       redirect_to wizard_path(wizard_steps[0])
       return
     end
-    session[:invalid_steps] << 'type' if @page.content_type
+    session[:invalid_steps][@page_id] ||= []
+    session[:invalid_steps][@page_id] << 'type' if @page.content_type
 
     @page.form_step = step
     case step
@@ -261,15 +266,21 @@ class Management::PageStepsController < ManagementController
     # Verify if the manager is editing a page or creating a new one
     @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
+    @page_id = if @page && @page.persisted?
+      @page.id
+    else
+      :new
+    end
+
     # Update the page with the attributes saved on the session
-    @page.assign_attributes session[:page] if session[:page]
+    @page.assign_attributes session[:page][@page_id] if session[:page][@page_id] 
     @page.assign_attributes page_params.to_h.except(:dataset_setting) if params[:site_page] && page_params.to_h.except(:dataset_setting)
 
   end
 
   # Saves the current page state in session
   def set_current_page_state
-    session[:page] = @page ? @page.attributes : nil
+    session[:page][@page_id] = @page.attributes
   end
 
   # Builds the current dataset setting based on the database, session and params
@@ -286,14 +297,14 @@ class Management::PageStepsController < ManagementController
       @dataset_setting = DatasetSetting.new
       @page.dataset_setting = @dataset_setting
     end
-    @dataset_setting.assign_attributes session[:dataset_setting] if session[:dataset_setting]
+    @dataset_setting.assign_attributes session[:dataset_setting][@page_id] if session[:dataset_setting][@page_id]
 
     if ds_id = ds_params[:dataset_id]
 
       # If the user changed the id of the dataset, the entity is reset
       if @dataset_setting.dataset_id && @dataset_setting.dataset_id != ds_id
-        session[:dataset_setting] = nil
-        session[:invalid_steps] = %w[type columns preview]
+        delete_session_key(:dataset_setting, @page_id)
+        session[:invalid_steps][@page_id] = %w[type columns preview]
         @dataset_setting.filters = @dataset_setting.columns_changeable = @dataset_setting.columns_visible = nil
       end
 
@@ -330,7 +341,7 @@ class Management::PageStepsController < ManagementController
 
   # Saves the current data settings state in the session
   def set_current_dataset_setting_state
-    session[:dataset_setting] = @dataset_setting ? @dataset_setting.attributes : nil
+    session[:dataset_setting][@page_id] = @dataset_setting ? @dataset_setting.attributes : nil
   end
 
   # Sets the current steps
@@ -348,7 +359,7 @@ class Management::PageStepsController < ManagementController
       self.steps_names = steps[:names]
     end
 
-    invalid_steps << session[:invalid_steps] if session[:invalid_steps]
+    invalid_steps << session[:invalid_steps][@page_id] if session[:invalid_steps][@page_id]
     invalid_steps.flatten!
     invalid_steps.uniq!
     set_invalid_steps invalid_steps
@@ -388,6 +399,7 @@ class Management::PageStepsController < ManagementController
     if save_button?
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
+        delete_session_key(:page, @page_id)
         redirect_to wizard_path(save_step_name), notice: 'Page successfully ' + notice_text
       else
         render_wizard
@@ -398,7 +410,8 @@ class Management::PageStepsController < ManagementController
       @page.enabled = !@page.enabled
       notice_text = @page.enabled ? 'published' : 'unpublished'
       if @page.save
-        session[:page][:enabled] = @page.enabled
+        delete_session_key(:page, @page_id) # delete 'new' session
+        reset_session_key(:page, @page.id, {enabled: @page.enabled}) # start 'edit' session
         redirect_to wizard_path(publish_step_name), notice: 'Page successfully ' + notice_text
       else
         render_wizard
@@ -407,7 +420,7 @@ class Management::PageStepsController < ManagementController
     else # Continue button
 
       if @page.valid?
-        session[:invalid_steps].delete(next_step_name)
+        session[:invalid_steps][@page_id].delete(next_step_name) if session[:invalid_steps][@page_id]
         redirect_to wizard_path(next_step_name)
       else
         render_wizard
@@ -453,5 +466,11 @@ class Management::PageStepsController < ManagementController
     dataset_array.uniq!
     widgets = Widget.where(dataset_id: dataset_array)
     widgets.map{|w| {id: w.id, name: w.name, visualization: w.visualization, description: w.description}}
+  end
+
+  def ensure_session_keys_exist
+    session[:dataset_setting] ||= {}
+    session[:invalid_steps] ||= {}
+    session[:page] ||= {}
   end
 end
