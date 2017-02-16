@@ -5,7 +5,8 @@ class Management::DatasetStepsController < ManagementController
   before_action :ensure_management_user, only: :destroy
   before_action :set_site, only: [:new, :edit, :show, :update]
   before_action :steps_names
-  before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
+  prepend_before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
+  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   steps *Dataset.form_steps[:pages]
   attr_accessor :steps_names
@@ -14,15 +15,15 @@ class Management::DatasetStepsController < ManagementController
 
   # This action clears the session
   def new
-    session[:dataset_creation] = {}
-    session[:context_datasets] = {}
+    reset_session_key(:dataset_creation, @dataset_id, {})
+    reset_session_key(:context_datasets, @dataset_id, {})
     redirect_to management_site_dataset_step_path(site_slug: params[:site_slug], id: 'title')
   end
 
   # This action clears the session
   def edit
-    session[:dataset_creation] = {}
-    session[:context_datasets] = {}
+    reset_session_key(:dataset_creation, @dataset_id, {})
+    reset_session_key(:context_datasets, @dataset_id, {})
     redirect_to management_site_dataset_dataset_step_path(site_slug: params[:site_slug],\
       dataset_id: params[:dataset_id], id: 'title')
   end
@@ -79,10 +80,11 @@ class Management::DatasetStepsController < ManagementController
           ds_id = @dataset.upload session[:user_token]
           if ds_id != nil
             save_context_datasets ds_id
+            delete_session_key(:dataset_creation, @dataset_id)
             redirect_to_finish_wizard
           else
             @dataset.errors['id'] <<
-              'There was an error creating the Database in the API. Please try again later.'
+              'There was an error creating the dataset in the API. Please try again later.'
             select_contexts
             render_wizard
           end
@@ -124,13 +126,15 @@ class Management::DatasetStepsController < ManagementController
 
   def build_current_dataset_state
     ds_params = params[:dataset] ? dataset_params : {}
-
-    # TODO: This will be for editing the datasets.
-    if ds_params[:id]
+    @dataset = ds_params[:dataset] ? Dataset.find(ds_params[:dataset]) : Dataset.new
+    @dataset_id = if @dataset && @dataset.persisted?
+      @dataset.id
     else
-      @dataset = Dataset.new
-      @dataset.set_attributes session[:dataset_creation]
+      :new
     end
+    # Update the dataset with the attributes saved on the session
+    @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
+
     @dataset.application = ['forest-atlas'] unless @dataset.application
     @dataset.tags = ds_params.delete(:tags)
     @dataset.assign_attributes ds_params.except(:context_ids)
@@ -138,7 +142,7 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def set_current_dataset_state
-    session[:dataset_creation] = @dataset.attributes
+    session[:dataset_creation][@dataset_id] = @dataset.attributes
   end
 
   # Creates an array of context_datasets
@@ -160,5 +164,10 @@ class Management::DatasetStepsController < ManagementController
   # Defines the path the wizard will go when finished
   def finish_wizard_path
     management_site_datasets_path params[:site_slug]
+  end
+
+  def ensure_session_keys_exist
+    session[:dataset_creation] ||= {}
+    session[:context_datasets] ||= {} # TODO: is this used?
   end
 end

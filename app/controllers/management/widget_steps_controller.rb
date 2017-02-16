@@ -2,6 +2,7 @@ class Management::WidgetStepsController < ManagementController
   include Wicked::Wizard
 
   before_action :build_widget
+  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   steps *Widget.form_steps[:pages]
 
@@ -11,12 +12,12 @@ class Management::WidgetStepsController < ManagementController
   SAVE = 'SAVE CHANGES'.freeze
 
   def new
-    session[:widget] = {}
+    reset_session_key(:widget, @widget_id, {})
     redirect_to management_site_widget_step_path(id: 'title')
   end
 
   def edit
-    session[:widget] = {}
+    reset_session_key(:widget, @widget_id, {})
     redirect_to wizard_path('title')
   end
 
@@ -53,6 +54,7 @@ class Management::WidgetStepsController < ManagementController
 
         if save_button?
           if @widget.save
+            delete_session_key(:widget, @widget_id)
             redirect_to management_site_widgets_path
           else
             render_wizard
@@ -69,6 +71,7 @@ class Management::WidgetStepsController < ManagementController
 
         if save_button?
           if @widget.save
+            delete_session_key(:widget, @widget_id)
             redirect_to management_site_widgets_path
           else
             get_datasets
@@ -87,6 +90,7 @@ class Management::WidgetStepsController < ManagementController
 
         if save_button?
           if @widget.save
+            delete_session_key(:widget, @widget_id)
             redirect_to management_site_widgets_path
           else
             get_fields
@@ -103,6 +107,7 @@ class Management::WidgetStepsController < ManagementController
 
       when 'visualization'
         if @widget.save
+          delete_session_key(:widget, @widget_id)
           respond_to do |format|
             format.html { redirect_to management_site_widgets_path, notice: 'The widget has been successfully created.' }
           end
@@ -148,9 +153,14 @@ class Management::WidgetStepsController < ManagementController
   def build_widget
     @site = Site.find_by(slug: params[:site_slug]) # Used because the widgets are still inside the site
     @widget = params[:widget_id] ? Widget.find(params[:widget_id]) : Widget.new
+    @widget_id = if @widget && @widget.persisted?
+      @widget.id
+    else
+      :new
+    end
 
     # Update the widget with the info saved on the session and sent by params
-    @widget.assign_attributes session[:widget] if session[:widget]
+    @widget.assign_attributes session[:widget][@widget_id] if session[:widget][@widget_id]
     if params[:widget] && widget_params
       @widget.assign_attributes widget_params.to_h
       if widget_params[:dataset_id]
@@ -176,7 +186,7 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def set_widget_state
-    session[:widget] = @widget ? @widget.attributes : nil
+    session[:widget][@widget_id] = @widget ? @widget.attributes : nil
   end
 
   def set_gon_filters
@@ -193,5 +203,9 @@ class Management::WidgetStepsController < ManagementController
   def save_button?
     return false unless params[:button]
     return params[:button].upcase == SAVE.upcase
+  end
+
+  def ensure_session_keys_exist
+    session[:widget] ||= {}
   end
 end

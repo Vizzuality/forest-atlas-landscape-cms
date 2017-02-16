@@ -2,10 +2,10 @@ class ContextStepsController < ManagementController
   include Wicked::Wizard
 
   before_action :steps_names
-  before_action :reset_context, only: [:new, :edit]
   before_action :build_context
   before_action :check_user_permissions, only: [:update, :show]
   before_action :build_steps_data, only: [:update, :show]
+  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   steps *Context.form_steps[:pages]
   attr_accessor :steps_names
@@ -15,11 +15,15 @@ class ContextStepsController < ManagementController
 
   # Reset the session
   def new
+    @context_id = :new
+    reset_session_key(:context, @context_id, {})
     redirect_to context_step_path(id: wizard_steps[0])
   end
 
   # Reset the session
   def edit
+    @context_id = @context.id
+    reset_session_key(:context, @context_id, {})
     redirect_to context_context_step_path(id: wizard_steps[0], context_id: params[:context_id])
   end
 
@@ -36,23 +40,25 @@ class ContextStepsController < ManagementController
     params.require(:context).permit(:id, :name, dataset_ids: [], writer_ids:[], owner_ids:[], site_ids: [] )
   end
 
-  def reset_context
-    session[:context] = {}
-  end
-
   def build_context
     @context = params[:context_id] ? Context.find(params[:context_id]) : Context.new
-    session[:context].merge!(context_params.to_h.except('dataset_ids')) if params[:context] && context_params.to_h.except('dataset_ids')
+    @context_id = if @context && @context.persisted?
+      @context.id
+    else
+      :new
+    end
+    session[:context][@context_id] ||= {}
+    session[:context][@context_id].merge!(context_params.to_h.except('dataset_ids')) if params[:context] && context_params.to_h.except('dataset_ids')
 
     if params[:context] && context_params['dataset_ids']
-      session[:context]['context_datasets'] = []
+      session[:context][@context_id]['context_datasets'] = []
       context_params['dataset_ids'].each do |dataset_id|
         # TODO: This has to be done in another way
-        session[:context]['context_datasets'] << ContextDataset.new(dataset_id: dataset_id)
+        session[:context][@context_id]['context_datasets'] << ContextDataset.new(dataset_id: dataset_id)
       end
     end
 
-    @context.assign_attributes session[:context] if session[:context]
+    @context.assign_attributes session[:context][@context_id] if session[:context][@context_id]
     @context.form_step = step
 
 
@@ -96,7 +102,7 @@ class ContextStepsController < ManagementController
   end
 
   def save_context
-    session[:context] = @context
+    session[:context][@context_id] = @context
   end
 
   def steps_names
@@ -129,7 +135,7 @@ class ContextStepsController < ManagementController
     if save_button?
       notice_text = @context.id ? 'saved' : 'created'
       if @context.save
-        reset_context
+        delete_session_key(:context, @context_id)
         redirect_to wizard_path(save_step_name), notice: 'Context successfully ' + notice_text
       else
         render_wizard
@@ -177,5 +183,9 @@ class ContextStepsController < ManagementController
     permitted_owners if step == 'owners'
     permitted_writers if step == 'writers'
     get_datasets if step == 'datasets'
+  end
+
+  def ensure_session_keys_exist
+    session[:context] ||= {}
   end
 end
