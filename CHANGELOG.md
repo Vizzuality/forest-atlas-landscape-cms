@@ -1,7 +1,5 @@
 ### 21 Feb 2017
 - Fixed an issue that prevented the map's settings to have color hightlighting
-
-### 16 Feb 2017
 - Fixed session issue when editing multiple pages
 
 ### 14 Feb 2017
