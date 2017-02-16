@@ -76,6 +76,10 @@
     .CodeMirror {
       height: calc(100vh - 502px);
     }
+
+    .c-select {
+      display: inline-block;
+    }
   }
 
   &.-analysis-dashboard,
