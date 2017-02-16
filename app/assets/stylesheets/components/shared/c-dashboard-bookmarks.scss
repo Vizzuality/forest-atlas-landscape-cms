@@ -136,7 +136,10 @@
 
         @media #{$mq-tablet} {
           left: -40px;
-          width: calc(100% + 80px);
+          // The 1px difference below is due to the fact that for some reason
+          // Safari (at least) requires it to prevent the content of the button
+          // to be placed on two lines
+          width: calc(100% + 81px);
         }
 
         > button {
