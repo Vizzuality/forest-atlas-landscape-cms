@@ -231,14 +231,15 @@
 
     /**
      * Return the step precision between two values
-     * The default step is 1, but if the min and max are close, the step is smaller
+     * NOTE: the precision is set so we get 100 values between
+     * the minimum and the maximum
      * @param {number} min
      * @param {number} max
      * @returns {number} step
      */
     _getStepPrecision: function (min, max) {
-      // eslint-disable-next-line no-nested-ternary
-      return (max - min <= 2) ? 0.1 : ((max - min <= 10) ? 0.5 : 1);
+      var difference = max - min;
+      return Math.round(difference / 100);
     },
 
     /**
