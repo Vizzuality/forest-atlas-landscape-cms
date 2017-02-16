@@ -1,3 +1,6 @@
+### 21 Feb 2017
+- Fixed an issue that prevented the map's settings to have color hightlighting
+
 ### 14 Feb 2017
 - In a site's dataset listing, only the datasets belonging to a site's context are show, even for admins.
 - Fixed bug that was duplicating the routes
