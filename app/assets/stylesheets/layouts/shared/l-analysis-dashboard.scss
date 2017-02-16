@@ -155,6 +155,10 @@ $secondary-container-initial-width: 400px;
   .table {
     max-width: $media-max-width;
     margin: 0 auto;
+
+    > .no-data {
+      text-align: center;
+    }
   }
 
   .map {

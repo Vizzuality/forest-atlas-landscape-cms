@@ -210,11 +210,18 @@
      * Init the table
      */
     _initTable: function () {
-      this.table = new App.View.TableView({
-        el: document.querySelector('.js-table'),
-        collection: this._getTableCollection(),
-        tableName: 'Dashboard data'
-      });
+      var tableCollection = this._getTableCollection();
+      var tableContainer = document.querySelector('.js-table');
+
+      if (tableCollection.length === 0) {
+        tableContainer.innerHTML = '<p class="no-data">The dataset is empty.</p>';
+      } else {
+        this.table = new App.View.TableView({
+          el: tableContainer,
+          collection: this._getTableCollection(),
+          tableName: 'Dashboard data'
+        });
+      }
     },
 
     /**
@@ -236,7 +243,7 @@
               lat: 'latitude' || null,
               lng: 'longitude' || null
             },
-            center: [widget.lat, widget.lng],
+            center: [widget.lat || 0, widget.lng || 0],
             zoom: widget.zoom
           });
         } else {
@@ -442,8 +449,8 @@
     _checkStateValidity: function (state) {
       var dataset = this._getDataset({ unfiltered: true });
 
-      // We check we have all the widgets
-      if (!state.config || !state.config.widgets || state.config.widgets.length < this.options.widgetsCount) {
+      // We check we have all the widgets and the dataset isn't empty
+      if (!state.config || !state.config.widgets || state.config.widgets.length < this.options.widgetsCount || !dataset.length) {
         return false;
       }
 

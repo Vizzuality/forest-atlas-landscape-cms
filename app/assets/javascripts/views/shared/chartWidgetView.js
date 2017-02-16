@@ -31,7 +31,7 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-      this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
+      if (this.options.data.length) this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
       this._setListeners();
 
       // We pre-render the component with its template
@@ -119,6 +119,7 @@
      * @returns {function}
      */
     _getChartTemplate: function () {
+      if (!this.options.data.length) return HandlebarsTemplates['front/charts/empty'];
       return HandlebarsTemplates['front/charts/' + this.options.chart];
     },
 
@@ -127,7 +128,7 @@
      * @returns {object}
      */
     _generateVegaSpec: function () {
-      if (!this.options.chart) {
+      if (this.options.data.length && !this.options.chart) {
         var availableCharts = this.widgetToolbox.getAvailableCharts();
         if (availableCharts.length) {
           this.options.chart = availableCharts[0];
@@ -141,7 +142,7 @@
       var chartDimensions = this._computeChartDimensions();
 
       // We check if we need to automatically select the columns
-      if (!this.options.columnX && !this.options.columnY) {
+      if (this.options.data.length && !this.options.columnX && !this.options.columnY) {
         var columns = this.widgetToolbox.getChartRandomColumns(this.options.chart);
         this.options.columnX = columns.x;
         this.options.columnY = columns.y;
@@ -160,12 +161,28 @@
      * Create the chart and append it to the DOM
      */
     _renderChart: function () {
-      // If no data, we render an empty chart
+      // The widget toolbox could be non-assigned if the view has been instantiated
+      // with no data
+      if (this.options.data.length && !this.widgetToolbox) {
+        this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
+      }
 
       vg.parse
         .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
-          this.chart = chart({ el: this.chartContainer }).update();
+          if (error) {
+            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError)
+            return;
+          }
+          this.chart = chart({
+            el: this.chartContainer,
+            // By using the SVG renderer, we give the client the posibility to
+            // translate the text contained in the charts
+            renderer: 'svg'
+          }).update();
         }.bind(this));
+
+      // We don't want to trigger anything if the dataset is empty
+      if (!this.options.data.length) return;
 
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration
@@ -247,10 +264,15 @@
 
     render: function () {
       this._renderChart();
-      if (this.options.enableChartSelector) this._renderChartSelector();
-      if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
-        this._renderSwitchButton();
+
+      // We don't render the chart selector and the switch button if the dataset is empty
+      if (this.options.data.length) {
+        if (this.options.enableChartSelector) this._renderChartSelector();
+        if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
+          this._renderSwitchButton();
+        }
       }
+
       return this.el;
     }
 
