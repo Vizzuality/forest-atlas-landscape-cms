@@ -100,6 +100,18 @@ class DatasetSetting < ApplicationRecord
     end
   end
 
+  # Returns the legend with the format needed for the front end (key long should be lng)
+  def parsed_legend
+    begin
+      parsed_legend = self.legend.dup
+      lng = parsed_legend.delete('long')
+      parsed_legend['lng'] = lng
+      parsed_legend
+    rescue
+      return nil
+    end
+  end
+
   # Returns the WHERE part of the sql query (the filters)
   def get_filters_sql
     if self.filters.blank?
