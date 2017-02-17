@@ -18,16 +18,18 @@ class Admin::SiteStepsController < AdminController
   helper_method :active_button?
 
   before_action :get_site_pages
+  before_action :set_site_id, only: [:new, :edit, :update, :show]
+  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   # This action cleans the session
   def new
-    session[:site] = {}
+    reset_session_key(:site, @site_id, {})
     redirect_to admin_site_step_path(id: :name)
   end
 
   # This action cleans the session
   def edit
-    session[:site] = {}
+    reset_session_key(:site, @site_id, {})
     redirect_to admin_site_site_step_path(site_slug: params[:site_slug], id: :name)
   end
 
@@ -78,13 +80,14 @@ class Admin::SiteStepsController < AdminController
         # If the user pressed the save button
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
           end
         else
           @site.form_step = 'name'
-          session[:site] = site_params.to_h
+          session[:site][@site_id] = site_params.to_h
 
           if @site.valid?
             redirect_to next_wizard_path
@@ -98,6 +101,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @managers = User.where(role: UserType::MANAGER)
@@ -119,6 +123,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @publishers = User.where(role: UserType::PUBLISHER)
@@ -140,6 +145,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @contexts = Context.all
@@ -160,6 +166,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
@@ -178,7 +185,7 @@ class Admin::SiteStepsController < AdminController
       # In this step, the site is always saved
       when 'settings'
         settings = site_params.to_h
-        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site])
+        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
 
         begin
           # If the user is editing
@@ -195,6 +202,7 @@ class Admin::SiteStepsController < AdminController
         end
 
         if @site.save
+          delete_session_key(:site, @site_id)
           redirect_to next_wizard_path, notice: 'The site\'s main color might take a few minutes to be visible'
         else
           render_wizard
@@ -215,7 +223,8 @@ class Admin::SiteStepsController < AdminController
 
   def current_site
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
-    session[:site].delete(:site_template_id) if site.id
+    session[:site][@site_id] ||= {}
+    session[:site][@site_id].delete(:site_template_id) if site.id
 
     # Contexts listing
     if !params[:site].blank? && site_params.to_h && step == 'contexts'
@@ -225,26 +234,26 @@ class Admin::SiteStepsController < AdminController
           context['_destroy'] = true if context['context_id'].blank?
           context_sites_attributes["#{i}"] = context
         end
-        session[:site]['context_sites_attributes'] =  context_sites_attributes
+        session[:site][@site_id]['context_sites_attributes'] =  context_sites_attributes
       else
-        session[:site]['context_sites_attributes'] = []
+        session[:site][@site_id]['context_sites_attributes'] = []
       end
     end
 
-    session[:site].merge!(site_params.to_h.except(:default_context, 'context_sites_attributes')) if params[:site] && site_params.to_h
+    session[:site][@site_id].merge!(site_params.to_h.except(:default_context, 'context_sites_attributes')) if params[:site] && site_params.to_h
 
     # Default context
     if params[:site] && site_params.to_h && site_params[:default_context]
       default_context_id = params[:site].delete :default_context
-      if session[:site] && !session[:site]['context_sites_attributes'].blank?
-        default_context = session[:site].dig('context_sites_attributes', "#{default_context_id}")
+      if session[:site][@site_id] && !session[:site][@site_id]['context_sites_attributes'].blank?
+        default_context = session[:site][@site_id].dig('context_sites_attributes', "#{default_context_id}")
       end
       default_context['is_site_default_context'] = 'true' if default_context
     end
 
 
 
-    site.assign_attributes session[:site] if session[:site]
+    site.assign_attributes session[:site][@site_id] if session[:site][@site_id]
     site
   end
 
@@ -254,5 +263,18 @@ class Admin::SiteStepsController < AdminController
 
   def get_site_pages
     self.steps_names = *Site.form_steps[:names]
+  end
+
+  def set_site_id
+    site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
+    if site && site.persisted?
+      @site_id = site.id
+    else
+      :new
+    end
+  end
+
+  def ensure_session_keys_exist
+    session[:site] ||= {}
   end
 end
