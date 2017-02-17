@@ -2,7 +2,7 @@ class DatasetService
 
   @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
     faraday.request :url_encoded
-    faraday.response :logger
+    faraday.response :logger, Rails.logger #, bodies: true # Activate this only for specific debugging
     faraday.adapter Faraday.default_adapter
   end
 
@@ -11,7 +11,7 @@ class DatasetService
   # ... so this will get the first 10000 records
   # Params
   # ++status++ the status of the dataset
-  def self.get_datasets(status = 'active')
+  def self.get_datasets(status = 'saved')
     datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', \
       'status': status, 'app': 'forest-atlas,gfw'}
     datasetsJSON = JSON.parse datasetRequest.body

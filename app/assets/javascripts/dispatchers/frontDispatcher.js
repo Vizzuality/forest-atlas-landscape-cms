@@ -13,7 +13,11 @@
       // history before anything else
       Backbone.history.stop();
 
-      new App.Router[routerName]();
+      // Backbone.history.stop has some asynchronous events that can trigger twice
+      // the same route when Backbone.history.start is executed
+      setTimeout(function () {
+        new App.Router[routerName]();
+      }, 0);
 
       // NOTE: Don't forget to start Backbone.history in the router
 
