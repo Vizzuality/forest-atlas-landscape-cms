@@ -23,6 +23,7 @@
     z-index: 15;
     pointer-events: none;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 
     &::before {
       display: block;
