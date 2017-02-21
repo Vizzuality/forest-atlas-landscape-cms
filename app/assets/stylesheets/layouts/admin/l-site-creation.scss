@@ -172,10 +172,10 @@
         > label {
           display: block;
           position: absolute;
-          top: 0;
           left: 0;
           width: 100%;
-          height: 100%;
+          height: 170px;
+          top: 31px;
           text-indent: -10000px;
           cursor: pointer;
           z-index: 1;
@@ -242,6 +242,7 @@
         }
 
         .restrictions {
+          flex-basis: 50%;
           margin-top: 10px;
           font-size: $font-size-small;
         }
@@ -273,6 +274,29 @@
 
       > .content-cover {
         flex-basis: calc(50% - 10px);
+      }
+
+      .cover-attribution {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        flex-basis: 50%;
+
+        input {
+          margin: 12px auto 0;
+          font-style: italic;
+          text-align: right;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          color: $color-4;
+          border: none;
+          height: 12px;
+          margin: 1px;
+        }
+      }
+
+      .file-input-footer {
+        display: flex;
       }
     }
   }
