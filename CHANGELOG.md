@@ -1,6 +1,10 @@
 ### 21 Feb 2017
+- Added token to datasets listing to bypass the API cache
+- Added logs for all API calls
 - Fixed an issue that prevented the map's settings to have color hightlighting
 - Fixed session issue when editing multiple pages
+- Added separator to dropdown menu in order to separate Admin, Management and Contexts from pages.
+- Added scroll to dropdown menu in order to prevent menu getting too tall.
 
 ### 14 Feb 2017
 - In a site's dataset listing, only the datasets belonging to a site's context are show, even for admins.

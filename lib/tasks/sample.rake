@@ -171,7 +171,7 @@ def create_users
   )
   @agnieszka_figiel_user = User.create(
     {
-      email: 'agnieszka_figiel@vizzuality.com',
+      email: 'agnieszka.figiel@vizzuality.com',
       name: 'Agnieszka Figiel',
       role: UserType::ADMIN
     }

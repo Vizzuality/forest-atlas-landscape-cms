@@ -1,5 +1,6 @@
 class AdminController < ActionController::Base
   include PermissionsHelper
+  include SessionHelpers
 
   # skip_before_action :verify_authenticity_token, raise: false
   before_action :ensure_admin_user
