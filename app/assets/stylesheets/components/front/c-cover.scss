@@ -69,4 +69,26 @@
       }
     }
   }
+
+  .cover-attribution {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0 0 0 15px;
+    color: white;
+    z-index: 2;
+
+    > a {
+      background-color: unset;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    > p {
+      line-height: 0;
+    }
+
+  }
 }

@@ -2,4 +2,15 @@
   <div class="wrapper">
     <h2 class="cover-title"><%= @site_page.name %></h2>
   </div>
+  <div class="cover-attribution">
+
+    <% if defined?(link) && defined?(value) %>
+    <a href="<%= link %>"> <%= value %> </a>
+    <% end %>
+
+    <% if !defined?(link) && defined?(value) %>
+    <p> <%= value %> </p>
+    <% end %>
+
+  </div>
 </div>
