@@ -29,7 +29,6 @@ class Management::PageStepsController < ManagementController
 
   # This action cleans the session
   def new
-    @page_id = :new
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
@@ -46,7 +45,6 @@ class Management::PageStepsController < ManagementController
 
   # This action cleans the session
   def edit
-    @page_id = @page.id
     redirect_to wizard_path(steps[0])
   end
 
@@ -470,7 +468,13 @@ class Management::PageStepsController < ManagementController
   end
 
   def reset_session
-    pages = params['action'] == 'new' ? %w[type title] : %w[type]
+    if params['action'] == 'new'
+      pages = %w[type title]
+      @page_id = :new
+    else
+      pages = %w[type]
+      @page_id = @page.id
+    end
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
     reset_session_key(:page, @page_id, {})
