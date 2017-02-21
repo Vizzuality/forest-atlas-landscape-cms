@@ -10,6 +10,7 @@ class Admin::UserStepsController < AdminController
   before_action :set_current_user, only: [:show, :update]
   before_action :get_user_pages
   before_action :set_breadcrumbs, only: [:show, :update]
+  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   SAVE = 'Save Changes'.freeze
   CONTINUE = 'Continue'.freeze
@@ -17,13 +18,13 @@ class Admin::UserStepsController < AdminController
 
   # This action cleans the session
   def new
-    session[:user] = {}
+    reset_session_key(:user, @user_id, {})
     redirect_to admin_user_step_path(id: Wicked::FIRST_STEP)
   end
 
   # This action clean the session
   def edit
-    session[:user] = {}
+    reset_session_key(:user, @user_id, {})
     redirect_to wizard_path(Wicked::FIRST_STEP)
   end
 
@@ -45,6 +46,7 @@ class Admin::UserStepsController < AdminController
         api_response = @user.send_to_api(session[:user_token], url)
         if api_response[:valid]
           @user.save
+          delete_session_key(:user, @user_id)
           redirect_to next_wizard_path, notice: 'User was successfully created. Please check your email to login.'
         else
           @user.errors['id'] << 'API error: ' + api_response[:error].to_s
@@ -65,8 +67,14 @@ class Admin::UserStepsController < AdminController
 
   def set_current_user
     @user = params[:user_id] ? User.find(params[:user_id]) : User.new
-    session[:user].merge!(user_params.to_h) if params[:user] && user_params.to_h
-    @user.assign_attributes session[:user] if session[:user]
+    @user_id = if @user && @user.persisted?
+      @user.id
+    else
+      :new
+    end
+    session[:user][@user_id] ||= {}
+    session[:user][@user_id].merge!(user_params.to_h) if params[:user] && user_params.to_h
+    @user.assign_attributes session[:user][@user_id] if session[:user][@user_id]
   end
 
   def get_user_pages
@@ -84,5 +92,9 @@ class Admin::UserStepsController < AdminController
     else
       @breadcrumbs << {name: 'New User'}
     end
+  end
+
+  def ensure_session_keys_exist
+    session[:user] ||= {}
   end
 end
