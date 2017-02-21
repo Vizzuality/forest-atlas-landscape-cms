@@ -4,26 +4,14 @@
     {{#each options}}
       {{#if_eq id ../activeOption.id}}
         {{#unless ../fixedOption}}
-          {{#if separator}}
-            <li role="option" tabindex="-1" class="option js-option -active -separator" data-id="{{id}}">
-              {{name}}
-            </li>
-          {{else}}
-            <li role="option" tabindex="0" class="option -active js-option" data-id="{{id}}">
-              {{name}}
-            </li>
-          {{/if}}
+          <li role="option" tabindex="-1" class="option js-option -active {{#if separator}} -separator{{/if}}" data-id="{{id}}">
+            {{name}}
+          </li>
         {{/unless}}
       {{else}}
-        {{#if separator}}
-          <li role="option" tabindex="-1" class="option js-option -separator" data-id="{{id}}">
-            {{name}}
-          </li>
-        {{else}}
-          <li role="option" tabindex="-1" class="option js-option" data-id="{{id}}">
-            {{name}}
-          </li>
-        {{/if}}
+        <li role="option" tabindex="-1" class="option js-option {{#if separator}} -separator"{{/if}}" data-id="{{id}}">
+          {{name}}
+        </li>
       {{/if_eq}}
     {{/each}}
   </ul>
