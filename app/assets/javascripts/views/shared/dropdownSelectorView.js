@@ -15,8 +15,8 @@
     defaults: {
       // List of options for the selector
       // Each options should have this format:
-      // { id: string, name: string, shortName: string }
-      // The shortName option is optional
+      // { id: string, name: string, shortName: string, separator: bool }
+      // The shortName and separator options are optional
       options: [],
       // Active option (from the list above)
       // NOTE: This is mandatory
