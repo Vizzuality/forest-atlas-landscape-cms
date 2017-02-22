@@ -5,6 +5,7 @@
 - Add clear formatting button to WYSIWYG editor
 - Update styling for Landscape applications
 - Add site title to page header
+- Store links between pages and widgets
 
 ### 21 Feb 2017
 - Added possibility to change the homepage's name
