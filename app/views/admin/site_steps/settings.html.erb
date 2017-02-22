@@ -95,9 +95,15 @@
                     <span>Select file</span>
                   </div>
                 <% end %>
-                <div class="restrictions js-restrictions">
-                  Recommended dimensions: 1280x500<br />
-                  Max. size: 1MB
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Recommended dimensions: 1280x500<br />
+                    Max. size: 1MB
+                  </div>
+                  <div class="cover-attribution">
+                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+                  </div>
                 </div>
               </div>
 
@@ -116,9 +122,15 @@
                     <span>Select file</span>
                   </div>
                 <% end %>
-                <div class="restrictions js-restrictions">
-                  Recommended dimensions: 1280x250<br />
-                  Max. size: 1MB
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Recommended dimensions: 1280x250<br />
+                    Max. size: 1MB
+                  </div>
+                  <div class="cover-attribution">
+                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+                  </div>
                 </div>
               </div>
 

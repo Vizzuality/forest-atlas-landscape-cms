@@ -2,4 +2,15 @@
   <div class="wrapper">
     <h2 class="cover-title"><%= @site_page.name %></h2>
   </div>
+  <div class="cover-attribution">
+    <% if defined?(image) && defined?(image.instance) %>
+      <% if image.instance.attribution_link.present? && image.instance.attribution_label.present? %>
+      <a href="<%= image.instance.attribution_link %>"> <%= image.instance.attribution_label %> </a>
+      <% end %>
+
+      <% if !image.instance.attribution_link.present? && image.instance.attribution_label.present? %>
+      <p> <%= image.instance.attribution_label %> </p>
+      <% end %>
+    <% end %>
+  </div>
 </div>
