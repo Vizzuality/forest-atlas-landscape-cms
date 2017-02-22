@@ -1,0 +1,86 @@
+<% content_for :extended_header do %>
+    <div class="c-extended-header">
+      <div class="wrapper">
+        <div class="description">
+          <h1>Customize</h1>
+          <p>Select a logo, an icon and two cover images – one for the homepage and the other for the Open Content
+            pages.</p>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+    <div class="l-site-creation -site-settings">
+      <div class="wrapper">
+
+        <div class="settings">
+          <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by { |s| s.position }) do |settings_form| %>
+              <% setting = settings_form.object %>
+              <% case setting.name
+
+                   when 'translate_english' %>
+                  <%= settings_form.hidden_field :position, value: '7' %>
+                  <%= settings_form.hidden_field :name, value: 'translate_english' %>
+
+                  <div class="c-checkbox">
+                    <%= settings_form.check_box :value, id: 'translate_english' %>
+                    <%= settings_form.label 'Allow English translations', for: 'translate_english' %>
+                  </div>
+
+              <% when 'translate_french' %>
+                  <%= settings_form.hidden_field :position, value: '8' %>
+                  <%= settings_form.hidden_field :name, value: 'translate_french' %>
+
+                  <div class="c-checkbox">
+                    <%= settings_form.check_box :value, id: 'translate_french' %>
+                    <%= settings_form.label 'Allow French translations', for: 'translate_french' %>
+                  </div>
+
+              <% when 'translate_spanish' %>
+                  <%= settings_form.hidden_field :position, value: '9' %>
+                  <%= settings_form.hidden_field :name, value: 'translate_spanish' %>
+
+                  <div class="c-checkbox">
+                    <%= settings_form.check_box :value, id: 'translate_spanish' %>
+                    <%= settings_form.label 'Allow Spanish translations', for: 'translate_spanish' %>
+                  </div>
+
+              <% when 'pre_footer' %>
+                  <%= settings_form.hidden_field :position, value: '10' %>
+                  <%= settings_form.hidden_field :name, value: 'pre_footer' %>
+
+                  <div>
+                    <%= settings_form.text_area :value, id: 'pre_footer' %>
+                    <%= settings_form.label 'Pre-footer', for: 'pre_footer' %>
+                  </div>
+
+              <% when 'analytics_key' %>
+                  <%= settings_form.hidden_field :position, value: '11' %>
+                  <%= settings_form.hidden_field :name, value: 'analytics_key' %>
+
+                  <div>
+                    <%= settings_form.text_field :value, id: 'analytics_key' %>
+                    <%= settings_form.label 'Analytics key', for: 'analytics_key' %>
+                  </div>
+
+              <% when 'keywords' %>
+                  <%= settings_form.hidden_field :position, value: '12' %>
+                  <%= settings_form.hidden_field :name, value: 'keywords' %>
+
+                  <div>
+                    <%= settings_form.text_area :value, id: 'keywords' %>
+                    <%= settings_form.label 'Keywords', for: 'keywords' %>
+                  </div>
+
+              <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <%= render partial: 'footer', locals: {f: f} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: {resource: @site} %>
