@@ -27,11 +27,30 @@ namespace :db do
             unless site.site_settings.exists?(name: 'alternative_image')
               site.site_settings.create!(name: 'alternative_image', value: '', position: 6)
             end
+            unless site.site_settings.exists?(name: 'translate_english')
+              site.site_settings.create!(name: 'translate_english', value: true, position: 7)
+            end
+            unless site.site_settings.exists?(name: 'translate_spanish')
+              site.site_settings.create!(name: 'translate_spanish', value: true, position: 8)
+            end
+            unless site.site_settings.exists?(name: 'translate_french')
+              site.site_settings.create!(name: 'translate_french', value: true, position: 9)
+            end
+            unless site.site_settings.exists?(name: 'pre_footer')
+              site.site_settings.create!(name: 'pre_footer', value: '', position: 10)
+            end
+            unless site.site_settings.exists?(name: 'analytics_key')
+              site.site_settings.create!(name: 'analytics_key', value: '', position: 11)
+            end
+            unless site.site_settings.exists?(name: 'keywords')
+              site.site_settings.create!(name: 'keywords', value: '', position: 12)
+            end
             puts "... finished creation for site #{site.name}"
           end
           puts 'Finished updating the position for the site settings'
         rescue Exception => e
           Rails.logger.error "Error updating the site settings: #{e.inspect}"
+          puts "Error updating the site settings: #{e.inspect}"
           raise ActiveRecord::Rollback
         end
       end
