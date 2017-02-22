@@ -47,7 +47,6 @@
     },
 
     _getSiteLanguages: function(languages) {
-      debugger;
       if (!window.gon || !window.gon.languages) {
         return languages;
       }
