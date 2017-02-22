@@ -16,64 +16,67 @@
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
     <div class="l-site-creation -site-settings">
       <div class="wrapper">
+        <div class="settings c-inputs-container">
+        <div class="container">
+          <%= f.fields_for :site_settings, \
+            (f.object.site_settings.collect.select{|x| %w[translate_english translate_french translate_spanish].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
+            <% setting = settings_form.object %>
+            <% case setting.name when 'translate_english' %>
 
-        <div class="settings">
-          <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by { |s| s.position }) do |settings_form| %>
-              <% setting = settings_form.object %>
-              <% case setting.name
-
-                   when 'translate_english' %>
-                  <%= settings_form.hidden_field :position, value: '7' %>
-                  <%= settings_form.hidden_field :name, value: 'translate_english' %>
-
-                  <div class="c-checkbox">
-                    <%= settings_form.check_box :value, id: 'translate_english' %>
-                    <%= settings_form.label 'Allow English translations', for: 'translate_english' %>
-                  </div>
+              <%= settings_form.hidden_field :position, value: '7' %>
+              <%= settings_form.hidden_field :name, value: 'translate_english' %>
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_english' %>
+                <%= settings_form.label 'Allow English translations', for: 'translate_english' %>
+              </div>
 
               <% when 'translate_french' %>
-                  <%= settings_form.hidden_field :position, value: '8' %>
-                  <%= settings_form.hidden_field :name, value: 'translate_french' %>
+              <%= settings_form.hidden_field :position, value: '8' %>
+              <%= settings_form.hidden_field :name, value: 'translate_french' %>
 
-                  <div class="c-checkbox">
-                    <%= settings_form.check_box :value, id: 'translate_french' %>
-                    <%= settings_form.label 'Allow French translations', for: 'translate_french' %>
-                  </div>
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_french' %>
+                <%= settings_form.label 'Allow French translations', for: 'translate_french' %>
+              </div>
 
               <% when 'translate_spanish' %>
-                  <%= settings_form.hidden_field :position, value: '9' %>
-                  <%= settings_form.hidden_field :name, value: 'translate_spanish' %>
+              <%= settings_form.hidden_field :position, value: '9' %>
+              <%= settings_form.hidden_field :name, value: 'translate_spanish' %>
 
-                  <div class="c-checkbox">
-                    <%= settings_form.check_box :value, id: 'translate_spanish' %>
-                    <%= settings_form.label 'Allow Spanish translations', for: 'translate_spanish' %>
-                  </div>
-
-              <% when 'pre_footer' %>
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_spanish' %>
+                <%= settings_form.label 'Allow Spanish translations', for: 'translate_spanish' %>
+              </div>
+            <%end%>
+          <%end%>
+        </div>
+          <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by { |s| s.position }) do |settings_form| %>
+              <% setting = settings_form.object %>
+              <% case setting.name when 'pre_footer' %>
                   <%= settings_form.hidden_field :position, value: '10' %>
                   <%= settings_form.hidden_field :name, value: 'pre_footer' %>
 
-                  <div>
-                    <%= settings_form.text_area :value, id: 'pre_footer' %>
+                  <div class="container -big">
                     <%= settings_form.label 'Pre-footer', for: 'pre_footer' %>
+                    <%= settings_form.text_area :value, id: 'pre_footer' %>
                   </div>
 
               <% when 'analytics_key' %>
                   <%= settings_form.hidden_field :position, value: '11' %>
                   <%= settings_form.hidden_field :name, value: 'analytics_key' %>
 
-                  <div>
-                    <%= settings_form.text_field :value, id: 'analytics_key' %>
+                  <div class="container -big">
                     <%= settings_form.label 'Analytics key', for: 'analytics_key' %>
+                    <%= settings_form.text_field :value, id: 'analytics_key' %>
                   </div>
 
               <% when 'keywords' %>
                   <%= settings_form.hidden_field :position, value: '12' %>
                   <%= settings_form.hidden_field :name, value: 'keywords' %>
 
-                  <div>
-                    <%= settings_form.text_area :value, id: 'keywords' %>
+                  <div class="container -big">
                     <%= settings_form.label 'Keywords', for: 'keywords' %>
+                    <%= settings_form.text_area :value, id: 'keywords' %>
                   </div>
 
               <% end %>
