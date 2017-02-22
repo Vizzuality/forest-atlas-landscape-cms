@@ -100,9 +100,9 @@
                     Recommended dimensions: 1280x500<br />
                     Max. size: 1MB
                   </div>
-                  <div class="cover-attribuition">
-                    <input type="text" placeholder="Add an attribution label to the image">
-                    <input type="text" placeholder="Add an attribution link to the image">
+                  <div class="cover-attribution">
+                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
                   </div>
                 </div>
               </div>
@@ -128,8 +128,8 @@
                     Max. size: 1MB
                   </div>
                   <div class="cover-attribution">
-                    <input type="text" placeholder="Add an attribution label to the image">
-                    <input type="text" placeholder="Add an attribution link to the image">
+                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
                   </div>
                 </div>
               </div>

@@ -18,6 +18,7 @@
 class SiteSetting < ApplicationRecord
   belongs_to :site, inverse_of: :site_settings
   validates_presence_of :site
+  validates :attribution_link, format: { with: URI.regexp }, if: 'attribution_link.present?'
 
   NAMES = %w[logo_image main_image alternative_image favico color flag]
   MAX_COLORS = 5
