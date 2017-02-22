@@ -88,6 +88,8 @@
     },
 
     render: function () {
+      if (!this.el) return;
+      
       this.$el.html(this.template({
         colors: this.collection.toJSON()
           .map(function (color, i) {
