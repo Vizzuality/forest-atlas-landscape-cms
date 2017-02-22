@@ -21,20 +21,24 @@
           <%= f.label :name, 'Page title' %>
           <%= f.text_field :name, placeholder: 'My page' %>
         </div>
-        <div class="container">
-          <%= f.label :description %>
-          <%= f.text_area :description, placeholder: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' %>
-        </div>
-        <div class="container">
-          <%= f.label :uri %>
-          <%= f.text_field :uri, placeholder: 'my-page' %>
-        </div>
-        <footer>
-          <div class="c-checkbox">
-            <%= f.check_box :show_on_menu %>
-            <%= f.label :show_on_menu, 'Show on navigation bar' %>
+        <% unless @page.content_type == ContentType::HOMEPAGE %>
+          <div class="container">
+            <%= f.label :description %>
+            <%= f.text_area :description, placeholder: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' %>
           </div>
-        </footer>
+          <div class="container">
+            <%= f.label :uri %>
+            <%= f.text_field :uri, placeholder: 'my-page' %>
+          </div>
+        <% end %>
+        <% unless @page.content_type == ContentType::HOMEPAGE %>
+          <footer>
+            <div class="c-checkbox">
+              <%= f.check_box :show_on_menu %>
+              <%= f.label :show_on_menu, 'Show on navigation bar' %>
+            </div>
+          </footer>
+        <%end %>
       </div>
     </div>
   </div>

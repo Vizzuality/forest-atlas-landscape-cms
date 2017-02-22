@@ -143,7 +143,7 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward (@page.content_type ? wizard_steps[3] : next_step)
+        move_forward ((@page.content_type && @page.content_type != ContentType::HOMEPAGE) ? wizard_steps[3] : next_step)
 
       when 'type'
         set_current_page_state

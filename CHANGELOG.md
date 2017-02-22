@@ -1,4 +1,5 @@
 ### 21 Feb 2017
+- Added possibility to change the homepage's name
 - Added token to datasets listing to bypass the API cache
 - Added logs for all API calls
 - Fixed an issue that prevented the map's settings to have color hightlighting
