@@ -1,6 +1,7 @@
 ### 28 Feb 2017
 - Add links to share on Facebook, Twitter and G+ on page footers
 - Add color highlight to 3rd level menu when element is selected
+- Add attribution label + link to cover images.
 
 ### 21 Feb 2017
 - Added possibility to change the homepage's name
