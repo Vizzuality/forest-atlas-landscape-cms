@@ -39,7 +39,7 @@
     @if $theme == 2 {
       background-color: rgba($color-5, .3);
     } @else {
-      background-color: transparent;
+      background-color: rgba(0, 0, 0, 0.2);
     }
   }
 
