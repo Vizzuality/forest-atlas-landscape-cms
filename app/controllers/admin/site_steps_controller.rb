@@ -86,6 +86,7 @@ class Admin::SiteStepsController < AdminController
         # If the user pressed the save button
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
@@ -106,6 +107,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @managers = User.where(role: UserType::MANAGER)
@@ -127,6 +129,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @publishers = User.where(role: UserType::PUBLISHER)
@@ -148,6 +151,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             @contexts = Context.all
@@ -168,6 +172,7 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
@@ -204,6 +209,7 @@ class Admin::SiteStepsController < AdminController
 
         if save_button?
           if @site.save
+            delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
             render_wizard
@@ -237,7 +243,8 @@ class Admin::SiteStepsController < AdminController
         end
 
         if @site.save
-          redirect_to next_wizard_path, notice: 'The site\'s main color might take a few minutes to be visible'
+          delete_session_key(:site, @site_id)
+          redirect_to next_wizard_path(site_id: @site.id), notice: 'The site\'s main color might take a few minutes to be visible'
         else
           render_wizard
         end
