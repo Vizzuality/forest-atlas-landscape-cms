@@ -27,6 +27,8 @@
       }
     };
   </script>
+  <%= render 'front/google_analytics' %>
+
   <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= yield :external_js %>
