@@ -143,8 +143,15 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward ((@page.content_type && @page.content_type != ContentType::HOMEPAGE) ? wizard_steps[3] : next_step)
-
+        move_forward next_step and return if @page_id == :new
+        case @page.content_type
+          when ContentType::HOMEPAGE
+            move_forward next_step
+          when ContentType::STATIC_CONTENT
+            move_forward wizard_steps[2]
+          else
+            move_forward wizard_steps[3]
+        end
       when 'type'
         set_current_page_state
         move_forward
