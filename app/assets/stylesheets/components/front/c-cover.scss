@@ -35,12 +35,7 @@
     width: 100%;
     height: 100%;
     content: '';
-
-    @if $theme == 2 {
-      background-color: rgba($color-5, .3);
-    } @else {
-      background-color: rgba($color-1, .4);
-    }
+    background-color: rgba($color-5, .3);
   }
 
   > .wrapper {
