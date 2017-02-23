@@ -149,10 +149,11 @@
       // We collapse the sidebar
       this._toggleExpandSidebar();
 
-      // We save the positionn of the cursor within the wysiwyg
+      // We save the position of the cursor within the wysiwyg
       var range = this.editor.getSelection();
 
       // TODO: create html code view
+      this.editor.insertEmbed(range.index, 'html', {}, 'user');
 
       // We hide the sidebar
       this._hideSidebar();
@@ -321,6 +322,7 @@
       Quill.register(App.Blot.IntroductionBlot);
       Quill.register(App.Blot.WidgetBlot);
       Quill.register(App.Blot.ImageBlot);
+      Quill.register(App.Blot.HtmlBlot);
 
       // We set the custom icons for the toolbar's buttons
       var icons = Quill.import('ui/icons');

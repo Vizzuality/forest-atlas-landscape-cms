@@ -14,75 +14,77 @@ class HtmlBlot extends Embed {
    * Creates an instance of HtmlBlot.
    *
    * @param {HTMLElement} domNode
-   * @param {{ src: string }} value
    *
-   * @memberOf ImageBlot
+   * @memberOf HtmlBlot
    */
-  constructor (domNode, value) {
-    super(domNode, value);
+  constructor (domNode) {
+    super(domNode);
 
-    this.image = domNode.querySelector('.js-image');
-    this.caption = domNode.querySelector('.js-caption');
+    this.htmlContainer = domNode.querySelector('.js-html-container');
     this.editor = window.editor;
 
     if (!this.editor.options.readOnly) {
       // We render the toolbar
       this._renderToolbar();
 
-      // We make the caption editable
-      this.caption.setAttribute('contenteditable', true);
+      // We make the htmlContainer editable
+      this.htmlContainer.setAttribute('contenteditable', true);
 
-      // We attach the listeners
-      this.image.addEventListener('mouseover', () => this._onMouseoverImage());
-      this.image.addEventListener('mouseout', e => this._onMouseoutImage(e));
     }
   }
 
   /**
    * Create the DOM node
-   * @param {any} value - URL of the image (or base64)
    * @returns {HTMLElement} node
    */
-  static create (value) {
+  static create () {
     const node = super.create();
 
-    const container = document.createElement('div');
+    const container = document.createElement('textarea');
+    container.classList.add('html-container', 'js-html-container');
     node.appendChild(container);
-
-    const image = document.createElement('img');
-    image.classList.add('js-image');
-    if (typeof value === 'string') image.setAttribute('src', value);
-
-    container.appendChild(image);
-
-    // We don't want the user to be able to add text within the container
-    node.setAttribute('contenteditable', false);
-
-    // We add the caption container
-    const captionContainer = document.createElement('p');
-    captionContainer.classList.add('caption', 'js-caption');
-
-    container.appendChild(captionContainer);
 
     // If we don't disable the "content editable" feature of the editor
     // when the user writes in the caption container, the browsers
     // jump to the top as it considers it as the element we're editing
-    captionContainer.addEventListener('focusin', function () {
+    container.addEventListener('focusin', function () {
       window.editor.root.setAttribute('contenteditable', false);
     });
 
-    captionContainer.addEventListener('focusout', function () {
+    container.addEventListener('focusout', function () {
       window.editor.root.setAttribute('contenteditable', true);
     });
 
-    captionContainer.addEventListener('blur', function () {
-      // If the user deleted the whole content, we want the default
-      // text to appear, nevertheless a br tag is inserted so we delete it
-      if (!this.textContent.length && this.innerHTML.length) {
-        this.innerHTML = '';
-      }
+    return node;
+  }
+
+  /**
+   * Event handler called when the user clicks the remove button
+   * @memberOf HtmlBlot
+   */
+  _onClickRemove() {
+    const offset = this.offset();
+    this.editor.deleteText(offset, this.length());
+    this.editor.setSelection(offset);
+  }
+
+  /**
+   * Render the toolbar
+   * @memberOf HtmlBlot
+   */
+  _renderToolbar() {
+    // We create the element with the default state
+    this.toolbar = document.createElement('div');
+    this.domNode.appendChild(this.toolbar);
+    this.toolbar.classList.add('toolbar');
+
+    // We append its content
+    this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
+      hideChangeBtn: true,
+      showSizeBtn: true
     });
 
-    return node;
+    // We attach the event listeners
+    this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
   }
 }
