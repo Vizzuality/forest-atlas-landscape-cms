@@ -267,7 +267,7 @@ class Admin::SiteStepsController < AdminController
           :id, :position, :value, :name, :image,
           :attribution_link, :attribution_label,
           :translate_english, :translate_french,
-          :translate_spanish, :pre_footer, :analytics_key, :keywords
+          :translate_spanish, :pre_footer, :analytics_key, :keywords, :contact_email_address
         ]
       )
   end
