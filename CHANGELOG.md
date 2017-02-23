@@ -2,6 +2,11 @@
 - Add links to share on Facebook, Twitter and G+ on page footers
 - Add color highlight to 3rd level menu when element is selected
 - Add attribution label + link to cover images.
+- Add Google Analytics global + per site tracking features
+- Add pre-footer
+- Add supported translations languages per site
+- Add meta tags to HTML + configurable "keywords" field per site
+- Add contact email address to site settings
 
 ### 21 Feb 2017
 - Added possibility to change the homepage's name
