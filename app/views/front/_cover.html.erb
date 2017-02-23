@@ -1,5 +1,6 @@
 <div class="c-cover <%= '-short' if defined?(size) && size == 'small' %>" style="background-image: url('<%= image if defined?(image) %>');">
   <div class="wrapper">
+    <h2 class="cover-subtitle"><%= @site_page.site.name %></h2>
     <h2 class="cover-title"><%= @site_page.name %></h2>
   </div>
   <div class="cover-attribution">

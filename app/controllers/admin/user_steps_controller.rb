@@ -12,7 +12,7 @@ class Admin::UserStepsController < AdminController
   before_action :set_breadcrumbs, only: [:show, :update]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
-  SAVE = 'Save Changes'.freeze
+  SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
 
 

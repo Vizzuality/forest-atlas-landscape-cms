@@ -31,7 +31,8 @@
             { indent: '+1' },
             { indent: '-1' },
             { list: 'bullet' },
-            { list: 'ordered' }
+            { list: 'ordered' },
+            'clean'
           ]
         ]
       },
