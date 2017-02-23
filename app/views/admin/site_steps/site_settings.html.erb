@@ -79,6 +79,15 @@
                     <%= settings_form.text_area :value, id: 'keywords' %>
                   </div>
 
+              <% when 'contact_email_address' %>
+                  <%= settings_form.hidden_field :position, value: '13' %>
+                  <%= settings_form.hidden_field :name, value: 'contact_email_address' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Contact email address', for: 'contact_email_address' %>
+                    <%= settings_form.text_field :value, id: 'contact_email_address' %>
+                  </div>
+
               <% end %>
           <% end %>
         </div>

@@ -10,9 +10,10 @@
   <div class="wrapper">
     <ul class="site-links-list">
       <li class="site-link-item"><%= link_to 'Terms of Service', '/terms-and-privacy', class: 'site-link' %></li>
-      <li class="separator"> | </li>
-      <li class="site-link-item"><%= link_to 'Contact us', nil, class: 'site-link' %></li>
-    </ul>
+      <% unless @site_page.site.site_settings.contact_email_address(@site_page.site_id).value.empty? -%>
+        <li class="separator"> |</li>
+        <li class="site-link-item"><%= link_to 'Contact us', 'mailto:' + @site_page.site.site_settings.contact_email_address(@site_page.site_id).value, class: 'site-link' %></li>
+      <% end %>    </ul>
 
     <div class="share">
       <span class="share-text">Share the Atlas</span>

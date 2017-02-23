@@ -45,6 +45,9 @@ namespace :db do
             unless site.site_settings.exists?(name: 'keywords')
               site.site_settings.create!(name: 'keywords', value: '', position: 12)
             end
+            unless site.site_settings.exists?(name: 'contact_email_address')
+              site.site_settings.create!(name: 'contact_email_address', value: '', position: 13)
+            end
             puts "... finished creation for site #{site.name}"
           end
           puts 'Finished updating the position for the site settings'

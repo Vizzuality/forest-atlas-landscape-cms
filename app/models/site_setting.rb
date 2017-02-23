@@ -20,7 +20,7 @@ class SiteSetting < ApplicationRecord
   validates_presence_of :site
   validates :attribution_link, format: { with: URI.regexp }, if: 'attribution_link.present?'
 
-  NAMES = %w[logo_image main_image alternative_image favico color flag translate_english translate_spanish translate_french pre_footer analytics_key keywords]
+  NAMES = %w[logo_image main_image alternative_image favico color flag translate_english translate_spanish translate_french pre_footer analytics_key keywords contact_email_address]
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
@@ -94,6 +94,10 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'keywords', site_id: site_id)
   end
 
+  def self.contact_email_address(site_id)
+    SiteSetting.find_by(name: 'contact_email_address', site_id: site_id)
+  end
+
   def flag_colors
     value.split(' ')
   end
@@ -129,6 +133,7 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'pre_footer', value: '', position: 10)
       site.site_settings.new(name: 'analytics_key', value: '', position: 11)
       site.site_settings.new(name: 'keywords', value: '', position: 12)
+      site.site_settings.new(name: 'contact_email_address', value: '', position: 13)
     end
   end
 
