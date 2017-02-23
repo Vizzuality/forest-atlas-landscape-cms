@@ -73,6 +73,9 @@
 
       a {
         color: $color-1;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
