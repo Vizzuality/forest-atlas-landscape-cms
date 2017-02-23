@@ -52,10 +52,10 @@ class Admin::SiteStepsController < AdminController
       if step == 'contexts'
         @contexts = Context.all
       end
-      if step == 'style'
+      if step == 'template'
         SiteSetting.create_color_settings @site
       end
-      if step == 'style_settings'
+      if step == 'style'
         SiteSetting.create_additional_settings @site
         gon.global.color_controller_id = COLOR_CONTROLLER_ID
         gon.global.color_controller_name = COLOR_CONTROLLER_NAME
@@ -68,7 +68,7 @@ class Admin::SiteStepsController < AdminController
         @alternative_image = @site.site_settings.where(name: 'alternative_image').first
         @favico = @site.site_settings.where(name: 'favico').first
       end
-      if step == 'site_settings'
+      if step == 'settings'
         SiteSetting.create_site_settings @site
         @translate_english = @site.site_settings.where(name: 'translate_english').first
         @translate_spanish = @site.site_settings.where(name: 'translate_spanish').first
@@ -168,8 +168,45 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-      when 'style'
+      when 'template'
         @site = current_site
+        if save_button?
+          if @site.save
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'template'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
+
+
+      # In this step, the site is always saved
+      when 'style'
+        settings = site_params.to_h
+        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
+
+        begin
+          # If the user is editing
+          if @site.id
+            @site.site_settings.each do |site_setting|
+              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
+              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            end
+            # If the user is creating a new site
+          else
+            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            @site.form_step = 'style'
+          end
+        end
+
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
@@ -187,9 +224,7 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-
-      # In this step, the site is always saved
-      when 'style_settings'
+      when 'settings'
         settings = site_params.to_h
         @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
 
@@ -203,42 +238,7 @@ class Admin::SiteStepsController < AdminController
             # If the user is creating a new site
           else
             settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
-            @site.form_step = 'style_settings'
-          end
-        end
-
-        if save_button?
-          if @site.save
-            delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
-          else
-            render_wizard
-          end
-        else
-          @site.form_step = 'style_settings'
-
-          if @site.valid?
-            redirect_to next_wizard_path
-          else
-            render_wizard
-          end
-        end
-
-      when 'site_settings'
-        settings = site_params.to_h
-        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
-
-        begin
-          # If the user is editing
-          if @site.id
-            @site.site_settings.each do |site_setting|
-              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
-              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
-            end
-            # If the user is creating a new site
-          else
-            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
-            @site.form_step = 'site_settings'
+            @site.form_step = 'settings'
           end
         end
 

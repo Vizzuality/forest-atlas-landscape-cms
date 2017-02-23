@@ -63,7 +63,7 @@
       });
     },
 
-    initStyleStep: function () {
+    initTemplateStep: function () {
       var themeColorContainer = document.querySelector('.js-theme-color');
       var input = themeColorContainer.querySelector('input');
       var colorLabel = themeColorContainer.querySelector('.js-label');
@@ -92,7 +92,7 @@
       }
     },
 
-    initStyleSettingsStep: function () {
+    initStyleStep: function () {
       var fileInputs = document.querySelectorAll('input[type="file"]');
       // eslint-disable-next-line block-scoped-var
       for (var i = 0, j = fileInputs.length; i < j; i++) {
