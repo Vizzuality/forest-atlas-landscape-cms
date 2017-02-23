@@ -244,7 +244,7 @@ class Admin::SiteStepsController < AdminController
 
         if @site.save
           delete_session_key(:site, @site_id)
-          redirect_to next_wizard_path(site_id: @site.id), notice: 'The site\'s main color might take a few minutes to be visible'
+          redirect_to next_wizard_path(site_slug: @site.slug), notice: 'The site\'s main color might take a few minutes to be visible'
         else
           render_wizard
         end
