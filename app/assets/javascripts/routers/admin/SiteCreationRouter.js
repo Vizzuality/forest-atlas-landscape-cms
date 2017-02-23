@@ -122,7 +122,7 @@
       var imageType = input.dataset.type;
       var container = input.parentElement;
       var placeholder = container.querySelector('.js-placeholder');
-      var restrictions = container.querySelector('.js-restrictions');
+      var fileInputFooter = container.querySelector('.js-restrictions').parentElement;
       var oldPreview = container.querySelector('.js-preview');
       var isHigh = (placeholder && placeholder.classList.contains('-high')) ||
         (oldPreview && oldPreview.classList.contains('-high'));
@@ -158,8 +158,7 @@
         } else {
           preview.style.backgroundImage = 'url(' + base64 + ')';
         }
-
-        container.insertBefore(preview, restrictions);
+        container.insertBefore(preview, fileInputFooter);
       });
       reader.readAsDataURL(file);
     }
