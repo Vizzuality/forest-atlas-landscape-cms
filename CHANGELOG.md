@@ -2,6 +2,7 @@
 - Add links to share on Facebook, Twitter and G+ on page footers
 - Add color highlight to 3rd level menu when element is selected
 - Add attribution label + link to cover images.
+- Add clear formatting button to WYSIWYG editor
 - Update styling for Landscape applications
 
 ### 21 Feb 2017
