@@ -1,3 +1,11 @@
+<% unless @site_page.site.site_settings.pre_footer(@site_page.site_id).value.empty? -%>
+    <div class="c-pre-footer">
+      <div class="wrapper">
+        <%= raw(@site_page.site.site_settings.pre_footer(@site_page.site_id).value.strip) %>
+      </div>
+    </div>
+<% end %>
+
 <footer class="c-footer">
   <div class="wrapper">
     <ul class="site-links-list">
@@ -11,17 +19,23 @@
       <ul class="share-links-list">
         <li class="share-link-item">
           <a class="share-link -facebook" href="http://www.facebook.com/sharer.php?u=<%= request.original_url %>" target="_blank">
-            <svg class="icon icon-Facebook"><use xlink:href="#icon-Facebook"></use></svg>
+            <svg class="icon icon-Facebook">
+              <use xlink:href="#icon-Facebook"></use>
+            </svg>
           </a>
         </li>
         <li class="share-link-item">
           <a class="share-link -twitter" href="https://twitter.com/share?url=<%= request.original_url %>" target="_blank">
-            <svg class="icon icon-Twitter"><use xlink:href="#icon-Twitter"></use></svg>
+            <svg class="icon icon-Twitter">
+              <use xlink:href="#icon-Twitter"></use>
+            </svg>
           </a>
         </li>
         <li class="share-link-item">
           <a class="share-link -googleplus" href="https://plus.google.com/share?url=<%= request.original_url %>" target="_blank">
-            <svg class="icon icon-Google"><use xlink:href="#icon-Google"></use></svg>
+            <svg class="icon icon-Google">
+              <use xlink:href="#icon-Google"></use>
+            </svg>
           </a>
         </li>
         <li class="share-link-item">
