@@ -3,6 +3,7 @@
 - Add color highlight to 3rd level menu when element is selected
 - Add attribution label + link to cover images.
 - Update styling for Landscape applications
+- Add site title to page header
 
 ### 21 Feb 2017
 - Added possibility to change the homepage's name
