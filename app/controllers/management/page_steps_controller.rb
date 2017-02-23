@@ -132,7 +132,7 @@ class Management::PageStepsController < ManagementController
       return
     end
     session[:invalid_steps][@page_id] ||= []
-    session[:invalid_steps][@page_id] << 'type' if @page.content_type
+    session[:invalid_steps][@page_id] << 'type' if @page.content_type and @page.valid?
 
     @page.form_step = step
     case step
