@@ -127,9 +127,9 @@ class SiteSetting < ApplicationRecord
   # Creates the color setting for a site
   def self.create_site_settings site
     unless site.site_settings.exists?(name: 'translate_english')
-      site.site_settings.new(name: 'translate_english', value: true, position: 7)
-      site.site_settings.new(name: 'translate_spanish', value: true, position: 8)
-      site.site_settings.new(name: 'translate_french', value: true, position: 9)
+      site.site_settings.new(name: 'translate_english', value: '1', position: 7)
+      site.site_settings.new(name: 'translate_spanish', value: '1', position: 8)
+      site.site_settings.new(name: 'translate_french', value: '1', position: 9)
       site.site_settings.new(name: 'pre_footer', value: '', position: 10)
       site.site_settings.new(name: 'analytics_key', value: '', position: 11)
       site.site_settings.new(name: 'keywords', value: '', position: 12)
