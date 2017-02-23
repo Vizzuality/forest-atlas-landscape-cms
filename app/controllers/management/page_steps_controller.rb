@@ -20,7 +20,7 @@ class Management::PageStepsController < ManagementController
   attr_accessor :invalid_steps
 
   CONTINUE = 'CONTINUE'.freeze
-  SAVE = 'SAVE CHANGES'.freeze
+  SAVE = 'SAVE'.freeze
   PUBLISH = 'PUBLISH'.freeze
 
 

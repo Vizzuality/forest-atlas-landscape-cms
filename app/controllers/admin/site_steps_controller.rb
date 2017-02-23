@@ -9,7 +9,7 @@ class Admin::SiteStepsController < AdminController
   COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
   COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
 
-  SAVE = 'Save Changes'.freeze
+  SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
 
   steps *Site.form_steps[:pages]
