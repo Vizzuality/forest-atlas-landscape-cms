@@ -481,5 +481,6 @@ class Management::PageStepsController < ManagementController
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
     reset_session_key(:page, @page_id, {})
+    reset_session_key(:page, :new, {})
   end
 end
