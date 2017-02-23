@@ -47,10 +47,15 @@
     },
 
     _getSiteLanguages: function(languages) {
-      if (!window.gon || !window.gon.languages) {
+      if (!window.gon || !window.gon.translations) {
         return languages;
       }
-      return languages;
+
+      const result = languages.filter((elem) => {
+        return window.gon.translations[elem.code];
+      });
+
+      return result;
     },
 
     /**

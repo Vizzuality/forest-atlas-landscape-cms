@@ -38,6 +38,7 @@
 </head>
 
 <body <%= yield :body_class %>>
+  <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
   <%= yield %>
