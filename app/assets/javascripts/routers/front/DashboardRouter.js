@@ -398,7 +398,7 @@
      * @returns {string} url - absolute URL without the host (for example "/bla")
      */
     _constructURL: function (state) {
-      return '/' + this._encodeState(this._compressState(state));
+      return this._encodeState(this._compressState(state));
     },
 
     /**
@@ -416,8 +416,12 @@
      * Update the URL to reflect the current state of the application
      */
     _updateUrl: function () {
-      var url = this._constructURL(this.state);
-      this.navigate(url, { replace: true });
+      var url = '#' + this._constructURL(this.state);
+      // NOTE: We can't use this.navigate because we can't pass the "state" option.
+      // Adding { turbolinks: {} } is mandatory to avoid breaking the browser's back button
+      // because Turbolinks doesn't handle well the URL changes
+      // Check here: https://github.com/turbolinks/turbolinks/issues/219
+      history.replaceState({ turbolinks: {} }, '', url);
     },
 
     /**
