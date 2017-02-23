@@ -65,6 +65,26 @@
     }
   }
 
+  .cover-subtitle {
+    max-width: $content-max-width;
+    margin: 0 auto;
+    color: $color-3;
+    font-weight: $font-weight-bold;
+    line-height: 1;
+    text-align: center;
+    font-size: $font-size-small;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+
+    @if $theme == 2 {
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    } @else {
+      font-family: $font-family-2;
+      letter-spacing: 1.25px;
+    }
+  }
+
   .cover-attribution {
     position: absolute;
     right: 0;

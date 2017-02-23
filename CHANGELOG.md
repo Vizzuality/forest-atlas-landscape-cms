@@ -4,6 +4,7 @@
 - Add attribution label + link to cover images.
 - Add clear formatting button to WYSIWYG editor
 - Update styling for Landscape applications
+- Add site title to page header
 
 ### 21 Feb 2017
 - Added possibility to change the homepage's name
