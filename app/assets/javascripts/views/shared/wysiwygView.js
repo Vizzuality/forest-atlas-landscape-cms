@@ -47,7 +47,8 @@
     events: {
       'click .js-toggle-expand-sidebar': '_onClickToggleExpandSidebar',
       'click .js-add-image': '_onClickAddImage',
-      'click .js-add-widget': '_onClickAddWidget'
+      'click .js-add-widget': '_onClickAddWidget',
+      'click .js-add-html': '_onClickAddHtml'
     },
 
     initialize: function (settings) {
@@ -136,6 +137,22 @@
 
 
       modal.open();
+
+      // We hide the sidebar
+      this._hideSidebar();
+    },
+
+    /**
+     * Event handler called when the sidebar's add html button is clicked
+     */
+    _onClickAddHtml: function () {
+      // We collapse the sidebar
+      this._toggleExpandSidebar();
+
+      // We save the positionn of the cursor within the wysiwyg
+      var range = this.editor.getSelection();
+
+      // TODO: create html code view
 
       // We hide the sidebar
       this._hideSidebar();
