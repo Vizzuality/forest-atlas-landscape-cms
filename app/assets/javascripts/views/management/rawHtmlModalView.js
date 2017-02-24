@@ -44,7 +44,8 @@
 
     _renderEditor: function () {
       var container = this.el.querySelector('.js-raw-html');
-      this.editor = CodeMirror.fromTextArea(container, { mode: 'javascript', json: true });
+
+      this.editor = CodeMirror.fromTextArea(container, { mode : "xml", htmlMode: true, autoCloseTags: true });
     },
 
     render: function () {

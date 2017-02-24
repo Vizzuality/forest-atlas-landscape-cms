@@ -1,0 +1,36 @@
+.c-raw-html-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .content {
+    flex-basis: 100%;
+    flex-grow: 1;
+    padding: 45px 45px 0;
+    height: calc(100% - 60px);
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: $font-size-huge;
+      font-weight: $font-weight-light;
+      text-align: center;
+    }
+
+    .raw-html {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(100% - 45px - 56px);
+      border: 1px solid rgba(85, 85, 85, 0.3);
+      padding: 5px;
+      overflow: auto;
+
+      > .CodeMirror {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+}

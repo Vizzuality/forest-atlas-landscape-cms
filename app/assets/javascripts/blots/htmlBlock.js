@@ -98,7 +98,7 @@
         var node = _get(HtmlBlot.__proto__ || Object.getPrototypeOf(HtmlBlot), 'create', this).call(this);
         var container = document.createElement('div');
 
-        container.classList.add('html-container', 'js-raw-html-content');
+        container.classList.add('js-raw-html-content');
         node.appendChild(container);
 
         return node;

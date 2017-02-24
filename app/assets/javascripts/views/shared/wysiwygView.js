@@ -152,8 +152,22 @@
       // We save the position of the cursor within the wysiwyg
       var range = this.editor.getSelection();
 
-      // TODO: create html code view
-      this.editor.insertEmbed(range.index, 'html', {}, 'user');
+      var modal = new App.View.ModalView();
+
+      // If exists, we delete the previous modal
+      if (this.rawHtmlModalView) this.rawHtmlModalView.remove();
+
+      this.rawHtmlModalView = new App.View.RawHtmlModalView({
+        cancelCallback: function () { modal.close(); },
+        continueCallback: function (content) {
+          modal.close();
+          this.editor.insertEmbed(range.index, 'html', content, 'user');
+        }.bind(this)
+      });
+
+      modal.render = this.rawHtmlModalView.render;
+
+      modal.open();
 
       // We hide the sidebar
       this._hideSidebar();

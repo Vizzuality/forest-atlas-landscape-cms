@@ -38,7 +38,7 @@ class HtmlBlot extends Embed {
     const node = super.create();
     const container = document.createElement('div');
 
-    container.classList.add('html-container', 'js-raw-html-content');
+    container.classList.add('js-raw-html-content');
     node.appendChild(container);
 
     return node;
