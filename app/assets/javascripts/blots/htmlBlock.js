@@ -37,6 +37,7 @@
 
       _this.editor = window.editor;
       _this.content = domNode.querySelector('.js-raw-html-content');
+      _this.content.setAttribute('contenteditable', false);
       _this.content.innerHTML = rawContent;
 
       if (!_this.editor.options.readOnly) {
@@ -53,17 +54,85 @@
 
 
     _createClass(HtmlBlot, [{
-      key: '_onClickRemove',
+      key: 'format',
 
+
+      /**
+       * Set an attribute of the node
+       * @param {string} name - attribute name
+       * @param {any} value
+       * @memberOf HtmlBlot
+       */
+      value: function format(name, value) {
+        if (name === 'content') {
+          if (value) {
+            this.content.innerHTML = value;
+          } else {
+            this.content.parentElement.removeChild(this.caption);
+          }
+        } else {
+          _get(HtmlBlot.prototype.__proto__ || Object.getPrototypeOf(HtmlBlot.prototype), 'format', this).call(this, name, value);
+        }
+      }
 
       /**
        * Event handler called when the user clicks the remove button
        * @memberOf HtmlBlot
        */
+
+    }, {
+      key: '_onClickRemove',
       value: function _onClickRemove() {
         var offset = this.offset();
         this.editor.deleteText(offset, this.length());
         this.editor.setSelection(offset);
+      }
+
+      /**
+       * Event handler called when the mouse is over an image
+       * @memberOf ImageBlot
+       */
+
+    }, {
+      key: '_onMouseoverImage',
+      value: function _onMouseoverImage() {
+        this._showToolbar();
+      }
+
+      /**
+       * Event handler called when the mouse leaves the image toolbar
+       * @param {object} e - event object
+       * @memberOf ImageBlot
+       */
+
+    }, {
+      key: '_onMouseoutToolbar',
+      value: function _onMouseoutToolbar(e) {
+        if (e.relatedTarget !== this.image && !$(e.relatedTarget).closest(this.toolbar).length) {
+          this._hideToolbar();
+        }
+      }
+
+      /**
+       * Hide the image toolbar
+       * @memberOf ImageBlot
+       */
+
+    }, {
+      key: '_hideToolbar',
+      value: function _hideToolbar() {
+        this.toolbar.classList.add('-hidden');
+      }
+
+      /**
+       * Show the image toolbar
+       * @memberOf ImageBlot
+       */
+
+    }, {
+      key: '_showToolbar',
+      value: function _showToolbar() {
+        this.toolbar.classList.remove('-hidden');
       }
 
       /**
@@ -78,16 +147,22 @@
 
         // We create the element with the default state
         this.toolbar = document.createElement('div');
-        this.domNode.appendChild(this.toolbar);
+        this.domNode.children[0].appendChild(this.toolbar);
         this.toolbar.classList.add('toolbar');
 
         // We append its content
         this.toolbar.innerHTML = HandlebarsTemplates['management/wysiwyg-block-toolbar']({
-          hideChangeBtn: true,
-          showSizeBtn: true
+          hideChangeBtn: false,
+          showSizeBtn: false
         });
 
         // We attach the event listeners
+        this.content.addEventListener('mouseover', function () {
+          return _this2._onMouseoverImage();
+        });
+        this.content.addEventListener('mouseout', function (e) {
+          return _this2._onMouseoutToolbar(e);
+        });
         this.toolbar.querySelector('.js-remove').addEventListener('click', function () {
           return _this2._onClickRemove();
         });
@@ -102,6 +177,27 @@
         node.appendChild(container);
 
         return node;
+      }
+
+      /**
+       * Return the attributes attached to the node
+       * @static
+       * @param {HTMLElement} node
+       * @returns {any}
+       * @memberOf HtmlBlot
+       */
+
+    }, {
+      key: 'formats',
+      value: function formats(node) {
+        var res = {};
+
+        var content = node.querySelector('.js-raw-html-content');
+        if (content && content.innerHTML) {
+          res.content = content.innerHTML;
+        }
+
+        return res;
       }
     }]);
 
