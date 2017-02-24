@@ -27,23 +27,21 @@
      * Creates an instance of HtmlBlot.
      *
      * @param {HTMLElement} domNode
-     *
+     * @param {String} rawContent
      * @memberOf HtmlBlot
      */
-    function HtmlBlot(domNode) {
+    function HtmlBlot(domNode, rawContent) {
       _classCallCheck(this, HtmlBlot);
 
       var _this = _possibleConstructorReturn(this, (HtmlBlot.__proto__ || Object.getPrototypeOf(HtmlBlot)).call(this, domNode));
 
-      _this.htmlContainer = domNode.querySelector('.js-html-container');
       _this.editor = window.editor;
+      _this.content = domNode.querySelector('.js-raw-html-content');
+      _this.content.innerHTML = rawContent;
 
       if (!_this.editor.options.readOnly) {
         // We render the toolbar
         _this._renderToolbar();
-
-        // We make the htmlContainer editable
-        _this.htmlContainer.setAttribute('contenteditable', true);
       }
       return _this;
     }
@@ -98,21 +96,10 @@
       key: 'create',
       value: function create() {
         var node = _get(HtmlBlot.__proto__ || Object.getPrototypeOf(HtmlBlot), 'create', this).call(this);
+        var container = document.createElement('div');
 
-        var container = document.createElement('textarea');
-        container.classList.add('html-container', 'js-html-container');
+        container.classList.add('html-container', 'js-raw-html-content');
         node.appendChild(container);
-
-        // If we don't disable the "content editable" feature of the editor
-        // when the user writes in the caption container, the browsers
-        // jump to the top as it considers it as the element we're editing
-        container.addEventListener('focusin', function () {
-          window.editor.root.setAttribute('contenteditable', false);
-        });
-
-        container.addEventListener('focusout', function () {
-          window.editor.root.setAttribute('contenteditable', true);
-        });
 
         return node;
       }
@@ -122,7 +109,7 @@
   }(Embed);
 
   HtmlBlot.blotName = 'html';
-  HtmlBlot.tagName = 'code';
+  HtmlBlot.tagName = 'div';
   HtmlBlot.className = '-raw-html';
 /* eslint-enable */
 

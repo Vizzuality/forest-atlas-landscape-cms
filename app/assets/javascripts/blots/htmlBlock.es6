@@ -14,22 +14,19 @@ class HtmlBlot extends Embed {
    * Creates an instance of HtmlBlot.
    *
    * @param {HTMLElement} domNode
-   *
+   * @param {String} rawContent
    * @memberOf HtmlBlot
    */
-  constructor (domNode) {
+  constructor (domNode, rawContent) {
     super(domNode);
 
-    this.htmlContainer = domNode.querySelector('.js-html-container');
     this.editor = window.editor;
+    this.content = domNode.querySelector('.js-raw-html-content');
+    this.content.innerHTML = rawContent;
 
     if (!this.editor.options.readOnly) {
       // We render the toolbar
       this._renderToolbar();
-
-      // We make the htmlContainer editable
-      this.htmlContainer.setAttribute('contenteditable', true);
-
     }
   }
 
@@ -39,21 +36,10 @@ class HtmlBlot extends Embed {
    */
   static create () {
     const node = super.create();
+    const container = document.createElement('div');
 
-    const container = document.createElement('textarea');
-    container.classList.add('html-container', 'js-html-container');
+    container.classList.add('html-container', 'js-raw-html-content');
     node.appendChild(container);
-
-    // If we don't disable the "content editable" feature of the editor
-    // when the user writes in the caption container, the browsers
-    // jump to the top as it considers it as the element we're editing
-    container.addEventListener('focusin', function () {
-      window.editor.root.setAttribute('contenteditable', false);
-    });
-
-    container.addEventListener('focusout', function () {
-      window.editor.root.setAttribute('contenteditable', true);
-    });
 
     return node;
   }
