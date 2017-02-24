@@ -77,6 +77,13 @@ ActiveRecord::Schema.define(version: 20170222110701) do
     t.index ["descendant_id"], name: "page_desc_idx", using: :btree
   end
 
+  create_table "page_widgets", force: :cascade do |t|
+    t.integer "page_id"
+    t.integer "widget_id"
+    t.index ["page_id"], name: "index_page_widgets_on_page_id", using: :btree
+    t.index ["widget_id"], name: "index_page_widgets_on_widget_id", using: :btree
+  end
+
   create_table "pages", force: :cascade do |t|
     t.integer  "site_id"
     t.string   "name"
@@ -190,4 +197,6 @@ ActiveRecord::Schema.define(version: 20170222110701) do
     t.string   "description"
   end
 
+  add_foreign_key "page_widgets", "pages"
+  add_foreign_key "page_widgets", "widgets"
 end

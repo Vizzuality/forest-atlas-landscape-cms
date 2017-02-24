@@ -23,6 +23,8 @@ class Page < ApplicationRecord
   extend EnumerateIt
 
   has_and_belongs_to_many :site_templates
+  has_many :page_widgets
+  has_many :widgets, through: :page_widgets, validate: false
 
   has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
@@ -64,7 +66,26 @@ class Page < ApplicationRecord
     return false
   end
 
+  def synchronise_page_widgets(page_params_hash)
+    return unless page_params_hash.key?('content')
+    content_after = JSON.parse(page_params_hash['content']['json'])
+    widget_ids_after = get_widget_ids_from_object(content_after).flatten.compact
+    current_widget_ids = page_widgets.pluck(:widget_id)
+    removed_widget_ids = current_widget_ids.select{ |id| !widget_ids_after.include?(id) }
+    PageWidget.delete(removed_widget_ids) unless removed_widget_ids.empty?
+    added_widget_ids = widget_ids_after.select{ |id| !current_widget_ids.include?(id) }
+    added_widget_ids.each{ |id| PageWidget.create(page_id: self.id, widget_id: id)}
+  end
+
   private
+
+  def get_widget_ids_from_object(object)
+    if object.respond_to?(:key?) && object.key?('widget')
+      object['widget']['id']
+    elsif object.respond_to?(:each)
+      object.map { |o| get_widget_ids_from_object(o) }
+    end
+  end
 
   def regenerate_url
     uri = self.uri || ''

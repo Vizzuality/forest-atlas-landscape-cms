@@ -395,6 +395,7 @@ class Management::PageStepsController < ManagementController
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
         delete_session_key(:page, @page_id)
+        @page.synchronise_page_widgets(page_params.to_h)
         redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page successfully ' + notice_text
       else
         render_wizard
