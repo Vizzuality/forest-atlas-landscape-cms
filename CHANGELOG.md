@@ -7,6 +7,7 @@
 - Add site title to page header
 - Store links between pages and widgets
 - Add "Go to live page" button on page save
+- Makes link on admin more visible.
 
 ### 21 Feb 2017
 - Added possibility to change the homepage's name
