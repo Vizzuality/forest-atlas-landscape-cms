@@ -79,6 +79,9 @@ class Admin::SiteStepsController < AdminController
 
         # If the user pressed the save button
         if save_button?
+          # front-end doesn't tell us which routes were removed,
+          # only passes a list of current ones
+          @site.mark_routes_for_destruction(session[:site][@site_id]['routes_attributes'])
           if @site.save
             delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
