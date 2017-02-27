@@ -89,6 +89,19 @@
       }
 
       /**
+       * Event handler called when the user clicks the change image button
+       * @memberOf HtmlBlot
+       */
+
+    }, {
+      key: '_onClickChange',
+      value: function _onClickChange() {
+        var offset = this.offset();
+        this.editor.setSelection(offset);
+        this.editor.emitter.emit('HTML_BLOT_EDIT', { content: this.content.innerHTML, blot: this });
+      }
+
+      /**
        * Event handler called when the mouse is over an image
        * @memberOf ImageBlot
        */
@@ -147,7 +160,7 @@
 
         // We create the element with the default state
         this.toolbar = document.createElement('div');
-        this.domNode.children[0].appendChild(this.toolbar);
+        this.domNode.appendChild(this.toolbar);
         this.toolbar.classList.add('toolbar');
 
         // We append its content
@@ -159,6 +172,9 @@
         // We attach the event listeners
         this.toolbar.querySelector('.js-remove').addEventListener('click', function () {
           return _this2._onClickRemove();
+        });
+        this.toolbar.querySelector('.js-change').addEventListener('click', function () {
+          return _this2._onClickChange();
         });
         this.domNode.addEventListener('mouseover', function () {
           return _this2._onMouseoverImage();

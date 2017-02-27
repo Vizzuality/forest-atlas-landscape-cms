@@ -92,6 +92,16 @@ class HtmlBlot extends Embed {
   }
 
   /**
+   * Event handler called when the user clicks the change image button
+   * @memberOf HtmlBlot
+   */
+  _onClickChange() {
+    const offset = this.offset();
+    this.editor.setSelection(offset);
+    this.editor.emitter.emit('HTML_BLOT_EDIT', { content: this.content.innerHTML, blot: this });
+  }
+
+  /**
    * Event handler called when the mouse is over an image
    * @memberOf ImageBlot
    */
@@ -133,7 +143,7 @@ class HtmlBlot extends Embed {
   _renderToolbar() {
     // We create the element with the default state
     this.toolbar = document.createElement('div');
-    this.domNode.children[0].appendChild(this.toolbar);
+    this.domNode.appendChild(this.toolbar);
     this.toolbar.classList.add('toolbar');
 
     // We append its content
@@ -144,6 +154,7 @@ class HtmlBlot extends Embed {
 
     // We attach the event listeners
     this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
+    this.toolbar.querySelector('.js-change').addEventListener('click', () => this._onClickChange());
     this.domNode.addEventListener('mouseover',() => this._onMouseoverImage());
     this.domNode.addEventListener('mouseout', e => this._onMouseoutToolbar(e));
   }

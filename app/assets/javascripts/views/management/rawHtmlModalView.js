@@ -38,18 +38,18 @@
     _onClickContinue: function (e) {
       e.preventDefault();
 
-      var content = this.editor.getValue();
+      var content = this.htmlEditor.getValue();
       this.options.continueCallback(content);
     },
 
     _renderEditor: function () {
       var container = this.el.querySelector('.js-raw-html');
 
-      this.editor = CodeMirror.fromTextArea(container, { mode : "xml", htmlMode: true, autoCloseTags: true });
+      this.htmlEditor = CodeMirror.fromTextArea(container, { mode : "xml", htmlMode: true, autoCloseTags: true });
     },
 
     render: function () {
-      this.el.innerHTML = this.template();
+      this.el.innerHTML = this.template(this.options);
       this.setElement(this.el);
 
       return this;

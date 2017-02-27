@@ -135,7 +135,6 @@
 
       modal.render = this.widgetsModalView.render;
 
-
       modal.open();
 
       // We hide the sidebar
@@ -144,8 +143,12 @@
 
     /**
      * Event handler called when the sidebar's add html button is clicked
+     * @param {{ content: string, blot: HtmlBlot }} e - event object
      */
-    _onClickAddHtml: function () {
+    _onClickAddHtml: function (e) {
+      var htmlContent = typeof e.content === 'string' ? e.content : null;
+      var blot = e.blot || null;
+
       // We collapse the sidebar
       this._toggleExpandSidebar();
 
@@ -158,10 +161,17 @@
       if (this.rawHtmlModalView) this.rawHtmlModalView.remove();
 
       this.rawHtmlModalView = new App.View.RawHtmlModalView({
-        cancelCallback: function () { modal.close(); },
+        content: htmlContent,
+        cancelCallback: function () {
+          modal.close();
+        },
         continueCallback: function (content) {
           modal.close();
-          this.editor.insertEmbed(range.index, 'html', content, 'user');
+          if (!blot) {
+            this.editor.insertEmbed(range.index, 'html', content, 'user');
+          } else {
+            blot.content.innerHTML = content;
+          }
         }.bind(this)
       });
 
@@ -178,6 +188,7 @@
      */
     _setListeners: function () {
       this.editor.on(Quill.events.EDITOR_CHANGE, this._onEditorChange.bind(this));
+      this.editor.on('HTML_BLOT_EDIT', this._onClickAddHtml.bind(this));
     },
 
     /**
