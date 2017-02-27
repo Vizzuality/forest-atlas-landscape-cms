@@ -41,7 +41,7 @@
       _this.content.innerHTML = rawContent;
 
       if (!_this.editor.options.readOnly) {
-        // We render the toolbar
+        // We make the caption editable
         _this._renderToolbar();
       }
       return _this;
@@ -157,14 +157,14 @@
         });
 
         // We attach the event listeners
-        this.content.addEventListener('mouseover', function () {
-          return _this2._onMouseoverImage();
-        });
-        this.content.addEventListener('mouseout', function (e) {
-          return _this2._onMouseoutToolbar(e);
-        });
         this.toolbar.querySelector('.js-remove').addEventListener('click', function () {
           return _this2._onClickRemove();
+        });
+        this.domNode.addEventListener('mouseover', function () {
+          return _this2._onMouseoverImage();
+        });
+        this.domNode.addEventListener('mouseout', function (e) {
+          return _this2._onMouseoutToolbar(e);
         });
       }
     }], [{

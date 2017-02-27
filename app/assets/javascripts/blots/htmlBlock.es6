@@ -24,7 +24,11 @@ class HtmlBlot extends Embed {
     this.content = domNode.querySelector('.js-raw-html-content');
     this.content.setAttribute('contenteditable', false);
     this.content.innerHTML = rawContent;
-    
+
+    if (!this.editor.options.readOnly) {
+      // We make the caption editable
+      this._renderToolbar();
+    }
   }
 
   /**
@@ -139,8 +143,8 @@ class HtmlBlot extends Embed {
     });
 
     // We attach the event listeners
+    this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
     this.domNode.addEventListener('mouseover',() => this._onMouseoverImage());
     this.domNode.addEventListener('mouseout', e => this._onMouseoutToolbar(e));
-    this.toolbar.querySelector('.js-remove').addEventListener('click', () => this._onClickRemove());
   }
 }
