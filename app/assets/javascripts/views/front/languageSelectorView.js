@@ -54,7 +54,7 @@
         return languages;
       }
 
-      const result = languages.filter((elem) => {
+      const result = languages.filter(function(elem) {
         return window.gon.translations[elem.code];
       });
 
