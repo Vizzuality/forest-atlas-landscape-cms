@@ -22,7 +22,7 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-      this.collection = new Collection((window.gon && gon.global.colorArray && gon.global.colorArray) || []);
+      this.collection = new Collection((window.gon && gon.global.colorArray) || []);
       this.render();
     },
 
@@ -88,6 +88,8 @@
     },
 
     render: function () {
+      if (!this.el) return;
+      
       this.$el.html(this.template({
         colors: this.collection.toJSON()
           .map(function (color, i) {

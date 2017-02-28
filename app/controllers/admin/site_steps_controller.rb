@@ -9,7 +9,7 @@ class Admin::SiteStepsController < AdminController
   COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
   COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
 
-  SAVE = 'Save Changes'.freeze
+  SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
 
   steps *Site.form_steps[:pages]
@@ -52,10 +52,10 @@ class Admin::SiteStepsController < AdminController
       if step == 'contexts'
         @contexts = Context.all
       end
-      if step == 'style'
+      if step == 'template'
         SiteSetting.create_color_settings @site
       end
-      if step == 'settings'
+      if step == 'style'
         SiteSetting.create_additional_settings @site
         gon.global.color_controller_id = COLOR_CONTROLLER_ID
         gon.global.color_controller_name = COLOR_CONTROLLER_NAME
@@ -68,6 +68,12 @@ class Admin::SiteStepsController < AdminController
         @alternative_image = @site.site_settings.where(name: 'alternative_image').first
         @favico = @site.site_settings.where(name: 'favico').first
       end
+      if step == 'settings'
+        SiteSetting.create_site_settings @site
+        @translate_english = @site.site_settings.where(name: 'translate_english').first
+        @translate_spanish = @site.site_settings.where(name: 'translate_spanish').first
+        @translate_french = @site.site_settings.where(name: 'translate_french').first
+      end
     end
     render_wizard
   end
@@ -79,6 +85,9 @@ class Admin::SiteStepsController < AdminController
 
         # If the user pressed the save button
         if save_button?
+          # front-end doesn't tell us which routes were removed,
+          # only passes a list of current ones
+          @site.mark_routes_for_destruction(session[:site][@site_id]['routes_attributes'])
           if @site.save
             delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
@@ -162,8 +171,45 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-      when 'style'
+      when 'template'
         @site = current_site
+        if save_button?
+          if @site.save
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'template'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
+
+
+      # In this step, the site is always saved
+      when 'style'
+        settings = site_params.to_h
+        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
+
+        begin
+          # If the user is editing
+          if @site.id
+            @site.site_settings.each do |site_setting|
+              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
+              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            end
+            # If the user is creating a new site
+          else
+            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            @site.form_step = 'style'
+          end
+        end
+
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
@@ -177,12 +223,12 @@ class Admin::SiteStepsController < AdminController
           if @site.valid?
             redirect_to next_wizard_path
           else
+            color_array = @site.site_settings.select{ |s| s.name == 'flag'}.first
+            gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
             render_wizard
           end
         end
 
-
-      # In this step, the site is always saved
       when 'settings'
         settings = site_params.to_h
         @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
@@ -203,7 +249,7 @@ class Admin::SiteStepsController < AdminController
 
         if @site.save
           delete_session_key(:site, @site_id)
-          redirect_to next_wizard_path, notice: 'The site\'s main color might take a few minutes to be visible'
+          redirect_to next_wizard_path(site_slug: @site.slug), notice: 'The site\'s main color might take a few minutes to be visible'
         else
           render_wizard
         end
@@ -215,10 +261,20 @@ class Admin::SiteStepsController < AdminController
   # Never trust parameters from the scary internet, only allow the white list through.
   def site_params
     params.require(:site).
-      permit(:name, :site_template_id, :default_context, user_ids: [],
-             context_sites_attributes: [:context_id, :id],
-             routes_attributes: [:host, :id],
-             site_settings_attributes: [:id, :position, :value, :name, :image])
+      permit(
+        :name,
+        :site_template_id,
+        :default_context,
+        user_ids: [],
+        context_sites_attributes: [:context_id, :id],
+        routes_attributes: [:host, :id],
+        site_settings_attributes: [
+          :id, :position, :value, :name, :image,
+          :attribution_link, :attribution_label,
+          :translate_english, :translate_french,
+          :translate_spanish, :pre_footer, :analytics_key, :keywords, :contact_email_address
+        ]
+      )
   end
 
   def current_site

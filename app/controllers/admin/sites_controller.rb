@@ -12,6 +12,7 @@ class Admin::SitesController < AdminController
       {
         'title' => {'value' => site.name, 'link' => { 'url' => site.routes.first.host, 'external' => true}, 'searchable' => true, 'sortable' => true},
         'template' => {'value' => site.site_template.name, 'searchable' => true, 'sortable' => true},
+        'preview' => {'value' => site.routes.first.host, 'link' => { 'url' => site.routes.first.host, 'external' => true}, 'searchable' => true, 'sortable' => true},
         'edit' => {'value' => edit_admin_site_site_step_path(site_slug: site.slug, id: :name), 'method' => 'get'},
         'delete' => {'value' => admin_site_path(slug: site.slug), 'method' => 'delete'}
       }

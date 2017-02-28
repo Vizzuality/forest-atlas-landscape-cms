@@ -1,0 +1,54 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Template</h1>
+        <p>Choose one of the two templates below and its main color</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= include_gon %>
+
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -style">
+    <div class="wrapper">
+
+      <div class="templates">
+        <% SiteTemplate.all.each do |template| %>
+          <div class="template">
+            <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
+            <% if f.object.id %>
+              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), disabled: :true,  :id => ('template-' + template.id.to_s) %>
+          <% else %>
+              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), :id => ('template-' + template.id.to_s) %>
+          <% end %>
+            <div class="content">
+              <p><%= template.name %></p>
+              <%= image_tag (template.name == 'Forest Atlas' ? 'fa-preview.jpg' : 'lsa-preview.jpg'), alt: template.name %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <hr />
+
+      <%= f.fields_for :site_settings, f.object.site_settings.select{|v| v.name == 'color'} do |color_form| %>
+          <%= color_form.hidden_field :id %>
+          <%= color_form.hidden_field :name, value: 'color' %>
+          <%= color_form.hidden_field :position, value: '1' %>
+          <div class="theme-color js-theme-color">
+            <p>Theme color</p>
+            <%= color_form.color_field :value, id: 'color' %>
+            <label for="color" tabindex="0" class="js-label">Change theme color</label>
+            <div class="preview js-preview"></div>
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>

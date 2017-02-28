@@ -12,7 +12,8 @@
 
 <div class="l-site-creation -finish">
   <div class="wrapper">
-    <%= link_to  'Go to site', @site.routes.first.host, target: '_blank', class: 'c-button' %>
+    <%= link_to 'Go to site', @site.routes.first.host, target: '_blank', class: 'c-button' %>
+    <%= link_to 'Edit my site', edit_admin_site_site_step_path(site_slug: @site.slug, id: :name), class: 'c-button -outline -dark-text' %>
     <%= link_to 'Create a new site', new_admin_site_step_path, class: 'c-button -outline -dark-text' %>
     <%= link_to 'See my sites', admin_sites_path, class: 'c-button -outline -dark-text' %>
   </div>

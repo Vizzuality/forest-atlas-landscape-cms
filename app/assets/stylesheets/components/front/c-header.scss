@@ -451,6 +451,10 @@
           display: inline-block;
           height: 100%;
 
+          > ul {
+            display: flex;
+          }
+
           li {
             height: 100%;
             padding: 0 14px;
@@ -463,6 +467,14 @@
 
             &:last-of-type {
               padding-right: 0;
+            }
+
+            &.-active {
+              @if $theme == 2 {
+                background-color: rgba($color-3, .1);
+              } @else {
+                background-color: rgba($color-1, .1);
+              }
             }
           }
         }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170130101307) do
+ActiveRecord::Schema.define(version: 20170222110701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,13 @@ ActiveRecord::Schema.define(version: 20170130101307) do
     t.index ["descendant_id"], name: "page_desc_idx", using: :btree
   end
 
+  create_table "page_widgets", force: :cascade do |t|
+    t.integer "page_id"
+    t.integer "widget_id"
+    t.index ["page_id"], name: "index_page_widgets_on_page_id", using: :btree
+    t.index ["widget_id"], name: "index_page_widgets_on_widget_id", using: :btree
+  end
+
   create_table "pages", force: :cascade do |t|
     t.integer  "site_id"
     t.string   "name"
@@ -129,6 +136,8 @@ ActiveRecord::Schema.define(version: 20170130101307) do
     t.datetime "image_updated_at"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.text     "attribution_link"
+    t.text     "attribution_label"
     t.index ["site_id", "name"], name: "index_site_settings_on_site_id_and_name", unique: true, using: :btree
     t.index ["site_id"], name: "index_site_settings_on_site_id", using: :btree
   end
@@ -188,4 +197,6 @@ ActiveRecord::Schema.define(version: 20170130101307) do
     t.string   "description"
   end
 
+  add_foreign_key "page_widgets", "pages"
+  add_foreign_key "page_widgets", "widgets"
 end

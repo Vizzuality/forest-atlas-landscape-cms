@@ -1,42 +1,47 @@
+<% unless @site_page.site.site_settings.pre_footer(@site_page.site_id).value.empty? -%>
+    <div class="c-pre-footer">
+      <div class="wrapper">
+        <%= raw(@site_page.site.site_settings.pre_footer(@site_page.site_id).value.strip) %>
+      </div>
+    </div>
+<% end %>
+
 <footer class="c-footer">
   <div class="wrapper">
     <ul class="site-links-list">
       <li class="site-link-item"><%= link_to 'Terms of Service', '/terms-and-privacy', class: 'site-link' %></li>
-      <li class="separator"> | </li>
-      <li class="site-link-item"><%= link_to 'Contact us', nil, class: 'site-link' %></li>
-    </ul>
+      <% unless @site_page.site.site_settings.contact_email_address(@site_page.site_id).value.empty? -%>
+        <li class="separator"> |</li>
+        <li class="site-link-item"><%= link_to 'Contact us', 'mailto:' + @site_page.site.site_settings.contact_email_address(@site_page.site_id).value, class: 'site-link' %></li>
+      <% end %>    </ul>
 
     <div class="share">
       <span class="share-text">Share the Atlas</span>
       <ul class="share-links-list">
         <li class="share-link-item">
-          <a class="share-link -facebook" href="#" target="_blank">
-            <svg class="icon icon-Facebook"><use xlink:href="#icon-Facebook"></use></svg>
+          <a class="share-link -facebook" href="http://www.facebook.com/sharer.php?u=<%= request.original_url %>" target="_blank">
+            <svg class="icon icon-Facebook">
+              <use xlink:href="#icon-Facebook"></use>
+            </svg>
           </a>
         </li>
         <li class="share-link-item">
-          <a class="share-link -twitter" href="#" target="_blank">
-            <svg class="icon icon-Twitter"><use xlink:href="#icon-Twitter"></use></svg>
+          <a class="share-link -twitter" href="https://twitter.com/share?url=<%= request.original_url %>" target="_blank">
+            <svg class="icon icon-Twitter">
+              <use xlink:href="#icon-Twitter"></use>
+            </svg>
           </a>
         </li>
         <li class="share-link-item">
-          <a class="share-link -googleplus" href="#" target="_blank">
-            <svg class="icon icon-Google"><use xlink:href="#icon-Google"></use></svg>
+          <a class="share-link -googleplus" href="https://plus.google.com/share?url=<%= request.original_url %>" target="_blank">
+            <svg class="icon icon-Google">
+              <use xlink:href="#icon-Google"></use>
+            </svg>
           </a>
         </li>
         <li class="share-link-item">
-          <a class="share-link -pinterest" href="#" target="_blank">
-            <svg class="icon icon-Pinterest"><use xlink:href="#icon-Pinterest"></use></svg>
-          </a>
-        </li>
-        <li class="share-link-item">
-          <a class="share-link -linkedin" href="#" target="_blank">
+          <a class="share-link -linkedin" href="https://www.linkedin.com/shareArticle?url=<%= request.original_url %>&title=<%= @site_page.name + ' - ' + @site_page.site.name %>&summary=<%= @site_page.description %>" target="_blank">
             <svg class="icon icon-Linkedin"><use xlink:href="#icon-Linkedin"></use></svg>
-          </a>
-        </li>
-        <li class="share-link-item">
-          <a class="share-link -tumblr" href="#" target="_blank">
-            <svg class="icon icon-Tumblr"><use xlink:href="#icon-Tumblr"></use></svg>
           </a>
         </li>
       </ul>

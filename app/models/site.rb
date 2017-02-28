@@ -50,8 +50,8 @@ class Site < ApplicationRecord
   after_create :create_template_content
 
   cattr_accessor :form_steps do
-    { pages: %w[name managers publishers contexts style settings finish],
-      names: %w[Name Managers Publishers Contexts Style Settings Finish] }
+    { pages: %w[name managers publishers contexts template style settings finish],
+      names: %w(Name Managers Publishers Contexts Template Style Settings Finish)}
   end
 
 
@@ -64,6 +64,14 @@ class Site < ApplicationRecord
     # All fields from previous steps are required if the
     # step parameter appears before or we are on the current step
     return true if self.form_steps[:pages].index(step.to_s) <= self.form_steps[:pages].index(form_step)
+  end
+
+  def mark_routes_for_destruction(routes_attributes)
+    keep_routes_ids = routes_attributes &&
+      routes_attributes.values.reject{ |r| r[:id].blank? }.map{ |r| r[:id].to_i }
+    routes.each do |r|
+      r.mark_for_destruction if r.persisted? && !keep_routes_ids.include?(r.id)
+    end
   end
 
   def update_routes

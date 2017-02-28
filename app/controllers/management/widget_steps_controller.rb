@@ -9,7 +9,7 @@ class Management::WidgetStepsController < ManagementController
   attr_accessor :steps_names
 
   CONTINUE = 'CONTINUE'.freeze
-  SAVE = 'SAVE CHANGES'.freeze
+  SAVE = 'SAVE'.freeze
 
   def new
     reset_session_key(:widget, @widget_id, {})

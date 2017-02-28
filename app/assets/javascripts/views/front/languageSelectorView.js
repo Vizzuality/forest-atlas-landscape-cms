@@ -22,7 +22,8 @@
       if (!Transifex) return;
 
       Transifex.live.onFetchLanguages(function (languages) {
-        this.options.languages = languages;
+
+        this.options.languages = this._getSiteLanguages(languages);
 
         var currentLanguageCode = Transifex.live.getSelectedLanguageCode();
         this.options.currentLanguage = _.findWhere(this.options.languages, { code: currentLanguageCode });
@@ -38,11 +39,26 @@
         // can be shareable
         if (!/\?(.*)?l=[a-z]{2}/.test(location.search)) {
           var url = (!location.search.length ? '?' : '&') + 'l=' + currentLanguageCode;
-          history.replaceState(null, '', url);
+          // NOTE: adding { turbolinks: {} } is mandatory to avoid breaking the browser's back button
+          // because Turbolinks doesn't handle well the URL changes
+          // Check here: https://github.com/turbolinks/turbolinks/issues/219
+          history.replaceState({ turbolinks: {} }, '', url);
         }
 
         this.render();
       }.bind(this));
+    },
+
+    _getSiteLanguages: function(languages) {
+      if (!window.gon || !window.gon.translations) {
+        return languages;
+      }
+
+      const result = languages.filter((elem) => {
+        return window.gon.translations[elem.code];
+      });
+
+      return result;
     },
 
     /**
@@ -56,7 +72,10 @@
 
       // We update the URL with the new language choice
       var search = location.search.replace(/l=[a-z]{2}/, 'l=' + languageCode);
-      history.replaceState(null, '', search);
+      // NOTE: adding { turbolinks: {} } is mandatory to avoid breaking the browser's back button
+      // because Turbolinks doesn't handle well the URL changes
+      // Check here: https://github.com/turbolinks/turbolinks/issues/219
+      history.replaceState({ turbolinks: {} }, '', search);
     },
 
     /**

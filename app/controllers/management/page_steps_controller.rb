@@ -20,7 +20,7 @@ class Management::PageStepsController < ManagementController
   attr_accessor :invalid_steps
 
   CONTINUE = 'CONTINUE'.freeze
-  SAVE = 'SAVE CHANGES'.freeze
+  SAVE = 'SAVE'.freeze
   PUBLISH = 'PUBLISH'.freeze
 
 
@@ -132,7 +132,7 @@ class Management::PageStepsController < ManagementController
       return
     end
     session[:invalid_steps][@page_id] ||= []
-    session[:invalid_steps][@page_id] << 'type' if @page.content_type
+    session[:invalid_steps][@page_id] << 'type' if @page.content_type and @page.valid?
 
     @page.form_step = step
     case step
@@ -143,8 +143,15 @@ class Management::PageStepsController < ManagementController
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
-        move_forward (@page.content_type ? wizard_steps[3] : next_step)
-
+        move_forward next_step and return if @page_id == :new
+        case @page.content_type
+          when ContentType::HOMEPAGE
+            move_forward next_step
+          when ContentType::STATIC_CONTENT
+            move_forward wizard_steps[2]
+          else
+            move_forward wizard_steps[3]
+        end
       when 'type'
         set_current_page_state
         move_forward
@@ -395,6 +402,7 @@ class Management::PageStepsController < ManagementController
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
         delete_session_key(:page, @page_id)
+        @page.synchronise_page_widgets(page_params.to_h)
         redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page successfully ' + notice_text
       else
         render_wizard
@@ -474,5 +482,6 @@ class Management::PageStepsController < ManagementController
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
     reset_session_key(:page, @page_id, {})
+    reset_session_key(:page, :new, {})
   end
 end

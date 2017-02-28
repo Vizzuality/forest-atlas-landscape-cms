@@ -11,7 +11,7 @@ class ContextStepsController < ManagementController
   attr_accessor :steps_names
 
   CONTINUE = 'CONTINUE'.freeze
-  SAVE = 'SAVE CHANGES'.freeze
+  SAVE = 'SAVE'.freeze
 
   # Reset the session
   def new

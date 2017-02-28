@@ -1,4 +1,22 @@
+### 28 Feb 2017
+- Add links to share on Facebook, Twitter and G+ on page footers
+- Add color highlight to 3rd level menu when element is selected
+- Add attribution label + link to cover images.
+- Add clear formatting button to WYSIWYG editor
+- Update styling for Landscape applications
+- Add site title to page header
+- Add Google Analytics global + per site tracking features
+- Add pre-footer
+- Add supported translations languages per site
+- Add meta tags to HTML + configurable "keywords" field per site
+- Add contact email address to site settings
+- Store links between pages and widgets
+- Add "Go to live page" button on page save
+- Makes link on admin more visible.
+- Fixes deleting site urls
+
 ### 21 Feb 2017
+- Added possibility to change the homepage's name
 - Added token to datasets listing to bypass the API cache
 - Added logs for all API calls
 - Fixed an issue that prevented the map's settings to have color hightlighting
