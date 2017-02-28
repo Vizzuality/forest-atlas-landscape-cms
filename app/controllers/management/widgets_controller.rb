@@ -18,6 +18,19 @@ class Management::WidgetsController < ManagementController
         'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
       }
       end
+    gon.widget_pages = Hash[
+      widgets.map do |widget|
+        [
+          widget.id,
+          widget.pages.select(:id, :name, :site_id, :url).map do |page|
+            {
+              page: page,
+              site: page.site.attributes.slice('id', 'name', 'slug')
+            }
+          end
+        ]
+      end
+    ]
   end
 
   def destroy
