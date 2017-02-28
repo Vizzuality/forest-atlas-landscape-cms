@@ -2,55 +2,143 @@
   <div class="c-extended-header">
     <div class="wrapper">
       <div class="description">
-        <h1>Style</h1>
-        <p>Choose one of the two templates below and its main color</p>
+        <h1>Site Style</h1>
+        <p>Select a logo, an icon and two cover images – one for the homepage and the other for the Open Content pages.</p>
       </div>
     </div>
   </div>
 <% end %>
 
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
-<%= include_gon %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-  <div class="l-site-creation -style">
+  <div class="l-site-creation -settings">
     <div class="wrapper">
 
-      <div class="templates">
-        <% SiteTemplate.all.each do |template| %>
-          <div class="template">
-            <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
-            <% if f.object.id %>
-              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), disabled: :true,  :id => ('template-' + template.id.to_s) %>
-          <% else %>
-              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), :id => ('template-' + template.id.to_s) %>
+      <div class="settings">
+        <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by{ |s| s.position}) do |settings_form| %>
+          <% setting = settings_form.object %>
+          <% case setting.name
+
+            when 'logo_image' %>
+              <%= settings_form.hidden_field :position, value: '2'%>
+              <%= settings_form.hidden_field :name, value: 'logo_image'%>
+
+              <div class="logo">
+                <h3>Logo image</h3>
+                <%= settings_form.file_field :image, id: 'logo', accept: 'image/*', 'data-type': 'image' %>
+                <%= settings_form.label :image, value: 'Change logo image', for: 'logo', tabindex: '0' %>
+                <% if !@logo_image.nil? && @logo_image.image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @logo_image.image.url, alt: 'Logo image' %>
+                  </div>
+                <% elsif @site.site_template.name == 'Landscape Application' %>
+                  <div class="preview js-preview">
+                    <%= image_tag asset_path('logo.png'), alt: 'Logo image' %>
+                  </div>
+                <% else %>
+                  <div class="placeholder js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="restrictions js-restrictions">
+                  Max. size: 1MB
+                </div>
+              </div>
+
+            <% when 'favico' %>
+              <%= settings_form.hidden_field :position, value: '3'%>
+              <%= settings_form.hidden_field :name, value: 'favico'%>
+
+              <div class="icon">
+                <h3>Icon image</h3>
+                <%= settings_form.file_field :image, id: 'favico', accept: 'image/*', 'data-type': 'image' %>
+                <%= settings_form.label :image, value: 'Change icon image', for: 'favico', tabindex: '0' %>
+                <% if !@favico.nil? && @favico.image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @favico.image.url, alt: 'Icon image' %>
+                  </div>
+                <% else %>
+                  <div class="placeholder js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="restrictions js-restrictions">
+                  Recommended dimensions: 292x292<br />
+                  Max. size: 1MB
+                </div>
+              </div>
+              <% unless @site.site_template.name == 'Forest Atlas' %>
+                <hr/>
+              <% end %>
+
+            <% when 'flag' %>
+              <div class="flag-colors">
+                <h3>Flag colors</h3>
+                <div class="js-flag-colors"></div>
+              </div>
+              <hr/>
+
+            <% when 'main_image' %>
+              <%= settings_form.hidden_field :position, value: '5'%>
+              <%= settings_form.hidden_field :name, value: 'main_image'%>
+              <div class="homepage-cover">
+                <h3>Homepage cover image</h3>
+                <%= settings_form.file_field :image, id: 'main', accept: 'image/*', 'data-type': 'background' %>
+                <%= settings_form.label :image, value: 'Change homepage cover image', for: 'main', tabindex: '0' %>
+                <% if !@main_image.nil? && @main_image.image_file_name %>
+                  <div class="preview -high js-preview" style="background-image: url('<%= @main_image.image.url %>');">
+                  </div>
+                <% else %>
+                  <div class="placeholder -high js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Recommended dimensions: 1280x500<br />
+                    Max. size: 1MB
+                  </div>
+                  <div class="cover-attribution">
+                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+                  </div>
+                </div>
+              </div>
+
+            <% when 'alternative_image' %>
+              <%= settings_form.hidden_field :position, value: '6'%>
+              <%= settings_form.hidden_field :name, value: 'alternative_image'%>
+              <div class="content-cover">
+                <h3>Content cover image</h3>
+                <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
+                <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
+                <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
+                  <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
+                  </div>
+                <% else %>
+                  <div class="placeholder -high js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Recommended dimensions: 1280x250<br />
+                    Max. size: 1MB
+                  </div>
+                  <div class="cover-attribution">
+                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+                  </div>
+                </div>
+              </div>
+
           <% end %>
-            <div class="content">
-              <p><%= template.name %></p>
-              <%= image_tag (template.name == 'Forest Atlas' ? 'fa-preview.jpg' : 'lsa-preview.jpg'), alt: template.name %>
-            </div>
-          </div>
         <% end %>
       </div>
-
-      <hr />
-
-      <%= f.fields_for :site_settings, f.object.site_settings.select{|v| v.name == 'color'} do |color_form| %>
-          <%= color_form.hidden_field :id %>
-          <%= color_form.hidden_field :name, value: 'color' %>
-          <%= color_form.hidden_field :position, value: '1' %>
-          <div class="theme-color js-theme-color">
-            <p>Theme color</p>
-            <%= color_form.color_field :value, id: 'color' %>
-            <label for="color" tabindex="0" class="js-label">Change theme color</label>
-            <div class="preview js-preview"></div>
-          </div>
-      <% end %>
-
     </div>
   </div>
-  <%= render partial: 'footer', locals: { f: f } %>
+  <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @site } %>
-
-<%= console if Rails.env.development? %>

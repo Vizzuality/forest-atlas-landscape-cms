@@ -14,7 +14,7 @@
     index: function () {
       // We execute the code specific to the step
       if (this.step && this.step.length) {
-        var stepMethod = 'init' + this.step[0].toUpperCase() + this.step.slice(1, this.step.length) + 'Step';
+        var stepMethod = 'init' + this.step[0].toUpperCase() + this.step.slice(1, this.step.length).replace(/(\_[a-z])/g, function($1){return $1.toUpperCase().replace('_','');}) + 'Step';
         if (this[stepMethod]) this[stepMethod]();
       }
     },
@@ -63,7 +63,7 @@
       });
     },
 
-    initStyleStep: function () {
+    initTemplateStep: function () {
       var themeColorContainer = document.querySelector('.js-theme-color');
       var input = themeColorContainer.querySelector('input');
       var colorLabel = themeColorContainer.querySelector('.js-label');
@@ -92,7 +92,7 @@
       }
     },
 
-    initSettingsStep: function () {
+    initStyleStep: function () {
       var fileInputs = document.querySelectorAll('input[type="file"]');
       // eslint-disable-next-line block-scoped-var
       for (var i = 0, j = fileInputs.length; i < j; i++) {
@@ -122,7 +122,7 @@
       var imageType = input.dataset.type;
       var container = input.parentElement;
       var placeholder = container.querySelector('.js-placeholder');
-      var restrictions = container.querySelector('.js-restrictions');
+      var fileInputFooter = container.querySelector('.js-restrictions').parentElement;
       var oldPreview = container.querySelector('.js-preview');
       var isHigh = (placeholder && placeholder.classList.contains('-high')) ||
         (oldPreview && oldPreview.classList.contains('-high'));
@@ -158,8 +158,7 @@
         } else {
           preview.style.backgroundImage = 'url(' + base64 + ')';
         }
-
-        container.insertBefore(preview, restrictions);
+        container.insertBefore(preview, fileInputFooter);
       });
       reader.readAsDataURL(file);
     }

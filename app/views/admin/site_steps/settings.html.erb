@@ -1,144 +1,97 @@
 <% content_for :extended_header do %>
-  <div class="c-extended-header">
-    <div class="wrapper">
-      <div class="description">
-        <h1>Customize</h1>
-        <p>Select a logo, an icon and two cover images – one for the homepage and the other for the Open Content pages.</p>
+    <div class="c-extended-header">
+      <div class="wrapper">
+        <div class="description">
+          <h1>Site Settings</h1>
+          <p>Configure other aspects of your site - like translations or contact email address</p>
+        </div>
       </div>
     </div>
-  </div>
 <% end %>
 
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-  <div class="l-site-creation -settings">
-    <div class="wrapper">
+    <div class="l-site-creation -site-settings">
+      <div class="wrapper">
+        <div class="settings c-inputs-container">
+        <div class="container">
+          <%= f.fields_for :site_settings, \
+            (f.object.site_settings.collect.select{|x| %w[translate_english translate_french translate_spanish].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
+            <% setting = settings_form.object %>
+            <% case setting.name when 'translate_english' %>
 
-      <div class="settings">
-        <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by{ |s| s.position}) do |settings_form| %>
-          <% setting = settings_form.object %>
-          <% case setting.name
-
-            when 'logo_image' %>
-              <%= settings_form.hidden_field :position, value: '2'%>
-              <%= settings_form.hidden_field :name, value: 'logo_image'%>
-
-              <div class="logo">
-                <h3>Logo image</h3>
-                <%= settings_form.file_field :image, id: 'logo', accept: 'image/*', 'data-type': 'image' %>
-                <%= settings_form.label :image, value: 'Change logo image', for: 'logo', tabindex: '0' %>
-                <% if !@logo_image.nil? && @logo_image.image_file_name %>
-                  <div class="preview js-preview">
-                    <%= image_tag @logo_image.image.url, alt: 'Logo image' %>
-                  </div>
-                <% elsif @site.site_template.name == 'Landscape Application' %>
-                  <div class="preview js-preview">
-                    <%= image_tag asset_path('logo.png'), alt: 'Logo image' %>
-                  </div>
-                <% else %>
-                  <div class="placeholder js-placeholder">
-                    <span>Select file</span>
-                  </div>
-                <% end %>
-                <div class="restrictions js-restrictions">
-                  Max. size: 1MB
-                </div>
+              <%= settings_form.hidden_field :position, value: '7' %>
+              <%= settings_form.hidden_field :name, value: 'translate_english' %>
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_english' %>
+                <%= settings_form.label 'Allow English translations', for: 'translate_english' %>
               </div>
 
-            <% when 'favico' %>
-              <%= settings_form.hidden_field :position, value: '3'%>
-              <%= settings_form.hidden_field :name, value: 'favico'%>
+              <% when 'translate_french' %>
+              <%= settings_form.hidden_field :position, value: '8' %>
+              <%= settings_form.hidden_field :name, value: 'translate_french' %>
 
-              <div class="icon">
-                <h3>Icon image</h3>
-                <%= settings_form.file_field :image, id: 'favico', accept: 'image/*', 'data-type': 'image' %>
-                <%= settings_form.label :image, value: 'Change icon image', for: 'favico', tabindex: '0' %>
-                <% if !@favico.nil? && @favico.image_file_name %>
-                  <div class="preview js-preview">
-                    <%= image_tag @favico.image.url, alt: 'Icon image' %>
-                  </div>
-                <% else %>
-                  <div class="placeholder js-placeholder">
-                    <span>Select file</span>
-                  </div>
-                <% end %>
-                <div class="restrictions js-restrictions">
-                  Recommended dimensions: 292x292<br />
-                  Max. size: 1MB
-                </div>
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_french' %>
+                <%= settings_form.label 'Allow French translations', for: 'translate_french' %>
               </div>
-              <% unless @site.site_template.name == 'Forest Atlas' %>
-                <hr/>
+
+              <% when 'translate_spanish' %>
+              <%= settings_form.hidden_field :position, value: '9' %>
+              <%= settings_form.hidden_field :name, value: 'translate_spanish' %>
+
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_spanish' %>
+                <%= settings_form.label 'Allow Spanish translations', for: 'translate_spanish' %>
+              </div>
+            <%end%>
+          <%end%>
+        </div>
+          <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by { |s| s.position }) do |settings_form| %>
+              <% setting = settings_form.object %>
+              <% case setting.name when 'pre_footer' %>
+                  <%= settings_form.hidden_field :position, value: '10' %>
+                  <%= settings_form.hidden_field :name, value: 'pre_footer' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Pre-footer', for: 'pre_footer' %>
+                    <%= settings_form.text_area :value, id: 'pre_footer' %>
+                  </div>
+
+              <% when 'analytics_key' %>
+                  <%= settings_form.hidden_field :position, value: '11' %>
+                  <%= settings_form.hidden_field :name, value: 'analytics_key' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Analytics key', for: 'analytics_key' %>
+                    <%= settings_form.text_field :value, id: 'analytics_key' %>
+                  </div>
+
+              <% when 'keywords' %>
+                  <%= settings_form.hidden_field :position, value: '12' %>
+                  <%= settings_form.hidden_field :name, value: 'keywords' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Keywords', for: 'keywords' %>
+                    <%= settings_form.text_area :value, id: 'keywords' %>
+                  </div>
+
+              <% when 'contact_email_address' %>
+                  <%= settings_form.hidden_field :position, value: '13' %>
+                  <%= settings_form.hidden_field :name, value: 'contact_email_address' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Contact email address', for: 'contact_email_address' %>
+                    <%= settings_form.text_field :value, id: 'contact_email_address' %>
+                  </div>
+
               <% end %>
-
-            <% when 'flag' %>
-              <div class="flag-colors">
-                <h3>Flag colors</h3>
-                <div class="js-flag-colors"></div>
-              </div>
-              <hr/>
-
-            <% when 'main_image' %>
-              <%= settings_form.hidden_field :position, value: '5'%>
-              <%= settings_form.hidden_field :name, value: 'main_image'%>
-              <div class="homepage-cover">
-                <h3>Homepage cover image</h3>
-                <%= settings_form.file_field :image, id: 'main', accept: 'image/*', 'data-type': 'background' %>
-                <%= settings_form.label :image, value: 'Change homepage cover image', for: 'main', tabindex: '0' %>
-                <% if !@main_image.nil? && @main_image.image_file_name %>
-                  <div class="preview -high js-preview" style="background-image: url('<%= @main_image.image.url %>');">
-                  </div>
-                <% else %>
-                  <div class="placeholder -high js-placeholder">
-                    <span>Select file</span>
-                  </div>
-                <% end %>
-                <div class="file-input-footer">
-                  <div class="restrictions js-restrictions">
-                    Recommended dimensions: 1280x500<br />
-                    Max. size: 1MB
-                  </div>
-                  <div class="cover-attribution">
-                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
-                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
-                  </div>
-                </div>
-              </div>
-
-            <% when 'alternative_image' %>
-              <%= settings_form.hidden_field :position, value: '6'%>
-              <%= settings_form.hidden_field :name, value: 'alternative_image'%>
-              <div class="content-cover">
-                <h3>Content cover image</h3>
-                <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
-                <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
-                <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
-                  <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
-                  </div>
-                <% else %>
-                  <div class="placeholder -high js-placeholder">
-                    <span>Select file</span>
-                  </div>
-                <% end %>
-                <div class="file-input-footer">
-                  <div class="restrictions js-restrictions">
-                    Recommended dimensions: 1280x250<br />
-                    Max. size: 1MB
-                  </div>
-                  <div class="cover-attribution">
-                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
-                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
-                  </div>
-                </div>
-              </div>
-
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
-  <%= render partial: 'footer', locals: { f: f} %>
+    <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @site } %>
+<%= render partial: 'shared/errors', locals: {resource: @site} %>

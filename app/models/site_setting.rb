@@ -20,7 +20,7 @@ class SiteSetting < ApplicationRecord
   validates_presence_of :site
   validates :attribution_link, format: { with: URI.regexp }, if: 'attribution_link.present?'
 
-  NAMES = %w[logo_image main_image alternative_image favico color flag]
+  NAMES = %w[logo_image main_image alternative_image favico color flag translate_english translate_spanish translate_french pre_footer analytics_key keywords contact_email_address]
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
@@ -70,6 +70,34 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'flag', site_id: site_id)
   end
 
+  def self.translate_english(site_id)
+    SiteSetting.find_by(name: 'translate_english', site_id: site_id)
+  end
+
+  def self.translate_spanish(site_id)
+    SiteSetting.find_by(name: 'translate_spanish', site_id: site_id)
+  end
+
+  def self.translate_french(site_id)
+    SiteSetting.find_by(name: 'translate_french', site_id: site_id)
+  end
+
+  def self.pre_footer(site_id)
+    SiteSetting.find_by(name: 'pre_footer', site_id: site_id)
+  end
+
+  def self.analytics_key(site_id)
+    SiteSetting.find_by(name: 'analytics_key', site_id: site_id)
+  end
+
+  def self.keywords(site_id)
+    SiteSetting.find_by(name: 'keywords', site_id: site_id)
+  end
+
+  def self.contact_email_address(site_id)
+    SiteSetting.find_by(name: 'contact_email_address', site_id: site_id)
+  end
+
   def flag_colors
     value.split(' ')
   end
@@ -93,6 +121,19 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
       site.site_settings.new(name: 'favico', value: '', position: 3)
       site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'
+    end
+  end
+
+  # Creates the color setting for a site
+  def self.create_site_settings site
+    unless site.site_settings.exists?(name: 'translate_english')
+      site.site_settings.new(name: 'translate_english', value: '1', position: 7)
+      site.site_settings.new(name: 'translate_spanish', value: '1', position: 8)
+      site.site_settings.new(name: 'translate_french', value: '1', position: 9)
+      site.site_settings.new(name: 'pre_footer', value: '', position: 10)
+      site.site_settings.new(name: 'analytics_key', value: '', position: 11)
+      site.site_settings.new(name: 'keywords', value: '', position: 12)
+      site.site_settings.new(name: 'contact_email_address', value: '', position: 13)
     end
   end
 

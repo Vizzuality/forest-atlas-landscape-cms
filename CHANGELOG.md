@@ -5,6 +5,11 @@
 - Add clear formatting button to WYSIWYG editor
 - Update styling for Landscape applications
 - Add site title to page header
+- Add Google Analytics global + per site tracking features
+- Add pre-footer
+- Add supported translations languages per site
+- Add meta tags to HTML + configurable "keywords" field per site
+- Add contact email address to site settings
 - Store links between pages and widgets
 - Add "Go to live page" button on page save
 - Makes link on admin more visible.

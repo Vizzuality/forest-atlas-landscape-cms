@@ -1,5 +1,6 @@
 class SitePageController < ApplicationController
   before_action :load_site_page
+  before_action :set_gon
   before_action :load_menu
   before_action :load_breadcrumbs
   before_action :get_active_menu_item
@@ -14,6 +15,17 @@ class SitePageController < ApplicationController
     redirect_to not_found_path unless @site_page && @site_page.visible?
   end
 
+  def set_gon
+    gon.push({
+               :translations => {
+                 :en => @site_page.site.site_settings.translate_english(@site_page.site_id).value == '1',
+                 :fr => @site_page.site.site_settings.translate_french(@site_page.site_id).value == '1',
+                 :es => @site_page.site.site_settings.translate_spanish(@site_page.site_id).value == '1'
+               }
+             })
+  end
+
+
   def load_menu
     @menu_root = @site_page.site.root
   end
@@ -22,7 +34,7 @@ class SitePageController < ApplicationController
     @breadcrumbs = []
     page = @site_page
 
-   begin
+    begin
       @breadcrumbs << page
       page = page.parent
     end while !page.nil?
@@ -47,8 +59,8 @@ class SitePageController < ApplicationController
 
   def load_flag
     begin
-    @flag = SiteSetting.flag_colors(@site_page.site.id)
-    @flag = @flag.value.split(' ')
+      @flag = SiteSetting.flag_colors(@site_page.site.id)
+      @flag = @flag.value.split(' ')
     rescue Exception => e
       @flag = []
       logger.error("Error when accessing the flag colors for site: #{@site_page.site.name}: #{e}")

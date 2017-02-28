@@ -50,8 +50,8 @@ class Site < ApplicationRecord
   after_create :create_template_content
 
   cattr_accessor :form_steps do
-    { pages: %w[name managers publishers contexts style settings finish],
-      names: %w[Name Managers Publishers Contexts Style Settings Finish] }
+    { pages: %w[name managers publishers contexts template style settings finish],
+      names: %w(Name Managers Publishers Contexts Template Style Settings Finish)}
   end
 
 

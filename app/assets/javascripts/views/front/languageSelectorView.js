@@ -22,7 +22,8 @@
       if (!Transifex) return;
 
       Transifex.live.onFetchLanguages(function (languages) {
-        this.options.languages = languages;
+
+        this.options.languages = this._getSiteLanguages(languages);
 
         var currentLanguageCode = Transifex.live.getSelectedLanguageCode();
         this.options.currentLanguage = _.findWhere(this.options.languages, { code: currentLanguageCode });
@@ -46,6 +47,18 @@
 
         this.render();
       }.bind(this));
+    },
+
+    _getSiteLanguages: function(languages) {
+      if (!window.gon || !window.gon.translations) {
+        return languages;
+      }
+
+      const result = languages.filter((elem) => {
+        return window.gon.translations[elem.code];
+      });
+
+      return result;
     },
 
     /**
