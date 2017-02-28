@@ -39,8 +39,11 @@ class Management::WidgetsController < ManagementController
 
   def destroy
     @widget = Widget.find(params[:id])
-    @widget.destroy
-    redirect_to management_site_widgets_path
+    if @widget.destroy
+      redirect_to management_site_widgets_path, notice: 'Widget was successfully destroyed.'
+    else
+      redirect_to management_site_widgets_path, alert: 'Failed: ' + @widget.errors[:base].join(', ')
+    end
   end
 
   private
