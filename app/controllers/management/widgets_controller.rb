@@ -6,14 +6,7 @@ class Management::WidgetsController < ManagementController
 
   def index
     begin
-      dataset_ids = []
-      @site.contexts.each do |context|
-        context.context_datasets.each do |dataset|
-          dataset_ids << dataset.dataset_id
-        end
-      end
-      dataset_ids.uniq!
-
+      dataset_ids = @site.contexts.map{ |c| c.context_datasets.pluck(:dataset_id) }.flatten.uniq
       widgets = Widget.where(dataset_id: dataset_ids)
 
       publisher = (current_user.role == UserType::PUBLISHER)
