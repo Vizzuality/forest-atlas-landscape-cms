@@ -220,6 +220,8 @@ class Admin::SiteStepsController < AdminController
           if @site.valid?
             redirect_to next_wizard_path
           else
+            color_array = @site.site_settings.select{ |s| s.name == 'flag'}.first
+            gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
             render_wizard
           end
         end
