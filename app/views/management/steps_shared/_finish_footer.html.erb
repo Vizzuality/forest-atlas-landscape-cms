@@ -3,6 +3,7 @@
     <%= link_to 'Back to Pages', management_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
     <div>
       <%= f.button (@page.enabled ? 'Unpublish' : 'Publish'), value: Management::PageStepsController::PUBLISH, type: 'submit', class: 'c-button js-submit' %>
+      <%= link_to 'Go to live page', @page.site.routes.first.host + @page.url, target: '_blank', class: 'c-button' if @page.enabled  %>
     </div>
   </div>
 </div>
