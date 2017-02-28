@@ -28,10 +28,10 @@
           </div>
           <div class="container">
             <%= f.label :uri %>
-            <%= f.text_field :uri, placeholder: 'my-page' %>
+            <%= f.text_field :uri, placeholder: 'my-page', :readonly => @page.content_type == ContentType::STATIC_CONTENT %>
           </div>
         <% end %>
-        <% unless @page.content_type == ContentType::HOMEPAGE %>
+        <% unless @page.content_type == ContentType::HOMEPAGE or @page.content_type == ContentType::STATIC_CONTENT %>
           <footer>
             <div class="c-checkbox">
               <%= f.check_box :show_on_menu %>

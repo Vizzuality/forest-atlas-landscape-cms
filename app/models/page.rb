@@ -50,7 +50,7 @@ class Page < ApplicationRecord
   end
 
   def disableable?
-    self.content_type != ContentType::HOMEPAGE
+    self.content_type != ContentType::HOMEPAGE and self.content_type != ContentType::STATIC_CONTENT
   end
 
   def visible?
