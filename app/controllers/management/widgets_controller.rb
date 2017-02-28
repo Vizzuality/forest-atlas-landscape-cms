@@ -10,21 +10,16 @@ class Management::WidgetsController < ManagementController
       widgets = Widget.where(dataset_id: dataset_ids)
 
       publisher = (current_user.role == UserType::PUBLISHER)
-      gon_widgets = []
-      if widgets.any?
-        gon_widgets = widgets.map do |widget|
-          {
-            'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
-            'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
-            'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
-            'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
-                      'method' => 'get'},
-            'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
-          }
+      gon.widgets = widgets.map do |widget|
+        {
+          'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
+          'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
+          'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
+          'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
+                    'method' => 'get'},
+          'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
+        }
         end
-      end
-
-      gon.widgets = gon_widgets
 
     rescue
     end
