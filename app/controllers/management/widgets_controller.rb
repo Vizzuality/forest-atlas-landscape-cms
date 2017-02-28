@@ -5,24 +5,19 @@ class Management::WidgetsController < ManagementController
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index
-    begin
-      dataset_ids = @site.contexts.map{ |c| c.context_datasets.pluck(:dataset_id) }.flatten.uniq
-      widgets = Widget.where(dataset_id: dataset_ids)
-
-      publisher = (current_user.role == UserType::PUBLISHER)
-      gon.widgets = widgets.map do |widget|
-        {
-          'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
-          'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
-          'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
-          'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
-                    'method' => 'get'},
-          'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
-        }
-        end
-
-    rescue
-    end
+    dataset_ids = @site.contexts.map{ |c| c.context_datasets.pluck(:dataset_id) }.flatten.uniq
+    widgets = Widget.where(dataset_id: dataset_ids)
+    publisher = (current_user.role == UserType::PUBLISHER)
+    gon.widgets = widgets.map do |widget|
+      {
+        'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
+        'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
+        'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
+        'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
+                  'method' => 'get'},
+        'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
+      }
+      end
   end
 
   def destroy
