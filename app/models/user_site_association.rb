@@ -7,6 +7,7 @@
 #  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  role       :integer          default(3)
 #
 
 class UserSiteAssociation < ApplicationRecord
@@ -15,4 +16,6 @@ class UserSiteAssociation < ApplicationRecord
 
   scope :manager, -> { where(role: UserType::MANAGER) }
   scope :publisher, -> { where(role: UserType::PUBLISHER) }
+
+  validates :user, uniqueness: {scope: :site}
 end
