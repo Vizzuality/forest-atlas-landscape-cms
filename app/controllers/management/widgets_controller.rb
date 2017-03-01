@@ -7,7 +7,7 @@ class Management::WidgetsController < ManagementController
   def index
     dataset_ids = @site.contexts.map{ |c| c.context_datasets.pluck(:dataset_id) }.flatten.uniq
     widgets = Widget.where(dataset_id: dataset_ids)
-    publisher = (current_user.role == UserType::PUBLISHER)
+    publisher = (current_user.roles.include? UserType::PUBLISHER)
     gon.widgets = widgets.map do |widget|
       {
         'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},

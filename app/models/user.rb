@@ -90,11 +90,6 @@ class User < ApplicationRecord
     contexts
   end
 
-  # Returns if the user is an admin
-  def admin
-    self.role == UserType::ADMIN
-  end
-
   def roles
     user_site_associations.pluck(:role).uniq
   end

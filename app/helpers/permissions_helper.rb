@@ -18,11 +18,11 @@ module PermissionsHelper
     end
     case action
       when 'access_admin'
-        return current_user_type == UserType::ADMIN
+        return current_user_is_admin
       when 'access_management'
-        return [UserType::ADMIN, UserType::MANAGER].include? current_user_type
+        return current_user_is_admin || current_user_has_roles([UserType::MANAGER])
       when 'access_publish'
-        return [UserType::ADMIN, UserType::MANAGER, UserType::PUBLISHER].include? current_user_type
+        return current_user_is_admin || current_user_has_roles([UserType::MANAGER, UserType::PUBLISHER])
       else
         false
     end
@@ -50,11 +50,18 @@ module PermissionsHelper
 
     email = session[:current_user]['email']
     user = User.find_by!(:email => email)
-    session[:current_user]['cms_role'] = user.role if user
+    if user
+      session[:current_user][:admin] = user.admin
+      session[:current_user][:roles] = user.roles
+    end
     return user
   end
 
-  def current_user_type
-    session[:current_user]['cms_role']
+  def current_user_is_admin
+    session[:current_user]['admin']
+  end
+
+  def current_user_has_roles(roles)
+    (session[:current_user][:roles] & roles).any?
   end
 end
