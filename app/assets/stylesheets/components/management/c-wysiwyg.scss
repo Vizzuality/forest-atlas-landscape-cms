@@ -387,6 +387,17 @@ $wysiwyg-width: $content-max-width + 2 * $wysiwyg-lateral-padding;
         }
       }
     }
+
+    .-raw-html {
+      iframe {
+        display: block;
+        margin: 0 auto;
+
+        & + p {
+          text-align: center;
+        }
+      }
+    }
   }
 
   .ql-editor[contenteditable=true] {
