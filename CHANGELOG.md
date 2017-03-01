@@ -1,4 +1,4 @@
-### 7 Feb 2017
+### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg
 
 ### 28 Feb 2017
