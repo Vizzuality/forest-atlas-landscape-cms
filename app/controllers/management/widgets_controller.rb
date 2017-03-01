@@ -38,7 +38,7 @@ class Management::WidgetsController < ManagementController
     if @widget.destroy
       redirect_to management_site_widgets_path, notice: 'Widget was successfully destroyed.'
     else
-      redirect_to management_site_widgets_path, alert: 'Failed: ' + @widget.errors[:base].join(', ')
+      redirect_to management_site_widgets_path, :flash => { :display => { title: "Widget can\'t be deleted", errors: @widget.errors[:base].first } }
     end
   end
 

@@ -1,0 +1,20 @@
+.c-notification-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    > .content {
+      flex-basis: 100%;
+      flex-grow: 1;
+      padding: 45px 45px 0;
+      overflow: auto;
+
+      h1 {
+        margin: 0 0 20px;
+        font-size: $font-size-huge;
+        font-weight: $font-weight-light;
+        text-align: center;
+      }
+    }
+}

@@ -88,6 +88,28 @@
     },
 
     /**
+     * Bubbles an event with the provided config
+     * @param config
+     */
+    modal: function (config) {
+      var modal = new App.View.ModalView();
+      if (this.notificationModal) this.notificationModal.remove();
+
+      this.notificationModal = new App.View.NotificationModalView({
+        title: config.title,
+        content: config.content,
+        continueCallback: function (widgetId) {
+          modal.close();
+        }.bind(this)
+      });
+
+      modal.render = this.notificationModal.render;
+
+
+      modal.open();
+    },
+
+    /**
      * Display the oldest notification
      */
     _displayNotification: function () {
