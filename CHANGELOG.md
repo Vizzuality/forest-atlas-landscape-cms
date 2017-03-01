@@ -1,3 +1,6 @@
+### 7 Feb 2017
+- Adds HTML Blot to be able in insert html content into the wysiwyg
+
 ### 28 Feb 2017
 - Add links to share on Facebook, Twitter and G+ on page footers
 - Add color highlight to 3rd level menu when element is selected
