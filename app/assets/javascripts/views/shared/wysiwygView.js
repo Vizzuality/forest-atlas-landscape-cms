@@ -48,7 +48,8 @@
     events: {
       'click .js-toggle-expand-sidebar': '_onClickToggleExpandSidebar',
       'click .js-add-image': '_onClickAddImage',
-      'click .js-add-widget': '_onClickAddWidget'
+      'click .js-add-widget': '_onClickAddWidget',
+      'click .js-add-html': '_onClickAddHtml'
     },
 
     initialize: function (settings) {
@@ -135,6 +136,47 @@
 
       modal.render = this.widgetsModalView.render;
 
+      modal.open();
+
+      // We hide the sidebar
+      this._hideSidebar();
+    },
+
+    /**
+     * Event handler called when the sidebar's add html button is clicked
+     * @param {{ content: string, blot: HtmlBlot }} e - event object
+     */
+    _onClickAddHtml: function (e) {
+      var htmlContent = typeof e.content === 'string' ? e.content : null;
+      var blot = e.blot || null;
+
+      // We collapse the sidebar
+      this._toggleExpandSidebar();
+
+      // We save the position of the cursor within the wysiwyg
+      var range = this.editor.getSelection();
+
+      var modal = new App.View.ModalView();
+
+      // If exists, we delete the previous modal
+      if (this.rawHtmlModalView) this.rawHtmlModalView.remove();
+
+      this.rawHtmlModalView = new App.View.RawHtmlModalView({
+        content: htmlContent,
+        cancelCallback: function () {
+          modal.close();
+        },
+        continueCallback: function (content) {
+          modal.close();
+          if (!blot) {
+            this.editor.insertEmbed(range.index, 'html', content, 'user');
+          } else {
+            blot.content.innerHTML = content;
+          }
+        }.bind(this)
+      });
+
+      modal.render = this.rawHtmlModalView.render;
 
       modal.open();
 
@@ -147,6 +189,7 @@
      */
     _setListeners: function () {
       this.editor.on(Quill.events.EDITOR_CHANGE, this._onEditorChange.bind(this));
+      this.editor.on('HTML_BLOT_EDIT', this._onClickAddHtml.bind(this));
     },
 
     /**
@@ -305,6 +348,7 @@
       Quill.register(App.Blot.IntroductionBlot);
       Quill.register(App.Blot.WidgetBlot);
       Quill.register(App.Blot.ImageBlot);
+      Quill.register(App.Blot.HtmlBlot);
 
       // We set the custom icons for the toolbar's buttons
       var icons = Quill.import('ui/icons');
