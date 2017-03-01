@@ -152,8 +152,7 @@ class Widget < ApplicationRecord
   private
   def prevent_destroy_if_dependent_pages_present
     if pages.any?
-      msg = "Cannot delete widget, operation blocked by existing pages: "
-      msg << pages.map(&:name).join(', ')
+      msg = pages.map(&:name).join(',')
       self.errors.add(:base, msg)
       throw(:abort)
     end

@@ -23,7 +23,8 @@
     <script>
       App.notifications.modal({
         title: '<%= value[:title] %>',
-        content: '<%= value[:errors] %>'
+        content: '<%= value[:content] %>',
+        bullets: '<%= value[:errors] %>'.split(',')
       });
     </script>
     <% end %>

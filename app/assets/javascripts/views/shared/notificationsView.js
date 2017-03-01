@@ -98,7 +98,8 @@
       this.notificationModal = new App.View.NotificationModalView({
         title: config.title,
         content: config.content,
-        continueCallback: function (widgetId) {
+        bullets: config.content,
+        continueCallback: function () {
           modal.close();
         }.bind(this)
       });
