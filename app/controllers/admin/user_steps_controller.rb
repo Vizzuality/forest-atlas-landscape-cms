@@ -62,7 +62,7 @@ class Admin::UserStepsController < AdminController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :role, site_ids: [], context_ids: [])
+    params.require(:user).permit(:name, :email, :admin, site_ids: [], context_ids: [])
   end
 
   def set_current_user

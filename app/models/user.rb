@@ -42,14 +42,14 @@ class User < ApplicationRecord
   end
   attr_accessor :form_step
 
+  ADMIN_ROLE_NAME = 'Admin'
+  NON_ADMIN_ROLE_NAME = 'Content contributor'
+
   def send_to_api(token, url)
-    api_role = case self.role
-                 when UserType::ADMIN
-                   'ADMIN'
-                 when UserType::MANAGER
-                   'MANAGER'
-                 when UserType::PUBLISHER
-                   'USER'
+    api_role = if self.admin
+                  'ADMIN'
+               else
+                  'USER'
                end
 
     UserService.create(token, self.email, api_role, url)
