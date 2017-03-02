@@ -89,25 +89,15 @@
 
     /**
      * Bubbles an event with the provided config
-     * @param config
+     * @param {{ type: string, content: string }} config - bubble config
      */
-    modal: function (config) {
-      var modal = new App.View.ModalView();
-      if (this.notificationModal) this.notificationModal.remove();
-
-      this.notificationModal = new App.View.NotificationModalView({
-        title: config.title,
-        content: config.content,
-        bullets: config.content,
-        continueCallback: function () {
-          modal.close();
-        }.bind(this)
-      });
-
-      modal.render = this.notificationModal.render;
-
-
-      modal.open();
+    display: function (config) {
+      switch(config.type) {
+        case 'WidgetDeletionError':
+          new App.View.WidgetDeletionErrorModal({ errors: config.content });
+          break;
+        default:
+      }
     },
 
     /**

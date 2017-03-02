@@ -1,10 +1,10 @@
-.c-notification-modal {
+.c-widget-deletion-modal {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
 
-    > .content {
+    > .widgets-modal-content {
       flex-basis: 100%;
       flex-grow: 1;
       padding: 45px 45px 0;
@@ -15,6 +15,20 @@
         font-size: $font-size-huge;
         font-weight: $font-weight-light;
         text-align: center;
+      }
+
+      .widgets-modal-body {
+        font-size: $font-size-s-normal;
+        font-weight: $font-weight-normal;
+        margin: 10%;
+
+        .widgets-modal-pages-list {
+          line-height: 2;
+
+          > li {
+            display: block;
+          }
+        }
       }
     }
 }

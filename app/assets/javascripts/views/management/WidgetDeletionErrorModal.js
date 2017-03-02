@@ -1,22 +1,21 @@
 ((function (App) {
   'use strict';
 
-  App.View.NotificationModalView = Backbone.View.extend({
-    className: 'c-notification-modal',
-    template: HandlebarsTemplates['shared/notification-modal'],
+  App.View.WidgetDeletionErrorModal = Backbone.View.extend({
+    className: 'c-widget-deletion-modal',
+    template: HandlebarsTemplates['management/widget-deletion-modal'],
 
     events: {
       'click .js-continue': '_onClickContinue'
     },
 
-    defaults: {
-      continueCallback: function () {}
-    },
+    options: {},
 
     initialize: function (settings) {
-      this.options = Object.assign({}, this.defaults, settings);
-
-      this.render = this.render.bind(this);
+      this.options.errors = settings.errors.split(',');
+      this.modal = new App.View.ModalView();
+      this.modal.render = this.render.bind(this);
+      this.modal.open();
     },
 
     /**
@@ -25,7 +24,8 @@
      */
     _onClickContinue: function (e) {
       e.preventDefault();
-      this.options.continueCallback();
+      this.modal.close();
+      this.remove();
     },
 
     render: function () {

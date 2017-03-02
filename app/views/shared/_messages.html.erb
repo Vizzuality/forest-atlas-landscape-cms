@@ -21,10 +21,9 @@
     </script>
     <% else %>
     <script>
-      App.notifications.modal({
-        title: '<%= value[:title] %>',
-        content: '<%= value[:content] %>',
-        bullets: '<%= value[:errors] %>'.split(',')
+      App.notifications.display({
+        type: '<%= value[:type] %>',
+        content: '<%= value[:errors] %>'
       });
     </script>
     <% end %>
