@@ -94,7 +94,7 @@
     display: function (config) {
       switch(config.type) {
         case 'WidgetDeletionError':
-          new App.View.WidgetDeletionErrorModal({ errors: config.content });
+          new App.View.WidgetDeletionErrorModal({ widget: gon.widgetPages[config.content] });
           break;
         default:
       }

@@ -152,7 +152,7 @@ class Widget < ApplicationRecord
   private
   def prevent_destroy_if_dependent_pages_present
     if pages.any?
-      msg = pages.map(&:name).join(',')
+      msg = self.id
       self.errors.add(:base, msg)
       throw(:abort)
     end

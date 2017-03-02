@@ -9,10 +9,8 @@
       'click .js-continue': '_onClickContinue'
     },
 
-    options: {},
-
     initialize: function (settings) {
-      this.options.errors = settings.errors.split(',');
+      this.options = Object.assign({}, settings);
       this.modal = new App.View.ModalView();
       this.modal.render = this.render.bind(this);
       this.modal.open();

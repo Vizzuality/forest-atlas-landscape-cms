@@ -40,7 +40,7 @@ class Management::WidgetsController < ManagementController
     else
       redirect_to management_site_widgets_path, :flash => { :display => {
         type: "WidgetDeletionError",
-        errors: @widget.errors[:base].first
+        content: @widget.errors[:base].first
       } }
     end
   end
