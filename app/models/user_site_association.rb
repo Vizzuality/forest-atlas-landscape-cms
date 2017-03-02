@@ -18,4 +18,16 @@ class UserSiteAssociation < ApplicationRecord
   scope :publisher, -> { where(role: UserType::PUBLISHER) }
 
   validates :user, uniqueness: {scope: :site}
+
+  attr_accessor :selected # virtual attribute used for processing the form
+
+  def <=> another
+    if user.try(:name) < another.user.try(:name)
+      -1
+    elsif user.try(:name) > another.user.try(:name)
+      1
+    else
+      0
+    end
+  end
 end

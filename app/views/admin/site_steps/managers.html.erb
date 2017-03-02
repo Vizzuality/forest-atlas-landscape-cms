@@ -13,18 +13,22 @@
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -users">
     <div class="wrapper">
-        <div class="c-cards-list">
-          <% @managers.each do |user| %>
-            <div class="card">
-              <label for="user-<%= user.id %>"><%= user.name %></label>
-              <%= check_box_tag "site[user_ids][]", user.id, f.object.users.include?(user), id: ('user-' + user.id.to_s) %>
-              <div class="content">
-                <h3><%= user.name %></h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-              </div>
+      <div class="c-cards-list">
+        <%= f.fields_for :user_site_associations, @site.user_site_associations.sort do |ff| %>
+          <%= ff.hidden_field :id %>
+          <%= ff.hidden_field :role %>
+          <%= ff.hidden_field :user_id %>
+          <div class="card">
+            <label for="user-<%= ff.object.user.id %>"><%= ff.object.user.name %></label>
+            <%= ff.check_box :selected, id: ('user-' + ff.object.user.id.to_s), disabled: !role_matches_step?(ff.object.role, step) %>
+
+            <div class="content">
+              <h3><%= ff.object.user.name %></h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
   <%= render partial: 'footer', locals: { f: f } %>

@@ -3,6 +3,7 @@ class Admin::SiteStepsController < AdminController
 
   include Wicked::Wizard
   include NavigationHelper
+  include SiteStepsHelper
 
   URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
@@ -44,10 +45,10 @@ class Admin::SiteStepsController < AdminController
     else
       @site = current_site
       if step == 'managers'
-        @managers = User.where(role: UserType::MANAGER)
+        @site.build_user_site_associations_for_users(non_admin_users, UserType::MANAGER)
       end
       if step == 'publishers'
-        @publishers = User.where(role: UserType::PUBLISHER)
+        @site.build_user_site_associations_for_users(non_admin_users, UserType::PUBLISHER)
       end
       if step == 'contexts'
         @contexts = Context.all
@@ -113,7 +114,7 @@ class Admin::SiteStepsController < AdminController
             delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
-            @managers = User.where(role: UserType::MANAGER)
+            @site.build_user_site_associations_for_users(non_admin_users, UserType::MANAGER)
             render_wizard
           end
         else
@@ -122,7 +123,7 @@ class Admin::SiteStepsController < AdminController
           if @site.valid?
             redirect_to next_wizard_path
           else
-            @managers = User.where(role: UserType::MANAGER)
+            @site.build_user_site_associations_for_users(non_admin_users, UserType::MANAGER)
             render_wizard
           end
         end
@@ -135,7 +136,7 @@ class Admin::SiteStepsController < AdminController
             delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
-            @publishers = User.where(role: UserType::PUBLISHER)
+            @site.build_user_site_associations_for_users(non_admin_users, UserType::PUBLISHER)
             render_wizard
           end
         else
@@ -144,7 +145,7 @@ class Admin::SiteStepsController < AdminController
           if @site.valid?
             redirect_to next_wizard_path
           else
-            @publishers = User.where(role: UserType::PUBLISHER)
+            @site.build_user_site_associations_for_users(non_admin_users, UserType::PUBLISHER)
             render_wizard
           end
         end
@@ -265,7 +266,7 @@ class Admin::SiteStepsController < AdminController
         :name,
         :site_template_id,
         :default_context,
-        user_ids: [],
+        user_site_associations_attributes: [:id, :user_id, :role, :selected],
         context_sites_attributes: [:context_id, :id],
         routes_attributes: [:host, :id],
         site_settings_attributes: [
@@ -296,7 +297,32 @@ class Admin::SiteStepsController < AdminController
       end
     end
 
-    session[:site][@site_id].merge!(site_params.to_h.except(:default_context, 'context_sites_attributes')) if params[:site] && site_params.to_h
+    if !params[:site].blank? && site_params.to_h && ['managers', 'publishers'].include?(step)
+      if site_params[:user_site_associations_attributes]
+        user_site_associations_attributes = {}
+        attributes_from_session = session[:site][@site_id]['user_site_associations_attributes'] || {}
+
+        site_params[:user_site_associations_attributes].to_h.each do |i, usa_from_params|
+          usa_from_session = attributes_from_session[i] || {}
+          usa = if usa_from_params['selected'] == '1'
+            usa_from_params
+          elsif usa_from_session['selected'] == '1' && !role_matches_step?(usa_from_session['role'].to_i, step)
+            usa_from_session
+          else
+            # The '_destroy' flag allows to 'unselect'
+            usa_from_params.merge({'_destroy' => true})
+          end
+          user_site_associations_attributes[i] = usa
+        end
+        session[:site][@site_id]['user_site_associations_attributes'] =  user_site_associations_attributes
+      else
+        session[:site][@site_id]['user_site_associations_attributes'] = {}
+      end
+    end
+
+    session[:site][@site_id].merge!(
+      site_params.to_h.except(:default_context, 'context_sites_attributes', 'user_site_associations_attributes')
+    ) if params[:site] && site_params.to_h
 
     # Default context
     if params[:site] && site_params.to_h && site_params[:default_context]
@@ -332,5 +358,9 @@ class Admin::SiteStepsController < AdminController
 
   def ensure_session_keys_exist
     session[:site] ||= {}
+  end
+
+  def non_admin_users
+    User.where(admin: false).order(:name)
   end
 end
