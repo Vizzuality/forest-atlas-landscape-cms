@@ -16,14 +16,25 @@
   <div class="l-user-creation -sites">
     <div class="wrapper">
       <div class="c-cards-list">
-        <% Site.all.each do |site| %>
+        <%= f.fields_for :user_site_associations, @user.user_site_associations do |ff| %>
+          <%= ff.hidden_field :id %>
+          <%= ff.hidden_field :site_id %>
           <div class="card">
-            <label for="site-<%= site.id %>"><%= site.name %></label>
-            <%= check_box_tag "user[site_ids][]", site.id, f.object.sites.include?(site), id: ('site-' + site.id.to_s) %>
+            <label for="site-<%= ff.object.site.id %>"><%= ff.object.site.name %></label>
+            <%= ff.check_box :selected, id: ('site-' + ff.object.site.id.to_s) %>
+
             <div class="content">
-              <h3><%= site.name %></h3>
+              <h3><%= ff.object.site.name %></h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
+            <footer>
+              <div class="c-radio">
+                <%= ff.radio_button :role, UserType::MANAGER %>
+                <%= ff.label :role, 'Manager', value:  UserType::MANAGER %>
+                <%= ff.radio_button :role, UserType::PUBLISHER %>
+                <%= ff.label :role, 'Publisher', value:  UserType::PUBLISHER %>
+              </div>
+            </footer>
           </div>
         <% end %>
       </div>

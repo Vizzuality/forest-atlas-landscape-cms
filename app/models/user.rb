@@ -29,7 +29,7 @@ class User < ApplicationRecord
   has_many :contexts, through: :context_users
 
   accepts_nested_attributes_for :context_users
-  accepts_nested_attributes_for :user_site_associations
+  accepts_nested_attributes_for :user_site_associations, allow_destroy: true
 
   has_enumeration_for :role, with: UserType, skip_validation: true
 
@@ -92,6 +92,18 @@ class User < ApplicationRecord
 
   def roles
     user_site_associations.pluck(:role).uniq
+  end
+
+  def build_user_site_associations_for_sites(sites)
+    user_site_associations.each do |usa|
+      usa.selected = true
+    end
+    all_sites = sites.map(&:id)
+    current_sites = user_site_associations.map(&:site_id)
+    missing_sites = all_sites - current_sites
+    missing_sites.each do |site_id|
+      user_site_associations.build(site_id: site_id, selected: false)
+    end
   end
 
   private
