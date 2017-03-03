@@ -58,7 +58,7 @@ module PermissionsHelper
   end
 
   def current_user_is_admin
-    session[:current_user]['admin']
+    session[:current_user][:admin]
   end
 
   def current_user_has_roles(roles)
