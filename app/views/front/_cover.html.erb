@@ -6,7 +6,7 @@
   <div class="cover-attribution">
     <% if defined?(image) && defined?(image.instance) %>
       <% if image.instance.attribution_link.present? && image.instance.attribution_label.present? %>
-      <a href="<%= image.instance.attribution_link %>"> <%= image.instance.attribution_label %> </a>
+      <a target="_blank" href="<%= image.instance.attribution_link %>"> <%= image.instance.attribution_label %> </a>
       <% end %>
 
       <% if !image.instance.attribution_link.present? && image.instance.attribution_label.present? %>
