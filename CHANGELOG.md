@@ -1,6 +1,7 @@
 ### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg
 - Open image attribution on separate tab
+- Show only site title on homepage banner 
 
 ### 28 Feb 2017
 - Add links to share on Facebook, Twitter and G+ on page footers
