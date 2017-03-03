@@ -95,6 +95,10 @@ class User < ApplicationRecord
     self.role == UserType::ADMIN
   end
 
+  def roles
+    user_site_associations.pluck(:role).uniq
+  end
+
   private
   def step_validation
     # Added to insure all validations are run if there's no step
