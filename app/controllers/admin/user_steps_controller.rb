@@ -93,7 +93,7 @@ class Admin::UserStepsController < AdminController
         end
         session[:user][@user_id]['user_site_associations_attributes'] =  user_site_associations_attributes
       else
-        session[:user][@user_id]['user_site_associations_attributes'] = []
+        session[:user][@user_id]['user_site_associations_attributes'] = {}
       end
     end
 

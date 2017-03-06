@@ -102,7 +102,7 @@ class User < ApplicationRecord
     current_sites = user_site_associations.map(&:site_id)
     missing_sites = all_sites - current_sites
     missing_sites.each do |site_id|
-      user_site_associations.build(site_id: site_id, selected: false)
+      user_site_associations.build(site_id: site_id, role: UserType::PUBLISHER, selected: false)
     end
   end
 

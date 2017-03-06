@@ -44,11 +44,8 @@ class Admin::SiteStepsController < AdminController
       gon.global.url_array = @site.routes.to_a
     else
       @site = current_site
-      if step == 'managers'
-        @site.build_user_site_associations_for_users(non_admin_users, UserType::MANAGER)
-      end
-      if step == 'publishers'
-        @site.build_user_site_associations_for_users(non_admin_users, UserType::PUBLISHER)
+      if step == 'users'
+        @site.build_user_site_associations_for_users(non_admin_users)
       end
       if step == 'contexts'
         @contexts = Context.all
@@ -106,50 +103,26 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-      # TODO: REFACTOR THIS
-      when 'managers'
+      when 'users'
         @site = current_site
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
-            @site.build_user_site_associations_for_users(non_admin_users, UserType::MANAGER)
+            @site.build_user_site_associations_for_users(non_admin_users)
             render_wizard
           end
         else
-          @site.form_step = 'managers'
+          @site.form_step = 'users'
 
           if @site.valid?
             redirect_to next_wizard_path
           else
-            @site.build_user_site_associations_for_users(non_admin_users, UserType::MANAGER)
+            @site.build_user_site_associations_for_users(non_admin_users)
             render_wizard
           end
         end
-
-
-      when 'publishers'
-        @site = current_site
-        if save_button?
-          if @site.save
-            delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
-          else
-            @site.build_user_site_associations_for_users(non_admin_users, UserType::PUBLISHER)
-            render_wizard
-          end
-        else
-          @site.form_step = 'publishers'
-
-          if @site.valid?
-            redirect_to next_wizard_path
-          else
-            @site.build_user_site_associations_for_users(non_admin_users, UserType::PUBLISHER)
-            render_wizard
-          end
-        end
-
 
       when 'contexts'
         @site = current_site
@@ -297,21 +270,11 @@ class Admin::SiteStepsController < AdminController
       end
     end
 
-    if !params[:site].blank? && site_params.to_h && ['managers', 'publishers'].include?(step)
+    if params[:site].present? && site_params.to_h && step == 'users'
       if site_params[:user_site_associations_attributes]
         user_site_associations_attributes = {}
-        attributes_from_session = session[:site][@site_id]['user_site_associations_attributes'] || {}
-
-        site_params[:user_site_associations_attributes].to_h.each do |i, usa_from_params|
-          usa_from_session = attributes_from_session[i] || {}
-          usa = if usa_from_params['selected'] == '1'
-            usa_from_params
-          elsif usa_from_session['selected'] == '1' && !role_matches_step?(usa_from_session['role'].to_i, step)
-            usa_from_session
-          else
-            # The '_destroy' flag allows to 'unselect'
-            usa_from_params.merge({'_destroy' => true})
-          end
+        site_params[:user_site_associations_attributes].to_h.each do |i, usa|
+          usa['_destroy'] = true if usa['selected'] != '1'
           user_site_associations_attributes[i] = usa
         end
         session[:site][@site_id]['user_site_associations_attributes'] =  user_site_associations_attributes

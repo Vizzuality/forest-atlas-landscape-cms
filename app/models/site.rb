@@ -50,8 +50,8 @@ class Site < ApplicationRecord
   after_create :create_template_content
 
   cattr_accessor :form_steps do
-    { pages: %w[name managers publishers contexts template style settings finish],
-      names: %w(Name Managers Publishers Contexts Template Style Settings Finish)}
+    { pages: %w[name users contexts template style settings finish],
+      names: %w(Name Users Contexts Template Style Settings Finish)}
   end
 
 
@@ -181,15 +181,15 @@ class Site < ApplicationRecord
     end
   end
 
-  def build_user_site_associations_for_users(users, role)
+  def build_user_site_associations_for_users(users)
     user_site_associations.each do |usa|
-      usa.selected = (usa.role == role)
+      usa.selected = true
     end
     all_users = users.map(&:id)
     current_users = user_site_associations.map(&:user_id)
     missing_users = all_users - current_users
     missing_users.each do |user_id|
-      user_site_associations.build(user_id: user_id, role: role, selected: false)
+      user_site_associations.build(user_id: user_id, role: UserType::PUBLISHER, selected: false)
     end
   end
 

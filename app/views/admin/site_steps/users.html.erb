@@ -2,8 +2,8 @@
   <div class="c-extended-header">
     <div class="wrapper">
       <div class="description">
-        <h1>Managers</h1>
-        <p>Choose which user can manage the site</p>
+        <h1>Users</h1>
+        <p>Choose which user have accress to the site</p>
       </div>
     </div>
   </div>
@@ -16,16 +16,23 @@
       <div class="c-cards-list">
         <%= f.fields_for :user_site_associations, @site.user_site_associations.sort do |ff| %>
           <%= ff.hidden_field :id %>
-          <%= ff.hidden_field :role %>
           <%= ff.hidden_field :user_id %>
           <div class="card">
             <label for="user-<%= ff.object.user.id %>"><%= ff.object.user.name %></label>
-            <%= ff.check_box :selected, id: ('user-' + ff.object.user.id.to_s), disabled: !role_matches_step?(ff.object.role, step) %>
+            <%= ff.check_box :selected, id: ('user-' + ff.object.user.id.to_s) %>
 
             <div class="content">
               <h3><%= ff.object.user.name %></h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
+            <footer>
+              <div class="c-radio">
+                <%= ff.radio_button :role, UserType::MANAGER %>
+                <%= ff.label :role, 'Manager', value:  UserType::MANAGER %>
+                <%= ff.radio_button :role, UserType::PUBLISHER %>
+                <%= ff.label :role, 'Publisher', value:  UserType::PUBLISHER %>
+              </div>
+            </footer>
           </div>
         <% end %>
       </div>

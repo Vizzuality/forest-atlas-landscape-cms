@@ -17,13 +17,6 @@
       position: absolute;
       left: -10000px;
 
-      &:disabled + .content {
-        border-color: $color-3;
-        background: $color-4;
-        color: $color-3;
-        cursor: not-allowed;
-      }
-
       &:checked + .content {
         border-color: $color-1;
         background: $color-1;
