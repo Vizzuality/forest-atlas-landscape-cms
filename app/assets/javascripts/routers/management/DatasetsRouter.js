@@ -103,13 +103,20 @@
         ]
       });
 
-      // We initialize the table
-      new App.View.TableView({
-        el: $('.js-table'),
-        collection: new TableCollection(gon.datasets, { parse: true }),
-        tableName: 'List of pages',
-        searchFieldContainer: $('.js-table-search')[0]
-      });
+      var tableCollection = new TableCollection(gon.datasets, { parse: true });
+      var tableContainer = document.querySelector('.js-table');
+
+      if (tableCollection.length === 0) {
+        tableContainer.innerHTML = '<p class="no-data">There isn\'t any dataset to display yet.</p>';
+      } else {
+        // We initialize the table
+        new App.View.TableView({
+          el: tableContainer,
+          collection: tableCollection,
+          tableName: 'List of pages',
+          searchFieldContainer: $('.js-table-search')[0]
+        });
+      }
     }
   });
 })(this.App));
