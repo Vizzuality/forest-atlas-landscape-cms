@@ -1,8 +1,13 @@
 # Forest Atlas and Landscape Application CMS
 
-[![Build Status](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms.svg?branch=master)](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms)
+![](sample-screenshot.png)
 
-Multisite content management system for forest atlas and landscape applications
+
+Multisite content management system for Forest Atlas and Landscape Applications
+
+## CI status
+
+[![Build Status](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms.svg?branch=master)](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms)
 
 ## Dependencies
 
@@ -117,3 +122,7 @@ This will run at 5 AM every day and delete the old sessions.
 #### API_URL
 
 URL of the API gateway. Used for user authentication.
+
+#### GLOBAL_GA_KEY
+
+Key for Google Analytics. Used on all sites. For site-specific GA integration, use the admin interface.
