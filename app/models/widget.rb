@@ -16,6 +16,8 @@
 
 class Widget < ApplicationRecord
   belongs_to :dataset
+  has_many :page_widgets
+  has_many :pages, through: :page_widgets
 
   cattr_accessor :form_steps do
     { pages: %w[title dataset filters visualization],
@@ -24,6 +26,7 @@ class Widget < ApplicationRecord
   attr_accessor :form_step
 
   validate :step_validation
+  before_destroy :prevent_destroy_if_dependent_pages_present
 
   # Returns an array of visible columns
   def get_columns_visible
@@ -144,6 +147,14 @@ class Widget < ApplicationRecord
         # TODO: Put the graph logic here. Ask Clement about this
       end
     end
+  end
 
+  private
+  def prevent_destroy_if_dependent_pages_present
+    if pages.any?
+      msg = self.id
+      self.errors.add(:base, msg)
+      throw(:abort)
     end
+  end
 end

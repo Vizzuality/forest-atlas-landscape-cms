@@ -5,42 +5,44 @@ class Management::WidgetsController < ManagementController
   #before_action :set_content_type_variables, only: [:new, :edit]
 
   def index
-    begin
-      dataset_ids = []
-      @site.contexts.each do |context|
-        context.context_datasets.each do |dataset|
-          dataset_ids << dataset.dataset_id
-        end
+    dataset_ids = @site.contexts.map{ |c| c.context_datasets.pluck(:dataset_id) }.flatten.uniq
+    widgets = Widget.where(dataset_id: dataset_ids)
+    publisher = (current_user.role == UserType::PUBLISHER)
+    gon.widgets = widgets.map do |widget|
+      {
+        'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
+        'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
+        'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
+        'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
+                  'method' => 'get'},
+        'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
+      }
       end
-      dataset_ids.uniq!
-
-      widgets = Widget.where(dataset_id: dataset_ids)
-
-      publisher = (current_user.role == UserType::PUBLISHER)
-      gon_widgets = []
-      if widgets.any?
-        gon_widgets = widgets.map do |widget|
-          {
-            'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
-            'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
-            'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
-            'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
-                      'method' => 'get'},
-            'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
-          }
-        end
+    gon.widget_pages = Hash[
+      widgets.map do |widget|
+        [
+          widget.id,
+          widget.pages.select(:id, :name, :site_id, :url).map do |page|
+            {
+              page: page,
+              site: page.site.attributes.slice('id', 'name', 'slug')
+            }
+          end
+        ]
       end
-
-      gon.widgets = gon_widgets
-
-    rescue
-    end
+    ]
   end
 
   def destroy
     @widget = Widget.find(params[:id])
-    @widget.destroy
-    redirect_to management_site_widgets_path
+    if @widget.destroy
+      redirect_to management_site_widgets_path, notice: 'Widget was successfully destroyed.'
+    else
+      redirect_to management_site_widgets_path, :flash => { :display => {
+        type: "WidgetDeletionError",
+        content: @widget.errors[:base].first
+      } }
+    end
   end
 
   private

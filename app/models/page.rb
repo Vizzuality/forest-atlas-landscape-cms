@@ -22,6 +22,7 @@
 class Page < ApplicationRecord
   extend EnumerateIt
 
+  belongs_to :site
   has_and_belongs_to_many :site_templates
   has_many :page_widgets
   has_many :widgets, through: :page_widgets, validate: false

@@ -6,15 +6,26 @@
           key = 'warning'
         when 'notice' then
           key = 'success'
+        when 'display' then
+          key = 'display'
       end
     %>
+    <% if key != 'display' %>
     <script>
-    App.notifications.broadcast({
-      closeable: true,
-      autoCloseTimer: <%= key == 'alert' ? '-1' : '5' %>,
-      type: '<%= key %>',
-      content: '<%== j value %>'
-     });
+      App.notifications.broadcast({
+        closeable: true,
+        autoCloseTimer: <%= key == 'alert' ? '-1' : '5' %>,
+        type: '<%= key %>',
+        content: '<%== j value %>'
+       });
     </script>
+    <% else %>
+    <script>
+      App.notifications.display({
+        type: '<%= value[:type] %>',
+        content: '<%= value[:content] %>'
+      });
+    </script>
+    <% end %>
   <% end %>
 <% end %>

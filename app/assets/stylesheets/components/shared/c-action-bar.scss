@@ -36,5 +36,11 @@
     > .wrapper {
       padding: 0 45px;
     }
+
+    &.-center {
+      > .wrapper {
+        justify-content: center;
+      }
+    }
   }
 }

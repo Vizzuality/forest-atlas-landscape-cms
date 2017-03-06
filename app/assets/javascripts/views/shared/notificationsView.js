@@ -88,6 +88,19 @@
     },
 
     /**
+     * Bubbles an event with the provided config
+     * @param {{ type: string, content: string }} config - bubble config
+     */
+    display: function (config) {
+      switch(config.type) {
+        case 'WidgetDeletionError':
+          new App.View.WidgetDeletionErrorModal({ widget: gon.widgetPages[config.content] });
+          break;
+        default:
+      }
+    },
+
+    /**
      * Display the oldest notification
      */
     _displayNotification: function () {
