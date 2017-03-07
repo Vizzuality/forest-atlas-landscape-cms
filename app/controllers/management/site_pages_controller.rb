@@ -12,7 +12,7 @@ class Management::SitePagesController < ManagementController
                .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
-    publisher = (current_user.role == UserType::PUBLISHER)
+    publisher = (current_user.roles.include? UserType::PUBLISHER)
     gon.pages = @pages.map do |page|
       delete = if publisher
                  {'value' => nil}

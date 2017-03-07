@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170222110701) do
+ActiveRecord::Schema.define(version: 20170301114012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,27 +160,29 @@ ActiveRecord::Schema.define(version: 20170222110701) do
   create_table "user_site_associations", force: :cascade do |t|
     t.integer  "site_id"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "role",       default: 3
     t.index ["site_id"], name: "index_user_site_associations_on_site_id", using: :btree
+    t.index ["user_id", "site_id"], name: "index_user_site_assiciations_on_user_id_and_site_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_user_site_associations_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "name"
-    t.integer  "role",                   default: 3
+    t.boolean  "admin",                  default: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -199,4 +201,6 @@ ActiveRecord::Schema.define(version: 20170222110701) do
 
   add_foreign_key "page_widgets", "pages"
   add_foreign_key "page_widgets", "widgets"
+  add_foreign_key "user_site_associations", "sites"
+  add_foreign_key "user_site_associations", "users"
 end

@@ -14,7 +14,7 @@ class Site < ApplicationRecord
   belongs_to :site_template, optional: :true
   has_many :routes,  dependent: :destroy
   has_many :site_pages, dependent: :destroy
-  has_many :user_site_associations, dependent: :destroy
+  has_many :user_site_associations, dependent: :destroy, autosave: true
   has_many :users, through: :user_site_associations
   has_many :site_managers, -> {manager}, class_name: 'UserSiteAssociation'
   has_many :managers, source: :user, through: :site_managers
@@ -26,7 +26,7 @@ class Site < ApplicationRecord
 
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :context_sites, allow_destroy: true
-  accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :user_site_associations, allow_destroy: true
   accepts_nested_attributes_for :managers
   accepts_nested_attributes_for :publishers
   accepts_nested_attributes_for :routes, reject_if: proc {|r| r['host'].blank?}
@@ -50,8 +50,8 @@ class Site < ApplicationRecord
   after_create :create_template_content
 
   cattr_accessor :form_steps do
-    { pages: %w[name managers publishers contexts template style settings finish],
-      names: %w(Name Managers Publishers Contexts Template Style Settings Finish)}
+    { pages: %w[name users contexts template style settings finish],
+      names: %w(Name Users Contexts Template Style Settings Finish)}
   end
 
 
@@ -178,6 +178,18 @@ class Site < ApplicationRecord
       Rails.logger.debug "Finished saving the assets for site #{self.id}"
     rescue Exception => e
         Rails.logger.error("Error compiling the css for site #{self.id}: #{e.inspect} -- #{e.backtrace}")
+    end
+  end
+
+  def build_user_site_associations_for_users(users)
+    user_site_associations.each do |usa|
+      usa.selected = true
+    end
+    all_users = users.map(&:id)
+    current_users = user_site_associations.map(&:user_id)
+    missing_users = all_users - current_users
+    missing_users.each do |user_id|
+      user_site_associations.build(user_id: user_id, role: UserType::PUBLISHER, selected: false)
     end
   end
 

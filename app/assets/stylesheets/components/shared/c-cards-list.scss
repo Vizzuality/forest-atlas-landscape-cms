@@ -23,6 +23,10 @@
         color: $color-3;
       }
 
+      &:not(:checked) + .content + footer {
+        visibility: hidden;
+      }
+
       &:focus:not(:checked) +.content {
         border-color: $color-1;
       }

@@ -29,9 +29,13 @@ class Admin::UserStepsController < AdminController
   end
 
   def show
-    if step == 'sites' && @user.admin
-      redirect_to next_wizard_path
-      return
+    if step == 'sites'
+      if @user.admin
+        redirect_to next_wizard_path
+        return
+      else
+        @user.build_user_site_associations_for_sites(Site.all)
+      end
     end
     render_wizard
   end
@@ -62,7 +66,13 @@ class Admin::UserStepsController < AdminController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :role, site_ids: [], context_ids: [])
+    params.require(:user).permit(
+      :name,
+      :email,
+      :admin,
+      user_site_associations_attributes: [:id, :site_id, :role, :selected],
+      context_ids: []
+    )
   end
 
   def set_current_user
@@ -73,7 +83,23 @@ class Admin::UserStepsController < AdminController
       :new
     end
     session[:user][@user_id] ||= {}
-    session[:user][@user_id].merge!(user_params.to_h) if params[:user] && user_params.to_h
+
+    if params[:user].present? && user_params.to_h && step == 'sites'
+      if user_params[:user_site_associations_attributes]
+        user_site_associations_attributes = {}
+        user_params[:user_site_associations_attributes].to_h.each do |i, usa|
+          usa['_destroy'] = true if usa['selected'] != '1'
+          user_site_associations_attributes[i] = usa
+        end
+        session[:user][@user_id]['user_site_associations_attributes'] =  user_site_associations_attributes
+      else
+        session[:user][@user_id]['user_site_associations_attributes'] = {}
+      end
+    end
+
+    session[:user][@user_id].merge!(
+      user_params.to_h.except(:user_site_associations_attributes)
+    ) if params[:user] && user_params.to_h
     @user.assign_attributes session[:user][@user_id] if session[:user][@user_id]
   end
 

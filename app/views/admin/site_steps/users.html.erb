@@ -2,29 +2,27 @@
   <div class="c-extended-header">
     <div class="wrapper">
       <div class="description">
-        <h1>User sites</h1>
-        <p>Please choose which sites the user will manage</p>
+        <h1>Users</h1>
+        <p>Choose which user have accress to the site</p>
       </div>
     </div>
   </div>
 <% end %>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @user.id, current_step: step, step_names: @steps_names} %>
-<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
-
-<%= form_for @user, url: wizard_path, method: :put do |f| %>
-  <div class="l-user-creation -sites">
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -users">
     <div class="wrapper">
       <div class="c-cards-list">
-        <%= f.fields_for :user_site_associations, @user.user_site_associations do |ff| %>
+        <%= f.fields_for :user_site_associations, @site.user_site_associations.sort do |ff| %>
           <%= ff.hidden_field :id %>
-          <%= ff.hidden_field :site_id %>
+          <%= ff.hidden_field :user_id %>
           <div class="card">
-            <label for="site-<%= ff.object.site.id %>"><%= ff.object.site.name %></label>
-            <%= ff.check_box :selected, id: ('site-' + ff.object.site.id.to_s) %>
+            <label for="user-<%= ff.object.user.id %>"><%= ff.object.user.name %></label>
+            <%= ff.check_box :selected, id: ('user-' + ff.object.user.id.to_s) %>
 
             <div class="content">
-              <h3><%= ff.object.site.name %></h3>
+              <h3><%= ff.object.user.name %></h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
             <footer>
@@ -38,9 +36,8 @@
           </div>
         <% end %>
       </div>
-
     </div>
   </div>
-  <%= render partial: 'footer', locals: { f: f} %>
+  <%= render partial: 'footer', locals: { f: f } %>
 <% end %>
-<%= render partial: 'shared/errors', locals: { resource: @user } %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>

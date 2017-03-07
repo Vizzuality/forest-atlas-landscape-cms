@@ -29,7 +29,7 @@ class User < ApplicationRecord
   has_many :contexts, through: :context_users
 
   accepts_nested_attributes_for :context_users
-  accepts_nested_attributes_for :user_site_associations
+  accepts_nested_attributes_for :user_site_associations, allow_destroy: true
 
   has_enumeration_for :role, with: UserType, skip_validation: true
 
@@ -42,14 +42,14 @@ class User < ApplicationRecord
   end
   attr_accessor :form_step
 
+  ADMIN_ROLE_NAME = 'Admin'
+  NON_ADMIN_ROLE_NAME = 'Content contributor'
+
   def send_to_api(token, url)
-    api_role = case self.role
-                 when UserType::ADMIN
-                   'ADMIN'
-                 when UserType::MANAGER
-                   'MANAGER'
-                 when UserType::PUBLISHER
-                   'USER'
+    api_role = if self.admin
+                  'ADMIN'
+               else
+                  'USER'
                end
 
     UserService.create(token, self.email, api_role, url)
@@ -90,9 +90,20 @@ class User < ApplicationRecord
     contexts
   end
 
-  # Returns if the user is an admin
-  def admin
-    self.role == UserType::ADMIN
+  def roles
+    user_site_associations.pluck(:role).uniq
+  end
+
+  def build_user_site_associations_for_sites(sites)
+    user_site_associations.each do |usa|
+      usa.selected = true
+    end
+    all_sites = sites.map(&:id)
+    current_sites = user_site_associations.map(&:site_id)
+    missing_sites = all_sites - current_sites
+    missing_sites.each do |site_id|
+      user_site_associations.build(site_id: site_id, role: UserType::PUBLISHER, selected: false)
+    end
   end
 
   private

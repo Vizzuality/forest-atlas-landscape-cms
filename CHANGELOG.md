@@ -5,6 +5,7 @@
 - Improve filters options on widget creation
 - Fix issue on dataset filters with only one value
 - Prevent widget from being deleted if they are being used on any page
+- Define the role of the user per site instead of at user creation
 
 ### 28 Feb 2017
 - Add links to share on Facebook, Twitter and G+ on page footers
