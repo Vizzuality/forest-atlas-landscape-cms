@@ -438,7 +438,7 @@
             text-transform: uppercase;
 
             @if $theme == 1 {
-              padding-top: 5px;
+              padding-top: 2px;
             }
 
             &:not(:last-of-type):after {

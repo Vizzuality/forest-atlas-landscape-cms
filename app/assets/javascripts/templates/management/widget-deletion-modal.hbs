@@ -1,0 +1,20 @@
+<div class="widgets-modal-content">
+  <h1>Widget can't be deleted</h1>
+
+  <div class="widgets-modal-body">
+    <p>
+      This widget is present in the following pages. Please remove it from all pages before deleting.
+    </p>
+    <ul class="widgets-modal-pages-list">
+    {{#each widget}}
+      <li>Site {{site.name}} / Page {{page.name}}</li>
+    {{/each}}
+    </ul>
+  </div>
+</div>
+
+<div class="c-action-bar -embed -center">
+  <div class="wrapper">
+    <button type="submit" class="c-button js-continue">Ok</button>
+  </div>
+</div>
