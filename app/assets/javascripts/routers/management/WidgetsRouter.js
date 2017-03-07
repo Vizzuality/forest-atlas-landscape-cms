@@ -100,7 +100,7 @@
       var tableContainer = document.querySelector('.js-table');
 
       if (tableCollection.length === 0) {
-        tableContainer.innerHTML = '<p class="no-data">There aren\'t any widget to display yet.</p>';
+        tableContainer.innerHTML = '<p class="no-data">There isn\'t any widget to display yet.</p>';
       } else {
         // We initialize the table
         new App.View.TableView({

@@ -2,6 +2,8 @@
 - Adds HTML Blot to be able in insert html content into the wysiwyg
 - Open image attribution on separate tab
 - Show only site title on homepage banner
+- Improve filters options on widget creation
+- Fix issue on dataset filters with only one value
 - Prevent widget from being deleted if they are being used on any page
 
 ### 28 Feb 2017

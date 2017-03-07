@@ -239,7 +239,13 @@
      */
     _getStepPrecision: function (min, max) {
       var difference = max - min;
-      return Math.round(difference / 100);
+      if (difference > 100) {
+        return Math.round(difference / 100);
+      } else if (difference > 1) {
+        return +((difference / 100).toFixed(2));
+      } else {
+        return difference;
+      }
     },
 
     /**
@@ -422,7 +428,7 @@
         }
 
         // We add an index to the final object, and rename the "values" property of the filter
-        // objet by "selectedValues"
+        // object by "selectedValues"
         var o = { id: index + 1 };
         if (filter.values) o.selectedValues = filter.values;
 

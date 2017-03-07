@@ -36,9 +36,10 @@
     },
 
     index: function () {
+      const fields = this._getFields();
       var datasetFiltersView = new App.View.DatasetFiltersView({
         el: '.js-filters',
-        fields: this._getFields(),
+        fields: fields,
         filters: (window.gon && gon.filtersArray) || [],
         endpointUrl: (window.gon && gon.filtersEndpointUrl) || '',
         hiddenInputName: 'widget[filters]',
