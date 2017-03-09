@@ -103,6 +103,7 @@ class Management::PageStepsController < ManagementController
         gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
         gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? nil : (JSON.parse @dataset_setting.default_graphs)
         gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
+        gon.analysis_widgets = @dataset_setting.widgets.blank? ? nil : (JSON.parse @dataset_setting.widgets)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
         gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.parsed_legend
@@ -251,11 +252,24 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :position, :uri, :show_on_menu,
-                                      :parent_id, :content_type, content: [:url, :target_blank, :body, :json, :settings],
-                                      dataset_setting: [:dataset_id, :filters,
-                                                        :default_graphs, :default_map,
-                                                        visible_fields: []])
+    params.require(:site_page).permit(
+      :name,
+      :description,
+      :position,
+      :uri,
+      :show_on_menu,
+      :parent_id,
+      :content_type,
+      content: [:url, :target_blank, :body, :json, :settings],
+      dataset_setting: [
+        :dataset_id,
+        :filters,
+        :default_graphs,
+        :default_map,
+        :widgets,
+        visible_fields: []
+      ]
+    )
   end
 
   # Sets the current site from the url
