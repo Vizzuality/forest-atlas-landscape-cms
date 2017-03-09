@@ -221,7 +221,7 @@ class Management::PageStepsController < ManagementController
     temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } })
 
     begin
-      count = temp_dataset_setting.get_row_count['data'].first.values.first
+      count = temp_dataset_setting.get_row_count
       preview = temp_dataset_setting.get_preview['data']
     rescue
       count = 0
