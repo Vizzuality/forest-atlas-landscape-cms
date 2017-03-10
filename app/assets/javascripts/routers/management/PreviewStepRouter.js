@@ -205,12 +205,14 @@
         };
       });
 
-      widgets.unshift({
-        type: 'map',
-        lat: (window.gon && gon.analysisMap.lat) || null,
-        lng: (window.gon && gon.analysisMap.lon) || null,
-        zoom: (window.gon && gon.analysisMap.zoom) || null
-      });
+      if(window.gon && gon.analysisMap){
+        widgets.unshift({
+          type: 'map',
+          lat: (window.gon && gon.analysisMap.lat) || null,
+          lng: (window.gon && gon.analysisMap.lon) || null,
+          zoom: (window.gon && gon.analysisMap.zoom) || null
+        });
+      }
 
       return widgets;
     },
@@ -263,7 +265,7 @@
         this['widget' + i].render();
       }
     },
-
+    
     /**
      * Switch the widget designated by its index for the widget of the specified type
      * @param {number} index
