@@ -1,15 +1,12 @@
 ((function (App) {
   'use strict';
 
-
   var TableCollection = Backbone.Collection.extend({
     parse: function (data) {
       var keys;
       if (data.length) keys = Object.keys(data[0]);
-
       return data.map(function (row) {
         var res = {};
-
         res.row = keys.map(function (key) {
           return {
             name: key,
@@ -17,14 +14,12 @@
             sortable: true
           };
         });
-
         return res;
       });
     }
   });
 
   App.Router.ManagementPreviewStep = Backbone.Router.extend({
-
     state: {
       name: 'Untitled',
       config: {
@@ -62,7 +57,6 @@
 
     index: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-
       this._initDescription();
       this._initWidgets();
       this._initTable();
@@ -81,7 +75,6 @@
           }.bind(this);
         }, this);
       }
-
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         this.listenTo(this['widget' + i], 'state:change', this.widgetsStateHandler[i]);
       }
@@ -92,7 +85,6 @@
      */
     _removeListeners: function () {
       if (!this.widgetsStateHandler) return;
-
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         this.stopListening(this['widget' + i], 'state:change', this.widgetsStateHandler[i]);
       }
@@ -112,18 +104,16 @@
     _openDescriptionModal: function () {
       if (!this.descriptionModal) {
         var description = document.querySelector('.js-description');
-
         this.descriptionModal = new App.View.ModalView();
-
         var descriptionDashboardModalView = new App.View.DescriptionDashboardModalView({
           name: (window.gon && gon.pageName) || null,
           description: description.innerHTML,
-          closeCallback: function () { this.descriptionModal.close(); }.bind(this)
+          closeCallback: function () {
+            this.descriptionModal.close();
+          }.bind(this)
         });
-
         this.descriptionModal.render = descriptionDashboardModalView.render;
       }
-
       this.descriptionModal.open();
     },
 
@@ -154,7 +144,6 @@
     _saveState: function (component, state) {
       var index = +component.slice(-1);
       this.state.config.widgets[index] = Object.assign({}, this.state.config.widgets[index], state);
-
       this._updateHiddenFields();
     },
 
@@ -168,11 +157,9 @@
         this.chartsInput = document.querySelector('.js-charts-input');
         this.mapInput = document.querySelector('.js-map-input');
       }
-
       this.chartsInput.value = JSON.stringify(this.state.config.widgets.filter(function (widget) {
         return widget.type === 'chart';
       }));
-
       var map = Object.assign({}, _.findWhere(this.state.config.widgets, { type: 'map' }));
       map.lon = map.lng;
       delete map.lng;
@@ -196,24 +183,35 @@
       /**
        * @type {object[]}
        */
-      var widgets = ((window.gon && gon.analysisGraphs) || []).map(function (widget) {
-        return {
-          type: 'chart',
-          chart: widget.chart,
-          x: widget.x,
-          y: widget.y || null
-        };
-      });
 
-      if(window.gon && gon.analysisMap){
-        widgets.unshift({
-          type: 'map',
-          lat: (window.gon && gon.analysisMap.lat) || null,
-          lng: (window.gon && gon.analysisMap.lon) || null,
-          zoom: (window.gon && gon.analysisMap.zoom) || null
+      var widgets = [];
+      if(window.gon && gon.analysisGraphs) {
+        widgets = (window.gon && gon.analysisGraphs).map(function (widget) {
+          return {
+            type: 'chart',
+            chart: widget.chart || null,
+            x: widget.x || null,
+            y: widget.y || null
+          };
         });
+      } else {
+        for (var i = 0, j = this.options.widgetsCount - 1; i < j; i++) {
+          widgets.push({
+            type: 'chart',
+            chart: null,
+            x: null,
+            y: null
+          });
+        }
       }
 
+      // Map widgets need to be initialised with this defaults: [lat, lon] = [0, 0] and zoom = 3
+      widgets.unshift({
+        type: 'map',
+        lat: window.gon && gon.analysisMap ? gon.analysisMap.lat : 0,
+        lng: window.gon && gon.analysisMap ? gon.analysisMap.lon : 0,
+        zoom: window.gon && gon.analysisMap ? gon.analysisMap.zoom : 3
+      });
       return widgets;
     },
 
@@ -223,7 +221,6 @@
     _initWidgets: function () {
       var dataset = this._getDataset();
       var widgets = this._getDashboardWidgets();
-
       widgets.forEach(function (widget, index) {
         if (widget.type === 'map') {
           this['widget' + index] = new App.View.MapWidgetView({
@@ -262,10 +259,10 @@
      */
     _renderWidgets: function () {
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-        this['widget' + i].render();
+        if (this['widget' + i]) this['widget' + i].render();
       }
     },
-    
+
     /**
      * Switch the widget designated by its index for the widget of the specified type
      * @param {number} index
@@ -274,21 +271,19 @@
     _switchWidget: function (index, type) {
       var instance = this['widget' + index];
       var widgetContainer = instance.el;
-
       // We remove the DOM changes implied by the widget's intance
       instance.remove();
-
       // We instanciate the new widget
       var dataset = this._getDataset();
-
       // We remove all the listeners
       this._removeListeners();
-
       if (type === 'chart') {
         this['widget' + index] = new App.View.ChartWidgetView({
           el: widgetContainer,
           data: dataset,
-          switchCallback: function () { this._switchWidget(index, 'map'); }.bind(this)
+          switchCallback: function () {
+            this._switchWidget(index, 'map');
+          }.bind(this)
         });
       } else {
         this['widget' + index] = new App.View.MapWidgetView({
@@ -301,15 +296,14 @@
             lat: 'latitude' || null,
             lng: 'longitude' || null
           },
-          switchCallback: function () { this._switchWidget(index, 'chart'); }.bind(this)
+          switchCallback: function () {
+            this._switchWidget(index, 'chart');
+          }.bind(this)
         });
       }
-
       // We re-set the listeners
       this._setListeners();
-
       this['widget' + index].render();
     }
-
   });
 })(this.App));
