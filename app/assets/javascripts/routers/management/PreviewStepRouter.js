@@ -1,6 +1,5 @@
 ((function (App) {
   'use strict';
-
   var TableCollection = Backbone.Collection.extend({
     parse: function (data) {
       var keys;
@@ -18,7 +17,6 @@
       });
     }
   });
-
   App.Router.ManagementPreviewStep = Backbone.Router.extend({
     state: {
       name: 'Untitled',
@@ -41,20 +39,16 @@
         ]
       }
     },
-
     defaults: {
       // Number of widgets of the dashboard
       widgetsCount: 3
     },
-
     routes: {
       '(/)': 'index'
     },
-
     initialize: function (params) {
       this.slug = params[0] || null;
     },
-
     index: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
       this._initDescription();
@@ -63,7 +57,6 @@
       this._setListeners();
       this._renderWidgets();
     },
-
     /**
      * Set the listeners that don't depend on a DOM element
      */
@@ -79,7 +72,6 @@
         this.listenTo(this['widget' + i], 'state:change', this.widgetsStateHandler[i]);
       }
     },
-
     /**
      * Remove the listeners that don't depend on a DOM element
      */
@@ -89,7 +81,6 @@
         this.stopListening(this['widget' + i], 'state:change', this.widgetsStateHandler[i]);
       }
     },
-
     /**
      * Init the description's "Read more" button
      */
@@ -97,7 +88,6 @@
       var readModeBtn = document.querySelector('.js-read-more');
       if (readModeBtn) readModeBtn.addEventListener('click', this._openDescriptionModal.bind(this));
     },
-
     /**
      * Open the description modal
      */
@@ -116,7 +106,6 @@
       }
       this.descriptionModal.open();
     },
-
     /**
      * Return the table collection corresponding to the dataset
      * @returns {object[]}
@@ -124,7 +113,6 @@
     _getTableCollection: function () {
       return new TableCollection(this._getDataset(), { parse: true });
     },
-
     /**
      * Init the table
      */
@@ -135,7 +123,6 @@
         tableName: 'Dashboard data'
       });
     },
-
     /**
      * Save the state of the specified component into a global state object
      * @param {string} component - "filters", "chart1", "chart2" or "map"
@@ -146,7 +133,6 @@
       this.state.config.widgets[index] = Object.assign({}, this.state.config.widgets[index], state);
       this._updateHiddenFields();
     },
-
     /**
      * Update the hidden fields so when the user submits the form, the back end saves
      * the configuration
@@ -165,7 +151,6 @@
       delete map.lng;
       this.mapInput.value = JSON.stringify(map);
     },
-
     /**
      * Return the dataset
      * @returns {object[]} dataset
@@ -173,7 +158,6 @@
     _getDataset: function () {
       return (window.gon && gon.analysisData.data) || [];
     },
-
     /**
      * Retrieve the list of widgets
      * @returns {object[]} widgets
@@ -185,7 +169,7 @@
        */
 
       var widgets = [];
-      if(window.gon && gon.analysisGraphs) {
+      if (window.gon && gon.analysisGraphs) {
         widgets = (window.gon && gon.analysisGraphs).map(function (widget) {
           return {
             type: 'chart',
@@ -204,7 +188,6 @@
           });
         }
       }
-
       // Map widgets need to be initialised with this defaults: [lat, lon] = [0, 0] and zoom = 3
       widgets.unshift({
         type: 'map',
@@ -214,7 +197,6 @@
       });
       return widgets;
     },
-
     /**
      * Init the widgets
      */
@@ -253,7 +235,6 @@
         }
       }, this);
     },
-
     /**
      * Render the widgets
      */
@@ -262,7 +243,6 @@
         if (this['widget' + i]) this['widget' + i].render();
       }
     },
-
     /**
      * Switch the widget designated by its index for the widget of the specified type
      * @param {number} index
