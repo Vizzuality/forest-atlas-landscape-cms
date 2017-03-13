@@ -16,11 +16,7 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
-  <!-- below is the new hidden field -->
-  <input type="hidden" type="text" name="site_page[dataset_setting][widgets]" value="" class="js-map-input" />
-  <!-- the two hidden fields below to be removed once logic updated -->
-  <input type="hidden" type="text" name="site_page[dataset_setting][default_graphs]" value="" class="js-charts-input" />
-  <input type="hidden" type="text" name="site_page[dataset_setting][default_map]" value="" class="js-map-input" />
+  <input type="hidden" type="text" name="site_page[dataset_setting][widgets]" value="" class="js-widgets-input" />
 
   <div class="l-page-creation -dashboard-preview">
     <div class="l-analysis-dashboard">

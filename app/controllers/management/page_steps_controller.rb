@@ -101,8 +101,6 @@ class Management::PageStepsController < ManagementController
         build_current_dataset_setting
         gon.page_name = @page.name
         gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
-        gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? nil : (JSON.parse @dataset_setting.default_graphs)
-        gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
         gon.analysis_widgets = @dataset_setting.widgets.blank? ? nil : (JSON.parse @dataset_setting.widgets)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
@@ -264,8 +262,6 @@ class Management::PageStepsController < ManagementController
       dataset_setting: [
         :dataset_id,
         :filters,
-        :default_graphs,
-        :default_map,
         :widgets,
         visible_fields: []
       ]
@@ -345,12 +341,8 @@ class Management::PageStepsController < ManagementController
       @dataset_setting.columns_visible = fields.to_json
     end
 
-    if fields = ds_params[:default_map]
-      @dataset_setting.default_map = fields
-    end
-
-    if fields = ds_params[:default_graphs]
-      @dataset_setting.default_graphs = fields
+    if fields = ds_params[:widgets]
+      @dataset_setting.widgets = fields
     end
 
   end
