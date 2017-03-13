@@ -9,11 +9,10 @@
 #  filters              :json
 #  columns_visible      :json
 #  columns_changeable   :json
-#  default_graphs       :json
-#  default_map          :json
-#  legend               :json
 #  api_table_name       :string
 #  fields_last_modified :string
+#  legend               :json
+#  widgets              :json
 #
 
 # Filters: The filters that will be in the SQL WHERE clause. Stored in JSON
