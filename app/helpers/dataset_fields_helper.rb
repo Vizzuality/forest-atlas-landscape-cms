@@ -1,4 +1,7 @@
 module DatasetFieldsHelper
+  INT_FIELDS = %w[number long double esrifieldtypeinteger esrifieldtypesmallinteger esrifieldtypedouble]
+  STRING_FIELDS = %w[string esrifieldtypestring esrifieldtypexml]
+  DATE_FIELDS =  %w[date esrifieldtypedate]
   def get_numeric_fields
     [:number, :date, :long, :double]
   end
