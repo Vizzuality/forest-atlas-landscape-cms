@@ -159,49 +159,49 @@ def create_users
     {
       email: 'tiago.garcia@vizzuality.com',
       name: 'Tiago Garcia',
-      role: UserType::ADMIN
+      admin: true
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
       name: 'Tiago Santos',
-      role: UserType::ADMIN
+      admin: true
     }
   )
   @agnieszka_figiel_user = User.create(
     {
       email: 'agnieszka.figiel@vizzuality.com',
       name: 'Agnieszka Figiel',
-      role: UserType::ADMIN
+      admin: true
     }
   )
   @jose_angel_user = User.create(
     {
       email: 'joseangel.parreno@vizzuality.com',
-      name: 'Jose Angel'
-
+      name: 'Jose Angel',
+      admin: false
     }
   )
   @hector_arce_user = User.create(
     {
       email: 'hector.arce@vizzuality.com',
       name: 'Hector Arce',
-      role: UserType::MANAGER
+      admin: false
     }
   )
   @clara_linos_user = User.create(
     {
       email: 'clara.linos@vizzuality.com',
       name: 'Clara Linos',
-      role: UserType::MANAGER
+      admin: false
     }
   )
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
       name: 'Clément Prodhomme',
-      role: UserType::ADMIN
+      admin: true
     }
   )
 =begin
