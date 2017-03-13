@@ -1,6 +1,7 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
   include TreeStructureHelper
+  include DatasetFieldsHelper
 
   before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
@@ -67,8 +68,7 @@ class Management::PageStepsController < ManagementController
       when 'filters'
         build_current_dataset_setting
         @fields = @dataset_setting.get_fields
-        @fields.each { |f| f[:type] = 'number' if %w[double long int].any? {|x| f[:type].downcase.include?(x)} }
-        @fields.each { |f| f[:type] = 'date' if f[:type].downcase.include?('date')}
+        @fields.each { |f| f[:type] = DatasetFieldsHelper.parse(f[:type]) }
 
         gon.fields = @fields
         gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'

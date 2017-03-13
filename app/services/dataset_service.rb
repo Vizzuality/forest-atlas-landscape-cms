@@ -1,4 +1,5 @@
 class DatasetService
+  include DatasetFieldsHelper
 
   @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
     faraday.request :url_encoded
@@ -44,7 +45,7 @@ class DatasetService
 
     fields = []
     fieldsJSON['fields'].each do |data|
-      if %w[number date string long double int].any? { |x| data.last['type'].downcase.include?(x) }
+      if DatasetFieldsHelper.is_valid? data.last['type']
         fields << {name: data.first, type: data.last['type']}
       end
     end
@@ -61,7 +62,7 @@ class DatasetService
     Rails.logger.info "Going to make a Filtered Request: #{full_query}"
 
     filteredRequest = @conn.get full_query
-    if filteredRequest.body.blank?
+    if filteredRequest.body.blank? || filteredRequest.status != 200
       Rails.logger.warn "There was a problem with the response from the API: #{filteredRequest}"
       return {}
     else
@@ -103,32 +104,34 @@ class DatasetService
   def self.get_fields_attributes(fields, api_table_name, dataset_id)
     query = 'select '
     field_names = []
-    fields.select { |f| %w[number date long double esriFieldTypeSmallInteger].any? { |x| f[:type].downcase.include?(x) } }.each do |field|
+    fields.select { |f| DatasetFieldsHelper.is_enumerable?(f[:type]) }.each do |field|
       field_names << " min(#{field[:name]}) as min_#{field[:name]} , max(#{field[:name]}) as max_#{field[:name]} "
     end
+
     query += field_names.join(', ')
     query += " from #{api_table_name}"
 
     number_dataset = get_filtered_dataset dataset_id, query unless field_names.blank?
 
     string_datasets = {}
-    fields.select { |f| f[:type].downcase.include?('string') }.each do |field|
+
+    fields.select { |f| DatasetFieldsHelper.is_string?(f[:type]) }.each do |field|
       query = "select count(*), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
 
     fields.each do |field|
       case field[:type]
-        when /number/, /date/, /long/, /double/
-          data = number_dataset['data'][0]
-          field[:min] = data["min_#{field[:name]}"] if data
-          field[:max] = data["max_#{field[:name]}"] if data
-        when /esriFieldTypeSmallInteger/
-          data = number_dataset['data'][0]
-          field[:min] = data["min_#{field[:name]}"] if data
-          field[:max] = data["max_#{field[:name]}"] if data
-        when /string/, /esriFieldTypeString/
-          field[:values] = string_datasets[field[:name]]['data'].map { |x| x[field[:name]] }
+        when -> (type) { DatasetFieldsHelper.is_enumerable?(type) }
+          field[:min] = number_dataset['data'][0]["min_#{field[:name]}"]
+          field[:max] = number_dataset['data'][0]["max_#{field[:name]}"]
+        when -> (type) { DatasetFieldsHelper.is_string?(type) }
+          data = string_datasets[field[:name]]['data']
+          if data.blank?
+            field[:values] = []
+          else
+            field[:values] = data.map{|x| x[field[:name]]}
+          end
       end
     end
     fields
