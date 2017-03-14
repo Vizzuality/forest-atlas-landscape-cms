@@ -28,7 +28,7 @@ Handlebars.registerHelper('each_range', function (min, max, step, block) {
 
   // We need to round the number on the next line due to JS approximation errors
   // Example: .1 + .2 !== .3
-  var count = (step === 0 ? 1 : Math.round(((max - min) / step) + 1));
+  var count = (step > 0 ? Math.round(((max - min) / step) + 1) : 1);
   var stepDecimals = getDecimalsCount(step); // Maximum number of decimals allowed
 
   return new Array(count).fill(null).map(function (value, index) {

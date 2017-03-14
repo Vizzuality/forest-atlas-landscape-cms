@@ -123,8 +123,8 @@ class DatasetService
     fields.each do |field|
       case field[:type]
         when -> (type) { DatasetFieldsHelper.is_enumerable?(type) }
-          field[:min] = number_dataset['data'][0]["min_#{field[:name]}"]
-          field[:max] = number_dataset['data'][0]["max_#{field[:name]}"]
+          field[:min] = number_dataset['data'][0]["min_#{field[:name]}"] unless number_dataset['data'].empty?
+          field[:max] = number_dataset['data'][0]["max_#{field[:name]}"] unless number_dataset['data'].empty?
         when -> (type) { DatasetFieldsHelper.is_string?(type) }
           data = string_datasets[field[:name]]['data']
           if data.blank?
