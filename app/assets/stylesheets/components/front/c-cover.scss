@@ -25,6 +25,10 @@
       // on the site settings
       height: 250px;
     }
+
+    &::after {
+      height: 45%;
+    }
   }
 
   &::after {
