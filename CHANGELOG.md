@@ -1,5 +1,6 @@
 ### 7 Mar 2017
 - Improve support for ArcGIS services
+- Update header text style
 
 ### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg
