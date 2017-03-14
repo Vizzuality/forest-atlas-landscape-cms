@@ -1,4 +1,7 @@
 ### 7 Mar 2017
+- Improve support for ArcGIS services
+
+### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg
 - Open image attribution on separate tab
 - Show only site title on homepage banner
