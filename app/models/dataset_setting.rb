@@ -140,7 +140,9 @@ class DatasetSetting < ApplicationRecord
 
   # Gets the number of rows for a query
   def get_row_count
-    get_filtered_dataset true
+    result = get_filtered_dataset true
+
+    return result['data'].first.values.first
   end
 
   # Gets a preview of the results

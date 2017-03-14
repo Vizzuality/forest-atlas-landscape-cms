@@ -1,4 +1,5 @@
 class DatasetService
+  include DatasetFieldsHelper
 
   @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
     faraday.request :url_encoded
@@ -12,7 +13,7 @@ class DatasetService
   # Params
   # ++status++ the status of the dataset
   def self.get_datasets(status = 'saved')
-    datasetRequest = @conn.get '/dataset' , {'page[number]': '1', 'page[size]': '10000', \
+    datasetRequest = @conn.get '/dataset', {'page[number]': '1', 'page[size]': '10000', \
       'status': status, 'app': 'forest-atlas,gfw', '_': Time.now.to_f}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
@@ -44,7 +45,7 @@ class DatasetService
 
     fields = []
     fieldsJSON['fields'].each do |data|
-      if %w[number date string long double int].any? {|x| data.last['type'].downcase.include?(x)}
+      if DatasetFieldsHelper.is_valid? data.last['type']
         fields << {name: data.first, type: data.last['type']}
       end
     end
@@ -61,7 +62,7 @@ class DatasetService
     Rails.logger.info "Going to make a Filtered Request: #{full_query}"
 
     filteredRequest = @conn.get full_query
-    if filteredRequest.body.blank?
+    if filteredRequest.body.blank? || filteredRequest.status != 200
       Rails.logger.warn "There was a problem with the response from the API: #{filteredRequest}"
       return {}
     else
@@ -100,30 +101,37 @@ class DatasetService
   # +fields+:: The list of fields to the get the attributes for
   # +api_table_name+:: The name of the table to select the attributes from
   # +dataset_id+:: The id of the dataset
-  def self.get_fields_attributes fields, api_table_name, dataset_id
+  def self.get_fields_attributes(fields, api_table_name, dataset_id)
     query = 'select '
     field_names = []
-    fields.select{|f| %w[number date long double].any?{|x| f[:type].downcase.include?(x)}  }.each do |field|
+    fields.select { |f| DatasetFieldsHelper.is_enumerable?(f[:type]) }.each do |field|
       field_names << " min(#{field[:name]}) as min_#{field[:name]} , max(#{field[:name]}) as max_#{field[:name]} "
     end
+
     query += field_names.join(', ')
     query += " from #{api_table_name}"
 
     number_dataset = get_filtered_dataset dataset_id, query unless field_names.blank?
 
     string_datasets = {}
-    fields.select {|f| f[:type].downcase.include?('string')}.each do |field|
+
+    fields.select { |f| DatasetFieldsHelper.is_string?(f[:type]) }.each do |field|
       query = "select count(*), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
 
     fields.each do |field|
       case field[:type]
-        when /number/, /date/, /long/, /double/
-          field[:min] = number_dataset['data'][0]["min_#{field[:name]}"]
-          field[:max] = number_dataset['data'][0]["max_#{field[:name]}"]
-        when /string/
-          field[:values] = string_datasets[field[:name]]['data'].map{|x| x[field[:name]]}
+        when -> (type) { DatasetFieldsHelper.is_enumerable?(type) }
+          field[:min] = number_dataset['data'][0]["min_#{field[:name]}"] unless number_dataset['data'].empty?
+          field[:max] = number_dataset['data'][0]["max_#{field[:name]}"] unless number_dataset['data'].empty?
+        when -> (type) { DatasetFieldsHelper.is_string?(type) }
+          data = string_datasets[field[:name]]['data']
+          if data.blank?
+            field[:values] = []
+          else
+            field[:values] = data.map{|x| x[field[:name]]}
+          end
       end
     end
     fields
@@ -131,7 +139,7 @@ class DatasetService
 
   # Sends the dataset to the API
   def self.upload(token, connectorType, connectorProvider, connectorUrl,
-                    applications, name, tags_array = nil, caption = {}, units = nil)
+    applications, name, tags_array = nil, caption = {}, units = nil)
 
     formatted_caption = caption.dup
     # Converting the caption[country] JSON
@@ -182,7 +190,7 @@ class DatasetService
 
       Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
 
-    return JSON.parse(res.body)['data']['id']
+      return JSON.parse(res.body)['data']['id']
 
     rescue Exception => e
       Rails.logger.error "Error creating new dataset in the API: #{e}"
