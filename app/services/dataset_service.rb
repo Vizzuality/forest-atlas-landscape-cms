@@ -1,7 +1,7 @@
 class DatasetService
   include DatasetFieldsHelper
 
-  @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
+  @conn ||= Faraday.new(:url => ENV.fetch("API_URL") + '/v1') do |faraday|
     faraday.request :url_encoded
     faraday.response :logger, Rails.logger #, bodies: true # Activate this only for specific debugging
     faraday.adapter Faraday.default_adapter
@@ -153,7 +153,6 @@ class DatasetService
 
     begin
       body = "{
-            \"dataset\": {
               \"connectorType\": \"#{connectorType}\",
               \"provider\": \"#{connectorProvider}\",
               \"connectorUrl\": \"#{connectorUrl}\",
@@ -161,7 +160,6 @@ class DatasetService
               \"application\": #{applications.to_json},
               \"name\": \"#{name}\",
               \"tags\": #{tags_array.to_json}
-            }
           }"
 
       Rails.logger.info 'Creating Dataset in the API.'

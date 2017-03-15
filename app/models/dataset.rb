@@ -7,8 +7,8 @@ class Dataset
 
   has_many :context_datasets
 
-  CONNECTOR_TYPES = %w[document json rest]
-  CONNECTOR_PROVIDERS = %w[csv rwjson cartodb featureservice]
+  CONNECTOR_TYPES = %w[document rest]
+  CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   cattr_accessor :form_steps do
     {pages: %w[title connector labels context],
