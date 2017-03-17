@@ -89,10 +89,8 @@ class SitePageController < ApplicationController
       # Fill the gon for:
       # ... user filters
       gon.analysis_user_filters = JSON.parse @setting.columns_changeable
-      # ... default graphs (type: {X,Y})
-      gon.analysis_graphs = JSON.parse @setting.default_graphs
-      # ... default map (type: {up_left, right_bottom})
-      gon.analysis_map = JSON.parse @setting.default_map
+      # ... widgets
+      gon.analysis_widgets = @setting.widgets.blank? ? nil : (JSON.parse @setting.widgets)
       # ... data
       gon.analysis_data = @setting.get_filtered_dataset
       # ... last modification of the fields

@@ -9,11 +9,10 @@
 #  filters              :json
 #  columns_visible      :json
 #  columns_changeable   :json
-#  default_graphs       :json
-#  default_map          :json
-#  legend               :json
 #  api_table_name       :string
 #  fields_last_modified :string
+#  legend               :json
+#  widgets              :json
 #
 
 # Filters: The filters that will be in the SQL WHERE clause. Stored in JSON
@@ -97,6 +96,18 @@ class DatasetSetting < ApplicationRecord
       return JSON.parse columns_visible
     else
       return []
+    end
+  end
+
+  # Returns the legend with the format needed for the front end (key long should be lng)
+  def parsed_legend
+    begin
+      parsed_legend = self.legend.dup
+      lng = parsed_legend.delete('long')
+      parsed_legend['lng'] = lng
+      parsed_legend
+    rescue
+      return nil
     end
   end
 

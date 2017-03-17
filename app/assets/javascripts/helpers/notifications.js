@@ -92,6 +92,10 @@
         content: 'The URL you’ve been shared is corrupted!',
         additionalContent: 'As a consequence, we loaded the default dashboard.'
       },
+      chartError: {
+        type: 'error',
+        content: 'One of the chart couldn\'t be loaded properly!'
+      },
       bookmarks: {
         deletion: {
           content: 'The bookmark has been successfully deleted!',
