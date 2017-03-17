@@ -138,18 +138,10 @@
      * the configuration
      */
     _updateHiddenFields: function () {
-      // TODO: update the method once the backend has been updated
-      if (!this.chartsInput) {
-        this.chartsInput = document.querySelector('.js-charts-input');
-        this.mapInput = document.querySelector('.js-map-input');
+      if (!this.widgetsInput) {
+        this.widgetsInput = document.querySelector('.js-widgets-input');
       }
-      this.chartsInput.value = JSON.stringify(this.state.config.widgets.filter(function (widget) {
-        return widget.type === 'chart';
-      }));
-      var map = Object.assign({}, _.findWhere(this.state.config.widgets, { type: 'map' }));
-      map.lon = map.lng;
-      delete map.lng;
-      this.mapInput.value = JSON.stringify(map);
+      this.widgetsInput.value = JSON.stringify(this.state.config.widgets);
     },
     /**
      * Return the dataset
@@ -163,42 +155,36 @@
      * @returns {object[]} widgets
      */
     _getDashboardWidgets: function () {
-      // TODO: temporary code to support the old back end code
-      /**
-       * @type {object[]}
-       */
-
       var widgets = [];
-      if (window.gon && gon.analysisGraphs) {
-        widgets = (window.gon && gon.analysisGraphs).map(function (widget) {
-          return {
-            type: 'chart',
-            chart: widget.chart || null,
-            x: widget.x || null,
-            y: widget.y || null
-          };
+      if (gon && gon.analysisWidgets) {
+        widgets = gon.analysisWidgets.map(function (widget) {
+          if (widget.type === 'chart') {
+            return {
+              type: 'chart',
+              chart: widget.chart || null,
+              x: widget.x || null,
+              y: widget.y || null
+            };
+          } else if (widget.type === 'map') {
+            return {
+              type: 'map',
+              lat: widget.lat || 0,
+              lng: widget.lng || 0,
+              zoom: widget.zoom || 3
+            };
+          }
         });
       } else {
         for (var i = 0, j = this.options.widgetsCount - 1; i < j; i++) {
-          widgets.push({
-            type: 'chart',
-            chart: null,
-            x: null,
-            y: null
-          });
+          widgets.push({ type: 'chart', chart: null, x: null, y: null });
         }
+        widgets.unshift({ type: 'map', lat: 0, lng: 0, zoom: 3 })
       }
-      // Map widgets need to be initialised with this defaults: [lat, lon] = [0, 0] and zoom = 3
-      widgets.unshift({
-        type: 'map',
-        lat: window.gon && gon.analysisMap ? gon.analysisMap.lat : 0,
-        lng: window.gon && gon.analysisMap ? gon.analysisMap.lon : 0,
-        zoom: window.gon && gon.analysisMap ? gon.analysisMap.zoom : 3
-      });
       return widgets;
     },
     /**
      * Init the widgets
+     *
      */
     _initWidgets: function () {
       var dataset = this._getDataset();

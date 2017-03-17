@@ -134,27 +134,7 @@
      * @returns {object[]} widgets
      */
     _getDashboardWidgets: function () {
-      // TODO: temporary code to support the old back end code
-      /**
-       * @type {object[]}
-       */
-      var widgets = ((window.gon && gon.analysisGraphs) || []).map(function (widget) {
-        return {
-          type: 'chart',
-          chart: widget.chart,
-          x: widget.x,
-          y: widget.y || null
-        };
-      });
-
-      widgets.unshift({
-        type: 'map',
-        lat: (window.gon && gon.analysisMap.lat) || null,
-        lng: (window.gon && gon.analysisMap.lon) || null,
-        zoom: (window.gon && gon.analysisMap.zoom) || null
-      });
-
-      return widgets;
+      return (window.gon && gon.analysisWidgets) || [];
     },
 
     /**
@@ -232,7 +212,7 @@
       var widgets = this._getDashboardWidgets();
 
       widgets.forEach(function (widget, index) {
-        if (widget.type === 'map') {
+        if (widget && widget.type === 'map') {
           this['widget' + index] = new App.View.MapWidgetView({
             el: document.querySelector('.js-widget-' + (index + 1)),
             data: dataset,
@@ -246,7 +226,7 @@
             center: [widget.lat || 0, widget.lng || 0],
             zoom: widget.zoom
           });
-        } else {
+        } else if (widget && widget.type === 'chart') {
           this['widget' + index] = new App.View.ChartWidgetView({
             el: document.querySelector('.js-widget-' + (index + 1)),
             data: dataset,
@@ -523,7 +503,7 @@
      */
     _renderWidgets: function () {
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-        this['widget' + i].render();
+        if(this['widget' + i]) this['widget' + i].render();
       }
     },
 
