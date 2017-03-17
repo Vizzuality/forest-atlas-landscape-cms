@@ -1,6 +1,7 @@
 - Added a default placeholder graph to the dashboard (used when the dataset is empty)
 - Made the graphs translatable (possibility to translate the titles of the axes for example)
 - Added the possibility to update the position and type of the dashboard's widgets
+- Added the new dashboard layout
 
 ### 7 Mar 2017
 - Improve support for ArcGIS services
