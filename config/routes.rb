@@ -73,6 +73,10 @@ Rails.application.routes.draw do
       end
       get '/structure', to: 'sites#structure'
       put :update_structure
+
+      resources :contexts, only: [:index, :destroy] do
+        resources :context_steps, only: [:edit, :show, :update]
+      end
     end
     get '/', to: 'static_page#dashboard'
   end
