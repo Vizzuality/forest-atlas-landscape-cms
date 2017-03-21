@@ -99,9 +99,15 @@
 
     > a {
       background-color: unset;
+      color: $color-3;
+      text-decoration: none;
 
       &:hover {
         text-decoration: underline;
+      }
+
+      &::selection {
+        background-color: unset;
       }
     }
 
