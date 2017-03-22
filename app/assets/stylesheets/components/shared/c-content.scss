@@ -282,6 +282,15 @@
   }
 
   .-raw-html {
+
+    .embed-container {
+      position: relative;
+      height: 500px;
+      display: block;
+      margin: 0 auto;
+      padding: 0;
+    }
+
     iframe {
       display: block;
       margin: 0 auto;
