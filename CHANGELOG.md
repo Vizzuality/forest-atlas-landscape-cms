@@ -1,3 +1,6 @@
+### 28 Mar 2017
+- Changes styles of cover attribution links.
+
 ### 21 Mar 2017
 - Added a default placeholder graph to the dashboard (used when the dataset is empty)
 - Made the graphs translatable (possibility to translate the titles of the axes for example)
