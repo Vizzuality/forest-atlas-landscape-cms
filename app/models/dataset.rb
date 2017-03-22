@@ -43,7 +43,11 @@ class Dataset
     @layers = data[:attributes][:layers]
     @connector_url = data[:attributes][:connector_url]
     @table_name = data[:attributes][:table_name]
-    @tags = data[:attributes][:tags]
+    vocabulary = data[:attributes][:vocabulary]
+    legacy = vocabulary && vocabulary.find do |v|
+      v['type'] == 'vocabulary' && v['attributes'].present? && v['attributes']['name'] == 'legacy'
+    end
+    @tags = legacy && legacy['attributes']['tags'] || []
     @data_overwrite = data[:attributes][:data_overwrite]
     @connector = data[:attributes][:connector]
     @type = data[:attributes][:type]

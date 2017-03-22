@@ -87,7 +87,10 @@ class DatasetService
   # +dataset_id+:: A list of datasets' ids
   def self.get_metadata_list(dataset_ids)
     return [] if dataset_ids.blank?
-    request = @conn.get "/dataset?ids=#{dataset_ids.join(',')}", {'page[number]': '1', 'page[size]': '10000', 'status': 'all', '_': Time.now.to_f }
+    request = @conn.get "/dataset?ids=#{dataset_ids.join(',')}", {
+      'includes': 'vocabulary',
+      'page[number]': '1', 'page[size]': '10000', '_': Time.now.to_f
+    }
     if request.body.blank?
       return {}
     else
