@@ -82,7 +82,7 @@
             { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
             { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
             { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' },
-            { name: 'Contexts', url: '/management/sites' + this.slug + '/contexts' }
+            { name: 'Contexts', url: '/management/sites/' + this.slug + '/contexts' }
           ]
         });
       }
