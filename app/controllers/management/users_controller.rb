@@ -1,14 +1,14 @@
 class Management::UsersController < ManagementController
-  before_filter :load_site
+  before_action :load_site
 
   def new
     @user = User.new
-    @user.user_site_associations.build(site: @site)
+    @usa = @user.user_site_associations.build(site: @site, role: UserType::PUBLISHER)
   end
 
   def create
     email = user_params[:email]
-    role = user_params.delete(:site_role)
+    role = user_params[:site_role]
     @user = User.find_by_email(email) if email.present?
     if @user
       grant_access(role)
@@ -32,11 +32,11 @@ class Management::UsersController < ManagementController
   end
 
   def grant_access(role)
-    usa = @user.user_site_associations.find_by_site_id(@site.id)
-    if usa
-      usa.role = role unless usa.role == UserType::MANAGER
+    @usa = @user.user_site_associations.find_by_site_id(@site.id)
+    if @usa
+      @usa.role = role unless @usa.role == UserType::MANAGER
     else
-      @user.user_site_associations.build(site: @site, role: role)
+      @usa = @user.user_site_associations.build(site: @site, role: role)
     end
     if @user.save
       redirect_to management_site_site_pages_url, notice: 'User granted access successfully'
@@ -46,8 +46,8 @@ class Management::UsersController < ManagementController
   end
 
   def create_and_grant_access(role)
-    @user = User.new(user_params)
-    @user.user_site_associations.build(site: @site, role: role)
+    @user = User.new(user_params.except(:site_role))
+    @usa = @user.user_site_associations.build(site: @site, role: role)
     if @user.valid?
       api_response = @user.send_to_api(session[:user_token], management_url)
       if api_response[:valid]

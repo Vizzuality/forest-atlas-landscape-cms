@@ -22,14 +22,12 @@
           <%= f.email_field :email, id:'email', placeholder: 'john.smith@gmail.com' %>
         </div>
         <div class="container -big">
-          <%= f.fields_for :user_site_associations, @user.user_site_associations do |ff| %>
-            <div class="c-radio">
-              <%= ff.radio_button :role, UserType::MANAGER %>
-              <%= ff.label :role, 'Manager', value:  UserType::MANAGER %>
-              <%= ff.radio_button :role, UserType::PUBLISHER %>
-              <%= ff.label :role, 'Publisher', value:  UserType::PUBLISHER %>
-            </div>
-          <% end %>
+          <div class="c-radio">
+            <%= f.radio_button :site_role, UserType::MANAGER, checked: @usa.role == UserType::MANAGER %>
+            <%= f.label :site_role, 'Manager', value:  UserType::MANAGER %>
+            <%= f.radio_button :site_role, UserType::PUBLISHER, checked: @usa.role == UserType::PUBLISHER %>
+            <%= f.label :site_role, 'Publisher', value:  UserType::PUBLISHER %>
+          </div>
         </div>
       </div>
     </div>
