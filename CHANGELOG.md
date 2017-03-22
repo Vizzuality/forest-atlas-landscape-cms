@@ -6,6 +6,7 @@
 - Made the graphs translatable (possibility to translate the titles of the axes for example)
 - Added the possibility to update the position and type of the dashboard's widgets
 - Added the new dashboard layout
+- Manager can add user to site
 
 ### 14 Mar 2017
 - Improve support for ArcGIS services
