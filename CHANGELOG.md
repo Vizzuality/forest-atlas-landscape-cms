@@ -1,3 +1,10 @@
+### 28 Mar 2017
+- Changes wysiwyg formatting styles
+
+### 21 Mar 2017
+
+### 14 Mar 2017
+
 ### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg
 - Open image attribution on separate tab
