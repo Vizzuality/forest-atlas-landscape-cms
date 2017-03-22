@@ -1,5 +1,6 @@
 ### 28 Mar 2017
 - Changes styles of cover attribution links.
+- Added a context tab to the site management page.
 
 ### 21 Mar 2017
 - Added a default placeholder graph to the dashboard (used when the dataset is empty)
