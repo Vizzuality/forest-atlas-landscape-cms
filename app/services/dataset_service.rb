@@ -142,7 +142,7 @@ class DatasetService
 
   # Sends the dataset to the API
   def self.upload(token, connectorType, connectorProvider, connectorUrl,
-    applications, name, tags_array = nil, caption = {}, units = nil)
+    applications, name, tags_array = [], caption = {}, units = nil)
 
     formatted_caption = caption.dup
     # Converting the caption[country] JSON
@@ -153,18 +153,22 @@ class DatasetService
     rescue
     end
 
+    body = {
+      connectorType: connectorType,
+      provider: connectorProvider,
+      connectorUrl: connectorUrl,
+      legend: formatted_caption,
+      application: applications,
+      name: name,
+      tags: tags_array,
+      vocabularies: {
+        legacy: {
+          tags: tags_array
+        }
+      }
+    }.to_json
 
     begin
-      body = "{
-              \"connectorType\": \"#{connectorType}\",
-              \"provider\": \"#{connectorProvider}\",
-              \"connectorUrl\": \"#{connectorUrl}\",
-              \"legend\": #{formatted_caption.to_json},
-              \"application\": #{applications.to_json},
-              \"name\": \"#{name}\",
-              \"tags\": #{tags_array.to_json}
-          }"
-
       Rails.logger.info 'Creating Dataset in the API.'
       Rails.logger.info "Body: #{body}"
 

@@ -136,7 +136,6 @@ class Management::DatasetStepsController < ManagementController
     @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
 
     @dataset.application = ['forest-atlas'] unless @dataset.application
-    @dataset.tags = ds_params.delete(:tags)
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
   end

@@ -121,8 +121,9 @@ class Dataset
   # Params:
   # +token+:: The authentication for the API
   def upload(token)
+    tags_array = tags.split(',')
     DatasetService.upload token, type, provider, connector_url,
-                          application, name, tags, legend
+                          application, name, tags_array, legend
   end
 
 
