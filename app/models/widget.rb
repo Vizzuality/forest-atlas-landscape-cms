@@ -79,7 +79,7 @@ class Widget < ApplicationRecord
     query = "select #{selector}"
     query += " from #{self.api_table_name}"
     query += ' where ' + get_filters_sql unless self.filters.blank? || JSON.parse(self.filters).blank?
-    query += " limit #{limit}" if limit
+    query += " limit #{limit}" if limit and not count
 
     DatasetService.get_filtered_dataset self.dataset_id, query
   end
@@ -107,7 +107,15 @@ class Widget < ApplicationRecord
 
   # Gets the number of rows for a query
   def get_row_count
-    get_filtered_dataset true
+    result = get_filtered_dataset true
+
+    if (result['data'].kind_of?(Array))
+      count = result['data'].first.values.first
+    else
+      count = result['data'].values.first
+    end
+
+    return count
   end
 
   # Gets a preview of the results

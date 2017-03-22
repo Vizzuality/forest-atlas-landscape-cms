@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170301114012) do
+ActiveRecord::Schema.define(version: 20170313110401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,11 +60,10 @@ ActiveRecord::Schema.define(version: 20170301114012) do
     t.json    "filters"
     t.json    "columns_visible"
     t.json    "columns_changeable"
-    t.json    "default_graphs"
-    t.json    "default_map"
     t.string  "api_table_name"
     t.string  "fields_last_modified"
     t.json    "legend"
+    t.json    "widgets"
     t.index ["context_id"], name: "index_dataset_settings_on_context_id", using: :btree
     t.index ["site_page_id"], name: "index_dataset_settings_on_site_page_id", using: :btree
   end

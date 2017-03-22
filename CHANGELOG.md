@@ -2,8 +2,14 @@
 - Changes wysiwyg formatting styles
 
 ### 21 Mar 2017
+- Added a default placeholder graph to the dashboard (used when the dataset is empty)
+- Made the graphs translatable (possibility to translate the titles of the axes for example)
+- Added the possibility to update the position and type of the dashboard's widgets
+- Added the new dashboard layout
 
 ### 14 Mar 2017
+- Improve support for ArcGIS services
+- Update header text style
 
 ### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg

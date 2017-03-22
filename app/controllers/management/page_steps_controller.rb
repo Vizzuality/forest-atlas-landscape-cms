@@ -1,6 +1,7 @@
 class Management::PageStepsController < ManagementController
   include Wicked::Wizard
   include TreeStructureHelper
+  include DatasetFieldsHelper
 
   before_action :authenticate_user_for_site!, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
@@ -67,8 +68,7 @@ class Management::PageStepsController < ManagementController
       when 'filters'
         build_current_dataset_setting
         @fields = @dataset_setting.get_fields
-        @fields.each { |f| f[:type] = 'number' if %w[double long int].any? {|x| f[:type].downcase.include?(x)} }
-        @fields.each { |f| f[:type] = 'date' if f[:type].downcase.include?('date')}
+        @fields.each { |f| f[:type] = DatasetFieldsHelper.parse(f[:type]) }
 
         gon.fields = @fields
         gon.filters_endpoint_url = wizard_path('filters') + '/filtered_results.json'
@@ -101,11 +101,10 @@ class Management::PageStepsController < ManagementController
         build_current_dataset_setting
         gon.page_name = @page.name
         gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
-        gon.analysis_graphs = @dataset_setting.default_graphs.blank? ? nil : (JSON.parse @dataset_setting.default_graphs)
-        gon.analysis_map = @dataset_setting.default_map.blank? ? nil : (JSON.parse @dataset_setting.default_map)
+        gon.analysis_widgets = @dataset_setting.widgets.blank? ? nil : (JSON.parse @dataset_setting.widgets)
         gon.analysis_data = @dataset_setting.get_filtered_dataset
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
-        gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.legend
+        gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.parsed_legend
         gon.test = @dataset_setting
 
         @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
@@ -221,7 +220,7 @@ class Management::PageStepsController < ManagementController
     temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } })
 
     begin
-      count = temp_dataset_setting.get_row_count['data'].first.values.first
+      count = temp_dataset_setting.get_row_count
       preview = temp_dataset_setting.get_preview['data']
     rescue
       count = 0
@@ -251,11 +250,22 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    params.require(:site_page).permit(:name, :description, :position, :uri, :show_on_menu,
-                                      :parent_id, :content_type, content: [:url, :target_blank, :body, :json, :settings],
-                                      dataset_setting: [:dataset_id, :filters,
-                                                        :default_graphs, :default_map,
-                                                        visible_fields: []])
+    params.require(:site_page).permit(
+      :name,
+      :description,
+      :position,
+      :uri,
+      :show_on_menu,
+      :parent_id,
+      :content_type,
+      content: [:url, :target_blank, :body, :json, :settings],
+      dataset_setting: [
+        :dataset_id,
+        :filters,
+        :widgets,
+        visible_fields: []
+      ]
+    )
   end
 
   # Sets the current site from the url
@@ -331,12 +341,8 @@ class Management::PageStepsController < ManagementController
       @dataset_setting.columns_visible = fields.to_json
     end
 
-    if fields = ds_params[:default_map]
-      @dataset_setting.default_map = fields
-    end
-
-    if fields = ds_params[:default_graphs]
-      @dataset_setting.default_graphs = fields
+    if fields = ds_params[:widgets]
+      @dataset_setting.widgets = fields
     end
 
   end

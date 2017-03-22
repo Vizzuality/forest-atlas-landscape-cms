@@ -1,5 +1,6 @@
 <% content_for :extended_header do %>
-  <div class="c-extended-header">
+  <!--suppress ALL -->
+    <div class="c-extended-header">
     <div class="wrapper">
       <div class="description">
         <h1>Layout preview</h1>
@@ -16,8 +17,7 @@
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
-  <input type="hidden" type="text" name="site_page[dataset_setting][default_graphs]" value="" class="js-charts-input" />
-  <input type="hidden" type="text" name="site_page[dataset_setting][default_map]" value="" class="js-map-input" />
+  <input type="hidden" type="text" name="site_page[dataset_setting][widgets]" value="" class="js-widgets-input" />
 
   <div class="l-page-creation -dashboard-preview">
     <div class="l-analysis-dashboard">
@@ -77,9 +77,9 @@
         </div>
 
         <div class="widgets">
-          <div class="large-widget js-map"></div>
-          <div class="widget js-chart-1"></div>
-          <div class="widget js-chart-2"></div>
+          <div class="large-widget js-widget-1"></div>
+          <div class="widget js-widget-2"></div>
+          <div class="widget js-widget-3"></div>
         </div>
 
         <hr/>

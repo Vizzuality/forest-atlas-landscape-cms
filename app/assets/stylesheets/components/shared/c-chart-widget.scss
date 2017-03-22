@@ -6,7 +6,10 @@
     overflow: hidden;
   }
 
-  > .c-hierarchical-select {
+  > .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 10px;
 
     @media #{$mq-tablet} {

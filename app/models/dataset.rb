@@ -11,8 +11,8 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv rwjson cartodb featureservice]
 
   cattr_accessor :form_steps do
-    { pages: %w[title connector labels context],
-      names: %w[Title Connector Labels Context] }
+    {pages: %w[title connector labels context],
+     names: %w[Title Connector Labels Context]}
   end
   attr_accessor :form_step
 
@@ -96,6 +96,18 @@ class Dataset
     }
   end
 
+  def connector_url=(value)
+    if (not @connector.eql? 'arcgis' or value.include? 'f=pjson')
+      @connector_url = value and return
+    end
+
+    if (value.include? '?')
+      @connector_url = value+'&f=pjson'
+    else
+      @connector_url = value+'?f=pjson'
+    end
+  end
+
   def get_metadata
     DatasetService.get_metadata self.id
   end
@@ -136,10 +148,8 @@ class Dataset
         self.errors['legend'] << 'Labels not correctly defined'
         return
       end
-      self.errors['legend'] << 'Latitude and Longitude have to be filled together' if
-        self.legend[:lat].blank? ^ self.legend[:long].blank?
-      self.errors['legend'] << 'Country and Region have to be filled together' if
-        self.legend[:country].blank? ^ self.legend[:region].blank?
+      self.errors['legend'] << 'Latitude and Longitude have to be filled together' if self.legend[:lat].blank? ^ self.legend[:long].blank?
+      self.errors['legend'] << 'Country and Region have to be filled together' if self.legend[:country].blank? ^ self.legend[:region].blank?
     end
   end
 

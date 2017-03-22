@@ -67,8 +67,7 @@ def add_analysis_dashboard
     columns_changeable: %w[track scan bright_ti4 confidence].to_json,
     columns_visible: %w[confidence bright_ti4 bright_ti5 latitude longitude track scan].to_json,
     filters: [name: 'bright_ti5', from: '0', to: '330'].to_json,
-    default_graphs: [{type: 'scatter', x: 'track', y: 'scan'}, {type: 'pie', x: 'confidence'}].to_json,
-    default_map: {graph_type: 'dots', lat: '10.59243', lon: '-33.2855068', zoom: '3', data: 'scan'}.to_json
+    widgets: [{type: 'map', lat: '10.59243', lng: '-33.2855068', zoom: '3'}, {type: 'chart', chart: 'scatter', x: 'track', y: 'scan'}, {type: 'chart', chart: 'pie', x: 'confidence'}].to_json
   }
 
 #  @staging_demo_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
@@ -159,49 +158,49 @@ def create_users
     {
       email: 'tiago.garcia@vizzuality.com',
       name: 'Tiago Garcia',
-      role: UserType::ADMIN
+      admin: true
     }
   )
   @tiago_santos_user = User.create(
     {
       email: 'tiago.santos@vizzuality.com',
       name: 'Tiago Santos',
-      role: UserType::ADMIN
+      admin: true
     }
   )
   @agnieszka_figiel_user = User.create(
     {
       email: 'agnieszka.figiel@vizzuality.com',
       name: 'Agnieszka Figiel',
-      role: UserType::ADMIN
+      admin: true
     }
   )
   @jose_angel_user = User.create(
     {
       email: 'joseangel.parreno@vizzuality.com',
-      name: 'Jose Angel'
-
+      name: 'Jose Angel',
+      admin: false
     }
   )
   @hector_arce_user = User.create(
     {
       email: 'hector.arce@vizzuality.com',
       name: 'Hector Arce',
-      role: UserType::MANAGER
+      admin: false
     }
   )
   @clara_linos_user = User.create(
     {
       email: 'clara.linos@vizzuality.com',
       name: 'Clara Linos',
-      role: UserType::MANAGER
+      admin: false
     }
   )
   @clement_prodhomme_user = User.create(
     {
       email: 'clement.prodhomme@vizzuality.com',
       name: 'Clément Prodhomme',
-      role: UserType::ADMIN
+      admin: true
     }
   )
 =begin
@@ -245,34 +244,44 @@ def create_user_sites
   user_sites = [
     {
       user: @daniel_caso_user,
-      site: @staging_demo_site
+      site: @staging_demo_site,
+      role: UserType::MANAGER
     }, {
       user: @daniel_caso_user,
-      site: @base_site
+      site: @base_site,
+      role: UserType::MANAGER
     }, {
       user: @david_gonzalez_user,
-      site: @base_site
+      site: @base_site,
+      role: UserType::MANAGER
     }, {
       user: @david_gonzalez_user,
-      site: @staging_demo_site
+      site: @staging_demo_site,
+      role: UserType::MANAGER
     }, {
       user: @david_inga_user,
-      site: @base_site
+      site: @base_site,
+      role: UserType::MANAGER
     }, {
       user: @david_inga_user,
-      site: @staging_demo_site
+      site: @staging_demo_site,
+      role: UserType::MANAGER
     }, {
       user: @jose_angel_user,
-      site: @base_site
+      site: @base_site,
+      role: UserType::MANAGER
     }, {
       user: @jose_angel_user,
-      site: @staging_demo_site
+      site: @staging_demo_site,
+      role: UserType::MANAGER
     }, {
       user: @hector_arce_user,
-      site: @base_site
+      site: @base_site,
+      role: UserType::MANAGER
     }, {
       user: @hector_arce_user,
-      site: @staging_demo_site
+      site: @staging_demo_site,
+      role: UserType::MANAGER
     }
   ]
 
