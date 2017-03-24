@@ -21,6 +21,7 @@ def create_pages_templates
       site_templates: [@fa_template, @la_template]
     }
   )
+  tpl = File.read('lib/assets/terms_template.json')
   PageTemplate.create!(
     {
       name: 'Terms and privacy',
@@ -30,7 +31,7 @@ def create_pages_templates
       show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: {json: '{"ops":[{"insert":"Terms and privacy"}]}'}
+      content: {json: tpl}
     }
   )
   puts 'Template pages created successfully'
