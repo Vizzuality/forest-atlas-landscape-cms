@@ -141,7 +141,7 @@ class DatasetService
   end
 
   # Sends the dataset to the API
-  def self.upload(token, connectorType, connectorProvider, connectorUrl,
+  def self.upload(token, connectorType, connectorProvider, connectorUrl, dataPath,
     applications, name, tags_array = [], caption = {}, units = nil)
 
     formatted_caption = caption.dup
@@ -157,6 +157,7 @@ class DatasetService
       connectorType: connectorType,
       provider: connectorProvider,
       connectorUrl: connectorUrl,
+      dataPath: dataPath,
       legend: formatted_caption,
       application: applications,
       name: name,

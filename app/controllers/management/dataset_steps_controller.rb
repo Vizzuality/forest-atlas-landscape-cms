@@ -97,8 +97,17 @@ class Management::DatasetStepsController < ManagementController
 
   private
   def dataset_params
-    params.require(:dataset).permit(:name, :tags, :connector, :provider, :type, :connector_url,
-                                    context_ids: [], legend: [:lat, :long, :country, :region, :date])
+    params.require(:dataset).permit(
+      :name,
+      :tags,
+      :connector,
+      :provider,
+      :type,
+      :connector_url,
+      :data_path,
+      context_ids: [],
+      legend: [:lat, :long, :country, :region, :date]
+    )
   end
 
   # Sets the current site from the url
