@@ -1,3 +1,6 @@
+- API upgrade
+- Allow to pass data path to API for nested JSON documents
+
 ### 22 Mar 2017
 - Changes styles of cover attribution links.
 - Added a context tab to the site management page.
