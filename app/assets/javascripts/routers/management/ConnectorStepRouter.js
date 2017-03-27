@@ -17,7 +17,7 @@
       return [
         { connector: 'cartodb', provider: 'cartodb', type: 'rest' },
         { connector: 'csv', provider: 'csv', type: 'document' },
-        { connector: 'json', provider: 'rwjson', type: 'json' },
+        { connector: 'json', provider: 'json', type: 'document' },
         { connector: 'arcgis', provider: 'featureservice', type: 'rest' }
       ];
     },

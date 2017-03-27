@@ -26,6 +26,10 @@
       var model = this.options.collection.findWhere({ connector: connector });
       if (model) {
         this.options.selectedConnector = model.attributes;
+        this.options.dataPathDisabled = false;
+        if (connector != 'json'){
+          this.options.dataPathDisabled = true
+        }
         this.render();
       }
     },
@@ -42,7 +46,8 @@
     render: function () {
       this.$el.html(this.template({
         connectors: this.options.collection.toJSON(),
-        selected: this.options.selectedConnector
+        selected: this.options.selectedConnector,
+        dataPathDisabled: this.options.dataPathDisabled
       }));
 
       this._enhanceSelectors();
