@@ -35,4 +35,9 @@
     <label for="url">URL:</label>
     <input id="url" name="dataset[connector_url]" class="js-url" placeholder="Dataset URL" />
   </div>
+
+  <div class="input-container{{#if dataPathDisabled}}--disabled{{/if}}">
+    <label for="data_path">Data path:</label>
+    <input id="data_path" name="dataset[data_path]" class="js-data-path" placeholder="JSON data path e.g. /results" {{#if dataPathDisabled}}disabled="disabled"{{/if}}/>
+  </div>
 </div>
