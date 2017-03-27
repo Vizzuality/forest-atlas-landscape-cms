@@ -35,6 +35,7 @@ To set up the database, run:
     bundle exec rake db:create
     bundle exec rake db:migrate
     bundle exec rake db:seed
+    bundle exec rake db:site_settings:update
 
 If you are on a development environment, you might also want to load some sample data:
 
