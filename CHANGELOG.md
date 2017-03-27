@@ -1,5 +1,6 @@
 - API upgrade
 - Allow to pass data path to API for nested JSON documents
+- Fixed some issues when creating ArcGIS datasets
 
 ### 22 Mar 2017
 - Changes styles of cover attribution links.
