@@ -193,6 +193,15 @@ class Site < ApplicationRecord
     end
   end
 
+  # triggered when hosting organization changed
+  def update_terms_of_service_page(page_template)
+    page_template ||= PageTemplate.find_by_uri(PageTemplate::TERMS_OF_SERVICE_SLUG)
+    return false unless page_template.present?
+    site_pages.where(uri: PageTemplate::TERMS_OF_SERVICE_SLUG).update_all(
+      content: page_template.render_terms_of_service_template(self)
+    )
+  end
+
   private
 
   def generate_slug

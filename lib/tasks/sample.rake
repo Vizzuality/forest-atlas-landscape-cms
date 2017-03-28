@@ -21,17 +21,17 @@ def create_pages_templates
       site_templates: [@fa_template, @la_template]
     }
   )
-  tpl = File.read('lib/assets/terms_template.json')
+
   PageTemplate.create!(
     {
       name: 'Terms and privacy',
       description: 'Terms and privacy',
-      uri: 'terms-and-privacy',
+      uri: PageTemplate::TERMS_OF_SERVICE_SLUG,
       parent: home,
       show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: {json: tpl}
+      content: nil # content rendered from .erb template upon site creation
     }
   )
   puts 'Template pages created successfully'

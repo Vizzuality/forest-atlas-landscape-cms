@@ -13,11 +13,17 @@ class SiteCreator
     @new_page_tree = {}
 
     pages.each do |page|
+      content = if page.uri == PageTemplate::TERMS_OF_SERVICE_SLUG
+        page.render_terms_of_service_template(site)
+      else
+        page.content
+      end
+
       newPage = SitePage.create!(
         {
           name: page.name,
           description: page.description,
-          content: page.content,
+          content: content,
           uri: page.uri,
           site: site,
           show_on_menu: page.show_on_menu,
