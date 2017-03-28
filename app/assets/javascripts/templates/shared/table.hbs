@@ -86,8 +86,11 @@
     </div>
   </div>
   <div class="paginator">
-    <button type="button" class="c-button -mini -arrow-left js-prev-page {{#if_eq firstResultIndex 1}}-disabled{{/if_eq}}">Previous page</button>
+    <button type="button" class="c-button -mini -arrow-left js-prev-page {{#if_eq firstResultIndex 1}}-disabled{{/if_eq}}"
+    {{#if_eq firstResultIndex 1}}disabled{{/if_eq}}>Previous page</button>
     {{firstResultIndex}}-{{lastResultIndex}} of {{totalResults}}
-    <button type="button" class="c-button -mini -arrow-right js-next-page {{#if_eq lastResultIndex totalResults}}-disabled{{/if_eq}}">Next page</button>
+    <button type="button" class="c-button -mini -arrow-right js-next-page {{#if_eq lastResultIndex totalResults}}-disabled{{/if_eq}}"
+    {{#if_eq lastResultIndex totalResults}}disabled{{/if_eq}}>
+    Next page</button>
   </div>
 </div>

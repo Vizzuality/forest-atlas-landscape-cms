@@ -1,3 +1,4 @@
+### 27 Mar 2017
 - API upgrade
 - Allow to pass data path to API for nested JSON documents
 - Fixed some issues when creating ArcGIS datasets
