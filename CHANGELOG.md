@@ -1,3 +1,8 @@
+### 29 Mar 2017
+- Add validation of template selection to site creation
+- Improve site settings update
+- Auto generate assets on deployment
+
 ### 22 Mar 2017
 - Changes styles of cover attribution links.
 - Added a context tab to the site management page.
