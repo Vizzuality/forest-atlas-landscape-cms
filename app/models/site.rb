@@ -33,10 +33,10 @@ class Site < ApplicationRecord
 
   validates_presence_of :name, if: -> { required_for_step? :name }
   validates_presence_of :routes, if: -> { required_for_step? :name }
+  validates_presence_of :site_template_id, if: -> { required_for_step? :template }
   # TODO Check if we still need managers/publishers
   #validates_presence_of :managers, if: -> { required_for_step? :managers }
   #validates_presence_of :publishers, if: -> { required_for_step? :publishers }
-  validates_presence_of :site_template_id, if: -> { required_for_step? :style }
 
   validate :template_not_changed
   validate :edition_has_one_context
