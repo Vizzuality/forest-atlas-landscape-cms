@@ -162,11 +162,14 @@ class DatasetService
     rescue
     end
 
-    body = {
+    body = if connectorType == 'json'
+      {dataPath: dataPath}
+    else
+      {}
+    end.merge({
       connectorType: connectorType,
       provider: connectorProvider,
       connectorUrl: connectorUrl,
-      dataPath: dataPath,
       legend: formatted_caption,
       application: applications,
       name: name,
@@ -176,7 +179,7 @@ class DatasetService
           tags: tags_array
         }
       }
-    }.to_json
+    }).to_json
 
     begin
       Rails.logger.info 'Creating Dataset in the API.'
