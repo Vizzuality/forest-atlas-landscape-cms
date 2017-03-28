@@ -111,6 +111,9 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
+    appsignal (2.1.2)
+      rack
+      thread_safe
     arel (7.1.4)
     autoprefixer-rails (6.5.1.1)
       execjs
@@ -326,6 +329,7 @@ DEPENDENCIES
   activemodel-associations
   activerecord-session_store!
   annotate
+  appsignal
   autoprefixer-rails
   byebug
   capistrano (= 3.7)
@@ -376,4 +380,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.7
+   1.14.4
