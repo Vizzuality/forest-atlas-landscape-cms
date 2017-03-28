@@ -174,7 +174,7 @@ class DatasetSetting < ApplicationRecord
 
   # Returns the metadata for a list of datasets
   def self.get_metadata ids
-    DatasetService.get_datasets id
+    DatasetService.get_datasets ids
   end
 
   private

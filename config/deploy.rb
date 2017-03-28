@@ -14,8 +14,35 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 
 set :deploy_to, '/var/www/facms'
 
+before 'deploy:publishing', 'site_settings:update'
+before "deploy:publishing", "assets:precompile_sites"
+
 namespace :deploy do
   after :finishing, 'deploy:cleanup'
   after 'deploy:publishing', 'deploy:restart'
+
+  namespace :assets do
+    task :precompile_sites do
+      on roles(fetch(:assets_roles)) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            execute(:rake, "site:create_assets")
+          end
+        end
+      end
+    end
+  end
+
+  namespace :site_settings do
+    task :update do
+      on roles(fetch(:assets_roles)) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            execute(:rake, 'db:site_settings:update')
+          end
+        end
+      end
+    end
+  end
 end
 

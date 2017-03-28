@@ -7,8 +7,8 @@ class Dataset
 
   has_many :context_datasets
 
-  CONNECTOR_TYPES = %w[document json rest]
-  CONNECTOR_PROVIDERS = %w[csv rwjson cartodb featureservice]
+  CONNECTOR_TYPES = %w[document rest]
+  CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   cattr_accessor :form_steps do
     {pages: %w[title connector labels context],
@@ -43,7 +43,11 @@ class Dataset
     @layers = data[:attributes][:layers]
     @connector_url = data[:attributes][:connector_url]
     @table_name = data[:attributes][:table_name]
-    @tags = data[:attributes][:tags]
+    vocabulary = data[:attributes][:vocabulary]
+    legacy = vocabulary && vocabulary.find do |v|
+      v['type'] == 'vocabulary' && v['attributes'].present? && v['attributes']['name'] == 'legacy'
+    end
+    @tags = legacy && legacy['attributes']['tags'] || []
     @data_overwrite = data[:attributes][:data_overwrite]
     @connector = data[:attributes][:connector]
     @type = data[:attributes][:type]
@@ -117,8 +121,9 @@ class Dataset
   # Params:
   # +token+:: The authentication for the API
   def upload(token)
-    DatasetService.upload token, type, provider, connector_url,
-                          application, name, tags, legend
+    tags_array = tags && tags.split(',') || []
+    DatasetService.upload token, type, provider, connector_url, data_path,
+                          application, name, tags_array, legend
   end
 
 
@@ -141,6 +146,9 @@ class Dataset
       self.errors['provider'] << 'You must enter a connector provider' unless CONNECTOR_PROVIDERS.include? self.provider
       self.errors['connector_url'] << 'You must enter a valid url' \
         unless self.connector_url && !self.connector_url.blank? && valid_url?(self.connector_url)
+      if self.connector_url.present? && self.data_path.present? && !valid_xpath?(self.data_path)
+        self.errors['data_path'] << 'If the JSON file is not structured as an array of objects in document root, please provide the path to data in Xpath format. Otherwise leave blank.'
+      end
     end
 
     if self.form_steps[:pages].index('labels') <= step_index
@@ -159,6 +167,16 @@ class Dataset
     uri.kind_of?(URI::HTTP)
   rescue URI::InvalidURIError
     false
+  end
+
+  def valid_xpath?(xpath)
+    doc = Nokogiri::HTML('<p/>') # dummy doc just for xpath syntax check
+    begin
+      doc.xpath(xpath)
+    rescue Nokogiri::XML::XPath::SyntaxError => e
+      return false
+    end
+    true
   end
 
 end

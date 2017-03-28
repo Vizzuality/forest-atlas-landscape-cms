@@ -1,7 +1,7 @@
 class DatasetService
   include DatasetFieldsHelper
 
-  @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
+  @conn ||= Faraday.new(:url => ENV.fetch("API_URL") + '/v1') do |faraday|
     faraday.request :url_encoded
     faraday.response :logger, Rails.logger #, bodies: true # Activate this only for specific debugging
     faraday.adapter Faraday.default_adapter
@@ -14,7 +14,7 @@ class DatasetService
   # ++status++ the status of the dataset
   def self.get_datasets(status = 'saved')
     datasetRequest = @conn.get '/dataset', {'page[number]': '1', 'page[size]': '10000', \
-      'status': status, 'app': 'forest-atlas,gfw', '_': Time.now.to_f}
+      'status': status, 'application': 'forest-atlas,gfw', '_': Time.now.to_f}
     datasetsJSON = JSON.parse datasetRequest.body
     datasets = []
 
@@ -41,9 +41,10 @@ class DatasetService
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
-    return {} unless fieldsJSON || fieldsRequest.status != 200
+    return {} if fieldsJSON.empty? || !fieldsRequest.success?
 
     fields = []
+
     fieldsJSON['fields'].each do |data|
       if DatasetFieldsHelper.is_valid? data.last['type']
         fields << {name: data.first, type: data.last['type']}
@@ -87,7 +88,10 @@ class DatasetService
   # +dataset_id+:: A list of datasets' ids
   def self.get_metadata_list(dataset_ids)
     return [] if dataset_ids.blank?
-    request = @conn.get "/dataset?ids=#{dataset_ids.join(',')}", {'page[number]': '1', 'page[size]': '10000', 'status': 'all', '_': Time.now.to_f }
+    request = @conn.get "/dataset?ids=#{dataset_ids.join(',')}", {
+      'includes': 'vocabulary',
+      'page[number]': '1', 'page[size]': '10000', '_': Time.now.to_f
+    }
     if request.body.blank?
       return {}
     else
@@ -102,29 +106,37 @@ class DatasetService
   # +api_table_name+:: The name of the table to select the attributes from
   # +dataset_id+:: The id of the dataset
   def self.get_fields_attributes(fields, api_table_name, dataset_id)
-    query = 'select '
-    field_names = []
-    fields.select { |f| DatasetFieldsHelper.is_enumerable?(f[:type]) }.each do |field|
-      field_names << " min(#{field[:name]}) as min_#{field[:name]} , max(#{field[:name]}) as max_#{field[:name]} "
+    number_dataset = {}
+    numeric_fields = fields.select { |f| DatasetFieldsHelper.is_enumerable?(f[:type]) }
+    # query in 5s - sth seems to go wrong in the API when too many select expressions
+    numeric_fields.each_slice(5) do |fields|
+      query = 'select '
+      field_names = []
+      fields.each do |field|
+        field_names << " min(#{field[:name]}) as min_#{field[:name]}, max(#{field[:name]}) as max_#{field[:name]} "
+      end
+      query += field_names.join(', ')
+      query += " from #{api_table_name}"
+
+      result = get_filtered_dataset dataset_id, query
+
+      if result['data'] && result['data'].any?
+        number_dataset = number_dataset.merge(result['data'][0])
+      end
     end
-
-    query += field_names.join(', ')
-    query += " from #{api_table_name}"
-
-    number_dataset = get_filtered_dataset dataset_id, query unless field_names.blank?
 
     string_datasets = {}
 
     fields.select { |f| DatasetFieldsHelper.is_string?(f[:type]) }.each do |field|
-      query = "select count(*), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
+      query = "select count(#{field[:name]}), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
 
     fields.each do |field|
       case field[:type]
         when -> (type) { DatasetFieldsHelper.is_enumerable?(type) }
-          field[:min] = number_dataset['data'][0]["min_#{field[:name]}"] unless number_dataset['data'].empty?
-          field[:max] = number_dataset['data'][0]["max_#{field[:name]}"] unless number_dataset['data'].empty?
+          field[:min] = number_dataset["min_#{field[:name]}"]
+          field[:max] = number_dataset["max_#{field[:name]}"]
         when -> (type) { DatasetFieldsHelper.is_string?(type) }
           data = string_datasets[field[:name]]['data']
           if data.blank?
@@ -138,8 +150,8 @@ class DatasetService
   end
 
   # Sends the dataset to the API
-  def self.upload(token, connectorType, connectorProvider, connectorUrl,
-    applications, name, tags_array = nil, caption = {}, units = nil)
+  def self.upload(token, connectorType, connectorProvider, connectorUrl, dataPath,
+    applications, name, tags_array = [], caption = {}, units = nil)
 
     formatted_caption = caption.dup
     # Converting the caption[country] JSON
@@ -150,20 +162,26 @@ class DatasetService
     rescue
     end
 
+    body = if connectorType == 'json'
+      {dataPath: dataPath}
+    else
+      {}
+    end.merge({
+      connectorType: connectorType,
+      provider: connectorProvider,
+      connectorUrl: connectorUrl,
+      legend: formatted_caption,
+      application: applications,
+      name: name,
+      tags: tags_array,
+      vocabularies: {
+        legacy: {
+          tags: tags_array
+        }
+      }
+    }).to_json
 
     begin
-      body = "{
-            \"dataset\": {
-              \"connectorType\": \"#{connectorType}\",
-              \"provider\": \"#{connectorProvider}\",
-              \"connectorUrl\": \"#{connectorUrl}\",
-              \"legend\": #{formatted_caption.to_json},
-              \"application\": #{applications.to_json},
-              \"name\": \"#{name}\",
-              \"tags\": #{tags_array.to_json}
-            }
-          }"
-
       Rails.logger.info 'Creating Dataset in the API.'
       Rails.logger.info "Body: #{body}"
 

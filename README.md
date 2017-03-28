@@ -105,6 +105,9 @@ Have fun coding! 😁🌲
 We use [Capistrano](http://capistranorb.com/) as a deploy tool. To deploy to production, simply run:
 
     cap production deploy
+    
+What needs doing as well is:
+`RAILS_ENV=production bundle exec rake site:create_assets`
 
 ## Server Setup
 
