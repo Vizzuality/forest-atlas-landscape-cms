@@ -263,7 +263,6 @@
         this['widget' + index] = new App.View.MapWidgetView({
           el: widgetContainer,
           data: dataset,
-          visible: (widget.visible !== undefined) ? widget.visible : true,
           // TODO
           // Once gon is updated, we should retrieve the real names of the fields used to position
           // the dots
@@ -282,7 +281,6 @@
         this['widget' + index] = new App.View.ChartWidgetView({
           el: widgetContainer,
           data: dataset,
-          visible: (widget.visible !== undefined) ? widget.visible : true,
           switchCallback: function () {
             this._switchWidget(index, 'map');
           }.bind(this),
