@@ -25,9 +25,15 @@
     </div>
 
     <div class="widgets">
-      <div class="large-widget js-widget-1"></div>
-      <div class="widget js-widget-2"></div>
-      <div class="widget js-widget-3"></div>
+      <% if @widgets_visibility[0] %>
+        <div class="large-widget js-widget-1"></div>
+      <% end %>
+      <% if @widgets_visibility[1] %>
+        <div class="widget js-widget-2"></div>
+      <% end %>
+      <% if @widgets_visibility[2] %>
+        <div class="widget js-widget-3"></div>
+      <% end %>
     </div>
 
     <hr/>
