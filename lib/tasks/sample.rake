@@ -203,6 +203,13 @@ def create_users
       admin: true
     }
   )
+  @alvaro_leal_user = User.create(
+    {
+      email: 'alvaro.leal@vizzuality.com',
+      name: 'Alvaro Leal',
+      admin: true
+    }
+  )
 =begin
   @thomas_maschler_user = User.create(
     {
@@ -280,6 +287,10 @@ def create_user_sites
       role: UserType::MANAGER
     }, {
       user: @hector_arce_user,
+      site: @staging_demo_site,
+      role: UserType::MANAGER
+    }, {
+      user: @alvaro_leal_user,
       site: @staging_demo_site,
       role: UserType::MANAGER
     }
