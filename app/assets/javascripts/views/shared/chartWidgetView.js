@@ -276,6 +276,8 @@
     },
     _toggleWidgetVisibility: function(){
       const visibleButton = this.el.querySelector('.toggle-visibility-button');
+      const largeWidget = visibleButton.closest('.large-widget');
+      if( largeWidget ){ largeWidget.classList.toggle('-is-not-visible'); }
       this.chartContainer.classList.toggle('is-hidden');
       visibleButton.classList.toggle('-slashed');
     },

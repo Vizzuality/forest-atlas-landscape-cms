@@ -90,6 +90,10 @@ $secondary-container-initial-width: 400px;
         // Please make them coincide
         min-height: #{$media-max-width * .5};
       }
+
+      &.-is-not-visible{
+        min-height: 0;
+      }
     }
 
     > .widget {
