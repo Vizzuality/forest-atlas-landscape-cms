@@ -163,14 +163,16 @@
               type: 'chart',
               chart: widget.chart || null,
               x: widget.x || null,
-              y: widget.y || null
+              y: widget.y || null,
+              visible: (widget.visible !== undefined) ? widget.visible : true,
             };
           } else if (widget.type === 'map') {
             return {
               type: 'map',
               lat: widget.lat || 0,
               lng: widget.lng || 0,
-              zoom: widget.zoom || 3
+              zoom: widget.zoom || 3,
+              visible: (widget.visible !== undefined) ? widget.visible : true
             };
           }
         });
@@ -203,8 +205,12 @@
             },
             center: [widget.lat, widget.lng],
             zoom: widget.zoom,
+            visible: (widget.visible !== undefined) ? widget.visible : true,
             switchCallback: function () {
               this._switchWidget(index, 'chart');
+            }.bind(this),
+            toggleVisibilityCallback: function () {
+              this._toggleVisibilityWidget(index);
             }.bind(this)
           });
         } else {
@@ -214,8 +220,12 @@
             chart: widget.chart,
             columnX: widget.x,
             columnY: widget.y,
+            visible: (widget.visible !== undefined) ? widget.visible : true,
             switchCallback: function () {
               this._switchWidget(index, 'map');
+            }.bind(this),
+            toggleVisibilityCallback: function () {
+              this._toggleVisibilityWidget(index);
             }.bind(this)
           });
         }
@@ -228,6 +238,12 @@
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         if (this['widget' + i]) this['widget' + i].render();
       }
+    },
+    _toggleVisibilityWidget: function (index) {
+      let previousVisibility = this['widget' + index].options.visible
+      this['widget' + index].options.visible = !previousVisibility;
+      this.state.config.widgets[index].visible = !previousVisibility;
+      this._updateHiddenFields();
     },
     /**
      * Switch the widget designated by its index for the widget of the specified type
@@ -243,18 +259,11 @@
       var dataset = this._getDataset();
       // We remove all the listeners
       this._removeListeners();
-      if (type === 'chart') {
-        this['widget' + index] = new App.View.ChartWidgetView({
-          el: widgetContainer,
-          data: dataset,
-          switchCallback: function () {
-            this._switchWidget(index, 'map');
-          }.bind(this)
-        });
-      } else {
+      if (type === 'map') {
         this['widget' + index] = new App.View.MapWidgetView({
           el: widgetContainer,
           data: dataset,
+          visible: (widget.visible !== undefined) ? widget.visible : true,
           // TODO
           // Once gon is updated, we should retrieve the real names of the fields used to position
           // the dots
@@ -264,6 +273,21 @@
           },
           switchCallback: function () {
             this._switchWidget(index, 'chart');
+          }.bind(this),
+          toggleVisibilityCallback: function () {
+            this._toggleVisibilityWidget(index);
+          }.bind(this)
+        });
+      } else {
+        this['widget' + index] = new App.View.ChartWidgetView({
+          el: widgetContainer,
+          data: dataset,
+          visible: (widget.visible !== undefined) ? widget.visible : true,
+          switchCallback: function () {
+            this._switchWidget(index, 'map');
+          }.bind(this),
+          toggleVisibilityCallback: function () {
+            this._toggleVisibilityWidget(index);
           }.bind(this)
         });
       }

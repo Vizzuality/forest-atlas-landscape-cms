@@ -23,6 +23,8 @@
       // The switch button will only appear if switchCallback is a function
       // The swith button let the user switch the chart for a map
       switchCallback: null,
+      // The toggle Visibility button lets the user hide / show the chart
+      toggleVisibilityCallback: null,
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
@@ -253,7 +255,30 @@
       // We append the button to the DOM
       this.el.querySelector('.js-switch-button').appendChild(button);
     },
+    /**
+     * Render the Toggle Visibility button and attach an event listener to it
+     */
+    _renderToggleVisibilityButton: function () {
+      // We create the button
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.classList.add('c-button', 'toggle-visibility-button');
+      button.textContent = 'Hide';
+      // We attach the listener
+      button.addEventListener('click', () => {
+        this._toggleWidgetVisibility();
+        this.options.toggleVisibilityCallback();
+        this._renderChart();
+      });
 
+      // We append the button to the DOM
+      this.el.querySelector('.js-toggle-visibility-button').appendChild(button);
+    },
+    _toggleWidgetVisibility: function(){
+      const visibleButton = this.el.querySelector('.toggle-visibility-button');
+      this.chartContainer.classList.toggle('is-hidden');
+      visibleButton.classList.toggle('-slashed');
+    },
     /**
      * Remove the changes the component implied to the container and all of
      * its children
@@ -270,8 +295,10 @@
         if (this.options.enableChartSelector) this._renderChartSelector();
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
           this._renderSwitchButton();
+          this._renderToggleVisibilityButton();
         }
       }
+      if(this.options.visible === false) this._toggleWidgetVisibility();
 
       return this.el;
     }
