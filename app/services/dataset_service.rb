@@ -41,9 +41,10 @@ class DatasetService
     fieldsRequest = @conn.get "/fields/#{dataset_id}"
     fieldsJSON = JSON.parse fieldsRequest.body
 
-    return {} unless fieldsJSON || fieldsRequest.status != 200
+    return {} if fieldsJSON.empty? || !fieldsRequest.success?
 
     fields = []
+
     fieldsJSON['fields'].each do |data|
       if DatasetFieldsHelper.is_valid? data.last['type']
         fields << {name: data.first, type: data.last['type']}
@@ -161,11 +162,14 @@ class DatasetService
     rescue
     end
 
-    body = {
+    body = if connectorType == 'json'
+      {dataPath: dataPath}
+    else
+      {}
+    end.merge({
       connectorType: connectorType,
       provider: connectorProvider,
       connectorUrl: connectorUrl,
-      dataPath: dataPath,
       legend: formatted_caption,
       application: applications,
       name: name,
@@ -175,7 +179,7 @@ class DatasetService
           tags: tags_array
         }
       }
-    }.to_json
+    }).to_json
 
     begin
       Rails.logger.info 'Creating Dataset in the API.'

@@ -15,40 +15,56 @@ namespace :db do
           SiteSetting.where(name: 'alternative_image').update_all(position: 6)
 
           Site.all.each do |site|
+            puts "... Updating settings for site #{site.name}"
+
             unless site.site_settings.exists?(name: 'logo_image')
-              site.site_settings.create!(name: 'logo_image', value: '', position: 2)
+              logo_setting = SiteSetting.new(name: 'logo_image', value: '', position: 2)
+              site.site_settings << logo_setting
+              logo_setting.save!(validate: false)
+              puts '...... Added logo_image'
             end
             unless site.site_settings.exists?(name: 'favico')
               site.site_settings.create!(name: 'favico', value: '', position: 3)
+              puts '...... Added favico'
             end
             unless site.site_settings.exists?(name: 'main_image')
               site.site_settings.create!(name: 'main_image', value: '', position: 5)
+              puts '...... Added main_image'
             end
             unless site.site_settings.exists?(name: 'alternative_image')
               site.site_settings.create!(name: 'alternative_image', value: '', position: 6)
+              puts '...... Added alternative_image'
             end
             unless site.site_settings.exists?(name: 'translate_english')
               site.site_settings.create!(name: 'translate_english', value: true, position: 7)
+              puts '...... Added translate_english'
             end
             unless site.site_settings.exists?(name: 'translate_spanish')
               site.site_settings.create!(name: 'translate_spanish', value: true, position: 8)
+              puts '...... Added translate_spanish'
             end
             unless site.site_settings.exists?(name: 'translate_french')
               site.site_settings.create!(name: 'translate_french', value: true, position: 9)
+              puts '...... Added translate_french'
             end
             unless site.site_settings.exists?(name: 'pre_footer')
               site.site_settings.create!(name: 'pre_footer', value: '', position: 10)
+              puts '...... Added pre_footer'
             end
             unless site.site_settings.exists?(name: 'analytics_key')
               site.site_settings.create!(name: 'analytics_key', value: '', position: 11)
+              puts '...... Added analytics_key'
             end
             unless site.site_settings.exists?(name: 'keywords')
               site.site_settings.create!(name: 'keywords', value: '', position: 12)
+              puts '...... Added keywords'
             end
             unless site.site_settings.exists?(name: 'contact_email_address')
               site.site_settings.create!(name: 'contact_email_address', value: '', position: 13)
+              puts '...... Added contact_email_address'
             end
-            puts "... finished creation for site #{site.name}"
+            puts "... Finished creation for site #{site.name}"
+            puts ''
           end
           puts 'Finished updating the position for the site settings'
         rescue Exception => e
