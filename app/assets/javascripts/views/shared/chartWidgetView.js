@@ -277,7 +277,11 @@
     _toggleWidgetVisibility: function(){
       const visibleButton = this.el.querySelector('.toggle-visibility-button');
       const largeWidget = visibleButton.closest('.large-widget');
-      if( largeWidget ){ largeWidget.classList.toggle('-is-not-visible'); }
+      const switchButton = visibleButton.parentElement.parentElement.querySelector('.js-switch-button')
+      const chartSelector = visibleButton.parentElement.parentElement.querySelector('.js-chart-selector')
+      if(largeWidget) largeWidget.classList.toggle('-is-not-visible');
+      if(switchButton) switchButton.classList.toggle('is-hidden');
+      if(chartSelector) chartSelector.classList.toggle('is-hidden');
       this.chartContainer.classList.toggle('is-hidden');
       visibleButton.classList.toggle('-slashed');
     },

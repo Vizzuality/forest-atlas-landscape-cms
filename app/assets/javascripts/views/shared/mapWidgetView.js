@@ -189,6 +189,8 @@
       const visibleButton = this.el.querySelector('.toggle-visibility-button')
       const mapPane = this.el.querySelector('.leaflet-map-pane');
       const controlPane = this.el.querySelector('.leaflet-control-container');
+      const mapToolbar = visibleButton.parentElement.querySelector('.map-toolbar')
+      if(mapToolbar) mapToolbar.classList.toggle('is-hidden');
       visibleButton.classList.toggle('-slashed');
       mapPane.classList.toggle('is-hidden');
       controlPane.classList.toggle('is-hidden');
