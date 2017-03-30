@@ -73,7 +73,7 @@
       },
       "update": {
         "fill": {
-          "field": "_id",
+          "field": {{{xColumn}}},
           "scale": "color"
         }
       }
@@ -124,15 +124,15 @@
       "properties": {
         "labels": {
           "y": {"scale": "legend-series-y", "offset": 0},
-          "x": {"value": 15},
+          "x": {"value": 30},
           "text": {
             "template": "\{{datum.data|left:1|upper}}\{{datum.data|slice:1|truncate:15}}"
             },
           "fontSize": {"value": 14}
         },
         "symbols": {
-          "y": {"scale": "legend-series-y", "offset": 0},
-          "x": {"value": 0},
+          "y": {"scale": "legend-series-y", "offset": -5},
+          "x": {"value": 15},
           "size": {"value": 100},
           "shape": {"value": "circle"},
           "stroke": "#ffffff"

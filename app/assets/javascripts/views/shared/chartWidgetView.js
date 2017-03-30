@@ -122,6 +122,13 @@
       if (!this.options.data.length) return HandlebarsTemplates['front/charts/empty'];
       return HandlebarsTemplates['front/charts/' + this.options.chart];
     },
+    /**
+     *  Get the vega theme
+     *  @returns {string}
+     */
+    _getVegaTheme: function () {
+      return JSON.parse(HandlebarsTemplates['front/charts/vegaTheme']());
+    },
 
     /**
      * Generate the vega spec
@@ -147,7 +154,6 @@
         this.options.columnX = columns.x;
         this.options.columnY = columns.y;
       }
-
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
         xColumn: JSON.stringify(this.options.columnX),
@@ -168,7 +174,7 @@
       }
 
       vg.parse
-        .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
+        .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
           if (error) {
             App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError)
             return;

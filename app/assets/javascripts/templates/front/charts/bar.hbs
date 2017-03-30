@@ -23,6 +23,12 @@
       "field": {{{yColumn}}}
     },
     "nice": true
+  },
+  {
+    "name": "color",
+    "type": "ordinal",
+    "range": ["#e6e6e6","#97be32","#5c770a"],
+    "domain": {"data": "table","field": {{{xColumn}}} }
   }],
   "axes": [{
     "type": "x",
@@ -58,7 +64,8 @@
       },
       "update": {
         "fill": {
-          "value": "steelblue"
+          "field": {{{xColumn}}},
+          "scale": "color"
         }
       }
     }
