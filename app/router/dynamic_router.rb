@@ -70,7 +70,7 @@ class DynamicRouter
     constraints = {}
     constraints.store(:host, route.host.gsub(/https?:\/\//, '')) unless route.blank? || route.host.blank?
 
-    path = '/' + (route.path.blank? ? '' : route.path) + site_page.url.to_s
+    path = '/' + (route.path.blank? ? '' : route.path.sub(/^\//, '')) + site_page.url.to_s
 
     ancestor_tags = site_page.ancestors.map { |site_page| 'p:' + site_page.id.to_s }
     tags = ['r:' + route.id.to_s, 's:' + site_page.site.id.to_s, 'p:' + site_page.id.to_s] + ancestor_tags
