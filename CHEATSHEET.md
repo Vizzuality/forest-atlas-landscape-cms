@@ -9,19 +9,18 @@ So when inserting raw html have in mind styles will be applied to following matc
 - **`.-intro`** - Introduction paragraph (Aa)
 - **`p`** - paragraph
 - **`ul`** - unordered list
+    - **`li`** - list item
 - **`ol`** - ordered list
     - **`li`** - list item
 - **`blockquote`** - quote paragraph
 - **`.-image`** - image
 - **`.-image.-large`** - image size large
 - **`.-image.-cover`** - image size cover
-- **`.caption`** - caption paragraph
-- **`.widget-container`** - widget container
-    - **`.-widget`** - widget blot
-        - **`.error`** - widget error
-    - **`.widget.-large`** - widget size large
-        - **`.error`** - widget error
-    - **`.widget.-cover`** - widget size cover
+    - **`.caption`** - caption paragraph
+- **`.-widget`** - widget blot
+- **`.-widget.-large`** - widget size large
+- **`.-widget.-cover`** - widget size cover
+    - **`.widget-container`** - widget container
         - **`.error`** - widget error
 - **`.embed-container`** - Center embedded content (ArcGIS default embed css container class)
 - **`iframe`** - iframe (centered)
