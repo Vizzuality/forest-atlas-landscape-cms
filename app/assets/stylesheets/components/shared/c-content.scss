@@ -94,6 +94,12 @@
     }
   }
 
+  a {
+    color: $color-1;
+    text-decoration: none;
+    background-color: transparent;
+  }
+
   ul,
   ol {
     display: block;
