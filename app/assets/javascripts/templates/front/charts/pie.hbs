@@ -9,27 +9,30 @@
       "type": "aggregate",
       "groupby": {{{xColumn}}},
       "summarize": [{
-        "field": {{{xColumn}}},
-        "ops": ["count"],
-        "as": "count"
-      }]
-    }, {
-      "type": "pie",
-      "field": "count"
-    }]
-  }],
-"scales": [
+      "field": {{{xColumn}}},
+      "ops": ["count"],
+      "as": "count" }]
+    },
+    { "type": "pie", "field": "count" }]
+    },
+    {
+      "name": "goupedData",
+      "source": "table",
+      "transform": [{ "type": "facet", "groupby": [{{{xColumn}}}] }]
+    }
+  ],
+  "scales": [
     {
       "name": "color",
       "type": "ordinal",
       "range": ["#e6e6e6","#97be32","#5c770a"],
-      "domain": {"data": "table","field": "_id"}
+      "domain": {"data": "table","field": {{{xColumn}}} }
     },
     {
       "name": "legend-series-y",
       "type": "ordinal",
       "range": [125,200],
-      "domain": {"data": "table","field": "_id"}
+      "domain": {"data": "table","field": {{{xColumn}}} }
     }
   ],
   "marks": [{
