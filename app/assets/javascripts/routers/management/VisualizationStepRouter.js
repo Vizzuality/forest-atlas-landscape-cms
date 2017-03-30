@@ -83,7 +83,7 @@
       this.chart = new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart'),
         data: dataset,
-        chart: chart.type || null,
+        chart: chart.chart || null,
         columnX: chart.x || null,
         columnY: chart.y || null
       });
