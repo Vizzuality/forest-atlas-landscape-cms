@@ -1,3 +1,4 @@
+- Added wysiwyg css cheatsheet
 - Added debugging to custom router to identify potential issue when rebuilding
 
 ### 29 Mar 2017
