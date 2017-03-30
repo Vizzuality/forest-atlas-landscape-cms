@@ -75,28 +75,26 @@ class DynamicRouter
     ancestor_tags = site_page.ancestors.map { |site_page| 'p:' + site_page.id.to_s }
     tags = ['r:' + route.id.to_s, 's:' + site_page.site.id.to_s, 'p:' + site_page.id.to_s] + ancestor_tags
 
+    routes_to_write = []
+
     case site_page.content_type
       when ContentType::HOMEPAGE
-        # Create error pages
+        # Create error pages routes
         [
           {error: '/404', action: 'not_found'},
           {error: '/500', action: 'internal_server_error'},
           {error: '/422', action: 'unacceptable'}
         ].each do |error|
-          route = RouteDefinition.new(error[:error], 'site_page#' + error[:action], {id: site_page.id}, constraints, tags)
-          @route_cache.write(route, route.tags) unless route.nil?
+          routes_to_write <<  RouteDefinition.new(error[:error], 'site_page#' + error[:action], {id: site_page.id}, constraints, tags)
         end
-
         target = 'site_page#homepage'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
       when ContentType::MAP
         target = 'site_page#map'
-        resources_route = RouteDefinition.new('resources.js', 'site_page#map_resources', {id: site_page.id}, constraints, tags)
-        @route_cache.write(resources_route, resources_route.tags) unless resources_route.nil?
-        # Create the route for a call to /report.html
-        resources_route = RouteDefinition.new('//report.html', 'site_page#map_report', {id: site_page.id}, constraints, tags)
-        @route_cache.write(resources_route, resources_route.tags) unless resources_route.nil?
+        # Create resources and report pages routes
+        routes_to_write <<  RouteDefinition.new('/resources.js', 'site_page#map_resources', {id: site_page.id}, constraints, tags)
+        routes_to_write <<  RouteDefinition.new('/report.html', 'site_page#map_report', {id: site_page.id}, constraints, tags)
       when ContentType::ANALYSIS_DASHBOARD
         target = 'site_page#analysis_dashboard'
       when ContentType::STATIC_CONTENT
@@ -107,8 +105,11 @@ class DynamicRouter
         target = 'site_page#open_content'
     end
 
-    route = RouteDefinition.new(path, target, {id: site_page.id}, constraints, tags)
-    @route_cache.write(route, route.tags) unless route.nil?
+    routes_to_write <<  RouteDefinition.new(path, target, {id: site_page.id}, constraints, tags)
+    routes_to_write.compact.each do |route|
+      Rails.logger.debug ">>>>>> Writing to cache " + route.inspect
+      @route_cache.write(route, route.tags)
+    end
   end
 
   def self._declare_route(route)
