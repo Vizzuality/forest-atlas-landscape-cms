@@ -85,6 +85,8 @@
         data: JSON.stringify([]),
         xColumn: JSON.stringify(''),
         yColumn: JSON.stringify(''),
+        xLabel: JSON.stringify(''),
+        yLabel: JSON.stringify(''),
         width: JSON.stringify(''),
         height: JSON.stringify('')
       }));
@@ -147,13 +149,27 @@
         this.options.columnX = columns.x;
         this.options.columnY = columns.y;
       }
+      const columnX = JSON.stringify(this.options.columnX);
+      const columnY = JSON.stringify(this.options.columnY);
+      const labelX = this.options.xLabel;
+      const labelY = this.options.yLabel;
+      let xLabel = columnX;
+      let yLabel = columnY;
+
+      if (labelX !== undefined && labelX !== null && labelX !== ''){
+        xLabel = JSON.stringify(labelX);}
+
+      if (labelY !== undefined && labelY !== null && labelY !== ''){
+        yLabel = JSON.stringify(labelY);}
 
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
-        xColumn: JSON.stringify(this.options.columnX),
-        yColumn: JSON.stringify(this.options.columnY),
+        xColumn: columnX,
+        yColumn: columnY,
         width: chartDimensions.width,
-        height: chartDimensions.height
+        height: chartDimensions.height,
+        xLabel: xLabel,
+        yLabel: yLabel
       });
     },
 
@@ -192,7 +208,9 @@
         type: 'chart',
         chart: this.options.chart,
         x: this.options.columnX,
-        y: this.options.columnY
+        y: this.options.columnY,
+        xLabel: this.options.xLabel,
+        yLabel: this.options.yLabel
       });
     },
 
@@ -255,6 +273,41 @@
     },
 
     /**
+     * Render the Custom Axis Label Inputs and attach an event listener to it
+     */
+    _renderCustomAxisLabelInput: function () {
+      const axis = ['X','Y'];
+
+      axis.forEach((axis)=>{
+        // We create the input  <label for="male">Male</label>
+        const labelText = 'Custom ' + axis + ' label';
+        const name = 'custom-' + axis;
+        var label = document.createElement('label');
+        var input = document.createElement('input');
+        label.innerHTML = labelText;
+        input.setAttribute('placeholder', labelText);
+        input.setAttribute('name', name);
+        label.setAttribute('for', name);
+        const axisLabel = (axis === 'X') ? this.options.xLabel : this.options.yLabel;
+        if (axisLabel !== undefined) { input.value = axisLabel };
+
+        // We attach the listeners
+        input.addEventListener('change', function(){
+          this._changeAxisLabel(axis , input.value);
+        }.bind(this));
+
+        // We append the inputs to the DOM
+        this.el.querySelector('#custom-axis-input-container').appendChild(label);
+        this.el.querySelector('#custom-axis-input-container').appendChild(input);
+
+      })
+    },
+    _changeAxisLabel: function(axis, value){
+      if(axis == 'X'){ this.options.xLabel = value;}
+      else { this.options.yLabel = value;}
+      this._renderChart();
+    },
+    /**
      * Remove the changes the component implied to the container and all of
      * its children
      */
@@ -264,6 +317,7 @@
 
     render: function () {
       this._renderChart();
+      this._renderCustomAxisLabelInput();
 
       // We don't render the chart selector and the switch button if the dataset is empty
       if (this.options.data.length) {

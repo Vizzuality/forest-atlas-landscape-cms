@@ -93,7 +93,9 @@
         data: dataset,
         chart: chart.chart || null,
         columnX: chart.x || null,
-        columnY: chart.y || null
+        columnY: chart.y || null,
+        xLabel: chart.xLabel,
+        yLabel: chart.yLabel
       });
     }
 
