@@ -12,6 +12,11 @@ class DynamicRouter
   end
 
   def self.load
+    begin
+      ActiveRecord::Migration.check_pending!
+    rescue ActiveRecord::PendingMigrationError => e
+      return
+    end
     Rails.logger.debug ">>> DynamicRouter.load"
     if @route_cache.empty?
       SitePage.includes(:site, :routes).all.each do |site_page|
