@@ -1,0 +1,37 @@
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>New user</h1>
+        <p>Provide user details to give them access to site</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= form_for @user, url: management_site_users_path(@site.slug), method: :post do |f| %>
+  <div class="l-widget-creation -title">
+    <div class="wrapper">
+      <div class="c-inputs-container">
+        <div class="container -big">
+          <%= f.label :name, for: 'name' %>
+          <%= f.text_field :name, id:'name', placeholder: 'John Smith' %>
+        </div>
+        <div class="container">
+          <%= f.label :email, for: 'email' %>
+          <%= f.email_field :email, id:'email', placeholder: 'john.smith@gmail.com' %>
+        </div>
+        <div class="container -big">
+          <div class="c-radio">
+            <%= f.radio_button :site_role, UserType::MANAGER, checked: @usa.role == UserType::MANAGER %>
+            <%= f.label :site_role, 'Manager', value:  UserType::MANAGER %>
+            <%= f.radio_button :site_role, UserType::PUBLISHER, checked: @usa.role == UserType::PUBLISHER %>
+            <%= f.label :site_role, 'Publisher', value:  UserType::PUBLISHER %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_site_pages_path(@site.slug), no_continue: true, always_save: true } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @user } %>

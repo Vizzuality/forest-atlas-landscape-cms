@@ -76,30 +76,42 @@ $secondary-container-initial-width: 400px;
       flex-basis: 100%;
       // The factor below is from the defaults of chartWidgetView
       // Please make them coincide
-      height: #{$breakpoint-mobile * .5};
+      min-height: #{$breakpoint-mobile * .5};
       margin-bottom: 45px;
 
       @media #{$mq-tablet} {
         // The factor below is from the defaults of chartWidgetView
         // Please make them coincide
-        height: #{$breakpoint-tablet * .5};
+        min-height: #{$breakpoint-tablet * .5};
       }
 
       @media #{$mq-laptop} {
         // The factor below is from the defaults of chartWidgetView
         // Please make them coincide
-        height: #{$media-max-width * .5};
+        min-height: #{$media-max-width * .5};
       }
     }
 
     > .widget {
       flex-basis: 100%;
       max-width: 100%; // Required for the widget's container calculations (_onResize)
+      // The factor below is from the defaults of chartWidgetView
+      // Please make them coincide
+      min-height: #{($breakpoint-mobile / 2) * .5};
       margin-bottom: 45px;
 
       @media #{$mq-tablet} {
         flex-basis: calc(50% - 30px);
+        // The factor below is from the defaults of chartWidgetView
+        // Please make them coincide
+        min-height: #{($breakpoint-tablet / 2) * .5};
         margin-bottom: 0;
+      }
+
+      @media #{$mq-laptop} {
+        // The factor below is from the defaults of chartWidgetView
+        // Please make them coincide
+        min-height: #{($media-max-width / 2) * .5};
       }
     }
 
@@ -143,6 +155,10 @@ $secondary-container-initial-width: 400px;
   .table {
     max-width: $media-max-width;
     margin: 0 auto;
+
+    > .no-data {
+      text-align: center;
+    }
   }
 
   .map {

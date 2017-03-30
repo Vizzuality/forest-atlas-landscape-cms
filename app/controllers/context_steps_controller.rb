@@ -166,11 +166,11 @@ class ContextStepsController < ManagementController
 
   # Created a list of users that are not admins
   def permitted_owners
-    @permitted_owners = User.where(role: [UserType::MANAGER, UserType::PUBLISHER])
+    @permitted_owners = User.where(admin: false)
   end
 
   def permitted_writers
-    permitted_users = User.where(role: [UserType::MANAGER, UserType::PUBLISHER])
+    permitted_users = User.where(admin: false)
     @permitted_writers = permitted_users.to_a.delete_if{|user| @context.owners.include?(user)}
   end
 

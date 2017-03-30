@@ -59,11 +59,34 @@
   });
 
   App.Router.ManagementContexts = Backbone.Router.extend({
+
     routes: {
       '(/)': 'index'
     },
 
+    initialize: function (params) {
+      this.slug = params[0] || null;
+    },
+
     index: function () {
+      var tabsContainer = $('.js-tabs');
+
+      if(tabsContainer.length){
+        // We initialize the tabs
+        new App.View.TabView({
+          el: tabsContainer,
+          redirect: true,
+          currentTab: 4,
+          tabs: [
+            { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
+            { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
+            { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
+            { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' },
+            { name: 'Contexts', url: '/management/sites/' + this.slug + '/contexts' }
+          ]
+        });
+      }
+
       var tableCollection = new TableCollection(gon.contexts, { parse: true });
       var tableContainer = document.querySelector('.js-table');
 

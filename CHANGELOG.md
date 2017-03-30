@@ -1,3 +1,25 @@
+### 29 Mar 2017
+- Add validation of template selection to site creation
+- Improve site settings update
+- Auto generate assets on deployment
+- API upgrade
+- Allow to pass data path to API for nested JSON documents
+- Fixed some issues when creating ArcGIS datasets
+
+### 22 Mar 2017
+- Changes styles of cover attribution links.
+- Added a context tab to the site management page.
+- Adds styling for the ArcGIS embed maps.
+- Added a default placeholder graph to the dashboard (used when the dataset is empty)
+- Made the graphs translatable (possibility to translate the titles of the axes for example)
+- Added the possibility to update the position and type of the dashboard's widgets
+- Added the new dashboard layout
+- Manager can add user to site
+
+### 14 Mar 2017
+- Improve support for ArcGIS services
+- Update header text style
+
 ### 7 Mar 2017
 - Adds HTML Blot to be able in insert html content into the wysiwyg
 - Open image attribution on separate tab

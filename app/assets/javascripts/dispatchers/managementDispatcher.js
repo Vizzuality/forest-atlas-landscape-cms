@@ -12,6 +12,7 @@
       'management/sites/:slug/structure(/)': 'Structure',
       'management/sites/:slug/widgets(/)': 'Widgets',
       'management/sites/:slug/datasets(/)': 'Datasets',
+      'management/sites/:slug/contexts(/)': 'Contexts',
       'management/sites/:slug/(datasets/:id/)dataset_steps/title': 'Index',
       'management/sites/:slug/(datasets/:id/)dataset_steps/connector': 'ConnectorStep',
       'management/sites/:slug/(datasets/:id/)dataset_steps/labels': 'Index',

@@ -99,7 +99,8 @@
           { name: 'Site\'s structure', url: '/management/sites/' + this.slug + '/structure' },
           { name: 'Pages', url: '/management/sites/' + this.slug + '/site_pages' },
           { name: 'Datasets', url: '/management/sites/' + this.slug + '/datasets' },
-          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' }
+          { name: 'Widgets', url: '/management/sites/' + this.slug + '/widgets' },
+          { name: 'Contexts', url: '/management/sites/' + this.slug + '/contexts' }
         ]
       });
 

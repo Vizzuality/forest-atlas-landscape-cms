@@ -1,7 +1,7 @@
 .c-cover {
   display: flex;
   position: relative;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   padding: 50px 0 30px;
   background-repeat: no-repeat;
@@ -25,21 +25,26 @@
       // on the site settings
       height: 250px;
     }
+
+    &::after {
+      height: 65%;
+    }
   }
 
   &::after {
     display: block;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 33%;
     content: '';
-    background-color: rgba($color-5, .3);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0,0,0, 0.3));
   }
 
   > .wrapper {
     z-index: 1;
+    margin-bottom: 50px;
   }
 
   .cover-title {
@@ -48,7 +53,7 @@
     color: $color-3;
     font-weight: $font-weight-bold;
     line-height: 1;
-    text-align: center;
+    text-align: left;
 
     @if $theme == 2 {
       font-size: $font-size-x-big;
@@ -56,11 +61,11 @@
       text-transform: uppercase;
     } @else {
       font-family: $font-family-2;
-      font-size: $font-size-huge;
+      font-size: $font-size-x-big;
       letter-spacing: 1.25px;
 
       @media #{$mq-tablet} {
-        font-size: $font-size-x-huge;
+        font-size: $font-size-huge;
       }
     }
   }
@@ -71,7 +76,6 @@
     color: $color-3;
     font-weight: $font-weight-bold;
     line-height: 1;
-    text-align: center;
     font-size: $font-size-small;
     text-transform: uppercase;
     padding-bottom: 15px;
@@ -95,9 +99,15 @@
 
     > a {
       background-color: unset;
+      color: $color-3;
+      text-decoration: none;
 
       &:hover {
         text-decoration: underline;
+      }
+
+      &::selection {
+        background-color: unset;
       }
     }
 

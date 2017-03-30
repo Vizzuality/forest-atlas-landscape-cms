@@ -9,11 +9,10 @@
 #  filters              :json
 #  columns_visible      :json
 #  columns_changeable   :json
-#  default_graphs       :json
-#  default_map          :json
-#  legend               :json
 #  api_table_name       :string
 #  fields_last_modified :string
+#  legend               :json
+#  widgets              :json
 #
 
 # Filters: The filters that will be in the SQL WHERE clause. Stored in JSON
@@ -100,6 +99,18 @@ class DatasetSetting < ApplicationRecord
     end
   end
 
+  # Returns the legend with the format needed for the front end (key long should be lng)
+  def parsed_legend
+    begin
+      parsed_legend = self.legend.dup
+      lng = parsed_legend.delete('long')
+      parsed_legend['lng'] = lng
+      parsed_legend
+    rescue
+      return nil
+    end
+  end
+
   # Returns the WHERE part of the sql query (the filters)
   def get_filters_sql
     if self.filters.blank?
@@ -140,7 +151,9 @@ class DatasetSetting < ApplicationRecord
 
   # Gets the number of rows for a query
   def get_row_count
-    get_filtered_dataset true
+    result = get_filtered_dataset true
+
+    return result['data'].first.values.first
   end
 
   # Gets a preview of the results
@@ -161,7 +174,7 @@ class DatasetSetting < ApplicationRecord
 
   # Returns the metadata for a list of datasets
   def self.get_metadata ids
-    DatasetService.get_datasets id
+    DatasetService.get_datasets ids
   end
 
   private

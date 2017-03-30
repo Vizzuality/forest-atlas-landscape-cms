@@ -134,10 +134,10 @@ class Management::WidgetStepsController < ManagementController
     temp_widget.set_filters (filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } })
 
     begin
-      count = temp_widget.get_row_count['data'].first.values.first
+      count = temp_widget.get_row_count
       preview = temp_widget.get_preview['data']
     rescue
-      count = 0
+      count = temp_widget.get_row_count
       preview = []
     end
     render json: {count: count, rows: preview}.to_json
