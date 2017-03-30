@@ -18,7 +18,20 @@
       "field": "count"
     }]
   }],
-  "scales": [],
+"scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": ["#e6e6e6","#97be32","#5c770a"],
+      "domain": {"data": "table","field": "_id"}
+    },
+    {
+      "name": "legend-series-y",
+      "type": "ordinal",
+      "range": [125,200],
+      "domain": {"data": "table","field": "_id"}
+    }
+  ],
   "marks": [{
     "type": "arc",
     "from": {
@@ -45,7 +58,7 @@
           "field": "layout_end"
         },
         "innerRadius": {
-          "value": 0
+          "value": {{{math height "*" 0.2}}}
         },
         "outerRadius": {
           "value": {{{height}}},
@@ -57,7 +70,8 @@
       },
       "update": {
         "fill": {
-          "value": "#ccc"
+          "field": "_id",
+          "scale": "color"
         }
       }
     }
@@ -100,5 +114,27 @@
         }
       }
     }
-  }]
+  }],
+"legends": [
+    {
+      "fill": "color",
+      "properties": {
+        "labels": {
+          "y": {"scale": "legend-series-y", "offset": 0},
+          "x": {"value": 15},
+          "text": {
+            "template": "\{{datum.data|left:1|upper}}\{{datum.data|slice:1|truncate:15}}"
+            },
+          "fontSize": {"value": 14}
+        },
+        "symbols": {
+          "y": {"scale": "legend-series-y", "offset": 0},
+          "x": {"value": 0},
+          "size": {"value": 100},
+          "shape": {"value": "circle"},
+          "stroke": "#ffffff"
+        }
+      }
+    }
+  ]
 }

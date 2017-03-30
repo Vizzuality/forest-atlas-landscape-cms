@@ -89,3 +89,28 @@ Handlebars.registerHelper('format_date', function (date) {
 
   return [month, day, year].join('/');
 });
+
+/**
+ * Math helper
+ */
+Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+  var left = parseFloat(lvalue);
+  var right = parseFloat(rvalue);
+  if (isNaN(left) || isNaN(right)) {
+    return {
+      "+": lvalue,
+      "-": lvalue,
+      "*": lvalue,
+      "/": lvalue,
+      "%": lvalue
+    }[operator];
+  }
+
+  return {
+    "+": left + right,
+    "-": left - right,
+    "*": left * right,
+    "/": left / right,
+    "%": left % right
+  }[operator];
+});
