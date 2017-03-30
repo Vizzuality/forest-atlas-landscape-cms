@@ -1,3 +1,6 @@
+### 5 Apr 2017
+- Changes wysiwyg formatting styles
+
 ### 29 Mar 2017
 - Add validation of template selection to site creation
 - Improve site settings update
