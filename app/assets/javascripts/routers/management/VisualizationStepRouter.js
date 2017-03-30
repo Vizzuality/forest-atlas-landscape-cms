@@ -67,7 +67,15 @@
      */
     _getChart: function () {
       try {
-        return (window.gon && gon.visualization && JSON.parse(gon.visualization)) || {};
+        var parsedChart = {};
+        if (window.gon && gon.visualization) {
+          parsedChart = JSON.parse(gon.visualization);
+          if (parsedChart.type !== 'chart') {
+            var chart = Object.assign({}, parsedChart, { type: 'chart', chart: parsedChart.type});
+            return chart
+          }
+        }
+        return parsedChart;
       } catch (e) {
         return {};
       }
