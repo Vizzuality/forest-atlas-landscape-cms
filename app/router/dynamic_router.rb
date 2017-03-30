@@ -12,23 +12,16 @@ class DynamicRouter
   end
 
   def self.load
-    begin
-      ActiveRecord::Base.connection
-    rescue
-      return
-    else
-
     Rails.logger.debug ">>> DynamicRouter.load"
-      if @route_cache.empty?
-        SitePage.includes(:site, :routes).all.each do |site_page|
-          site_page.routes.each do |route|
-            _build_routes_for_page_and_route(site_page, route)
-          end
+    if @route_cache.empty?
+      SitePage.includes(:site, :routes).all.each do |site_page|
+        site_page.routes.each do |route|
+          _build_routes_for_page_and_route(site_page, route)
         end
       end
-
-      _load_routes_from_cache
     end
+
+    _load_routes_from_cache
   end
 
   def self.update_routes_for_site_page(site_page)
