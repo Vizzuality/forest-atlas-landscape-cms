@@ -20,8 +20,6 @@ class DynamicRouter
 
     Rails.logger.debug ">>> DynamicRouter.load"
       if @route_cache.empty?
-        return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
-
         SitePage.includes(:site, :routes).all.each do |site_page|
           site_page.routes.each do |route|
             _build_routes_for_page_and_route(site_page, route)
@@ -75,8 +73,6 @@ class DynamicRouter
   end
 
   def self._build_routes_for_page_and_route(site_page, route)
-    return unless ActiveRecord::Base.connection.schema_cache.data_source_exists? 'pages'
-
     Rails.logger.debug ">>> DynamicRouter._build_routes_for_page_and_route #{site_page.id}, #{route.id}"
     constraints = {}
     constraints.store(:host, route.host.gsub(/https?:\/\//, '')) unless route.blank? || route.host.blank?
