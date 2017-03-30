@@ -3,7 +3,7 @@ class DynamicRouter
   RouteDefinition = Struct.new(:path, :to, :defaults, :constraints, :tags)
 
   @route_cache ||= TaggedCache.new(
-    Proc.new { |route| 'route/'+ route.constraints[:host] + route.path }
+    Proc.new { |route| 'route/' + route.constraints[:host] + route.path }
   )
 
   def self.reload
@@ -37,7 +37,7 @@ class DynamicRouter
     Rails.logger.debug ">>> DynamicRouter.update_routes_for_site_page #{site_page.try(:id) || 'NULL'}"
     return if site_page.id.nil?
 
-    @route_cache.remove('p:'+site_page.id.to_s)
+    @route_cache.remove('p:' + site_page.id.to_s)
 
     site_page.routes.each do |route|
       _build_routes_for_page_and_route(site_page, route)
@@ -50,7 +50,7 @@ class DynamicRouter
     Rails.logger.debug ">>> DynamicRouter.update_routes_for_site #{site.try(:id) || 'NULL'}"
     return if site.id.nil?
 
-    @route_cache.remove('s:'+site.id.to_s)
+    @route_cache.remove('s:' + site.id.to_s)
 
     site.site_pages.each do |site_page|
       site_page.routes.each do |route|
@@ -65,7 +65,7 @@ class DynamicRouter
     Rails.logger.debug ">>> DynamicRouter.update_routes_for_route #{route.try(:id) || 'NULL'}"
     return if route.id.nil?
 
-    @route_cache.remove('r:'+route.id.to_s)
+    @route_cache.remove('r:' + route.id.to_s)
 
     route.site_pages.each do |site_page|
       _build_routes_for_page_and_route(site_page, route)
@@ -83,8 +83,8 @@ class DynamicRouter
 
     path = '/' + (route.path.blank? ? '' : route.path) + site_page.url.to_s
 
-    ancestor_tags = site_page.ancestors.map { |site_page| 'p:'+site_page.id.to_s }
-    tags = ['r:'+route.id.to_s, 's:'+site_page.site.id.to_s, 'p:'+site_page.id.to_s] + ancestor_tags
+    ancestor_tags = site_page.ancestors.map { |site_page| 'p:' + site_page.id.to_s }
+    tags = ['r:' + route.id.to_s, 's:' + site_page.site.id.to_s, 'p:' + site_page.id.to_s] + ancestor_tags
 
     case site_page.content_type
       when ContentType::HOMEPAGE
