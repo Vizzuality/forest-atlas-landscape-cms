@@ -91,9 +91,6 @@ $secondary-container-initial-width: 400px;
         min-height: #{$media-max-width * .5};
       }
 
-      &.-is-not-visible{
-        min-height: 0;
-      }
     }
 
     > .widget {
@@ -116,6 +113,18 @@ $secondary-container-initial-width: 400px;
         // The factor below is from the defaults of chartWidgetView
         // Please make them coincide
         min-height: #{($media-max-width / 2) * .5};
+      }
+    }
+
+    .chart{
+      &.is-invisible {
+        visibility:hidden;
+      }
+    }
+
+    .toolbar{
+      .is-invisible {
+        visibility:hidden;
       }
     }
 

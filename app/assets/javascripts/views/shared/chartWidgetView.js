@@ -276,13 +276,11 @@
     },
     _toggleWidgetVisibility: function(){
       const visibleButton = this.el.querySelector('.toggle-visibility-button');
-      const largeWidget = visibleButton.closest('.large-widget');
       const switchButton = visibleButton.parentElement.parentElement.querySelector('.js-switch-button')
       const chartSelector = visibleButton.parentElement.parentElement.querySelector('.js-chart-selector')
-      if(largeWidget) largeWidget.classList.toggle('-is-not-visible');
-      if(switchButton) switchButton.classList.toggle('is-hidden');
-      if(chartSelector) chartSelector.classList.toggle('is-hidden');
-      this.chartContainer.classList.toggle('is-hidden');
+      if(switchButton) switchButton.classList.toggle('is-invisible');
+      if(chartSelector) chartSelector.classList.toggle('is-invisible');
+      this.chartContainer.classList.toggle('is-invisible');
       visibleButton.classList.toggle('-slashed');
     },
     /**
