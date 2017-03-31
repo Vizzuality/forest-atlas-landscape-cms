@@ -34,8 +34,31 @@
     "type": "x",
     "scale": "x"
   }, {
+    "grid": true,
+    "layer": "back",
     "type": "y",
-    "scale": "y"
+    "scale": "y",
+    "tickSize": 30,
+    "properties": {
+      "grid": {
+        "stroke": {"value": "#eeeeee"},
+        "strokeWidth": {"value": 2},
+        "strokeDash": {"value": [5, 5]}
+      },
+      "majorTicks": {"strokeWidth": {"value": 2}},
+      "ticks": {
+        "stroke": {"value": "#eeeeee"},
+        "strokeDash": {"value": [5, 5]}
+      },
+      "labels": {
+        "text": {
+          "template": "\{{datum.data | number:'.2s' }}"
+        },
+        "align": {"value": "left"},
+        "baseline": {"value": "bottom"},
+        "fontSize": {"value": 11}
+        }
+      }
   }],
   "marks": [{
     "type": "rect",
@@ -46,12 +69,13 @@
       "enter": {
         "x": {
           "scale": "x",
-          "field": {{{xColumn}}}
+          "field": {{{xColumn}}},
+          "offset": 10
         },
         "width": {
           "scale": "x",
           "band": true,
-          "offset": -1
+          "offset": -15
         },
         "y": {
           "scale": "y",
