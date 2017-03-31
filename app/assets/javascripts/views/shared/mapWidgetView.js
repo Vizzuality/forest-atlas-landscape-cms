@@ -195,6 +195,16 @@
       mapPane.classList.toggle('is-hidden');
       controlPane.classList.toggle('is-hidden');
     },
+    _hideWidget: function(){
+      const visibleButton = this.el.querySelector('.toggle-visibility-button')
+      const mapPane = this.el.querySelector('.leaflet-map-pane');
+      const controlPane = this.el.querySelector('.leaflet-control-container');
+      const mapToolbar = visibleButton.parentElement.querySelector('.map-toolbar')
+      if(mapToolbar) mapToolbar.classList.add('is-hidden');
+      visibleButton.classList.add('-slashed');
+      mapPane.classList.add('is-hidden');
+      controlPane.classList.add('is-hidden');
+    },
 
     /**
      * Remove the changes the component implied to the container and all of
@@ -240,7 +250,7 @@
           this._renderToolbar();
         }
       }
-      if(this.options.visible === false) this._toggleWidgetVisibility();
+      if(this.options.visible === false) this._hideWidget();
 
       return this.el;
     }
