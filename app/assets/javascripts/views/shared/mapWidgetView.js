@@ -177,11 +177,11 @@
       button.classList.add('c-button', 'toggle-visibility-button','-in-map');
       button.textContent = 'Hide';
       // We attach the listener
-      button.addEventListener('click', () => {
+      button.addEventListener('click', function(){
         this._toggleWidgetVisibility();
         this.options.toggleVisibilityCallback();
         this.render();
-      });
+      }.bind(this));
       // We append the button to the DOM
       this.el.appendChild(button);
     },
