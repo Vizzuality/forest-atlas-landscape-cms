@@ -2,75 +2,46 @@
   "width": {{{width}}},
   "height": {{{height}}},
   "padding": "strict",
-  "data": [{
-    "name": "table",
-    "values": {{{data}}},
-    "format": {
-      "parse": {
-        {{{xColumn}}}: "date"
-      }
+  "data": [
+    {
+      "name": "table",
+      "values": {{{data}}}
     }
-  }],
-  "scales": [{
-    "name": "x",
-    "type": "time",
-    "range": "width",
-    "zero": false,
-    "domain": {
-      "data": "table",
-      "field": {{{xColumn}}}
-    }
-  }, {
-    "name": "y",
-    "type": "linear",
-    "range": "height",
-    "nice": true,
-    "domain": {
-      "data": "table",
-      "field": {{{yColumn}}}
-    }
-  }],
-  "axes": [{
-    "type": "x",
-    "scale": "x",
-    "ticks": 6
-  }, {
-    "type": "y",
-    "scale": "y"
-  }],
-  "marks": [{
-    "type": "area",
-    "from": {
-      "data": "table"
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "nice": true,
+      "type": "linear",
+      "zero": false,
+      "range": "width",
+      "domain": {"data": "table","field": {{{xColumn}}} }
     },
+    {
+      "name": "y",
+      "type": "linear",
+      "range": "height",
+      "domain": {"data": "table","field": {{{yColumn}}} }
+    }
+  ],
+  "axes": [
+    {"type": "x","scale": "x","ticks": 6},
+    {"type": "y","scale": "y"}
+  ],
+  "marks": [
+    {
+    "type": "area",
+    "from": {"data": "table"},
     "properties": {
       "enter": {
-        "x": {
-          "scale": "x",
-          "field": {{{xColumn}}}
+        "x": {"scale": "x","field": {{{xColumn}}} },
+        "y": {"scale": "y","field": {{{yColumn}}} },
+        "stroke": {"value": "#97be32"},
+        "strokeWidth": {"value": 2}
         },
-        "y": {
-          "scale": "y",
-          "field": {{{yColumn}}}
-        },
-        "y2": {
-          "scale": "y",
-          "value": 0
-        },
-        "fill": {
-          "value": "steelblue"
-        }
-      },
-      "update": {
-        "fillOpacity": {
-          "value": 1
-        }
-      },
-      "hover": {
-        "fillOpacity": {
-          "value": 0.5
-        }
+      "update": {"fillOpacity": {"value": 1}},
+      "hover": {"fillOpacity": {"value": 0.5}}
       }
     }
-  }]
+  ]
 }
