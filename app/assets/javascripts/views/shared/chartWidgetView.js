@@ -278,16 +278,11 @@
     _renderCustomAxisLabelInput: function () {
       const axis = ['X','Y'];
 
-      axis.forEach((axis)=>{
-        // We create the input  <label for="male">Male</label>
-        const labelText = 'Custom ' + axis + ' label';
-        const name = 'custom-' + axis;
-        var label = document.createElement('label');
+      axis.forEach(function(axis){
+        // We create the input
         var input = document.createElement('input');
-        label.innerHTML = labelText;
-        input.setAttribute('placeholder', labelText);
-        input.setAttribute('name', name);
-        label.setAttribute('for', name);
+        input.setAttribute('placeholder', 'Custom ' + axis + ' label');
+        input.setAttribute('name', 'custom-' + axis);
         const axisLabel = (axis === 'X') ? this.options.xLabel : this.options.yLabel;
         if (axisLabel !== undefined) { input.value = axisLabel };
 
@@ -297,10 +292,9 @@
         }.bind(this));
 
         // We append the inputs to the DOM
-        this.el.querySelector('#custom-axis-input-container').appendChild(label);
         this.el.querySelector('#custom-axis-input-container').appendChild(input);
 
-      })
+      }.bind(this))
     },
     _changeAxisLabel: function(axis, value){
       if(axis == 'X'){ this.options.xLabel = value;}
