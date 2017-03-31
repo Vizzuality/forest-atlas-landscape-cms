@@ -28,8 +28,29 @@
     "type": "x",
     "scale": "x"
   }, {
-    "type": "y",
-    "scale": "y"
+      "grid": true,
+      "layer": "back",
+      "type": "y",
+      "scale": "y",
+      "tickSize": 30,
+      "properties": {
+        "grid": {
+          "stroke": {"value": "#eeeeee"},
+          "strokeWidth": {"value": 2},
+          "strokeDash": {"value": [5,5]}
+          },
+        "majorTicks": {"strokeWidth": {"value": 2}},
+        "ticks": {
+          "stroke": {"value": "#eeeeee"},
+          "strokeDash": {"value": [5,5]}
+          },
+        "labels": {
+          "text": {"template": "\{{datum.data | number:'.2s' }}"},
+          "align": {"value": "left"},
+          "baseline": {"value": "bottom"},
+          "fontSize": {"value": 11}
+          }
+      }
   }],
   "marks": [{
     "type": "symbol",
@@ -38,28 +59,10 @@
     },
     "properties": {
       "enter": {
-        "x": {
-          "scale": "x",
-          "field": {{{xColumn}}}
-        },
-        "width": {
-          "scale": "x",
-          "band": true,
-          "offset": -1
-        },
-        "y": {
-          "scale": "y",
-          "field": {{{yColumn}}}
-        },
-        "y2": {
-          "scale": "y",
-          "value": 0
-        }
-      },
-      "update": {
-        "fill": {
-          "value": "steelblue"
-        }
+        "x": {"scale": "x", "field": {{{xColumn}}} },
+        "y": {"scale": "y", "field": {{{yColumn}}} },
+        "fill": {"value": "#97be32"},
+        "size": {"value": 15}
       }
     }
   }]
