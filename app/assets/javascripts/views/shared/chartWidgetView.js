@@ -311,11 +311,16 @@
 
     render: function () {
       this._renderChart();
-      this._renderCustomAxisLabelInput();
 
       // We don't render the chart selector and the switch button if the dataset is empty
       if (this.options.data.length) {
-        if (this.options.enableChartSelector) this._renderChartSelector();
+        if (this.options.enableChartSelector){
+          this._renderChartSelector();
+          // TODO: use displayMode to enable the render of rest of the buttons and inputs
+          if(this.options.displayMode !== 'dashboard'){
+            this._renderCustomAxisLabelInput();
+          }
+        }
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
           this._renderSwitchButton();
         }

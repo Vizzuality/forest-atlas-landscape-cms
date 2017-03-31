@@ -115,7 +115,9 @@ var WidgetBlot = function (_Embed) {
         config = {
           chart: null,
           x: null,
-          y: null
+          y: null,
+          xLabel: null,
+          yLabel: null,
         };
       }
 
@@ -126,6 +128,8 @@ var WidgetBlot = function (_Embed) {
         chart: config.chart,
         columnX: config.x,
         columnY: config.y,
+        xLabel: config.xLabel,
+        yLabel: config.yLabel,
         enableChartSelector: false
       });
 

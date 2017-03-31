@@ -232,7 +232,8 @@
             data: dataset,
             chart: widget.chart,
             columnX: widget.x,
-            columnY: widget.y
+            columnY: widget.y,
+            displayMode: 'dashboard'
           });
         }
       }, this);
