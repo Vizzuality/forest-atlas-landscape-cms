@@ -1,3 +1,8 @@
+- Added wysiwyg css cheatsheet
+- Changes wysiwyg formatting styles
+- Added debugging to custom router to identify potential issue when rebuilding
+
+
 ### 29 Mar 2017
 - Add validation of template selection to site creation
 - Improve site settings update
