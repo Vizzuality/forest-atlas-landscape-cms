@@ -23,12 +23,12 @@
       // The switch button will only appear if switchCallback is a function
       // The swith button let the user switch the chart for a map
       switchCallback: null,
-      // The toggle Visibility button lets the user hide / show the chart
-      toggleVisibilityCallback: null,
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
-      _height: null
+      _height: null,
+      // Flag that determines whether the widget is visible or not
+      visible: true
     },
 
     initialize: function (settings) {
@@ -177,7 +177,7 @@
           }
           this.chart = chart({
             el: this.chartContainer,
-            // By using the SVG renderer, we give the client the posibility to
+            // By using the SVG renderer, we give the client the possibility to
             // translate the text contained in the charts
             renderer: 'svg'
           }).update();
@@ -188,13 +188,14 @@
 
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration
-      // NOTE: We need to make sure in case the view hasn't been instanciated with
+      // NOTE: We need to make sure in case the view hasn't been instantiated with
       // a chart configuration that it's set by the toolbox before triggering
       this.trigger('state:change', {
         type: 'chart',
         chart: this.options.chart,
         x: this.options.columnX,
-        y: this.options.columnY
+        y: this.options.columnY,
+        visible: this.options.visible
       });
     },
 
@@ -263,25 +264,23 @@
       var button = document.createElement('button');
       button.type = 'button';
       button.classList.add('c-button', 'toggle-visibility-button');
+      if (!this.options.visible) button.classList.add('-slashed');
       button.textContent = 'Hide';
       // We attach the listener
       button.addEventListener('click', function() {
-        this._toggleWidgetVisibility();
-        this.options.toggleVisibilityCallback();
-        this._renderChart();
+        button.classList.toggle('-slashed');
+        this._toggleVisibility();
       }.bind(this));
 
       // We append the button to the DOM
       this.el.querySelector('.js-toggle-visibility-button').appendChild(button);
     },
-    _toggleWidgetVisibility: function(){
-      const visibleButton = this.el.querySelector('.toggle-visibility-button');
-      const switchButton = visibleButton.parentElement.parentElement.querySelector('.js-switch-button')
-      const chartSelector = visibleButton.parentElement.parentElement.querySelector('.js-chart-selector')
-      if(switchButton) switchButton.classList.toggle('is-invisible');
-      if(chartSelector) chartSelector.classList.toggle('is-invisible');
-      this.chartContainer.classList.toggle('is-invisible');
-      visibleButton.classList.toggle('-slashed');
+    /**
+     * Trigger widget visibility change
+     */
+    _toggleVisibility: function () {
+      this.options.visible = !this.options.visible;
+      this.trigger('state:change', { visible: this.options.visible });
     },
     /**
      * Remove the changes the component implied to the container and all of
@@ -302,7 +301,6 @@
           this._renderToggleVisibilityButton();
         }
       }
-      if(this.options.visible === false) this._toggleWidgetVisibility();
 
       return this.el;
     }

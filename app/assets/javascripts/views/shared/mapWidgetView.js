@@ -19,12 +19,12 @@
       // Options to be passed at the map instantiation
       mapOptions: {
       },
-      // The toggle Visibility button lets the user hide / show the chart
-      toggleVisibilityCallback: null,
       // Callback to execute when the switch button is pressed
       // The switch button will only appear if switchCallback is a function
       // The swith button let the user switch the map for a chart
-      switchCallback: null
+      switchCallback: null,
+      // Flag that determines whether the widget is visible or not
+      visible: true
     },
 
     initialize: function (settings) {
@@ -52,7 +52,8 @@
         type: 'map',
         lat: this.options.center[0],
         lng: this.options.center[1],
-        zoom: this.options.zoom
+        zoom: this.options.zoom,
+        visible: this.options.visible
       });
     },
 
@@ -175,35 +176,22 @@
       var button = document.createElement('button');
       button.type = 'button';
       button.classList.add('c-button', 'toggle-visibility-button','-in-map');
+      if (!this.options.visible) button.classList.add('-slashed');
       button.textContent = 'Hide';
       // We attach the listener
-      button.addEventListener('click', function(){
-        this._toggleWidgetVisibility();
-        this.options.toggleVisibilityCallback();
-        this.render();
+      button.addEventListener('click', function () {
+        button.classList.toggle('-slashed');
+        this._toggleVisibility();
       }.bind(this));
       // We append the button to the DOM
       this.el.appendChild(button);
     },
-    _toggleWidgetVisibility: function(){
-      const visibleButton = this.el.querySelector('.toggle-visibility-button')
-      const mapPane = this.el.querySelector('.leaflet-map-pane');
-      const controlPane = this.el.querySelector('.leaflet-control-container');
-      const mapToolbar = visibleButton.parentElement.querySelector('.map-toolbar')
-      if(mapToolbar) mapToolbar.classList.toggle('is-hidden');
-      visibleButton.classList.toggle('-slashed');
-      mapPane.classList.toggle('is-hidden');
-      controlPane.classList.toggle('is-hidden');
-    },
-    _hideWidget: function(){
-      const visibleButton = this.el.querySelector('.toggle-visibility-button')
-      const mapPane = this.el.querySelector('.leaflet-map-pane');
-      const controlPane = this.el.querySelector('.leaflet-control-container');
-      const mapToolbar = visibleButton.parentElement.querySelector('.map-toolbar')
-      if(mapToolbar) mapToolbar.classList.add('is-hidden');
-      visibleButton.classList.add('-slashed');
-      mapPane.classList.add('is-hidden');
-      controlPane.classList.add('is-hidden');
+    /**
+     * Trigger widget visibility change
+     */
+    _toggleVisibility: function () {
+      this.options.visible = !this.options.visible;
+      this._triggerState();
     },
 
     /**
@@ -250,7 +238,6 @@
           this._renderToolbar();
         }
       }
-      if(this.options.visible === false) this._hideWidget();
 
       return this.el;
     }
