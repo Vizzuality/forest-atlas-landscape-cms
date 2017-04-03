@@ -26,7 +26,9 @@
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
-      _height: null
+      _height: null,
+      // Flag that determines whether the widget is visible or not
+      visible: true
     },
 
     initialize: function (settings) {
@@ -175,7 +177,7 @@
           }
           this.chart = chart({
             el: this.chartContainer,
-            // By using the SVG renderer, we give the client the posibility to
+            // By using the SVG renderer, we give the client the possibility to
             // translate the text contained in the charts
             renderer: 'svg'
           }).update();
@@ -186,13 +188,14 @@
 
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration
-      // NOTE: We need to make sure in case the view hasn't been instanciated with
+      // NOTE: We need to make sure in case the view hasn't been instantiated with
       // a chart configuration that it's set by the toolbox before triggering
       this.trigger('state:change', {
         type: 'chart',
         chart: this.options.chart,
         x: this.options.columnX,
-        y: this.options.columnY
+        y: this.options.columnY,
+        visible: this.options.visible
       });
     },
 
@@ -253,7 +256,32 @@
       // We append the button to the DOM
       this.el.querySelector('.js-switch-button').appendChild(button);
     },
+    /**
+     * Render the Toggle Visibility button and attach an event listener to it
+     */
+    _renderToggleVisibilityButton: function () {
+      // We create the button
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.classList.add('c-button', 'toggle-visibility-button');
+      if (!this.options.visible) button.classList.add('-slashed');
+      button.textContent = 'Hide';
+      // We attach the listener
+      button.addEventListener('click', function() {
+        button.classList.toggle('-slashed');
+        this._toggleVisibility();
+      }.bind(this));
 
+      // We append the button to the DOM
+      this.el.querySelector('.js-toggle-visibility-button').appendChild(button);
+    },
+    /**
+     * Trigger widget visibility change
+     */
+    _toggleVisibility: function () {
+      this.options.visible = !this.options.visible;
+      this.trigger('state:change', { visible: this.options.visible });
+    },
     /**
      * Remove the changes the component implied to the container and all of
      * its children
@@ -270,6 +298,7 @@
         if (this.options.enableChartSelector) this._renderChartSelector();
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
           this._renderSwitchButton();
+          this._renderToggleVisibilityButton();
         }
       }
 

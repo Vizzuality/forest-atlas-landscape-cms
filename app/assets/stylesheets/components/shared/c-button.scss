@@ -109,4 +109,27 @@
       padding: 0;
     }
   }
+
+  &.toggle-visibility-button {
+    z-index: 700; // This value depends on the map's z-index
+    display: block;
+    border: 0;
+    background: image-url('icons/eye-icon.svg') no-repeat center center;
+    background-size: contain;
+    text-indent: -10000px; // For accessibility, the text should stay visible
+    cursor: pointer;
+    height: 24px;
+    padding: 18px;
+
+    &.-in-map {
+      position: absolute;
+      bottom: 15px;
+      right: 50px;
+    }
+
+    &.-slashed {
+      background: image-url('icons/slashed-eye-icon.svg') no-repeat center center;
+      background-size: contain;
+    }
+  }
 }

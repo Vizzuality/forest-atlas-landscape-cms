@@ -125,7 +125,7 @@
     },
     /**
      * Save the state of the specified component into a global state object
-     * @param {string} component - "filters", "chart1", "chart2" or "map"
+     * @param {string} component - "filters", "widget1", "widget2"
      * @param {object} state - state to save
      */
     _saveState: function (component, state) {
@@ -163,16 +163,19 @@
               type: 'chart',
               chart: widget.chart || null,
               x: widget.x || null,
-              y: widget.y || null
+              y: widget.y || null,
+              visible: (widget.visible !== undefined) ? widget.visible : true
             };
           } else if (widget.type === 'map') {
             return {
               type: 'map',
               lat: widget.lat || 0,
               lng: widget.lng || 0,
-              zoom: widget.zoom || 3
+              zoom: widget.zoom || 3,
+              visible: (widget.visible !== undefined) ? widget.visible : true
             };
           }
+          return widget;
         });
       } else {
         for (var i = 0, j = this.options.widgetsCount - 1; i < j; i++) {
@@ -203,6 +206,7 @@
             },
             center: [widget.lat, widget.lng],
             zoom: widget.zoom,
+            visible: widget.visible,
             switchCallback: function () {
               this._switchWidget(index, 'chart');
             }.bind(this)
@@ -214,6 +218,7 @@
             chart: widget.chart,
             columnX: widget.x,
             columnY: widget.y,
+            visible: widget.visible,
             switchCallback: function () {
               this._switchWidget(index, 'map');
             }.bind(this)
@@ -243,15 +248,7 @@
       var dataset = this._getDataset();
       // We remove all the listeners
       this._removeListeners();
-      if (type === 'chart') {
-        this['widget' + index] = new App.View.ChartWidgetView({
-          el: widgetContainer,
-          data: dataset,
-          switchCallback: function () {
-            this._switchWidget(index, 'map');
-          }.bind(this)
-        });
-      } else {
+      if (type === 'map') {
         this['widget' + index] = new App.View.MapWidgetView({
           el: widgetContainer,
           data: dataset,
@@ -264,6 +261,14 @@
           },
           switchCallback: function () {
             this._switchWidget(index, 'chart');
+          }.bind(this)
+        });
+      } else {
+        this['widget' + index] = new App.View.ChartWidgetView({
+          el: widgetContainer,
+          data: dataset,
+          switchCallback: function () {
+            this._switchWidget(index, 'map');
           }.bind(this)
         });
       }
