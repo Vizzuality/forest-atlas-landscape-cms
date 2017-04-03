@@ -87,6 +87,15 @@
                     <%= settings_form.text_field :value, id: 'contact_email_address' %>
                   </div>
 
+              <% when 'hosting_organization' %>
+                  <%= settings_form.hidden_field :position, value: '14' %>
+                  <%= settings_form.hidden_field :name, value: 'hosting_organization' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Hosting organization', for: 'hosting_organization' %>
+                    <%= settings_form.text_field :value, id: 'hosting_organization' %>
+                  </div>
+
               <% end %>
           <% end %>
         </div>

@@ -37,16 +37,16 @@
   }
 
   h1 {
-    margin: 40px auto 10px;
-    font-size: $font-size-big;
-    letter-spacing: .3px;
+    margin: 20px auto 5px;
+    font-size: $font-size-medium;
+    letter-spacing: .2px;
 
     @media #{$mq-mobile} {
-      font-size: $font-size-x-big;
+      font-size: $font-size-big;
     }
 
     @media #{$mq-tablet} {
-      font-size: $font-size-huge;
+      font-size: $font-size-x-big;
     }
 
     @if $theme == 2 {
@@ -62,8 +62,9 @@
 
   h2 {
     margin: 20px auto 5px;
-    font-size: $font-size-medium;
-    font-weight: $font-weight-bold;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-normal;
+    line-height: 1.7;
 
     @if $theme == 2 {
       color: $color-4;
@@ -93,6 +94,12 @@
     }
   }
 
+  a {
+    color: $color-1;
+    text-decoration: none;
+    background-color: transparent;
+  }
+
   ul,
   ol {
     display: block;
@@ -101,6 +108,7 @@
 
     li {
       display: list-item;
+      line-height: 2;
 
       &::before {
         font-family: $font-family-1;
@@ -110,8 +118,9 @@
 
   blockquote {
     margin: 30px auto;
-    font-size: $font-size-medium;
+    font-size: $font-size-x-normal;
     font-weight: $font-weight-light;
+    font-style: italic;
 
     &::before {
       content: '“';
@@ -123,7 +132,7 @@
 
     @media #{$mq-mobile} {
       margin: 60px auto;
-      font-size: $font-size-big;
+      font-size: $font-size-medium;
     }
 
     @if $theme == 2 {
@@ -133,7 +142,6 @@
     } @else {
       color: $color-1;
       font-family: $font-family-2;
-      font-style: italic;
       line-height: 1.5;
 
       @media #{$mq-mobile} {
