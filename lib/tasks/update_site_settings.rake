@@ -63,6 +63,10 @@ namespace :db do
               site.site_settings.create!(name: 'contact_email_address', value: '', position: 13)
               puts '...... Added contact_email_address'
             end
+            unless site.site_settings.exists?(name: 'hosting_organization')
+              site.site_settings.create!(name: 'hosting_organization', value: '', position: 14)
+              puts '...... Added hosting_organization'
+            end
             puts "... Finished creation for site #{site.name}"
             puts ''
           end
