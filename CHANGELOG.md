@@ -1,4 +1,5 @@
 - Added debugging to custom router to identify potential issue when rebuilding
+- Add custom labels support to widgets
 
 ### 29 Mar 2017
 - Add validation of template selection to site creation
