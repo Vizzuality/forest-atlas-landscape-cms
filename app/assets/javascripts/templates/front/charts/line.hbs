@@ -5,14 +5,19 @@
   "data": [
     {
       "name": "table",
-      "values": {{{data}}}
+      "values": {{{data}}},
+      "format": {
+        "parse": {
+          {{{xColumn}}}: "date"
+        }
+      }
     }
   ],
   "scales": [
     {
       "name": "x",
       "nice": true,
-      "type": "linear",
+      "type": "time",
       "zero": false,
       "range": "width",
       "domain": {"data": "table","field": {{{xColumn}}} }
