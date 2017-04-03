@@ -1,6 +1,6 @@
 {
   "width": {{{width}}},
-  "height": {{{height}}},
+  "height": {{{math height "+" 100}}},
   "padding": "strict",
   "data": [{
     "name": "table",
@@ -31,9 +31,20 @@
     "domain": {"data": "table","field": {{{xColumn}}} }
   }],
   "axes": [{
-    "type": "x",
-    "scale": "x"
-  }, {
+      "layer": "back",
+      "type": "x",
+      "scale": "x",
+      "tickSize": 5,
+      "properties": {
+      "labels": {
+        "text": {"template": "\{{datum.data}}"},
+        "align": {"value": "left"},
+        "baseline": {"value": "middle"},
+        "angle": {"value": 45},
+        "fontSize": {"value": 11}
+        }
+      }
+    }, {
     "grid": true,
     "layer": "back",
     "type": "y",
