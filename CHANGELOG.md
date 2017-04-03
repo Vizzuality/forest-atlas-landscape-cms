@@ -1,3 +1,4 @@
+### 4 April 2017
 - Added debugging to custom router to identify potential issue when rebuilding
 - Terms of Service page update
 
@@ -5,8 +6,6 @@
 - Add validation of template selection to site creation
 - Improve site settings update
 - Auto generate assets on deployment
-
-### 27 Mar 2017
 - API upgrade
 - Allow to pass data path to API for nested JSON documents
 - Fixed some issues when creating ArcGIS datasets
