@@ -184,7 +184,7 @@
         this._toggleVisibility();
       }.bind(this));
       // We append the button to the DOM
-      this.el.appendChild(button);
+      this.toolbarDiv.appendChild(button);
     },
     /**
      * Trigger widget visibility change

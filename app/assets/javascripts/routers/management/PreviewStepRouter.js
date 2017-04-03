@@ -129,7 +129,6 @@
      * @param {object} state - state to save
      */
     _saveState: function (component, state) {
-      debugger;
       var index = +component.slice(-1);
       this.state.config.widgets[index] = Object.assign({}, this.state.config.widgets[index], state);
       this._updateHiddenFields();
