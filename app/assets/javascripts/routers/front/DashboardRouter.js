@@ -212,7 +212,7 @@
       var widgets = this._getDashboardWidgets();
 
       widgets.forEach(function (widget, index) {
-        if (widget && widget.type === 'map') {
+        if (widget && widget.type === 'map' && widget.visible) {
           this['widget' + index] = new App.View.MapWidgetView({
             el: document.querySelector('.js-widget-' + (index + 1)),
             data: dataset,
@@ -226,7 +226,7 @@
             center: [widget.lat || 0, widget.lng || 0],
             zoom: widget.zoom
           });
-        } else if (widget && widget.type === 'chart') {
+        } else if (widget && widget.type === 'chart' && widget.visible) {
           this['widget' + index] = new App.View.ChartWidgetView({
             el: document.querySelector('.js-widget-' + (index + 1)),
             data: dataset,
@@ -234,6 +234,8 @@
             columnX: widget.x,
             columnY: widget.y
           });
+        } else {
+          this.options.widgetsCount--;
         }
       }, this);
     },
@@ -282,14 +284,17 @@
         f: state.config.filters.map(function (filter) { return [filter.name, filter.value]; }),
         w: this.state.config.widgets.map(function (chart) {
           if (!chart.type) return null;
-          var res = { t: chart.type };
+          var res = {
+            c: chart.chart,
+            t: chart.type,
+            v: chart.visible
+          };
 
-          if (chart.type === 'map') {
+          if (chart.type === 'map' || chart.chart === 'map') {
             res.la = chart.lat;
             res.ln = chart.lng;
             res.z = chart.zoom;
           } else {
-            res.c = chart.chart;
             res.x = chart.x;
             if (chart.y) res.y = chart.y;
           }
@@ -333,12 +338,14 @@
             return !!filter;
           })) || [],
           widgets: compressedState.w && compressedState.w.map(function (widget) {
-            if (widget.t === 'map') {
+            if (widget.t === 'map' || widget.c === 'map') {
               return {
-                type: 'map',
+                type: 'chart',
+                chart: 'map',
                 lat: widget.la,
                 lng: widget.ln,
-                zoom: widget.z
+                zoom: widget.z,
+                visible: widget.v
               };
             }
 
@@ -346,7 +353,8 @@
               type: 'chart',
               chart: widget.c,
               x: widget.x,
-              y: widget.y || null
+              y: widget.y || null,
+              visible: widget.v || true
             };
           })
         }
