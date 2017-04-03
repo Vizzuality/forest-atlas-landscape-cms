@@ -1,4 +1,6 @@
 ### 4 April 2017
+- Added wysiwyg css cheatsheet
+- Changes wysiwyg formatting styles
 - Added debugging to custom router to identify potential issue when rebuilding
 - Terms of Service page update
 
