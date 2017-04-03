@@ -23,6 +23,7 @@
       // The switch button will only appear if switchCallback is a function
       // The swith button let the user switch the chart for a map
       switchCallback: null,
+      changeLabelCallback: null,
       // Inner width of the chart, used internally
       _width: null,
       // Inner height of the chart, used internally
@@ -300,6 +301,7 @@
       if(axis == 'X'){ this.options.xLabel = value;}
       else { this.options.yLabel = value;}
       this._renderChart();
+      this.options.changeLabelsCallback()
     },
     /**
      * Remove the changes the component implied to the container and all of

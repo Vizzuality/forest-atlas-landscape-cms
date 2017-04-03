@@ -163,7 +163,9 @@
               type: 'chart',
               chart: widget.chart || null,
               x: widget.x || null,
-              y: widget.y || null
+              y: widget.y || null,
+              xLabel: widget.xLabel,
+              yLabel: widget.yLabel
             };
           } else if (widget.type === 'map') {
             return {
@@ -216,6 +218,9 @@
             columnY: widget.y,
             switchCallback: function () {
               this._switchWidget(index, 'map');
+            }.bind(this),
+            changeLabelsCallback: function () {
+              this._changeLabels(index);
             }.bind(this)
           });
         }
@@ -228,6 +233,15 @@
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         if (this['widget' + i]) this['widget' + i].render();
       }
+    },
+    /**
+     * Change the custom labels of the widget axis
+     * @param {number} index
+     */
+    _changeLabels: function (index) {
+      this.state.config.widgets[index].xLabel = this['widget' + index].options.xLabel;
+      this.state.config.widgets[index].yLabel = this['widget' + index].options.yLabel;
+      this._updateHiddenFields();
     },
     /**
      * Switch the widget designated by its index for the widget of the specified type
@@ -249,6 +263,9 @@
           data: dataset,
           switchCallback: function () {
             this._switchWidget(index, 'map');
+          }.bind(this),
+          changeLabelsCallback: function () {
+            this._changeLabels(index);
           }.bind(this)
         });
       } else {
