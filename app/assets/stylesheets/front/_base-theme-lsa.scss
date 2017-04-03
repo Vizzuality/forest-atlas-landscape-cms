@@ -21,7 +21,7 @@ body {
   font-family: $font-family-1;
   font-size: $font-size-s-normal;
   font-weight: $font-weight-light;
-  line-height: 2.1;
+  line-height: 1.7;
 
   @media #{$mq-body-width} {
     margin: 0 auto;

@@ -8,10 +8,12 @@
     <button type="button" class="remove-url js-remove-url" data-id="{{@index}}">Remove</button>
   </div>
 {{/each}}
+{{#if showNextInput}}
 <div class="container">
   <label for="url-0">{{#if urls.length}}Additional URL{{else}}Main URL{{/if}}</label>
   <input value="" class="js-input" placeholder="{{#if urls.length}}https://www.my-site.com{{else}}https://www.mysite.com{{/if}}" name="{{inputName}}[{{urls.length}}][host]" id="url-0">
 </div>
+{{/if}}
 <footer>
   <button type="button" class="add-url js-add-url">Add URL</button>
 </footer>
