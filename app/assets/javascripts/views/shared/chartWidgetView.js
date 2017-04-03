@@ -72,6 +72,8 @@
       this.options.chart = arguments[0][0];
       this.options.columnX = arguments[0][1];
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
+      this.options.xLabel = null;
+      this.options.yLabel = null;
       this._renderChart();
     },
 
