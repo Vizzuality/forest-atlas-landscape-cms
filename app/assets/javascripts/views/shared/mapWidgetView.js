@@ -22,7 +22,9 @@
       // Callback to execute when the switch button is pressed
       // The switch button will only appear if switchCallback is a function
       // The swith button let the user switch the map for a chart
-      switchCallback: null
+      switchCallback: null,
+      // Flag that determines whether the widget is visible or not
+      visible: true
     },
 
     initialize: function (settings) {
@@ -50,7 +52,8 @@
         type: 'map',
         lat: this.options.center[0],
         lng: this.options.center[1],
-        zoom: this.options.zoom
+        zoom: this.options.zoom,
+        visible: this.options.visible
       });
     },
 
@@ -137,6 +140,18 @@
     },
 
     /**
+     * Render the toolbar
+     */
+    _renderToolbar: function () {
+      this.toolbarDiv = document.createElement('div');
+      this.toolbarDiv.classList.add('map-toolbar');
+      this.el.appendChild(this.toolbarDiv);
+
+      this._renderSwitchButton();
+      this._renderToggleVisibilityButton();
+    },
+
+    /**
      * Render the switch button and attach an event listener to it
      */
     _renderSwitchButton: function () {
@@ -150,7 +165,33 @@
       button.addEventListener('click', this.options.switchCallback);
 
       // We append the button to the DOM
-      this.el.appendChild(button);
+      this.toolbarDiv.appendChild(button);
+    },
+
+    /**
+     * Render the Toggle Visibility button and attach an event listener to it
+     */
+    _renderToggleVisibilityButton: function () {
+      // We create the button
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.classList.add('c-button', 'toggle-visibility-button','-in-map');
+      if (!this.options.visible) button.classList.add('-slashed');
+      button.textContent = 'Hide';
+      // We attach the listener
+      button.addEventListener('click', function () {
+        button.classList.toggle('-slashed');
+        this._toggleVisibility();
+      }.bind(this));
+      // We append the button to the DOM
+      this.toolbarDiv.appendChild(button);
+    },
+    /**
+     * Trigger widget visibility change
+     */
+    _toggleVisibility: function () {
+      this.options.visible = !this.options.visible;
+      this._triggerState();
     },
 
     /**
@@ -194,7 +235,7 @@
         this._renderData();
 
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
-          this._renderSwitchButton();
+          this._renderToolbar();
         }
       }
 

@@ -4,6 +4,7 @@
 - Changes wysiwyg formatting styles
 - Added debugging to custom router to identify potential issue when rebuilding
 - Terms of Service page update
+- Adds visibility toggle to dashboard widgets
 
 ### 29 Mar 2017
 - Add validation of template selection to site creation
