@@ -29,12 +29,25 @@
       "domain": {"data": "table","field": {{{yColumn}}} }
     }
   ],
-  "axes": [
-    {"type": "x","scale": "x","ticks": 6},
-    {"type": "y","scale": "y"}
-  ],
-  "marks": [
-    {
+  "axes": [{
+    "type": "x",
+    "scale": "x",
+    "ticks": 6,
+    "title": {{{xLabel}}}
+  }, {
+    "type": "y",
+    "scale": "y",
+    "title": {{{yLabel}}},
+    "properties": {
+      "title": {
+        "angle": {"value": 0},
+        "y":{"value": -20 },
+        "x":{"value": -12 },
+        "font-family":{ "value":"Fira Sans" }
+      }
+    }
+  }],
+  "marks": [{
     "type": "area",
     "from": {"data": "table"},
     "properties": {

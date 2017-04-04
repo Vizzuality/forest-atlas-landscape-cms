@@ -6,6 +6,7 @@
     template: HandlebarsTemplates['admin/urls-input'],
 
     defaults: {
+      showNextInput: false
     },
 
     events: {
@@ -23,6 +24,7 @@
      * Event handler executed when the user clicks the add URL button
      */
     _addUrl: function () {
+      this.options.showNextInput = true;
       this.render();
     },
 
@@ -35,6 +37,7 @@
         var index = +e.target.dataset.id;
         var model = this.collection.at(index);
         this.collection.remove(model);
+        this.options.showNextInput = false;
         this.render();
       }
     },
@@ -64,7 +67,7 @@
     },
 
     render: function () {
-      // We add the component's class name to the elemetn
+      // We add the component's class name to the element
       this.$el.addClass(this.className);
 
       // We remove all of the previous rendered nodes
@@ -74,6 +77,7 @@
       }
 
       this.$el.append(this.template({
+        showNextInput: this.options.showNextInput,
         urls: this.collection.toJSON(),
         inputId: (window.gon && gon.global && gon.global.urlControllerId) || '',
         inputName: (window.gon && gon.global && gon.global.urlControllerName) || ''

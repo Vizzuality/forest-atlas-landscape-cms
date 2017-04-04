@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313110401) do
+ActiveRecord::Schema.define(version: 20170329090135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -196,6 +196,7 @@ ActiveRecord::Schema.define(version: 20170313110401) do
     t.json     "columns"
     t.string   "name"
     t.string   "description"
+    t.boolean  "visible",              default: true
   end
 
   add_foreign_key "page_widgets", "pages"
