@@ -1,6 +1,6 @@
 {
   "width": {{{width}}},
-  "height": {{{height}}},
+  "height": {{{math height "+" 100}}},
   "padding": "strict",
   "data": [{
     "name": "table",
@@ -26,7 +26,17 @@
   }],
   "axes": [{
     "type": "x",
-    "scale": "x"
+    "scale": "x",
+    "tickSize": 5,
+    "properties": {
+      "labels": {
+        "text": {"template": "\{{datum.data}}"},
+        "align": {"value": "right"},
+        "baseline": {"value": "middle"},
+        "angle": {"value": -45},
+        "fontSize": {"value": 11}
+      }
+    }
   }, {
       "grid": true,
       "layer": "back",
@@ -59,7 +69,7 @@
     },
     "properties": {
       "enter": {
-        "x": {"scale": "x", "field": {{{xColumn}}} },
+        "x": {"scale": "x", "field": {{{xColumn}}}, "offset": 30 },
         "y": {"scale": "y", "field": {{{yColumn}}} },
         "fill": {"value": "#97be32"},
         "size": {"value": 15}
