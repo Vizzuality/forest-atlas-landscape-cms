@@ -1,4 +1,5 @@
 ### 4 April 2017
+- Add custom labels support to widgets
 - Added wysiwyg css cheatsheet
 - Changes wysiwyg formatting styles
 - Added debugging to custom router to identify potential issue when rebuilding

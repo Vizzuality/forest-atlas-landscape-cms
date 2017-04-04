@@ -74,6 +74,8 @@
       this.options.chart = arguments[0][0];
       this.options.columnX = arguments[0][1];
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
+      this.options.xLabel = null;
+      this.options.yLabel = null;
       this._renderChart();
     },
 
@@ -87,6 +89,8 @@
         data: JSON.stringify([]),
         xColumn: JSON.stringify(''),
         yColumn: JSON.stringify(''),
+        xLabel: JSON.stringify(''),
+        yLabel: JSON.stringify(''),
         width: JSON.stringify(''),
         height: JSON.stringify('')
       }));
@@ -149,13 +153,27 @@
         this.options.columnX = columns.x;
         this.options.columnY = columns.y;
       }
+      const columnX = JSON.stringify(this.options.columnX);
+      const columnY = JSON.stringify(this.options.columnY);
+      const labelX = this.options.xLabel;
+      const labelY = this.options.yLabel;
+      var xLabel = columnX;
+      var yLabel = columnY;
+
+      if (labelX !== undefined && labelX !== null && labelX !== ''){
+        xLabel = JSON.stringify(labelX);}
+
+      if (labelY !== undefined && labelY !== null && labelY !== ''){
+        yLabel = JSON.stringify(labelY);}
 
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
-        xColumn: JSON.stringify(this.options.columnX),
-        yColumn: JSON.stringify(this.options.columnY),
+        xColumn: columnX,
+        yColumn: columnY,
         width: chartDimensions.width,
-        height: chartDimensions.height
+        height: chartDimensions.height,
+        xLabel: xLabel,
+        yLabel: yLabel
       });
     },
 
@@ -195,6 +213,8 @@
         chart: this.options.chart,
         x: this.options.columnX,
         y: this.options.columnY,
+        xLabel: this.options.xLabel,
+        yLabel: this.options.yLabel,
         visible: this.options.visible
       });
     },
@@ -283,6 +303,35 @@
       this.trigger('state:change', { visible: this.options.visible });
     },
     /**
+     * Render the Custom Axis Label Inputs and attach an event listener to it
+     */
+    _renderCustomAxisLabelInput: function () {
+      const axis = ['X','Y'];
+
+      axis.forEach(function(axis){
+        // We create the input
+        var input = document.createElement('input');
+        input.setAttribute('placeholder', 'Custom ' + axis + ' label');
+        input.setAttribute('name', 'custom-' + axis);
+        const axisLabel = (axis === 'X') ? this.options.xLabel : this.options.yLabel;
+        if (axisLabel !== undefined) { input.value = axisLabel };
+
+        // We attach the listeners
+        input.addEventListener('change', function(){
+          this._changeAxisLabel(axis , input.value);
+        }.bind(this));
+
+        // We append the inputs to the DOM
+        this.el.querySelector('#custom-axis-input-container').appendChild(input);
+
+      }.bind(this))
+    },
+    _changeAxisLabel: function(axis, value){
+      if(axis === 'X') this.options.xLabel = value;
+      else this.options.yLabel = value;
+      this._renderChart();
+    },
+    /**
      * Remove the changes the component implied to the container and all of
      * its children
      */
@@ -295,7 +344,13 @@
 
       // We don't render the chart selector and the switch button if the dataset is empty
       if (this.options.data.length) {
-        if (this.options.enableChartSelector) this._renderChartSelector();
+        if (this.options.enableChartSelector){
+          this._renderChartSelector();
+          // TODO: use displayMode to enable the render of rest of the buttons and inputs
+          if(this.options.displayMode !== 'dashboard'){
+            this._renderCustomAxisLabelInput();
+          }
+        }
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
           this._renderSwitchButton();
           this._renderToggleVisibilityButton();

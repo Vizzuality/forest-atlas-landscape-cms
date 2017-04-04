@@ -100,6 +100,8 @@ class WidgetBlot extends Embed {
       chart: config.chart,
       columnX: config.x,
       columnY: config.y,
+      xLabel: config.xLabel,
+      yLabel: config.yLabel,
       enableChartSelector: false
     });
 

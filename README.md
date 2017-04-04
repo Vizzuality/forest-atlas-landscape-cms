@@ -38,8 +38,8 @@ To set up the database, run:
 
 If you're running a previous version of the application site settings, run:
 ```
-`bundle exec rake db:site_settings:update
-``
+bundle exec rake db:site_settings:update
+```
 
 If you are on a development environment, you might also want to load some sample data:
 

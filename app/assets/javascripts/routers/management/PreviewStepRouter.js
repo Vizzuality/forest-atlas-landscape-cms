@@ -164,6 +164,8 @@
               chart: widget.chart || null,
               x: widget.x || null,
               y: widget.y || null,
+              xLabel: widget.xLabel,
+              yLabel: widget.yLabel,
               visible: (widget.visible !== undefined) ? widget.visible : true
             };
           } else if (widget.type === 'map') {
@@ -181,7 +183,7 @@
         for (var i = 0, j = this.options.widgetsCount - 1; i < j; i++) {
           widgets.push({ type: 'chart', chart: null, x: null, y: null });
         }
-        widgets.unshift({ type: 'map', lat: 0, lng: 0, zoom: 3 })
+        widgets.unshift({ type: 'map', lat: 0, lng: 0, zoom: 3 });
       }
       return widgets;
     },

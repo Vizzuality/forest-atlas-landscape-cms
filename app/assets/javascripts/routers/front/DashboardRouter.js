@@ -232,7 +232,10 @@
             data: dataset,
             chart: widget.chart,
             columnX: widget.x,
-            columnY: widget.y
+            columnY: widget.y,
+            xLabel: widget.xLabel,
+            yLabel: widget.yLabel,
+            displayMode: 'dashboard'
           });
         }
       }, this);
