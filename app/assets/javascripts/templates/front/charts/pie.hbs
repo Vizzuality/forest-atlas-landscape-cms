@@ -31,7 +31,7 @@
     {
       "name": "legend-series-y",
       "type": "ordinal",
-      "range": "height",
+      "range": [40, {{{math height "-" 10}}}],
       "domain": {"data": "table","field": {{{xColumn}}} }
     }
   ],
@@ -82,7 +82,8 @@
       "type": "text",
       "properties": {
         "enter": {
-          "x": {"value": 50},
+          "x": {"value": -140},
+          "y": {"value": 10},
           "text": {
             "template": {{{xLabel}}}
           },

@@ -17,7 +17,6 @@
   }, {
     "name": "y",
     "type": "linear",
-    "range": "height",
     "domain": {
       "data": "table",
       "field": {{{yColumn}}}
@@ -35,7 +34,13 @@
         "align": {"value": "right"},
         "baseline": {"value": "middle"},
         "angle": {"value": -45},
-        "fontSize": {"value": 11}
+        "fontSize": {"value": 11},
+        "dy": {"value": 20}
+      },
+      "title": {
+        "dx": {"value": 150},
+        "dy": {"value": 5},
+        "baseline": {"value": "top"}
       }
     }
   }, {
@@ -51,7 +56,6 @@
           "strokeWidth": {"value": 2},
           "strokeDash": {"value": [5,5]}
           },
-        "majorTicks": {"strokeWidth": {"value": 2}},
         "ticks": {
           "stroke": {"value": "#eeeeee"},
           "strokeDash": {"value": [5,5]}
@@ -60,7 +64,14 @@
           "text": {"template": "\{{datum.data | number:'.2s' }}"},
           "align": {"value": "left"},
           "baseline": {"value": "bottom"},
-          "fontSize": {"value": 11}
+          "fontSize": {"value": 11},
+          "dy": {"value": -10}
+          },
+          "title": {
+            "dx": {"value": 90},
+            "dy": {"value": -15},
+            "align": {"value": "right"},
+            "baseline": {"value": "top"}
           }
       }
   }],
