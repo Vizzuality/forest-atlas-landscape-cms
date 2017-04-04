@@ -76,6 +76,7 @@
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
       this.options.xLabel = null;
       this.options.yLabel = null;
+      this._renderCustomAxisLabelInput();
       this._renderChart();
     },
 
@@ -128,6 +129,13 @@
       if (!this.options.data.length) return HandlebarsTemplates['front/charts/empty'];
       return HandlebarsTemplates['front/charts/' + this.options.chart];
     },
+    /**
+     *  Get the vega theme
+     *  @returns {string}
+     */
+    _getVegaTheme: function () {
+      return JSON.parse(HandlebarsTemplates['front/charts/vegaTheme']());
+    },
 
     /**
      * Generate the vega spec
@@ -153,6 +161,7 @@
         this.options.columnX = columns.x;
         this.options.columnY = columns.y;
       }
+
       const columnX = JSON.stringify(this.options.columnX);
       const columnY = JSON.stringify(this.options.columnY);
       const labelX = this.options.xLabel;
@@ -188,7 +197,7 @@
       }
 
       vg.parse
-        .spec(JSON.parse(this._generateVegaSpec()), function (error, chart) {
+        .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
           if (error) {
             App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError)
             return;
@@ -306,6 +315,11 @@
      * Render the Custom Axis Label Inputs and attach an event listener to it
      */
     _renderCustomAxisLabelInput: function () {
+      var inputContainer = this.el.querySelector('#custom-axis-input-container');
+      if (inputContainer.children.length) {
+        inputContainer.innerHTML = '';
+      }
+
       const axis = ['X','Y'];
 
       axis.forEach(function(axis){
@@ -322,7 +336,7 @@
         }.bind(this));
 
         // We append the inputs to the DOM
-        this.el.querySelector('#custom-axis-input-container').appendChild(input);
+        inputContainer.appendChild(input);
 
       }.bind(this))
     },

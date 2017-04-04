@@ -9,16 +9,32 @@
       "type": "aggregate",
       "groupby": {{{xColumn}}},
       "summarize": [{
-        "field": {{{xColumn}}},
-        "ops": ["count"],
-        "as": "count"
-      }]
-    }, {
-      "type": "pie",
-      "field": "count"
-    }]
-  }],
-  "scales": [],
+      "field": {{{xColumn}}},
+      "ops": ["count"],
+      "as": "count" }]
+    },
+    { "type": "pie", "field": "count" }]
+    },
+    {
+      "name": "goupedData",
+      "source": "table",
+      "transform": [{ "type": "facet", "groupby": [{{{xColumn}}}] }]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": ["#e6e6e6","#97be32","#5c770a"],
+      "domain": {"data": "table","field": {{{xColumn}}} }
+    },
+    {
+      "name": "legend-series-y",
+      "type": "ordinal",
+      "range": [40, {{{math height "-" 10}}}],
+      "domain": {"data": "table","field": {{{xColumn}}} }
+    }
+  ],
   "marks": [{
     "type": "arc",
     "from": {
@@ -36,7 +52,7 @@
           "field": {
             "group": "height"
           },
-          "mult": 0.5
+          "mult": 0.45
         },
         "startAngle": {
           "field": "layout_start"
@@ -45,7 +61,7 @@
           "field": "layout_end"
         },
         "innerRadius": {
-          "value": 0
+          "value": {{{math height "*" 0.2}}}
         },
         "outerRadius": {
           "value": {{{height}}},
@@ -57,7 +73,8 @@
       },
       "update": {
         "fill": {
-          "value": "#ccc"
+          "field": {{{xColumn}}},
+          "scale": "color"
         }
       }
     }
@@ -65,7 +82,8 @@
       "type": "text",
       "properties": {
         "enter": {
-          "x": {"value": 50},
+          "x": {"value": -140},
+          "y": {"value": 10},
           "text": {
             "template": {{{xLabel}}}
           },
@@ -90,7 +108,7 @@
           "field": {
             "group": "height"
           },
-          "mult": 0.5
+          "mult": 0.45
         },
         "radius": {
           "value": 80
@@ -112,5 +130,27 @@
         }
       }
     }
-  }]
+  }],
+"legends": [
+    {
+      "fill": "color",
+      "properties": {
+        "labels": {
+          "y": {"scale": "legend-series-y", "offset": 0},
+          "x": {"value": 30},
+          "text": {
+            "template": "\{{datum.data|left:1|upper}}\{{datum.data|slice:1|truncate:15}}"
+            },
+          "fontSize": {"value": 14}
+        },
+        "symbols": {
+          "y": {"scale": "legend-series-y", "offset": -5},
+          "x": {"value": 15},
+          "size": {"value": 100},
+          "shape": {"value": "circle"},
+          "stroke": "#ffffff"
+        }
+      }
+    }
+  ]
 }

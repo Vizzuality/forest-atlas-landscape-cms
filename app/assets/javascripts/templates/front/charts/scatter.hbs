@@ -1,6 +1,6 @@
 {
   "width": {{{width}}},
-  "height": {{{height}}},
+  "height": {{{math height "+" 100}}},
   "padding": "strict",
   "data": [{
     "name": "table",
@@ -17,7 +17,6 @@
   }, {
     "name": "y",
     "type": "linear",
-    "range": "height",
     "domain": {
       "data": "table",
       "field": {{{yColumn}}}
@@ -27,19 +26,54 @@
   "axes": [{
     "type": "x",
     "scale": "x",
-     "title": {{{xLabel}}}
-  }, {
-    "type": "y",
-    "scale": "y",
-    "title": {{{yLabel}}},
+    "title": {{{xLabel}}},
+    "tickSize": 5,
     "properties": {
+      "labels": {
+        "text": {"template": "\{{datum.data}}"},
+        "align": {"value": "right"},
+        "baseline": {"value": "middle"},
+        "angle": {"value": -45},
+        "fontSize": {"value": 11},
+        "dy": {"value": 20}
+      },
       "title": {
-        "angle": {"value": 0},
-        "y":{"value": -20 },
-        "x":{"value": -12 },
-        "font-family":{ "value":"Fira Sans" }
+        "dx": {"value": 150},
+        "dy": {"value": 5},
+        "baseline": {"value": "top"}
       }
     }
+  }, {
+      "grid": true,
+      "layer": "back",
+      "type": "y",
+      "title": {{{yLabel}}},
+      "scale": "y",
+      "tickSize": 30,
+      "properties": {
+        "grid": {
+          "stroke": {"value": "#eeeeee"},
+          "strokeWidth": {"value": 2},
+          "strokeDash": {"value": [5,5]}
+          },
+        "ticks": {
+          "stroke": {"value": "#eeeeee"},
+          "strokeDash": {"value": [5,5]}
+          },
+        "labels": {
+          "text": {"template": "\{{datum.data | number:'.2s' }}"},
+          "align": {"value": "left"},
+          "baseline": {"value": "bottom"},
+          "fontSize": {"value": 11},
+          "dy": {"value": -10}
+          },
+          "title": {
+            "dx": {"value": 90},
+            "dy": {"value": -15},
+            "align": {"value": "right"},
+            "baseline": {"value": "top"}
+          }
+      }
   }],
   "marks": [{
     "type": "symbol",
@@ -48,28 +82,10 @@
     },
     "properties": {
       "enter": {
-        "x": {
-          "scale": "x",
-          "field": {{{xColumn}}}
-        },
-        "width": {
-          "scale": "x",
-          "band": true,
-          "offset": -1
-        },
-        "y": {
-          "scale": "y",
-          "field": {{{yColumn}}}
-        },
-        "y2": {
-          "scale": "y",
-          "value": 0
-        }
-      },
-      "update": {
-        "fill": {
-          "value": "steelblue"
-        }
+        "x": {"scale": "x", "field": {{{xColumn}}}, "offset": 30 },
+        "y": {"scale": "y", "field": {{{yColumn}}} },
+        "fill": {"value": "#97be32"},
+        "size": {"value": 15}
       }
     }
   }]

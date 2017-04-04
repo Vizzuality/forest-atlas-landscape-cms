@@ -1,6 +1,6 @@
 {
   "width": {{{width}}},
-  "height": {{{height}}},
+  "height": {{{math height "+" 100}}},
   "padding": "strict",
   "data": [{
     "name": "table",
@@ -23,23 +23,67 @@
       "field": {{{yColumn}}}
     },
     "nice": true
+  },
+  {
+    "name": "color",
+    "type": "ordinal",
+    "range": ["#e6e6e6","#97be32","#5c770a"],
+    "domain": {"data": "table","field": {{{xColumn}}} }
   }],
   "axes": [{
-    "type": "x",
-    "scale": "x",
-    "title": {{{xLabel}}}
-  }, {
+      "layer": "back",
+      "type": "x",
+      "scale": "x",
+      "title": {{{xLabel}}},
+      "tickSize": 5,
+      "properties": {
+      "labels": {
+        "text": {"template": "\{{datum.data}}"},
+        "align": {"value": "right"},
+        "baseline": {"value": "middle"},
+        "angle": {"value": -45},
+        "fontSize": {"value": 11},
+        "dy": {"value": 20}
+        },
+        "title": {
+          "dx": {"value": 150},
+          "dy": {"value": 5},
+          "baseline": {"value": "top"}
+        }
+      }
+    }, {
+    "grid": true,
+    "layer": "back",
     "type": "y",
     "scale": "y",
     "title": {{{yLabel}}},
+    "tickSize": 30,
     "properties": {
-      "title": {
-        "angle": {"value": 0},
-        "y":{"value": -20 },
-        "x":{"value": -3 },
-        "font-family":{ "value":"Fira Sans" }
+      "grid": {
+        "stroke": {"value": "#eeeeee"},
+        "strokeWidth": {"value": 2},
+        "strokeDash": {"value": [5, 5]}
+      },
+      "ticks": {
+        "stroke": {"value": "#eeeeee"},
+        "strokeDash": {"value": [5, 5]}
+      },
+      "labels": {
+        "text": {
+          "template": "\{{datum.data | number:'.2s' }}"
+        },
+        "align": {"value": "left"},
+        "baseline": {"value": "bottom"},
+        "fontSize": {"value": 11},
+        "dy": {"value": -15}
+        },
+        "title": {
+          "dx": {"value": 90},
+          "dy": {"value": -10},
+          "align": {"value": "right"},
+          "baseline": {"value": "top"}
+        }
       }
-    }
   }],
   "marks": [{
     "type": "rect",
@@ -50,12 +94,13 @@
       "enter": {
         "x": {
           "scale": "x",
-          "field": {{{xColumn}}}
+          "field": {{{xColumn}}},
+          "offset": 10
         },
         "width": {
           "scale": "x",
           "band": true,
-          "offset": -1
+          "offset": -15
         },
         "y": {
           "scale": "y",
@@ -68,7 +113,8 @@
       },
       "update": {
         "fill": {
-          "value": "steelblue"
+          "field": {{{xColumn}}},
+          "scale": "color"
         }
       }
     }
