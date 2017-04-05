@@ -212,31 +212,33 @@
       var widgets = this._getDashboardWidgets();
 
       widgets.forEach(function (widget, index) {
-        if (widget && widget.type === 'map' && widget.visible) {
-          this['widget' + index] = new App.View.MapWidgetView({
-            el: document.querySelector('.js-widget-' + (index + 1)),
-            data: dataset,
-            // TODO
-            // Once gon is updated, we should retrieve the real names of the fields used to position
-            // the dots
-            fields: {
-              lat: 'latitude' || null,
-              lng: 'longitude' || null
-            },
-            center: [widget.lat || 0, widget.lng || 0],
-            zoom: widget.zoom
-          });
-        } else if (widget && widget.type === 'chart' && widget.visible) {
-          this['widget' + index] = new App.View.ChartWidgetView({
-            el: document.querySelector('.js-widget-' + (index + 1)),
-            data: dataset,
-            chart: widget.chart,
-            columnX: widget.x,
-            columnY: widget.y,
-            xLabel: widget.xLabel,
-            yLabel: widget.yLabel,
-            displayMode: 'dashboard'
-          });
+        if (widget.visible !== false) {
+          if (widget && widget.type === 'map') {
+            this['widget' + index] = new App.View.MapWidgetView({
+              el: document.querySelector('.js-widget-' + (index + 1)),
+              data: dataset,
+              // TODO
+              // Once gon is updated, we should retrieve the real names of the fields used to position
+              // the dots
+              fields: {
+                lat: 'latitude' || null,
+                lng: 'longitude' || null
+              },
+              center: [widget.lat || 0, widget.lng || 0],
+              zoom: widget.zoom
+            });
+          } else if (widget && widget.type === 'chart') {
+            this['widget' + index] = new App.View.ChartWidgetView({
+              el: document.querySelector('.js-widget-' + (index + 1)),
+              data: dataset,
+              chart: widget.chart,
+              columnX: widget.x,
+              columnY: widget.y,
+              xLabel: widget.xLabel,
+              yLabel: widget.yLabel,
+              displayMode: 'dashboard'
+            });
+          }
         }
       }, this);
     },
@@ -298,6 +300,8 @@
             res.x = chart.x;
             res.c = chart.chart;
             if (chart.y) res.y = chart.y;
+            if (chart.xLabel) res.xl = chart.xLabel;
+            if (chart.yLabel) res.yl = chart.yLabel;
           }
 
           return res;
@@ -341,20 +345,22 @@
           widgets: compressedState.w && compressedState.w.map(function (widget) {
             if (widget.t === 'map') {
               return {
-                type: 'chart',
+                type: 'map',
                 lat: widget.la,
                 lng: widget.ln,
                 zoom: widget.z,
-                visible: widget.v
+                visible: widget.v || true
               };
             }
 
             return {
               type: 'chart',
-              chart: widget.c,
+              chart: widget.c || widget.t,
               x: widget.x,
               y: widget.y || null,
-              visible: widget.v || true
+              visible: widget.v || true,
+              xLabel: widget.xl,
+              yLabel: widget.yl
             };
           })
         }
@@ -492,7 +498,7 @@
               center: [widget.lat, widget.lng],
               zoom: widget.zoom
             });
-          } else if (widget){
+          } else if (widget) {
             this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
               chart: widget.chart,
               columnX: widget.x,
