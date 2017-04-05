@@ -76,8 +76,8 @@
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
       this.options.xLabel = null;
       this.options.yLabel = null;
-      this._renderCustomAxisLabelInput();
-      this._renderChart();
+
+      this.render();
     },
 
     /**
@@ -361,7 +361,7 @@
         if (this.options.enableChartSelector){
           this._renderChartSelector();
           // TODO: use displayMode to enable the render of rest of the buttons and inputs
-          if(this.options.displayMode !== 'dashboard'){
+          if(this.options.displayMode !== 'dashboard') {
             this._renderCustomAxisLabelInput();
           }
         }
