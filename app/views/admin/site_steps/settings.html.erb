@@ -23,10 +23,11 @@
             <% case setting.name when 'default_site_language' %>
               <%= settings_form.hidden_field :position, value: '15' %>
               <%= settings_form.hidden_field :name, value: 'default_site_language' %>
-              <div class="c-select">
-                <%= settings_form.label 'Default site language', for: 'default_site_language' %>
-                <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es}, id: 'default_site_language' %>
-              </div>
+
+              <%= settings_form.label 'Default site language', for: 'default_site_language' %>
+                <div class="c-select -admin">
+                  <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es}, id: 'default_site_language' %>
+                </div>
 
               <% when 'translate_english' %>
               <%= settings_form.hidden_field :position, value: '7' %>
