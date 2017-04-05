@@ -17,6 +17,7 @@ class SitePageController < ApplicationController
 
   def set_gon
     gon.push({
+               :default_site_language => @site_page.site.site_settings.default_site_language(@site_page.site_id).value || 'en',
                :translations => {
                  :en => @site_page.site.site_settings.translate_english(@site_page.site_id).value == '1',
                  :fr => @site_page.site.site_settings.translate_french(@site_page.site_id).value == '1',
@@ -98,7 +99,7 @@ class SitePageController < ApplicationController
       # ... legend fields
       gon.legend = @setting.legend
     end
-    @widgets_visibility = JSON.parse(@setting.widgets).map{|config| config["visible"] }
+    @widgets_visibility = JSON.parse(@setting.widgets).map { |config| config["visible"] }
   end
 
   def map_report

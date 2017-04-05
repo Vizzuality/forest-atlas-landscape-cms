@@ -26,7 +26,7 @@
       api_key: 'a81c84348fa34de097781e4017e1a944',
       detectlang: function () {
         var match = location.search.match(/\?(?:.*)?l=([a-z]{2})/);
-        return (match && match.length) > 1 ? match[1]: 'en';
+        return (match && match.length) > 1 ? match[1]: '<%= @site_page.site.site_settings.default_site_language(@site_page.site_id).value || 'en' %>';
       }
     };
   </script>
