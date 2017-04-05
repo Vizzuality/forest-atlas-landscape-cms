@@ -273,6 +273,10 @@
      * Render the switch button and attach an event listener to it
      */
     _renderSwitchButton: function () {
+      var switchContainer = this.el.querySelector('.js-switch-button');
+      if (switchContainer.children.length) {
+        switchContainer.innerHTML = '';
+      }
       // We create the button
       var button = document.createElement('button');
       button.type = 'button';
@@ -283,12 +287,16 @@
       button.addEventListener('click', this.options.switchCallback);
 
       // We append the button to the DOM
-      this.el.querySelector('.js-switch-button').appendChild(button);
+      switchContainer.appendChild(button);
     },
     /**
      * Render the Toggle Visibility button and attach an event listener to it
      */
     _renderToggleVisibilityButton: function () {
+      var toggleContainer = this.el.querySelector('.js-toggle-visibility-button');
+      if (toggleContainer.children.length) {
+        toggleContainer.innerHTML = '';
+      }
       // We create the button
       var button = document.createElement('button');
       button.type = 'button';
@@ -302,7 +310,7 @@
       }.bind(this));
 
       // We append the button to the DOM
-      this.el.querySelector('.js-toggle-visibility-button').appendChild(button);
+      toggleContainer.appendChild(button);
     },
     /**
      * Trigger widget visibility change

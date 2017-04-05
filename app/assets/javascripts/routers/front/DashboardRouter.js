@@ -212,10 +212,11 @@
       var widgets = this._getDashboardWidgets();
 
       widgets.forEach(function (widget, index) {
+        var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
         if (widget.visible !== false) {
           if (widget && widget.type === 'map') {
             this['widget' + index] = new App.View.MapWidgetView({
-              el: document.querySelector('.js-widget-' + (index + 1)),
+              el: widgetContainer,
               data: dataset,
               // TODO
               // Once gon is updated, we should retrieve the real names of the fields used to position
@@ -229,7 +230,7 @@
             });
           } else if (widget && widget.type === 'chart') {
             this['widget' + index] = new App.View.ChartWidgetView({
-              el: document.querySelector('.js-widget-' + (index + 1)),
+              el: widgetContainer,
               data: dataset,
               chart: widget.chart,
               columnX: widget.x,
@@ -239,6 +240,8 @@
               displayMode: 'dashboard'
             });
           }
+        } else {
+          widgetContainer.classList.add('is-hidden');
         }
       }, this);
     },
