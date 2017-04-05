@@ -98,7 +98,6 @@ class SitePageController < ApplicationController
       # ... legend fields
       gon.legend = @setting.legend
     end
-    @widgets_visibility = JSON.parse(@setting.widgets).map{|config| config["visible"] }
   end
 
   def map_report
