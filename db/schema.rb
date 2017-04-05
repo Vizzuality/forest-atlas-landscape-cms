@@ -196,7 +196,6 @@ ActiveRecord::Schema.define(version: 20170329090135) do
     t.json     "columns"
     t.string   "name"
     t.string   "description"
-    t.boolean  "visible",              default: true
   end
 
   add_foreign_key "page_widgets", "pages"
