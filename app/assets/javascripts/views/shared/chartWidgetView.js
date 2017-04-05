@@ -114,7 +114,6 @@
       this.options._width = width;
       this.options._height = height;
       /* eslint-enable no-underscore-dangle */
-
       return {
         width: width,
         height: height
@@ -170,11 +169,12 @@
       var yLabel = columnY;
 
       if (labelX !== undefined && labelX !== null && labelX !== ''){
-        xLabel = JSON.stringify(labelX);}
+        xLabel = JSON.stringify(labelX);
+      }
 
       if (labelY !== undefined && labelY !== null && labelY !== ''){
-        yLabel = JSON.stringify(labelY);}
-
+        yLabel = JSON.stringify(labelY);
+      }
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
         xColumn: columnX,
@@ -199,7 +199,7 @@
       vg.parse
         .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
           if (error) {
-            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError)
+            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
             return;
           }
           this.chart = chart({
