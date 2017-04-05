@@ -213,7 +213,6 @@
 
       widgets.forEach(function (widget, index) {
         var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
-        if (widget.visible !== false) {
           if (widget && widget.type === 'map') {
             this['widget' + index] = new App.View.MapWidgetView({
               el: widgetContainer,
@@ -226,7 +225,8 @@
                 lng: 'longitude' || null
               },
               center: [widget.lat || 0, widget.lng || 0],
-              zoom: widget.zoom
+              zoom: widget.zoom,
+              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
             });
           } else if (widget && widget.type === 'chart') {
             this['widget' + index] = new App.View.ChartWidgetView({
@@ -237,12 +237,10 @@
               columnY: widget.y,
               xLabel: widget.xLabel,
               yLabel: widget.yLabel,
-              displayMode: 'dashboard'
+              displayMode: 'dashboard',
+              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
             });
           }
-        } else {
-          widgetContainer.classList.add('is-hidden');
-        }
       }, this);
     },
 
@@ -495,19 +493,26 @@
       // We restore the widgets
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         var widget = state.config.widgets[i];
-        if (this['widget' + i]) {
-          if (widget && widget.type === 'map') {
-            this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
-              center: [widget.lat, widget.lng],
-              zoom: widget.zoom
-            });
-          } else if (widget) {
-            this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
-              chart: widget.chart,
-              columnX: widget.x,
-              columnY: widget.y
-            });
-          }
+        if (widget && widget.type === 'map') {
+          this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
+            center: [widget.lat, widget.lng],
+            zoom: widget.zoom,
+            // TODO: this prevents showing bookmarks that now are hidden, remove if needed
+            visible: this['widget' + i].options.visible
+          });
+        } else if (widget) {
+          this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
+            chart: widget.chart,
+            columnX: widget.x,
+            columnY: widget.y,
+            // TODO: this prevents showing bookmarks that now are hidden, remove if needed
+            visible: this['widget' + i].options.visible
+          });
+        } else {
+          this['widget' + i].options = Object.assign({}, {
+            // for compatibility if the widget was null before don't try to render it
+            visible: false
+          });
         }
       }
 
@@ -522,7 +527,12 @@
      */
     _renderWidgets: function () {
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-        if (this['widget' + i]) this['widget' + i].render();
+        if (this['widget' + i] && this['widget' + i].options.visible) {
+          this['widget' + i].el.classList.remove('is-hidden');
+          this['widget' + i].render();
+        } else {
+          this['widget' + i].el.classList.add('is-hidden');
+        }
       }
     },
 
