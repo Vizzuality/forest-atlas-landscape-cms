@@ -22,9 +22,7 @@
           <div class="container">
             <label for="version">Version</label>
             <div class="c-select -small">
-              <select id="version">
-                <option value="1.1.10" selected>1.1.10</option>
-              </select>
+              <%= ff.select 'version', MapVersion.to_a %>
             </div>
           </div>
           <div class="container">

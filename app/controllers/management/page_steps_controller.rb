@@ -258,7 +258,7 @@ class Management::PageStepsController < ManagementController
       :show_on_menu,
       :parent_id,
       :content_type,
-      content: [:url, :target_blank, :body, :json, :settings],
+      content: [:url, :target_blank, :body, :json, :settings, :version],
       dataset_setting: [
         :dataset_id,
         :filters,
