@@ -153,7 +153,7 @@
               id: widget.id,
               name: widget.name,
               description: widget.description,
-              type: JSON.parse(widget.visualization).type
+              type: JSON.parse(widget.visualization).chart
             };
           } catch (e) {
             return null;

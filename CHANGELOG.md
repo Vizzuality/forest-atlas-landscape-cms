@@ -1,3 +1,14 @@
+- Add option to select a site's default language
+
+### 4 April 2017
+- Add custom labels support to widgets
+- Added wysiwyg css cheatsheet
+- Changes wysiwyg formatting styles
+- Added debugging to custom router to identify potential issue when rebuilding
+- Terms of Service page update
+- Adds visibility toggle to dashboard widgets
+- Widgets restyling
+
 ### 29 Mar 2017
 - Add validation of template selection to site creation
 - Improve site settings update

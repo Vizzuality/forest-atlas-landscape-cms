@@ -18,10 +18,18 @@
         <div class="settings c-inputs-container">
         <div class="container">
           <%= f.fields_for :site_settings, \
-            (f.object.site_settings.collect.select{|x| %w[translate_english translate_french translate_spanish].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
+            (f.object.site_settings.collect.select{|x| %w[translate_english translate_french translate_spanish default_site_language].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
             <% setting = settings_form.object %>
-            <% case setting.name when 'translate_english' %>
+            <% case setting.name when 'default_site_language' %>
+              <%= settings_form.hidden_field :position, value: '15' %>
+              <%= settings_form.hidden_field :name, value: 'default_site_language' %>
 
+              <%= settings_form.label 'Default site language', for: 'default_site_language' %>
+                <div class="c-select -admin">
+                  <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es}, id: 'default_site_language' %>
+                </div>
+
+              <% when 'translate_english' %>
               <%= settings_form.hidden_field :position, value: '7' %>
               <%= settings_form.hidden_field :name, value: 'translate_english' %>
               <div class="c-checkbox">
@@ -46,8 +54,8 @@
                 <%= settings_form.check_box :value, id: 'translate_spanish' %>
                 <%= settings_form.label 'Allow Spanish translations', for: 'translate_spanish' %>
               </div>
-            <%end%>
-          <%end%>
+              <% end %>
+          <% end %>
         </div>
           <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by { |s| s.position }) do |settings_form| %>
               <% setting = settings_form.object %>
@@ -85,6 +93,15 @@
                   <div class="container -big">
                     <%= settings_form.label 'Contact email address', for: 'contact_email_address' %>
                     <%= settings_form.text_field :value, id: 'contact_email_address' %>
+                  </div>
+
+              <% when 'hosting_organization' %>
+                  <%= settings_form.hidden_field :position, value: '14' %>
+                  <%= settings_form.hidden_field :name, value: 'hosting_organization' %>
+
+                  <div class="container -big">
+                    <%= settings_form.label 'Hosting organization', for: 'hosting_organization' %>
+                    <%= settings_form.text_field :value, id: 'hosting_organization' %>
                   </div>
 
               <% end %>

@@ -21,16 +21,17 @@ def create_pages_templates
       site_templates: [@fa_template, @la_template]
     }
   )
+
   PageTemplate.create!(
     {
       name: 'Terms and privacy',
       description: 'Terms and privacy',
-      uri: 'terms-and-privacy',
+      uri: PageTemplate::TERMS_OF_SERVICE_SLUG,
       parent: home,
       show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
       site_templates: [@fa_template, @la_template],
-      content: {json: '{"ops":[{"insert":"Terms and privacy"}]}'}
+      content: nil # content rendered from .erb template upon site creation
     }
   )
   puts 'Template pages created successfully'
@@ -203,6 +204,13 @@ def create_users
       admin: true
     }
   )
+  @alvaro_leal_user = User.create(
+    {
+      email: 'alvaro.leal@vizzuality.com',
+      name: 'Alvaro Leal',
+      admin: true
+    }
+  )
 =begin
   @thomas_maschler_user = User.create(
     {
@@ -280,6 +288,10 @@ def create_user_sites
       role: UserType::MANAGER
     }, {
       user: @hector_arce_user,
+      site: @staging_demo_site,
+      role: UserType::MANAGER
+    }, {
+      user: @alvaro_leal_user,
       site: @staging_demo_site,
       role: UserType::MANAGER
     }

@@ -212,9 +212,10 @@
       var widgets = this._getDashboardWidgets();
 
       widgets.forEach(function (widget, index) {
+        var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
         if (widget && widget.type === 'map') {
           this['widget' + index] = new App.View.MapWidgetView({
-            el: document.querySelector('.js-widget-' + (index + 1)),
+            el: widgetContainer,
             data: dataset,
             // TODO
             // Once gon is updated, we should retrieve the real names of the fields used to position
@@ -224,17 +225,24 @@
               lng: 'longitude' || null
             },
             center: [widget.lat || 0, widget.lng || 0],
-            zoom: widget.zoom
+            zoom: widget.zoom,
+            visible: typeof widget.visible !== 'undefined' ? widget.visible : true
           });
         } else if (widget && widget.type === 'chart') {
           this['widget' + index] = new App.View.ChartWidgetView({
-            el: document.querySelector('.js-widget-' + (index + 1)),
+            el: widgetContainer,
             data: dataset,
             chart: widget.chart,
             columnX: widget.x,
-            columnY: widget.y
+            columnY: widget.y,
+            xLabel: widget.xLabel,
+            yLabel: widget.yLabel,
+            displayMode: 'dashboard',
+            visible: typeof widget.visible !== 'undefined' ? widget.visible : true
           });
         }
+        // Save initial state
+        this._saveState('widget' + index, widget);
       }, this);
     },
 
@@ -282,16 +290,21 @@
         f: state.config.filters.map(function (filter) { return [filter.name, filter.value]; }),
         w: this.state.config.widgets.map(function (chart) {
           if (!chart.type) return null;
-          var res = { t: chart.type };
+          var res = {
+            t: chart.type,
+            v: chart.visible
+          };
 
           if (chart.type === 'map') {
             res.la = chart.lat;
             res.ln = chart.lng;
             res.z = chart.zoom;
           } else {
-            res.c = chart.chart;
             res.x = chart.x;
+            res.c = chart.chart;
             if (chart.y) res.y = chart.y;
+            if (chart.xLabel) res.xl = chart.xLabel;
+            if (chart.yLabel) res.yl = chart.yLabel;
           }
 
           return res;
@@ -338,15 +351,19 @@
                 type: 'map',
                 lat: widget.la,
                 lng: widget.ln,
-                zoom: widget.z
+                zoom: widget.z,
+                visible: typeof widget.v !== 'undefined' ? widget.v : true
               };
             }
 
             return {
               type: 'chart',
-              chart: widget.c,
+              chart: widget.c || widget.t,
               x: widget.x,
-              y: widget.y || null
+              y: widget.y || null,
+              visible: typeof widget.v !== 'undefined' ? widget.v : true,
+              xLabel: widget.xl,
+              yLabel: widget.yl
             };
           })
         }
@@ -430,7 +447,7 @@
       var dataset = this._getDataset({ unfiltered: true });
 
       // We check we have all the widgets and the dataset isn't empty
-      if (!state.config || !state.config.widgets || state.config.widgets.length < this.options.widgetsCount || !dataset.length) {
+      if (!state.config || !state.config.widgets || !dataset.length) {
         return false;
       }
 
@@ -448,7 +465,7 @@
 
     /**
      * Restore the state of the dashboard
-     * NOTE: must be called after _renderWidgets
+     * NOTE: must be called before _renderWidgets
      * @param {object} state
      * @returns {boolean} restored - true if the state could be restored
      */
@@ -478,16 +495,25 @@
       // We restore the widgets
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         var widget = state.config.widgets[i];
-        if (widget.type === 'map') {
+        if (widget && widget.type === 'map') {
           this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
             center: [widget.lat, widget.lng],
-            zoom: widget.zoom
+            zoom: widget.zoom,
+            // TODO: this prevents showing bookmarks that now are hidden, remove if needed
+            visible: this['widget' + i].options.visible
           });
-        } else {
+        } else if (widget) {
           this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
             chart: widget.chart,
             columnX: widget.x,
-            columnY: widget.y
+            columnY: widget.y,
+            // TODO: this prevents showing bookmarks that now are hidden, remove if needed
+            visible: this['widget' + i].options.visible
+          });
+        } else {
+          this['widget' + i].options = Object.assign({}, {
+            // for compatibility if the widget was null before don't try to render it
+            visible: false
           });
         }
       }
@@ -503,7 +529,12 @@
      */
     _renderWidgets: function () {
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-        if(this['widget' + i]) this['widget' + i].render();
+        if (this['widget' + i] && this['widget' + i].options.visible) {
+          this['widget' + i].el.classList.remove('is-hidden');
+          this['widget' + i].render();
+        } else {
+          this['widget' + i].el.classList.add('is-hidden');
+        }
       }
     },
 

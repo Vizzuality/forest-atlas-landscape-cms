@@ -27,6 +27,10 @@ namespace :db do
               site.site_settings.create!(name: 'favico', value: '', position: 3)
               puts '...... Added favico'
             end
+            unless site.site_settings.exists?(name: 'flag') or site.site_template.name != 'Forest Atlas'
+              site.site_settings.create!(name: 'flag', value: '', position: 4)
+              puts '...... Added flag'
+            end
             unless site.site_settings.exists?(name: 'main_image')
               site.site_settings.create!(name: 'main_image', value: '', position: 5)
               puts '...... Added main_image'
@@ -62,6 +66,14 @@ namespace :db do
             unless site.site_settings.exists?(name: 'contact_email_address')
               site.site_settings.create!(name: 'contact_email_address', value: '', position: 13)
               puts '...... Added contact_email_address'
+            end
+            unless site.site_settings.exists?(name: 'hosting_organization')
+              site.site_settings.create!(name: 'hosting_organization', value: '', position: 14)
+              puts '...... Added hosting_organization'
+            end
+            unless site.site_settings.exists?(name: 'default_site_language')
+              site.site_settings.create!(name: 'default_site_language', value: 'en', position: 15)
+              puts '...... Added default_site_language'
             end
             puts "... Finished creation for site #{site.name}"
             puts ''

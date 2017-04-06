@@ -113,9 +113,11 @@ var WidgetBlot = function (_Embed) {
         config = JSON.parse(chart.visualization);
       } catch (e) {
         config = {
-          type: null,
+          chart: null,
           x: null,
-          y: null
+          y: null,
+          xLabel: null,
+          yLabel: null,
         };
       }
 
@@ -123,9 +125,11 @@ var WidgetBlot = function (_Embed) {
       this.widget = new App.View.ChartWidgetView({
         el: this.domNode.querySelector('.js-widget-container'),
         data: chart.data,
-        chart: config.type,
+        chart: config.chart,
         columnX: config.x,
         columnY: config.y,
+        xLabel: config.xLabel,
+        yLabel: config.yLabel,
         enableChartSelector: false
       });
 

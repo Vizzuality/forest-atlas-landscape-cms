@@ -97,9 +97,11 @@ class WidgetBlot extends Embed {
     this.widget = new App.View.ChartWidgetView({
       el: this.domNode.querySelector('.js-widget-container'),
       data: chart.data,
-      chart: config.type,
+      chart: config.chart,
       columnX: config.x,
       columnY: config.y,
+      xLabel: config.xLabel,
+      yLabel: config.yLabel,
       enableChartSelector: false
     });
 

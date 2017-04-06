@@ -67,7 +67,15 @@
      */
     _getChart: function () {
       try {
-        return (window.gon && gon.visualization && JSON.parse(gon.visualization)) || {};
+        var parsedChart = {};
+        if (window.gon && gon.visualization) {
+          parsedChart = JSON.parse(gon.visualization);
+          if (parsedChart.type !== 'chart') {
+            var chart = Object.assign({}, parsedChart, { type: 'chart', chart: parsedChart.type});
+            return chart
+          }
+        }
+        return parsedChart;
       } catch (e) {
         return {};
       }
@@ -83,9 +91,11 @@
       this.chart = new App.View.ChartWidgetView({
         el: document.querySelector('.js-chart'),
         data: dataset,
-        chart: chart.type || null,
+        chart: chart.chart || null,
         columnX: chart.x || null,
-        columnY: chart.y || null
+        columnY: chart.y || null,
+        xLabel: chart.xLabel,
+        yLabel: chart.yLabel
       });
     }
 
