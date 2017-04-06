@@ -212,32 +212,35 @@
       var widgets = this._getDashboardWidgets();
 
       widgets.forEach(function (widget, index) {
-        if (widget && widget.type === 'map' && widget.visible) {
-          this['widget' + index] = new App.View.MapWidgetView({
-            el: document.querySelector('.js-widget-' + (index + 1)),
-            data: dataset,
-            // TODO
-            // Once gon is updated, we should retrieve the real names of the fields used to position
-            // the dots
-            fields: {
-              lat: 'latitude' || null,
-              lng: 'longitude' || null
-            },
-            center: [widget.lat || 0, widget.lng || 0],
-            zoom: widget.zoom
-          });
-        } else if (widget && widget.type === 'chart' && widget.visible) {
-          this['widget' + index] = new App.View.ChartWidgetView({
-            el: document.querySelector('.js-widget-' + (index + 1)),
-            data: dataset,
-            chart: widget.chart,
-            columnX: widget.x,
-            columnY: widget.y,
-            xLabel: widget.xLabel,
-            yLabel: widget.yLabel,
-            displayMode: 'dashboard'
-          });
-        }
+        var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
+          if (widget && widget.type === 'map') {
+            this['widget' + index] = new App.View.MapWidgetView({
+              el: widgetContainer,
+              data: dataset,
+              // TODO
+              // Once gon is updated, we should retrieve the real names of the fields used to position
+              // the dots
+              fields: {
+                lat: 'latitude' || null,
+                lng: 'longitude' || null
+              },
+              center: [widget.lat || 0, widget.lng || 0],
+              zoom: widget.zoom,
+              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
+            });
+          } else if (widget && widget.type === 'chart') {
+            this['widget' + index] = new App.View.ChartWidgetView({
+              el: widgetContainer,
+              data: dataset,
+              chart: widget.chart,
+              columnX: widget.x,
+              columnY: widget.y,
+              xLabel: widget.xLabel,
+              yLabel: widget.yLabel,
+              displayMode: 'dashboard',
+              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
+            });
+          }
       }, this);
     },
 
@@ -298,6 +301,8 @@
             res.x = chart.x;
             res.c = chart.chart;
             if (chart.y) res.y = chart.y;
+            if (chart.xLabel) res.xl = chart.xLabel;
+            if (chart.yLabel) res.yl = chart.yLabel;
           }
 
           return res;
@@ -341,20 +346,22 @@
           widgets: compressedState.w && compressedState.w.map(function (widget) {
             if (widget.t === 'map') {
               return {
-                type: 'chart',
+                type: 'map',
                 lat: widget.la,
                 lng: widget.ln,
                 zoom: widget.z,
-                visible: widget.v
+                visible: typeof widget.v !== 'undefined' ? widget.v : true
               };
             }
 
             return {
               type: 'chart',
-              chart: widget.c,
+              chart: widget.c || widget.t,
               x: widget.x,
               y: widget.y || null,
-              visible: widget.v || true
+              visible: typeof widget.v !== 'undefined' ? widget.v : true,
+              xLabel: widget.xl,
+              yLabel: widget.yl
             };
           })
         }
@@ -486,19 +493,26 @@
       // We restore the widgets
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         var widget = state.config.widgets[i];
-        if (this['widget' + i]) {
-          if (widget && widget.type === 'map') {
-            this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
-              center: [widget.lat, widget.lng],
-              zoom: widget.zoom
-            });
-          } else if (widget){
-            this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
-              chart: widget.chart,
-              columnX: widget.x,
-              columnY: widget.y
-            });
-          }
+        if (widget && widget.type === 'map') {
+          this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
+            center: [widget.lat, widget.lng],
+            zoom: widget.zoom,
+            // TODO: this prevents showing bookmarks that now are hidden, remove if needed
+            visible: this['widget' + i].options.visible
+          });
+        } else if (widget) {
+          this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
+            chart: widget.chart,
+            columnX: widget.x,
+            columnY: widget.y,
+            // TODO: this prevents showing bookmarks that now are hidden, remove if needed
+            visible: this['widget' + i].options.visible
+          });
+        } else {
+          this['widget' + i].options = Object.assign({}, {
+            // for compatibility if the widget was null before don't try to render it
+            visible: false
+          });
         }
       }
 
@@ -513,7 +527,12 @@
      */
     _renderWidgets: function () {
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-        if (this['widget' + i]) this['widget' + i].render();
+        if (this['widget' + i] && this['widget' + i].options.visible) {
+          this['widget' + i].el.classList.remove('is-hidden');
+          this['widget' + i].render();
+        } else {
+          this['widget' + i].el.classList.add('is-hidden');
+        }
       }
     },
 

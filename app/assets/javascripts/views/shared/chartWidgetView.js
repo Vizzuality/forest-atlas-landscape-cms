@@ -76,8 +76,8 @@
       this.options.columnY = arguments[0].length > 2 ? arguments[0][2] : null;
       this.options.xLabel = null;
       this.options.yLabel = null;
-      this._renderCustomAxisLabelInput();
-      this._renderChart();
+
+      this.render();
     },
 
     /**
@@ -114,7 +114,6 @@
       this.options._width = width;
       this.options._height = height;
       /* eslint-enable no-underscore-dangle */
-
       return {
         width: width,
         height: height
@@ -170,11 +169,12 @@
       var yLabel = columnY;
 
       if (labelX !== undefined && labelX !== null && labelX !== ''){
-        xLabel = JSON.stringify(labelX);}
+        xLabel = JSON.stringify(labelX);
+      }
 
       if (labelY !== undefined && labelY !== null && labelY !== ''){
-        yLabel = JSON.stringify(labelY);}
-
+        yLabel = JSON.stringify(labelY);
+      }
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
         xColumn: columnX,
@@ -199,7 +199,7 @@
       vg.parse
         .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
           if (error) {
-            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError)
+            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
             return;
           }
           this.chart = chart({
@@ -273,6 +273,10 @@
      * Render the switch button and attach an event listener to it
      */
     _renderSwitchButton: function () {
+      var switchContainer = this.el.querySelector('.js-switch-button');
+      if (switchContainer.children.length) {
+        switchContainer.innerHTML = '';
+      }
       // We create the button
       var button = document.createElement('button');
       button.type = 'button';
@@ -283,12 +287,16 @@
       button.addEventListener('click', this.options.switchCallback);
 
       // We append the button to the DOM
-      this.el.querySelector('.js-switch-button').appendChild(button);
+      switchContainer.appendChild(button);
     },
     /**
      * Render the Toggle Visibility button and attach an event listener to it
      */
     _renderToggleVisibilityButton: function () {
+      var toggleContainer = this.el.querySelector('.js-toggle-visibility-button');
+      if (toggleContainer.children.length) {
+        toggleContainer.innerHTML = '';
+      }
       // We create the button
       var button = document.createElement('button');
       button.type = 'button';
@@ -302,7 +310,7 @@
       }.bind(this));
 
       // We append the button to the DOM
-      this.el.querySelector('.js-toggle-visibility-button').appendChild(button);
+      toggleContainer.appendChild(button);
     },
     /**
      * Trigger widget visibility change
@@ -361,7 +369,7 @@
         if (this.options.enableChartSelector){
           this._renderChartSelector();
           // TODO: use displayMode to enable the render of rest of the buttons and inputs
-          if(this.options.displayMode !== 'dashboard'){
+          if(this.options.displayMode !== 'dashboard') {
             this._renderCustomAxisLabelInput();
           }
         }

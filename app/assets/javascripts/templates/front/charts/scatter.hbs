@@ -1,6 +1,6 @@
 {
   "width": {{{width}}},
-  "height": {{{math height "+" 100}}},
+  "height": {{{height}}},
   "padding": "strict",
   "data": [{
     "name": "table",
@@ -30,7 +30,7 @@
     "tickSize": 5,
     "properties": {
       "labels": {
-        "text": {"template": "\{{datum.data}}"},
+        "text": {"template": "\{{datum.data | left:10}}"},
         "align": {"value": "right"},
         "baseline": {"value": "middle"},
         "angle": {"value": -45},
