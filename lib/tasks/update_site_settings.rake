@@ -67,6 +67,10 @@ namespace :db do
               site.site_settings.create!(name: 'hosting_organization', value: '', position: 14)
               puts '...... Added hosting_organization'
             end
+            unless site.site_settings.exists?(name: 'default_site_language')
+              site.site_settings.create!(name: 'default_site_language', value: 'en', position: 15)
+              puts '...... Added default_site_language'
+            end
             puts "... Finished creation for site #{site.name}"
             puts ''
           end

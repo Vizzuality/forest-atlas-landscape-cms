@@ -17,6 +17,7 @@ class SitePageController < ApplicationController
 
   def set_gon
     gon.push({
+               :default_site_language => @site_page.site.site_settings.default_site_language(@site_page.site_id).value || 'en',
                :translations => {
                  :en => @site_page.site.site_settings.translate_english(@site_page.site_id).value == '1',
                  :fr => @site_page.site.site_settings.translate_french(@site_page.site_id).value == '1',
