@@ -350,7 +350,7 @@
                 lat: widget.la,
                 lng: widget.ln,
                 zoom: widget.z,
-                visible: widget.v || true
+                visible: typeof widget.v !== 'undefined' ? widget.v : true
               };
             }
 
@@ -359,7 +359,7 @@
               chart: widget.c || widget.t,
               x: widget.x,
               y: widget.y || null,
-              visible: widget.v || true,
+              visible: typeof widget.v !== 'undefined' ? widget.v : true,
               xLabel: widget.xl,
               yLabel: widget.yl
             };
