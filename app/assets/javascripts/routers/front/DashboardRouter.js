@@ -213,34 +213,36 @@
 
       widgets.forEach(function (widget, index) {
         var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
-          if (widget && widget.type === 'map') {
-            this['widget' + index] = new App.View.MapWidgetView({
-              el: widgetContainer,
-              data: dataset,
-              // TODO
-              // Once gon is updated, we should retrieve the real names of the fields used to position
-              // the dots
-              fields: {
-                lat: 'latitude' || null,
-                lng: 'longitude' || null
-              },
-              center: [widget.lat || 0, widget.lng || 0],
-              zoom: widget.zoom,
-              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
-            });
-          } else if (widget && widget.type === 'chart') {
-            this['widget' + index] = new App.View.ChartWidgetView({
-              el: widgetContainer,
-              data: dataset,
-              chart: widget.chart,
-              columnX: widget.x,
-              columnY: widget.y,
-              xLabel: widget.xLabel,
-              yLabel: widget.yLabel,
-              displayMode: 'dashboard',
-              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
-            });
-          }
+        if (widget && widget.type === 'map') {
+          this['widget' + index] = new App.View.MapWidgetView({
+            el: widgetContainer,
+            data: dataset,
+            // TODO
+            // Once gon is updated, we should retrieve the real names of the fields used to position
+            // the dots
+            fields: {
+              lat: 'latitude' || null,
+              lng: 'longitude' || null
+            },
+            center: [widget.lat || 0, widget.lng || 0],
+            zoom: widget.zoom,
+            visible: typeof widget.visible !== 'undefined' ? widget.visible : true
+          });
+        } else if (widget && widget.type === 'chart') {
+          this['widget' + index] = new App.View.ChartWidgetView({
+            el: widgetContainer,
+            data: dataset,
+            chart: widget.chart,
+            columnX: widget.x,
+            columnY: widget.y,
+            xLabel: widget.xLabel,
+            yLabel: widget.yLabel,
+            displayMode: 'dashboard',
+            visible: typeof widget.visible !== 'undefined' ? widget.visible : true
+          });
+        }
+        // Save initial state
+        this._saveState('widget' + index, widget);
       }, this);
     },
 
