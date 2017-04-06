@@ -41,7 +41,7 @@
       box-shadow: 0 2px 3px 0 rgba($color-1, .1);
     }
 
-    &[type="text"]:disabled .-dashboard {
+    &[type="text"]:disabled.-dashboard {
       display: none;
     }
   }
