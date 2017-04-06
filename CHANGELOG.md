@@ -1,6 +1,4 @@
-- Add option to select a site's default language
-
-### 4 April 2017
+### 6 April 2017
 - Add custom labels support to widgets
 - Added wysiwyg css cheatsheet
 - Changes wysiwyg formatting styles
@@ -8,6 +6,7 @@
 - Terms of Service page update
 - Adds visibility toggle to dashboard widgets
 - Widgets restyling
+- Add option to select a site's default language
 
 ### 29 Mar 2017
 - Add validation of template selection to site creation
