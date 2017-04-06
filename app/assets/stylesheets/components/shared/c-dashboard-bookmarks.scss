@@ -54,26 +54,60 @@
     }
   }
 
-  > .bookmarks {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 0 auto;
-    padding: 10px 30px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+  .add-button {
+    display: inline-block;
+    margin: 0;
 
-    @media #{$mq-tablet} {
-      justify-content: center;
-      width: calc(100% - 160px);
-      padding: 10px 0;
+    button {
+      margin-right: 30px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: $color-1;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      @media #{$mq-tablet} {
+        margin-right: 0;
+      }
     }
 
+    @media #{$mq-tablet} {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+  }
+
+  .bookmarks-wrapper {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 auto;
+    padding: 0 30px;
+    height: 48px;
+    width: 45%;
+
+    @media #{$mq-tablet} {
+      width: 75%;
+    }
+  }
+
+  .bookmarks {
+    white-space: nowrap;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 50px;
+
     > li {
+      display: inline-block;
       position: relative;
-      flex-shrink: 0;
       height: 27px;
       margin-right: 70px;
       line-height: 27px;
@@ -94,23 +128,6 @@
 
         @media #{$mq-tablet} {
           display: block;
-        }
-      }
-
-      &.add-button button {
-        margin-right: 30px;
-        padding: 0;
-        border: 0;
-        background: transparent;
-        color: $color-1;
-        font-family: inherit;
-        font-size: inherit;
-        cursor: pointer;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-
-        @media #{$mq-tablet} {
-          margin-right: 0;
         }
       }
 
