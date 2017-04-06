@@ -1,3 +1,5 @@
+- Add option to select a site's default language
+
 ### 4 April 2017
 - Add custom labels support to widgets
 - Added wysiwyg css cheatsheet
