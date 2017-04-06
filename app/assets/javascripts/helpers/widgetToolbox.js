@@ -95,7 +95,7 @@
    */
   App.Helper.WidgetToolbox.prototype.checkWidgetValidity = function (widget) {
     // If the widget is not visible return true
-    if (!widget.visible) return true;
+    if (widget.visible === false) return true;
     // If the widget is a map, we return true
     if (widget.type === 'map') return true;
     // If the widget is an unknown chart, we consider it as valid
