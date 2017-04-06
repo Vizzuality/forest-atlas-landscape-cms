@@ -25,6 +25,7 @@ class SiteSetting < ApplicationRecord
 
   NAMES = %w[
     logo_image main_image alternative_image favico color flag
+    default_site_language
     translate_english translate_spanish translate_french
     pre_footer analytics_key keywords contact_email_address
     hosting_organization
@@ -76,6 +77,10 @@ class SiteSetting < ApplicationRecord
 
   def self.flag_colors(site_id)
     SiteSetting.find_by(name: 'flag', site_id: site_id)
+  end
+
+  def self.default_site_language(site_id)
+    SiteSetting.find_by(name: 'default_site_language', site_id: site_id)
   end
 
   def self.translate_english(site_id)
@@ -147,6 +152,7 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'keywords', value: '', position: 12)
       site.site_settings.new(name: 'contact_email_address', value: '', position: 13)
       site.site_settings.new(name: 'hosting_organization', value: '', position: 14)
+      site.site_settings.new(name: 'default_site_language', value: 'en', position: 15)
     end
   end
 

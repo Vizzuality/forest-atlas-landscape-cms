@@ -68,6 +68,7 @@ class Admin::SiteStepsController < AdminController
       end
       if step == 'settings'
         SiteSetting.create_site_settings @site
+        @default_site_language = @site.site_settings.where(name: 'default_site_language').first
         @translate_english = @site.site_settings.where(name: 'translate_english').first
         @translate_spanish = @site.site_settings.where(name: 'translate_spanish').first
         @translate_french = @site.site_settings.where(name: 'translate_french').first
@@ -245,6 +246,7 @@ class Admin::SiteStepsController < AdminController
         site_settings_attributes: [
           :id, :position, :value, :name, :image,
           :attribution_link, :attribution_label,
+          :default_site_language,
           :translate_english, :translate_french,
           :translate_spanish, :pre_footer, :analytics_key, :keywords, :contact_email_address
         ]
