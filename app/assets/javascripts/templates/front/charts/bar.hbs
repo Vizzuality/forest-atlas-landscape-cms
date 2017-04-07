@@ -27,7 +27,7 @@
   {
     "name": "color",
     "type": "ordinal",
-    "range": ["#e6e6e6","#97be32","#5c770a"],
+    "range": "colorRange",
     "domain": {"data": "table","field": {{{xColumn}}} }
   }],
   "axes": [{
@@ -36,19 +36,22 @@
       "scale": "x",
       "title": {{{xLabel}}},
       "tickSize": 5,
+      "tickSizeEnd": 0,
       "properties": {
       "labels": {
         "text": {"template": "\{{datum.data | truncate:10}}"},
         "align": {"value": "right"},
         "baseline": {"value": "middle"},
         "angle": {"value": -45},
-        "fontSize": {"value": 11},
-        "dy": {"value": 20}
+        "fontSize": {"value": 11}
         },
         "title": {
-          "dx": {"value": 150},
-          "dy": {"value": 5},
-          "baseline": {"value": "top"}
+          "dy": {"value": 35},
+          "baseline": {"value": "top"},
+          "fontWeight": {"value": 300}
+        },
+        "axis": {
+          "stroke": {"value": "#999999"}
         }
       }
     }, {
@@ -75,13 +78,14 @@
         "align": {"value": "left"},
         "baseline": {"value": "bottom"},
         "fontSize": {"value": 11},
-        "dy": {"value": -15}
+        "dx": {"value": 15}
         },
         "title": {
-          "dx": {"value": 90},
-          "dy": {"value": -10},
-          "align": {"value": "right"},
-          "baseline": {"value": "top"}
+          "angle": {"value": 0},
+          "y":{"value": -20 },
+          "x":{"value": -12 },
+          "align": {"value": "left"},
+          "fontWeight": {"value": 300}
         }
       }
   }],

@@ -33,7 +33,18 @@
     "type": "x",
     "scale": "x",
     "ticks": 6,
-    "title": {{{xLabel}}}
+    "tickSizeEnd": 0,
+    "title": {{{xLabel}}},
+    "properties": {
+      "axis": {
+        "stroke": {"value": "#999999"}
+      },
+      "title": {
+        "fontWeight": {"value": 300},
+        "dy": {"value": 35},
+        "baseline": {"value": "top"}
+      }
+    }
   }, {
     "type": "y",
     "scale": "y",
@@ -43,7 +54,8 @@
         "angle": {"value": 0},
         "y":{"value": -20 },
         "x":{"value": -12 },
-        "font-family":{ "value":"Fira Sans" }
+        "align": {"value": "left"},
+        "fontWeight": {"value": 300}
       }
     }
   }],
