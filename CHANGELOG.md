@@ -1,3 +1,8 @@
+- Fix issue with link page type creation
+- Hide 2nd custom label input on pie charts
+- Fix scatter charts
+- Update positioning on label axis
+
 ### 6 April 2017
 - Add custom labels support to widgets
 - Added wysiwyg css cheatsheet
