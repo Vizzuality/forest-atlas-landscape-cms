@@ -333,10 +333,23 @@
       axis.forEach(function(axis){
         // We create the input
         var input = document.createElement('input');
-        input.setAttribute('placeholder', 'Custom ' + axis + ' label');
+        input.setAttribute('type', 'text');
         input.setAttribute('name', 'custom-' + axis);
-        const axisLabel = (axis === 'X') ? this.options.xLabel : this.options.yLabel;
-        if (axisLabel !== undefined) { input.value = axisLabel };
+        input.setAttribute('class', '-dashboard');
+
+        var axisLabel = null;
+        var placeholder = 'Custom ' + axis + ' label';
+
+        if (axis === 'X') {
+          axisLabel = this.options.xLabel;
+          if (!this.options.columnY) placeholder = 'Custom label';
+          input.setAttribute('placeholder', placeholder);
+        } else {
+          axisLabel = this.options.yLabel;
+          this.options.columnY ? input.setAttribute('placeholder', placeholder) : input.setAttribute('disabled', 'disabled');
+        }
+
+        if (axisLabel) input.value = axisLabel;
 
         // We attach the listeners
         input.addEventListener('change', function(){

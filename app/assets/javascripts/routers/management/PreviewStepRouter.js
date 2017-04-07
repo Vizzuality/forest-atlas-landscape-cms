@@ -166,7 +166,7 @@
               y: widget.y || null,
               xLabel: widget.xLabel,
               yLabel: widget.yLabel,
-              visible: (widget.visible !== undefined) ? widget.visible : true
+              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
             };
           } else if (widget.type === 'map') {
             return {
@@ -174,16 +174,16 @@
               lat: widget.lat || 0,
               lng: widget.lng || 0,
               zoom: widget.zoom || 3,
-              visible: (widget.visible !== undefined) ? widget.visible : true
+              visible: typeof widget.visible !== 'undefined' ? widget.visible : true
             };
           }
           return widget;
         });
       } else {
         for (var i = 0, j = this.options.widgetsCount - 1; i < j; i++) {
-          widgets.push({ type: 'chart', chart: null, x: null, y: null });
+          widgets.push({ type: 'chart', chart: null, x: null, y: null, visible: true });
         }
-        widgets.unshift({ type: 'map', lat: 0, lng: 0, zoom: 3 });
+        widgets.unshift({ type: 'map', lat: 0, lng: 0, zoom: 3, visible: true });
       }
       return widgets;
     },
@@ -220,6 +220,8 @@
             chart: widget.chart,
             columnX: widget.x,
             columnY: widget.y,
+            xLabel: widget.xLabel,
+            yLabel: widget.yLabel,
             visible: widget.visible,
             switchCallback: function () {
               this._switchWidget(index, 'map');
@@ -271,7 +273,10 @@
           data: dataset,
           switchCallback: function () {
             this._switchWidget(index, 'map');
-          }.bind(this)
+          }.bind(this),
+          columnX: null,
+          columnY: null,
+          visible: true
         });
       }
       // We re-set the listeners
