@@ -17,6 +17,7 @@
   }, {
     "name": "y",
     "type": "linear",
+    "range": "height",
     "domain": {
       "data": "table",
       "field": {{{yColumn}}}
@@ -28,9 +29,10 @@
     "scale": "x",
     "title": {{{xLabel}}},
     "tickSize": 5,
+    "tickSizeEnd": 0,
     "properties": {
       "labels": {
-        "text": {"template": "\{{datum.data | left:10}}"},
+        "text": {"template": "\{{datum.data | truncate:10}}"},
         "align": {"value": "right"},
         "baseline": {"value": "middle"},
         "angle": {"value": -45},
@@ -40,7 +42,11 @@
       "title": {
         "dx": {"value": 150},
         "dy": {"value": 5},
-        "baseline": {"value": "top"}
+        "baseline": {"value": "top"},
+        "fontWeight": {"value": 300}
+      },
+      "axis": {
+        "stroke": {"value": "#999999"}
       }
     }
   }, {
@@ -71,7 +77,8 @@
             "dx": {"value": 90},
             "dy": {"value": -15},
             "align": {"value": "right"},
-            "baseline": {"value": "top"}
+            "baseline": {"value": "top"},
+            "fontWeight": {"value": 300}
           }
       }
   }],
