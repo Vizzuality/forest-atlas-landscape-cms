@@ -24,7 +24,7 @@ class Page < ApplicationRecord
 
   belongs_to :site
   has_and_belongs_to_many :site_templates
-  has_many :page_widgets
+  has_many :page_widgets, dependent: :destroy
   has_many :widgets, through: :page_widgets, validate: false
 
   has_closure_tree order: 'position', dependent: :destroy

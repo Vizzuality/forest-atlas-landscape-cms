@@ -54,9 +54,20 @@ class Management::SitePagesController < ManagementController
   # DELETE /management/pages/1
   # DELETE /management/pages/1.json
   def destroy
-    return unless @site_page.deletable?
-
     site = @site_page.site
+    unless @site_page.deletable?
+      respond_to do |format|
+        format.html {
+          redirect_to(
+            {'controller' => 'management/site_pages', 'action' => 'index', 'site_slug' => site.slug},
+            {alert: 'Page cannot be destroyed.'}
+          )
+        }
+        format.json { head :no_content }
+      end
+      return
+    end
+
     @site_page.destroy
     respond_to do |format|
       format.html {
