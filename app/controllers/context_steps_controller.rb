@@ -164,9 +164,11 @@ class ContextStepsController < ManagementController
       end
   end
 
-  # Created a list of users that are not admins
+  # Created a list of users that are either admins or managers of previously selected sites
   def permitted_owners
-    @permitted_owners = User.where(admin: false)
+    @permitted_owners = User.
+      joins('LEFT JOIN user_site_associations usa ON usa.user_id = users.id').
+      where(['(usa.site_id IN (?) AND usa.role = ?) OR admin', @context.sites.map(&:id), UserType::MANAGER])
   end
 
   def permitted_writers
