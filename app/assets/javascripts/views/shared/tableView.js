@@ -416,9 +416,10 @@
 
       return this.options.collection.toJSON()
         .map(function (row, index) {
+          var enabled = row.enabled && row.enabled.value;
           // The rowIndex value is used for accessibility
           // The index needs to start at 2 because the header row is 1
-          return Object.assign({}, row.row, { rowIndex: index + 2, enabled: row.enabled.value });
+          return Object.assign({}, row.row, { rowIndex: index + 2, enabled: typeof enabled !== 'undefined' ? enabled : true });
         })
         .slice(start, end);
     },
