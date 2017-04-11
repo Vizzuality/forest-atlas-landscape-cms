@@ -172,8 +172,32 @@
     }
 
     .c-dropdown-selector {
-      > ul {
+
+      > .options {
         padding: 0;
+        right: unset;
+        background-color: $color-7;
+        box-shadow: none;
+
+        &::before {
+          display: none;
+        }
+
+        > .option {
+          color: $color-2;
+
+          &:hover {
+            background-color: $color-7;
+          }
+
+          &.-active {
+            background-color: $color-7;
+            &::before {
+              border-top: $color-2 2px solid;
+              border-right: $color-2 2px solid;
+            }
+          }
+        }
       }
     }
   }

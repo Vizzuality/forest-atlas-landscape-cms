@@ -23,6 +23,7 @@
 
       // This component is in charge of the translation selector
       new App.View.LanguageSelectorView();
+      new App.View.LanguageSelectorView({ el: '.js-language-selector-mobile' });
     } else {
       // eslint-disable-next-line no-console
       console.warn('The route ' + window.route + ' doesn\'t have any associated router.');
