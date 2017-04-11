@@ -170,6 +170,12 @@
         }
       }
     }
+
+    .c-dropdown-selector {
+      > ul {
+        padding: 0;
+      }
+    }
   }
 
   > .desktop-menu {
