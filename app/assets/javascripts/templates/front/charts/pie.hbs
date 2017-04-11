@@ -15,10 +15,10 @@
     },
     {"type": "sort", "by": "-count"},
     {"type": "rank", "field": "count"},
-    {"type": "formula", "field": {{{xColumn}}}, "expr": "datum.rank > 4 ? 'Other' : datum.{{{xColumn}}}"},
+    {"type": "formula", "field": {{{xColumn}}}, "expr": "datum.rank > 4 ? 'Other' : datum.{{{safeVal xColumn "placeholder"}}}"},
     {"type": "aggregate", "groupby": {{{xColumn}}}, "summarize": [
       {
-        "field": "{{{xColumn}}}",
+        "field": {{{xColumn}}},
         "ops": ["count"],
         "as": "count"
       }]
