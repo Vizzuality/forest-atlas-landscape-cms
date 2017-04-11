@@ -8,7 +8,7 @@
       if (data.length) keys = Object.keys(data[0]);
 
       return data.map(function (row) {
-        var res = {};
+        var res = { enabled: row.enabled };
 
         res.row = keys.filter(function (key) {
           return key !== 'enabled';
