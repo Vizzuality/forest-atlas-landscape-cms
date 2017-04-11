@@ -65,7 +65,7 @@ class Admin::SitesController < AdminController
     @site.destroy
 
     respond_to do |format|
-      format.html { redirect_to admin_sites_url, notice: 'The site was successfully deleted.' }
+      format.html { redirect_to admin_sites_url, notice: 'Site was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

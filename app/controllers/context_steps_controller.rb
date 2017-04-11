@@ -136,7 +136,7 @@ class ContextStepsController < ManagementController
       notice_text = @context.id ? 'saved' : 'created'
       if @context.save
         delete_session_key(:context, @context_id)
-        redirect_to wizard_path(save_step_name), notice: 'Context successfully ' + notice_text
+        redirect_to wizard_path(save_step_name), notice: 'Context was successfully ' + notice_text
       else
         render_wizard
       end

@@ -15,7 +15,7 @@ class Management::ProfileController < ManagementController
 
     @user.name = user_params[:name]
     if @user.save
-      redirect_to management_path, notice: 'Name successfully updated'
+      redirect_to management_path, notice: 'Name was successfully updated.'
     else
       render :edit
     end

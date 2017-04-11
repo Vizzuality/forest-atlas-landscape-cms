@@ -56,7 +56,7 @@ class Admin::SiteTemplatesController < AdminController
   def destroy
     @site_template.destroy
     respond_to do |format|
-      format.html { redirect_to site_templates_url, notice: 'SiteTemplate was successfully destroyed.' }
+      format.html { redirect_to site_templates_url, notice: 'Site template was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

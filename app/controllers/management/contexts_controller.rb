@@ -14,7 +14,7 @@ class Management::ContextsController < ManagementController
   def destroy
     context = Context.find(params[:id])
     context.destroy
-    redirect_to controller: 'management/contexts', action: 'index', site_slug: @site.slug, notice: 'Context successfully removed.'
+    redirect_to controller: 'management/contexts', action: 'index', site_slug: @site.slug, notice: 'Context was successfully destroyed.'
   end
 
   private

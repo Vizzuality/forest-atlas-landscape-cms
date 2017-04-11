@@ -409,7 +409,7 @@ class Management::PageStepsController < ManagementController
       if @page.save
         delete_session_key(:page, @page_id)
         @page.synchronise_page_widgets(page_params.to_h)
-        redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page successfully ' + notice_text
+        redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page was successfully ' + notice_text
       else
         render_wizard
       end
@@ -421,7 +421,7 @@ class Management::PageStepsController < ManagementController
       if @page.save
         delete_session_key(:page, @page_id) # delete 'new' session
         reset_session_key(:page, @page.id, {enabled: @page.enabled}) # start 'edit' session
-        redirect_to wizard_path(publish_step_name), notice: 'Page successfully ' + notice_text
+        redirect_to wizard_path(publish_step_name), notice: 'Page was successfully ' + notice_text
       else
         render_wizard
       end

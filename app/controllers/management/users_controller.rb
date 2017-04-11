@@ -39,7 +39,7 @@ class Management::UsersController < ManagementController
       @usa = @user.user_site_associations.build(site: @site, role: role)
     end
     if @user.save
-      redirect_to management_site_site_pages_url, notice: 'User granted access successfully'
+      redirect_to management_site_site_pages_url, notice: 'User was successfully granted access.'
     else
       render :new
     end
@@ -52,7 +52,7 @@ class Management::UsersController < ManagementController
       api_response = @user.send_to_api(session[:user_token], management_url)
       if api_response[:valid]
         @user.save
-        redirect_to management_site_site_pages_url, notice: 'User created successfully'
+        redirect_to management_site_site_pages_url, notice: 'User was successfully created.'
       else
         @user.errors['id'] << 'API error: ' + api_response[:error].to_s
         render :new

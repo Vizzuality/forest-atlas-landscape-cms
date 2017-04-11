@@ -109,7 +109,7 @@ class Management::WidgetStepsController < ManagementController
         if @widget.save
           delete_session_key(:widget, @widget_id)
           respond_to do |format|
-            format.html { redirect_to management_site_widgets_path, notice: 'The widget has been successfully created.' }
+            format.html { redirect_to management_site_widgets_path, notice: 'Widget was successfully created.' }
           end
         else
           set_gon_filters
