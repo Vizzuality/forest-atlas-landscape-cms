@@ -76,7 +76,7 @@ class Management::SitePagesController < ManagementController
     @site_page.enabled = !@site_page.enabled
     @site_page.save
 
-    redirect_to management_site_site_pages_path(@site.slug)
+    redirect_to management_site_site_pages_path(@site.slug), notice: 'Visibility was successfully updated.'
   end
 
   private
