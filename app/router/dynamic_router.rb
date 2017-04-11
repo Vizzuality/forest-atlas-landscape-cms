@@ -15,6 +15,7 @@ class DynamicRouter
     begin
       ActiveRecord::Migration.check_pending!
     rescue ActiveRecord::PendingMigrationError => e
+      Rails.logger.error "Pending migrations - cannot load dynamic routes"
       return
     end
     Rails.logger.debug ">>> DynamicRouter.load"
