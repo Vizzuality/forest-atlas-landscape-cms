@@ -1,5 +1,10 @@
 .c-map-widget {
   z-index: 0;
+  height: 245px;
+
+  @media #{$mq-desktop} {
+    height: unset;
+  }
 
   .cluster,
   .dot {
