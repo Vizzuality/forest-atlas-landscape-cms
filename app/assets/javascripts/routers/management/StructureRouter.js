@@ -171,7 +171,7 @@
               {{/if}}\
             {{/if}}\
             <li><a href="{{#if editUrl}}{{editUrl}}{{else}}{{editurl}}{{/if}}" class="edit-button">Edit</a></li>\
-            {{#if disableable}}\
+            {{#if deletable}}\
               <li><a rel="nofollow" data-method="delete" data-confirm="Are you sure you want to delete this page?" href="{{#if deleteUrl}}{{deleteUrl}}{{else}}{{deleteurl}}{{/if}}" class="delete-button js-delete">Delete</a></li>\
             {{/if}}\
           </ul>\
