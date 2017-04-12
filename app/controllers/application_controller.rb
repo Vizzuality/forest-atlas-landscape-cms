@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def layout_by_resource
-    if @current_user && !self.is_a?(SitePageController)
+    if @current_user && !self.is_a?(SitePageController) || action_name == 'no_permissions'
       'admin'
     else
       'application'

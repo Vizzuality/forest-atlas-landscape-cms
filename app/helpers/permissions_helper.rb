@@ -3,11 +3,24 @@ module PermissionsHelper
 
   def ensure_user_can(action)
     unless current_user
+      if session[:current_user] && api_validation_ttl?
+        # No use redirecting to the API login gateway, because this user is already logged in.
+        # The CMS does not recognise the login because either login email not in database,
+        # or the user logged in via social media login, which is not supported.
+        flash[:alert] = if session[:current_user][:email].present?
+          'Please verify that the CMS account is set up properly for ' + session[:current_user][:email]
+        else
+          'Please log in with your email address.'
+        end
+        session.delete(:current_user)
+        session.delete(:api_validation_ttl)
+        redirect_to :no_permissions and return
+      end
       redirect_to_api_gateway_login and return
     end
 
     unless user_can? action
-      flash[:error] = 'You do not have permissions to view this page'
+      flash[:alert] = 'You do not have permissions to view this page'
       redirect_to :no_permissions
     end
   end
@@ -30,29 +43,23 @@ module PermissionsHelper
 
   private
 
+  def api_validation_ttl?
+    session[:api_validation_ttl] && session[:api_validation_ttl] > Time.current
+  end
+
+
   def current_user
-    return false unless session.key?(:current_user) and session[:current_user]['email']
-
-    if not session.key?(:api_validation_ttl) or session[:api_validation_ttl] <= Time.current
-      connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
-        faraday.request :url_encoded # form-encode POST params
-        faraday.response :logger # log requests to STDOUT
-        faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
-      end
-
-      connect.authorization :Bearer, session[:user_token]
-      response = connect.get('/auth/check-logged');
-      user_data = JSON.parse response.body
-
-      session[:current_user] = user_data
-      session[:api_validation_ttl] = Time.now + Rails.configuration.session_revalidate_timer
+    if !api_validation_ttl?
+      return nil unless session[:user_token] && ensure_logged_in
     end
-
-    email = session[:current_user]['email']
-    user = User.find_by!(:email => email)
+    return nil unless session[:current_user]
+    email = session[:current_user][:email]
+    user = email && User.find_by(email: email)
     if user
       session[:current_user][:admin] = user.admin
       session[:current_user][:roles] = user.roles
+    else
+      session.delete(:user_token)
     end
     return user
   end

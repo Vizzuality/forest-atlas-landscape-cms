@@ -7,7 +7,7 @@ class Management::ProfileController < ManagementController
 
   def update
     if params['REMOVE'] == 'yes'
-      @user.delete_from_api(session[:user_token], session[:current_user]['id'])
+      @user.delete_from_api(session[:user_token], session[:current_user][:id])
       @user.destroy!
       redirect_to auth_logout_path
       return
