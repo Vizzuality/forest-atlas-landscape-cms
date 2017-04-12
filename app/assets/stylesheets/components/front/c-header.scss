@@ -153,6 +153,10 @@
       transform: translateX(100%);
 
       + .mobile-menu .hamburger-menu {
+        position: fixed;
+        top: 25px;
+        right: 30px;
+
         > div {
           &:first-of-type {
             transform: translateY(9px) rotate(-45deg);
@@ -192,9 +196,9 @@
 
           &.-active {
             background-color: $color-7;
+            opacity: 0.5;
             &::before {
-              border-top: $color-2 2px solid;
-              border-right: $color-2 2px solid;
+              display: none;
             }
           }
         }
