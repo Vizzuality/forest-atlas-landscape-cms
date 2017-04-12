@@ -21,20 +21,29 @@
 
       // NOTE: Don't forget to start Backbone.history in the router
 
-      // NOTE: because there's two language selectors in the webpage, we need to maintain them in sync
-      var desktopLanguageSelector = new App.View.LanguageSelectorView();
-      var mobileDesktopLanguageSelector = new App.View.LanguageSelectorView({
-        el: '.js-language-selector-mobile',
-        useShortName: false
-      });
+      // NOTE: Translations are optional, so we only render the translation selector if some language is enabled
+      var translate = false;
+      if (gon && gon.translations) {
+        translate = Object.keys(gon.translations).some(function (elem) {
+          return gon.translations[elem];
+        });
+      }
+      if (translate) {
+        // NOTE: because there's two language selectors in the webpage, we need to maintain them in sync
+        var desktopLanguageSelector = new App.View.LanguageSelectorView();
+        var mobileDesktopLanguageSelector = new App.View.LanguageSelectorView({
+          el: '.js-language-selector-mobile',
+          useShortName: false
+        });
 
-      // Here we listen to changes in one selector and manually update the other one.
-      desktopLanguageSelector.listenTo(mobileDesktopLanguageSelector, 'state:change', function (state) {
-        this.updateCurrentLanguage(state.currentLanguage);
-      });
-      mobileDesktopLanguageSelector.listenTo(desktopLanguageSelector, 'state:change', function (state) {
-        this.updateCurrentLanguage(state.currentLanguage);
-      });
+        // Here we listen to changes in one selector and manually update the other one.
+        desktopLanguageSelector.listenTo(mobileDesktopLanguageSelector, 'state:change', function (state) {
+          this.updateCurrentLanguage(state.currentLanguage);
+        });
+        mobileDesktopLanguageSelector.listenTo(desktopLanguageSelector, 'state:change', function (state) {
+          this.updateCurrentLanguage(state.currentLanguage);
+        });
+      }
     } else {
       // eslint-disable-next-line no-console
       console.warn('The route ' + window.route + ' doesn\'t have any associated router.');
