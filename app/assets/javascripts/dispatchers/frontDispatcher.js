@@ -21,7 +21,7 @@
 
       // NOTE: Don't forget to start Backbone.history in the router
 
-      // NOTE: Translations are optional, so we only render the translation selector if some language is enabled
+      // Translations are optional, so we only render the translation selector if some language is enabled
       var translate = false;
       if (gon && gon.translations) {
         translate = Object.keys(gon.translations).some(function (elem) {

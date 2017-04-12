@@ -180,8 +180,13 @@
       > .options {
         padding: 0;
         right: unset;
-        background-color: $color-7;
         box-shadow: none;
+
+        @if $theme == 2 {
+          background-color: $color-7;
+        } @else {
+          background-color: $color-1;
+        }
 
         &::before {
           display: none;
@@ -191,11 +196,19 @@
           color: $color-2;
 
           &:hover {
-            background-color: $color-7;
+            @if $theme == 2 {
+              background-color: $color-7;
+            } @else {
+              background-color: $color-1;
+            }
           }
 
           &.-active {
-            background-color: $color-7;
+            @if $theme == 2 {
+              background-color: $color-7;
+            } @else {
+              background-color: $color-1;
+            }
             opacity: 0.5;
             &::before {
               display: none;
