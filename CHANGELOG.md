@@ -2,6 +2,8 @@
 - Hide 2nd custom label input on pie charts
 - Fix scatter charts
 - Update positioning on label axis
+- Fixes issue when deleting pages that contained widgets.
+- Fixes issue where a delete button would appear in undeletable pages.
 
 ### 6 April 2017
 - Add custom labels support to widgets
