@@ -23,7 +23,10 @@
 
       // NOTE: because there's two language selectors in the webpage, we need to maintain them in sync
       var desktopLanguageSelector = new App.View.LanguageSelectorView();
-      var mobileDesktopLanguageSelector = new App.View.LanguageSelectorView({ el: '.js-language-selector-mobile' });
+      var mobileDesktopLanguageSelector = new App.View.LanguageSelectorView({
+        el: '.js-language-selector-mobile',
+        useShortName: false
+      });
 
       // Here we listen to changes in one selector and manually update the other one.
       desktopLanguageSelector.listenTo(mobileDesktopLanguageSelector, 'state:change', function (state) {
