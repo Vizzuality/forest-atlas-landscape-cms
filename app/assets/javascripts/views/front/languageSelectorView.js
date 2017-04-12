@@ -11,7 +11,9 @@
       // { name: 'French', code: 'fr' }
       languages: [],
       // Current language (use the structure above)
-      currentLanguage: null
+      currentLanguage: null,
+      // Display the short name or not
+      useShortName: true
     },
 
     initialize: function (settings) {
@@ -128,7 +130,7 @@
           el: this.el,
           options: this._getSelectorOptions(),
           activeOption: this._getSelectorActiveOption(),
-          useShortName: true,
+          useShortName: this.options.useShortName,
           align: 'right',
           onChangeCallback: this._onLanguageChange.bind(this)
         });
