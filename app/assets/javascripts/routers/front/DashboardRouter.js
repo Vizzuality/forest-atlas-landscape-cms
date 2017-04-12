@@ -214,15 +214,17 @@
       widgets.forEach(function (widget, index) {
         var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
         if (widget && widget.type === 'map') {
+          var location = {};
+          if (gon && gon.legend) {
+            location.lng = gon.legend.lng || 'longitude';
+            location.lat = gon.legend.lat || 'latitude';
+          }
           this['widget' + index] = new App.View.MapWidgetView({
             el: widgetContainer,
             data: dataset,
-            // TODO
-            // Once gon is updated, we should retrieve the real names of the fields used to position
-            // the dots
             fields: {
-              lat: 'latitude' || null,
-              lng: 'longitude' || null
+              lat: location.lat || null,
+              lng: location.lng || null
             },
             center: [widget.lat || 0, widget.lng || 0],
             zoom: widget.zoom,
