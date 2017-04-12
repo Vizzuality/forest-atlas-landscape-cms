@@ -235,6 +235,10 @@
           line-height: 50px;
           text-transform: uppercase;
 
+          > a {
+            padding: 0;
+          }
+
           &.-active {
             @if $theme == 2 {
               background-color: rgba($color-3, .1);
