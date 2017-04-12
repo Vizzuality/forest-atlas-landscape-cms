@@ -76,6 +76,10 @@
       // because Turbolinks doesn't handle well the URL changes
       // Check here: https://github.com/turbolinks/turbolinks/issues/219
       history.replaceState({ turbolinks: {} }, '', search);
+
+      this.trigger('state:change', {
+        currentLanguage: _.findWhere(this.options.languages, { code: languageCode })
+      });
     },
 
     /**
@@ -110,6 +114,12 @@
     _setMapLanguage: function (languageCode) {
       var languagePicker = document.querySelector('.app-header__language[data-lang="' + languageCode + '"]');
       if (languagePicker) languagePicker.click();
+    },
+
+    updateCurrentLanguage: function (lang) {
+      this.options.currentLanguage = lang;
+      this.dropdownSelectorView.setActive(this._getSelectorActiveOption());
+      this.dropdownSelectorView.render();
     },
 
     render: function () {
