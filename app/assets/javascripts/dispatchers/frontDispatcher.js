@@ -21,9 +21,17 @@
 
       // NOTE: Don't forget to start Backbone.history in the router
 
-      // This component is in charge of the translation selector
-      new App.View.LanguageSelectorView();
-      new App.View.LanguageSelectorView({ el: '.js-language-selector-mobile' });
+      // NOTE: because there's two language selectors in the webpage, we need to maintain them in sync
+      var desktopLanguageSelector = new App.View.LanguageSelectorView();
+      var mobileDesktopLanguageSelector = new App.View.LanguageSelectorView({ el: '.js-language-selector-mobile' });
+
+      // Here we listen to changes in one selector and manually update the other one.
+      desktopLanguageSelector.listenTo(mobileDesktopLanguageSelector, 'state:change', function (state) {
+        this.updateCurrentLanguage(state.currentLanguage);
+      });
+      mobileDesktopLanguageSelector.listenTo(desktopLanguageSelector, 'state:change', function (state) {
+        this.updateCurrentLanguage(state.currentLanguage);
+      });
     } else {
       // eslint-disable-next-line no-console
       console.warn('The route ' + window.route + ' doesn\'t have any associated router.');
