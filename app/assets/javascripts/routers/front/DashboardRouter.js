@@ -45,7 +45,11 @@
           //   type: 'chart',
           //   chart: null,
           //   x: null,
-          //   y: null
+          //   y: null,
+          //   xLabel: null,
+          //   yLabel: null,
+          //   displayMode: null,
+          //   visible: true
           // }
         ]
       }
