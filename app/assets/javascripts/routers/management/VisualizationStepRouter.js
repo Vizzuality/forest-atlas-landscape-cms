@@ -72,7 +72,7 @@
           parsedChart = JSON.parse(gon.visualization);
           if (parsedChart.type !== 'chart') {
             var chart = Object.assign({}, parsedChart, { type: 'chart', chart: parsedChart.type});
-            return chart
+            return chart;
           }
         }
         return parsedChart;
