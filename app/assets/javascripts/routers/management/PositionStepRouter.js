@@ -125,11 +125,6 @@
       return '\
         <div class="page {{#unless enabled}} -disabled {{/unless}} {{#if highlighted}}-highlight{{/if}} js-handle">\
           <span>{{name}}</span>\
-          {{#unless enabled}}\
-            <ul class="action-buttons">\
-              <li><span class="view-button-slashed">Disabled</span></li>\
-            </ul>\
-          {{/unless}}\
         </div>\
       ';
     }
