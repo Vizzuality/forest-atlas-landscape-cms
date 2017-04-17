@@ -121,6 +121,11 @@
       background-color: $color-1;
     }
 
+    @media #{$mq-tablet} {
+      left: -33%;
+      width: 33%;
+    }
+
     // This media query shouldn't be necessary but as the user could rotate
     // their device while the drawer is open, we want to make sure it's hidden
     // because otherway, they won't be able to close it without rotating back
