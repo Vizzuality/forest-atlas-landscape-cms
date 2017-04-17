@@ -7,6 +7,7 @@
 - Removes confusing slashed eye icon in the page position step.
 - Grays-out disabled pages in the management page table.
 - Includes dataset custom geo-fields in the dashboard widgets.
+- Includes language selector on mobile menu.
 
 ### 6 April 2017
 - Add custom labels support to widgets
