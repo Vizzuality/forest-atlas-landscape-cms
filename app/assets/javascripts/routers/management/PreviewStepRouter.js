@@ -196,15 +196,17 @@
       var widgets = this._getDashboardWidgets();
       widgets.forEach(function (widget, index) {
         if (widget.type === 'map') {
+          var location = {};
+          if (gon && gon.legend) {
+            location.lng = gon.legend.lng || 'longitude';
+            location.lat = gon.legend.lat || 'latitude';
+          }
           this['widget' + index] = new App.View.MapWidgetView({
             el: document.querySelector('.js-widget-' + (index + 1)),
             data: dataset,
-            // TODO
-            // Once gon is updated, we should retrieve the real names of the fields used to position
-            // the dots
             fields: {
-              lat: 'latitude' || null,
-              lng: 'longitude' || null
+              lat: location.lat || null,
+              lng: location.lng || null
             },
             center: [widget.lat, widget.lng],
             zoom: widget.zoom,
@@ -253,15 +255,17 @@
       // We remove all the listeners
       this._removeListeners();
       if (type === 'map') {
+        var location = {};
+        if (gon && gon.legend) {
+          location.lng = gon.legend.lng || 'longitude';
+          location.lat = gon.legend.lat || 'latitude';
+        }
         this['widget' + index] = new App.View.MapWidgetView({
           el: widgetContainer,
           data: dataset,
-          // TODO
-          // Once gon is updated, we should retrieve the real names of the fields used to position
-          // the dots
           fields: {
-            lat: 'latitude' || null,
-            lng: 'longitude' || null
+            lat: location.lat || null,
+            lng: location.lng || null
           },
           switchCallback: function () {
             this._switchWidget(index, 'chart');

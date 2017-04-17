@@ -19,7 +19,7 @@
       </tr>
     {{/if}}
     {{#each rows}}
-      <tr role="row" aria-rowindex="{{rowIndex}}">
+      <tr role="row" aria-rowindex="{{rowIndex}}" {{#unless enabled}} class="-disabled" {{/unless}}>
         {{#each this}}
           {{#if_eq @key 'rowIndex'}}
           {{else}}
