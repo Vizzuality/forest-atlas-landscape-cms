@@ -81,11 +81,14 @@ $wrapper-mobile-padding:   15px;
 $breakpoint-mobile:  425px;
 $breakpoint-tablet:  768px;
 $breakpoint-laptop: 1024px;
+$breakpoint-navbar: 1033px;
 
 // Media queries
 $mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
+$mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
+
 
 $mq-body-width: 'screen and (min-width: #{$body-max-width})';
 
