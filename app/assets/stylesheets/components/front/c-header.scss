@@ -153,6 +153,10 @@
       transform: translateX(100%);
 
       + .mobile-menu .hamburger-menu {
+        position: fixed;
+        top: 25px;
+        right: 30px;
+
         > div {
           &:first-of-type {
             transform: translateY(9px) rotate(-45deg);
@@ -166,6 +170,49 @@
           &:last-of-type {
             transform: translateY(-8px) rotate(45deg);
             transform-origin: center;
+          }
+        }
+      }
+    }
+
+    .c-dropdown-selector {
+
+      > .options {
+        padding: 0;
+        right: unset;
+        box-shadow: none;
+
+        @if $theme == 2 {
+          background-color: $color-7;
+        } @else {
+          background-color: $color-1;
+        }
+
+        &::before {
+          display: none;
+        }
+
+        > .option {
+          color: $color-2;
+
+          &:hover {
+            @if $theme == 2 {
+              background-color: $color-7;
+            } @else {
+              background-color: $color-1;
+            }
+          }
+
+          &.-active {
+            @if $theme == 2 {
+              background-color: $color-7;
+            } @else {
+              background-color: $color-1;
+            }
+            opacity: 0.5;
+            &::before {
+              display: none;
+            }
           }
         }
       }

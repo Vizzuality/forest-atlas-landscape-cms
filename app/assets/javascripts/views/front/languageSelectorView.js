@@ -11,7 +11,9 @@
       // { name: 'French', code: 'fr' }
       languages: [],
       // Current language (use the structure above)
-      currentLanguage: null
+      currentLanguage: null,
+      // Display the short name or not
+      useShortName: true
     },
 
     initialize: function (settings) {
@@ -76,6 +78,10 @@
       // because Turbolinks doesn't handle well the URL changes
       // Check here: https://github.com/turbolinks/turbolinks/issues/219
       history.replaceState({ turbolinks: {} }, '', search);
+
+      this.trigger('state:change', {
+        currentLanguage: _.findWhere(this.options.languages, { code: languageCode })
+      });
     },
 
     /**
@@ -112,13 +118,19 @@
       if (languagePicker) languagePicker.click();
     },
 
+    updateCurrentLanguage: function (lang) {
+      this.options.currentLanguage = lang;
+      this.dropdownSelectorView.setActive(this._getSelectorActiveOption());
+      this.dropdownSelectorView.render();
+    },
+
     render: function () {
       if (!this.dropdownSelectorView) {
         this.dropdownSelectorView = new App.View.DropdownSelectorView({
           el: this.el,
           options: this._getSelectorOptions(),
           activeOption: this._getSelectorActiveOption(),
-          useShortName: true,
+          useShortName: this.options.useShortName,
           align: 'right',
           onChangeCallback: this._onLanguageChange.bind(this)
         });

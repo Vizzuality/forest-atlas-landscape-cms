@@ -216,6 +216,12 @@
       this._removeOptionsFocus();
       this.dropdown.classList.remove('-visible');
     },
+    /**
+     * Sets the Active Option object insides the this.options, not to confuse with the DOM options
+     */
+    setActive: function (active) {
+      this.options.activeOption = active;
+    },
 
     render: function () {
       this.el.innerHTML = this.template({
