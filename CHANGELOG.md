@@ -1,3 +1,4 @@
+### 18 April 2017
 - Fix issue with link page type creation
 - Hide 2nd custom label input on pie charts
 - Fix scatter charts
