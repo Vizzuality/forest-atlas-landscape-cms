@@ -9,7 +9,7 @@ Handlebars.registerHelper('if_eq', function (a, b, opts) {
   };
 
   if (a === b || (b === null && isNullObject(a))) return opts.fn(this);
-  return opts.inverse(this);
+  else return opts.inverse(this);
 });
 
 /**
@@ -113,4 +113,11 @@ Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
     "/": left / right,
     "%": left % right
   }[operator];
+});
+/**
+ * safeVal helper
+ */
+Handlebars.registerHelper('safeVal', function (value, safeValue) {
+  var out = JSON.parse(value) || safeValue;
+  return new Handlebars.SafeString(out);
 });
