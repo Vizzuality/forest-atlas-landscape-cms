@@ -1,3 +1,4 @@
+### 19 April 2017
 - Change default site language to french
 - Add Georgian translation support
 - Warn users of unsupported social network login
