@@ -78,6 +78,10 @@
     },
 
     dashboard: {
+      bookmark_unavailable: {
+        type: 'warning',
+        content: 'Sorry, this link doesn\'t work anymore'
+      },
       changed: {
         type: 'warning',
         content: 'The dashboard configuration has been updated and it might affect the visualizations.'

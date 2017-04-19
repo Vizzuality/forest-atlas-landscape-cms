@@ -498,9 +498,19 @@
       this.filters.setFilters(state.config.filters);
       this.filters.render();
 
+      // all widgets available flag
+      var widgetVisibilityChanges = 0;
+      var widgetTypeChanges = 0;
+
       // We restore the widgets
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         var widget = state.config.widgets[i];
+        if (typeof widget.visible !== 'undefined' && this['widget' + i].options.visible !== widget.visible) {
+          widgetVisibilityChanges++;
+        }
+        if (this['widget' + i].options.type !== widget.type) {
+          widgetTypeChanges++;
+        }
         if (widget && widget.type === 'map') {
           this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
             center: [widget.lat, widget.lng],
@@ -522,6 +532,10 @@
             visible: false
           });
         }
+      }
+
+      if (widgetVisibilityChanges > 0 || widgetTypeChanges > 0) {
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmark_unavailable);
       }
 
       // We finally render the whole dashboard
