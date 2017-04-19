@@ -23,40 +23,43 @@
         {{#each this}}
           {{#if_eq @key 'rowIndex'}}
           {{else}}
-            <td role="gridcell" aria-rowindex="{{../rowIndex}}">
-              {{#if html}}
-                <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
-              {{else}}
-                {{#is_array value}}
-                  <span class="row-name">{{name}}</span>
-                  <span class="row-content">
-                    {{#each_slice value ../../valuesPerCell}}
-                      {{#if @last_sliced_item}}
-                        {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
-                      {{else}}
-                        {{#if @last_item}}
-                          {{this}}
+            {{#if_eq @key 'enabled'}}
+            {{else}}
+              <td role="gridcell" aria-rowindex="{{../rowIndex}}">
+                {{#if html}}
+                  <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
+                {{else}}
+                  {{#is_array value}}
+                    <span class="row-name">{{name}}</span>
+                    <span class="row-content">
+                      {{#each_slice value ../../valuesPerCell}}
+                        {{#if @last_sliced_item}}
+                          {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
                         {{else}}
-                          {{this}},
+                          {{#if @last_item}}
+                            {{this}}
+                          {{else}}
+                            {{this}},
+                          {{/if}}
                         {{/if}}
+                      {{else}}
+                        –
+                      {{/each_slice}}
+                    </span>
+                  {{else}}
+                    {{#if value}}
+                      {{#if link}}
+                        <span class="row-name">{{name}}</span><span class="row-content"> <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a> </span>
+                      {{else}}
+                        <span class="row-name">{{name}}</span><span class="row-content"> {{value}} </span>
                       {{/if}}
                     {{else}}
-                      –
-                    {{/each_slice}}
-                  </span>
-                {{else}}
-                  {{#if value}}
-                    {{#if link}}
-                      <span class="row-name">{{name}}</span><span class="row-content"> <a href="{{link.url}}" {{#if link.external}}target="_blank"{{/if}} rel="noopener">{{value}}</a> </span>
-                    {{else}}
-                      <span class="row-name">{{name}}</span><span class="row-content"> {{value}} </span>
+                      <span class="row-name">{{name}}</span><span class="row-content"> – </span>
                     {{/if}}
-                  {{else}}
-                    <span class="row-name">{{name}}</span><span class="row-content"> – </span>
-                  {{/if}}
-                {{/is_array}}
-              {{/if}}
-            </td>
+                  {{/is_array}}
+                {{/if}}
+              </td>
+              {{/if_eq}}
           {{/if_eq}}
         {{/each}}
       </tr>
