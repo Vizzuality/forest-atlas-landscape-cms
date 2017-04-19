@@ -15,7 +15,8 @@
         { id: 'logout', name: 'Log out', url: null }
       ],
       // id of the active link
-      activeLink: 'user'
+      activeLink: 'user',
+      accessDenied: false
     },
 
     initialize: function (settings) {
@@ -25,6 +26,7 @@
         this.options.links[0].name = gon.global.user.name;
         this.options.links[1].url = gon.global.user.profile;
         this.options.links[2].url = gon.global.user.logout;
+        this.options.accessDenied = gon.global.user.accessDenied;
       }
 
       this.render();
@@ -39,16 +41,29 @@
       Turbolinks.visit(link.url);
     },
 
+    _renderLogout: function () {
+      var el = document.querySelector('.js-user-links');
+      el.innerHTML = '';
+      var logout = document.createElement('a');
+      logout.textContent = 'Log out';
+      logout.href = this.options.links[2].url;
+      el.appendChild(logout);
+    },
+
     render: function () {
-      new App.View.DropdownSelectorView({
-        el: '.js-user-links',
-        options: this.options.links,
-        activeOption: _.findWhere(this.options.links, { id: this.options.activeLink }),
-        fixedOption: true,
-        onChangeCallback: this._onChangeDropdown.bind(this),
-        align: 'right',
-        arrowPosition: null
-      });
+      if (!this.options.accessDenied) {
+        new App.View.DropdownSelectorView({
+          el: '.js-user-links',
+          options: this.options.links,
+          activeOption: _.findWhere(this.options.links, { id: this.options.activeLink }),
+          fixedOption: true,
+          onChangeCallback: this._onChangeDropdown.bind(this),
+          align: 'right',
+          arrowPosition: null
+        });
+      } else {
+        this._renderLogout();
+      }
     }
   });
 })(this.App));

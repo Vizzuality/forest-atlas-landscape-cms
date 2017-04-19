@@ -1,5 +1,7 @@
 class StaticPageController < ApplicationController
 
+  skip_before_action :set_current_user, only: [:no_permissions]
+
   # GET /no-permissions
   def no_permissions
   end
