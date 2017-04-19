@@ -3,6 +3,29 @@
   font-family: $font-family-1; // Needed as the map CSS overrides it
   z-index: 8;
 
+  &.-overflow {
+    > .mobile-menu {
+      @media #{$mq-navbar} {
+        display: flex;
+      }
+    }
+    > mobile-drawer {
+      @media #{$mq-navbar} {
+        display: block;
+      }
+    }
+
+    > .desktop-menu {
+       @media #{$mq-navbar} {
+         display: none;
+
+         .menu {
+           display: none;
+         }
+       }
+     }
+  }
+
   @if $theme == 2 {
     color: $color-3;
   } @else {
@@ -285,12 +308,6 @@
         padding: 0;
         list-style: none;
 
-        &:first-child > li {
-          max-width: 150px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
         > li {
           display: inline-block;
           position: relative;
@@ -442,6 +459,7 @@
           > li {
             &:last-of-type {
               padding-right: 0;
+              padding-left: 35px;
             }
           }
         }
