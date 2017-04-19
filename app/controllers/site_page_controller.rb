@@ -21,7 +21,8 @@ class SitePageController < ApplicationController
                :translations => {
                  :en => @site_page.site.site_settings.translate_english(@site_page.site_id).value == '1',
                  :fr => @site_page.site.site_settings.translate_french(@site_page.site_id).value == '1',
-                 :es => @site_page.site.site_settings.translate_spanish(@site_page.site_id).value == '1'
+                 :es => @site_page.site.site_settings.translate_spanish(@site_page.site_id).value == '1',
+                 :ka => @site_page.site.site_settings.translate_georgian(@site_page.site_id).value == '1'
                }
              })
   end

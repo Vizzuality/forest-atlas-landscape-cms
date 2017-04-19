@@ -1,3 +1,5 @@
+- Change default site language to french
+- Add Georgian translation support
 - Warn users of unsupported social network login
 - Fix issue with missing "style" options on site settings
 - Prepend protocol to site links on admin interface

@@ -18,18 +18,9 @@
         <div class="settings c-inputs-container">
         <div class="container">
           <%= f.fields_for :site_settings, \
-            (f.object.site_settings.collect.select{|x| %w[translate_english translate_french translate_spanish default_site_language].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
+            (f.object.site_settings.collect.select{|x| %w[translate_english translate_french translate_spanish translate_georgian].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
             <% setting = settings_form.object %>
-            <% case setting.name when 'default_site_language' %>
-              <%= settings_form.hidden_field :position, value: '15' %>
-              <%= settings_form.hidden_field :name, value: 'default_site_language' %>
-
-              <%= settings_form.label 'Default site language', for: 'default_site_language' %>
-                <div class="c-select -admin">
-                  <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es}, id: 'default_site_language' %>
-                </div>
-
-              <% when 'translate_english' %>
+            <% case setting.name when 'translate_english' %>
               <%= settings_form.hidden_field :position, value: '7' %>
               <%= settings_form.hidden_field :name, value: 'translate_english' %>
               <div class="c-checkbox">
@@ -54,7 +45,31 @@
                 <%= settings_form.check_box :value, id: 'translate_spanish' %>
                 <%= settings_form.label 'Allow Spanish translations', for: 'translate_spanish' %>
               </div>
+
+              <% when 'translate_georgian' %>
+              <%= settings_form.hidden_field :position, value: '16' %>
+              <%= settings_form.hidden_field :name, value: 'translate_georgian' %>
+
+              <div class="c-checkbox">
+                <%= settings_form.check_box :value, id: 'translate_georgian' %>
+                <%= settings_form.label 'Allow Georgian translations', for: 'translate_georgian' %>
+              </div>
               <% end %>
+          <% end %>
+        </div>
+        <div class="container">
+          <%= f.fields_for :site_settings, \
+            (f.object.site_settings.collect.select{|x| %w[default_site_language].include?(x.name)}.sort_by { |s| s.position }) do |settings_form|%>
+            <% setting = settings_form.object %>
+            <% case setting.name when 'default_site_language' %>
+              <%= settings_form.hidden_field :position, value: '15' %>
+              <%= settings_form.hidden_field :name, value: 'default_site_language' %>
+
+              <%= settings_form.label 'Default site language', for: 'default_site_language' %>
+                <div class="c-select -admin">
+                  <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es, 'Georgian' => :ka}, id: 'default_site_language' %>
+                </div>
+            <% end %>
           <% end %>
         </div>
           <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by { |s| s.position }) do |settings_form| %>
