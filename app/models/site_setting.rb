@@ -132,7 +132,7 @@ class SiteSetting < ApplicationRecord
 
   # Creates all the additional settings for a site
   def self.create_additional_settings site
-    unless site.site_settings.length > 1
+    unless site.site_settings.exists?(name: 'logo_image')
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
       site.site_settings.new(name: 'main_image', value: '', position: 5)
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
