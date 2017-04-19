@@ -60,7 +60,7 @@ class Management::SitesController < ManagementController
 
     if (@site.routes.any?)
       # We just want a valid URL for the site
-      @url = @site.routes.first.host
+      @url = @site.routes.first.host_with_scheme
     end
   end
 
