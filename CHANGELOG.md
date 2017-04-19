@@ -1,3 +1,4 @@
+- Fix issue with missing "style" options on site settings
 - Prepend protocol to site links on admin interface
 
 ### 18 April 2017
