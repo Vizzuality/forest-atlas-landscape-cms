@@ -1,3 +1,5 @@
+- Prepend protocol to site links on admin interface
+
 ### 18 April 2017
 - Fix issue with link page type creation
 - Hide 2nd custom label input on pie charts

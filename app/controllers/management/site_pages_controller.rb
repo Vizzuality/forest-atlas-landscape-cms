@@ -25,7 +25,7 @@ class Management::SitePagesController < ManagementController
                end
 
       res = {
-        'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true, 'link' => { 'url' => page.site.routes.first.host + page.url, 'external' => true }},
+        'title' => {'value' => page.name, 'searchable' => true, 'sortable' => true, 'link' => { 'url' => page.site.routes.first.host_with_scheme + page.url, 'external' => true }},
         'url' => {'value' => page.url, 'searchable' => true, 'sortable' => true},
         'type' => {'value' => page.content_type_humanize, 'searchable' => false, 'sortable' => true},
         'enabled' => {'value' => page.enabled},
@@ -98,7 +98,7 @@ class Management::SitePagesController < ManagementController
 
     if (@site.routes.any?)
       # We just want a valid URL for the site
-      @url = @site.routes.first.host
+      @url = @site.routes.first.host_with_scheme
     end
   end
 
