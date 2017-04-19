@@ -3,14 +3,21 @@ module PermissionsHelper
 
   def ensure_user_can(action)
     unless current_user
+      unset_user_gon
       if session[:current_user] && api_validation_ttl?
+        gon.global.user = {
+          logout: auth_logout_url,
+          access_denied: true,
+          name: 'ACCESS DENIED', #  TMP to prevent JS errors
+          profile: no_permissions_url #  TMP to prevent JS errors
+        }
         # No use redirecting to the API login gateway, because this user is already logged in.
         # The CMS does not recognise the login because either login email not in database,
         # or the user logged in via social media login, which is not supported.
         flash[:alert] = if session[:current_user][:email].present?
           'Please verify that the CMS account is set up properly for ' + session[:current_user][:email]
         else
-          'Please log in with your email address.'
+          'Social network login is not supported in the CMS. Please log in with your email address.'
         end
         session.delete(:current_user)
         session.delete(:api_validation_ttl)
@@ -41,12 +48,26 @@ module PermissionsHelper
     end
   end
 
+  def unset_user_gon
+    gon.global.admin = false
+    gon.global.user = {}
+  end
+
+  def set_user_gon
+    unset_user_gon and return unless current_user
+    gon.global.admin = current_user.admin
+    gon.global.user = {
+      name: current_user.name,
+      profile: edit_management_profile_path(current_user.id),
+      logout: auth_logout_url
+    }
+  end
+
   private
 
   def api_validation_ttl?
     session[:api_validation_ttl] && session[:api_validation_ttl] > Time.current
   end
-
 
   def current_user
     if !api_validation_ttl?

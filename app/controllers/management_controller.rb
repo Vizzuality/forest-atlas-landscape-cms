@@ -5,7 +5,7 @@ class ManagementController < ActionController::Base
 
   before_action :ensure_publish_user
   before_action :set_management_base_breadcrumbs
-  before_action :set_gon
+  before_action :set_user_gon
   layout 'management'
 
   def authenticate_user_for_site!
@@ -30,15 +30,5 @@ class ManagementController < ActionController::Base
 
   def set_management_base_breadcrumbs
     @breadcrumbs = []
-  end
-
-  def set_gon
-    gon.global.admin = if current_user
-                         current_user.admin
-                       else
-                         false
-                       end
-
-    gon.global.user = { 'name' => current_user.name, 'profile' => edit_management_profile_path(current_user.id), 'logout' => auth_logout_url } if current_user
   end
 end
