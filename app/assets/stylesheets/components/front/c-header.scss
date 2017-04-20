@@ -285,12 +285,6 @@
         padding: 0;
         list-style: none;
 
-        &:first-child > li {
-          max-width: 150px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
         > li {
           display: inline-block;
           position: relative;
