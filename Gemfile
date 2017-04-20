@@ -26,6 +26,7 @@ gem 'gon'
 gem 'wicked' # Multi-steps form
 gem 'sitemap_generator'
 gem 'faraday', '~> 0.9.2'
+gem 'whenever', :require => false
 
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
