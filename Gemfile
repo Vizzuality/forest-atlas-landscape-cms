@@ -24,7 +24,7 @@ gem 'handlebars_assets'
 gem 'enumerate_it'
 gem 'gon'
 gem 'wicked' # Multi-steps form
-gem 'sitemap_generator'
+
 gem 'faraday', '~> 0.9.2'
 
 # Session management
