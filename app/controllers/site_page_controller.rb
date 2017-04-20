@@ -6,7 +6,7 @@ class SitePageController < ApplicationController
   before_action :get_active_menu_item
   before_action :load_images
   before_action :load_flag
-  before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable]
+  before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable, :sitemap]
   protect_from_forgery except: :map_resources
 
   def load_site_page
@@ -124,6 +124,13 @@ class SitePageController < ApplicationController
 
   # 422
   def unacceptable
+  end
+
+  def sitemap
+    respond_to do |format|
+      format.html { render :sitemap }
+      format.xml { render file: File.join(Rails.root, 'public', 'sitemaps', @menu_root.site.id.to_s, 'sitemap.xml') }
+    end
   end
 
   private

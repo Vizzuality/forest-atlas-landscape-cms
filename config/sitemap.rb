@@ -29,7 +29,7 @@ Site.all.each do |site|
       #   Article.find_each do |article|
       #     add article_path(article), :lastmod => article.updated_at
       #   end
-      site.site_pages.where('content_type <> ?', ContentType::LINK).each do |page|
+      site.pages_for_sitemap.each do |page|
         add page.url, lastmod: page.updated_at
       end
     end
