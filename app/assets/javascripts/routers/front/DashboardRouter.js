@@ -477,7 +477,8 @@
       var typeChanged = false;
       var visibilityChange = false;
       state.config.widgets.forEach(function (widget, i) {
-        if (widget.type !== this['widget' + i].options.type) typeChanged = true;
+        if (widget.type === 'map' && typeof this['widget' + i].map === 'undefined') typeChanged = true;
+        if (widget.type !== 'map' && typeof this['widget' + i].map !== 'undefined') typeChanged = true;
         if (widget.visible !== this['widget' + i].options.visible) visibilityChange = true;
       }.bind(this));
 
