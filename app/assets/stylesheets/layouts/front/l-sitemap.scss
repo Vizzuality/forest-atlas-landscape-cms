@@ -1,0 +1,80 @@
+.l-sitemap {
+  max-width: 900px;
+  min-height: calc(100vh - 445px);
+  margin: 0 auto;
+
+  h1 {
+    max-width: 600px;
+    margin: 25px 0;
+    font-size: $font-size-big;
+    font-weight: $font-weight-light;
+    line-height: 1.2;
+
+    @media #{$mq-tablet} {
+      margin: 90px 0 25px;
+      font-size: $font-size-huge;
+    }
+  }
+
+  p {
+    margin-bottom: 0;
+
+    @media #{$mq-tablet} {
+      margin-bottom: 15px;
+    }
+  }
+
+  .sitemap {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    @media #{$mq-tablet} {
+      margin-top: 15px;
+    }
+
+    > li {
+      font-size: $font-size-s-normal;
+      line-height: 1.38;
+      margin-bottom: 12px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      @media #{$mq-tablet} {
+        display: inline-block;
+        margin-right: 50px;
+        font-size: $font-size-medium;
+        line-height: 1.4;
+      }
+
+      a {
+        text-transform: capitalize;
+        background-color: transparent;
+        color: $color-1;
+      }
+
+      > ul {
+        display: flex;
+        flex-direction: column;
+        text-indent: 40px;
+        margin: 12px 0;
+
+        > li {
+          font-size: $font-size-normal;
+          margin-bottom: 18px;
+          line-height: 1.71;
+          text-transform: capitalize;
+          background-color: transparent;
+
+          > a {
+            color: $color-4;
+          }
+        }
+
+      }
+    }
+  }
+}
