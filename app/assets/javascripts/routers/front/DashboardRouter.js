@@ -468,6 +468,21 @@
         return res && Object.keys(firstRow).indexOf(filter.name) !== -1;
       }, true);
     },
+    /**
+     * Check if the state's widgets match the default widgets in type and visibility
+     * @param {object} state
+     * @returns {{ type: boolean, visible: boolean }} changes
+     */
+    _checkWidgetsChanges: function (state) {
+      var typeChanged = false;
+      var visibilityChange = false;
+      state.config.widgets.forEach(function (widget, i) {
+        if (widget.type !== this['widget' + i].options.type) typeChanged = true;
+        if (widget.visible !== this['widget' + i].options.visible) visibilityChange = true;
+      }.bind(this));
+
+      return { type: typeChanged, visible: visibilityChange };
+    },
 
     /**
      * Restore the state of the dashboard
@@ -477,9 +492,14 @@
      */
     _restoreState: function (state) {
       var isStateUpToDate = this._checkStateVersion(state);
+      var widgetsBreakingChanges = this._checkWidgetsChanges(state);
 
-      if (!isStateUpToDate) {
+      if (!isStateUpToDate && !widgetsBreakingChanges.type && !widgetsBreakingChanges.visible) {
         App.notifications.broadcast(App.Helper.Notifications.dashboard.changed);
+      }
+
+      if (widgetsBreakingChanges.type || widgetsBreakingChanges.visible) {
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmark_unavailable);
       }
 
       var isStateValid = this._checkStateValidity(state);
@@ -498,19 +518,9 @@
       this.filters.setFilters(state.config.filters);
       this.filters.render();
 
-      // all widgets available flag
-      var widgetVisibilityChanges = 0;
-      var widgetTypeChanges = 0;
-
       // We restore the widgets
       for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
         var widget = state.config.widgets[i];
-        if (typeof widget.visible !== 'undefined' && this['widget' + i].options.visible !== widget.visible) {
-          widgetVisibilityChanges++;
-        }
-        if (this['widget' + i].options.type !== widget.type) {
-          widgetTypeChanges++;
-        }
         if (widget && widget.type === 'map') {
           this['widget' + i].options = Object.assign({}, this['widget' + i].options, {
             center: [widget.lat, widget.lng],
@@ -532,10 +542,6 @@
             visible: false
           });
         }
-      }
-
-      if (widgetVisibilityChanges > 0 || widgetTypeChanges > 0) {
-        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmark_unavailable);
       }
 
       // We finally render the whole dashboard
