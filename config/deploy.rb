@@ -9,16 +9,12 @@ set :keep_releases, 5
 set :use_sudo, true
 
 set :linked_files, %w{.env}
-set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/sitemaps}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 set :deploy_to, '/var/www/facms'
 
-require "whenever/capistrano"
-require 'capistrano/sitemap_generator'
-
 before 'deploy:publishing', 'site_settings:update'
 before "deploy:publishing", "assets:precompile_sites"
-after 'deploy:publishing', 'sitemap:refresh'
 
 namespace :deploy do
   after :finishing, 'deploy:cleanup'
