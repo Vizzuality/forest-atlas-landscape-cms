@@ -129,7 +129,7 @@ class SitePageController < ApplicationController
   def sitemap
     respond_to do |format|
       format.html { render :sitemap }
-      format.xml { render file: File.join(Rails.root, 'public', 'sitemaps', @menu_root.site.id.to_s, 'sitemap.xml') }
+      format.xml
     end
   end
 
