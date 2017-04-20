@@ -248,6 +248,8 @@ GEM
       rails-assets-underscore (>= 1.8.3)
     rails-assets-d3 (3.5.17)
     rails-assets-datalib (1.7.3)
+    rails-assets-fitvids (1.2.0)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-fuse.js (2.5.0)
     rails-assets-jquery (3.1.1)
     rails-assets-jquery-ui (1.12.1)
@@ -356,6 +358,7 @@ DEPENDENCIES
   rails-assets-backbone!
   rails-assets-d3 (~> 3.5.16)!
   rails-assets-datalib (= 1.7.3)!
+  rails-assets-fitvids (~> 1.2.0)
   rails-assets-fuse.js!
   rails-assets-jquery-ui!
   rails-assets-leaflet (= 1.0.3)!

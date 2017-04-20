@@ -16,7 +16,6 @@
       var overflow = 'auto';
       if (opened) overflow = 'hidden';
       document.querySelector('body').style.overflow = overflow;
-
     }
 
   });
