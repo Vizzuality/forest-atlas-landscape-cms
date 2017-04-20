@@ -80,7 +80,7 @@
     dashboard: {
       bookmark_unavailable: {
         type: 'warning',
-        content: 'Sorry, this link doesn\'t work anymore'
+        content: 'The dashboard settings you are trying to load are no longer applicable. The default settings will be used instead.'
       },
       changed: {
         type: 'warning',
