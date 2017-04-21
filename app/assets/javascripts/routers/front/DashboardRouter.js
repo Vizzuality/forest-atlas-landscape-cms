@@ -99,21 +99,23 @@
       }
 
       // When the dataset is filtered, we need to update the components
-      this.listenTo(this.filters, 'dataset:change', function (dataset) {
-        this.filteredDataset = dataset;
+      if (gon && gon.analysisUserFilters && gon.analysisUserFilters.length) {
+        this.listenTo(this.filters, 'dataset:change', function (dataset) {
+          this.filteredDataset = dataset;
 
-        // eslint-disable-next-line no-shadow
-        for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
-          if (this['widget' + i]) {
-            this['widget' + i].options.data = this._getDataset();
-            this['widget' + i].render();
+          // eslint-disable-next-line no-shadow
+          for (var i = 0, j = this.options.widgetsCount; i < j; i++) {
+            if (this['widget' + i]) {
+              this['widget' + i].options.data = this._getDataset();
+              this['widget' + i].render();
+            }
           }
-        }
 
-        if (this.table) {
-          this._initTable();
-        }
-      });
+          if (this.table) {
+            this._initTable();
+          }
+        });
+      }
     },
 
     /**
