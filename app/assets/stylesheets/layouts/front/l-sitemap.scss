@@ -56,24 +56,27 @@
         color: $color-1;
       }
 
-      > ul {
+      ul {
         display: flex;
         flex-direction: column;
         text-indent: 40px;
         margin: 12px 0;
 
-        > li {
+        li {
           font-size: $font-size-normal;
           margin-bottom: 18px;
           line-height: 1.71;
           text-transform: capitalize;
           background-color: transparent;
 
-          > a {
+          a {
             color: $color-4;
           }
-        }
 
+          > ul {
+            text-indent: 80px;
+          }
+        }
       }
     }
   }
