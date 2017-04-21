@@ -1,4 +1,8 @@
 - Responsive and cross-browser changes
+- Fix issue on placement of content in site's page tree
+- Improve widget rendering performance
+- Fix populating of float and text values on widget creation
+- Update robots.txt
 - Inform users when loading outdated dashboard layouts
 
 ### 19 April 2017
