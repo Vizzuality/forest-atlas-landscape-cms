@@ -181,8 +181,9 @@ class Management::WidgetStepsController < ManagementController
 
   def get_fields
     @fields = @widget.get_fields
-    @fields.each { |f| f[:type] = 'number' if %w[double long int].any? {|x| f[:type].downcase.include?(x)} }
-    @fields.each { |f| f[:type] = 'date' if f[:type].downcase.include?('date')}
+    @fields.each { |f| f[:type] = 'number' if %w[double long int float].any? { |x| f[:type].downcase == x } }
+    @fields.each { |f| f[:type] = 'string' if %w[string text].any? { |x| f[:type].downcase == x } }
+    @fields.each { |f| f[:type] = 'date' if f[:type].downcase == 'date' }
   end
 
   def set_widget_state

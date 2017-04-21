@@ -128,7 +128,7 @@ class DatasetService
     string_datasets = {}
 
     fields.select { |f| DatasetFieldsHelper.is_string?(f[:type]) }.each do |field|
-      query = "select count(#{field[:name]}), #{field[:name]} from #{api_table_name} group by #{field[:name]}"
+      query = "select #{field[:name]} from #{api_table_name} group by #{field[:name]}"
       string_datasets[field[:name]] = get_filtered_dataset(dataset_id, query)
     end
 
