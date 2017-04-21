@@ -29,7 +29,7 @@ class WidgetBlot extends Embed {
       // We make the caption editable
       this.caption.setAttribute('contenteditable', true);
     }
-    console.log(domNode);
+
     this.widgetContainer.innerHTML = '<div class="c-loading-spinner"></div>';
 
     this._fetchWidget()

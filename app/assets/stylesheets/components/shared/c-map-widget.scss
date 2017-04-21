@@ -3,7 +3,7 @@
   height: 245px;
 
   @media #{$mq-laptop} {
-    height: initial inherit;
+    height: auto;
   }
 
   .cluster,
