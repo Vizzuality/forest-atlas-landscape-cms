@@ -122,7 +122,7 @@
     }
 
     @media #{$mq-tablet} {
-      left: unset;
+      left: auto;
       right: -33%;
       width: 33%;
     }
@@ -189,7 +189,7 @@
 
       > .options {
         padding: 0;
-        right: unset;
+        right: auto;
         box-shadow: none;
 
         @if $theme == 2 {
