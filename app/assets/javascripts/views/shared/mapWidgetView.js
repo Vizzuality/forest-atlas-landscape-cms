@@ -158,7 +158,8 @@
       // We create the button
       var button = document.createElement('button');
       button.type = 'button';
-      button.classList.add('c-button', 'switch-button');
+      button.classList.add('c-button');
+      button.classList.add('switch-button');
       button.textContent = 'Switch for chart';
 
       // We attach the listener
@@ -175,7 +176,10 @@
       // We create the button
       var button = document.createElement('button');
       button.type = 'button';
-      button.classList.add('c-button', 'toggle-visibility-button','-in-map');
+      button.classList.add('c-button');
+      button.classList.add('toggle-visibility-button');
+      button.classList.add('-in-map');
+
       if (!this.options.visible) button.classList.add('-slashed');
       button.textContent = 'Hide';
       // We attach the listener
