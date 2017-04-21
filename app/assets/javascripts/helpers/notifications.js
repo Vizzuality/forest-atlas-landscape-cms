@@ -78,6 +78,10 @@
     },
 
     dashboard: {
+      bookmark_unavailable: {
+        type: 'warning',
+        content: 'The dashboard layout you are loading is outdated and may no longer be fully reproducible.'
+      },
       changed: {
         type: 'warning',
         content: 'The dashboard configuration has been updated and it might affect the visualizations.'

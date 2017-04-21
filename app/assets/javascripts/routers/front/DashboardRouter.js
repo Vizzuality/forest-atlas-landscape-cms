@@ -468,6 +468,22 @@
         return res && Object.keys(firstRow).indexOf(filter.name) !== -1;
       }, true);
     },
+    /**
+     * Check if the state's widgets match the default widgets in type and visibility
+     * @param {object} state
+     * @returns {{ type: boolean, visible: boolean }} changes
+     */
+    _checkWidgetsChanges: function (state) {
+      var typeChanged = false;
+      var visibilityChange = false;
+      state.config.widgets.forEach(function (widget, i) {
+        if (widget.type === 'map' && typeof this['widget' + i].map === 'undefined') typeChanged = true;
+        if (widget.type !== 'map' && typeof this['widget' + i].map !== 'undefined') typeChanged = true;
+        if (widget.visible !== this['widget' + i].options.visible) visibilityChange = true;
+      }.bind(this));
+
+      return { type: typeChanged, visible: visibilityChange };
+    },
 
     /**
      * Restore the state of the dashboard
@@ -477,9 +493,14 @@
      */
     _restoreState: function (state) {
       var isStateUpToDate = this._checkStateVersion(state);
+      var widgetsBreakingChanges = this._checkWidgetsChanges(state);
 
-      if (!isStateUpToDate) {
+      if (!isStateUpToDate && !widgetsBreakingChanges.type && !widgetsBreakingChanges.visible) {
         App.notifications.broadcast(App.Helper.Notifications.dashboard.changed);
+      }
+
+      if (widgetsBreakingChanges.type || widgetsBreakingChanges.visible) {
+        App.notifications.broadcast(App.Helper.Notifications.dashboard.bookmark_unavailable);
       }
 
       var isStateValid = this._checkStateValidity(state);
