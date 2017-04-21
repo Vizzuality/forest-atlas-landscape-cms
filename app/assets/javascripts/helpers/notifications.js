@@ -80,7 +80,7 @@
     dashboard: {
       bookmark_unavailable: {
         type: 'warning',
-        content: 'The dashboard settings you are trying to load are no longer applicable. The default settings will be used instead.'
+        content: 'The dashboard layout you are loading is outdated and may no longer be fully reproducible.'
       },
       changed: {
         type: 'warning',
