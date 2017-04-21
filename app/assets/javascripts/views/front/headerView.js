@@ -12,7 +12,10 @@
     },
 
     toggleDrawer: function () {
-      this.drawer.classList.toggle('-opened');
+      var opened = this.drawer.classList.toggle('-opened');
+      var overflow = 'auto';
+      if (opened) overflow = 'hidden';
+      document.querySelector('body').style.overflow = overflow;
     }
 
   });

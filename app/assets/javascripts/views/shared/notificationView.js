@@ -56,7 +56,8 @@
      */
     _createEl: function () {
       this.el = document.createElement('div');
-      this.el.classList.add('c-notification', '-' + this.options.type);
+      this.el.classList.add('c-notification');
+      this.el.classList.add('-' + this.options.type);
       this.el.setAttribute('role', 'alert');
       this.el.setAttribute('aria-label', this.options.type);
       this.el.setAttribute('aria-describedby', 'notification-content');

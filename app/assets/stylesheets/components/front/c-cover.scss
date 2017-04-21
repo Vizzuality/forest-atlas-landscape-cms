@@ -98,7 +98,7 @@
     z-index: 2;
 
     > a {
-      background-color: unset;
+      background-color: transparent;
       color: $color-3;
       text-decoration: none;
 
@@ -107,7 +107,7 @@
       }
 
       &::selection {
-        background-color: unset;
+        background-color: transparent;
       }
     }
 

@@ -11,6 +11,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5.x'
 gem 'jbuilder', '~> 2.0'
+gem 'rails-assets-fitvids', '~> 1.2.0'
 
 gem 'dotenv-rails', '~> 2.1'
 
