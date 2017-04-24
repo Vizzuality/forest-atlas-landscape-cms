@@ -10,6 +10,10 @@ class Dataset
   CONNECTOR_TYPES = %w[document rest]
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
+  API_PROPERTIES = [
+    :language, :description, :citation, :source
+  ]
+
   APPLICATION_PROPERTIES = [
     :agol_id, :agol_link, :amazon_link, :sql_api, :carto_link, :map_service,
     :download_data, :cautions, :date_of_content, :frequency_of_updates,
@@ -24,9 +28,8 @@ class Dataset
 
   validate :step_validation
 
-  attr_accessor :id, :application, :name, :subtitle, :language, :description,
-                :source, :metadata, :data_path, :attributes_path, :provider,
-                :format, :layers, :connector_url, :table_name, :tags,
+  attr_accessor :id, :application, :name, :metadata, :data_path, :attributes_path,
+                :provider, :format, :layers, :connector_url, :table_name, :tags,
                 :data_overwrite, :connector, :provider, :type, :legend, :status
 
   def initialize(data = {})
@@ -40,10 +43,6 @@ class Dataset
     @id = data[:id]
     @name = data[:attributes][:name]
     @application = data[:attributes][:application]
-    @subtitle = data[:attributes][:subtitle]
-    @language = data[:attributes][:language]
-    @description = data[:attributes][:description]
-    @source = data[:attributes][:source]
     @metadata = (data[:attributes][:metadata] || {}).symbolize_keys
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
@@ -69,10 +68,6 @@ class Dataset
     @id = data[:id]
     @name = data[:name]
     @application = data[:application]
-    @subtitle = data[:subtitle]
-    @language = data[:language]
-    @description = data[:description]
-    @source = data[:source]
     @metadata = (data[:metadata] || {}).symbolize_keys
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
@@ -94,10 +89,6 @@ class Dataset
       id: @id,
       name: @name,
       application: @application,
-      subtitle: @subtitle,
-      language: @language,
-      description: @description,
-      source: @source,
       metadata: @metadata,
       data_path: @data_path,
       attributes_path: @attributes_path,

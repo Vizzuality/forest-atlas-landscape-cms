@@ -95,7 +95,7 @@ class Management::DatasetStepsController < ManagementController
       :data_path,
       context_ids: [],
       legend: [:lat, :long, :country, :region, :date],
-      metadata: [:language, :description, :source] + Dataset::APPLICATION_PROPERTIES
+      metadata: Dataset::API_PROPERTIES + Dataset::APPLICATION_PROPERTIES
     )
   end
 
