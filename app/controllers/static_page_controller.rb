@@ -6,11 +6,6 @@ class StaticPageController < ApplicationController
   def no_permissions
   end
 
-  # 404
-  # GET /not_found
-  def not_found
-  end
-
   # Gets the data of a widget
   # GET widget_data
   def widget_data

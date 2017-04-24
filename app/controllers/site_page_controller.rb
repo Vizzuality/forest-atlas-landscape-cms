@@ -116,6 +116,7 @@ class SitePageController < ApplicationController
   # 404
   # GET /not_found
   def not_found
+    render :not_found => true, :status => 404
   end
 
   # 500
