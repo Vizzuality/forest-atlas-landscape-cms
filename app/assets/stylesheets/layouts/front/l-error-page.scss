@@ -1,8 +1,11 @@
 .l-error-page {
-  max-width: 900px;
-  min-height: calc(100vh - 445px);
+  max-width: 750px;
+  min-height: calc(100vh - 491px);
   margin: 0 auto;
 
+  @media #{$mq-tablet} {
+  min-height: calc(100vh - 440px);
+  }
   h1 {
     max-width: 600px;
     margin: 25px 0;
@@ -11,7 +14,7 @@
     line-height: 1.2;
 
     @media #{$mq-tablet} {
-      margin: 90px 0 25px;
+      margin: 90px 0 45px;
       font-size: $font-size-huge;
     }
   }
@@ -24,6 +27,12 @@
     }
   }
 
+  .wrapper {
+    @media #{$mq-tablet} {
+      padding: 0;
+    }
+  }
+
   .sitemap {
     margin-bottom: 25px;
 
@@ -32,20 +41,30 @@
     }
 
     li {
-      display: block;
+      width: 140px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: $color-1;
+
       font-size: $font-size-s-normal;
       line-height: 2.4;
 
       @media #{$mq-tablet} {
+        width: 165px;
         display: inline-block;
-        margin-right: 50px;
-        font-size: $font-size-medium;
+        margin-right: 10px;
+        font-size: $font-size-x-normal;
         line-height: 1.4;
       }
 
       a {
         background-color: transparent;
         color: $color-1;
+      }
+
+      > ul {
+        display: none;
       }
     }
   }
