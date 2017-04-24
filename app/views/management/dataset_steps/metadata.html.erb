@@ -21,6 +21,14 @@
           <%= f.label :language, for: 'dataset_metadata_language' %>
           <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language] %>
         </div>
+        <div>
+          <%= f.label :description, for: 'dataset_metadata_description' %>
+          <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
+        </div>
+        <div>
+          <%= f.label :source, for: 'dataset_metadata_source' %>
+          <%= text_field_tag 'dataset[metadata][source]', f.object.metadata[:source] %>
+        </div>
         <% Dataset::APPLICATION_PROPERTIES.each do |ap| %>
           <div>
             <%= f.label ap, for: "dataset_metadata_#{ap}" %>
