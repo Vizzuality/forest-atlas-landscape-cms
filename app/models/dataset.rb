@@ -10,18 +10,24 @@ class Dataset
   CONNECTOR_TYPES = %w[document rest]
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
+  APPLICATION_PROPERTIES = [
+    :agol_id, :agol_link, :amazon_link, :sql_api, :carto_link, :map_service,
+    :download_data, :cautions, :date_of_content, :frequency_of_updates,
+    :function, :geographic_coverage, :learn_more, :other, :resolution, :subtitle
+  ]
+
   cattr_accessor :form_steps do
-    {pages: %w[title connector labels context],
-     names: %w[Title Connector Labels Context]}
+    {pages: %w[title connector labels metadata context],
+     names: %w[Title Connector Labels Metadata Context]}
   end
   attr_accessor :form_step
 
   validate :step_validation
 
   attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
-                :attributes_path, :provider, :format, :layers, :connector_url, :table_name,
-                :tags, :data_overwrite, :connector, :provider, :type, :legend, :status
-
+                :attributes_path, :provider, :format, :layers, :connector_url,
+                :table_name, :tags, :data_overwrite, :connector, :provider,
+                :type, :legend, :metadata, :status
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -52,6 +58,7 @@ class Dataset
     @connector = data[:attributes][:connector]
     @type = data[:attributes][:type]
     @legend = data[:attributes][:legend]
+    @metadata = data[:attributes][:metadata]
     @status = data[:attributes][:status]
   end
 
@@ -74,6 +81,7 @@ class Dataset
     @connector = data[:connector]
     @type = data[:type]
     @legend = data[:legend]
+    @metadata = data[:metadata]
     @status = data[:status]
   end
 
@@ -96,6 +104,7 @@ class Dataset
       connector: @connector,
       type: @type,
       legend: @legend,
+      metadata: @metadata,
       status: @status
     }
   end
@@ -123,7 +132,7 @@ class Dataset
   def upload(token)
     tags_array = tags && tags.split(',') || []
     DatasetService.upload token, type, provider, connector_url, data_path,
-                          application, name, tags_array, legend
+                          application, name, tags_array, legend, metadata
   end
 
 
