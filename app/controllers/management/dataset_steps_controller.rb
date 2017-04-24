@@ -133,7 +133,7 @@ class Management::DatasetStepsController < ManagementController
     # Update the dataset with the attributes saved on the session
     @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
 
-    @dataset.application = ['forest-atlas'] unless @dataset.application
+    @dataset.application = 'forest-atlas' unless @dataset.application
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
     @dataset.metadata = {} unless @dataset.metadata

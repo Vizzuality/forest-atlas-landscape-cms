@@ -171,7 +171,7 @@ class DatasetService
       provider: connectorProvider,
       connectorUrl: connectorUrl,
       legend: formatted_caption,
-      application: application,
+      application: [application],
       name: name,
       vocabularies: {
         legacy: {
