@@ -182,10 +182,10 @@ class DatasetService
 
     metadata_body = {
       application: application,
-      language: metadata[:language],
+      name: name,
       applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).
         merge(tags: tags_array)
-    }.to_json
+    }.merge(metadata.slice(*Dataset::API_PROPERTIES)).to_json
 
     begin
       Rails.logger.info 'Creating Dataset in the API.'
