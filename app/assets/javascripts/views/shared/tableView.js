@@ -30,7 +30,8 @@
             return {
               name: cell.name,
               searchable: !!cell.searchable,
-              sortable: !!cell.sortable
+              sortable: !!cell.sortable,
+              visible: cell.visible !== 'undefined' ? cell.visible : true
             };
           });
       }
@@ -416,10 +417,16 @@
 
       return this.options.collection.toJSON()
         .map(function (row, index) {
+          var rows = row.row.filter(function (column) {
+            return typeof column.visible !== 'undefined' ? column.visible : true;
+          });
           var enabled = row.enabled && row.enabled.value;
           // The rowIndex value is used for accessibility
           // The index needs to start at 2 because the header row is 1
-          return Object.assign({}, row.row, { rowIndex: index + 2, enabled: typeof enabled !== 'undefined' ? enabled : true });
+          return Object.assign({}, rows, {
+            rowIndex: index + 2,
+            enabled: typeof enabled !== 'undefined' ? enabled : true
+          });
         })
         .slice(start, end);
     },
@@ -430,6 +437,7 @@
       var headers;
       if (this.options.collection.length) {
         headers = this.options.headers.toJSON()
+          .filter(function (column) { return typeof column.visible !== 'undefined' ? column.visible : true; })
           .map(function (column) {
             var sort;
             if (column.name === sortColumn) {

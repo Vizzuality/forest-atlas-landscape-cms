@@ -19,7 +19,8 @@
                   .filter(function (tag) { return tag.length; })
                   .join(', '),
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: true
               };
 
             case /status/.test(key):
@@ -27,7 +28,8 @@
                 name: key,
                 value: App.Helper.Utils.toTitleCase(row[key].value),
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: true
               };
 
             case /connector/.test(key):
@@ -35,14 +37,16 @@
                 name: key,
                 value: row[key].value.toUpperCase(),
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: true
               };
 
             case /(enable|edit|delete)/.test(key):
               // eslint-disable-next-line no-shadow
               var res = {
                 name: null,
-                searchable: false
+                searchable: false,
+                visible: true
               };
 
               // We need extra attributes when making a put or delete request
@@ -69,7 +73,8 @@
                 name: key,
                 value: row[key].value,
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: typeof row[key].visible !== 'undefined' ? row[key].visible : true
               };
           }
         });
