@@ -24,10 +24,10 @@ class Dataset
 
   validate :step_validation
 
-  attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
-                :attributes_path, :provider, :format, :layers, :connector_url,
-                :table_name, :tags, :data_overwrite, :connector, :provider,
-                :type, :legend, :status
+  attr_accessor :id, :application, :name, :subtitle, :language, :description,
+                :source, :metadata, :data_path, :attributes_path, :provider,
+                :format, :layers, :connector_url, :table_name, :tags,
+                :data_overwrite, :connector, :provider, :type, :legend, :status
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -42,6 +42,9 @@ class Dataset
     @application = data[:attributes][:application]
     @subtitle = data[:attributes][:subtitle]
     @metadata = data[:attributes][:metadata]
+    @language = data[:attributes][:language]
+    @description = data[:attributes][:description]
+    @source = data[:attributes][:source]
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
     @provider = data[:attributes][:provider]
@@ -68,6 +71,9 @@ class Dataset
     @application = data[:application]
     @subtitle = data[:subtitle]
     @metadata = data[:metadata]
+    @language = data[:language]
+    @description = data[:description]
+    @source = data[:source]
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
@@ -89,6 +95,9 @@ class Dataset
       name: @name,
       application: @application,
       subtitle: @subtitle,
+      language: @language,
+      description: @description,
+      source: @source,
       metadata: @metadata,
       data_path: @data_path,
       attributes_path: @attributes_path,
