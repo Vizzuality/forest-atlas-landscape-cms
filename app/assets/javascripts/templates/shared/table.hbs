@@ -32,19 +32,23 @@
                   {{#is_array value}}
                     <span class="row-name">{{name}}</span>
                     <span class="row-content">
-                      {{#each_slice value ../../valuesPerCell}}
-                        {{#if @last_sliced_item}}
-                          {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
-                        {{else}}
-                          {{#if @last_item}}
-                            {{this}}
-                          {{else}}
-                            {{this}},
-                          {{/if}}
-                        {{/if}}
+                      {{#if_eq name 'metadata'}}
+                        <button type="button" class="js-metadata-info" data-values="{{value}}">Info</button>
                       {{else}}
-                        –
-                      {{/each_slice}}
+                        {{#each_slice value ../../valuesPerCell}}
+                          {{#if @last_sliced_item}}
+                            {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
+                          {{else}}
+                            {{#if @last_item}}
+                              {{this}}
+                            {{else}}
+                              {{this}},
+                            {{/if}}
+                          {{/if}}
+                        {{else}}
+                          –
+                        {{/each_slice}}
+                      {{/if_eq}}
                     </span>
                   {{else}}
                     {{#if value}}

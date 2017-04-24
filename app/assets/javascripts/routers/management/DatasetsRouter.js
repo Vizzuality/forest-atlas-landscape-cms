@@ -6,10 +6,10 @@
     parse: function (data) {
       var keys;
       if (data.length) keys = Object.keys(data[0]);
+      var infoButton;
 
       return data.map(function (row) {
         var res = {};
-
         res.row = keys.map(function (key) {
           switch (true) {
             case /tags/.test(key):
@@ -39,6 +39,22 @@
                 searchable: row[key].searchable,
                 sortable: row[key].sortable,
                 visible: true
+              };
+
+            case /metadata/.test(key):
+              // we copy the metadata into another column to display the info button
+              infoButton = {
+                name: 'metadata',
+                value: row[key].value,
+                visible: true
+              };
+
+              return {
+                name: key,
+                value: row[key].value,
+                searchable: row[key].searchable,
+                sortable: row[key].sortable,
+                visible: typeof row[key].visible !== 'undefined' ? row[key].visible : true
               };
 
             case /(enable|edit|delete)/.test(key):
@@ -78,6 +94,7 @@
               };
           }
         });
+        res.row.push(infoButton);
 
         return res;
       });

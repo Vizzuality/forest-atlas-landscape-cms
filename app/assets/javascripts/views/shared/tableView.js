@@ -90,6 +90,7 @@
 
     template: HandlebarsTemplates['shared/table'],
     modalTemplate: HandlebarsTemplates['shared/table-modal'],
+    metadataModalTemplate: HandlebarsTemplates['shared/table-metadata'],
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
@@ -150,6 +151,8 @@
       this.$('.js-header').on('keydown', this._onKeydownHeader.bind(this));
 
       this.$('.js-more').on('click', this._onClickMore.bind(this));
+
+      this.$('.js-metadata-info').on('click', this._onClickMetadataInfo.bind(this));
 
       this.$('.js-results-per-page').on('change', this._onChangeResultsPerPage.bind(this));
 
@@ -223,6 +226,25 @@
         render: function () {
           return this.modalTemplate({
             columnName: columnName,
+            values: values
+          });
+        }.bind(this)
+      }))();
+
+      modal.open();
+    },
+
+    /**
+     * Listener for the click on the "info" button
+     * @param {Event} e - event
+     */
+    _onClickMetadataInfo: function (e) {
+      var button = e.target;
+      var values = button.dataset.values.split(',');
+
+      var modal = new (App.View.ModalView.extend({
+        render: function () {
+          return this.metadataModalTemplate({
             values: values
           });
         }.bind(this)
