@@ -202,6 +202,11 @@ class Site < ApplicationRecord
     )
   end
 
+  def pages_for_sitemap
+    root.self_and_descendants.where('content_type <> ?', ContentType::LINK).
+      reject{ |page| !page.visible? }
+  end
+
   private
 
   def generate_slug

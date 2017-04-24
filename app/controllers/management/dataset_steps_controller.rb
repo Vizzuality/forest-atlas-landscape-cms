@@ -49,19 +49,7 @@ class Management::DatasetStepsController < ManagementController
     @dataset.form_step = step
     set_current_dataset_state
     case step
-      when 'title'
-        if @dataset.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
-      when 'connector'
-        if @dataset.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
-      when 'labels'
+      when 'title', 'connector', 'labels', 'metadata'
         if @dataset.valid?
           redirect_to next_wizard_path
         else
@@ -106,7 +94,8 @@ class Management::DatasetStepsController < ManagementController
       :connector_url,
       :data_path,
       context_ids: [],
-      legend: [:lat, :long, :country, :region, :date]
+      legend: [:lat, :long, :country, :region, :date],
+      metadata: Dataset::API_PROPERTIES + Dataset::APPLICATION_PROPERTIES
     )
   end
 
@@ -144,9 +133,10 @@ class Management::DatasetStepsController < ManagementController
     # Update the dataset with the attributes saved on the session
     @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
 
-    @dataset.application = ['forest-atlas'] unless @dataset.application
+    @dataset.application = 'forest-atlas' unless @dataset.application
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
+    @dataset.metadata = {} unless @dataset.metadata
   end
 
   def set_current_dataset_state

@@ -1,0 +1,47 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Metadata</h1>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+
+
+<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+  <div class="l-dataset-creation -labels">
+    <div class="wrapper">
+
+      <div class="inputs-container">
+        <div>
+          <%= f.label :language, for: 'dataset_metadata_language' %>
+          <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language] %>
+        </div>
+        <div>
+          <%= f.label :description, for: 'dataset_metadata_description' %>
+          <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
+        </div>
+        <div>
+          <%= f.label :citation, for: 'dataset_metadata_citation' %>
+          <%= text_field_tag 'dataset[metadata][citation]', f.object.metadata[:citation] %>
+        </div>
+        <div>
+          <%= f.label :source, for: 'dataset_metadata_source' %>
+          <%= text_field_tag 'dataset[metadata][source]', f.object.metadata[:source] %>
+        </div>
+        <% Dataset::APPLICATION_PROPERTIES.each do |ap| %>
+          <div>
+            <%= f.label ap, for: "dataset_metadata_#{ap}" %>
+            <%= text_field_tag "dataset[metadata][#{ap}]", f.object.metadata[ap] %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>

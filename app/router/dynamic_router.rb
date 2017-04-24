@@ -93,6 +93,7 @@ class DynamicRouter
         ].each do |error|
           routes_to_write <<  RouteDefinition.new(error[:error], 'site_page#' + error[:action], {id: site_page.id}, constraints, tags)
         end
+        routes_to_write <<  RouteDefinition.new('/sitemap', 'site_page#sitemap', {id: site_page.id}, constraints, tags)
         target = 'site_page#homepage'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'

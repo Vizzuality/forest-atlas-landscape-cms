@@ -99,6 +99,20 @@ class DatasetService
     end
   end
 
+  def self.metadata_find_by_ids(token, dataset_ids)
+    return [] if dataset_ids.blank?
+
+    res = @conn.post do |req|
+      req.url '/dataset/metadata/find-by-ids'
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = {ids: dataset_ids}.to_json
+    end
+
+    parsed_res = JSON.parse(res.body)
+    parsed_res['data'] || []
+  end
+
   # TODO : Move this to the model
   # Gets the fields attributes for a dataset (name, type, min, max, and values)
   # Params:
@@ -151,7 +165,7 @@ class DatasetService
 
   # Sends the dataset to the API
   def self.upload(token, connectorType, connectorProvider, connectorUrl, dataPath,
-    applications, name, tags_array = [], caption = {}, units = nil)
+    application, name, tags_array = [], caption = {}, metadata = {})
 
     formatted_caption = caption.dup
     # Converting the caption[country] JSON
@@ -171,15 +185,21 @@ class DatasetService
       provider: connectorProvider,
       connectorUrl: connectorUrl,
       legend: formatted_caption,
-      application: applications,
+      application: [application],
       name: name,
-      tags: tags_array,
       vocabularies: {
         legacy: {
           tags: tags_array
         }
       }
     }).to_json
+
+    metadata_body = {
+      application: application,
+      name: name,
+      applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).
+        merge(tags: tags_array)
+    }.merge(metadata.slice(*Dataset::API_PROPERTIES)).to_json
 
     begin
       Rails.logger.info 'Creating Dataset in the API.'
@@ -192,25 +212,24 @@ class DatasetService
         req.body = body
       end
 
-      # TODO Make another request to dataset/:id/metadata
-      # ... to put the units
-      # body: {
-      #   application: ["a", "b"],
-      #   language: {"en"},
-      #   units: [{"a": "b"}, {"b": "c"}]
-      # }
-
-
-      #\"info\": {
-      #          \"units\" : #{units.to_json}
-      #          }
-      #        }
-
       Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
+      dataset_id = JSON.parse(res.body)['data']['id']
 
-      return JSON.parse(res.body)['data']['id']
+      Rails.logger.info 'Creating Dataset Metadata in the API.'
+      Rails.logger.info "Body: #{metadata_body}"
 
-    rescue Exception => e
+      metadata_res = @conn.post do |req|
+        req.url "/dataset/#{dataset_id}/metadata"
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = metadata_body
+      end
+
+      Rails.logger.info "Response from dataset metadata creation endpoint: #{metadata_res.body}"
+
+      return dataset_id
+
+    rescue => e
       Rails.logger.error "Error creating new dataset in the API: #{e}"
       return nil
     end
