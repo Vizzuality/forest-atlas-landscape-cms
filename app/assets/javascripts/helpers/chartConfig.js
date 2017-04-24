@@ -18,7 +18,9 @@
       name: 'line',
       acceptedStatTypes: [
         ['temporal', 'quantitative'],
-        ['ordinal', 'quantitative']
+        ['ordinal', 'quantitative'],
+        ['quantitative', 'quantitative'],
+        ['temporal', 'nominal']
       ]
     },
     {
@@ -33,6 +35,9 @@
     {
       name: 'scatter',
       acceptedStatTypes: [
+        ['nominal', 'quantitative'],
+        ['temporal', 'quantitative'],
+        ['ordinal', 'quantitative'],
         ['quantitative', 'quantitative'],
         ['nominal', 'nominal'],
         ['nominal', 'ordinal'],
