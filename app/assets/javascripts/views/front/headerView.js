@@ -8,39 +8,35 @@
     },
 
     initialize: function () {
+      this.MAX_ITEMS = 4;
       this.drawer = this.el.querySelector('.js-mobile-drawer');
-      this._onResize();
-      this._setListeners();
+      this._renderMenu();
     },
 
-    _onResize: function () {
-      this.el.classList.remove('-overflow');
-      if (this._menuOverflows()) {
-        this.el.classList.add('-overflow');
-      }
+    _renderMenu: function () {
+      var menu = this.$el.find('.js-desktop-menu');
+      if (menu.children().length > this.MAX_ITEMS) this._renderDropdown(menu);
+      menu[0].classList.remove('is-hidden');
     },
 
-    _menuOverflows: function () {
-      var menu = this.el.querySelector('.js-desktop-menu');
-      var childrenWidth = Array.prototype.reduce.call(menu.firstElementChild.children, function (acc, child) {
-        var childWidth = child.getBoundingClientRect().width;
-        if (typeof acc !== 'number') return acc.getBoundingClientRect().width + childWidth;
-        return acc + childWidth;
+    _renderDropdown: function (menu) {
+      var dropdown = $('<li class="dropdown-item">More<ul><li><a>More</a></li></ul></li>');
+      var dropdownList = dropdown.find('ul');
+      var more = Array.prototype.splice.call(menu.find('>li'), this.MAX_ITEMS, menu.children().length);
+
+      more.forEach(function (item) {
+        var ul = $(item).find('ul');
+        if (ul) {
+          dropdownList.append(ul.children());
+          item.remove();
+        }
+        else dropdownList.append(item);
       });
-      var parentWidth = menu.firstElementChild.getBoundingClientRect().width;
-git 
-      return (parentWidth < (childrenWidth + 20));
-    },
-
-    _setListeners: function () {
-      window.addEventListener('resize', _.debounce(this._onResize.bind(this), 150));
+      menu.append(dropdown);
     },
 
     toggleDrawer: function () {
-      var opened = this.drawer.classList.toggle('-opened');
-      var overflow = 'auto';
-      if (opened) overflow = 'hidden';
-      document.querySelector('body').style.overflow = overflow;
+      this.drawer.classList.toggle('-opened');
     }
 
   });
