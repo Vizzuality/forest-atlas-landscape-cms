@@ -1,3 +1,4 @@
+- Add metadata fields to dataset creation and list
 - Improved 404 page
 - Added sitemap.xml and sitemap.html pages
 - Responsive and cross-browser changes

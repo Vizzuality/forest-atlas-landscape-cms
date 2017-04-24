@@ -10,18 +10,27 @@ class Dataset
   CONNECTOR_TYPES = %w[document rest]
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
+  API_PROPERTIES = [
+    :language, :description, :citation, :source
+  ]
+
+  APPLICATION_PROPERTIES = [
+    :agol_id, :agol_link, :amazon_link, :sql_api, :carto_link, :map_service,
+    :download_data, :cautions, :date_of_content, :frequency_of_updates,
+    :function, :geographic_coverage, :learn_more, :other, :resolution, :subtitle
+  ]
+
   cattr_accessor :form_steps do
-    {pages: %w[title connector labels context],
-     names: %w[Title Connector Labels Context]}
+    {pages: %w[title connector labels metadata context],
+     names: %w[Title Connector Labels Metadata Context]}
   end
   attr_accessor :form_step
 
   validate :step_validation
 
-  attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
-                :attributes_path, :provider, :format, :layers, :connector_url, :table_name,
-                :tags, :data_overwrite, :connector, :provider, :type, :legend, :status
-
+  attr_accessor :id, :application, :name, :metadata, :data_path, :attributes_path,
+                :provider, :format, :layers, :connector_url, :table_name, :tags,
+                :data_overwrite, :connector, :provider, :type, :legend, :status
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -34,8 +43,7 @@ class Dataset
     @id = data[:id]
     @name = data[:attributes][:name]
     @application = data[:attributes][:application]
-    @subtitle = data[:attributes][:subtitle]
-    @metadata = data[:attributes][:metadata]
+    @metadata = (data[:attributes][:metadata] || {}).symbolize_keys
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
     @provider = data[:attributes][:provider]
@@ -60,8 +68,7 @@ class Dataset
     @id = data[:id]
     @name = data[:name]
     @application = data[:application]
-    @subtitle = data[:subtitle]
-    @metadata = data[:metadata]
+    @metadata = (data[:metadata] || {}).symbolize_keys
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
@@ -82,7 +89,6 @@ class Dataset
       id: @id,
       name: @name,
       application: @application,
-      subtitle: @subtitle,
       metadata: @metadata,
       data_path: @data_path,
       attributes_path: @attributes_path,
@@ -123,7 +129,7 @@ class Dataset
   def upload(token)
     tags_array = tags && tags.split(',') || []
     DatasetService.upload token, type, provider, connector_url, data_path,
-                          application, name, tags_array, legend
+                          application, name, tags_array, legend, metadata
   end
 
 
