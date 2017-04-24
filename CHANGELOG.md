@@ -1,3 +1,5 @@
+- Fix issue on dataset/widget filter step.
+- Adds support for more datatypes in chart widgets.
 - Responsive and cross-browser changes
 - Fix issue on placement of content in site's page tree
 - Improve widget rendering performance
