@@ -18,7 +18,7 @@
      * @returns {object[]} fields
      */
     _getFields: function () {
-      return ((window.gon && gon.fields) || []).map(function (field) {
+      return (gon && Array.isArray(gon.fields) ? gon.fields : []).map(function (field) {
         if (field.type === 'date') {
           field.min = new Date(field.min);
           field.max = new Date(field.max);
