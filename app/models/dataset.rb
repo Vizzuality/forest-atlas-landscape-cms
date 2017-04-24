@@ -41,10 +41,10 @@ class Dataset
     @name = data[:attributes][:name]
     @application = data[:attributes][:application]
     @subtitle = data[:attributes][:subtitle]
-    @metadata = data[:attributes][:metadata]
     @language = data[:attributes][:language]
     @description = data[:attributes][:description]
     @source = data[:attributes][:source]
+    @metadata = (data[:attributes][:metadata] || {}).symbolize_keys
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
     @provider = data[:attributes][:provider]
@@ -70,10 +70,10 @@ class Dataset
     @name = data[:name]
     @application = data[:application]
     @subtitle = data[:subtitle]
-    @metadata = data[:metadata]
     @language = data[:language]
     @description = data[:description]
     @source = data[:source]
+    @metadata = (data[:metadata] || {}).symbolize_keys
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]

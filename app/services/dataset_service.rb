@@ -183,7 +183,7 @@ class DatasetService
     metadata_body = {
       application: application,
       language: metadata[:language],
-      applicationProperties: metadata.slice(Dataset::APPLICATION_PROPERTIES).
+      applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).
         merge(tags: tags_array)
     }.to_json
 
