@@ -99,6 +99,20 @@ class DatasetService
     end
   end
 
+  def self.metadata_find_by_ids(token, dataset_ids)
+    return [] if dataset_ids.blank?
+
+    res = @conn.post do |req|
+      req.url '/dataset/metadata/find-by-ids'
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = {ids: dataset_ids}.to_json
+    end
+
+    parsed_res = JSON.parse(res.body)
+    parsed_res['data'] || []
+  end
+
   # TODO : Move this to the model
   # Gets the fields attributes for a dataset (name, type, min, max, and values)
   # Params:

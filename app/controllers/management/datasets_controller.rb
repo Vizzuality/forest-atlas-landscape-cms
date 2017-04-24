@@ -9,6 +9,19 @@ class Management::DatasetsController < ManagementController
   before_action :authenticate_user_for_site!
 
   def index
+    metadata_list = DatasetService.metadata_find_by_ids(session[:user_token], @datasets.map(&:id))
+    @dataset_metadata =
+      Hash[metadata_list.map do |d|
+        attributes = d['attributes'].symbolize_keys
+        application_properties = attributes[:applicationProperties].try(:symbolize_keys)
+        metadata = attributes.slice(*Dataset::API_PROPERTIES)
+        metadata = metadata.merge(application_properties.slice(*Dataset::APPLICATION_PROPERTIES)) if application_properties.present?
+        [
+          attributes[:dataset],
+          metadata.values.reject{ |v| v.blank? }
+        ]
+      end]
+
     gon.datasets = @datasets.map do |dataset|
       {
         'title' => {'value' => dataset.name, 'searchable' => true, 'sortable' => true},
@@ -16,6 +29,7 @@ class Management::DatasetsController < ManagementController
         'connector' => {'value' => dataset.provider, 'searchable' => true, 'sortable' => true},
         'tags' => {'value' => dataset.tags, 'searchable' => true, 'sortable' => false},
         'status' => {'value' => dataset.status, 'searchable' => true, 'sortable' => true},
+        'metadata' => {'value' => @dataset_metadata[dataset.id], 'searchable' => true, 'sortable' => false, 'visible' => false}
         # TODO: once both actions work properly, restore buttons
         # 'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, 'title'), 'method' => 'get'},
         # 'delete' => {'value' => management_site_dataset_path(@site.slug, dataset.id), 'method' => 'delete'}
