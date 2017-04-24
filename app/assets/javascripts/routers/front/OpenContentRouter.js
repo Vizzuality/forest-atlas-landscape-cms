@@ -21,6 +21,7 @@
         serializedContent: content ? JSON.parse(content) : null,
         readOnly: true
       });
+      $('.-raw-html').fitVids();
     },
 
     index: function () {

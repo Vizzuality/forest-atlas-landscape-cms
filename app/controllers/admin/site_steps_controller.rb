@@ -72,6 +72,7 @@ class Admin::SiteStepsController < AdminController
         @translate_english = @site.site_settings.where(name: 'translate_english').first
         @translate_spanish = @site.site_settings.where(name: 'translate_spanish').first
         @translate_french = @site.site_settings.where(name: 'translate_french').first
+        @translate_georgian = @site.site_settings.where(name: 'translate_georgian').first
       end
     end
     render_wizard
@@ -248,7 +249,8 @@ class Admin::SiteStepsController < AdminController
           :attribution_link, :attribution_label,
           :default_site_language,
           :translate_english, :translate_french,
-          :translate_spanish, :pre_footer, :analytics_key, :keywords, :contact_email_address
+          :translate_spanish, :translate_georgian,
+          :pre_footer, :analytics_key, :keywords, :contact_email_address
         ]
       )
   end

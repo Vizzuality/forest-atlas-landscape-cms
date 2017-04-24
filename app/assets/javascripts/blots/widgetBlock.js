@@ -41,7 +41,7 @@ var WidgetBlot = function (_Embed) {
 
     _this.editor = window.editor;
     _this.caption = domNode.querySelector('.js-caption');
-    _this.widgetContainer = _this.domNode.querySelector('.js-widget-container');
+    _this.widgetContainer = domNode.querySelector('.js-widget-container');
 
     if (!_this.editor.options.readOnly) {
       // We make the caption editable
@@ -266,7 +266,9 @@ var WidgetBlot = function (_Embed) {
       var defaultCaption = obj.defaultCaption || false;
 
       var widgetContainer = document.createElement('div');
-      widgetContainer.classList.add('widget-container', 'js-widget-container');
+      widgetContainer.classList.add('widget-container');
+      widgetContainer.classList.add('js-widget-container');
+
       node.appendChild(widgetContainer);
 
       // We save the id of the widget into the DOM
@@ -277,7 +279,8 @@ var WidgetBlot = function (_Embed) {
 
       // We add the caption container
       var captionContainer = document.createElement('p');
-      captionContainer.classList.add('caption', 'js-caption');
+      captionContainer.classList.add('caption');
+      captionContainer.classList.add('js-caption');
       if (defaultCaption) captionContainer.dataset.defaultCaption = 'true';
 
       node.appendChild(captionContainer);

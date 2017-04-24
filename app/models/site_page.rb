@@ -32,6 +32,8 @@ class SitePage < Page
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates_presence_of :site_id
+  before_create :cheat_with_position_on_create
+  before_update :cheat_with_position_on_update
   after_save :update_routes
 
   validate :step_validation
@@ -168,5 +170,19 @@ class SitePage < Page
 
     end
 
+  end
+
+  def cheat_with_position_on_create
+    if self.position.present?
+      siblings.where('position >= ?', self.position).update_all('position = position + 1')
+    end
+  end
+
+  def cheat_with_position_on_update
+    if self.position > self.position_was
+      siblings.where('position <= ?', self.position).update_all('position = position - 1')
+    else
+      siblings.where('position >= ?', self.position).update_all('position = position + 1')
+    end
   end
 end

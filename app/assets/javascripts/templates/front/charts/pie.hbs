@@ -13,12 +13,17 @@
       "ops": ["count"],
       "as": "count" }]
     },
-    { "type": "pie", "field": "count" }]
+    {"type": "sort", "by": "-count"},
+    {"type": "rank", "field": "count"},
+    {"type": "formula", "field": {{{xColumn}}}, "expr": "datum.rank > 4 ? 'Other' : datum.{{{safeVal xColumn "placeholder"}}}"},
+    {"type": "aggregate", "groupby": {{{xColumn}}}, "summarize": [
+      {
+        "field": {{{xColumn}}},
+        "ops": ["count"],
+        "as": "count"
+      }]
     },
-    {
-      "name": "goupedData",
-      "source": "table",
-      "transform": [{ "type": "facet", "groupby": [{{{xColumn}}}] }]
+    { "type": "pie", "field": "count" }]
     }
   ],
   "scales": [

@@ -60,7 +60,8 @@ class ImageBlot extends Embed {
 
     // We add the caption container
     const captionContainer = document.createElement('p');
-    captionContainer.classList.add('caption', 'js-caption');
+    captionContainer.classList.add('caption');
+    captionContainer.classList.add('js-caption');
 
     container.appendChild(captionContainer);
 

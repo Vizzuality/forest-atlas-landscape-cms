@@ -51,6 +51,10 @@ namespace :db do
               site.site_settings.create!(name: 'translate_french', value: true, position: 9)
               puts '...... Added translate_french'
             end
+            unless site.site_settings.exists?(name: 'translate_georgian')
+              site.site_settings.create!(name: 'translate_georgian', value: true, position: 16)
+              puts '...... Added translate_georgian'
+            end
             unless site.site_settings.exists?(name: 'pre_footer')
               site.site_settings.create!(name: 'pre_footer', value: '', position: 10)
               puts '...... Added pre_footer'

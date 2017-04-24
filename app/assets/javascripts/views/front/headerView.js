@@ -28,7 +28,7 @@
         return acc + childWidth;
       });
       var parentWidth = menu.firstElementChild.getBoundingClientRect().width;
-
+git 
       return (parentWidth < (childrenWidth + 20));
     },
 
@@ -37,7 +37,10 @@
     },
 
     toggleDrawer: function () {
-      this.drawer.classList.toggle('-opened');
+      var opened = this.drawer.classList.toggle('-opened');
+      var overflow = 'auto';
+      if (opened) overflow = 'hidden';
+      document.querySelector('body').style.overflow = overflow;
     }
 
   });

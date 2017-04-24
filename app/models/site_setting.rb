@@ -26,7 +26,7 @@ class SiteSetting < ApplicationRecord
   NAMES = %w[
     logo_image main_image alternative_image favico color flag
     default_site_language
-    translate_english translate_spanish translate_french
+    translate_english translate_spanish translate_french translate_georgian
     pre_footer analytics_key keywords contact_email_address
     hosting_organization
   ]
@@ -95,6 +95,10 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'translate_french', site_id: site_id)
   end
 
+  def self.translate_georgian(site_id)
+    SiteSetting.find_by(name: 'translate_georgian', site_id: site_id)
+  end
+
   def self.pre_footer(site_id)
     SiteSetting.find_by(name: 'pre_footer', site_id: site_id)
   end
@@ -132,7 +136,7 @@ class SiteSetting < ApplicationRecord
 
   # Creates all the additional settings for a site
   def self.create_additional_settings site
-    unless site.site_settings.length > 1
+    unless site.site_settings.exists?(name: 'logo_image')
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
       site.site_settings.new(name: 'main_image', value: '', position: 5)
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
@@ -152,7 +156,8 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'keywords', value: '', position: 12)
       site.site_settings.new(name: 'contact_email_address', value: '', position: 13)
       site.site_settings.new(name: 'hosting_organization', value: '', position: 14)
-      site.site_settings.new(name: 'default_site_language', value: 'en', position: 15)
+      site.site_settings.new(name: 'default_site_language', value: 'fr', position: 15)
+      site.site_settings.new(name: 'translate_georgian', value: '1', position: 16)
     end
   end
 

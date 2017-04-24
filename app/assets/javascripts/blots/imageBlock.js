@@ -281,7 +281,8 @@ var ImageBlot = function (_Embed) {
 
       // We add the caption container
       var captionContainer = document.createElement('p');
-      captionContainer.classList.add('caption', 'js-caption');
+      captionContainer.classList.add('caption');
+      captionContainer.classList.add('js-caption');
 
       container.appendChild(captionContainer);
 

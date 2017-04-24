@@ -42,6 +42,7 @@ class Page < ApplicationRecord
     end
   end
 
+  # TODO potentially obsolete
   def links(port=80)
     self.routes.map { |route| route.link(port) + self.url }
   end

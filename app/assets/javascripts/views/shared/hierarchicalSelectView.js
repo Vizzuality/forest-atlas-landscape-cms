@@ -313,7 +313,7 @@
 
         // We append the new step to the DOM
         var templateData = Object.assign({}, hierarchy, { selectID: this.options.ID });
-        this.stepsContainer.append($(this.stepTemplate(templateData))[0]);
+        this.stepsContainer.appendChild($(this.stepTemplate(templateData))[0]);
 
         // We update the label with the current step name
         this.labelContainer.innerHTML = '<div class="arrow -left"></div>' + hierarchy.label;

@@ -1,3 +1,18 @@
+- Responsive and cross-browser changes
+- Fix issue on placement of content in site's page tree
+- Improve widget rendering performance
+- Fix populating of float and text values on widget creation
+- Update robots.txt
+- Inform users when loading outdated dashboard layouts
+
+### 19 April 2017
+- Change default site language to french
+- Add Georgian translation support
+- Warn users of unsupported social network login
+- Fix issue with missing "style" options on site settings
+- Prepend protocol to site links on admin interface
+
+### 18 April 2017
 - Fix issue with link page type creation
 - Hide 2nd custom label input on pie charts
 - Fix scatter charts

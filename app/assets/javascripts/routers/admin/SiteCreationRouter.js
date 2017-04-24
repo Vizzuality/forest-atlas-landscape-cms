@@ -148,7 +148,8 @@
 
         // We add the preview image
         var preview = document.createElement('div');
-        preview.classList.add('preview', 'js-preview');
+        preview.classList.add('preview');
+        preview.classList.add('js-preview');
         if (isHigh) preview.classList.add('-high');
 
         if (imageType === 'image') {

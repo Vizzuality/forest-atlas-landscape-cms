@@ -16,6 +16,7 @@
 //= require jquery_ujs
 //= require backbone
 //= require turbolinks
+//= require fitvids
 //= require d3
 //= require vega
 //= require leaflet
