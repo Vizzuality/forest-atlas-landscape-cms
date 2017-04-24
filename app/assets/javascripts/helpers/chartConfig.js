@@ -7,7 +7,11 @@
       acceptedStatTypes: [
         ['nominal', 'quantitative'],
         ['temporal', 'quantitative'],
-        ['ordinal', 'quantitative']
+        ['ordinal', 'quantitative'],
+        ['quantitative', 'quantitative'],
+        ['nominal', 'nominal'],
+        ['nominal', 'ordinal'],
+        ['ordinal', 'nominal']
       ]
     },
     {
@@ -20,6 +24,8 @@
     {
       name: 'pie',
       acceptedStatTypes: [
+        ['quantitative'],
+        ['nominal'],
         ['nominal'],
         ['ordinal']
       ]
