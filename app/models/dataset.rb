@@ -27,7 +27,7 @@ class Dataset
   attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
                 :attributes_path, :provider, :format, :layers, :connector_url,
                 :table_name, :tags, :data_overwrite, :connector, :provider,
-                :type, :legend, :metadata, :status
+                :type, :legend, :status
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -58,7 +58,6 @@ class Dataset
     @connector = data[:attributes][:connector]
     @type = data[:attributes][:type]
     @legend = data[:attributes][:legend]
-    @metadata = data[:attributes][:metadata]
     @status = data[:attributes][:status]
   end
 
@@ -81,7 +80,6 @@ class Dataset
     @connector = data[:connector]
     @type = data[:type]
     @legend = data[:legend]
-    @metadata = data[:metadata]
     @status = data[:status]
   end
 
@@ -104,7 +102,6 @@ class Dataset
       connector: @connector,
       type: @type,
       legend: @legend,
-      metadata: @metadata,
       status: @status
     }
   end
