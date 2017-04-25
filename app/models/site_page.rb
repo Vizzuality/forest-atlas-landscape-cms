@@ -179,7 +179,7 @@ class SitePage < Page
   end
 
   def cheat_with_position_on_update
-    if self.position > self.position_was
+    if self.position.present? && self.position_was.present? && self.position > self.position_was
       siblings.where('position <= ?', self.position).update_all('position = position - 1')
     else
       siblings.where('position >= ?', self.position).update_all('position = position + 1')
