@@ -18,7 +18,7 @@ class Management::DatasetsController < ManagementController
         metadata = metadata.merge(application_properties.slice(*Dataset::APPLICATION_PROPERTIES)) if application_properties.present?
         [
           attributes[:dataset],
-          metadata.values.reject{ |v| v.blank? }
+          metadata
         ]
       end]
 
