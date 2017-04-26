@@ -117,9 +117,11 @@ var WidgetBlot = function (_Embed) {
           x: null,
           y: null,
           xLabel: null,
-          yLabel: null,
+          yLabel: null
         };
       }
+
+      var meta = chart.metadata;
 
       // We render the widget
       this.widget = new App.View.ChartWidgetView({
@@ -130,7 +132,8 @@ var WidgetBlot = function (_Embed) {
         columnY: config.y,
         xLabel: config.xLabel,
         yLabel: config.yLabel,
-        enableChartSelector: false
+        enableChartSelector: false,
+        metadata: meta
       });
 
       if (!this.editor.options.readOnly) {

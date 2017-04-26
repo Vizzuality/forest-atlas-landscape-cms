@@ -241,12 +241,10 @@
     _onClickMetadataInfo: function (e) {
       var button = e.target;
       var values = JSON.parse(button.dataset.values);
-      var title = button.dataset.title;
 
       var modal = new (App.View.ModalView.extend({
         render: function () {
           return this.metadataModalTemplate({
-            title: title,
             values: values
           });
         }.bind(this)

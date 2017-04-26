@@ -381,10 +381,8 @@
      */
     _renderInfoButton: function () {
       var button = $('<button type="button" class="c-table-action-button -info js-metadata-info metadata-button"></button>');
-      var values = JSON.stringify({});
-      var title = '';
+      var values = JSON.stringify(this.options.metadata);
       button.attr('data-values', values);
-      button.attr('data-title', title);
       this.$el.append(button);
 
       this.$('.js-metadata-info').on('click', this._onClickMetadataInfo.bind(this));
@@ -397,12 +395,10 @@
     _onClickMetadataInfo: function (e) {
       var button = e.target;
       var values = JSON.parse(button.dataset.values);
-      var title = button.dataset.title;
 
       var modal = new (App.View.ModalView.extend({
         render: function () {
           return this.metadataModalTemplate({
-            title: title,
             values: values
           });
         }.bind(this)
@@ -428,7 +424,7 @@
           this._renderToggleVisibilityButton();
         }
       }
-      if(this.options.displayMode !== 'dashboard') {
+      if(this.options.displayMode !== 'dashboard' && this.options.metadata) {
         this._renderInfoButton();
       }
       return this.el;

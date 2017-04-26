@@ -30,7 +30,11 @@
                   <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
                 {{else}}
                   {{#if is_metadata}}
-                      <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}" data-title="{{title}}">Info</button>
+                    {{#if_eq value "null"}}
+                      –
+                    {{else}}
+                      <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}">Info</button>
+                    {{/if_eq}}
                   {{else}}
                   {{#is_array value}}
                     <span class="row-name">{{name}}</span>
