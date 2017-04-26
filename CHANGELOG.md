@@ -1,3 +1,6 @@
+- Added metadata table modal to management section
+
+### 25 April 2017
 - Add metadata fields to dataset creation and list
 - Improved 404 page
 - Added sitemap.xml and sitemap.html pages

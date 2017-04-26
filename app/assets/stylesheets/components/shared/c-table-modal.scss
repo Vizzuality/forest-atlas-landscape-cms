@@ -1,7 +1,7 @@
 .c-table-modal {
   max-width: 515px;
   margin: 0 auto;
-  padding: 45px;
+  padding: 45px 0;
   font-size: $font-size-s-normal;
 
   h1 {
@@ -21,6 +21,26 @@
 
       &:last-of-type {
         margin-bottom: 0;
+      }
+    }
+  }
+
+  .table-data {
+
+    > dl {
+      display: flex;
+      justify-content: space-between;
+
+      dt {
+        font-weight: $font-weight-bold;
+        text-transform: capitalize;
+        flex: 0.3;
+      }
+
+      dd {
+        text-transform: capitalize;
+        flex: 0.7;
+        overflow-x: auto;
       }
     }
   }

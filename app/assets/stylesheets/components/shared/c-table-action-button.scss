@@ -2,6 +2,8 @@
   display: inline-block;
   text-indent: -10000px; // Hide the text
   vertical-align: middle;
+  border: none;
+  cursor: pointer;
 
   &.-enable {
     width: 16px;
@@ -25,5 +27,11 @@
     width: 10px;
     height: 14px;
     background: image-url('icons/bin-icon.svg') no-repeat center center;
+  }
+
+  &.-info {
+    width: 16px;
+    height: 16px;
+    background: image-url('icons/info-icon.svg') no-repeat center center;
   }
 }
