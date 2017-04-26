@@ -1,3 +1,6 @@
+- Add metadata fields to dataset creation and list
+- Improved 404 page
+- Added sitemap.xml and sitemap.html pages
 - Responsive and cross-browser changes
 - Fix issue on placement of content in site's page tree
 - Improve widget rendering performance
