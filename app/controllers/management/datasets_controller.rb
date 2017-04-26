@@ -9,7 +9,7 @@ class Management::DatasetsController < ManagementController
   before_action :authenticate_user_for_site!
 
   def index
-    @dataset_metadata = Dataset.get_metadata_for_frontend(session[:user_token], @datasets.map(&:id))
+    @dataset_metadata = Dataset.get_metadata_list_for_frontend(session[:user_token], @datasets.map(&:id))
 
     gon.datasets = @datasets.map do |dataset|
       {

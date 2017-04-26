@@ -138,7 +138,7 @@ class Dataset
     DatasetService.get_metadata_list(dataset_ids)
   end
 
-  def self.get_metadata_for_frontend(user_token, dataset_ids)
+  def self.get_metadata_list_for_frontend(user_token, dataset_ids)
     metadata_list = DatasetService.metadata_find_by_ids(user_token, dataset_ids)
     Hash[metadata_list.map do |d|
       attributes = d['attributes'].symbolize_keys
@@ -150,6 +150,11 @@ class Dataset
         metadata
       ]
     end]
+  end
+
+  def self.get_metadata_for_frontend(user_token, dataset_id)
+    metadata_list = Dataset.get_metadata_list_for_frontend(user_token, dataset_id)
+    metadata_list[dataset_id]
   end
 
   private
