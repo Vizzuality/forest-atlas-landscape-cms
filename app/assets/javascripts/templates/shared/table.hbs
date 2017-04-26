@@ -33,7 +33,7 @@
                     <span class="row-name">{{name}}</span>
                     <span class="row-content">
                       {{#if_eq name 'metadata'}}
-                        <button type="button" class="js-metadata-info" data-values="{{value}}">Info</button>
+                        <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}">Info</button>
                       {{else}}
                         {{#each_slice value ../../valuesPerCell}}
                           {{#if @last_sliced_item}}
