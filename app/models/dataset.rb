@@ -11,7 +11,7 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   API_PROPERTIES = [
-    :language, :description, :citation, :source
+    :language, :description, :citation, :source, :name, :application
   ]
 
   APPLICATION_PROPERTIES = [
