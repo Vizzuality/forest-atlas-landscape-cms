@@ -45,13 +45,24 @@
               // we copy the metadata into another column to display the info button
               infoButton = {
                 name: 'metadata',
-                value: row[key].value,
+                value: JSON.stringify(row[key].value),
                 visible: true
               };
 
+              var values = [];
+              if (row[key].value) {
+                values = Object.keys(row[key].value)
+                  .map(function (item) {
+                    return row[key].value[item];
+                  })
+                  .filter(function (item) {
+                    return item !== '';
+                  });
+              }
+
               return {
                 name: key,
-                value: row[key].value,
+                value: values,
                 searchable: row[key].searchable,
                 sortable: row[key].sortable,
                 visible: typeof row[key].visible !== 'undefined' ? row[key].visible : true

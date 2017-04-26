@@ -1,9 +1,13 @@
-<div class="c-table-modal">
+<div class="c-table-modal -no-padding">
   <h1>Metadata</h1>
 
-  <ul>
+  <div class="table-data">
+    {{log values}}
     {{#each values}}
-      <li>{{this}}</li>
+      <dl>
+        <dt>{{@key}}</dt>
+        <dd>{{this}}</dd>
+      </dl>
     {{/each}}
-  </ul>
+  </div>
 </div>

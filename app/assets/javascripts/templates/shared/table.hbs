@@ -29,12 +29,12 @@
                 {{#if html}}
                   <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
                 {{else}}
+                  {{#if_eq name 'metadata'}}
+                      <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}">Info</button>
+                  {{else}}
                   {{#is_array value}}
                     <span class="row-name">{{name}}</span>
                     <span class="row-content">
-                      {{#if_eq name 'metadata'}}
-                        <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}">Info</button>
-                      {{else}}
                         {{#each_slice value ../../valuesPerCell}}
                           {{#if @last_sliced_item}}
                             {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
@@ -48,7 +48,6 @@
                         {{else}}
                           –
                         {{/each_slice}}
-                      {{/if_eq}}
                     </span>
                   {{else}}
                     {{#if value}}
@@ -61,6 +60,7 @@
                       <span class="row-name">{{name}}</span><span class="row-content"> – </span>
                     {{/if}}
                   {{/is_array}}
+                  {{/if_eq}}
                 {{/if}}
               </td>
               {{/if_eq}}

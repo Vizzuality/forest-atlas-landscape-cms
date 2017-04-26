@@ -240,7 +240,7 @@
      */
     _onClickMetadataInfo: function (e) {
       var button = e.target;
-      var values = button.dataset.values.split(',');
+      var values = JSON.parse(button.dataset.values);
 
       var modal = new (App.View.ModalView.extend({
         render: function () {
