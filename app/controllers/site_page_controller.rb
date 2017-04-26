@@ -95,6 +95,9 @@ class SitePageController < ApplicationController
       gon.analysis_widgets = @setting.widgets.blank? ? nil : (JSON.parse @setting.widgets)
       # ... data
       gon.analysis_data = @setting.get_filtered_dataset
+      # ... metadata
+      @dataset_metadata = Dataset.get_metadata_for_frontend(session[:user_token], [@setting.dataset_id])
+      gon.metadata = @dataset_metadata[@setting.dataset_id]
       # ... last modification of the fields
       gon.analysis_timestamp = @setting.fields_last_modified
       # ... legend fields
