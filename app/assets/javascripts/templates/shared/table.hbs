@@ -29,8 +29,8 @@
                 {{#if html}}
                   <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
                 {{else}}
-                  {{#if_eq name 'metadata'}}
-                      <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}">Info</button>
+                  {{#if is_metadata}}
+                      <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}" data-title="{{title}}">Info</button>
                   {{else}}
                   {{#is_array value}}
                     <span class="row-name">{{name}}</span>
@@ -60,7 +60,7 @@
                       <span class="row-name">{{name}}</span><span class="row-content"> – </span>
                     {{/if}}
                   {{/is_array}}
-                  {{/if_eq}}
+                  {{/if}}
                 {{/if}}
               </td>
               {{/if_eq}}

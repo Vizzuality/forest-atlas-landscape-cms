@@ -44,7 +44,9 @@
             case /metadata/.test(key):
               // we copy the metadata into another column to display the info button
               infoButton = {
-                name: 'metadata',
+                name: '',
+                title: row.title && row.title.value,
+                is_metadata: true,
                 value: JSON.stringify(row[key].value),
                 visible: true
               };

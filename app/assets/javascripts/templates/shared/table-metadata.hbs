@@ -1,12 +1,18 @@
-<div class="c-table-modal -no-padding">
-  <h1>Metadata</h1>
-
+<div class="c-table-modal">
+  <h1>{{title}}</h1>
+  <p>{{values.description}}</p>
+  {{#unless values}}
+    <p>No additional information available.</p>
+  {{/unless}}
   <div class="table-data">
     {{#each values}}
-      <dl>
-        <dt>{{@key}}</dt>
-        <dd>{{this}}</dd>
-      </dl>
+      {{#if_eq @key "description"}}
+      {{else}}
+        <dl>
+          <dt>{{@key}}</dt>
+          <dd>{{this}}</dd>
+        </dl>
+      {{/if_eq}}
     {{/each}}
   </div>
 </div>
