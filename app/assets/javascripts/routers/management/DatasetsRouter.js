@@ -6,10 +6,10 @@
     parse: function (data) {
       var keys;
       if (data.length) keys = Object.keys(data[0]);
+      var infoButton;
 
       return data.map(function (row) {
         var res = {};
-
         res.row = keys.map(function (key) {
           switch (true) {
             case /tags/.test(key):
@@ -19,7 +19,8 @@
                   .filter(function (tag) { return tag.length; })
                   .join(', '),
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: true
               };
 
             case /status/.test(key):
@@ -27,7 +28,8 @@
                 name: key,
                 value: App.Helper.Utils.toTitleCase(row[key].value),
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: true
               };
 
             case /connector/.test(key):
@@ -35,14 +37,44 @@
                 name: key,
                 value: row[key].value.toUpperCase(),
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: true
+              };
+
+            case /metadata/.test(key):
+              // we copy the metadata into another column to display the info button
+              infoButton = {
+                name: '',
+                is_metadata: true,
+                value: JSON.stringify(row[key].value),
+                visible: true
+              };
+
+              var values = [];
+              if (row[key].value) {
+                values = Object.keys(row[key].value)
+                  .map(function (item) {
+                    return row[key].value[item];
+                  })
+                  .filter(function (item) {
+                    return item !== '';
+                  });
+              }
+
+              return {
+                name: key,
+                value: values,
+                searchable: row[key].searchable,
+                sortable: row[key].sortable,
+                visible: typeof row[key].visible !== 'undefined' ? row[key].visible : true
               };
 
             case /(enable|edit|delete)/.test(key):
               // eslint-disable-next-line no-shadow
               var res = {
                 name: null,
-                searchable: false
+                searchable: false,
+                visible: true
               };
 
               // We need extra attributes when making a put or delete request
@@ -69,10 +101,12 @@
                 name: key,
                 value: row[key].value,
                 searchable: row[key].searchable,
-                sortable: row[key].sortable
+                sortable: row[key].sortable,
+                visible: typeof row[key].visible !== 'undefined' ? row[key].visible : true
               };
           }
         });
+        res.row.push(infoButton);
 
         return res;
       });

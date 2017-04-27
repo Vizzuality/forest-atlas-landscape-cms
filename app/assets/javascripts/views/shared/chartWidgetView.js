@@ -4,6 +4,7 @@
   App.View.ChartWidgetView = Backbone.View.extend({
 
     template: HandlebarsTemplates['front/chart-widget'],
+    metadataModalTemplate: HandlebarsTemplates['shared/table-metadata'],
 
     defaults: {
       // Ratio between the height and the width (i.e. height = chartRatio * width)
@@ -375,6 +376,36 @@
     remove: function () {
       this.el.innerHTML = '';
     },
+    /**
+     * Render the info button that will show the metadata modal.
+     */
+    _renderInfoButton: function () {
+      var button = $('<button type="button" class="c-table-action-button -info js-metadata-info metadata-button"></button>');
+      var values = JSON.stringify(this.options.metadata);
+      button.attr('data-values', values);
+      this.$el.append(button);
+
+      this.$('.js-metadata-info').on('click', this._onClickMetadataInfo.bind(this));
+    },
+
+    /**
+     * Listener for the click on the "info" button
+     * @param {Event} e - event
+     */
+    _onClickMetadataInfo: function (e) {
+      var button = e.target;
+      var values = JSON.parse(button.dataset.values);
+      
+      var modal = new (App.View.ModalView.extend({
+        render: function () {
+          return this.metadataModalTemplate({
+            values: values
+          });
+        }.bind(this)
+      }))();
+
+      modal.open();
+    },
 
     render: function () {
       this._renderChart();
@@ -393,7 +424,9 @@
           this._renderToggleVisibilityButton();
         }
       }
-
+      if(this.options.displayMode !== 'dashboard' && this.options.metadata) {
+        this._renderInfoButton();
+      }
       return this.el;
     }
 

@@ -29,22 +29,29 @@
                 {{#if html}}
                   <span class="row-name">{{name}}</span><span class="row-content"> {{{html}}} </span>
                 {{else}}
+                  {{#if is_metadata}}
+                    {{#if_eq value "null"}}
+                      –
+                    {{else}}
+                      <button type="button" class="c-table-action-button -info js-metadata-info" data-values="{{value}}">Info</button>
+                    {{/if_eq}}
+                  {{else}}
                   {{#is_array value}}
                     <span class="row-name">{{name}}</span>
                     <span class="row-content">
-                      {{#each_slice value ../../valuesPerCell}}
-                        {{#if @last_sliced_item}}
-                          {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
-                        {{else}}
-                          {{#if @last_item}}
-                            {{this}}
+                        {{#each_slice value ../../valuesPerCell}}
+                          {{#if @last_sliced_item}}
+                            {{this}} <button type="button" class="more-button js-more" data-column="{{../name}}" data-values="{{../value}}">and more</button>
                           {{else}}
-                            {{this}},
+                            {{#if @last_item}}
+                              {{this}}
+                            {{else}}
+                              {{this}},
+                            {{/if}}
                           {{/if}}
-                        {{/if}}
-                      {{else}}
-                        –
-                      {{/each_slice}}
+                        {{else}}
+                          –
+                        {{/each_slice}}
                     </span>
                   {{else}}
                     {{#if value}}
@@ -57,6 +64,7 @@
                       <span class="row-name">{{name}}</span><span class="row-content"> – </span>
                     {{/if}}
                   {{/is_array}}
+                  {{/if}}
                 {{/if}}
               </td>
               {{/if_eq}}

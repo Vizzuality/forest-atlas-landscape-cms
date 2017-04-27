@@ -252,6 +252,7 @@
     }
 
     .widget-container {
+      position: relative;
       padding: 20px 20px 10px;
       border: 1px solid $color-13;
 
@@ -261,6 +262,11 @@
 
       .error {
         text-align: center;
+      }
+
+      .metadata-button {
+        position: absolute;
+        right: 60px;
       }
     }
 
