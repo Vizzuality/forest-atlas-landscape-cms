@@ -11,7 +11,7 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   API_PROPERTIES = [
-    :language, :description, :citation, :source
+    :language, :description, :citation, :source, :name, :application
   ]
 
   APPLICATION_PROPERTIES = [
@@ -118,6 +118,7 @@ class Dataset
     end
   end
 
+  # TODO: have a feeling this does not return the metadata object
   def get_metadata
     DatasetService.get_metadata self.id
   end
@@ -132,11 +133,29 @@ class Dataset
                           application, name, tags_array, legend, metadata
   end
 
-
+  # TODO: have a feeling this does not return the metadata object
   def self.get_metadata_list(dataset_ids)
     DatasetService.get_metadata_list(dataset_ids)
   end
 
+  def self.get_metadata_list_for_frontend(user_token, dataset_ids)
+    metadata_list = DatasetService.metadata_find_by_ids(user_token, dataset_ids)
+    Hash[metadata_list.map do |d|
+      attributes = d['attributes'].symbolize_keys
+      application_properties = attributes[:applicationProperties].try(:symbolize_keys)
+      metadata = attributes.slice(*Dataset::API_PROPERTIES)
+      metadata = metadata.merge(application_properties.slice(*Dataset::APPLICATION_PROPERTIES)) if application_properties.present?
+      [
+        attributes[:dataset],
+        metadata
+      ]
+    end]
+  end
+
+  def self.get_metadata_for_frontend(user_token, dataset_id)
+    metadata_list = Dataset.get_metadata_list_for_frontend(user_token, dataset_id)
+    metadata_list[dataset_id]
+  end
 
   private
   # Validates the dataset according to the current step

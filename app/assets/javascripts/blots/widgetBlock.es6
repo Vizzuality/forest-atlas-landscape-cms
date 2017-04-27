@@ -89,9 +89,12 @@ class WidgetBlot extends Embed {
       config = {
         type: null,
         x: null,
-        y: null
+        y: null,
+        xLabel: null,
+        yLabel: null
       };
     }
+    const meta = chart.metadata;
 
     // We render the widget
     this.widget = new App.View.ChartWidgetView({
@@ -102,7 +105,8 @@ class WidgetBlot extends Embed {
       columnY: config.y,
       xLabel: config.xLabel,
       yLabel: config.yLabel,
-      enableChartSelector: false
+      enableChartSelector: false,
+      metadata: meta
     });
 
     if (!this.editor.options.readOnly) {

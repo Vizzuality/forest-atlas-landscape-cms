@@ -21,7 +21,7 @@ $secondary-container-initial-width: 400px;
       margin: 45px auto 0;
     }
 
-    button {
+    .read-more {
       display: inline;
       padding: 0;
       border: 0;
@@ -33,6 +33,12 @@ $secondary-container-initial-width: 400px;
       cursor: pointer;
       -webkit-appearance: none;
       -moz-appearance: none;
+    }
+
+    .metadata-button {
+      &.-hidden {
+        display: none;
+      }
     }
 
     .full-description {

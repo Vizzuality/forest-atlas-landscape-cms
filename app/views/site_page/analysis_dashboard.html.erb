@@ -13,12 +13,14 @@
     <div class="description">
       <% if @site_page.description.length > 200 %>
         <%= @site_page.description[0, 200].strip + '…' %><br/>
-        <button type="button" class="js-read-more">Read more</button>
+        <button type="button" class="read-more js-read-more">Read more</button>
         <div class="full-description js-description">
           <%= @site_page.description %>
         </div>
+        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
       <% else %>
         <%= @site_page.description %>
+        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
       <% end %>
     </div>
     <div class="filters js-filters">

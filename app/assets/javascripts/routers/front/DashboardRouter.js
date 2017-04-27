@@ -67,7 +67,7 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-
+      this.metadataModalTemplate = HandlebarsTemplates['shared/table-metadata'];
       // Instantiate the common views here for the page, use the "routes" object to instantiate
       // per route views
       new App.View.HeaderView({
@@ -126,6 +126,13 @@
     _getDataset: function (options) {
       return ((!options || !options.unfiltered) && this.filteredDataset) || (window.gon && gon.analysisData.data) || [];
     },
+    /**
+     * Retrieve the dataset metadata provided by the dashboard
+     * @returns {object} metadata
+     */
+    _getMetadata: function () {
+      return gon && gon.metadata ? gon.metadata : null;
+    },
 
     /**
      * Retrieve the dashboard's version
@@ -149,6 +156,13 @@
     _initDescription: function () {
       var readModeBtn = document.querySelector('.js-read-more');
       if (readModeBtn) readModeBtn.addEventListener('click', this._openDescriptionModal.bind(this));
+      var meta = this._getMetadata();
+      var metaButton = document.querySelector('.js-metadata-info');
+      if (meta) {
+        metaButton.setAttribute('data-values', JSON.stringify(meta));
+        metaButton.addEventListener('click', this._onClickMetadataInfo.bind(this));
+        metaButton.classList.remove('-hidden');
+      }
     },
 
     /**
@@ -170,6 +184,25 @@
       }
 
       this.descriptionModal.open();
+    },
+
+    /**
+     * Listener for the click on the "info" button
+     * @param {Event} e - event
+     */
+    _onClickMetadataInfo: function (e) {
+      var button = e.target;
+      var values = JSON.parse(button.dataset.values);
+
+      var modal = new (App.View.ModalView.extend({
+        render: function () {
+          return this.metadataModalTemplate({
+            values: values
+          });
+        }.bind(this)
+      }))();
+
+      modal.open();
     },
 
     /**

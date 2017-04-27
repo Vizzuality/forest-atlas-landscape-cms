@@ -30,7 +30,8 @@
             return {
               name: cell.name,
               searchable: !!cell.searchable,
-              sortable: !!cell.sortable
+              sortable: !!cell.sortable,
+              visible: cell.visible !== 'undefined' ? cell.visible : true
             };
           });
       }
@@ -89,6 +90,7 @@
 
     template: HandlebarsTemplates['shared/table'],
     modalTemplate: HandlebarsTemplates['shared/table-modal'],
+    metadataModalTemplate: HandlebarsTemplates['shared/table-metadata'],
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
@@ -149,6 +151,8 @@
       this.$('.js-header').on('keydown', this._onKeydownHeader.bind(this));
 
       this.$('.js-more').on('click', this._onClickMore.bind(this));
+
+      this.$('.js-metadata-info').on('click', this._onClickMetadataInfo.bind(this));
 
       this.$('.js-results-per-page').on('change', this._onChangeResultsPerPage.bind(this));
 
@@ -222,6 +226,25 @@
         render: function () {
           return this.modalTemplate({
             columnName: columnName,
+            values: values
+          });
+        }.bind(this)
+      }))();
+
+      modal.open();
+    },
+
+    /**
+     * Listener for the click on the "info" button
+     * @param {Event} e - event
+     */
+    _onClickMetadataInfo: function (e) {
+      var button = e.target;
+      var values = JSON.parse(button.dataset.values);
+
+      var modal = new (App.View.ModalView.extend({
+        render: function () {
+          return this.metadataModalTemplate({
             values: values
           });
         }.bind(this)
@@ -416,10 +439,16 @@
 
       return this.options.collection.toJSON()
         .map(function (row, index) {
+          var rows = row.row.filter(function (column) {
+            return typeof column.visible !== 'undefined' ? column.visible : true;
+          });
           var enabled = row.enabled && row.enabled.value;
           // The rowIndex value is used for accessibility
           // The index needs to start at 2 because the header row is 1
-          return Object.assign({}, row.row, { rowIndex: index + 2, enabled: typeof enabled !== 'undefined' ? enabled : true });
+          return Object.assign({}, rows, {
+            rowIndex: index + 2,
+            enabled: typeof enabled !== 'undefined' ? enabled : true
+          });
         })
         .slice(start, end);
     },
@@ -430,6 +459,7 @@
       var headers;
       if (this.options.collection.length) {
         headers = this.options.headers.toJSON()
+          .filter(function (column) { return typeof column.visible !== 'undefined' ? column.visible : true; })
           .map(function (column) {
             var sort;
             if (column.name === sortColumn) {
