@@ -1,3 +1,5 @@
+- Fix issue on dataset/widget filter step.
+- Adds support for more datatypes in chart widgets.
 - Added metadata table modal to management section.
 - Added metadata table modal to open content widgets.
 - Added metadata table modal to analysis dashboards.
