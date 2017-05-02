@@ -1,3 +1,8 @@
+### 02 May 2017
+- 404 page when loading incorrect site slug
+- Include datasets registered for "PREP" app
+
+### 29 April 2017
 - Fix issue on dataset/widget filter step.
 - Adds support for more datatypes in chart widgets.
 - Added metadata table modal to management section.

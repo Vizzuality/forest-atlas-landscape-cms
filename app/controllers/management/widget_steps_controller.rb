@@ -160,7 +160,7 @@ class Management::WidgetStepsController < ManagementController
     end
 
     # Update the widget with the info saved on the session and sent by params
-    @widget.assign_attributes session[:widget][@widget_id] if session[:widget][@widget_id]
+    @widget.assign_attributes session[:widget][@widget_id] if session.present? and session[:widget].present? and session[:widget][@widget_id]
     if params[:widget] && widget_params
       @widget.assign_attributes widget_params.to_h
       if widget_params[:dataset_id]
