@@ -94,7 +94,7 @@ class Management::SitePagesController < ManagementController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_site
-    @site = Site.find_by({slug: params[:site_slug]})
+    @site = Site.find_by_slug!(params[:site_slug])
 
     if (@site.routes.any?)
       # We just want a valid URL for the site
