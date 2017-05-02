@@ -67,7 +67,13 @@ class DatasetService
       Rails.logger.warn "There was a problem with the response from the API: #{filteredRequest}"
       return {}
     else
-      return JSON.parse filteredRequest.body
+      result = JSON.parse filteredRequest.body
+      result['data'] = result['data'].collect do |elem|
+        elem.delete('_id')
+        elem
+      end
+
+      return result
     end
   end
 
