@@ -111,8 +111,11 @@ class Widget < ApplicationRecord
 
     if (result['data'].kind_of?(Array))
       count = result['data'].first.values.first
-    else
+    elsif (result['data'].is_a?(Hash))
       count = result['data'].values.first
+    else
+      Rails.logger.debug 'Widget.get_row_count - Expected hash or array, got ' + result.inspect
+      count = 0
     end
 
     return count
