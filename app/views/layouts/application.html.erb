@@ -23,7 +23,7 @@
   </script>
   <script type="text/javascript">
     window.liveSettings = {
-      api_key: 'f55e2d2ffd4748e5b062a1d54d5844f7',
+      api_key: '<%= @site_page.site.site_settings.transifex_api_key(@site_page.site_id).value || '' %>',
       detectlang: function () {
         var match = location.search.match(/\?(?:.*)?l=([a-z]{2})/);
         return (match && match.length) > 1 ? match[1]: '<%= @site_page.site.site_settings.default_site_language(@site_page.site_id).value || 'fr' %>';

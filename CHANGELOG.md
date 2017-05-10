@@ -1,3 +1,5 @@
+- Add configurable transifex api key to site settings
+
 ### 02 May 2017
 - 404 page when loading incorrect site slug
 - Include datasets registered for "PREP" app

@@ -73,6 +73,7 @@ class Admin::SiteStepsController < AdminController
         @translate_spanish = @site.site_settings.where(name: 'translate_spanish').first
         @translate_french = @site.site_settings.where(name: 'translate_french').first
         @translate_georgian = @site.site_settings.where(name: 'translate_georgian').first
+        @transifex_api_key = @site.site_settings.where(name: 'transifex_api_key').first
       end
     end
     render_wizard
@@ -250,7 +251,8 @@ class Admin::SiteStepsController < AdminController
           :default_site_language,
           :translate_english, :translate_french,
           :translate_spanish, :translate_georgian,
-          :pre_footer, :analytics_key, :keywords, :contact_email_address
+          :pre_footer, :analytics_key, :keywords, :contact_email_address,
+          :transifex_api_key
         ]
       )
   end
