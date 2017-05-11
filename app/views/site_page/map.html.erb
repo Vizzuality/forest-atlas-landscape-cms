@@ -2,6 +2,7 @@
   class="tundra"
 <% end %>
 
+
 <svg class="hidden">
   <symbol id="shape-close" viewbox="0 0 25 25">
     <title>Close</title>
@@ -200,28 +201,34 @@
   </symbol>
 </svg>
 
-<div id="root"></div><div id="layer-modal" class="modal-wrapper hidden"></div><div id="share-modal" class="modal-wrapper hidden"></div>
+<div id="root"></div>
+<div id="share-modal" class="modal-wrapper hidden"></div>
 
 <script type="text/javascript">
   window.route = 'Map';
 </script>
 
 <% content_for :external_js do %>
-    <script id="lucas" src="//alpha.blueraster.io.s3.amazonaws.com/gfw-mapbuilder/library-load/js/library.js"></script>
+    <script id="library-load" src="http://alpha.blueraster.io.s3.amazonaws.com/gfw-mapbuilder/library-load-dist/<%= @site_page.content['version'] || '1.1.10' %>.js"></script>
+
     <script>
+      var mapDatabaseConfig = JSON.parse('<%= @site_page.content.nil? ? '{}' : @site_page.content['settings'].squish.gsub("'", %q(\\\')).html_safe %>')
+      var mapConfig = Object.assign(mapDatabaseConfig, {
+        language: 'en',
+        title: '<%= @site_page.site.name %>',
+        labels: {
+          en: {
+            title: '<%= @site_page.site.name %>',
+            subtitle: '<%= @site_page.description %>'
+          }
+        }
+      });
+
       var ll = new MapBuilder({
         el: 'root', //We need a div ID, not a class
-        config: {
-          language: window.liveSettings.detectlang(),
-          title: '<%= @site_page.site.name %>',
-          labels: {
-            en: {
-              title: '<%= @site_page.name %>',
-              subtitle: '<%= @site_page.description %>'
-            }
-          }
-        },
-        version: '<%= @site_page.content['version'] || '1.1.10' %>'
+        config: mapConfig,
+        version: '<%= @site_page.content['version'] || '1.1.10' %>'//,
+        //base: ""
       });
     </script>
 <% end %>
