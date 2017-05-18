@@ -1,3 +1,6 @@
+
+
+### 18 May 2017
 - Use ID as slug as fallback
 - Add configurable transifex api key to site settings
 
