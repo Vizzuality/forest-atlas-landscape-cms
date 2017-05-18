@@ -93,7 +93,7 @@ class Site < ApplicationRecord
   end
 
   def handle_non_compliant_slugs
-    return unless self.slug.empty?
+    return unless self.slug.blank?
 
     write_attribute(:slug, self.id)
 
