@@ -95,9 +95,7 @@ class Site < ApplicationRecord
   def handle_non_compliant_slugs
     return unless self.slug.blank?
 
-    write_attribute(:slug, self.id)
-
-    self.save!(validate: false)
+    update_attribute(:slug, self.id)
   end
 
   def root
