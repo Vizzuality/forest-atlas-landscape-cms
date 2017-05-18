@@ -26,6 +26,7 @@ gem 'gon'
 gem 'wicked' # Multi-steps form
 
 gem 'faraday', '~> 0.9.2'
+gem 'faraday_middleware', '~> 0.11.0.1'
 
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'

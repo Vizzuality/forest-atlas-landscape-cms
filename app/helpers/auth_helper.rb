@@ -18,9 +18,10 @@ module AuthHelper
 
   def ensure_logged_in
     connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
+      faraday.use FaradayMiddleware::FollowRedirects
       faraday.request :url_encoded # form-encode POST params
-      faraday.response :logger # log requests to STDOUT
-      faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
+      faraday.response :logger # log requests to STDOUThttps://github.com/tiagojsag/githooks
+      faraday.adapter :net_http
     end
     connect.authorization :Bearer, session[:user_token]
     response = connect.get('/auth/check-logged')
