@@ -45,6 +45,7 @@ class Site < ApplicationRecord
   before_save :create_default_context
   before_save :update_default_context
   after_create :create_context
+  after_create :handle_non_compliant_slugs
   after_save :update_routes
   after_save :apply_settings
   after_create :create_template_content
@@ -85,15 +86,16 @@ class Site < ApplicationRecord
   def create_context
     return nil unless self.contexts.empty?
 
-    #context = Context.new({name: self.name})
-    #context.sites << self
-    #context.save!
-
-
     context = Context.new({name: self.name})
     context.save!(validate: false)
     #context = Context.create!({name: self.name})
     self.context_sites.create(context_id: context.id, is_site_default_context: true)
+  end
+
+  def handle_non_compliant_slugs
+    return unless self.slug.blank?
+
+    update_attribute(:slug, self.id)
   end
 
   def root
