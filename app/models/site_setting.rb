@@ -28,7 +28,7 @@ class SiteSetting < ApplicationRecord
     default_site_language
     translate_english translate_spanish translate_french translate_georgian
     pre_footer analytics_key keywords contact_email_address
-    hosting_organization
+    hosting_organization transifex_api_key
   ]
   MAX_COLORS = 5
 
@@ -119,6 +119,10 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'hosting_organization', site_id: site_id)
   end
 
+  def self.transifex_api_key(site_id)
+    SiteSetting.find_by(name: 'transifex_api_key', site_id: site_id)
+  end
+
   def flag_colors
     value.split(' ')
   end
@@ -158,6 +162,7 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'hosting_organization', value: '', position: 14)
       site.site_settings.new(name: 'default_site_language', value: 'fr', position: 15)
       site.site_settings.new(name: 'translate_georgian', value: '1', position: 16)
+      site.site_settings.new(name: 'transifex_api_key', value: '', position: 17)
     end
   end
 

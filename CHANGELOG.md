@@ -1,3 +1,5 @@
+- Add configurable transifex api key to site settings
+
 ### 02 May 2017
 - Hide _id field from datasets
 - 404 page when loading incorrect site slug

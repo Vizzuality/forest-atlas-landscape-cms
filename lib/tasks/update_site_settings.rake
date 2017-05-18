@@ -79,6 +79,10 @@ namespace :db do
               site.site_settings.create!(name: 'default_site_language', value: 'en', position: 15)
               puts '...... Added default_site_language'
             end
+            unless site.site_settings.exists?(name: 'transifex_api_key')
+              site.site_settings.create!(name: 'transifex_api_key', value: '', position: 16)
+              puts '...... Added transifex_api_key'
+            end
             puts "... Finished creation for site #{site.name}"
             puts ''
           end
