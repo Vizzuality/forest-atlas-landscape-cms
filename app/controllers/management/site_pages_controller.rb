@@ -9,7 +9,6 @@ class Management::SitePagesController < ManagementController
   def index
     @pages = SitePage.joins(:site)
                .where(sites: {slug: params[:site_slug]})
-               .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
     publisher = (current_user.roles.include? UserType::PUBLISHER)
