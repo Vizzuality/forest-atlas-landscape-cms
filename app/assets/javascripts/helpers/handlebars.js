@@ -9,7 +9,7 @@ Handlebars.registerHelper('if_eq', function (a, b, opts) {
   };
 
   if (a === b || (b === null && isNullObject(a))) return opts.fn(this);
-  else return opts.inverse(this);
+  return opts.inverse(this);
 });
 
 /**
@@ -93,25 +93,25 @@ Handlebars.registerHelper('format_date', function (date) {
 /**
  * Math helper
  */
-Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+Handlebars.registerHelper('math', function (lvalue, operator, rvalue, options) {
   var left = parseFloat(lvalue);
   var right = parseFloat(rvalue);
   if (isNaN(left) || isNaN(right)) {
     return {
-      "+": lvalue,
-      "-": lvalue,
-      "*": lvalue,
-      "/": lvalue,
-      "%": lvalue
+      '+': lvalue,
+      '-': lvalue,
+      '*': lvalue,
+      '/': lvalue,
+      '%': lvalue
     }[operator];
   }
 
   return {
-    "+": left + right,
-    "-": left - right,
-    "*": left * right,
-    "/": left / right,
-    "%": left % right
+    '+': left + right,
+    '-': left - right,
+    '*': left * right,
+    '/': left / right,
+    '%': left % right
   }[operator];
 });
 /**
@@ -120,4 +120,17 @@ Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
 Handlebars.registerHelper('safeVal', function (value, safeValue) {
   var out = JSON.parse(value) || safeValue;
   return new Handlebars.SafeString(out);
+});
+
+/**
+ * humanize helper
+ */
+Handlebars.registerHelper('humanize', function (value) {
+  return value
+    .replace(/_/g, ' ')
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/(\w+)/g, function (match) {
+      return match.charAt(0).toUpperCase() + match.slice(1);
+    })
+    .replace(/  +/g, ' ');
 });
