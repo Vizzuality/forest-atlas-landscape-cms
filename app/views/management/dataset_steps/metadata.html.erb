@@ -18,6 +18,50 @@
 
       <div class="inputs-container">
         <div>
+          <%= f.label :subtitle, for: 'dataset_metadata_subtitle' %>
+          <%= text_field_tag 'dataset[metadata][subtitle]', f.object.metadata[:subtitle] %>
+        </div>
+        <div>
+          <%= f.label :function, for: 'dataset_metadata_function' %>
+          <%= text_field_tag 'dataset[metadata][function]', f.object.metadata[:function] %>
+        </div>
+        <div>
+          <%= f.label :resolution, for: 'dataset_metadata_resolution' %>
+          <%= text_field_tag 'dataset[metadata][resolution]', f.object.metadata[:resolution] %>
+        </div>
+        <div>
+          <%= f.label :geographic_coverage, for: 'dataset_metadata_geographic_coverage' %>
+          <%= text_field_tag 'dataset[metadata][geographic_coverage]', f.object.metadata[:geographic_coverage] %>
+        </div>
+        <div>
+          <%= f.label :source, for: 'dataset_metadata_source' %>
+          <%= text_field_tag 'dataset[metadata][source]', f.object.metadata[:source] %>
+        </div>
+        <div>
+          <%= f.label :frequency_of_updates, for: 'dataset_metadata_frequency_of_updates' %>
+          <%= text_field_tag 'dataset[metadata][frequency_of_updates]', f.object.metadata[:frequency_of_updates] %>
+        </div>
+        <div>
+          <%= f.label :date_of_content, for: 'dataset_metadata_date_of_content' %>
+          <%= text_field_tag 'dataset[metadata][date_of_content]', f.object.metadata[:date_of_content] %>
+        </div>
+        <div>
+          <%= f.label :cautions, for: 'dataset_metadata_cautions' %>
+          <%= text_field_tag 'dataset[metadata][cautions]', f.object.metadata[:cautions] %>
+        </div>
+        <div>
+          <%= f.label :citation, for: 'dataset_metadata_citation' %>
+          <%= text_field_tag 'dataset[metadata][citation]', f.object.metadata[:citation] %>
+        </div>
+        <div>
+          <%= f.label :other, for: 'dataset_metadata_other' %>
+          <%= text_field_tag 'dataset[metadata][other]', f.object.metadata[:other] %>
+        </div>
+
+
+
+
+        <div>
           <%= f.label :language, for: 'dataset_metadata_language' %>
           <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language] %>
         </div>
@@ -26,19 +70,37 @@
           <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
         </div>
         <div>
-          <%= f.label :citation, for: 'dataset_metadata_citation' %>
-          <%= text_field_tag 'dataset[metadata][citation]', f.object.metadata[:citation] %>
+          <%= f.label :agol_id, for: 'dataset_metadata_agol_id' %>
+          <%= text_field_tag 'dataset[metadata][agol_id]', f.object.metadata[:agol_id] %>
         </div>
         <div>
-          <%= f.label :source, for: 'dataset_metadata_source' %>
-          <%= text_field_tag 'dataset[metadata][source]', f.object.metadata[:source] %>
+          <%= f.label :agol_link, for: 'dataset_metadata_agol_link' %>
+          <%= text_field_tag 'dataset[metadata][agol_link]', f.object.metadata[:agol_link] %>
         </div>
-        <% Dataset::APPLICATION_PROPERTIES.each do |ap| %>
-          <div>
-            <%= f.label ap, for: "dataset_metadata_#{ap}" %>
-            <%= text_field_tag "dataset[metadata][#{ap}]", f.object.metadata[ap] %>
-          </div>
-        <% end %>
+        <div>
+          <%= f.label :amazon_link, for: 'dataset_metadata_amazon_link' %>
+          <%= text_field_tag 'dataset[metadata][amazon_link]', f.object.metadata[:amazon_link] %>
+        </div>
+        <div>
+          <%= f.label :sql_api, for: 'dataset_metadata_sql_api' %>
+          <%= text_field_tag 'dataset[metadata][sql_api]', f.object.metadata[:sql_api] %>
+        </div>
+        <div>
+          <%= f.label :carto_link, for: 'dataset_metadata_carto_link' %>
+          <%= text_field_tag 'dataset[metadata][carto_link]', f.object.metadata[:carto_link] %>
+        </div>
+        <div>
+          <%= f.label :map_service, for: 'dataset_metadata_map_service' %>
+          <%= text_field_tag 'dataset[metadata][map_service]', f.object.metadata[:map_service] %>
+        </div>
+        <div>
+          <%= f.label :download_data, for: 'dataset_metadata_download_data' %>
+          <%= text_field_tag 'dataset[metadata][download_data]', f.object.metadata[:download_data] %>
+        </div>
+        <div>
+          <%= f.label :learn_more, for: 'dataset_metadata_learn_more' %>
+          <%= text_field_tag 'dataset[metadata][learn_more]', f.object.metadata[:learn_more] %>
+        </div>
       </div>
     </div>
   </div>
