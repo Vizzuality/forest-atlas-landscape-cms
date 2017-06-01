@@ -11,18 +11,22 @@ class Management::DatasetsController < ManagementController
   def index
     @dataset_metadata = Dataset.get_metadata_list_for_frontend(session[:user_token], @datasets.map(&:id))
 
-    gon.datasets = @datasets.map do |dataset|
-      {
+    gon.datasets = [];
+
+    @datasets.each do |dataset|
+      function = @dataset_metadata[dataset.id][:function] if @dataset_metadata[dataset.id].present?
+      gon.datasets.push({
         'title' => {'value' => dataset.name, 'searchable' => true, 'sortable' => true},
         'contexts' => {'value' => ContextDataset.where(dataset_id: dataset.id).map{|ds| ds.context.name}.join(', '), 'searchable' => true, 'sortable' => false},
         'connector' => {'value' => dataset.provider, 'searchable' => true, 'sortable' => true},
+        'function' => {'value' => function, 'searchable' => true, 'sortable' => false},
         'tags' => {'value' => dataset.tags, 'searchable' => true, 'sortable' => false},
         'status' => {'value' => dataset.status, 'searchable' => true, 'sortable' => true},
-        'metadata' => {'value' => @dataset_metadata[dataset.id], 'searchable' => true, 'sortable' => false, 'visible' => false}
+        'metadata' => {'value' => @dataset_metadata[dataset.id], 'searchable' => false, 'sortable' => false, 'visible' => false}
         # TODO: once both actions work properly, restore buttons
         # 'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, 'title'), 'method' => 'get'},
         # 'delete' => {'value' => management_site_dataset_path(@site.slug, dataset.id), 'method' => 'delete'}
-      }
+      })
     end
   end
 

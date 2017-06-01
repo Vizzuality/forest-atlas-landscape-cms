@@ -18,6 +18,12 @@
 
       <div class="inputs-container">
         <div>
+          <%= f.label :language, for: 'dataset_metadata_language', :class => 'required' %>
+          <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language], :required => true %>
+        </div>
+
+
+        <div>
           <%= f.label :subtitle, for: 'dataset_metadata_subtitle' %>
           <%= text_field_tag 'dataset[metadata][subtitle]', f.object.metadata[:subtitle] %>
         </div>
@@ -61,10 +67,6 @@
 
 
 
-        <div>
-          <%= f.label :language, for: 'dataset_metadata_language' %>
-          <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language] %>
-        </div>
         <div>
           <%= f.label :description, for: 'dataset_metadata_description' %>
           <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
