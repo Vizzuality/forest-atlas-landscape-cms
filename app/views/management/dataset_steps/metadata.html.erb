@@ -22,6 +22,11 @@
           <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language], :required => true %>
         </div>
 
+        <div>
+          <%= f.label :description, for: 'dataset_metadata_description' %>
+          <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
+        </div>
+
 
         <div>
           <%= f.label :subtitle, for: 'dataset_metadata_subtitle' %>
@@ -66,10 +71,25 @@
 
 
 
-
         <div>
-          <%= f.label :description, for: 'dataset_metadata_description' %>
-          <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
+          <%= f.label :download_data, for: 'dataset_metadata_download_data' %>
+          <%= text_field_tag 'dataset[metadata][download_data]', f.object.metadata[:download_data] %>
+        </div>
+        <div>
+          <%= f.label :learn_more, for: 'dataset_metadata_learn_more' %>
+          <%= text_field_tag 'dataset[metadata][learn_more]', f.object.metadata[:learn_more] %>
+        </div>
+        <div>
+          <%= f.label :amazon_link, for: 'dataset_metadata_amazon_link' %>
+          <%= text_field_tag 'dataset[metadata][amazon_link]', f.object.metadata[:amazon_link] %>
+        </div>
+        <div>
+          <%= f.label :map_service, for: 'dataset_metadata_map_service' %>
+          <%= text_field_tag 'dataset[metadata][map_service]', f.object.metadata[:map_service] %>
+        </div>
+        <div>
+          <%= f.label :sql_api, for: 'dataset_metadata_sql_api' %>
+          <%= text_field_tag 'dataset[metadata][sql_api]', f.object.metadata[:sql_api] %>
         </div>
         <div>
           <%= f.label :agol_id, for: 'dataset_metadata_agol_id' %>
@@ -80,28 +100,8 @@
           <%= text_field_tag 'dataset[metadata][agol_link]', f.object.metadata[:agol_link] %>
         </div>
         <div>
-          <%= f.label :amazon_link, for: 'dataset_metadata_amazon_link' %>
-          <%= text_field_tag 'dataset[metadata][amazon_link]', f.object.metadata[:amazon_link] %>
-        </div>
-        <div>
-          <%= f.label :sql_api, for: 'dataset_metadata_sql_api' %>
-          <%= text_field_tag 'dataset[metadata][sql_api]', f.object.metadata[:sql_api] %>
-        </div>
-        <div>
           <%= f.label :carto_link, for: 'dataset_metadata_carto_link' %>
           <%= text_field_tag 'dataset[metadata][carto_link]', f.object.metadata[:carto_link] %>
-        </div>
-        <div>
-          <%= f.label :map_service, for: 'dataset_metadata_map_service' %>
-          <%= text_field_tag 'dataset[metadata][map_service]', f.object.metadata[:map_service] %>
-        </div>
-        <div>
-          <%= f.label :download_data, for: 'dataset_metadata_download_data' %>
-          <%= text_field_tag 'dataset[metadata][download_data]', f.object.metadata[:download_data] %>
-        </div>
-        <div>
-          <%= f.label :learn_more, for: 'dataset_metadata_learn_more' %>
-          <%= text_field_tag 'dataset[metadata][learn_more]', f.object.metadata[:learn_more] %>
         </div>
       </div>
     </div>
