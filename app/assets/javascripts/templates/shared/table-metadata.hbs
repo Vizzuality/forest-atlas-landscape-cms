@@ -8,7 +8,7 @@
         {{#if_eq @key "name"}}
         {{else}}
           <dl>
-            <dt>{{@key}}</dt>
+            <dt>{{humanize @key}}</dt>
             <dd>{{this}}</dd>
           </dl>
         {{/if_eq}}
