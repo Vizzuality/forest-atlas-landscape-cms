@@ -42,8 +42,10 @@
                     <span>Select file</span>
                   </div>
                 <% end %>
-                <div class="restrictions js-restrictions">
-                  Max. size: 1MB
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Max. size: 1MB
+                  </div>
                 </div>
               </div>
 
@@ -64,9 +66,11 @@
                     <span>Select file</span>
                   </div>
                 <% end %>
-                <div class="restrictions js-restrictions">
-                  Recommended dimensions: 292x292<br />
-                  Max. size: 1MB
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Recommended dimensions: 292x292<br />
+                    Max. size: 1MB
+                  </div>
                 </div>
               </div>
               <% unless @site.site_template.name == 'Forest Atlas' %>
