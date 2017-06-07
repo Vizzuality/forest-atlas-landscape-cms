@@ -1,4 +1,6 @@
 
+- Reorder dataset metadata fields
+- Configure dataset metadata fields for sorting
 - Fix issue preventing images thumbnails from being displayed in site settings
 
 ### 30 May 2017
