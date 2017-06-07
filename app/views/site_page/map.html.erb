@@ -209,7 +209,7 @@
 </script>
 
 <% content_for :external_js do %>
-    <script id="library-load" src="http://wri-sites.s3.amazonaws.com/gfw-mapbuilder.org/library-releases/<%= @site_page.content['version'] || '1.1.10' %>.js"></script>
+    <script id="library-load" src="http://wri-sites.s3.amazonaws.com/gfw-mapbuilder.org/library-releases/<%= @site_page.content['version'] || '1.1.11' %>.js"></script>
 
     <script>
       var mapDatabaseConfig = JSON.parse('<%= @site_page.content.nil? ? '{}' : @site_page.content['settings'].squish.gsub("'", %q(\\\')).html_safe %>')
@@ -227,7 +227,7 @@
       var ll = new MapBuilder({
         el: 'root', //We need a div ID, not a class
         config: mapConfig,
-        version: '<%= @site_page.content['version'] || '1.1.10' %>'//,
+        version: '<%= @site_page.content['version'] || '1.1.11' %>'//,
         //base: ""
       });
     </script>
