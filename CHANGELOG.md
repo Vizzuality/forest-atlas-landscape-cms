@@ -1,4 +1,6 @@
 
+- Fix issue preventing images thumbnails from being displayed in site settings
+
 ### 30 May 2017
 - Fix issue where site page listing would not show all pages
 
