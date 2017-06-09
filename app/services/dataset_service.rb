@@ -165,6 +165,7 @@ class DatasetService
             field[:values] = data.map{|x| x[field[:name]]}
           end
       end
+      field[:type] = DatasetFieldsHelper.parse(field[:type])
     end
     fields
   end
