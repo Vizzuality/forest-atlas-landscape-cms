@@ -69,7 +69,7 @@
                 visible: typeof row[key].visible !== 'undefined' ? row[key].visible : true
               };
 
-            case /(enable|edit|delete)/.test(key):
+            case /(enable|edit|delete|edit_metadata)/.test(key):
               // eslint-disable-next-line no-shadow
               var res = {
                 name: null,
