@@ -118,11 +118,38 @@ class Dataset
     end
   end
 
-  # TODO: have a feeling this does not return the metadata object
   def get_metadata
     DatasetService.get_metadata self.id
   end
 
+  def self.find_with_metadata(id)
+    properties = DatasetService.get_metadata(id)
+    return nil if properties.empty? || (data = properties['data']).empty?
+    dataset = Dataset.new
+    attributes = {id: id}
+    data_attributes = data['attributes'] && data['attributes'].symbolize_keys
+    if data_attributes
+      attributes = attributes.merge(data_attributes.except(:metadata))
+      if data_attributes[:metadata]
+        # select metadata by current locale, otherwise first available
+        metadata = data_attributes[:metadata].find do |md|
+          md['attributes']['language'] == I18n.locale.to_s
+        end
+        metadata ||= data_attributes[:metadata].first
+        if metadata['attributes']
+          metadata_attributes = metadata['attributes'].symbolize_keys
+          if metadata_attributes[:applicationProperties]
+            metadata_attributes = metadata_attributes.merge(
+              metadata_attributes[:applicationProperties].symbolize_keys
+            )
+          end
+          attributes = attributes.merge({metadata: metadata_attributes})
+        end
+      end
+    end
+    dataset.set_attributes(attributes)
+    dataset
+  end
 
   # Uploads the dataset to the API
   # Params:
@@ -131,6 +158,13 @@ class Dataset
     tags_array = tags && tags.split(',') || []
     DatasetService.upload token, type, provider, connector_url, data_path,
                           application, name, tags_array, legend, metadata
+  end
+
+  def update_metadata(token)
+    tags_array = tags && tags.split(',') || []
+    DatasetService.update_metadata(
+      token, id, 'forest-atlas', name, tags_array, metadata
+    )
   end
 
   # TODO: have a feeling this does not return the metadata object

@@ -7,11 +7,10 @@
   </div>
 </div>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
-<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+<%= form_for @dataset, url: update_metadata_management_site_dataset_url(@site.slug, @dataset.id), method: :put do |f| %>
   <%= render partial: 'management/datasets/metadata_form', locals: {f: f} %>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, no_continue: true, cancel: management_site_datasets_path(@site.slug)} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @dataset } %>
