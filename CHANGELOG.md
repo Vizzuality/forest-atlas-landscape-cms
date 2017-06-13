@@ -2,6 +2,7 @@
 - Reorder dataset metadata fields
 - Configure dataset metadata fields for sorting
 - Fix issue preventing images thumbnails from being displayed in site settings
+- Widget filters for arcgis datasets: fix retrieving count of rows & fix displaying value dropdowns
 - Allow editing metadata for existing datasets from within the CMS
 
 ### 30 May 2017

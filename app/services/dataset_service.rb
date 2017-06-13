@@ -69,7 +69,7 @@ class DatasetService
     else
       result = JSON.parse filteredRequest.body
       result['data'] = result['data'].collect do |elem|
-        elem.delete('_id')
+        elem.delete('_id') if elem.is_a?(Hash)
         elem
       end
 
@@ -165,6 +165,7 @@ class DatasetService
             field[:values] = data.map{|x| x[field[:name]]}
           end
       end
+      field[:type] = DatasetFieldsHelper.parse(field[:type])
     end
     fields
   end
