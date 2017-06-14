@@ -1,4 +1,4 @@
-
+### 14 June 2017
 - Reorder dataset metadata fields
 - Configure dataset metadata fields for sorting
 - Fix issue preventing images thumbnails from being displayed in site settings
