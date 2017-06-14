@@ -136,7 +136,7 @@ class Dataset
           md['attributes']['language'] == I18n.locale.to_s
         end
         metadata ||= data_attributes[:metadata].first
-        if metadata['attributes']
+        if metadata.present? and metadata['attributes']
           metadata_attributes = metadata['attributes'].symbolize_keys
           if metadata_attributes[:applicationProperties]
             metadata_attributes = metadata_attributes.merge(
