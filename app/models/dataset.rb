@@ -130,7 +130,7 @@ class Dataset
     data_attributes = data['attributes'] && data['attributes'].symbolize_keys
     if data_attributes
       attributes = attributes.merge(data_attributes.except(:metadata))
-      if data_attributes[:metadata]
+      if data_attributes[:metadata] && data_attributes[:metadata].any?
         # select metadata by current locale, otherwise first available
         metadata = data_attributes[:metadata].find do |md|
           md['attributes']['language'] == I18n.locale.to_s
