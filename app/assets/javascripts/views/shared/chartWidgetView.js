@@ -36,7 +36,7 @@
       this.options = Object.assign({}, this.defaults, settings);
       if (this.options.data.length) this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
       this._setListeners();
-
+      this._rendering = false;
       // We pre-render the component with its template
       this.el.innerHTML = this.template();
       this.chartContainer = this.el.querySelector('.js-chart');
@@ -48,6 +48,24 @@
      */
     _setListeners: function () {
       window.addEventListener('resize', _.debounce(this._onResize.bind(this), 150));
+    },
+
+    _setRendering: function (rendering) {
+      this._rendering = rendering;
+      var chart = this.el.querySelector('.js-chart');
+      if (this._rendering) {
+        chart.classList.add('c-loading-spinner');
+        chart.classList.add('-full-size');
+        chart.classList.add('-bg');
+        chart.classList.add('-blank');
+      } else {
+        setTimeout(function () {
+          chart.classList.remove('c-loading-spinner');
+          chart.classList.remove('-full-size');
+          chart.classList.remove('-bg');
+          chart.classList.remove('-blank');
+        }, 500);
+      }
     },
 
     /**
@@ -191,42 +209,44 @@
      * Create the chart and append it to the DOM
      */
     _renderChart: function () {
-      // The widget toolbox could be non-assigned if the view has been instantiated
-      // with no data
-      if (this.options.data.length && !this.widgetToolbox) {
-        this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
+      if (!this._rendering) {
+        this._setRendering(true);
+        // The widget toolbox could be non-assigned if the view has been instantiated
+        // with no data
+        if (this.options.data.length && !this.widgetToolbox) {
+          this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
+        }
+        vg.parse
+          .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
+            if (error) {
+              App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
+              return;
+            }
+            this.chart = chart({
+              el: this.chartContainer,
+              // By using the SVG renderer, we give the client the possibility to
+              // translate the text contained in the charts
+              renderer: 'svg'
+            }).update();
+            console.log('hey' + Date.now());
+            this._setRendering(false);
+          }.bind(this));
+        // We don't want to trigger anything if the dataset is empty
+        if (!this.options.data.length) return;
+        // We save the state of the widget each time we render as it can be the
+        // consequence of a change in the configuration
+        // NOTE: We need to make sure in case the view hasn't been instantiated with
+        // a chart configuration that it's set by the toolbox before triggering
+        this.trigger('state:change', {
+          type: 'chart',
+          chart: this.options.chart,
+          x: this.options.columnX,
+          y: this.options.columnY,
+          xLabel: this.options.xLabel,
+          yLabel: this.options.yLabel,
+          visible: this.options.visible
+        });
       }
-
-      vg.parse
-        .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
-          if (error) {
-            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
-            return;
-          }
-          this.chart = chart({
-            el: this.chartContainer,
-            // By using the SVG renderer, we give the client the possibility to
-            // translate the text contained in the charts
-            renderer: 'svg'
-          }).update();
-        }.bind(this));
-
-      // We don't want to trigger anything if the dataset is empty
-      if (!this.options.data.length) return;
-
-      // We save the state of the widget each time we render as it can be the
-      // consequence of a change in the configuration
-      // NOTE: We need to make sure in case the view hasn't been instantiated with
-      // a chart configuration that it's set by the toolbox before triggering
-      this.trigger('state:change', {
-        type: 'chart',
-        chart: this.options.chart,
-        x: this.options.columnX,
-        y: this.options.columnY,
-        xLabel: this.options.xLabel,
-        yLabel: this.options.yLabel,
-        visible: this.options.visible
-      });
     },
 
     /**
@@ -395,7 +415,7 @@
     _onClickMetadataInfo: function (e) {
       var button = e.target;
       var values = JSON.parse(button.dataset.values);
-      
+
       var modal = new (App.View.ModalView.extend({
         render: function () {
           return this.metadataModalTemplate({

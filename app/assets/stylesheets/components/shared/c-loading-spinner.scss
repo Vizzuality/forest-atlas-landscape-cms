@@ -28,6 +28,17 @@ $spinner-velocity: 0.6s;
       z-index: 2;
       background-color: rgba($spinner-bg-color, 0.2);
     }
+
+    &.-blank {
+      &::before {
+        border: 1px solid $color-13;
+        border-radius: 4px;
+        background-color: $color-3;
+      }
+      &::after {
+        z-index: 2;
+      }
+    }
   }
 
   &::after {
