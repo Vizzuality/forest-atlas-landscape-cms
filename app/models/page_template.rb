@@ -25,7 +25,7 @@ class PageTemplate < Page
 
   def render_terms_of_service_template(site)
     template = File.read('lib/assets/terms_template.json.erb')
-    hosting_organization = SiteSetting.hosting_organization(site.id).value ||
+    hosting_organization = SiteSetting.hosting_organization(site.id).try(:value) ||
       '[HOSTING ORGANIZATION]'
     result = TemplateRenderer.render(
       template,
