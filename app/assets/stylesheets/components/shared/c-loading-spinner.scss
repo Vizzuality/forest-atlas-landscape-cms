@@ -48,6 +48,16 @@ $spinner-velocity: 0.6s;
   &.-big::after {
     border-width: $spinner-width * 2;
   }
+
+  &.-btn {
+    color: transparent;
+    pointer-events: none;
+    outline: 0;
+    &::after {
+      border-top-color: $color-2;
+      border-right-color: $color-2;
+    }
+  }
 }
 
 @keyframes rotate {
