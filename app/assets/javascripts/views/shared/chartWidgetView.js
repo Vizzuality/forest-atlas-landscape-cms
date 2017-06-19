@@ -216,24 +216,25 @@
         if (this.options.data.length && !this.widgetToolbox) {
           this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
         }
-        vg.parse
-          .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
-            if (error) {
-              App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
-              return;
-            }
-            this.chart = chart({
-              el: this.chartContainer,
-              // By using the SVG renderer, we give the client the possibility to
-              // translate the text contained in the charts
-              renderer: 'svg'
-            }).update();
-            console.log('hey' + Date.now());
-            this._setRendering(false);
-          }.bind(this));
-        // We don't want to trigger anything if the dataset is empty
-        if (!this.options.data.length) return;
+        requestAnimationFrame(function () {
+          vg.parse
+            .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
+              if (error) {
+                App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
+                return;
+              }
+              this.chart = chart({
+                el: this.chartContainer,
+                // By using the SVG renderer, we give the client the possibility to
+                // translate the text contained in the charts
+                renderer: 'svg'
+              }).update();
+              this._setRendering(false);
+            }.bind(this));
+        }.bind(this));
       }
+      // We don't want to trigger anything if the dataset is empty
+      if (!this.options.data.length) return;
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration
       // NOTE: We need to make sure in case the view hasn't been instantiated with
@@ -286,7 +287,7 @@
         el: this.chartSelectorContainer,
         ID: +(new Date()),
         hierarchy: hierarchy,
-        onChange: this._onChangeChart.bind(this)
+        onChange: _.throttle(this._onChangeChart.bind(this), 300)
       });
     },
 
