@@ -180,10 +180,10 @@
         this.options.columnY = columns.y;
       }
 
-      const columnX = JSON.stringify(this.options.columnX);
-      const columnY = JSON.stringify(this.options.columnY);
-      const labelX = this.options.xLabel;
-      const labelY = this.options.yLabel;
+      var columnX = JSON.stringify(this.options.columnX);
+      var columnY = JSON.stringify(this.options.columnY);
+      var labelX = this.options.xLabel;
+      var labelY = this.options.yLabel;
       var xLabel = columnX;
       var yLabel = columnY;
 
@@ -352,9 +352,9 @@
         inputContainer.innerHTML = '';
       }
 
-      const axis = ['X','Y'];
+      var axes = ['X', 'Y'];
 
-      axis.forEach(function(axis){
+      axes.forEach(function (axis) {
         // We create the input
         var input = document.createElement('input');
         input.setAttribute('type', 'text');
@@ -370,20 +370,20 @@
           input.setAttribute('placeholder', placeholder);
         } else {
           axisLabel = this.options.yLabel;
-          this.options.columnY ? input.setAttribute('placeholder', placeholder) : input.setAttribute('disabled', 'disabled');
+          if (this.options.columnY) input.setAttribute('placeholder', placeholder);
+          else input.setAttribute('disabled', 'disabled');
         }
 
         if (axisLabel) input.value = axisLabel;
 
         // We attach the listeners
-        input.addEventListener('change', function(){
-          this._changeAxisLabel(axis , input.value);
+        input.addEventListener('change', function () {
+          this._changeAxisLabel(axis, input.value);
         }.bind(this));
 
         // We append the inputs to the DOM
         inputContainer.appendChild(input);
-
-      }.bind(this))
+      }.bind(this));
     },
     _changeAxisLabel: function(axis, value){
       if(axis === 'X') this.options.xLabel = value;
