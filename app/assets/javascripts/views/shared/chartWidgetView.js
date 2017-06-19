@@ -231,6 +231,10 @@
               }).update();
               this._setRendering(false);
             }.bind(this));
+          if (this.options.enableChartSelector && this.options.displayMode !== 'dashboard') {
+            // TODO: use displayMode to enable the render of rest of the buttons and inputs
+            this._renderCustomAxisLabelInput();
+          }
         }.bind(this));
       }
       // We don't want to trigger anything if the dataset is empty
@@ -433,12 +437,8 @@
 
       // We don't render the chart selector and the switch button if the dataset is empty
       if (this.options.data.length) {
-        if (this.options.enableChartSelector){
+        if (this.options.enableChartSelector) {
           this._renderChartSelector();
-          // TODO: use displayMode to enable the render of rest of the buttons and inputs
-          if(this.options.displayMode !== 'dashboard') {
-            this._renderCustomAxisLabelInput();
-          }
         }
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
           this._renderSwitchButton();
