@@ -233,20 +233,20 @@
           }.bind(this));
         // We don't want to trigger anything if the dataset is empty
         if (!this.options.data.length) return;
-        // We save the state of the widget each time we render as it can be the
-        // consequence of a change in the configuration
-        // NOTE: We need to make sure in case the view hasn't been instantiated with
-        // a chart configuration that it's set by the toolbox before triggering
-        this.trigger('state:change', {
-          type: 'chart',
-          chart: this.options.chart,
-          x: this.options.columnX,
-          y: this.options.columnY,
-          xLabel: this.options.xLabel,
-          yLabel: this.options.yLabel,
-          visible: this.options.visible
-        });
       }
+      // We save the state of the widget each time we render as it can be the
+      // consequence of a change in the configuration
+      // NOTE: We need to make sure in case the view hasn't been instantiated with
+      // a chart configuration that it's set by the toolbox before triggering
+      this.trigger('state:change', {
+        type: 'chart',
+        chart: this.options.chart,
+        x: this.options.columnX,
+        y: this.options.columnY,
+        xLabel: this.options.xLabel,
+        yLabel: this.options.yLabel,
+        visible: this.options.visible
+      });
     },
 
     /**
