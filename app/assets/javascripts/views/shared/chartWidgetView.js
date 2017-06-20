@@ -36,7 +36,7 @@
       this.options = Object.assign({}, this.defaults, settings);
       if (this.options.data.length) this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
       this._setListeners();
-
+      this._rendering = false;
       // We pre-render the component with its template
       this.el.innerHTML = this.template();
       this.chartContainer = this.el.querySelector('.js-chart');
@@ -48,6 +48,24 @@
      */
     _setListeners: function () {
       window.addEventListener('resize', _.debounce(this._onResize.bind(this), 150));
+    },
+
+    _setRendering: function (rendering) {
+      this._rendering = rendering;
+      var chart = this.el.querySelector('.js-chart');
+      if (this._rendering) {
+        chart.classList.add('c-loading-spinner');
+        chart.classList.add('-full-size');
+        chart.classList.add('-bg');
+        chart.classList.add('-blank');
+      } else {
+        setTimeout(function () {
+          chart.classList.remove('c-loading-spinner');
+          chart.classList.remove('-full-size');
+          chart.classList.remove('-bg');
+          chart.classList.remove('-blank');
+        }, 500);
+      }
     },
 
     /**
@@ -162,10 +180,10 @@
         this.options.columnY = columns.y;
       }
 
-      const columnX = JSON.stringify(this.options.columnX);
-      const columnY = JSON.stringify(this.options.columnY);
-      const labelX = this.options.xLabel;
-      const labelY = this.options.yLabel;
+      var columnX = JSON.stringify(this.options.columnX);
+      var columnY = JSON.stringify(this.options.columnY);
+      var labelX = this.options.xLabel;
+      var labelY = this.options.yLabel;
       var xLabel = columnX;
       var yLabel = columnY;
 
@@ -191,29 +209,36 @@
      * Create the chart and append it to the DOM
      */
     _renderChart: function () {
-      // The widget toolbox could be non-assigned if the view has been instantiated
-      // with no data
-      if (this.options.data.length && !this.widgetToolbox) {
-        this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
-      }
-
-      vg.parse
-        .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
-          if (error) {
-            App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
-            return;
+      if (!this._rendering) {
+        this._setRendering(true);
+        // The widget toolbox could be non-assigned if the view has been instantiated
+        // with no data
+        if (this.options.data.length && !this.widgetToolbox) {
+          this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
+        }
+        requestAnimationFrame(function () {
+          vg.parse
+            .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
+              if (error) {
+                App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
+                return;
+              }
+              this.chart = chart({
+                el: this.chartContainer,
+                // By using the SVG renderer, we give the client the possibility to
+                // translate the text contained in the charts
+                renderer: 'svg'
+              }).update();
+              this._setRendering(false);
+            }.bind(this));
+          if (this.options.enableChartSelector && this.options.displayMode !== 'dashboard') {
+            // TODO: use displayMode to enable the render of rest of the buttons and inputs
+            this._renderCustomAxisLabelInput();
           }
-          this.chart = chart({
-            el: this.chartContainer,
-            // By using the SVG renderer, we give the client the possibility to
-            // translate the text contained in the charts
-            renderer: 'svg'
-          }).update();
         }.bind(this));
-
+      }
       // We don't want to trigger anything if the dataset is empty
       if (!this.options.data.length) return;
-
       // We save the state of the widget each time we render as it can be the
       // consequence of a change in the configuration
       // NOTE: We need to make sure in case the view hasn't been instantiated with
@@ -266,7 +291,7 @@
         el: this.chartSelectorContainer,
         ID: +(new Date()),
         hierarchy: hierarchy,
-        onChange: this._onChangeChart.bind(this)
+        onChange: _.throttle(this._onChangeChart.bind(this), 300)
       });
     },
 
@@ -331,9 +356,9 @@
         inputContainer.innerHTML = '';
       }
 
-      const axis = ['X','Y'];
+      var axes = ['X', 'Y'];
 
-      axis.forEach(function(axis){
+      axes.forEach(function (axis) {
         // We create the input
         var input = document.createElement('input');
         input.setAttribute('type', 'text');
@@ -349,20 +374,20 @@
           input.setAttribute('placeholder', placeholder);
         } else {
           axisLabel = this.options.yLabel;
-          this.options.columnY ? input.setAttribute('placeholder', placeholder) : input.setAttribute('disabled', 'disabled');
+          if (this.options.columnY) input.setAttribute('placeholder', placeholder);
+          else input.setAttribute('disabled', 'disabled');
         }
 
         if (axisLabel) input.value = axisLabel;
 
         // We attach the listeners
-        input.addEventListener('change', function(){
-          this._changeAxisLabel(axis , input.value);
+        input.addEventListener('change', function () {
+          this._changeAxisLabel(axis, input.value);
         }.bind(this));
 
         // We append the inputs to the DOM
         inputContainer.appendChild(input);
-
-      }.bind(this))
+      }.bind(this));
     },
     _changeAxisLabel: function(axis, value){
       if(axis === 'X') this.options.xLabel = value;
@@ -395,7 +420,7 @@
     _onClickMetadataInfo: function (e) {
       var button = e.target;
       var values = JSON.parse(button.dataset.values);
-      
+
       var modal = new (App.View.ModalView.extend({
         render: function () {
           return this.metadataModalTemplate({
@@ -412,12 +437,8 @@
 
       // We don't render the chart selector and the switch button if the dataset is empty
       if (this.options.data.length) {
-        if (this.options.enableChartSelector){
+        if (this.options.enableChartSelector) {
           this._renderChartSelector();
-          // TODO: use displayMode to enable the render of rest of the buttons and inputs
-          if(this.options.displayMode !== 'dashboard') {
-            this._renderCustomAxisLabelInput();
-          }
         }
         if (this.options.switchCallback && typeof this.options.switchCallback === 'function') {
           this._renderSwitchButton();

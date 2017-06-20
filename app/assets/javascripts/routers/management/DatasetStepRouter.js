@@ -31,6 +31,12 @@
           }
         ));
       });
+
+      var submit = $('.js-submit')
+      submit.one('click', function () {
+        submit
+         .addClass('c-loading-spinner -btn');
+      });
     },
 
     /**
