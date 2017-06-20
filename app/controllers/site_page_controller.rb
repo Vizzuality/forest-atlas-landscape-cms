@@ -78,9 +78,6 @@ class SitePageController < ApplicationController
   def static_content
   end
 
-  def map_resources
-  end
-
   def analysis_dashboard
     gon.page_name = @site_page.name
 
@@ -102,9 +99,6 @@ class SitePageController < ApplicationController
       # ... legend fields
       gon.legend = @setting.legend
     end
-  end
-
-  def map_report
   end
 
   def get_active_menu_item
