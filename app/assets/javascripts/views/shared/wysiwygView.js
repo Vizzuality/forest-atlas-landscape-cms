@@ -193,6 +193,14 @@
     },
 
     /**
+     * Remove the event listeners of the wysiwyg
+     */
+    _removeListeners: function () {
+      this.editor.emitter.eventNames().forEach(function(e) { this.editor.emitter.removeAllListeners(e); }.bind(this));
+      window.editor.emitter.eventNames().forEach(function(e) { window.editor.emitter.removeAllListeners(e); });
+    },
+
+    /**
      * Ask the user for an image and return its optimized base64 representation
      * through a jQuery Deferred object
      * @returns {object} $.Deferred
@@ -406,6 +414,12 @@
 
       if (this.options.serializedContent) {
         this._restoreContent();
+      }
+      if (this.options.readOnly) {
+        this._removeListeners();
+        var content = this.editor.container.cloneNode(true);
+        this.el.innerHTML = '';
+        this.el.innerHTML = content.innerHTML;
       }
     }
 
