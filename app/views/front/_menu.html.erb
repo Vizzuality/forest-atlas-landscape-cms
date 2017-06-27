@@ -69,7 +69,7 @@
               <% next unless (child_page.show_on_menu && child_page.visible?) %>
               <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
                 <%= page_link child_page %>
-                <% if !child_page.children.nil? and !child_page.children.empty? %>
+                <% if child_page.has_visible_children? %>
                     <ul>
                       <li>
                         <%= page_link child_page %>
