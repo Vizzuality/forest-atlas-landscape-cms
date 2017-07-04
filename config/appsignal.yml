@@ -9,6 +9,9 @@ default: &defaults
   # ignore_actions:
   #   - ApplicationController#isup
 
+  ignore_exceptions:
+    - ActiveRecord::RecordNotFound
+
   # See http://docs.appsignal.com/gem-settings/configuration.html for
   # all configuration options.
 
