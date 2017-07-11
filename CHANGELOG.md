@@ -1,3 +1,6 @@
+### 11 July 2017
+- Update MapBuilder default version to 1.1.12
+
 ### 14 June 2017
 - Reorder dataset metadata fields
 - Configure dataset metadata fields for sorting
