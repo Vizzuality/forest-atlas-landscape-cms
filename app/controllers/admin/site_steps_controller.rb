@@ -176,15 +176,23 @@ class Admin::SiteStepsController < AdminController
         begin
           # If the user is editing
           if @site.id
-            @site.site_settings.each do |site_setting|
-              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
-              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            settings[:site_settings_attributes].values.each do |attrs|
+              site_setting = @site.site_settings.find { |s| s.name == attrs['name'] } if attrs['name'].present?
+              if site_setting
+                site_setting.assign_attributes(attrs)
+              else
+                @site.site_settings.build(attrs)
+              end
             end
             # If the user is creating a new site
           else
             settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
             @site.form_step = 'style'
           end
+        rescue => e
+          Rails.logger.error e.class
+          Rails.logger.error e.message
+          e.backtrace.each { |l| Rails.logger.error l }
         end
 
         if save_button?
