@@ -177,7 +177,7 @@ class Admin::SiteStepsController < AdminController
           # If the user is editing
           if @site.id
             settings[:site_settings_attributes].values.each do |attrs|
-              site_setting = @site.site_settings.find_by_name(attrs['name']) if attrs['name'].present?
+              site_setting = @site.site_settings.find { |s| s.name == attrs['name'] } if attrs['name'].present?
               if site_setting
                 site_setting.assign_attributes(attrs)
               else
