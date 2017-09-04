@@ -14,7 +14,7 @@ default: &default
 
 development:
   <<: *default
-  database: falcms_dev
+  database: <%= ENV.fetch("POSTGRES_DATABASE") { "falcms_dev" } %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
