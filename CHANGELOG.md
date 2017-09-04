@@ -1,3 +1,5 @@
+- Fix issue preventing logo files and other site images to be uploaded
+
 ### 11 July 2017
 - Update MapBuilder default version to 1.1.12
 
