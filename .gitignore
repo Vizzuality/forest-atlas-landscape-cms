@@ -43,3 +43,6 @@
 
 # Debug files
 /npm-debug.log
+
+
+/db/*.dump
