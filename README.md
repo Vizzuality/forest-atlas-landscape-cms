@@ -43,7 +43,7 @@ bundle exec rake db:site_settings:update
 
 If you are on a development environment, you might also want to load some sample data:
 
-    bundle exec rake db:sample
+    bundle exec rake db:sample db:site_settings:update db:site_templates:update
 
 While not required, it's highly recommended that you use the included git hooks. 
 
@@ -111,7 +111,7 @@ We use [Capistrano](http://capistranorb.com/) as a deploy tool. To deploy to pro
 
     cap production deploy
     
-What needs doing as well is:
+What needs doing as well is (in server):
 `RAILS_ENV=production bundle exec rake site:create_assets`
 
 ## Server Setup
