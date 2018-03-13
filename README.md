@@ -30,7 +30,7 @@ Install project dependencies:
 
 Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
 
-Before setting up the database, you need to create a posrgres user, install homebrew then, run:
+Before setting up the database, you need to create a postgres user, install homebrew then, run:
 
     $ brew install postgres
     $ initdb /usr/local/var/postgres
