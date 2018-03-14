@@ -36,7 +36,6 @@ class Admin::SitesController < AdminController
   # GET /admin/sites/new
   def new
     @site = Site.new
-
     gon.urlControllerId = URL_CONTROLLER_ID
     gon.urlControllerName = URL_CONTROLLER_NAME
     gon.urlArray = @site.routes
