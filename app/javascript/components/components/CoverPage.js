@@ -2,24 +2,20 @@ import React from "react"
 import PropTypes from "prop-types"
 class CoverPage extends React.Component {
   render () {
-    const {
-      site,
-      page,
-      image,
-      short,
-      siteTitleOnly,
-      pageSize
-    } = this.props;
+    const { site } = this.props;
+
+    const { current, page, meta } = site;
+    const { pageSize, image, siteTitleOnly } = meta;
 
     const coverBackground = {
-      'backgroundImage': `url(${this.props.image})`
+      'backgroundImage': `url(${image})`
     };
 
     return (
       <div className={`c-cover ${pageSize && pageSize === 'small'? '-short' : ''}`} style={coverBackground}>
 
       <div className="wrapper">
-        {siteTitleOnly && <h2 className="cover-title">{site.name}</h2>}
+        {siteTitleOnly && <h2 className="cover-title">{current.name}</h2>}
         {!siteTitleOnly && <h2 className="cover-title">{page.name}</h2>}
       </div>
 
@@ -32,6 +28,7 @@ class CoverPage extends React.Component {
 
       </div>
     );
+
   }
 }
 
@@ -46,4 +43,5 @@ CoverPage.propTypes = {
   siteTitleOnly: PropTypes.bool,
   size: PropTypes.string
 };
+
 export default CoverPage
