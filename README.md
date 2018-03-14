@@ -30,7 +30,13 @@ Install project dependencies:
 
 Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
 
-To set up the database, run:
+Before setting up the database, you need to create a postgres user, install homebrew then, run:
+
+    $ brew install postgres
+    $ initdb /usr/local/var/postgres
+    $ /usr/local/Cellar/postgresql/<version>/bin/createuser -s postgres
+
+Then to set up the database, run:
 
     bundle exec rake db:create
     bundle exec rake db:migrate
@@ -45,10 +51,10 @@ If you are on a development environment, you might also want to load some sample
 
     bundle exec rake db:sample db:site_settings:update db:site_templates:update
 
-While not required, it's highly recommended that you use the included git hooks. 
+While not required, it's highly recommended that you use the included git hooks.
 
     ./bin/git/init-hooks
-    
+
 You only have to do this once. Future changes to hooks will be loaded automatically.
 
 ### With Docker
@@ -71,7 +77,7 @@ Set up environment variables by copying `.env.sample` to `.env` and filling up t
 To run application:
 
     bundle exec rails server
-    
+
 ### With Docker
 
 you open a terminal (if you have mac or windows, open a terminal with the 'Docker Quickstart Terminal') and execute the next command:
@@ -89,7 +95,7 @@ To set up the database, run:
 If you are on a development environment, you might also want to load some sample data:
 
     docker-compose -f docker-compose.dev.yml run web rake db:sample
-    
+
 ## Development
 
 ### Code Quality
@@ -110,7 +116,7 @@ Have fun coding! 😁🌲
 We use [Capistrano](http://capistranorb.com/) as a deploy tool. To deploy to production, simply run:
 
     cap production deploy
-    
+
 What needs doing as well is (in server):
 `RAILS_ENV=production bundle exec rake site:create_assets`
 
