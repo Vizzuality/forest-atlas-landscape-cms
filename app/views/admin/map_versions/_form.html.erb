@@ -1,0 +1,34 @@
+<%= form_for([:admin, @map_version]) do |f| %>
+  <% if @map_version.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@map_version.errors.count, "error") %> prohibited this route from being saved:</h2>
+
+      <ul>
+        <% @map_version.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset class="form-group row">
+    <%= f.label :version, class: 'col-sm-2 form-control-label' %>
+    <div class="col-sm-10"><%= f.text_field :version, class: 'form-control' %></div>
+  </fieldset>
+
+  <fieldset class="form-group row">
+    <%= f.label :position, class: 'col-sm-2 form-control-label' %>
+    <div class="col-sm-10"><%= f.number_field :position, class: 'form-control' %></div>
+  </fieldset>
+
+  <fieldset class="form-group row">
+    <%= f.label :description, class: 'col-sm-2 form-control-label' %>
+    <div class="col-sm-10"><%= f.text_field :description, class: 'form-control' %></div>
+  </fieldset>
+
+  <div class="form-group row">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

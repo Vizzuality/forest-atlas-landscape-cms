@@ -5,6 +5,7 @@
     routes: {
       'users(/)': 'Users',
       '(sites)(/)': 'Sites',
+      '(map_versions)(/)': 'MapVersions',
       'site_steps/(:step)': 'SiteCreation',
       'sites/:slug/site_steps/:step(/)': 'SiteEdition'
     }
