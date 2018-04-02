@@ -1,12 +1,12 @@
 class Admin::MapVersionsController < AdminController
-  before_action :set_user, only: :destroy
+  before_action :set_map_version, only: :destroy
 
   def new
     @map_version = MapVersion.new
   end
 
   def create
-    @map_version = MapVersion.new(user_params)
+    @map_version = MapVersion.new(map_params)
 
     if @map_version.save
       redirect_to admin_map_versions_path,
@@ -16,6 +16,19 @@ class Admin::MapVersionsController < AdminController
     end
   end
 
+  def edit
+    @map_version = MapVersion.find(params[:id])
+  end
+
+  def update
+    @map_version = MapVersion.find(params[:id])
+    if @map_version.update(map_params)
+      redirect_to admin_map_versions_path,
+                  notice: 'Map version updated'
+    else
+      render :edit
+    end
+  end
 
   # GET /users
   # GET /users.json
@@ -50,12 +63,12 @@ class Admin::MapVersionsController < AdminController
 
   private
   # Use callbacks to share common setup or constraints between actions.
-  def set_user
+  def set_map_version
     @map_version = MapVersion.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def user_params
+  def map_params
     params.require(:map_version).permit(:version, :position, :description)
   end
 end
