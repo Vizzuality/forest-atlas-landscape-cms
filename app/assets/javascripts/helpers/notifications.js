@@ -3,6 +3,14 @@
 
   App.Helper.Notifications = {
 
+    map_version: {
+      deletion: {
+        type: 'warning',
+        content: 'Are you sure you want to permanently delete this map version?',
+        dialogButtons: true,
+        closeable: false
+      }
+    },
     site: {
       maxFileSize: {
         type: 'warning',

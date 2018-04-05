@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405113156) do
+ActiveRecord::Schema.define(version: 20180402133656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,15 @@ ActiveRecord::Schema.define(version: 20170405113156) do
     t.json    "widgets"
     t.index ["context_id"], name: "index_dataset_settings_on_context_id", using: :btree
     t.index ["site_page_id"], name: "index_dataset_settings_on_site_page_id", using: :btree
+  end
+
+  create_table "map_versions", force: :cascade do |t|
+    t.string   "version",     null: false
+    t.integer  "position"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["version"], name: "index_map_versions_on_version", using: :btree
   end
 
   create_table "page_hierarchies", id: false, force: :cascade do |t|

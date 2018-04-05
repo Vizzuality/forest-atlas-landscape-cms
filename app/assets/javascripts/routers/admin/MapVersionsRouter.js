@@ -1,7 +1,7 @@
 ((function (App) {
   'use strict';
 
-    // This collection is used to display the table
+  // This collection is used to display the table
   var TableCollection = Backbone.Collection.extend({
     parse: function (data) {
       var keys;
@@ -31,7 +31,8 @@
               }
 
               res.html = '<a href="' + row[key].value + '" class="c-table-action-button -' +
-                key + '" title="' + App.Helper.Utils.toTitleCase(key) + '" ' + extraAttributes + '>' +
+                key + ((method === 'delete') ? ' js-confirm' : '') +
+                '" title="' + App.Helper.Utils.toTitleCase(key) + '" ' + extraAttributes + '>' +
                 App.Helper.Utils.toTitleCase(key) + '</a>';
 
               return res;
@@ -40,6 +41,7 @@
               return {
                 name: key,
                 value: row[key].value,
+                link: row[key].link,
                 searchable: row[key].searchable,
                 sortable: row[key].sortable
               };
@@ -51,7 +53,7 @@
     }
   });
 
-  App.Router.AdminUsers = Backbone.Router.extend({
+  App.Router.AdminMapVersions = Backbone.Router.extend({
 
     routes: {
       '(/)': 'index'
@@ -62,7 +64,7 @@
       new App.View.TabView({
         el: $('.js-tabs'),
         redirect: true,
-        currentTab: 1,
+        currentTab: 2,
         tabs: [
           { name: 'Sites', url: '/admin/sites/' },
           { name: 'Users', url: '/admin/users/' },
@@ -70,18 +72,33 @@
         ]
       });
 
-      var tableCollection = new TableCollection(gon.users, { parse: true });
+      var tableCollection = new TableCollection(gon.map_versions, { parse: true });
       var tableContainer = document.querySelector('.js-table');
 
       if (tableCollection.length === 0) {
-        tableContainer.innerHTML = '<p class="no-data">There aren\'t any user to display yet.</p>';
+        tableContainer.innerHTML = '<p class="no-data">There aren\'t any map versions to display yet.</p>';
       } else {
         // We initialize the table
         new App.View.TableView({
           el: tableContainer,
           collection: tableCollection,
-          tableName: 'List of users',
+          tableName: 'List of map versions',
           searchFieldContainer: $('.js-table-search')[0]
+        });
+
+        // We attach a dialog notification to the delete buttons
+        $('.js-confirm').on('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation(); // Prevents rails to automatically delete the site
+
+          App.notifications.broadcast(Object.assign({},
+            App.Helper.Notifications.map_version.deletion,
+            {
+              continueCallback: function () {
+                $.rails.handleMethod($(e.target));
+              }
+            }
+          ));
         });
       }
     }

@@ -67,7 +67,8 @@
         currentTab: 0,
         tabs: [
           { name: 'Sites', url: '/admin/sites/' },
-          { name: 'Users', url: '/admin/users/' }
+          { name: 'Users', url: '/admin/users/' },
+          { name: 'Maps', url: '/admin/map_versions/' }
         ]
       });
 
