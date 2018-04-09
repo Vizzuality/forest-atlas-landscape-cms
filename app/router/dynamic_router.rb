@@ -95,6 +95,10 @@ class DynamicRouter
         end
         routes_to_write <<  RouteDefinition.new('/sitemap', 'site_page#sitemap', {id: site_page.id}, constraints, tags)
         routes_to_write <<  RouteDefinition.new('/not_found', 'site_page#not_found', {id: site_page.id}, constraints, tags)
+        routes_to_write <<  RouteDefinition.new('/login', 'site_page#login', {id: site_page.id}, constraints, tags)
+        routes_to_write <<  RouteDefinition.new('/login_redirect', 'site_page#login_redirect', {id: site_page.id}, constraints, tags)
+        routes_to_write <<  RouteDefinition.new('/logout', 'site_page#logout', {id: site_page.id}, constraints, tags)
+
         target = 'site_page#homepage'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
