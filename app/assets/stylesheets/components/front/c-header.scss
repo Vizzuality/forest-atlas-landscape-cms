@@ -320,14 +320,13 @@
           &.dropdown-item {
             cursor: pointer;
             z-index: 1; // On top of the breadcrumbs/section menu
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
             ul {
-              position: absolute;
-              top: 0;
-              left: -15px;
+              margin: 5px 0 0;
               width: calc(100% + 30px);
-              margin: 0;
-              padding: 0;
               transition: opacity .2s ease-out, visibility 0s .2s;
               background-color: $color-3;
               list-style: none;
@@ -337,75 +336,38 @@
               visibility: hidden;
               will-change: transform, opacity;
 
-              // Black border
-              &::after {
-                display:  block;
-                position: absolute;
-                top: 50px;
-                left: 0;
-                width:  100%;
-                height: 5px;
-                content: '';
-
-                @if $theme == 2 {
-                  background-color: $color-7;
-                } @else {
-                  background-color: $color-1;
-                }
-              }
-
               li {
                 display: block;
                 border-bottom: 1px solid $color-9;
                 text-align: center;
+                line-height: 1.3;
+                text-transform: none;
 
                 @if $theme == 2 {
                   color: $color-6;
                 }
 
-                // The first item isn't a sub-menu element but a copy of the parent element
-                &:first-of-type {
-                  height: 50px;
-                  line-height: 50px;
-                  cursor: pointer;
-                }
-
-                // We need some extra space to put the black border
-                &:nth-of-type(2) {
-                  height: 55px;
-                  padding-top: 5px;
-                }
-
-                &:not(:first-of-type) {
-                  line-height: 1.3;
-                  text-transform: none;
-
-                  &:hover {
-                    @if $theme == 2 {
-                      background-color: $color-8;
-                    } @else {
-                      background-color: rgba($color-1, .1);
-                    }
+                &:hover {
+                  @if $theme == 2 {
+                    background-color: $color-8;
+                  } @else {
+                    background-color: rgba($color-1, .1);
                   }
-
-                  a {
-                    padding: 15px 5px;
-
-                    @if $theme == 1 {
-                      color: $color-6;
-                    }
-                  }
-                }
-
-                &:last-of-type {
-                  border: 0;
                 }
 
                 a {
                   display: block;
                   width: 100%;
                   height: 100%;
-                  padding: 0 14px;
+                  padding: 15px 5px;
+
+                  @if $theme == 1 {
+                    color: $color-6;
+                  }
+                }
+
+                &:last-of-type {
+                  border: 0;
                 }
               }
             }
