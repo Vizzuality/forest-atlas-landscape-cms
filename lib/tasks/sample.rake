@@ -244,6 +244,13 @@ def create_users
       name: 'José Ángel'
     }
   )
+  @tomas_eriksson_user = User.create(
+    {
+      email: 'tomas.eriksson@vizzuality.com',
+      name: 'Tomas Eriksson',
+      admin: true
+    }
+  )
 
   puts 'Users created successfully'
 end

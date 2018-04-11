@@ -26,6 +26,7 @@ class SitePageController < ApplicationController
                }
              })
     gon.page = @site_page
+    gon.content = OpenStruct.new(@site_page.content).json
   end
 
 
