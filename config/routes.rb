@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :site_templates
     resources :page_templates
     resources :site_users
+    resources :map_versions
     resources :datasets, only: :index do
       get 'dataset'
     end

@@ -1,0 +1,21 @@
+<% if session[:current_user].present? %>
+
+  <li class="dropdown-item">
+    <a href="#"><%= session[:current_user][:email] %></a>
+    <ul>
+      <li>
+        <a href="http://www.globalforestwatch.org/my_gfw/subscriptions">My Subscriptions</a>
+      </li>
+      <li>
+        <a href="<%= logout_path %>">Logout</a>
+      </li>
+    </ul>
+  </li>
+
+<% else %>
+
+    <li>
+      <a href=<%= login_path %>>Login</a>
+    </li>
+
+<% end %>

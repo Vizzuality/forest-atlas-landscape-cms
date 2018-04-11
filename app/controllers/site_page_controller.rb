@@ -1,4 +1,6 @@
 class SitePageController < ApplicationController
+  include AuthHelper
+
   before_action :load_site_page
   before_action :set_gon
   before_action :load_menu
@@ -81,6 +83,31 @@ class SitePageController < ApplicationController
   end
 
   def static_content
+  end
+
+  def login
+  end
+
+  def login_redirect
+    token = params[:token]
+
+    if token.blank?
+      redirect_to controller: 'site_page', action: 'homepage',
+                  id: @site_page.site.id and return
+    end
+
+    session[:user_token] = token
+    ensure_logged_in
+    session[:current_user]
+
+    redirect_to controller: 'site_page', action: 'homepage',
+                id: @site_page.site.id
+  end
+
+  def logout
+    session.delete(:user_token)
+    session.delete(:current_user)
+    redirect_to request.referrer
   end
 
   def analysis_dashboard
