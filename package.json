@@ -27,9 +27,12 @@
   "dependencies": {
     "@rails/webpacker": "^3.3.1",
     "babel-preset-react": "^6.24.1",
+    "classnames": "^2.2.5",
     "prop-types": "^15.6.1",
+    "query-string": "^6.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-quill": "^1.2.7",
     "react-redux": "^5.0.7",
     "react_ujs": "^2.4.4",
     "redux": "^3.7.2",

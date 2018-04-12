@@ -26,7 +26,7 @@ Install global dependencies:
 Install project dependencies:
 
     bundle install
-    npm install
+    yarn install
 
 Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
 
@@ -98,18 +98,52 @@ If you are on a development environment, you might also want to load some sample
 
 ## Development
 
+### Front-end Architecture
+
+The application is built with react, [react rails](https://github.com/reactjs/react-rails) & Redux.
+
+This is the core folder structure for the front-end app
+
+Anything you add inside the **containers** folder, will be available in the rails templates.
+
+```
+- containers
+ Public.js
+ Admin.js
+ Map.js
+- pages (any page)
+- shared (shared or common components)
+- store (redux store)
+- utils (any utility file)
+```
+
+Any component you write will have this structure to keep it consistant. If you dont need state, use stateless components and ignore the "*" optional files.
+
+```
+- folder (component name)
+  index.js (container, Or statless component)
+  {component-name}.component.js
+  *store.js
+  *dispatcher.js
+```
+
+To render your page, you have **react_component** available inside the rails template files.
+
+```
+<%= react_component('Container', {...any gon properties you need to pass here} ) %>
+```
+
+Please only use **page containers** when rendering your components inside the rails templates so we keep the logic consistant.
+
 ### Code Quality
 
 To keep a good and consistent quality code we use `eslint` (JS) and `sass-lint` (CSS).
 
-`eslint` rules are based on [Airbnb](http://airbnb.io/javascript/) ones.
-
+`eslint` rules are based on the Airbnb & [vizzuality](https://github.com/vizzuality/eslint-config-vizzuality) ones.
 `sass-lint` rules are based on [SMACSS](https://github.com/brigade/scss-lint/blob/master/data/property-sort-orders/smacss.txt) ones.
 
-Also we have some custom rules you can check in `.eslintrc` and `.sass-lint`, respectively.
 
 Have fun coding! 😁🌲
-
 
 ## Deployment
 

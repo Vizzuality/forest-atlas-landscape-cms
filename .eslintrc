@@ -42,9 +42,6 @@
     },
     "sourceType": "module"
   },
-  "plugins": [
-    "babel"
-  ],
   "env": {
     "browser": true,
     "es6": true
