@@ -1,18 +1,18 @@
 <%= javascript_pack_tag 'application' %>
-<%= render 'front/cover', image: @main_image, site_title_only: true%>
 
-<%#
+<%= react_component('Public', {
+  page: @site_page,
+  site: @site_page.site,
+  siteTitleOnly: @site_title_only,
+  image: @image,
+  pageSize: defined?(@size) ? @size : nil
+} ) %>
 
-  Replace with front/content partial
-  render 'front/cover', content: @site_page.content
-
-%>
 <div class="c-content">
   <div class="wrapper">
     <div class="js-content"></div>
     <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@site_page.content).json unless @site_page.content.blank? || OpenStruct.new(@site_page.content).json.blank? %>" />
   </div>
-
 </div>
 
 <%= render 'front/footer' %>

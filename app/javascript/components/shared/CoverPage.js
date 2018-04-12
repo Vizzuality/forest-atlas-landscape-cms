@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+
 class CoverPage extends React.Component {
   render () {
     const { site } = this.props;

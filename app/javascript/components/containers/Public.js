@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom'
 import { Provider } from 'react-redux';
-import Site from './Site';
 import configureStore from '../store/configureStore';
+
 import { setSite, setPage, setMeta } from '../actions/site'
+
+import PublicSite from '../pages/public-site';
 
 const store = configureStore();
 
-export default class Root extends Component {
+export default class Public extends Component {
   componentWillMount() {
     store.dispatch(setSite(this.props.site));
     store.dispatch(setPage(this.props.page));
@@ -20,7 +22,7 @@ export default class Root extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Site />
+        <PublicSite />
       </Provider>
     );
   }
