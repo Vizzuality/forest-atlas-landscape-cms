@@ -8,6 +8,9 @@ class CoverPage extends React.Component {
     const { site } = this.props;
 
     const { current, page, meta } = site;
+
+    console.log('site', site);
+
     const { pageSize, image, siteTitleOnly } = meta;
 
     const coverBackground = {

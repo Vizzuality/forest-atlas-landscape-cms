@@ -11,9 +11,6 @@ const store = configureStore();
 
 export default class Public extends Component {
   componentWillMount() {
-
-    console.log('public container', this.props);
-
     store.dispatch(setSite(this.props.site));
     store.dispatch(setPage(this.props.page));
     store.dispatch(setMeta({
@@ -21,7 +18,6 @@ export default class Public extends Component {
       pageSize: this.props.pageSize,
       siteTitleOnly: this.props.siteTitleOnly
     }));
-
     store.dispatch(setSiteSettings(this.props.siteSettings));
   }
   render() {

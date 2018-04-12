@@ -30,7 +30,6 @@ const quillModules = {
 class SiteContent extends React.Component {
   render() {
     const { content } = this.props;
-    console.log('site content', content);
     return (
       <div className="c-content">
         <div className="wrapper">
