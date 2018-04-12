@@ -37,6 +37,9 @@ class Admin::SiteStepsController < AdminController
   def show
     @breadcrumbs << {name: current_site.id ? 'Editing "'+current_site.name+'"' : 'New Site'}
 
+    gon.site = current_site
+    gon.users = non_admin_users;
+
     if step == 'name'
       @site = current_site
       gon.global.url_controller_id = URL_CONTROLLER_ID

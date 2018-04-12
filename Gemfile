@@ -6,9 +6,9 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'sass-rails', '>= 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '~> 4.1.0' # REMOVE ME
 
-gem 'jquery-rails'
+gem 'jquery-rails' # REMOVE ME
 gem 'turbolinks', '~> 5.x'
 gem 'jbuilder', '~> 2.0'
 gem 'rails-assets-fitvids', '~> 1.2.0'
@@ -27,6 +27,9 @@ gem 'wicked' # Multi-steps form
 
 gem 'faraday', '~> 0.9.2'
 gem 'faraday_middleware', '~> 0.11.0.1'
+
+gem 'webpacker'
+gem 'react-rails'
 
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'

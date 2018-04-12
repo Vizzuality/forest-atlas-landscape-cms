@@ -27,6 +27,8 @@ class SitePageController < ApplicationController
                  :ka => @site_page.site.site_settings.translate_georgian(@site_page.site_id).value == '1'
                }
              })
+    gon.page = @site_page
+    gon.content = OpenStruct.new(@site_page.content).json
   end
 
 
@@ -59,6 +61,9 @@ class SitePageController < ApplicationController
 
     image_setting = SiteSetting.favico(@site_page.site.id)
     @favico = image_setting.image if !image_setting.blank? && !image_setting.image_file_name.blank?
+
+    gon.main_image = @image_url
+    gon.alternative_image = @alternative_image
   end
 
   def load_flag
