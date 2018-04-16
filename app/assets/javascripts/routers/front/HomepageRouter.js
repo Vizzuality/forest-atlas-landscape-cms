@@ -16,6 +16,7 @@
 
       // We instantiate the wysiwyg editor
       var content = document.querySelector('.js-json-content').value;
+
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
         serializedContent: content ? JSON.parse(content) : null,

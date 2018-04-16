@@ -1,18 +1,29 @@
 import React from "react"
 import PropTypes from "prop-types"
+
+import classnames from 'classnames';
+
 class CoverPage extends React.Component {
   render () {
     const { site } = this.props;
 
     const { current, page, meta } = site;
+
+    console.log('site', site);
+
     const { pageSize, image, siteTitleOnly } = meta;
 
     const coverBackground = {
       'backgroundImage': `url(${image})`
     };
 
+    const ClsMainWrapper = classnames({
+      'c-cover': true,
+      '-short': pageSize && pageSize === 'small'
+    });
+
     return (
-      <div className={`c-cover ${pageSize && pageSize === 'small'? '-short' : ''}`} style={coverBackground}>
+      <div className={ClsMainWrapper} style={coverBackground}>
 
       <div className="wrapper">
         {siteTitleOnly && <h2 className="cover-title">{current.name}</h2>}

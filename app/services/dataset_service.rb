@@ -16,6 +16,7 @@ class DatasetService
     datasetRequest = @conn.get '/dataset', {'page[number]': '1', 'page[size]': '10000', \
       'status': status, 'application': 'forest-atlas,gfw,prep', '_': Time.now.to_f}
     datasetsJSON = JSON.parse datasetRequest.body
+
     datasets = []
 
     begin

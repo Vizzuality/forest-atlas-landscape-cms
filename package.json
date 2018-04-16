@@ -17,17 +17,22 @@
   },
   "homepage": "https://github.com/Vizzuality/forest-atlas-landscape-cms#readme",
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
     "eslint": "^3.3.1",
     "eslint-config-airbnb-base": "^5.0.3",
+    "eslint-config-vizzuality": "^1.0.14",
     "eslint-plugin-import": "^1.14.0",
     "webpack-dev-server": "2.11.2"
   },
   "dependencies": {
     "@rails/webpacker": "^3.3.1",
     "babel-preset-react": "^6.24.1",
+    "classnames": "^2.2.5",
     "prop-types": "^15.6.1",
+    "query-string": "^6.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-quill": "^1.2.7",
     "react-redux": "^5.0.7",
     "react_ujs": "^2.4.4",
     "redux": "^3.7.2",

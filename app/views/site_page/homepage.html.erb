@@ -1,22 +1,10 @@
 <%= javascript_pack_tag 'application' %>
-<%= render 'front/cover', image: @main_image, site_title_only: true%>
 
-<%#
-
-  Replace with front/content partial
-  render 'front/cover', content: @site_page.content
-
-%>
-<div class="c-content">
-  <div class="wrapper">
-    <div class="js-content"></div>
-    <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@site_page.content).json unless @site_page.content.blank? || OpenStruct.new(@site_page.content).json.blank? %>" />
-  </div>
-
-</div>
-
-<%= render 'front/footer' %>
-
-<script type="text/javascript">
-  window.route = 'Homepage';
-</script>
+<%= react_component('Public', {
+  page: @site_page,
+  site: @site_page.site,
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: @site_title_only,
+  image: @image_url,
+  pageSize: defined?(size) ? size : nil
+} ) %>
