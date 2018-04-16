@@ -1,7 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import { CoverPage, SiteContent, Footer } from '../../shared';
+import { connect } from 'react-redux';
+
+import { CoverPage, SiteContent, Footer } from '../shared';
 
 const StaticPage = ({ site }) => (
   <div className="fa-page">
@@ -11,4 +13,10 @@ const StaticPage = ({ site }) => (
   </div>
  );
 
-export default StaticPage;
+function mapStateToProps(state) {
+  return {
+    site: state.site
+  }
+}
+
+export default connect(mapStateToProps, null)(StaticPage);

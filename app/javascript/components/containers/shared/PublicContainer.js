@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux';
 import configureStore from '../../store/configureStore';
 
-import { setSite, setPage, setMeta, setSiteSettings } from '../../pages/public-site/public-site-actions';
+import { setSite, setPage, setMeta, setSiteSettings } from '../../redactions/site';
 
 const store = configureStore();
 
@@ -13,6 +13,7 @@ const store = configureStore();
 
   remember when extending this to include the store in your page.
 */
+
 export default class PublicContainer extends Component {
   constructor(props) {
     super(props);
@@ -29,8 +30,6 @@ export default class PublicContainer extends Component {
     store.dispatch(setSiteSettings(this.props.siteSettings));
   }
   render() {
-    return (<Provider store={store}>
-      {this.props.children}
-    </Provider>)
+    return <Provider store={store}>{this.props.children}</Provider>;
   }
 }

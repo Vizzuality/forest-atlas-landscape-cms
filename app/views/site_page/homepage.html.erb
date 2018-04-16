@@ -1,6 +1,6 @@
 <%= javascript_pack_tag 'application' %>
 
-<%= react_component('Public', {
+<%= react_component('HomePage', {
   page: @site_page,
   site: @site_page.site,
   siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,

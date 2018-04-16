@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { render } from 'react-dom'
 
 import PublicContainer from './shared/PublicContainer';
+import Home from '../pages/home';
 
-import PublicSite from '../pages/public-site';
-
-export default class Public extends PublicContainer {
+export default class HomePage extends PublicContainer {
   render() {
-    return <PublicSite store={this.store} />;
+    return <Home store={this.store} />;
   }
 }
