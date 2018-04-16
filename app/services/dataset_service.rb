@@ -13,12 +13,12 @@ class DatasetService
   # Params
   # ++status++ the status of the dataset
   def self.get_datasets(status = 'saved')
-    datasetRequest = @conn.get '/dataset', {'page[number]': '1', 'page[size]': '10000', \
-      'status': status, 'application': 'forest-atlas,gfw,prep', '_': Time.now.to_f}
+    datasetRequest = @conn.get '/v1/dataset', {'page[number]': '1', 'page[size]': '10000', \
+      'status': status, 'application': 'forest-atlas,gfw,prep', '_': Time.now.to_s}
+
     datasetsJSON = JSON.parse datasetRequest.body
 
     datasets = []
-
     begin
       datasetsJSON['data'].each do |data|
         # TODO: Refactor!!! The service can't depend on the model
@@ -59,7 +59,7 @@ class DatasetService
   # +dataset_id+:: The dataset to be queried
   # +query+:: The query to perform
   def self.get_filtered_dataset(dataset_id, query)
-    full_query = "/query/#{dataset_id}?sql=#{query}"
+    full_query = "/v1/query/#{dataset_id}?sql=#{query}"
 
     Rails.logger.info "Going to make a Filtered Request: #{full_query}"
 
@@ -95,7 +95,7 @@ class DatasetService
   # +dataset_id+:: A list of datasets' ids
   def self.get_metadata_list(dataset_ids)
     return [] if dataset_ids.blank?
-    request = @conn.get "/dataset?ids=#{dataset_ids.join(',')}", {
+    request = @conn.get "/v1/dataset?ids=#{dataset_ids.join(',')}", {
       'includes': 'vocabulary',
       'page[number]': '1', 'page[size]': '10000', '_': Time.now.to_f
     }
@@ -110,7 +110,7 @@ class DatasetService
     return [] if dataset_ids.blank?
 
     res = @conn.post do |req|
-      req.url '/dataset/metadata/find-by-ids'
+      req.url '/v1/dataset/metadata/find-by-ids'
       req.headers['Authorization'] = "Bearer #{token}"
       req.headers['Content-Type'] = 'application/json'
       req.body = {ids: dataset_ids}.to_json
