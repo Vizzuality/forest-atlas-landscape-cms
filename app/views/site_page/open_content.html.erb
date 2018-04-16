@@ -1,14 +1,10 @@
-<%= render 'front/cover', image: @alternative_image, size: 'small' %>
+<%= javascript_pack_tag 'application' %>
 
-<div class="c-content">
-  <div class="wrapper">
-    <div class="js-content"></div>
-    <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@site_page.content).json unless @site_page.content.blank? || OpenStruct.new(@site_page.content).json.blank? %>" />
-  </div>
-</div>
-
-<%= render 'front/footer'%>
-
-<script type="text/javascript">
-  window.route = 'OpenContent';
-</script>
+<%= react_component('StaticPage', {
+  page: @site_page,
+  site: @site_page.site,
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: @site_title_only,
+  image: @alternative_image,
+  pageSize: defined?(size) ? size : nil
+} ) %>

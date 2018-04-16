@@ -5,12 +5,9 @@ import classnames from 'classnames';
 
 class CoverPage extends React.Component {
   render () {
-    const { site } = this.props;
+    const { site, secondary } = this.props;
 
     const { current, page, meta } = site;
-
-    console.log('site', site);
-
     const { pageSize, image, siteTitleOnly } = meta;
 
     const coverBackground = {
@@ -19,7 +16,7 @@ class CoverPage extends React.Component {
 
     const ClsMainWrapper = classnames({
       'c-cover': true,
-      '-short': pageSize && pageSize === 'small'
+      '-short': (pageSize && pageSize === 'small') || secondary
     });
 
     return (
