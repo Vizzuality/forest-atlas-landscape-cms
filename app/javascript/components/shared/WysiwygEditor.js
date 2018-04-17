@@ -27,7 +27,7 @@ const quillModules = {
 };
 
 // TODO: This will also allow edit mode in admin, for now we are just rendering the contents for the end-user
-class SiteContent extends React.Component {
+class WysiwygEditor extends React.Component {
   render() {
     const { content } = this.props;
     return (
@@ -50,4 +50,4 @@ class SiteContent extends React.Component {
   }
 }
 
-export default SiteContent;
+export default WysiwygEditor;
