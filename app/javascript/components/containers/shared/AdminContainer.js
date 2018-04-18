@@ -3,6 +3,8 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux';
 import configureStore from '../../store/configureStore';
 
+import { setPages } from '../../redactions/admin';
+
 const store = configureStore();
 
 /*
@@ -15,8 +17,10 @@ export default class AdminContainer extends Component {
     this.store = store;
   }
   componentWillMount() {
-    // Dispatch something
-    console.log(this)
+    const { props } = this;
+    if ('pages' in props) {
+      store.dispatch(setPages(props.pages));
+    }
   }
   render() {
     return <Provider store={store}>{this.props.children}</Provider>;

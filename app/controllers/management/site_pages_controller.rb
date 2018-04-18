@@ -12,7 +12,8 @@ class Management::SitePagesController < ManagementController
                .order(params[:order] || 'created_at ASC')
 
     publisher = (current_user.roles.include? UserType::PUBLISHER)
-    gon.pages = @pages.map do |page|
+
+    @formattedPages = @pages.map do |page|
       delete = if publisher
                  {'value' => nil}
                else
@@ -38,6 +39,9 @@ class Management::SitePagesController < ManagementController
 
       res
     end
+
+    # keep this for now, untill backbone is removed, we still need it
+    gon.pages = @formattedPages
 
     respond_to do |format|
       format.html { render :index }
