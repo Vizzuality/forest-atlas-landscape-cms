@@ -8,3 +8,4 @@ export { default as CoverPage } from './CoverPage';
 
 // Admin specific components
 export { default as ExtendedHeader } from './admin/ExtendedHeader';
+export { default as Table } from './admin/Table';

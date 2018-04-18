@@ -27,5 +27,10 @@
       background-color: $color-3;
       color: $color-4;
     }
+
+    & > a {
+      color: inherit;
+    }
+
   }
 }

@@ -1,0 +1,17 @@
+<ul class="c-tabs">
+    <li class="tab" <%= "aria-selected=true" if request.url.include?("structure") %>>
+        <a href="/management/sites/<%= params[:site_slug] %>/structure">Site's structure</a>
+    </li>
+    <li class="tab" <%= "aria-selected=true" if request.url.include?("site_pages") %> >
+        <a href="/management/sites/<%= params[:site_slug] %>/site_pages">Pages</a>
+    </li>
+    <li class="tab" <%= "aria-selected=true" if request.url.include?("datasets") %>>
+        <a href="/management/sites/<%= params[:site_slug] %>/datasets">Datasets</a>
+    </li>
+    <li class="tab" <%= "aria-selected=true" if request.url.include?("widgets") %>>
+        <a href="/management/sites/<%= params[:site_slug] %>/widgets">Widgets</a>
+    </li>
+    <li class="tab" <%= "aria-selected=true" if request.url.include?("contexts") %>>
+        <a href="/management/sites/<%= params[:site_slug] %>/contexts">Contexts</a>
+    </li>
+</ul>
