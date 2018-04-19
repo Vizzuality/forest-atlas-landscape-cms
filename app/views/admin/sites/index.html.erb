@@ -17,16 +17,12 @@
   <li class="tab"><a href="/admin/map_versions/">Maps</a></li>
 </ul>
 
-<div class="l-site-list">
-  <div class="wrapper">
-    <div class="c-action-toolbar">
-      <ul class="buttons">
-      </ul>
-      <ul class="filters">
-        <li><div class="c-input-search js-table-search"></div></li>
-      </ul>
-    </div>
-
-    <div class="js-table"></div>
-  </div>
-</div>
+<%= javascript_pack_tag 'application' %>
+<%= react_component('AdminTableView', {
+  meta: {
+    columns: ['Title', 'Template', 'Preview'],
+    actions: ['edit', 'delete'],
+    datapoint: 'sites'
+  },
+  sites: @formattedSites
+} ) %>

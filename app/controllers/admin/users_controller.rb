@@ -6,16 +6,18 @@ class Admin::UsersController < AdminController
   def index
     @users = User.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
 
-    gon.users = @users.map do |user|
+    @formattedUsers = @users.map do |user|
       {
         'name' => {'value' => user.name, 'searchable' => true, 'sortable' => true},
         'email' => {'value' => user.email, 'searchable' => true, 'sortable' => true},
-        'Role' => {'value' => (user.admin ? User::ADMIN_ROLE_NAME : User::NON_ADMIN_ROLE_NAME), 'searchable' => true, 'sortable' => true},
-        'Sites' => {'value' => !user.admin ? user.sites.map{|x| x.name} : nil, 'searchable' => true, 'sortable' => true},
+        'role' => {'value' => (user.admin ? User::ADMIN_ROLE_NAME : User::NON_ADMIN_ROLE_NAME), 'searchable' => true, 'sortable' => true},
+        'sites' => {'value' => !user.admin ? user.sites.map{|x| x.name} : nil, 'searchable' => true, 'sortable' => true},
         # 'edit' => {'value' => edit_admin_user_user_step_path(user_id: user.id, id: 'identity'), 'method' => 'get'},
         # 'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
       }
     end
+
+    gon.users = @formattedUsers;
 
     respond_to do |format|
       format.html { render :index }
