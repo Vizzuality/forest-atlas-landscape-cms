@@ -11,7 +11,7 @@ export default ({data, actions, showRowInfo}) => {
 
       return (<td key={k}>
           <span className="row-content">
-            <a href="/management/sites/base-site/site_pages/17/toggle_enable"
+            <a href={data.enable.value}
                 className={`c-table-action-button -${data.enabled.value ? 'disable' : 'enable'}`}
                 title={data.enabled.value ? 'Disable' : 'Enable'}
                 rel="noreferrer noopener"
