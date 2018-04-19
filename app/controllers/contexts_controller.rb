@@ -40,6 +40,8 @@ class ContextsController < ManagementController
       }
 
       @gon_contexts << gon_context
+
+
     end
 
   end

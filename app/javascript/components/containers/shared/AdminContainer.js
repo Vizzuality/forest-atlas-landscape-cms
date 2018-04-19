@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux';
 import configureStore from '../../store/configureStore';
 
-import { setPages, setDatasets } from '../../redactions/admin';
+import { setPages, setDatasets, setWidgets } from '../../redactions/admin';
 
 const store = configureStore();
 
@@ -25,6 +25,10 @@ export default class AdminContainer extends Component {
 
     if ('datasets' in props) {
       store.dispatch(setDatasets(props.datasets));
+    }
+
+    if ('widgets' in props) {
+      store.dispatch(setWidgets(props.widgets));
     }
 
   }
