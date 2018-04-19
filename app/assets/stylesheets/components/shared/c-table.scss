@@ -1,6 +1,5 @@
 .c-table {
   width: 100%;
-  overflow-x: auto;
   overflow-y: hidden;
 
   > table {
@@ -10,6 +9,12 @@
 
   caption {
     display: none;
+  }
+
+  td {
+    &.isList {
+      word-break: break-all;
+    }
   }
 
   th,
@@ -22,17 +27,12 @@
   }
 
   tr {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
 
     &:nth-of-type(2n+1) {
       background-color: $color-2;
     }
 
     @media #{$mq-tablet} {
-      display: table-row;
-
       &:nth-of-type(2n+1) {
         background-color: transparent;
       }
@@ -44,9 +44,6 @@
     }
 
     td {
-      display: flex;
-      align-items: stretch;
-
       &:first-of-type { padding-top: 20px; }
       &:last-of-type { padding-bottom: 20px; }
 

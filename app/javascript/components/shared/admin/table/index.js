@@ -6,6 +6,10 @@ import TableActions from './TableActions';
 import Toolbar from './Toolbar';
 import TableFooter from './TableFooter';
 
+import { Modal } from '../../../shared';
+
+import classnames from 'classnames';
+
 const fuseOptions = {
   shouldSort: true,
   threshold: 0.6,
@@ -22,6 +26,7 @@ class Table extends React.Component {
     this.state = {
       q: '',
       sort: 'asc',
+      modalOpen: false,
       // when / if we get dynamic pagination, use that information instead
       pagination: {
         limit: props.limit || 10,
@@ -39,6 +44,11 @@ class Table extends React.Component {
     this.setState({ q: e.target.value });
   }
 
+  showRowInfo(data) {
+    console.log('hello', data);
+    this.setState({ modalOpen: true });
+  }
+
   offsetPage(p) {
     const { offset, limit, page } = this.state.pagination;
 
@@ -54,11 +64,11 @@ class Table extends React.Component {
   }
 
   formatRow(d, k) {
-    const { columns, actions } = this.props;
+    const { columns, actions, info } = this.props;
     return (
       <tr role="row" key={k}>
         {this.formatCols(d)}
-        <TableActions actions={actions} data={d} />
+        <TableActions actions={actions} data={d} showRowInfo={info => this.showRowInfo(info)} />
       </tr>
     );
   }
@@ -76,23 +86,31 @@ class Table extends React.Component {
   formatCols(d) {
     const { columns } = this.props;
     const re = new RegExp(columns.join('|').toLowerCase());
+
     return Object.keys(d).map(key => {
+      const value = d[key].value && d[key].value.length > 0 ? d[key].value : '-';
+      const cls = classnames({
+        'isLong': value.length > 15,
+        'isList': Array.isArray(value)
+      });
+
       if (re.test(key)) {
         if ('link' in d[key]) {
           return (
-            <td key={key + d[key].value}>
+            <td key={key + value} className={cls}>
               <span className="row-content">
                 <a href={d[key].link.url}
                   {...('external' in d[key].link && d[key].link.external ? {
                     'target': '__blank',
                     'rel': 'noopener noreferrer'
                   } : {})}
-                >{d[key].value}</a>
+                >{value}</a>
               </span>
             </td>
           )
         }
-        return <td key={key + d[key].value}>{d[key].value}</td>
+        return <td key={key + value} className={cls}><span className="row-content">{
+          Array.isArray(value) ? value.join(' ') : value}</span></td>
       }
       return null;
     });
@@ -100,7 +118,7 @@ class Table extends React.Component {
 
   render() {
     const { data, columns, actions } = this.props;
-    const { q, sort, pagination } = this.state;
+    const { q, sort, pagination, modalOpen } = this.state;
     const { limit, pages } = pagination;
 
     const filteredResults = q.length > 0 ? this.fuse.search(q) : data;
@@ -136,6 +154,10 @@ class Table extends React.Component {
           offsetPage={p => this.offsetPage(p)}
           setRowsPerPage={e => this.setRowsPerPage(e)}
         />
+
+        <Modal show={modalOpen}>
+          <h2>Hello modal</h2>
+        </Modal>
 
       </div>
     );

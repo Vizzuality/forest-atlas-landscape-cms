@@ -7,7 +7,6 @@
       var keys;
       if (data.length) keys = Object.keys(data[0]);
       var infoButton;
-      console.log('edit site', data)
       return data.map(function (row) {
         var res = {};
         res.row = keys.map(function (key) {

@@ -2,9 +2,8 @@ import React from "react"
 import PropTypes from "prop-types"
 
 // Any action we accept for the table, add it here, otherwise it will be ignored
-export default ({data, actions}) => {
+export default ({data, actions, showRowInfo}) => {
   return actions.map((action, k) => {
-
     if (action === 'toggle' &&
         'enable' in data &&
         'enabled' in data &&
@@ -31,7 +30,6 @@ export default ({data, actions}) => {
       </td>)
     }
 
-
     if (action === 'delete' &&
         'delete' in data &&
         data.delete.value !== null) {
@@ -46,6 +44,22 @@ export default ({data, actions}) => {
       </td>)
     }
 
+    if (/info/.test(action)) {
+      const splt = action.split('.');
+      const showInfoOn = splt[1];
+      if (showInfoOn && showInfoOn in data && data[showInfoOn].value !== null) {
+        return (<td key={k}>
+          <button
+            type="button"
+            onClick={() => showRowInfo(data[showInfoOn])}
+            className="c-table-action-button -info js-metadata-info">Info
+          </button>
+        </td>)
+      }
+    }
+
     return <td key={k}>-</td>;
   });
 }
+
+
