@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 import { connect } from 'react-redux';
 
-import { Table } from '../../shared';
+import { Table, DatasetModal } from '../../shared';
 
 const Datasets = ({ admin }) => (
   <div className="l-page-list">
@@ -11,6 +11,7 @@ const Datasets = ({ admin }) => (
       <Table
         columns={['Title', 'Contexts', 'Connector', 'Function', 'Tags', 'Status']}
         data={admin.datasets}
+        modal={DatasetModal}
         actions={['edit', 'info.metadata']}
       />
     </div>

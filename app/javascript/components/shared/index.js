@@ -2,6 +2,7 @@
 export { default as WysiwygEditor } from './WysiwygEditor';
 export { default as Icon } from './icon';
 export { default as Modal } from './Modal';
+export { default as DatasetModal } from './modals/DatasetModal';
 
 // Public specific components
 export { default as Footer } from './public/footer';

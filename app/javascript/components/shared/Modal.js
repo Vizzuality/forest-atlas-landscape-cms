@@ -3,19 +3,21 @@ import PropTypes from "prop-types"
 
 import { Icon } from '../shared'
 
-export default function Modal({ show, children }) {
+export default function Modal({ show, children, onClose }) {
   if (!show) {
     return null;
   }
   return (
     <div className="modal">
-      <div className="modal__body">
-        <button type="button" className="modal__close">
+      <div className="modal__wrapper">
+        <button type="button" className="modal__close" onClick={() => onClose()}>
           <Icon name="icon-close" />
         </button>
-        {children}
+        <div className="modal__body">
+          {children}
+        </div>
       </div>
-      <div className="modal__backdrop"></div>
+      <div className="modal__backdrop" onClick={() => onClose()}></div>
     </div>
   );
 }

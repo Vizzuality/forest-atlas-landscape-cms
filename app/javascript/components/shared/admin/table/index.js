@@ -27,6 +27,7 @@ class Table extends React.Component {
       q: '',
       sort: 'asc',
       modalOpen: false,
+      datasetInfo: null,
       // when / if we get dynamic pagination, use that information instead
       pagination: {
         limit: props.limit || 10,
@@ -38,6 +39,9 @@ class Table extends React.Component {
 
     this.fuse = new Fuse(props.data, {
       keys: props.columns.map(col => col.toLowerCase() + '.value'), ...fuseOptions } );
+
+    this.modal = props.modal || null;
+
   }
 
   onSearch(e) {
@@ -45,8 +49,11 @@ class Table extends React.Component {
   }
 
   showRowInfo(data) {
-    console.log('hello', data);
-    this.setState({ modalOpen: true });
+    this.setState({ modalOpen: true, datasetInfo: data });
+  }
+
+  onCloseModal() {
+    this.setState({ modalOpen: false, datasetInfo: null });
   }
 
   offsetPage(p) {
@@ -117,8 +124,8 @@ class Table extends React.Component {
   }
 
   render() {
-    const { data, columns, actions } = this.props;
-    const { q, sort, pagination, modalOpen } = this.state;
+    const { data, columns, actions, modal } = this.props;
+    const { q, sort, pagination, modalOpen, datasetInfo } = this.state;
     const { limit, pages } = pagination;
 
     const filteredResults = q.length > 0 ? this.fuse.search(q) : data;
@@ -155,8 +162,8 @@ class Table extends React.Component {
           setRowsPerPage={e => this.setRowsPerPage(e)}
         />
 
-        <Modal show={modalOpen}>
-          <h2>Hello modal</h2>
+        <Modal show={modalOpen} onClose={() => this.onCloseModal()}>
+          {modal && typeof modal === 'function' ? React.createElement(modal, datasetInfo) : null}
         </Modal>
 
       </div>
