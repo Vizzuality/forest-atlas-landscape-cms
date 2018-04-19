@@ -4,6 +4,7 @@ import Fuse from 'fuse.js';
 
 import TableActions from './TableActions';
 import Toolbar from './Toolbar';
+import TableFooter from './TableFooter';
 
 const fuseOptions = {
   shouldSort: true,
@@ -17,19 +18,39 @@ const fuseOptions = {
 class Table extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       q: '',
       sort: 'asc',
+      // when / if we get dynamic pagination, use that information instead
       pagination: {
-        limit: 10
+        limit: props.limit || 10,
+        page: 1,
+        offset: 0,
+        pages: parseInt(props.data.length / (props.limit || 10))
       }
     }
+
     this.fuse = new Fuse(props.data, {
       keys: props.columns.map(col => col.toLowerCase() + '.value'), ...fuseOptions } );
   }
 
   onSearch(e) {
     this.setState({ q: e.target.value });
+  }
+
+  offsetPage(p) {
+    const { offset, limit, page } = this.state.pagination;
+
+    const newOffset = p > page ? offset + limit : offset - limit;
+    const pagination = { ...this.state.pagination, page: p, offset: newOffset };
+
+    this.setState({ pagination });
+  }
+
+  setRowsPerPage(e) {
+    const pagination = { ...this.state.pagination, limit: parseInt(e.target.value) };
+    this.setState({ pagination })
   }
 
   formatRow(d, k) {
@@ -40,6 +61,16 @@ class Table extends React.Component {
         <TableActions actions={actions} data={d} />
       </tr>
     );
+  }
+
+  // verify pagination, if we should render item
+  verifyPagination(k) {
+    const { pagination } = this.state;
+    const { limit, offset } = pagination;
+
+    const shouldShow = k < (limit+offset) && k >= offset;
+
+    return shouldShow;
   }
 
   formatCols(d) {
@@ -70,7 +101,7 @@ class Table extends React.Component {
   render() {
     const { data, columns, actions } = this.props;
     const { q, sort, pagination } = this.state;
-    const { limit } = pagination;
+    const { limit, pages } = pagination;
 
     const filteredResults = q.length > 0 ? this.fuse.search(q) : data;
 
@@ -78,21 +109,34 @@ class Table extends React.Component {
         <Toolbar q={q} onSearch={q => this.onSearch(q)} />
         <table role="grid">
           <thead>
-          <tr className="header" role="row">
+          {filteredResults.length > 0 && <tr className="header" role="row">
               {columns.map((col, k) => <th key={k}
                 {...(k === 0 ?
                   { className: `-order-${sort === 'asc' ? 'ascending' : 'descending'}`} : {}
                 )}
               role="columnheader">{col}</th>)}
               {/* Render empty rows for each action */}
-              {actions.map((a, k) => <th key={k}  aria-sort="none" role="columnheader"></th>)}
-          </tr>
+              {actions.map((a, k) => <th key={k} aria-sort="none" role="columnheader"></th>)}
+          </tr>}
           </thead>
           <tbody>
             {filteredResults &&
-              filteredResults.map((d, k) => (k + 1) < limit ? this.formatRow(d, k) : 0)}
+              filteredResults.map((d, k) => this.verifyPagination(k) ? this.formatRow(d, k) : null)}
+
+            {filteredResults.length === 0 && <tr role="row">
+              {q.length > 0 ? <td align="center">No results found for {q}</td> :
+               <td align="center">No items to display</td>}
+            </tr>}
+
           </tbody>
         </table>
+
+        <TableFooter
+          pagination={pagination}
+          offsetPage={p => this.offsetPage(p)}
+          setRowsPerPage={e => this.setRowsPerPage(e)}
+        />
+
       </div>
     );
   }
