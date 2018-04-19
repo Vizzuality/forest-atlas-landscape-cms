@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux';
 import configureStore from '../../store/configureStore';
 
-import { setPages, setDatasets, setWidgets } from '../../redactions/admin';
+import { setPages, setDatasets, setWidgets, setSites, setUsers, setMaps, setMeta } from '../../redactions/admin';
 
 const store = configureStore();
 
@@ -19,6 +19,10 @@ export default class AdminContainer extends Component {
   componentWillMount() {
     const { props } = this;
 
+    if ('meta' in props) {
+      store.dispatch(setMeta(props.meta));
+    }
+
     if ('pages' in props) {
       store.dispatch(setPages(props.pages));
     }
@@ -29,6 +33,18 @@ export default class AdminContainer extends Component {
 
     if ('widgets' in props) {
       store.dispatch(setWidgets(props.widgets));
+    }
+
+    if ('sites' in props) {
+      store.dispatch(setSites(props.sites));
+    }
+
+    if ('users' in props) {
+      store.dispatch(setUsers(props.users));
+    }
+
+    if ('maps' in props) {
+      store.dispatch(setMaps(props.maps));
     }
 
   }

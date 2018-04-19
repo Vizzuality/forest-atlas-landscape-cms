@@ -8,7 +8,7 @@ class Admin::SitesController < AdminController
   def index
     @sites = Site.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
 
-    gon.sites = @sites.map do |site|
+    @formattedSites = @sites.map do |site|
       {
         'title' => {'value' => site.name, 'link' => { 'url' => site.routes.first.host_with_scheme, 'external' => true}, 'searchable' => true, 'sortable' => true},
         'template' => {'value' => site.site_template.name, 'searchable' => true, 'sortable' => true},
@@ -17,6 +17,8 @@ class Admin::SitesController < AdminController
         'delete' => {'value' => admin_site_path(slug: site.slug), 'method' => 'delete'}
       }
     end
+
+    gon.sites = @formattedSites
 
     respond_to do |format|
       format.html { render :index }
