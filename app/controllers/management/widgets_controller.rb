@@ -8,16 +8,20 @@ class Management::WidgetsController < ManagementController
     dataset_ids = @site.contexts.map{ |c| c.context_datasets.pluck(:dataset_id) }.flatten.uniq
     widgets = Widget.where(dataset_id: dataset_ids)
     publisher = (current_user.roles.include? UserType::PUBLISHER)
-    gon.widgets = widgets.map do |widget|
+    @formattedWidgets = widgets.map do |widget|
       {
         'name' => {'value' => widget.name, 'searchable' => true, 'sortable' => true},
         'description' => {'value' => widget.description, 'searchable' => true, 'sortable' => true},
         'chart' => {'value' => widget.visualization, 'searchable' => true, 'sortable' => true},
+        'chart type' => { 'value' => JSON.parse(widget.visualization)['type'], 'searchable' => true, 'sortable' => true},
         'edit' => {'value' => edit_management_site_widget_widget_step_path(site_slug: @site.slug, widget_id: widget.id, id: 'title'), \
                   'method' => 'get'},
         'delete' => publisher ? {'value' => nil} : {'value' => management_site_widget_path(@site.slug, widget.id), 'method' => 'delete'}
       }
       end
+
+    gon.widgets = @formattedWidgets
+
     gon.widget_pages = Hash[
       widgets.map do |widget|
         [
@@ -31,6 +35,9 @@ class Management::WidgetsController < ManagementController
         ]
       end
     ]
+
+
+
   end
 
   def destroy

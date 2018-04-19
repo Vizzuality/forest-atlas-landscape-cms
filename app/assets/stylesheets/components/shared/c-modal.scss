@@ -68,3 +68,89 @@
     pointer-events: none;
   }
 }
+
+
+// NEW REACT MODAL STYLES
+// REMOVE THE CODE ABOVE WHEN BACKBONE IS GONE
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  &__wrapper {
+    max-width: 530px;
+    margin: 50px auto 0 auto;
+    position: relative;
+  }
+
+  &__body {
+    position: relative;
+
+    max-height: calc(100vh - 80px);
+    padding: 10px;
+
+    background: #FFF;
+
+    overflow-y: scroll;
+    border-radius: 5px;
+  }
+
+  &__close {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: none;
+    padding: 0;
+    position: absolute;
+    top: -25px;
+    background: transparent;
+    right: -10px;
+
+    svg {
+      width: 40px;
+      height: 40px;
+      fill: #FFF;
+    }
+
+  }
+
+  &__contents {
+    padding: 0 10px;
+    h1 {
+      font-size: 26px;
+    }
+    p {
+      line-height: 1.5em;
+      font-size: 14px;
+    }
+  }
+
+  &__tabledata {
+    padding: 10px 0;
+    dl {
+      display: flex;
+      flex-flow: row;
+      dt {
+        flex: 0.3;
+        font-weight: 700;
+      }
+      dd {
+        flex: 0.7;
+      }
+    }
+  }
+
+  &__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+
+    background: rgba(00,00,00,0.4);
+    z-index: -1;
+  }
+
+}

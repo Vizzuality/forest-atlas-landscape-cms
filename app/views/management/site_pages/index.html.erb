@@ -1,18 +1,9 @@
 <%= render partial: 'management/extended_header'%>
 <%= include_gon %>
-<div class="js-tabs"></div>
 
-<div class="l-page-list">
-  <div class="wrapper">
+<%= render partial: 'management/tabs'%>
 
-    <div class="c-action-toolbar">
-      <ul class="buttons">
-      </ul>
-      <ul class="filters">
-        <li><div class="c-input-search js-table-search"></div></li>
-      </ul>
-    </div>
-
-    <div class="js-table"></div>
-  </div>
-</div>
+<%= javascript_pack_tag 'application' %>
+<%= react_component('SitePages', {
+  pages: @formattedPages
+} ) %>

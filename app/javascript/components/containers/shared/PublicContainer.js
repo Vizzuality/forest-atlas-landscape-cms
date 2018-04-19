@@ -9,8 +9,6 @@ const store = configureStore();
 
 /*
   Container for any public site, this will include any data thats required for our public pages
-  These parameters we get from our **gon** object within our rails template files
-
   remember when extending this to include the store in your page.
 */
 
@@ -20,16 +18,18 @@ export default class PublicContainer extends Component {
     this.store = store;
   }
   componentWillMount() {
-    store.dispatch(setSite(this.props.site));
-    store.dispatch(setPage(this.props.page));
+    const { props } = this;
+
+    store.dispatch(setSite(props.site));
+    store.dispatch(setPage(props.page));
     store.dispatch(setMeta({
-      image: this.props.image,
-      pageSize: this.props.pageSize,
-      siteTitleOnly: this.props.siteTitleOnly
+      image: props.image,
+      pageSize: props.pageSize,
+      siteTitleOnly: props.siteTitleOnly
     }));
-    store.dispatch(setSiteSettings(this.props.siteSettings));
+    store.dispatch(setSiteSettings(props.siteSettings));
   }
   render() {
-    return <Provider store={store}>{this.props.children}</Provider>;
+    return <Provider store={store}>{props.children}</Provider>;
   }
 }

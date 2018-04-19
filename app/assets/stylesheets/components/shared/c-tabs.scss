@@ -17,7 +17,6 @@
   }
 
   > .tab {
-    width: 200px;
     line-height: 50px;
     text-align: center;
     text-transform: uppercase;
@@ -27,5 +26,13 @@
       background-color: $color-3;
       color: $color-4;
     }
+
+    & > a {
+      display: block;
+
+      color: inherit;
+      width: 140px;
+    }
+
   }
 }
