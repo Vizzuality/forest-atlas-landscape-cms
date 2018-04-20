@@ -1,4 +1,10 @@
 {
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
   "globals": {
     "vg": true,
     "d3": true,
@@ -43,8 +49,13 @@
     },
     "sourceType": "module"
   },
-  "env": {
-    "browser": true,
-    "es6": true
+  "plugins": [
+    "babel"
+  ],
+  "settings": {
+    "import/resolver": {
+      "babel-module": {
+      }
+    }
   }
 }

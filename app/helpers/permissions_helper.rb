@@ -55,6 +55,8 @@ module PermissionsHelper
 
   def set_user_gon
     unset_user_gon and return unless current_user
+
+    @user = current_user
     gon.global.admin = current_user.admin
     gon.global.user = {
       name: current_user.name,

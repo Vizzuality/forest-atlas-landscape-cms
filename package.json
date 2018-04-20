@@ -17,11 +17,10 @@
   },
   "homepage": "https://github.com/Vizzuality/forest-atlas-landscape-cms#readme",
   "devDependencies": {
-    "babel-eslint": "^8.2.2",
-    "eslint": "^3.3.1",
-    "eslint-config-airbnb-base": "^5.0.3",
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
     "eslint-config-vizzuality": "^1.0.14",
-    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-babel": "^5.0.0",
     "webpack-dev-server": "2.11.2"
   },
   "dependencies": {

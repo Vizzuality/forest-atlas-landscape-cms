@@ -77,3 +77,55 @@
     }
   }
 }
+
+
+// New dropdown, remove c-dropdown-selector when backbone is removed
+.c-dropdown {
+  position: relative;
+
+  button {
+    display: block;
+    border: none;
+    background: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: unset;
+    padding: 0;
+    line-height: 50px;
+    outline: none;
+  }
+
+  button:focus ~ ul.options, button:active ~ ul.options {
+    display: block;
+    opacity: 1;
+  }
+
+  .options {
+    display: none; // by default
+    position: absolute;
+    min-width: 150px;
+    padding: 0 15px;
+
+    background: #FFF;
+
+    &:hover {display: block; opacity: 1;}
+
+    .option {
+      display: block;
+      width: 100%;
+
+      color: #555;
+      a { color: inherit; }
+    }
+  }
+
+
+  &.-right .options { right: 0; }
+
+  &.-right .option {
+    text-align: right;
+  }
+
+}
+

@@ -35,7 +35,7 @@ class Admin::MapVersionsController < AdminController
   def index
     @map_versions = MapVersion.order(:position)
 
-    gon.map_versions = @map_versions.map do |map|
+    @formattedMaps = @map_versions.map do |map|
       {
         'version' => {'value' => map.version, 'searchable' => true, 'sortable' => true},
         'position' => {'value' => map.position, 'searchable' => true, 'sortable' => true},
@@ -44,6 +44,8 @@ class Admin::MapVersionsController < AdminController
         'delete' => {'value' => admin_map_version_path(map), 'method' => 'delete'}
       }
     end
+
+    gon.map_versions = @formattedMaps;
 
     respond_to do |format|
       format.html { render :index }
