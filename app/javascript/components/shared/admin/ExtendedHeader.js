@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ExtendedHeader({ title, subTitle }) {
   return (
@@ -15,6 +15,6 @@ export default function ExtendedHeader({ title, subTitle }) {
 }
 
 ExtendedHeader.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string
+  title: PropTypes.string.isRequired,
+  subTitle: PropTypes.string.isRequired
 };

@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function DatasetModal({ value }) {
   const {
@@ -34,6 +34,4 @@ export default function DatasetModal({ value }) {
   );
 }
 
-DatasetModal.propTypes = {
-
-};
+DatasetModal.propTypes = { value: PropTypes.object.isRequired };

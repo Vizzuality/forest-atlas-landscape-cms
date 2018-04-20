@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
@@ -15,12 +15,12 @@ const SiteListPages = ({ admin }) => (
       />
     </div>
   </div>
- );
+);
 
 function mapStateToProps(state) {
-  return {
-    admin: state.admin
-  }
+  return { admin: state.admin };
 }
+
+SiteListPages.propTypes = { admin: PropTypes.object.isRequired };
 
 export default connect(mapStateToProps, null)(SiteListPages);

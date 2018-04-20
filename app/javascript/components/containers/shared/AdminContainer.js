@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom'
 import { Provider } from 'react-redux';
+
+import PropTypes from 'prop-types';
+
 import configureStore from '../../store/configureStore';
 
 import { setPages, setDatasets, setWidgets } from '../../redactions/admin';
@@ -11,7 +13,7 @@ const store = configureStore();
   Container for any admin site, this will include any data thats required for our admin pages
 */
 
-export default class AdminContainer extends Component {
+class AdminContainer extends Component {
   constructor(props) {
     super(props);
     this.store = store;
@@ -36,3 +38,7 @@ export default class AdminContainer extends Component {
     return <Provider store={store}>{this.props.children}</Provider>;
   }
 }
+
+AdminContainer.propTypes = { children: PropTypes.array };
+
+export default AdminContainer;

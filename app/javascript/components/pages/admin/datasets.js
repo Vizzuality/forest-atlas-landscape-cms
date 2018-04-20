@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
@@ -16,12 +16,13 @@ const Datasets = ({ admin }) => (
       />
     </div>
   </div>
- );
+);
 
 function mapStateToProps(state) {
-  return {
-    admin: state.admin
-  }
+  return { admin: state.admin };
 }
+
+
+Datasets.propTypes = { admin: PropTypes.object.isRequired };
 
 export default connect(mapStateToProps, null)(Datasets);

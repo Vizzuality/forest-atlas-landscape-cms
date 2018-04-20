@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom'
+import React from 'react';
 
 import AdminContainer from './shared/AdminContainer';
 import SiteListPages from '../pages/admin/site-list-pages';
