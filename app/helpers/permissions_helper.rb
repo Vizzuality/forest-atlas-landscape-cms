@@ -61,7 +61,7 @@ module PermissionsHelper
     gon.global.admin = current_user.admin
 
     # maybe find a more logical place for this
-    gon.global.api_url = ENV['API_URL'] + 'api/v1'
+    gon.global.api_url = ENV['API_URL'] + '/v1/'
 
     gon.global.user = {
       name: current_user.name,
