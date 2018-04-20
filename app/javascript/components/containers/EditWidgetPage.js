@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom'
+import React from 'react';
 
 import AdminContainer from './shared/AdminContainer';
 import EditWidget from '../pages/admin/widget';

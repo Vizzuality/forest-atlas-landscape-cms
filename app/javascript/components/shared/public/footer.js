@@ -1,7 +1,5 @@
-import React, { PureComponent } from "react"
-import PropTypes from "prop-types"
-
-import classnames from 'classnames';
+import React from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import { Icon } from '../../shared';
@@ -20,12 +18,12 @@ class Footer extends React.PureComponent {
     }
 
     if (service === 'linkedin') {
-        const linkedInParams = {
-          url: window.location.href,
-          title: `${site.page.name}-${site.current.name}`,
-          summary: site.page.description
-        }
-        return availableServices['linkedin'] + `?${queryString.stringify(linkedInParams)}`;
+      const linkedInParams = {
+        url: window.location.href,
+        title: `${site.page.name}-${site.current.name}`,
+        summary: site.page.description
+      }
+      return availableServices['linkedin'] + `?${queryString.stringify(linkedInParams)}`;
     }
 
     const servicesParams = {

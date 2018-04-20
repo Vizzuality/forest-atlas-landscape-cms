@@ -1,14 +1,13 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 import Fuse from 'fuse.js';
+import classnames from 'classnames';
 
 import TableActions from './TableActions';
 import Toolbar from './Toolbar';
 import TableFooter from './TableFooter';
 
 import { Modal } from '../../../shared';
-
-import classnames from 'classnames';
 
 const fuseOptions = {
   shouldSort: true,
@@ -35,25 +34,23 @@ class Table extends React.Component {
         offset: 0,
         pages: parseInt(props.data.length / (props.limit || 10))
       }
-    }
+    };
 
-    this.fuse = new Fuse(props.data, {
-      keys: props.columns.map(col => col.toLowerCase() + '.value'), ...fuseOptions } );
-
-    this.modal = props.modal || null;
-
+    this.fuse = new Fuse(props.data, { keys: props.columns.map(col => `${col.toLowerCase()}.value`), ...fuseOptions });
   }
 
   onSearch(e) {
     this.setState({ q: e.target.value });
   }
 
-  showRowInfo(data) {
-    this.setState({ modalOpen: true, datasetInfo: data });
-  }
 
   onCloseModal() {
     this.setState({ modalOpen: false, datasetInfo: null });
+  }
+
+  setRowsPerPage(e) {
+    const pagination = { ...this.state.pagination, limit: parseInt(e.target.value) };
+    this.setState({ pagination })
   }
 
   offsetPage(p) {
@@ -65,17 +62,16 @@ class Table extends React.Component {
     this.setState({ pagination });
   }
 
-  setRowsPerPage(e) {
-    const pagination = { ...this.state.pagination, limit: parseInt(e.target.value) };
-    this.setState({ pagination })
+  showRowInfo(data) {
+    this.setState({ modalOpen: true, datasetInfo: data });
   }
 
   formatRow(d, k) {
-    const { columns, actions, info } = this.props;
+    const { actions } = this.props;
     return (
       <tr role="row" key={k}>
         {this.formatCols(d)}
-        <TableActions actions={actions} data={d} showRowInfo={info => this.showRowInfo(info)} />
+        <TableActions actions={actions} data={d} showRowInfo={i => this.showRowInfo(i)} />
       </tr>
     );
   }
@@ -85,7 +81,7 @@ class Table extends React.Component {
     const { pagination } = this.state;
     const { limit, offset } = pagination;
 
-    const shouldShow = k < (limit+offset) && k >= offset;
+    const shouldShow = k < (limit + offset) && k >= offset;
 
     return shouldShow;
   }
@@ -94,11 +90,11 @@ class Table extends React.Component {
     const { columns } = this.props;
     const re = new RegExp(columns.join('|').toLowerCase());
 
-    return Object.keys(d).map(key => {
+    return Object.keys(d).map((key) => {
       const value = d[key].value && d[key].value.length > 0 ? d[key].value : '-';
       const cls = classnames({
-        'isLong': value.length > 15,
-        'isList': Array.isArray(value)
+        isLong: value.length > 15,
+        isList: Array.isArray(value)
       });
 
       if (re.test(key)) {
@@ -106,18 +102,24 @@ class Table extends React.Component {
           return (
             <td key={key + value} className={cls}>
               <span className="row-content">
-                <a href={d[key].link.url}
+                <a
+                  href={d[key].link.url}
                   {...('external' in d[key].link && d[key].link.external ? {
-                    'target': '__blank',
-                    'rel': 'noopener noreferrer'
+                    target: '__blank',
+                    rel: 'noopener noreferrer'
                   } : {})}
-                >{value}</a>
+                >{value}
+                </a>
               </span>
             </td>
-          )
+          );
         }
-        return <td key={key + value} className={cls}><span className="row-content">{
-          Array.isArray(value) ? value.join(' ') : value}</span></td>
+        return (
+          <td key={key + value} className={cls}>
+            <span className="row-content">
+              {Array.isArray(value) ? value.join(' ') : value}
+            </span>
+          </td>);
       }
       return null;
     });
@@ -130,27 +132,35 @@ class Table extends React.Component {
 
     const filteredResults = q.length > 0 ? this.fuse.search(q) : data;
 
-      return (<div className="c-table">
+    return (
+      <div className="c-table">
         <Toolbar q={q} onSearch={q => this.onSearch(q)} />
         <table role="grid">
           <thead>
-          {filteredResults.length > 0 && <tr className="header" role="row">
-              {columns.map((col, k) => <th key={k}
-                {...(k === 0 ?
-                  { className: `-order-${sort === 'asc' ? 'ascending' : 'descending'}`} : {}
-                )}
-              role="columnheader">{col}</th>)}
-              {/* Render empty rows for each action */}
-              {actions.map((a, k) => <th key={k} aria-sort="none" role="columnheader"></th>)}
-          </tr>}
+            {filteredResults.length > 0 &&
+            <tr className="header" role="row">
+                {columns.map((col, k) => (
+                  <th
+                    key={k}
+                    {...(k === 0 ?
+                    { className: `-order-${sort === 'asc' ? 'ascending' : 'descending'}` } : {}
+                    )}
+                    role="columnheader"
+                  >{col}
+                  </th>))}
+                {/* Render empty rows for each action */}
+                {actions.map((a, k) => (<th key={k} aria-sort="none" role="columnheader" />))}
+            </tr>
+            }
           </thead>
           <tbody>
             {filteredResults &&
-              filteredResults.map((d, k) => this.verifyPagination(k) ? this.formatRow(d, k) : null)}
+              filteredResults.map((d, k) => (this.verifyPagination(k) ? this.formatRow(d, k) : null))}
 
-            {filteredResults.length === 0 && <tr role="row">
+            {filteredResults.length === 0 &&
+            <tr role="row">
               {q.length > 0 ? <td align="center">No results found for {q}</td> :
-               <td align="center">No items to display</td>}
+              <td align="center">No items to display</td>}
             </tr>}
 
           </tbody>
@@ -165,10 +175,16 @@ class Table extends React.Component {
         <Modal show={modalOpen} onClose={() => this.onCloseModal()}>
           {modal && typeof modal === 'function' ? React.createElement(modal, datasetInfo) : null}
         </Modal>
-
       </div>
     );
   }
 }
+
+Table.propTypes = {
+  limit: PropTypes.number,
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
+  actions: PropTypes.array.isRequired
+};
 
 export default Table;

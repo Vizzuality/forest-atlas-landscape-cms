@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
@@ -17,11 +17,12 @@ export default ({ pages, pagination, offsetPage, setRowsPerPage }) => {
         <div className="c-select -mini">
           <select
             value={pagination.rowsPerPage}
-            onChange={e => setRowsPerPage(e)}>
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
+            onChange={e => setRowsPerPage(e)}
+          >
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
           </select>
         </div>
       </div>
@@ -59,6 +60,7 @@ export default ({ pages, pagination, offsetPage, setRowsPerPage }) => {
           Next page
         </button>
       </div>
-  </div>
-  )
-}
+    </div>
+  );
+};
+
