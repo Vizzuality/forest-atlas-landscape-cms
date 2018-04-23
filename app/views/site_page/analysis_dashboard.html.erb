@@ -33,7 +33,12 @@
     </div>
 
     <hr/>
-    <div class="table js-table"></div>
+
+    <%= javascript_pack_tag 'application' %>
+    <%= react_component('PublicTableView', {
+      dashboard: if @setting then @setting.get_filtered_dataset else nil end
+    } ) %>
+
   </div>
 </div>
 

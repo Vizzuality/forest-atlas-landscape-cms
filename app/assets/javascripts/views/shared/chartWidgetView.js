@@ -219,8 +219,6 @@
           this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
         }
         // TODO: Move this to react ?
-        console.log('conf', JSON.parse(this._generateVegaSpec()));
-        console.log('theme', this._getVegaTheme());
         requestAnimationFrame(function () {
           vg.parse
             .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {

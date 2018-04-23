@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { CoverPage, SiteContent, Footer } from '../shared';
+import { CoverPage, WysiwygEditor, Footer } from '../shared';
 
 const StaticPage = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} secondary />
-    <SiteContent content={JSON.parse(site.page.content.json)} />
+    <WysiwygEditor content={JSON.parse(site.page.content.json)} />
     <Footer site={site} />
   </div>
 );

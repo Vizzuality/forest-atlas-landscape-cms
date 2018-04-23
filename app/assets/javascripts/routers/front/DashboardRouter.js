@@ -251,8 +251,6 @@
       var dataset = this._getDataset();
       var widgets = this._getDashboardWidgets();
 
-      console.log('widgets in dashboard', widgets);
-
       widgets.forEach(function (widget, index) {
         var widgetContainer = document.querySelector('.js-widget-' + (index + 1));
         if (widget && widget.type === 'map') {
@@ -273,9 +271,6 @@
             visible: typeof widget.visible !== 'undefined' ? widget.visible : true
           });
         } else if (widget && widget.type === 'chart') {
-
-          console.log('what we need to render', widget);
-
           this['widget' + index] = new App.View.ChartWidgetView({
             el: widgetContainer,
             data: dataset,
