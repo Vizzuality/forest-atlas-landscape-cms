@@ -1,3 +1,4 @@
+/* eslint-disable */
 ((function (App) {
   'use strict';
 
@@ -423,13 +424,17 @@
           // If we have a min and max value and the field is type number, we want to compute
           // the step precision between the two values
           if (field.min !== null && field.max !== null && field.type === 'number') {
-            field.step = this._getStepPrecision(field.min, field.max);
+
+            // TODO: All this logic will be moved to react,
+            // Setting step to 1 for these fields is a temporary hotfix to display these datatypes correctly
+            field.step = /year|month|state_id/.test(field.name) ? 1 : this._getStepPrecision(field.min, field.max);
           }
         }
 
         // We add an index to the final object, and rename the "values" property of the filter
         // object by "selectedValues"
         var o = { id: index + 1 };
+
         if (filter.values) o.selectedValues = filter.values;
 
         return Object.assign({}, filter, field, o);
@@ -443,6 +448,7 @@
         canBeVariable: this.options.canBeVariable,
         hiddenInputName: this.options.hiddenInputName
       }));
+
       this.setElement(this.el);
 
       this.rowCountContainer = this.el.querySelector('.js-row-count');
