@@ -11,6 +11,7 @@ module PermissionsHelper
           name: 'ACCESS DENIED', #  TMP to prevent JS errors
           profile: no_permissions_url #  TMP to prevent JS errors
         }
+
         # No use redirecting to the API login gateway, because this user is already logged in.
         # The CMS does not recognise the login because either login email not in database,
         # or the user logged in via social media login, which is not supported.
@@ -58,8 +59,16 @@ module PermissionsHelper
 
     @user = current_user
     gon.global.admin = current_user.admin
+
+    # maybe find a more logical place for this
+    gon.global.api_url = ENV['API_URL'] + '/v1/'
+    gon.global.api_env = ENV['API_ENV']
+    gon.global.api_applications = ENV['API_APPLICATIONS']
+    gon.global.control_tower_url = ENV['CONTROL_TOWER_URL']
+
     gon.global.user = {
       name: current_user.name,
+      token: session[:user_token],
       profile: edit_management_profile_path(current_user.id),
       logout: auth_logout_url
     }
