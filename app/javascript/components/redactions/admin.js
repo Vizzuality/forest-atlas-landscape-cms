@@ -4,8 +4,7 @@ const initialState = {
   sites: null,
   widgets: null,
   users: null,
-  meta: null,
-  env: null
+  meta: null
 };
 
 export const SET_ADMIN_PAGES = '@admin/SET_PAGES';
@@ -15,7 +14,6 @@ export const SET_ADMIN_SITES = '@admin/setSites';
 export const SET_ADMIN_USERS = '@admin/setUsers';
 export const SET_ADMIN_META = '@admin/setMeta';
 export const SET_ADMIN_MAPS = '@admin/setMaps';
-export const SET_ADMIN_ENV_VARS = '@admin/setEnv';
 
 export function setPages(pages) {
   return {
@@ -66,18 +64,6 @@ export function setMeta(meta) {
   };
 }
 
-export function setGlobalEnv(global) {
-  const env = {
-    api_url: global.api_url,
-    user: global.user
-  };
-
-  return {
-    type: SET_ADMIN_ENV_VARS,
-    env
-  };
-}
-
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -95,8 +81,6 @@ export default (state = initialState, action) => {
       return { ...state, maps: action.maps };
     case SET_ADMIN_META:
       return { ...state, meta: action.meta };
-    case SET_ADMIN_ENV_VARS:
-      return { ...state, env: action.env };
     default:
       return state;
   }

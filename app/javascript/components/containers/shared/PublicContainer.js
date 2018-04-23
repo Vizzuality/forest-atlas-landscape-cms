@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import configureStore from '../../store/configureStore';
 
 import { setSite, setPage, setMeta, setSiteSettings } from '../../redactions/site';
+import { setEnvVars } from '../../redactions/env';
 
 const store = configureStore();
 
@@ -18,6 +19,7 @@ class PublicContainer extends Component {
     super(props);
     this.store = store;
   }
+
   componentWillMount() {
     const { props } = this;
 
@@ -29,7 +31,12 @@ class PublicContainer extends Component {
       siteTitleOnly: props.siteTitleOnly
     }));
     store.dispatch(setSiteSettings(props.siteSettings));
+
+    if (window.gon && 'global' in window.gon) {
+      store.dispatch(setEnvVars());
+    }
   }
+
   render() {
     return <Provider store={store}>{this.props.children}</Provider>;
   }
