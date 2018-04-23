@@ -7,13 +7,15 @@ const initialState = {
     image: null,
     pageSize: null,
     siteTitleOnly: false
-  }
+  },
+  dashboard: null
 };
 
 export const SET_SITE = '@public/SET_SITE';
 export const SET_PAGE = '@public/SET_PAGE';
 export const SET_META = '@public/SET_META';
 export const SET_SITE_SETTINGS = '@public/SET_SITE_SETTINGS';
+export const SET_DASHBOARD_DATA = '@public/SET_DASHBOARD';
 
 export function setSite(current) {
   return {
@@ -43,6 +45,13 @@ export function setMeta(meta) {
   };
 }
 
+export function setDashboardData(dashboard) {
+  return {
+    type: SET_DASHBOARD_DATA,
+    dashboard
+  };
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_SITE:
@@ -53,6 +62,8 @@ export default (state = initialState, action) => {
       return { ...state, meta: action.meta };
     case SET_SITE_SETTINGS:
       return { ...state, settings: action.settings };
+    case SET_DASHBOARD_DATA:
+      return { ...state, dashboard: action.dashboard };
     default:
       return state;
   }

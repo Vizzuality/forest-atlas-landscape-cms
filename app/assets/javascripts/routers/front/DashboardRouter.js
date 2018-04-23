@@ -1,3 +1,4 @@
+/* eslint-disable */
 ((function (App) {
   'use strict';
 
@@ -486,7 +487,6 @@
      */
     _checkStateValidity: function (state) {
       var dataset = this._getDataset({ unfiltered: true });
-
       // We check we have all the widgets and the dataset isn't empty
       if (!state.config || !state.config.widgets || !dataset.length) {
         return false;

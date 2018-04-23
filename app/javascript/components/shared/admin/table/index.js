@@ -22,11 +22,14 @@ class Table extends React.Component {
   constructor(props) {
     super(props);
 
+    const cols = props.columns || Object.keys(props.data[0]);
+
     this.state = {
       q: '',
       sort: 'asc',
       modalOpen: false,
       datasetInfo: null,
+      columns: cols,
       // when / if we get dynamic pagination, use that information instead
       pagination: {
         limit: props.limit || 10,
@@ -36,7 +39,7 @@ class Table extends React.Component {
       }
     };
 
-    this.fuse = new Fuse(props.data, { keys: props.columns.map(col => `${col.toLowerCase()}.value`), ...fuseOptions });
+    this.fuse = new Fuse(props.data, { keys: cols.map(col => `${col.toLowerCase()}.value`), ...fuseOptions });
   }
 
   onSearch(e) {
@@ -71,7 +74,7 @@ class Table extends React.Component {
     return (
       <tr role="row" key={k}>
         {this.formatCols(d)}
-        <TableActions actions={actions} data={d} showRowInfo={i => this.showRowInfo(i)} />
+        {actions && <TableActions actions={actions} data={d} showRowInfo={i => this.showRowInfo(i)} />}
       </tr>
     );
   }
@@ -87,10 +90,11 @@ class Table extends React.Component {
   }
 
   formatCols(d) {
-    const { columns } = this.props;
+    const { columns } = this.state;
     const re = new RegExp(columns.join('|').toLowerCase());
 
     return Object.keys(d).map((key) => {
+
       const value = d[key].value && d[key].value.length > 0 ? d[key].value : '-';
       const cls = classnames({
         isLong: value.length > 15,
@@ -98,6 +102,15 @@ class Table extends React.Component {
       });
 
       if (re.test(key)) {
+        if (typeof d[key] !== 'object') {
+          return (
+            <td key={key + d[key]} className={cls}>
+              <span className="row-content">
+                {d[key]}
+              </span>
+            </td>);
+        }
+
         if ('link' in d[key]) {
           return (
             <td key={key + value} className={cls}>
@@ -126,15 +139,14 @@ class Table extends React.Component {
   }
 
   render() {
-    const { data, columns, actions, modal } = this.props;
-    const { q, sort, pagination, modalOpen, datasetInfo } = this.state;
-    const { limit, pages } = pagination;
+    const { data, actions, modal, searchable } = this.props;
+    const { q, sort, columns, pagination, modalOpen, datasetInfo } = this.state;
 
-    const filteredResults = q.length > 0 ? this.fuse.search(q) : data;
+    const filteredResults = (q.length > 0 && searchable) ? this.fuse.search(q) : data;
 
     return (
       <div className="c-table">
-        <Toolbar q={q} onSearch={q => this.onSearch(q)} />
+        {searchable && <Toolbar q={q} onSearch={query => this.onSearch(query)} />}
         <table role="grid">
           <thead>
             {filteredResults.length > 0 &&
@@ -149,7 +161,7 @@ class Table extends React.Component {
                   >{col}
                   </th>))}
                 {/* Render empty rows for each action */}
-                {actions.map((a, k) => (<th key={k} aria-sort="none" role="columnheader" />))}
+                {actions && actions.map((a, k) => (<th key={k} aria-sort="none" role="columnheader" />))}
             </tr>
             }
           </thead>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 ((function (App) {
   'use strict';
 
@@ -276,6 +277,8 @@
      */
     _getUnusedFields: function () {
       return this.options.fields.filter(function (field) {
+        // dont show alerts, this will be handled through GFW && map builder
+        if (field.name && field.name === 'alerts') return false;
         var filter = _.findWhere(this.collection.toJSON(), { name: field.name });
         return !filter;
       }, this);
@@ -302,7 +305,7 @@
         delete res.type;
         return res;
       }).filter(function (filter) {
-        return filter.name;
+        return filter.name && filter.name !== 'alerts';
       });
 
       return JSON.stringify(serializedFilters);
@@ -423,13 +426,17 @@
           // If we have a min and max value and the field is type number, we want to compute
           // the step precision between the two values
           if (field.min !== null && field.max !== null && field.type === 'number') {
-            field.step = this._getStepPrecision(field.min, field.max);
+
+            // TODO: All this logic will be moved to react,
+            // Setting step to 1 for these fields is a temporary hotfix to display these datatypes correctly
+            field.step = /year|month|state_id/.test(field.name) ? 1 : this._getStepPrecision(field.min, field.max);
           }
         }
 
         // We add an index to the final object, and rename the "values" property of the filter
         // object by "selectedValues"
         var o = { id: index + 1 };
+
         if (filter.values) o.selectedValues = filter.values;
 
         return Object.assign({}, filter, field, o);
@@ -443,6 +450,7 @@
         canBeVariable: this.options.canBeVariable,
         hiddenInputName: this.options.hiddenInputName
       }));
+
       this.setElement(this.el);
 
       this.rowCountContainer = this.el.querySelector('.js-row-count');

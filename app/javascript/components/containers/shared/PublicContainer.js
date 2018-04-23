@@ -23,6 +23,12 @@ class PublicContainer extends Component {
   componentWillMount() {
     const { props } = this;
 
+    // Always attach gon object on public site
+    if (props.dashboard) {
+      store.dispatch(setDashboardData(props.dashboard));
+    }
+
+
     store.dispatch(setSite(props.site));
     store.dispatch(setPage(props.page));
     store.dispatch(setMeta({
