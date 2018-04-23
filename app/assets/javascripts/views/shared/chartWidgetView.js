@@ -1,3 +1,4 @@
+/* eslint-disable */
 ((function (App) {
   'use strict';
 
@@ -194,6 +195,7 @@
       if (labelY !== undefined && labelY !== null && labelY !== ''){
         yLabel = JSON.stringify(labelY);
       }
+
       return this._getChartTemplate()({
         data: JSON.stringify(this.options.data),
         xColumn: columnX,
@@ -216,6 +218,9 @@
         if (this.options.data.length && !this.widgetToolbox) {
           this.widgetToolbox = new App.Helper.WidgetToolbox(this.options.data);
         }
+        // TODO: Move this to react ?
+        console.log('conf', JSON.parse(this._generateVegaSpec()));
+        console.log('theme', this._getVegaTheme());
         requestAnimationFrame(function () {
           vg.parse
             .spec(JSON.parse(this._generateVegaSpec()), this._getVegaTheme(), function (error, chart) {
@@ -223,12 +228,14 @@
                 App.notifications.broadcast(App.Helper.Notifications.dashboard.chartError);
                 return;
               }
+
               this.chart = chart({
                 el: this.chartContainer,
                 // By using the SVG renderer, we give the client the possibility to
                 // translate the text contained in the charts
                 renderer: 'svg'
               }).update();
+
               this._setRendering(false);
             }.bind(this));
           if (this.options.enableChartSelector && this.options.displayMode !== 'dashboard') {

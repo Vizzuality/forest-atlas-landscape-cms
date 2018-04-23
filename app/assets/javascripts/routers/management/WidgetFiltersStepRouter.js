@@ -24,7 +24,7 @@
           field.max = new Date(field.max);
 
           // If the date couldn't be parsed, we just remove the field
-          if (Number.isNaN(field.min.getTime()) || Number.isNaN(field.max.getTime())) {
+          if (Number.isNaN(field.min.getTime()) || Number.isNaN(field.max.getTime())  ) {
             return null;
           }
         }

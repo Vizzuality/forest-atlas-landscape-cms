@@ -277,6 +277,8 @@
      */
     _getUnusedFields: function () {
       return this.options.fields.filter(function (field) {
+        // dont show alerts, this will be handled through GFW && map builder
+        if (field.name && field.name === 'alerts') return false;
         var filter = _.findWhere(this.collection.toJSON(), { name: field.name });
         return !filter;
       }, this);
@@ -303,7 +305,7 @@
         delete res.type;
         return res;
       }).filter(function (filter) {
-        return filter.name;
+        return filter.name && filter.name !== 'alerts';
       });
 
       return JSON.stringify(serializedFilters);
