@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": "app/javascript"
+  },
+  "include": [
+    "app/javascript"
+  ]
+}

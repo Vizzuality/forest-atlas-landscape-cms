@@ -1,6 +1,5 @@
 <%= javascript_pack_tag 'application' %>
-
-<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<%= Gon::Base.render_data %>
 
 <!-- render 'front/cover', image: @alternative_image, size: 'small' -->
 
@@ -45,6 +44,3 @@
 
 <%= render 'front/footer' %>
 
-<script type="text/javascript">
-  window.route = 'Dashboard';
-</script>

@@ -11,7 +11,7 @@
 
 <%= render partial: 'shared/navigation_header', \
   locals: {form_steps: wizard_steps, id: @widget.id, current_step: step, step_names: @steps_names} %>
-<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<%= Gon::Base.render_data %>
 
 
 <%= form_for @widget, url: wizard_path, method: :put do |f| %>
