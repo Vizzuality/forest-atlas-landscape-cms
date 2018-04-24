@@ -1,8 +1,7 @@
 import React from 'react';
 
-import PublicContainer from './shared/PublicContainer';
-
-import { Table, Widget } from '../shared';
+import PublicContainer from 'containers/shared/PublicContainer';
+import { Table, Widget } from 'components';
 
 export default class Dashboard extends PublicContainer {
   render() {
