@@ -8,10 +8,10 @@ export function setEnvVars() {
   return {
     type: SET_ENV_VARS,
     payload: {
-      apiUrl: global.apiUrl,
-      apiEnv: global.apiEnv,
-      apiApplications: global.apiApplications,
-      controlTowerUrl: global.controlTowerUrl,
+      apiUrl: global.api_url,
+      apiEnv: global.api_env,
+      apiApplications: global.api_applications,
+      controlTowerUrl: global.control_tower_url,
       user: global.user
     }
   };
