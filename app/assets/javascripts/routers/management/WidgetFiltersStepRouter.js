@@ -40,8 +40,8 @@
       var datasetFiltersView = new App.View.DatasetFiltersView({
         el: '.js-filters',
         fields: fields,
-        filters: (window.gon && gon.filtersArray) || [],
-        endpointUrl: (window.gon && gon.filtersEndpointUrl) || '',
+        filters: (window.gon && gon.filters_array) || [],
+        endpointUrl: (window.gon && gon.filters_endpoint_url) || '',
         hiddenInputName: 'widget[filters]',
         canBeVariable: false
       });

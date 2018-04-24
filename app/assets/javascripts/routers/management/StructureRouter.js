@@ -63,7 +63,7 @@
       this._displaySavingNotification();
 
       $.ajax({
-        url: gon.updateStructurePath,
+        url: gon.update_structure_path,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ collection: [this.treeStructureView.getTree()] })
@@ -151,7 +151,7 @@
     _onClickAddPage: function (e) {
       e.preventDefault();
       var node = $(e.target).closest('.js-draggable')[0];
-      window.location = '' + gon.addPagePath + '?parent=' + $(node).attr('id').match(/\d+/)[0];
+      window.location = '' + gon.add_page_path + '?parent=' + $(node).attr('id').match(/\d+/)[0];
     },
 
     /**

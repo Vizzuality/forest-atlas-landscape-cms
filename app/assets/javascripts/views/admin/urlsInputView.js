@@ -79,8 +79,8 @@
       this.$el.append(this.template({
         showNextInput: this.options.showNextInput,
         urls: this.collection.toJSON(),
-        inputId: (window.gon && gon.global && gon.global.urlControllerId) || '',
-        inputName: (window.gon && gon.global && gon.global.urlControllerName) || ''
+        inputId: (window.gon && gon.global && gon.global.url_controller_id) || '',
+        inputName: (window.gon && gon.global && gon.global.url_controller_name) || ''
       }));
       this.setElement(this.el);
     }

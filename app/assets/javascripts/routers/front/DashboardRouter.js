@@ -100,7 +100,7 @@
       }
 
       // When the dataset is filtered, we need to update the components
-      if (gon && gon.analysisUserFilters && gon.analysisUserFilters.length) {
+      if (gon && gon.analysis_user_filters && gon.analysis_user_filters.length) {
         this.listenTo(this.filters, 'dataset:change', function (dataset) {
           this.filteredDataset = dataset;
 
@@ -125,7 +125,7 @@
      * @returns {object[]} dataset
      */
     _getDataset: function (options) {
-      return ((!options || !options.unfiltered) && this.filteredDataset) || (window.gon && gon.analysisData.data) || [];
+      return ((!options || !options.unfiltered) && this.filteredDataset) || (window.gon && gon.analysis_data.data) || [];
     },
     /**
      * Retrieve the dataset metadata provided by the dashboard
@@ -140,7 +140,7 @@
      * @returns {string} version
      */
     _getDashboardVersion: function () {
-      return (window.gon && gon.analysisTimestamp) || null;
+      return (window.gon && gon.analysis_timestamp) || null;
     },
 
     /**
@@ -148,7 +148,7 @@
      * @returns {object[]} widgets
      */
     _getDashboardWidgets: function () {
-      return (window.gon && gon.analysisWidgets) || [];
+      return (window.gon && gon.analysis_widgets) || [];
     },
 
     /**
@@ -176,7 +176,7 @@
         this.descriptionModal = new App.View.ModalView();
 
         var descriptionDashboardModalView = new App.View.DescriptionDashboardModalView({
-          name: (window.gon && gon.pageName) || null,
+          name: (window.gon && gon.page_name) || null,
           description: description.innerHTML,
           closeCallback: function () { this.descriptionModal.close(); }.bind(this)
         });
@@ -214,7 +214,7 @@
       this.filters = new App.View.DashboardFiltersView({
         el: document.querySelector('.js-filters'),
         data: dataset,
-        filteringFields: (window.gon && gon.analysisUserFilters) || []
+        filteringFields: (window.gon && gon.analysis_user_filters) || []
       });
     },
 
