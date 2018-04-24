@@ -21,7 +21,7 @@
     },
 
     initNameStep: function () {
-      var formattedUrls = (window.gon && window.gon.global) ? gon.global.urlArray : [];
+      var formattedUrls = (window.gon && window.gon.global) ? gon.global.url_array : [];
       formattedUrls = formattedUrls.map(function (url) {
         return {
           url: url.host,

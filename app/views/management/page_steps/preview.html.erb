@@ -14,7 +14,7 @@
   {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
   nvalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 
-<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<%= Gon::Base.render_data %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
   <input type="hidden" type="text" id="widgets-settings" name="site_page[dataset_setting][widgets]" value="" class="js-widgets-input" />

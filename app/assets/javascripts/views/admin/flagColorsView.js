@@ -22,7 +22,7 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-      this.collection = new Collection((window.gon && gon.global.colorArray) || []);
+      this.collection = new Collection((window.gon && gon.global.color_array) || []);
       this.render();
     },
 
@@ -89,7 +89,7 @@
 
     render: function () {
       if (!this.el) return;
-      
+
       this.$el.html(this.template({
         colors: this.collection.toJSON()
           .map(function (color, i) {
@@ -97,8 +97,8 @@
             return color;
           }, this),
         addButtonVisible: this._canAddColor(),
-        inputId: window.gon && gon.global && gon.global.colorControllerId,
-        inputName: window.gon && gon.global && gon.global.colorControllerName,
+        inputId: window.gon && gon.global && gon.global.color_controller_id,
+        inputName: window.gon && gon.global && gon.global.color_controller_name,
         colorsValue: this._serializeColors()
       }));
       this.setElement(this.el);

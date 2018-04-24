@@ -26,7 +26,7 @@
         this.options.links[0].name = gon.global.user.name;
         this.options.links[1].url = gon.global.user.profile;
         this.options.links[2].url = gon.global.user.logout;
-        this.options.accessDenied = gon.global.user.accessDenied;
+        this.options.accessDenied = gon.global.user.access_denied;
       }
 
       this.render();

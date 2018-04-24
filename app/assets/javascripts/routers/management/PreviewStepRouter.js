@@ -96,7 +96,7 @@
         var description = document.querySelector('.js-description');
         this.descriptionModal = new App.View.ModalView();
         var descriptionDashboardModalView = new App.View.DescriptionDashboardModalView({
-          name: (window.gon && gon.pageName) || null,
+          name: (window.gon && gon.page_name) || null,
           description: description.innerHTML,
           closeCallback: function () {
             this.descriptionModal.close();
@@ -148,7 +148,7 @@
      * @returns {object[]} dataset
      */
     _getDataset: function () {
-      return (window.gon && gon.analysisData.data) || [];
+      return (window.gon && gon.analysis_data.data) || [];
     },
     /**
      * Retrieve the list of widgets
@@ -156,8 +156,8 @@
      */
     _getDashboardWidgets: function () {
       var widgets = [];
-      if (gon && gon.analysisWidgets) {
-        widgets = gon.analysisWidgets.map(function (widget) {
+      if (gon && gon.analysis_widgets) {
+        widgets = gon.analysis_widgets.map(function (widget) {
           if (widget.type === 'chart') {
             return {
               type: 'chart',

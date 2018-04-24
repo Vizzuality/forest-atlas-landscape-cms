@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<%= Gon::Base.render_data %>
 
 <%= form_for @dataset, url: update_metadata_management_site_dataset_url(@site.slug, @dataset.id), method: :put do |f| %>
   <%= render partial: 'management/datasets/metadata_form', locals: {f: f} %>
