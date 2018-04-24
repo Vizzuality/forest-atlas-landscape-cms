@@ -195,8 +195,8 @@ class Table extends React.Component {
 Table.propTypes = {
   limit: PropTypes.number,
   data: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired,
-  actions: PropTypes.array.isRequired
+  columns: PropTypes.array,
+  actions: PropTypes.array
 };
 
 export default Table;

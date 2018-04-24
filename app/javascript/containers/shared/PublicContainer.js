@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 
 import configureStore from 'store/configureStore';
 
-import { setSite, setPage, setMeta, setSiteSettings, setDashboardData } from 'redactions/site';
+import { setSite, setPage, setMeta, setSiteSettings } from 'redactions/site';
 import { setEnvVars } from 'redactions/env';
+import { setDashboardData, setDashboardWidgets } from 'redactions/dashboard';
 
 const store = configureStore();
 
@@ -22,11 +23,17 @@ class PublicContainer extends Component {
 
   componentWillMount() {
     const { props } = this;
-    // Always attach gon object on public site
+
+
+    console.log(props, 'props in public container');
+
     if (props.dashboard) {
       store.dispatch(setDashboardData(props.dashboard));
     }
 
+    if (props.widgets) {
+      store.dispatch(setDashboardWidgets(props.widgets));
+    }
 
     store.dispatch(setSite(props.site));
     store.dispatch(setPage(props.page));

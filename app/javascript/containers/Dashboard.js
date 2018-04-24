@@ -1,14 +1,11 @@
 import React from 'react';
 
 import PublicContainer from 'containers/shared/PublicContainer';
-import { Table, Widget } from 'components';
+
+import WidgetDashboard from 'pages/widget-dashboard';
 
 export default class Dashboard extends PublicContainer {
   render() {
-    return (
-      <div>
-        <Widget data={this.props.dashboard.data} />
-        <Table data={this.props.dashboard.data} searchable={false} />
-      </div>);
+    return <WidgetDashboard store={this.store} />;
   }
 }
