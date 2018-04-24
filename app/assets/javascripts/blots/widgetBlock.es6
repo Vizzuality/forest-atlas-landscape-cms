@@ -58,6 +58,7 @@ class WidgetBlot extends Embed {
    * Fetch the data associated to the widget
    * @returns {any} jQuery deferred object
    */
+  // TODO: THIS WE NEED TO COPY, SO WE CAN GET THE CORECT CONFIGURATION
   _fetchWidget () {
     var id = WidgetBlot.value(this.domNode).id;
 

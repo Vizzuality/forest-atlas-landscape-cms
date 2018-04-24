@@ -211,6 +211,7 @@
      * Create the chart and append it to the DOM
      */
     _renderChart: function () {
+      console.log(this);
       if (!this._rendering) {
         this._setRendering(true);
         // The widget toolbox could be non-assigned if the view has been instantiated

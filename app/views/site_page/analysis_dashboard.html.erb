@@ -36,7 +36,8 @@
 
     <hr/>
     <%= react_component('Dashboard', {
-      dashboard: if @setting then @setting.get_filtered_dataset else nil end
+      dashboard: if @setting then @setting.get_filtered_dataset else nil end,
+      widgets: if @siteWidgets then @siteWidgets else nil end
     } ) %>
 
   </div>
