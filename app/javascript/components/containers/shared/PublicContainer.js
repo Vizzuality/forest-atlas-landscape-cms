@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import configureStore from '../../store/configureStore';
 
-import { setSite, setPage, setMeta, setSiteSettings } from '../../redactions/site';
+import { setSite, setPage, setMeta, setSiteSettings, setDashboardData } from '../../redactions/site';
 import { setEnvVars } from '../../redactions/env';
 
 const store = configureStore();

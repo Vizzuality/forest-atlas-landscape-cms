@@ -1,3 +1,5 @@
+<%= javascript_pack_tag 'application' %>
+
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
 
 <!-- render 'front/cover', image: @alternative_image, size: 'small' -->
@@ -33,9 +35,7 @@
     </div>
 
     <hr/>
-
-    <%= javascript_pack_tag 'application' %>
-    <%= react_component('PublicTableView', {
+    <%= react_component('Dashboard', {
       dashboard: if @setting then @setting.get_filtered_dataset else nil end
     } ) %>
 
