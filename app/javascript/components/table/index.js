@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Fuse from 'fuse.js';
 import classnames from 'classnames';
 
-import TableActions from 'components/admin/table/TableActions';
-import Toolbar from 'components/admin/table/Toolbar';
-import TableFooter from 'components/admin/table/TableFooter';
+import TableActions from 'components/table/TableActions';
+import Toolbar from 'components/table/Toolbar';
+import TableFooter from 'components/table/TableFooter';
 
 import { Modal } from 'components';
 
