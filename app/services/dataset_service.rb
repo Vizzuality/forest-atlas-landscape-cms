@@ -181,8 +181,6 @@ class DatasetService
       metadata.slice(*Dataset::API_PROPERTIES)
       ).to_json
 
-      puts '****** **** ******* ***** META DATA ***************', metadata_body
-
       begin
         Rails.logger.info 'Saving dataset Metadata in the API.'
         Rails.logger.info "Body: #{metadata_body}"
