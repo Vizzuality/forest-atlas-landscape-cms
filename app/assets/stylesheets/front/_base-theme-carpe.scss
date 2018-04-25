@@ -51,3 +51,18 @@ body {
   }
 
 }
+
+.c-cover > .wrapper {
+  position: absolute;
+  width: 100vw;
+  margin: 0;
+
+  // Position container at the center , -50 = header height
+  top: 50%;
+  transform: translateY(calc(-50% - -50px));
+
+  .cover-title {
+    text-align: center;
+    line-height: 1.2em;
+  }
+}
