@@ -1,36 +1,38 @@
 <%= Gon::Base.render_data %>
 
-<!-- render 'front/cover', image: @alternative_image, size: 'small' -->
-
 <div class="l-analysis-dashboard">
+
+  <!--
   <div class="bookmarks">
     <div class="wrapper">
       <div class="js-bookmarks"></div>
     </div>
   </div>
+  -->
 
   <div class="wrapper">
     <div class="description">
       <% if @site_page.description.length > 200 %>
-        <%= @site_page.description[0, 200].strip + '…' %><br/>
-        <button type="button" class="read-more js-read-more">Read more</button>
-        <div class="full-description js-description">
-          <%= @site_page.description %>
-        </div>
-        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
+        <%= @site_page.description[0, 200].strip + '…' %>
       <% else %>
         <%= @site_page.description %>
-        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
       <% end %>
     </div>
-    <div class="filters js-filters">
-    </div>
+
+    <!--
+    Not sure what filters does at this point
+    <div class="filters js-filters"></div>
+    -->
 
     <div class="widgets">
         <div class="large-widget js-widget-1"></div>
         <div class="widget js-widget-2"></div>
         <div class="widget js-widget-3"></div>
     </div>
+
+    <% if @site_page.description.length > 200 %>
+      <%= @site_page.description %>
+    <% end %>
 
     <hr/>
 
