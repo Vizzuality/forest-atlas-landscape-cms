@@ -40,6 +40,36 @@ body {
     margin: 0 auto;
     background: none;
     max-width: $body-max-width;
+
+    .dropdown-item {
+      overflow: hidden;
+    }
+
+    .menu > ul > li {
+      text-align: left;
+
+      &:last-of-type { padding-right: 20px!important; }
+
+      &:hover {
+        background: #FFF;
+        color: #000000;
+
+        a { color: inherit; }
+
+        ul {
+          border: none;
+          box-shadow: none;
+          border-top: 3px solid #000;
+          margin: 0;
+          padding: 0 20px;
+          position: relative;
+          width: 130%;
+        }
+
+      }
+    }
+
+
   }
 
   a {
@@ -65,4 +95,21 @@ body {
     text-align: center;
     line-height: 1.2em;
   }
+
+}
+
+
+.c-footer > .wrapper {
+  max-width: $body-max-width;
+  margin: 0 auto;
+  ul { list-style: none; }
+
+  a {
+    text-decoration: none;
+  }
+
+  .share-links-list {
+    padding: 0;
+  }
+
 }
