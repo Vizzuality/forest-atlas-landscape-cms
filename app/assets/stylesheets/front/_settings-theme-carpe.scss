@@ -1,5 +1,5 @@
 // Font families
-$font-family-1: 'Roboto', sans-serif;
+$font-family-1: 'Roboto Condensed', sans-serif;
 
 // Font sizes
 $font-size-small:    12px;
@@ -57,5 +57,5 @@ $mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
 $mq-body-width: 'screen and (min-width: #{$body-max-width})';
 
 // Theme
-$theme: 2;
+$theme: 2; // Whats this ???
 $admin: false;

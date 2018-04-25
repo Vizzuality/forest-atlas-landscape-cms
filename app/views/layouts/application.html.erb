@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.6/quill.core.css">
 
   <% if @site_page.site_template.name.eql?('CAPRE Landscape') %>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
   <% end %>
 
   <%= stylesheet_link_tag 'front/application-theme-fa', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('Forest Atlas')) %>
