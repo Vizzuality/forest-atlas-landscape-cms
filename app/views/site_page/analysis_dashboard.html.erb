@@ -1,3 +1,4 @@
+<%= javascript_pack_tag 'application' %>
 <%= Gon::Base.render_data %>
 
 <!-- render 'front/cover', image: @alternative_image, size: 'small' -->
@@ -33,10 +34,9 @@
     </div>
 
     <hr/>
-
-    <%= javascript_pack_tag 'application' %>
-    <%= react_component('PublicTableView', {
-      dashboard: if @setting then @setting.get_filtered_dataset else nil end
+    <%= react_component('Dashboard', {
+      dashboard: if @setting then @setting.get_filtered_dataset else nil end,
+      widgets: if @siteWidgets then @siteWidgets else nil end
     } ) %>
 
   </div>
@@ -45,5 +45,6 @@
 <%= render 'front/footer' %>
 
 <script type="text/javascript">
+  // XXX : While we are dependent on backbone, keep this here so we render the dashboard route
   window.route = 'Dashboard';
 </script>

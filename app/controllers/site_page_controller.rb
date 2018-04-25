@@ -113,8 +113,10 @@ class SitePageController < ApplicationController
   def analysis_dashboard
     gon.page_name = @site_page.name
 
+
     @setting = @site_page.dataset_setting
     if @setting
+      @siteWidgets = Widget.where(dataset_id: @setting.dataset_id)
       # Query the API in the dataset_setting
 
       # Fill the gon for:
