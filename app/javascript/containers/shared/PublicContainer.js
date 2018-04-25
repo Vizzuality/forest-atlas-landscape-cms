@@ -24,9 +24,6 @@ class PublicContainer extends Component {
   componentWillMount() {
     const { props } = this;
 
-
-    console.log(props, 'props in public container');
-
     if (props.dashboard) {
       store.dispatch(setDashboardData(props.dashboard));
     }
