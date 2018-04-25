@@ -11,11 +11,18 @@
     border: 1px solid rgba($color-2, .3);
     border-radius: 40px;
 
-    a {
+    a,
+    button {
       display: block;
       padding: 0 25px;
       color: $color-3;
       line-height: 27px;
+      background: transparent;
+      border: 0;
+      appearance: none;
+      font-family: $font-family-1;
+      font-size: $font-size-normal;
+      cursor: pointer;
 
       &.-active {
         border-radius: 40px;
