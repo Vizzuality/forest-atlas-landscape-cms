@@ -1,0 +1,12 @@
+// This file is used in development only
+$color-1:#97BE32;
+
+@import
+'leaflet',
+'../helpers',
+'settings-theme-carpe',
+'../layouts/shared/*',
+'../layouts/front/*',
+'../components/shared/**/*',
+'../components/front/**/*',
+'base-theme-carpe'; // Theme specific styles below so it overwrites anything we need to without problems

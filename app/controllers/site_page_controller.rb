@@ -56,8 +56,8 @@ class SitePageController < ApplicationController
     main_image_setting = SiteSetting.main_image(@site_page.site.id)
     @main_image = main_image_setting.image if !main_image_setting.blank? && !main_image_setting.image_file_name.blank?
 
-    alt_image_setting = SiteSetting.alternative_image(@site_page.site.id)
-    @alternative_image = alt_image_setting.image if !alt_image_setting.blank? && !alt_image_setting.image_file_name.blank?
+    alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
+    @alternative_image = alternative_image_setting.image if !alternative_image_setting.blank? && !alternative_image_setting.image_file_name.blank?
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)
     @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?

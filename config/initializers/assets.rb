@@ -16,4 +16,4 @@ Rails.application.config.assets.paths << Rails.root.join('tmp', 'compiled_css')
 Rails.application.config.assets.precompile += %w( management.js admin.js )
 Rails.application.config.assets.precompile += %w( admin/application.css management/application.css)
 # The precompilation of the front assets is no longer needed
-#Rails.application.config.assets.precompile += %w( admin/application.css management/application.css front/application-theme-fa.css front/application-theme-lsa.css )
+#Rails.application.config.assets.precompile += %w( admin/application.css management/application.css front/application-theme-fa.css front/application-theme-lsa.css front/application-theme-carpe.css )

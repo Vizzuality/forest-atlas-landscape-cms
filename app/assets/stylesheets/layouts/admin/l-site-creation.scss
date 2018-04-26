@@ -80,6 +80,7 @@
 
         .content {
           position: relative;
+          width: 350px;
 
           &::before {
             position: absolute;
@@ -97,6 +98,7 @@
           img {
             border: 1px solid $color-13;
             border-radius: 4px;
+            width: 100%;
           }
 
           p {
