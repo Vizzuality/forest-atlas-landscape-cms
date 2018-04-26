@@ -42,6 +42,7 @@
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
-    "widget-editor": "^1.1.0"
+    "widget-editor": "^1.1.0",
+    "wri-json-api-serializer": "^1.0.1"
   }
 }

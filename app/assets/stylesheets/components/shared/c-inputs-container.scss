@@ -59,6 +59,23 @@
       font-size: $font-size-s-normal;
       line-height: 1.5;
     }
+
+    > select {
+      width: 100%;
+      margin: 0;
+      padding: 9px 35px 0 15px;
+      min-height: 40px;
+      border: 1px solid $color-13;
+      border-radius: 4px;
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-normal;
+      line-height: 40px;
+      background: asset-url('icons/arrow-icon.svg') no-repeat;
+      background-size: 12px auto;
+      background-position: right 11px center;
+      appearance: none;
+    }
   }
 
   > footer {
