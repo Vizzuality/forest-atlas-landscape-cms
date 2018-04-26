@@ -118,6 +118,8 @@ class NewWidgetPage extends React.Component {
                 datasetId={dataset}
                 widgetTitle={title}
                 widgetCaption={caption}
+                saveButtonMode="never"
+                embedButtonMode="never"
                 onChangeWidgetTitle={t => setTitle(t)}
                 onChangeWidgetCaption={c => setCaption(c)}
                 provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
