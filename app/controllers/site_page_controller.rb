@@ -49,20 +49,20 @@ class SitePageController < ApplicationController
   end
 
   def load_images
-    image_setting = SiteSetting.logo_image(@site_page.site.id)
+    logo_image_setting = SiteSetting.logo_image(@site_page.site.id)
     @image_url = '/'
-    @image_url = image_setting.image if !image_setting.blank? && !image_setting.image_file_name.blank?
+    @image_url = logo_image_setting.image if !logo_image_setting.blank? && !logo_image_setting.image_file_name.blank?
 
-    image_setting = SiteSetting.main_image(@site_page.site.id)
-    @main_image = image_setting.image if !image_setting.blank? && !image_setting.image_file_name.blank?
+    main_image_setting = SiteSetting.main_image(@site_page.site.id)
+    @main_image = main_image_setting.image if !main_image_setting.blank? && !main_image_setting.image_file_name.blank?
 
-    image_setting = SiteSetting.alternative_image(@site_page.site.id)
-    @alternative_image = image_setting.image if !image_setting.blank? && !image_setting.image_file_name.blank?
+    alt_image_setting = SiteSetting.alternative_image(@site_page.site.id)
+    @alternative_image = alt_image_setting.image if !alt_image_setting.blank? && !alt_image_setting.image_file_name.blank?
 
-    image_setting = SiteSetting.favico(@site_page.site.id)
-    @favico = image_setting.image if !image_setting.blank? && !image_setting.image_file_name.blank?
+    favico_image_setting = SiteSetting.favico(@site_page.site.id)
+    @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?
 
-    gon.main_image = @image_url
+    gon.main_image = @main_image
     gon.alternative_image = @alternative_image
   end
 

@@ -1,0 +1,18 @@
+$this: 'fa-dashboard';
+
+.#{$this} {
+  display: block;
+
+  &__summary {
+    display: block;
+  }
+
+  &__description {
+    display: block;
+  }
+
+  &__widgetEditor {
+    display: block;
+  }
+
+}

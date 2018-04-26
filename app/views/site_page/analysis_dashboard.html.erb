@@ -1,51 +1,32 @@
 <%= Gon::Base.render_data %>
 
-<div class="l-analysis-dashboard">
+<%= javascript_pack_tag 'application' %>
 
-  <!--
-  <div class="bookmarks">
-    <div class="wrapper">
-      <div class="js-bookmarks"></div>
-    </div>
-  </div>
-  -->
+<%= react_component('HeaderView', {
+  page: @site_page,
+  site: @site_page.site,
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: @site_title_only,
+  image: @main_image,
+  pageSize: defined?(size) ? size : nil
+} ) %>
 
-  <div class="wrapper">
-    <div class="description">
+<div class="fa-dashboard">
+
+    <p class="fa-dashboard__summary">
       <% if @site_page.description.length > 200 %>
         <%= @site_page.description[0, 200].strip + '…' %>
       <% else %>
         <%= @site_page.description %>
       <% end %>
-    </div>
+    </p>
 
-    <!--
-    Not sure what filters does at this point
-    <div class="filters js-filters"></div>
-    -->
-
-    <div class="widgets">
-        <div class="large-widget js-widget-1"></div>
-        <div class="widget js-widget-2"></div>
-        <div class="widget js-widget-3"></div>
-    </div>
+    <div class="fa-dashboard__widgetEditor">i want a react component ::)</div>
 
     <% if @site_page.description.length > 200 %>
-      <%= @site_page.description %>
+      <p class="fa-dashboard__description"><%= @site_page.description %></p>
     <% end %>
 
-    <hr/>
-
-    <%= javascript_pack_tag 'application' %>
-    <%= react_component('PublicTableView', {
-      dashboard: if @setting then @setting.get_filtered_dataset else nil end
-    } ) %>
-
-  </div>
 </div>
 
 <%= render 'front/footer' %>
-
-<script type="text/javascript">
-  window.route = 'Dashboard';
-</script>
