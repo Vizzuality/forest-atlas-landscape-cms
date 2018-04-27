@@ -7,8 +7,6 @@ import TableActions from 'components/admin/table/TableActions';
 import Toolbar from 'components/admin/table/Toolbar';
 import TableFooter from 'components/admin/table/TableFooter';
 
-import { Modal } from 'components';
-
 const fuseOptions = {
   shouldSort: true,
   threshold: 0.6,
@@ -39,8 +37,6 @@ class Table extends React.Component {
          */
         columnIndex: 0
       },
-      modalOpen: false,
-      datasetInfo: null,
       columns: cols,
       // when / if we get dynamic pagination, use that information instead
       pagination: {
@@ -87,11 +83,6 @@ class Table extends React.Component {
     });
   }
 
-
-  onCloseModal() {
-    this.setState({ modalOpen: false, datasetInfo: null });
-  }
-
   setRowsPerPage(e) {
     const pagination = {
       ...this.state.pagination,
@@ -113,16 +104,12 @@ class Table extends React.Component {
     this.setState({ pagination });
   }
 
-  showRowInfo(data) {
-    this.setState({ modalOpen: true, datasetInfo: data });
-  }
-
-  formatRow(d, k) {
+  formatRow(d) {
     const { actions } = this.props;
     return (
-      <tr role="row" key={k}>
+      <tr role="row" key={d}>
         {this.formatCols(d)}
-        {actions && <TableActions actions={actions} data={d} showRowInfo={i => this.showRowInfo(i)} />}
+        {actions && <TableActions actions={actions} data={d} onClickAction={this.props.onClickAction} />}
       </tr>
     );
   }
@@ -224,8 +211,8 @@ class Table extends React.Component {
   }
 
   render() {
-    const { data, actions, modal, searchable } = this.props;
-    const { q, sort, columns, pagination, modalOpen, datasetInfo } = this.state;
+    const { data, actions, searchable } = this.props;
+    const { q, sort, columns, pagination } = this.state;
 
     const filteredResults = this.sortResults(q.length > 0 && searchable
       ? this.fuse.search(q)
@@ -261,13 +248,13 @@ class Table extends React.Component {
                   >{col}
                   </th>))}
                 {/* Render empty rows for each action */}
-                {actions && actions.map((a, k) => (<th key={k} aria-sort="none" role="columnheader" />))}
+                {actions && actions.map(a => (<th key={a} aria-sort="none" role="columnheader" />))}
             </tr>
             }
           </thead>
           <tbody>
             {filteredResults &&
-              filteredResults.map((d, k) => (this.verifyPagination(k) ? this.formatRow(d, k) : null))}
+              filteredResults.map((d, k) => (this.verifyPagination(k) ? this.formatRow(d) : null))}
 
             {filteredResults.length === 0 &&
             <tr role="row">
@@ -288,10 +275,6 @@ class Table extends React.Component {
           offsetPage={p => this.offsetPage(p)}
           setRowsPerPage={e => this.setRowsPerPage(e)}
         />
-
-        <Modal show={modalOpen} onClose={() => this.onCloseModal()}>
-          {modal && typeof modal === 'function' ? React.createElement(modal, datasetInfo) : null}
-        </Modal>
       </div>
     );
   }
@@ -343,13 +326,25 @@ Table.propTypes = {
    * rows (case insensitive)
    */
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // TODO: document
-  actions: PropTypes.array.isRequired
+  /**
+   * List of actions for each row
+   * @type {'edit'|'delete'|'toggle'|'info'} actions
+   */
+  actions: PropTypes.arrayOf(PropTypes.oneOf(['edit', 'delete', 'toggle', 'info'])),
+  /**
+   * Event handler executed when the user clicks the action
+   * or a row
+   * Gets passed the action and the row
+   * @type {(action: 'edit'|'delete'|'toggle'|'info', row: Row): function} onClickAction
+   */
+  onClickAction: PropTypes.func
 };
 
 Table.defaultProps = {
   limit: 10,
-  searchable: false
+  searchable: false,
+  actions: [],
+  onClickAction: () => {}
 };
 
 export default Table;
