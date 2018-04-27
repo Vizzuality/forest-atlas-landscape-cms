@@ -43,7 +43,7 @@ export default ({ pages, pagination, offsetPage, setRowsPerPage }) => {
           Previous page
         </button>
 
-        {pagination.page} of {pagination.pages + 1}
+        {pagination.page} of {pagination.pages}
 
         <button
           type="button"

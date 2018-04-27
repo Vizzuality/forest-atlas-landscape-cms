@@ -35,7 +35,7 @@ class Table extends React.Component {
         limit: props.limit,
         page: 1,
         offset: 0,
-        pages: parseInt(props.data.length / props.limit)
+        pages: Math.ceil(props.data.length / props.limit)
       }
     };
 
@@ -52,8 +52,15 @@ class Table extends React.Component {
   }
 
   setRowsPerPage(e) {
-    const pagination = { ...this.state.pagination, limit: parseInt(e.target.value) };
-    this.setState({ pagination })
+    const pagination = {
+      ...this.state.pagination,
+      limit: parseInt(e.target.value),
+      pages: Math.ceil(this.props.data.length / parseInt(e.target.value)),
+      page: 1,
+      offset: 0
+    };
+
+    this.setState({ pagination });
   }
 
   offsetPage(p) {
