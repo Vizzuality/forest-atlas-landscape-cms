@@ -1,11 +1,7 @@
-class DatasetService
+class DatasetService < ApiService
   include DatasetFieldsHelper
 
-  @conn ||= Faraday.new(:url => ENV.fetch("API_URL")) do |faraday|
-    faraday.request :url_encoded
-    faraday.response :logger, Rails.logger #, bodies: true # Activate this only for specific debugging
-    faraday.adapter Faraday.default_adapter
-  end
+  @conn ||= connect
 
   # Gets all the existing datasets
   # This was changed in the new version of the API, and now it's paginated...

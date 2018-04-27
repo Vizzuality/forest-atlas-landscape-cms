@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402133656) do
+ActiveRecord::Schema.define(version: 20180426164459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20180402133656) do
 
   create_table "page_widgets", force: :cascade do |t|
     t.integer "page_id"
-    t.integer "widget_id"
+    t.string  "widget_id"
     t.index ["page_id"], name: "index_page_widgets_on_page_id", using: :btree
     t.index ["widget_id"], name: "index_page_widgets_on_widget_id", using: :btree
   end
@@ -195,20 +195,7 @@ ActiveRecord::Schema.define(version: 20180402133656) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  create_table "widgets", force: :cascade do |t|
-    t.string   "dataset_id"
-    t.string   "api_table_name"
-    t.json     "filters"
-    t.string   "visualization"
-    t.datetime "fields_last_modified"
-    t.json     "legend"
-    t.json     "columns"
-    t.string   "name"
-    t.string   "description"
-  end
-
   add_foreign_key "page_widgets", "pages"
-  add_foreign_key "page_widgets", "widgets"
   add_foreign_key "user_site_associations", "sites"
   add_foreign_key "user_site_associations", "users"
 end

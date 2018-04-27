@@ -1,121 +1,23 @@
 class Management::WidgetStepsController < ManagementController
-  include Wicked::Wizard
 
   before_action :build_widget
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
-  steps *Widget.form_steps[:pages]
-
-  attr_accessor :steps_names
-
-  CONTINUE = 'CONTINUE'.freeze
-  SAVE = 'SAVE'.freeze
-
   def new
     reset_session_key(:widget, @widget_id, {})
-    redirect_to management_site_widget_step_path(id: 'title')
+    # redirect_to management_site_widget_step_path(id: 'title')
   end
 
   def edit
     reset_session_key(:widget, @widget_id, {})
-    redirect_to wizard_path('title')
+    # redirect_to wizard_path('title')
   end
 
   def show
-    breadcrumbs = @widget.id ? {name: "Editing \"#{@widget.name}\""} : {name: 'New Widget'}
-    @breadcrumbs << breadcrumbs
 
-    case step
-      when 'title'
-      when 'dataset'
-        get_datasets
-      when 'filters'
-        set_gon_filters
-
-        # Saving all the possible visible fields for this widget so that ...
-        # ... they can be used in the filtered_results
-        (@widget.set_columns_visible(
-          @fields.map { |f| f[:name] })) unless @widget.columns
-        set_widget_state
-
-      when 'visualization'
-        gon.data = @widget.get_filtered_dataset
-        gon.legend = @widget.legend
-        gon.analysis_timestamp = @widget.fields_last_modified
-        gon.visualization = @widget.visualization
-    end
-    render_wizard
   end
 
   def update
-    set_widget_state
-    case step
-      when 'title'
-
-        if save_button?
-          if @widget.save
-            delete_session_key(:widget, @widget_id)
-            redirect_to management_site_widgets_path
-          else
-            render_wizard
-          end
-        else
-          if @widget.valid?
-            redirect_to next_wizard_path
-          else
-            render_wizard
-          end
-        end
-
-      when 'dataset'
-
-        if save_button?
-          if @widget.save
-            delete_session_key(:widget, @widget_id)
-            redirect_to management_site_widgets_path
-          else
-            get_datasets
-            render_wizard
-          end
-        else
-          if @widget.valid?
-            redirect_to next_wizard_path
-          else
-            get_datasets
-            render_wizard
-          end
-        end
-
-      when 'filters'
-
-        if save_button?
-          if @widget.save
-            delete_session_key(:widget, @widget_id)
-            redirect_to management_site_widgets_path
-          else
-            get_fields
-            render_wizard
-          end
-        else
-          if @widget.valid?
-            redirect_to next_wizard_path
-          else
-            get_fields
-            render_wizard
-          end
-        end
-
-      when 'visualization'
-        if @widget.save
-          delete_session_key(:widget, @widget_id)
-          respond_to do |format|
-            format.html { redirect_to management_site_widgets_path, notice: 'Widget was successfully created.' }
-          end
-        else
-          set_gon_filters
-          render_wizard
-        end
-    end
 
   end
 
@@ -201,10 +103,6 @@ class Management::WidgetStepsController < ManagementController
                         end
   end
 
-  def save_button?
-    return false unless params[:button]
-    return params[:button].upcase == SAVE.upcase
-  end
 
   def ensure_session_keys_exist
     session[:widget] ||= {}
