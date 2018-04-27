@@ -26,7 +26,19 @@ class Table extends React.Component {
 
     this.state = {
       q: '',
-      sort: 'asc',
+      sort: {
+        /**
+         * Sort order
+         * 1 for ASC, -1 for DESC
+         * @type {1|-1} order
+         */
+        order: 1,
+        /**
+         * Column index used to sort the tbale
+         * @type {number} columnIndex
+         */
+        columnIndex: 0
+      },
       modalOpen: false,
       datasetInfo: null,
       columns: cols,
@@ -40,6 +52,28 @@ class Table extends React.Component {
     };
 
     this.fuse = new Fuse(props.data, { keys: cols.map(col => `${col.toLowerCase()}.value`), ...fuseOptions });
+  }
+
+  /**
+   * Event handler executed when the user
+   * sorts a column
+   * @param {string} column Column
+   */
+  onSort(column) {
+    const columnIndex = this.state.columns.indexOf(column);
+    if (columnIndex !== -1) {
+      if (columnIndex === this.state.sort.columnIndex) {
+        this.setState({ sort: { ...this.state.sort, order: this.state.sort.order * -1 } });
+      } else {
+        this.setState({ sort: {
+          ...this.state.sort,
+          columnIndex,
+          order: 1
+        } });
+      }
+
+      this.setState({ pagination: { ...this.state.pagination, page: 1, offset: 0 } });
+    }
   }
 
   onSearch(e) {
@@ -145,26 +179,78 @@ class Table extends React.Component {
     });
   }
 
+  /**
+   * Return the sorted rows
+   * @param {Row[]} rows Rows
+   * @returns {Row[]}
+   */
+  sortResults(rows) {
+    return rows.sort((a, b) => {
+      const column = this.state.columns[this.state.sort.columnIndex].toLowerCase();
+
+      const cellA = a[column];
+      const cellB = b[column];
+
+      const valA = Array.isArray(cellA.value) ? cellA.value[0] : cellA.value;
+      const valB = Array.isArray(cellB.value) ? cellB.value[0] : cellB.value;
+
+      if ((valA === undefined || valA === null) && (valB === undefined || valB === null)) {
+        return 0;
+      } else if ((valA === undefined || valB === null) && valB) {
+        return -1 * this.state.sort.order;
+      } else if (valA && (valB === undefined || valB === null)) {
+        return this.state.sort.order;
+      }
+
+      if (typeof valA === 'number' && typeof valB === 'number') {
+        if (valA < valB) return -1 * this.state.sort.order;
+        if (valA > valB) return this.state.sort.order;
+        return 0;
+      } else if (typeof valA === 'number' && typeof valB !== 'number') {
+        return -1 * this.state.sort.order;
+      } else if (typeof valA !== 'number' && typeof valB === 'number') {
+        return this.state.sort.order;
+      }
+
+      return valA.localeCompare(valB, [], { sensitivity: 'base' }) * this.state.sort.order;
+    });
+  }
+
   render() {
     const { data, actions, modal, searchable } = this.props;
     const { q, sort, columns, pagination, modalOpen, datasetInfo } = this.state;
 
-    const filteredResults = (q.length > 0 && searchable) ? this.fuse.search(q) : data;
+    const filteredResults = this.sortResults(q.length > 0 && searchable
+      ? this.fuse.search(q)
+      : data);
+
+    const sortName = sort.order === 1 ? 'ascending' : 'descending';
+    const isSortable = (column) => {
+      if (data.length && data[0][column.toLowerCase()]) {
+        return !!data[0][column.toLowerCase()].sortable;
+      }
+
+      return false;
+    };
 
     return (
       <div className="c-table">
         {searchable && <Toolbar q={q} onSearch={query => this.onSearch(query)} />}
         <table role="grid">
+          <caption>
+            {this.props.name}, sorted by {columns[sort.columnIndex]}: {sortName}
+          </caption>
           <thead>
             {filteredResults.length > 0 &&
             <tr className="header" role="row">
                 {columns.map((col, k) => (
                   <th
-                    key={k}
-                    {...(k === 0 ?
-                    { className: `-order-${sort === 'asc' ? 'ascending' : 'descending'}` } : {}
-                    )}
+                    key={col}
+                    aria-sort={k === sort.columnIndex ? sortName : 'none'}
+                    tabIndex={k === sort.columnIndex ? '0' : '-1'}
+                    className={k === sort.columnIndex ? `-order-${sortName}` : ''}
                     role="columnheader"
+                    onClick={() => isSortable(col) && this.onSort(col)}
                   >{col}
                   </th>))}
                 {/* Render empty rows for each action */}
@@ -207,6 +293,10 @@ class Table extends React.Component {
 /* eslint-enable max-len */
 
 Table.propTypes = {
+  /**
+   * Name of the table (for screen readers)
+   */
+  name: PropTypes.string.isRequired,
   /**
    * Number of results per page
    */
