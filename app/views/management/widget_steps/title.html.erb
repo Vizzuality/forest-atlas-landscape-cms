@@ -1,8 +1,6 @@
 
 <%= javascript_pack_tag 'application' %>
 
-<%= react_component('WidgetsContainer', {
-  widget: @widget
-}) %>
+<%= react_component('WidgetsContainer', {}) %>
 
 <%= render partial: 'shared/errors', locals: { resource: @widget } %>

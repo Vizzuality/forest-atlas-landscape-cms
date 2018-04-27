@@ -9,10 +9,10 @@ import NewWidgetPage from 'pages/management/widgets/NewWidgetPage';
 import WidgetsPage from 'pages/management/widgets/WidgetsPage';
 
 function WidgetsContainer(props) {
-  if (props.widget && props.widget.id) {
+  if (props.widget) {
     return (
       <ManagementContainer>
-        <EditWidgetPage widget={props.widget} />
+        <EditWidgetPage widget={APISerializer(props.widget)} />
       </ManagementContainer>
     );
   }
