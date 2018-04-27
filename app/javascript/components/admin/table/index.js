@@ -77,7 +77,14 @@ class Table extends React.Component {
   }
 
   onSearch(e) {
-    this.setState({ q: e.target.value });
+    this.setState({
+      q: e.target.value,
+      pagination: {
+        ...this.state.pagination,
+        offset: 0,
+        page: 1
+      }
+    });
   }
 
 
@@ -272,7 +279,12 @@ class Table extends React.Component {
         </table>
 
         <TableFooter
-          pagination={pagination}
+          pagination={{
+            ...pagination,
+            pages: filteredResults
+              ? Math.ceil(filteredResults.length / pagination.limit)
+              : pagination.pages
+          }}
           offsetPage={p => this.offsetPage(p)}
           setRowsPerPage={e => this.setRowsPerPage(e)}
         />
@@ -302,9 +314,13 @@ Table.propTypes = {
    */
   limit: PropTypes.number,
   /**
+   * Whether the user can search text in the table
+   */
+  searchable: PropTypes.bool,
+  /**
    * Data to display in the table
-   * Each row contains several columns with their value,
-   * an attribute to tell if the column can be searchable and another to tell if it's sortable
+   * Each row contains several columns with their value and
+   * an attribute to tell if the column can be sortable
    * NOTE: The name of the columns must be in lowercase
    * NOTE: the data will always be sorted ASC by the first column
    * The value attribute can have an array of strings
@@ -313,8 +329,8 @@ Table.propTypes = {
    * An example of the format can be:
    * [
    *   {
-   *     name: { value: '$3', searchable: true },
-   *     description: { value: ['Spain', 'France'], searchable: true, sortable: false },
+   *     name: { value: '$3' },
+   *     description: { value: ['Spain', 'France'], sortable: false },
    *     price: { value: 'iPhone 6', link: { url: 'https://www.apple.com', external: true }, searchable: false }
    *   }
    * ]
@@ -332,7 +348,8 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
-  limit: 10
+  limit: 10,
+  searchable: false
 };
 
 export default Table;
