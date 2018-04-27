@@ -3,17 +3,18 @@ class WidgetService < ApiService
   @conn ||= connect
 
   def self.get_widgets(status = 'saved')
-    widgetsRequest = @conn.get '/v1/widget',
-                               'page[number]': '1', 'page[size]': '10000',
-                               'status': status,
-                               'application': 'forest-atlas,gfw,prep',
-                               '_': Time.now.to_s
+    widgets_request = @conn.get '/v1/widget',
+                                'page[number]': '1', 'page[size]': '10000',
+                                'status': status,
+                                'application': ENV.fetch('API_APPLICATIONS'),
+                                'env': ENV.fetch('API_ENV'),
+                                '_': Time.now.to_s
 
-    widgetsJSON = JSON.parse widgetsRequest.body
+    widgets_json = JSON.parse widgets_request.body
 
     widgets = []
     begin
-      widgetsJSON['data'].each do |data|
+      widgets_json['data'].each do |data|
         # TODO: Refactor!!! The service can't depend on the model
         widget = Widget.new data
         widgets.push widget
@@ -25,6 +26,18 @@ class WidgetService < ApiService
     end
 
     widgets
+  end
+
+  def self.widget(id)
+    begin
+      widgets_request = @conn.get "/v1/widget/#{id}"
+      widget_json = JSON.parse widgets_request.body
+      widget = Widget.new widget_json['data']
+    rescue Exception
+      return nil
+    end
+
+    widget
   end
 
   def self.upload
