@@ -5,6 +5,6 @@ import CoverPage from 'components/CoverPage';
 
 export default class HeaderView extends PublicContainer {
   render() {
-    return <CoverPage {...this.store.getState()} secondary />;
+    return <CoverPage {...this.store.getState()} secondary showPageName />;
   }
 }

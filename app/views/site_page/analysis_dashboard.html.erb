@@ -21,7 +21,14 @@
       <% end %>
     </p>
 
-    <div class="fa-dashboard__widgetEditor">i want a react component ::)</div>
+    <%= react_component('DashboardView', {
+      page: @site_page,
+      site: @site_page.site,
+      siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+      siteTitleOnly: @site_title_only,
+      image: @main_image,
+      pageSize: defined?(size) ? size : nil
+    } ) %>
 
     <% if @site_page.description.length > 200 %>
       <p class="fa-dashboard__description"><%= @site_page.description %></p>

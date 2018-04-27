@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 class CoverPage extends React.Component {
   render() {
-    const { site, secondary } = this.props;
+    const { site, secondary, showPageName } = this.props;
 
     const { current, page, meta } = site;
     const { pageSize, image, siteTitleOnly } = meta || {};
@@ -23,8 +23,8 @@ class CoverPage extends React.Component {
       <div className={ClsMainWrapper} style={coverBackground}>
 
         <div className="wrapper">
-          {siteTitleOnly && <h2 className="cover-title">{current.name}</h2>}
-          {!siteTitleOnly && <h2 className="cover-title">{page.name}</h2>}
+          {!showPageName && <h2 className="cover-title">{current.name}</h2>}
+          {showPageName && <h2 className="cover-title">{page.name}</h2>}
         </div>
 
         {image &&

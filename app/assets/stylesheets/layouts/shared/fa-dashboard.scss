@@ -1,7 +1,8 @@
 $this: 'fa-dashboard';
 
 .#{$this} {
-  display: block;
+  max-width: $body-max-width;
+  margin: 0 auto;
 
   &__summary {
     display: block;
