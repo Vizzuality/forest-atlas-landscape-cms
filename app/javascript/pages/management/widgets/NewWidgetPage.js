@@ -7,7 +7,7 @@ import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
 import Notification from 'components/Notification';
 
-import { setStep, getDatasets, setWidgetCreationDataset, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
+import { setStep, setWidgetCreationDataset, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
 
 const STEPS = [
   {
@@ -40,10 +40,6 @@ class NewWidgetPage extends React.Component {
     };
   }
 
-  componentWillMount() {
-    this.props.getDatasets();
-  }
-
   /**
    * Event handler executed when the user clicks the "Create"
    * button on the second step
@@ -66,36 +62,26 @@ class NewWidgetPage extends React.Component {
 
   render() {
     // eslint-disable-next-line no-shadow
-    const { currentStep, setStep, loading, datasets, dataset, setDataset,
+    const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption } = this.props;
 
     let content;
     if (currentStep === 0) {
-      if (loading) {
-        content = (
-          <div className="l-widget-creation -dataset">
-            <div className="wrapper">
-              <div className="c-loading-spinner" />
-            </div>
-          </div>
-        );
-      } else {
-        content = (
-          <div className="l-widget-creation -dataset">
-            <div className="wrapper">
-              <div className="c-inputs-container">
-                <div className="container -big">
-                  <label htmlFor="dataset">Dataset</label>
-                  <select id="dataset" name="dataset" defaultValue={dataset || ''} onChange={e => setDataset(e.target.selectedOptions[0].value)}>
-                    <option value="">Select a dataset</option>
-                    {datasets.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
-                  </select>
-                </div>
+      content = (
+        <div className="l-widget-creation -dataset">
+          <div className="wrapper">
+            <div className="c-inputs-container">
+              <div className="container -big">
+                <label htmlFor="dataset">Dataset</label>
+                <select id="dataset" name="dataset" defaultValue={dataset || ''} onChange={e => setDataset(e.target.selectedOptions[0].value)}>
+                  <option value="">Select a dataset</option>
+                  {datasets.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                </select>
               </div>
             </div>
           </div>
-        );
-      }
+        </div>
+      );
     } else {
       content = (
         <div>
@@ -190,9 +176,7 @@ NewWidgetPage.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   caption: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
-  getDatasets: PropTypes.func.isRequired,
   setDataset: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
@@ -203,19 +187,16 @@ function mapStateToProps(state) {
   return {
     env: state.env,
     currentStep: state.management.step,
-    datasets: state.management.datasets.list,
     dataset: state.management.widgetCreation.dataset,
     title: state.management.widgetCreation.title,
     description: state.management.widgetCreation.description,
-    caption: state.management.widgetCreation.caption,
-    loading: state.management.datasets.loading
+    caption: state.management.widgetCreation.caption
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     setStep: (...params) => dispatch(setStep(...params)),
-    getDatasets: () => dispatch(getDatasets()),
     setDataset: (...params) => dispatch(setWidgetCreationDataset(...params)),
     setTitle: (...params) => dispatch(setWidgetCreationTitle(...params)),
     setDescription: (...params) => dispatch(setWidgetCreationDescription(...params)),

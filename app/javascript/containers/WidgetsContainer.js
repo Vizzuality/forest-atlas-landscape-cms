@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import APISerializer from 'wri-json-api-serializer';
+
 
 import ManagementContainer from 'containers/shared/ManagementContainer';
 import EditWidgetPage from 'pages/management/widgets/EditWidgetPage';
@@ -25,14 +27,15 @@ function WidgetsContainer(props) {
 
   return (
     <ManagementContainer>
-      <NewWidgetPage />
+      <NewWidgetPage datasets={APISerializer(props.datasets)} />
     </ManagementContainer>
   );
 }
 
 WidgetsContainer.propTypes = {
   widget: PropTypes.any, // eslint-disable-line react/require-default-props
-  widgets: PropTypes.array // eslint-disable-line react/require-default-props
+  widgets: PropTypes.array, // eslint-disable-line react/require-default-props
+  datasets: PropTypes.array // eslint-disable-line react/require-default-props
 };
 
 export default WidgetsContainer;
