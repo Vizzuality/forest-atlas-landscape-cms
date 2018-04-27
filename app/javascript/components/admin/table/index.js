@@ -32,10 +32,10 @@ class Table extends React.Component {
       columns: cols,
       // when / if we get dynamic pagination, use that information instead
       pagination: {
-        limit: props.limit || 10,
+        limit: props.limit,
         page: 1,
         offset: 0,
-        pages: parseInt(props.data.length / (props.limit || 10))
+        pages: parseInt(props.data.length / props.limit)
       }
     };
 
@@ -192,11 +192,50 @@ class Table extends React.Component {
   }
 }
 
+/* eslint-disable max-len */
+/**
+ * Definition of a row
+ * @typedef {{ [column: string]: { value?: any, searchable?: boolean, sortable?: boolean, link?: { url: string, external: boolean }, method?: string } }}  Row
+ */
+/* eslint-enable max-len */
+
 Table.propTypes = {
+  /**
+   * Number of results per page
+   */
   limit: PropTypes.number,
-  data: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired,
+  /**
+   * Data to display in the table
+   * Each row contains several columns with their value,
+   * an attribute to tell if the column can be searchable and another to tell if it's sortable
+   * NOTE: The name of the columns must be in lowercase
+   * NOTE: the data will always be sorted ASC by the first column
+   * The value attribute can have an array of strings
+   * An optional link attribute can be present, it contains its url and an attribute to tell
+   * if the link is external or not (this is not built for multi-value cells)
+   * An example of the format can be:
+   * [
+   *   {
+   *     name: { value: '$3', searchable: true },
+   *     description: { value: ['Spain', 'France'], searchable: true, sortable: false },
+   *     price: { value: 'iPhone 6', link: { url: 'https://www.apple.com', external: true }, searchable: false }
+   *   }
+   * ]
+   * @type {Row[]} data
+   */
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /**
+   * Name of the columns
+   * Make sure the name matches one attribute of the
+   * rows (case insensitive)
+   */
+  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // TODO: document
   actions: PropTypes.array.isRequired
+};
+
+Table.defaultProps = {
+  limit: 10
 };
 
 export default Table;
