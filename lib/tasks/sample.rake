@@ -133,7 +133,7 @@ end
 def create_heroku_staging_site_routes
   routes = [
     {
-      host: 'http://fa-cms.herokuapp.com',
+      host: 'http://fa-cms-staging.herokuapp.com',
       site: @staging_demo_site
     }
   ]
