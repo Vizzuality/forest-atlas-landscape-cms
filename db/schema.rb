@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402133656) do
+ActiveRecord::Schema.define(version: 20180427122058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,15 +98,16 @@ ActiveRecord::Schema.define(version: 20180402133656) do
     t.string   "description"
     t.string   "uri"
     t.string   "url"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "content_type"
     t.text     "type"
     t.boolean  "enabled"
     t.integer  "parent_id"
     t.integer  "position"
     t.json     "content"
-    t.boolean  "show_on_menu", default: true
+    t.boolean  "show_on_menu",      default: true
+    t.integer  "dashboard_version", default: 1
     t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
   end
 
