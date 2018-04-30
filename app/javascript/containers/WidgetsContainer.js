@@ -27,7 +27,11 @@ function WidgetsContainer(props) {
 
   return (
     <ManagementContainer>
-      <NewWidgetPage datasets={props.datasets} />
+      <NewWidgetPage
+        datasets={props.datasets}
+        queryUrl={props.queryUrl}
+        redirectUrl={props.redirectUrl}
+      />
     </ManagementContainer>
   );
 }
@@ -35,7 +39,9 @@ function WidgetsContainer(props) {
 WidgetsContainer.propTypes = {
   widget: PropTypes.any, // eslint-disable-line react/require-default-props
   widgets: PropTypes.array, // eslint-disable-line react/require-default-props
-  datasets: PropTypes.array // eslint-disable-line react/require-default-props
+  datasets: PropTypes.array, // eslint-disable-line react/require-default-props
+  queryUrl: PropTypes.string, // eslint-disable-line react/require-default-props
+  redirectUrl: PropTypes.string // eslint-disable-line react/require-default-props
 };
 
 export default WidgetsContainer;

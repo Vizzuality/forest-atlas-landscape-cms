@@ -3,7 +3,7 @@
 <%= react_component('WidgetsContainer',
                     { datasets: @datasets,
                       widget: @widget,
-                      query_url: @widget.nil? ? new_management_site_widget_step_path(@site.slug) : management_site_widget_step_path(@site.slug, @widget.id),
-                      listing_url: management_site_widgets_path(@site.slug)}) %>
+                      queryUrl: @widget.nil? ? new_management_site_widget_step_path(@site.slug) : management_site_widget_step_path(@site.slug, @widget.id),
+                      redirectUrl: management_site_widgets_path(@site.slug)}) %>
 
 <%= render partial: 'shared/errors', locals: { resource: @widget } %>

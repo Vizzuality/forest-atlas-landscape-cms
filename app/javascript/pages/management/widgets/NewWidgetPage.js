@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme } from 'widget-editor';
+import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme, getConfig } from 'widget-editor';
 
 import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
@@ -77,19 +77,68 @@ class NewWidgetPage extends React.Component {
    * button on the second step
    */
   onClickCreate() {
-    if (!this.getWidgetConfig) {
-      // TODO: error case
-    }
-
-    this.getWidgetConfig()
-      .then((widgetConfig) => {
-        // TODO: send data to backend
-        console.log(widgetConfig);
-      })
-      .catch(() => {
-        // We display a warning in the UI
+    if (this.state.advancedEditor) {
+      // TODO:
+    } else {
+      if (!this.getWidgetConfig) {
         this.setState({ widgetConfigError: true });
-      });
+        return;
+      }
+
+      this.getWidgetConfig()
+        .then((widgetConfig) => {
+          const widgetObj = Object.assign(
+            {},
+            {
+              name: this.props.title || null,
+              description: this.props.description
+            },
+            { widgetConfig }
+          );
+
+          let metadataObj = null;
+          if (this.props.caption) {
+            metadataObj = {
+              info: {
+                caption: this.props.caption
+              }
+            };
+          }
+
+          const widget = Object.assign({}, widgetObj, {
+            application: [getConfig().applications],
+            published: false,
+            default: false,
+            dataset: this.props.dataset
+          });
+
+          const metadata = !metadataObj
+            ? null
+            : Object.assign({}, metadataObj, {
+              language: getConfig().locale,
+              application: getConfig().applications
+            });
+
+          const getRequestOptions = body => ({
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${getConfig().userToken}`
+            }
+          });
+
+          fetch(this.props.queryUrl, {
+            method: 'POST',
+            body: JSON.stringify(Object.assign({}, { widget }, { metadata }))
+          }).then(res => console.log(res))
+            .catch(err => console.error(err));
+        })
+        .catch(() => {
+          // We display a warning in the UI
+          this.setState({ widgetConfigError: true });
+        });
+    }
   }
 
   /**
@@ -106,7 +155,7 @@ class NewWidgetPage extends React.Component {
   render() {
     // eslint-disable-next-line no-shadow
     const { currentStep, setStep, datasets, dataset, setDataset,
-      setTitle, setDescription, setCaption, title, description, caption } = this.props;
+      setTitle, setDescription, setCaption, title, description, caption, redirectUrl } = this.props;
     const { widgetConfigError, advancedEditor,
       advancedEditorWarningAccepted, widgetConfig, previewLoading } = this.state;
 
@@ -224,9 +273,9 @@ class NewWidgetPage extends React.Component {
 
         <div className="c-action-bar">
           <div className="wrapper">
-            <button type="button" className="c-button -outline -dark-text" onClick={() => window.history.back()}>
+            <a href={redirectUrl} className="c-button -outline -dark-text">
               Cancel
-            </button>
+            </a>
             <div>
               { currentStep >= 1 && (
                 <button type="button" className="c-button -outline -dark-text" onClick={() => setStep(currentStep - 1)}>
@@ -263,7 +312,9 @@ NewWidgetPage.propTypes = {
   setDataset: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
-  setCaption: PropTypes.func.isRequired
+  setCaption: PropTypes.func.isRequired,
+  queryUrl: PropTypes.string.isRequired,
+  redirectUrl: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {
