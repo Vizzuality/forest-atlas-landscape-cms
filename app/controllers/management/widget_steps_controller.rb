@@ -1,5 +1,6 @@
 class Management::WidgetStepsController < ManagementController
 
+  before_action :set_site
 
   def new
     @datasets = get_datasets
@@ -9,7 +10,6 @@ class Management::WidgetStepsController < ManagementController
     @datasets = nil
     @widget = WidgetService.get_widgets(params[:id])
   end
-
 
   def update
     DatasetService.update(widget_parameters)
@@ -31,5 +31,9 @@ class Management::WidgetStepsController < ManagementController
                   :source, :source_url, :layer_id, :dataset, :authors,
                   :query_url, :widget_config, :template, :default,
                   :protected, :status, :published, :freeze, :verified)
+  end
+
+  def set_site
+    @site = Site.find_by(slug: params[:site_slug])
   end
 end

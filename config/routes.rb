@@ -59,7 +59,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :widget_steps, only: [:new, :update, :show] do
+      resources :widget_steps, only: [:new, :update, :show, :create] do
         member do
           get :filtered_results,
               constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
