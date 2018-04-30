@@ -1,0 +1,15 @@
+<%= Gon::Base.render_data %>
+
+<div class="l-dashboard-v2">
+  <div class="wrapper">
+    <div class="description">
+      <%= @site_page.description %>
+    </div>
+    <%= javascript_pack_tag 'application' %>
+    <%= react_component('PublicDashboard', {
+      page: @site_page
+    } ) %>
+  </div>
+</div>
+
+<%= render 'front/footer' %>
