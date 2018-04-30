@@ -347,8 +347,19 @@ Table.defaultProps = {
   actions: [],
   onClickAction: (action, data) => {
     // By default, the value is a link, so just redirect to it
-    if (action in data && 'value' in data[action]) {
-      window.location.href = data[action].value;
+    if (action in data && action !== 'delete') {
+      if ('value' in data[action]) {
+        window.location.href = data[action].value;
+      }
+    }
+
+    if (action === 'delete') {
+      const shouldDelete = window.confirm('are you sure you want to remove this?');
+      if (shouldDelete) {
+        fetch(window.location.origin + data[action].value, { method: 'delete' }).then(() => {
+          window.location.reload();
+        });
+      }
     }
   }
 };
