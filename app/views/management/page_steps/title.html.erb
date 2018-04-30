@@ -47,4 +47,10 @@
   <%= render partial: 'management/steps_shared/footer', locals: {f: f} %>
 <% end %>
 
+<%= javascript_pack_tag 'application' %>
+<%= react_component('EditDashboardPage', {
+  page: @page
+} ) %>
+
+
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
