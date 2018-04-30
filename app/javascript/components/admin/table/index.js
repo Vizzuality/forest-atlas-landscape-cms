@@ -107,9 +107,9 @@ class Table extends React.Component {
   formatRow(d) {
     const { actions } = this.props;
     return (
-      <tr role="row" key={d}>
+      <tr role="row" key={d + Math.random()}>
         {this.formatCols(d)}
-        {actions && <TableActions actions={actions} data={d} onClickAction={this.props.onClickAction} />}
+        {actions && <TableActions data={d} actions={actions} onClickAction={this.props.onClickAction} />}
       </tr>
     );
   }
@@ -239,7 +239,7 @@ class Table extends React.Component {
             <tr className="header" role="row">
                 {columns.map((col, k) => (
                   <th
-                    key={col}
+                    key={col + k}
                     aria-sort={k === sort.columnIndex ? sortName : 'none'}
                     tabIndex={k === sort.columnIndex ? '0' : '-1'}
                     className={k === sort.columnIndex ? `-order-${sortName}` : ''}
@@ -248,7 +248,7 @@ class Table extends React.Component {
                   >{col}
                   </th>))}
                 {/* Render empty rows for each action */}
-                {actions && actions.map(a => (<th key={a} aria-sort="none" role="columnheader" />))}
+                {actions && actions.map((a, k) => (<th key={a + k} aria-sort="none" role="columnheader" />))}
             </tr>
             }
           </thead>
