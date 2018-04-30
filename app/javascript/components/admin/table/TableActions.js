@@ -64,7 +64,7 @@ const TableActions = ({ data, actions, onClickAction }) => actions.map((action) 
     );
   }
 
-  return null;
+  return <td key={action}>-</td>;
 });
 
 TableActions.propTypes = {

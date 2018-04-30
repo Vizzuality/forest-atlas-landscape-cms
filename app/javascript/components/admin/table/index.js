@@ -344,7 +344,12 @@ Table.defaultProps = {
   limit: 10,
   searchable: false,
   actions: [],
-  onClickAction: () => {}
+  onClickAction: (action, data) => {
+    // By default, the value is a link, so just redirect to it
+    if (action in data && 'value' in data[action]) {
+      window.location.href = data[action].value;
+    }
+  }
 };
 
 export default Table;
