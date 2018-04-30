@@ -27,7 +27,7 @@ function WidgetsContainer(props) {
 
   return (
     <ManagementContainer>
-      <NewWidgetPage datasets={APISerializer(props.datasets)} />
+      <NewWidgetPage datasets={props.datasets} />
     </ManagementContainer>
   );
 }
