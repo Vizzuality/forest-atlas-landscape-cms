@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import WidgetEditor, { Modal, Tooltip, Icons, setConfig } from 'widget-editor';
+import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme } from 'widget-editor';
 
 import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
@@ -36,8 +36,40 @@ class NewWidgetPage extends React.Component {
     });
 
     this.state = {
-      widgetConfigError: false
+      // Error while retrieving the widgetConfig from the widget-editor
+      widgetConfigError: false,
+      // Whether the user has dismissed the warning when switching to
+      // the advanced editor
+      advancedEditorWarningAccepted: false,
+      // Whether we're using the advanced editor
+      advancedEditor: false,
+      // State of the advanced editor
+      widgetConfig: {},
+      // Whether the preview of the avanced editor is loading
+      previewLoading: false
     };
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (!prevState.advancedEditor && this.state.advancedEditor && this.advancedEditor) {
+      this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
+        mode: 'javascript',
+        autoCloseTags: true,
+        lineWrapping: true,
+        lineNumbers: true
+      });
+
+      this.codeMirror.on('change', () => {
+        try {
+          const widgetConfig = JSON.parse(this.codeMirror.getValue());
+          this.setState({ widgetConfig });
+        } catch (e) {
+          // If there's an error in the JSON, we reset the widgetConfig
+          // so the user sees the preview is empty
+          this.setState({ widgetConfig: {} });
+        }
+      });
+    }
   }
 
   /**
@@ -60,10 +92,23 @@ class NewWidgetPage extends React.Component {
       });
   }
 
+  /**
+   * Event handler executed when the user toggles between
+   * the "normal" and avanced editor
+   */
+  onToggleAdvancedEditor() {
+    this.setState({
+      advancedEditor: !this.state.advancedEditor,
+      advancedEditorWarningAccepted: false
+    });
+  }
+
   render() {
     // eslint-disable-next-line no-shadow
     const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption } = this.props;
+    const { widgetConfigError, advancedEditor,
+      advancedEditorWarningAccepted, widgetConfig, previewLoading } = this.state;
 
     let content;
     if (currentStep === 0) {
@@ -99,24 +144,51 @@ class NewWidgetPage extends React.Component {
                   <label htmlFor="description">Description</label>
                   <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
                 </div>
+                <footer>
+                  <div className="c-checkbox">
+                    <input type="checkbox" id="advanced-editor" name="advanced-editor" checked={advancedEditor} onClick={() => this.onToggleAdvancedEditor()} />
+                    <label htmlFor="advanced-editor">Use the advanced editor to create the widget manually</label>
+                  </div>
+                </footer>
               </div>
-              <WidgetEditor
-                datasetId={dataset}
-                widgetTitle={title}
-                widgetCaption={caption}
-                saveButtonMode="never"
-                embedButtonMode="never"
-                onChangeWidgetTitle={t => setTitle(t)}
-                onChangeWidgetCaption={c => setCaption(c)}
-                provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
-              />
+              { !advancedEditor && (
+                <WidgetEditor
+                  datasetId={dataset}
+                  widgetTitle={title}
+                  widgetCaption={caption}
+                  saveButtonMode="never"
+                  embedButtonMode="never"
+                  onChangeWidgetTitle={t => setTitle(t)}
+                  onChangeWidgetCaption={c => setCaption(c)}
+                  provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                />
+              )}
+              { advancedEditor && (
+                <div className="advanced-editor">
+                  <div>
+                    <textarea
+                      ref={(el) => { this.advancedEditor = el; }}
+                      defaultValue={JSON.stringify(widgetConfig)}
+                    />
+                  </div>
+                  <div className="preview">
+                    { previewLoading && <div className="c-loading-spinner -bg" /> }
+                    <VegaChart
+                      data={widgetConfig}
+                      theme={getVegaTheme()}
+                      showLegend
+                      reloadOnResize
+                      toggleLoading={loading => this.setState({ previewLoading: loading })}
+                      getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       );
     }
-
-    const { widgetConfigError } = this.state;
 
     return (
       <div>
@@ -136,6 +208,18 @@ class NewWidgetPage extends React.Component {
           />
         )}
 
+        {advancedEditor && !advancedEditorWarningAccepted && (
+          <Notification
+            type="warning"
+            content="Onced you've created the widget with the advanced editor, you won't be able to use the simple interface."
+            dialogButtons
+            closeable={false}
+            onCancel={() => this.setState({ advancedEditor: false })}
+            onContinue={() => this.setState({ advancedEditorWarningAccepted: true })}
+            onClose={() => this.setState({ advancedEditor: false })}
+          />
+        )}
+
         {content}
 
         <div className="c-action-bar">
@@ -145,18 +229,17 @@ class NewWidgetPage extends React.Component {
             </button>
             <div>
               { currentStep >= 1 && (
-                // <%= link_to 'Cancel', management_site_widgets_path, class: 'c-button -outline -dark-text js-cancel' %>
                 <button type="button" className="c-button -outline -dark-text" onClick={() => setStep(currentStep - 1)}>
                   Back
                 </button>
               )}
-              { currentStep === 0 && dataset && (
-                <button type="submit" className="c-button" onClick={() => setStep(currentStep + 1)}>
+              { currentStep === 0 && (
+                <button type="submit" className="c-button" disabled={!dataset} onClick={() => setStep(currentStep + 1)}>
                   Continue
                 </button>
               )}
               { currentStep === 1 && (
-                <button type="submit" className="c-button" onClick={() => this.onClickCreate()}>
+                <button type="submit" className="c-button" disabled={!title} onClick={() => this.onClickCreate()}>
                   Create
                 </button>
               )}

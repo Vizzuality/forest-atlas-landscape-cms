@@ -34,6 +34,29 @@
         width: 100%;
         margin-top: 70px;
       }
+
+      > .advanced-editor {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        width: 100%;
+        margin-top: 70px;
+
+        > * {
+          flex-basis: 50%;
+          flex-grow: 0;
+          height: 500px;
+          overflow: hidden;
+        }
+
+        .CodeMirror {
+          height: 100%;
+        }
+
+        .c-we-chart {
+          height: 100%;
+        }
+      }
     }
   }
 }
