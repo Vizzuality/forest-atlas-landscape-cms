@@ -109,6 +109,8 @@ class DynamicRouter
         routes_to_write <<  RouteDefinition.new('/report.html', 'site_page#map_report', {id: site_page.id}, constraints, tags)
       when ContentType::ANALYSIS_DASHBOARD
         target = 'site_page#analysis_dashboard'
+      when ContentType::DASHBOARD_V2
+        target = 'site_page#dashboard_v2'
       when ContentType::STATIC_CONTENT
         target = 'site_page#static_content'
       when ContentType::LINK

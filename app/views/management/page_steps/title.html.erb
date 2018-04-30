@@ -38,11 +38,22 @@
               <%= f.label :show_on_menu, 'Show on navigation bar' %>
             </div>
           </footer>
-        <%end %>
+        <% end %>
       </div>
     </div>
   </div>
+
+  <% if @page.dashboard_version > 1 %>
+    <!-- New dashboards will have the content with the new fancy wysiwyg editor -->
+    <%= javascript_pack_tag 'application' %>
+    <%= react_component('EditDashboardPage', {
+      page: @page
+    } ) %>
+    <%= f.hidden_field :content %>
+  <% end %>
+
   <%= render partial: 'management/steps_shared/footer', locals: {f: f} %>
 <% end %>
+
 
 <%= render partial: 'shared/errors', locals: { resource: @page } %>

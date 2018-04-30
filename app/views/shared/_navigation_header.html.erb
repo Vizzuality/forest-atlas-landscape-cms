@@ -2,19 +2,19 @@
   <div class="wrapper">
     <ul class="steps">
       <% form_steps.each_with_index do |step, i| %>
-        <li>
-          <% tab_index = disable_button?(form_steps, step, current_step, id, local_assigns[:invalid_steps], local_assigns[:invalid_state]) ? '-1' : '0' %>
-          <% html_class =
-               if disable_button?(form_steps, step, current_step, id, local_assigns[:invalid_steps], local_assigns[:invalid_state])
-                 '-disabled'
-               elsif active_button?(form_steps, step, current_step, id)
-                 '-active'
-               else
-                 ''
-               end
-          %>
-          <%= link_to step_names[i], wizard_path(step), 'tabindex': tab_index, class: html_class %>
-        </li>
+      <li>
+        <% tab_index = disable_button?(form_steps, step, current_step, id, local_assigns[:invalid_steps], local_assigns[:invalid_state]) ? '-1' : '0' %>
+        <% html_class =
+              if disable_button?(form_steps, step, current_step, id, local_assigns[:invalid_steps], local_assigns[:invalid_state])
+                '-disabled'
+              elsif active_button?(form_steps, step, current_step, id)
+                '-active'
+              else
+                ''
+              end
+        %>
+        <%= link_to step_names[i], wizard_path(step), 'tabindex': tab_index, class: html_class %>
+      </li>
       <% end %>
     </ul>
   </div>

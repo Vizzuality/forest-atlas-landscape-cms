@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import configureStore from 'store/configureStore';
 
-import { setPages, setDatasets, setWidgets, setSites, setUsers, setMaps, setMeta } from 'redactions/admin';
+import { setPages, setPage, setDatasets, setWidgets, setSites, setUsers, setMaps, setMeta } from 'redactions/admin';
 import { setEnvVars } from 'redactions/env';
 
 const store = configureStore();
@@ -49,6 +49,10 @@ class AdminContainer extends Component {
 
     if ('maps' in props) {
       store.dispatch(setMaps(props.maps));
+    }
+
+    if ('page' in props) {
+      store.dispatch(setPage(props.page));
     }
 
     if (window.gon && 'global' in window.gon) {
