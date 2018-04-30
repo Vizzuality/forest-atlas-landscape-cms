@@ -2,8 +2,6 @@ class Management::WidgetStepsController < ManagementController
 
 
   def new
-    reset_session_key(:widget, @widget_id, {})
-    @widget = nil
     @datasets = get_datasets
   end
 
