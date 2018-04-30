@@ -11,6 +11,12 @@ const EditDashboard = ({ admin }) => (
       <h1>Dashboard Content</h1>
       <Wysiwyg
         items={admin.page.content || []}
+        onChange={(d) => {
+          const el = document.getElementById('site_page_content');
+          if (el) {
+            el.value = JSON.stringify(d);
+          }
+        }}
       />
     </div>
   </div>
