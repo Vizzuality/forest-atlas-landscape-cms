@@ -1,76 +1,76 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-// Any action we accept for the table, add it here, otherwise it will be ignored
-export default ({ data, actions, showRowInfo }) => {
-  return actions.map((action, k) => {
-    if (action === 'toggle' &&
-        'enable' in data &&
-        'enabled' in data &&
-        data.enable.value !== null) {
-      return (
-        <td key={k}>
-          <span className="row-content">
-            <a
-              href="/management/sites/base-site/site_pages/17/toggle_enable"
-              className={`c-table-action-button -${data.enabled.value ? 'disable' : 'enable'}`}
-              title={data.enabled.value ? 'Disable' : 'Enable'}
-              rel="noreferrer noopener"
-              data-method="put"
-            >
-              {data.enabled.value ? 'Disable' : 'Enable'}
-            </a>
-          </span>
-        </td>);
-    }
+const TableActions = ({ data, actions, onClickAction }) => actions.map((action) => {
+  if (action === 'toggle' && 'enable' in data && 'enabled' in data && data.enable.value !== null) {
+    return (
+      <td key={action}>
+        <span className="row-content">
+          <button
+            type="button"
+            className={`c-table-action-button -${data.enabled.value ? 'disable' : 'enable'}`}
+            title={data.enabled.value ? 'Disable' : 'Enable'}
+            onClick={() => onClickAction(action, data)}
+          >
+            {data.enabled.value ? 'Disable' : 'Enable'}
+          </button>
+        </span>
+      </td>);
+  }
 
-    if (action === 'edit' && 'edit' in data) {
-      return (
-        <td key={k}>
-          <span className="row-content">
-            <a
-              href={data.edit.value}
-              className="c-table-action-button -edit"
-              title="Edit"
-            >Edit
-            </a>
-          </span>
-        </td>);
-    }
+  if (action === 'edit') {
+    return (
+      <td key={action}>
+        <span className="row-content">
+          <button
+            type="button"
+            className="c-table-action-button -edit"
+            title="Edit"
+            onClick={() => onClickAction(action, data)}
+          >
+            Edit
+          </button>
+        </span>
+      </td>);
+  }
 
-    if (action === 'delete' &&
-        'delete' in data &&
-        data.delete.value !== null) {
-      return (
-        <td key={k}>
-          <span className="row-content">
-            <a
-              href={data.delete.value}
-              className="c-table-action-button -delete js-confirm"
-              title="Delete"
-              rel="nofollow"
-              data-method="delete"
-            >Delete
-            </a>
-          </span>
-        </td>);
-    }
+  if (action === 'delete') {
+    return (
+      <td key={action}>
+        <span className="row-content">
+          <button
+            type="button"
+            className="c-table-action-button -delete"
+            title="Delete"
+            onClick={() => onClickAction(action, data)}
+          >
+            Delete
+          </button>
+        </span>
+      </td>);
+  }
 
-    if (/info/.test(action)) {
-      const splt = action.split('.');
-      const showInfoOn = splt[1];
-      if (showInfoOn && showInfoOn in data && data[showInfoOn].value !== null) {
-        return (
-          <td key={k}>
-            <button
-              type="button"
-              onClick={() => showRowInfo(data[showInfoOn])}
-              className="c-table-action-button -info js-metadata-info"
-            >Info
-            </button>
-          </td>);
-      }
-    }
+  if (action === 'info') {
+    return (
+      <td key={action}>
+        <button
+          type="button"
+          className="c-table-action-button -info js-metadata-info"
+          onClick={() => onClickAction(action, data)}
+        >
+          Info
+        </button>
+      </td>
+    );
+  }
 
-    return <td key={k}>-</td>;
-  });
+  return null;
+});
+
+TableActions.propTypes = {
+  data: PropTypes.object.isRequired,
+  actions: PropTypes.array.isRequired,
+  onClickAction: PropTypes.func.isRequired
 };
+
+export default TableActions;
