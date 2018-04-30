@@ -6,19 +6,30 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def edit
-    reset_session_key(:widget, @widget_id, {})
     @datasets = nil
     @widget = WidgetService.get_widgets(params[:id])
   end
 
 
   def update
+    DatasetService.update(widget_parameters)
+  end
 
+  def create
+    DatasetService.create(widget_parameters)
   end
 
   private
 
   def get_datasets
     DatasetService.get_datasets
+  end
+
+  def widget_parameters
+    params.require(:widget)
+          .permit(:id, :user_id, :application, :slug, :name, :description,
+                  :source, :source_url, :layer_id, :dataset, :authors,
+                  :query_url, :widget_config, :template, :default,
+                  :protected, :status, :published, :freeze, :verified)
   end
 end

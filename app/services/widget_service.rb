@@ -40,8 +40,49 @@ class WidgetService < ApiService
     widget
   end
 
-  def self.upload
+  def self.update(widget_params)
+    widget = Widget.new widget_params
+    begin
+      Rails.logger.info 'Creating Widget in the API.'
+      Rails.logger.info "Widget: #{widget}"
 
+      res = @conn.update do |req|
+        req.url '/widget'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = widget
+      end
+
+      Rails.logger.info "Response from widget creation endpoint: #{res.body}"
+      widget_id = JSON.parse(res.body)['data']['id']
+    rescue => e
+      Rails.logger.error "Error creating new widget in the API: #{e}"
+      return nil
+    end
+    widget_id
+
+  end
+
+  def self.create(widget_params)
+    widget = Widget.new widget_params
+    begin
+      Rails.logger.info 'Creating Widget in the API.'
+      Rails.logger.info "Widget: #{widget}"
+
+      res = @conn.post do |req|
+        req.url '/widget'
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = widget
+      end
+
+      Rails.logger.info "Response from widget creation endpoint: #{res.body}"
+      widget_id = JSON.parse(res.body)['data']['id']
+    rescue => e
+      Rails.logger.error "Error creating new widget in the API: #{e}"
+      return nil
+    end
+    widget_id
   end
 
 end
