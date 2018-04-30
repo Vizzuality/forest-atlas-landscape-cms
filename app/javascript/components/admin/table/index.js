@@ -109,7 +109,8 @@ class Table extends React.Component {
     return (
       <tr role="row" key={d + Math.random()}>
         {this.formatCols(d)}
-        {actions && <TableActions data={d} actions={actions} onClickAction={this.props.onClickAction} />}
+        {actions.map(a =>
+          <TableActions data={d} action={a} onClickAction={this.props.onClickAction} />)}
       </tr>
     );
   }
