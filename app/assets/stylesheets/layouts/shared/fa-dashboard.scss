@@ -1,0 +1,19 @@
+$this: 'fa-dashboard';
+
+.#{$this} {
+  max-width: $body-max-width;
+  margin: 0 auto;
+
+  &__summary {
+    display: block;
+  }
+
+  &__description {
+    display: block;
+  }
+
+  &__widgetEditor {
+    display: block;
+  }
+
+}

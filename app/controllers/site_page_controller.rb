@@ -62,7 +62,7 @@ class SitePageController < ApplicationController
     favico_image_setting = SiteSetting.favico(@site_page.site.id)
     @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?
 
-    gon.main_image = @image_url
+    gon.main_image = @main_image
     gon.alternative_image = @alternative_image
   end
 

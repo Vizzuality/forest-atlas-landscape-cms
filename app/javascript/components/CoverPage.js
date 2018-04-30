@@ -4,11 +4,11 @@ import PropTypes from "prop-types"
 import classnames from 'classnames';
 
 class CoverPage extends React.Component {
-  render () {
-    const { site, secondary } = this.props;
+  render() {
+    const { site, secondary, showPageName } = this.props;
 
     const { current, page, meta } = site;
-    const { pageSize, image, siteTitleOnly } = meta;
+    const { pageSize, image, siteTitleOnly } = meta || {};
 
     const coverBackground = {
       backgroundImage: `url(${image})`
@@ -23,16 +23,17 @@ class CoverPage extends React.Component {
       <div className={ClsMainWrapper} style={coverBackground}>
 
         <div className="wrapper">
-          <h2 className="cover-title">{current.name}</h2>
+          {!showPageName && <h2 className="cover-title">{current.name}</h2>}
+          {showPageName && <h2 className="cover-title">{page.name}</h2>}
         </div>
 
         {image &&
-          <div className="cover-attribution">
+        <div className="cover-attribution">
             {image.attribution_link &&
             <a target="_blank" href={image.instance.attribution_link}>{image.instance.attribution_label}</a>}
 
             {image.attribution_link && <p>{image.instance.attribution_label}</p>}
-          </div>}
+        </div>}
 
       </div>
     );

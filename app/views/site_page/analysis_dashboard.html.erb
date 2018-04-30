@@ -1,49 +1,39 @@
 <%= Gon::Base.render_data %>
 
-<!-- render 'front/cover', image: @alternative_image, size: 'small' -->
+<%= javascript_pack_tag 'application' %>
 
-<div class="l-analysis-dashboard">
-  <div class="bookmarks">
-    <div class="wrapper">
-      <div class="js-bookmarks"></div>
-    </div>
-  </div>
+<%= react_component('HeaderView', {
+  page: @site_page,
+  site: @site_page.site,
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: @site_title_only,
+  image: @main_image,
+  pageSize: defined?(size) ? size : nil
+} ) %>
 
-  <div class="wrapper">
-    <div class="description">
+<div class="fa-dashboard">
+
+    <p class="fa-dashboard__summary">
       <% if @site_page.description.length > 200 %>
-        <%= @site_page.description[0, 200].strip + '…' %><br/>
-        <button type="button" class="read-more js-read-more">Read more</button>
-        <div class="full-description js-description">
-          <%= @site_page.description %>
-        </div>
-        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
+        <%= @site_page.description[0, 200].strip + '…' %>
       <% else %>
         <%= @site_page.description %>
-        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
       <% end %>
-    </div>
-    <div class="filters js-filters">
-    </div>
+    </p>
 
-    <div class="widgets">
-        <div class="large-widget js-widget-1"></div>
-        <div class="widget js-widget-2"></div>
-        <div class="widget js-widget-3"></div>
-    </div>
-
-    <hr/>
-
-    <%= javascript_pack_tag 'application' %>
-    <%= react_component('PublicTableView', {
-      dashboard: if @setting then @setting.get_filtered_dataset else nil end
+    <%= react_component('DashboardView', {
+      page: @site_page,
+      site: @site_page.site,
+      siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+      siteTitleOnly: @site_title_only,
+      image: @main_image,
+      pageSize: defined?(size) ? size : nil
     } ) %>
 
-  </div>
+    <% if @site_page.description.length > 200 %>
+      <p class="fa-dashboard__description"><%= @site_page.description %></p>
+    <% end %>
+
 </div>
 
 <%= render 'front/footer' %>
-
-<script type="text/javascript">
-  window.route = 'Dashboard';
-</script>
