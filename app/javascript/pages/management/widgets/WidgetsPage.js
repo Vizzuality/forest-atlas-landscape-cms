@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import { Table } from 'components';
 
 function WidgetsPage(props) {
@@ -17,7 +19,7 @@ function WidgetsPage(props) {
           searchable
           columns={['Name', 'Description']}
           data={rows}
-          actions={['edit', 'delete']}
+          actions={props.admin ? ['edit', 'delete'] : []}
           onClickAction={(...params) => console.log(params)}
         />
       </div>
@@ -26,7 +28,12 @@ function WidgetsPage(props) {
 }
 
 WidgetsPage.propTypes = {
-  widgets: PropTypes.array.isRequired
+  widgets: PropTypes.array.isRequired,
+  admin: PropTypes.bool.isRequired
 };
 
-export default WidgetsPage;
+const mapStateToProps = ({ env }) => ({
+  admin: env.admin
+});
+
+export default connect(mapStateToProps)(WidgetsPage);
