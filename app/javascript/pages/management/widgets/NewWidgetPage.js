@@ -46,7 +46,9 @@ class NewWidgetPage extends React.Component {
       // State of the advanced editor
       widgetConfig: {},
       // Whether the preview of the avanced editor is loading
-      previewLoading: false
+      previewLoading: false,
+      // Error while saving the widget
+      saveError: false
     };
   }
 
@@ -77,68 +79,67 @@ class NewWidgetPage extends React.Component {
    * button on the second step
    */
   onClickCreate() {
-    if (this.state.advancedEditor) {
-      // TODO:
-    } else {
-      if (!this.getWidgetConfig) {
-        this.setState({ widgetConfigError: true });
-        return;
+    new Promise((resolve, reject) => { // eslint-disable-line no-new
+      if (this.state.advancedEditor) {
+        resolve(this.state.widgetConfig);
+      } else {
+        this.getWidgetConfig()
+          .then(resolve)
+          .catch(reject);
+      }
+    }).then((widgetConfig) => {
+      const widgetObj = Object.assign(
+        {},
+        {
+          name: this.props.title || null,
+          description: this.props.description
+        },
+        { widgetConfig }
+      );
+
+      let metadataObj = null;
+      if (this.props.caption) {
+        metadataObj = {
+          info: {
+            caption: this.props.caption
+          }
+        };
       }
 
-      this.getWidgetConfig()
-        .then((widgetConfig) => {
-          const widgetObj = Object.assign(
-            {},
-            {
-              name: this.props.title || null,
-              description: this.props.description
-            },
-            { widgetConfig }
-          );
+      const widget = Object.assign({}, widgetObj, {
+        application: [getConfig().applications],
+        published: false,
+        default: false,
+        dataset: this.props.dataset
+      });
 
-          let metadataObj = null;
-          if (this.props.caption) {
-            metadataObj = {
-              info: {
-                caption: this.props.caption
-              }
-            };
-          }
-
-          const widget = Object.assign({}, widgetObj, {
-            application: [getConfig().applications],
-            published: false,
-            default: false,
-            dataset: this.props.dataset
-          });
-
-          const metadata = !metadataObj
-            ? null
-            : Object.assign({}, metadataObj, {
-              language: getConfig().locale,
-              application: getConfig().applications
-            });
-
-          const getRequestOptions = body => ({
-            method: 'POST',
-            body: JSON.stringify(body),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${getConfig().userToken}`
-            }
-          });
-
-          fetch(this.props.queryUrl, {
-            method: 'POST',
-            body: JSON.stringify(Object.assign({}, { widget }, { metadata }))
-          }).then(res => console.log(res))
-            .catch(err => console.error(err));
-        })
-        .catch(() => {
-          // We display a warning in the UI
-          this.setState({ widgetConfigError: true });
+      const metadata = !metadataObj
+        ? null
+        : Object.assign({}, metadataObj, {
+          language: getConfig().locale,
+          application: getConfig().applications
         });
-    }
+
+      fetch(this.props.queryUrl, {
+        method: 'POST',
+        body: JSON.stringify(Object.assign(
+          {},
+          { widget },
+          { ...(this.state.advancedEditor ? {} : { metadata }) }
+        ))
+      }).then((res) => {
+        if (res.ok) {
+          window.location = this.props.redirectUrl;
+        } else {
+          throw new Error(res.statusText);
+        }
+      }).catch(() => {
+        this.setState({ saveError: true });
+      });
+    }).catch(() => {
+      // We display a warning in the UI
+      this.setState({ widgetConfigError: true });
+    });
   }
 
   /**
@@ -157,7 +158,7 @@ class NewWidgetPage extends React.Component {
     const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption, redirectUrl } = this.props;
     const { widgetConfigError, advancedEditor,
-      advancedEditorWarningAccepted, widgetConfig, previewLoading } = this.state;
+      advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError } = this.state;
 
     let content;
     if (currentStep === 0) {
@@ -254,6 +255,15 @@ class NewWidgetPage extends React.Component {
             content="Unable to create the widget"
             additionalContent="Make sure the visualization is correctly previewed before submitting the widget."
             onClose={() => this.setState({ widgetConfigError: false })}
+          />
+        )}
+
+        {saveError && (
+          <Notification
+            type="error"
+            content="Unable to create the widget"
+            additionalContent="Please try again later."
+            onClose={() => this.setState({ saveError: false })}
           />
         )}
 
