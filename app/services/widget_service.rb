@@ -47,7 +47,7 @@ class WidgetService < ApiService
       Rails.logger.info "Widget: #{widget}"
 
       res = @conn.update do |req|
-        req.url '/widget'
+        req.url 'widget'
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
         req.body = widget
@@ -72,7 +72,7 @@ class WidgetService < ApiService
       Rails.logger.info "Widget: #{widget}"
 
       res = @conn.post do |req|
-        req.url '/widget'
+        req.url 'widget'
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
         req.body = widget.attributes.to_json
