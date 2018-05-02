@@ -47,7 +47,7 @@ class WidgetService < ApiService
       Rails.logger.info 'Creating Widget in the API.'
       Rails.logger.info "Widget: #{widget}"
 
-      res = @conn.update do |req|
+      res = @conn.put do |req|
         req.url 'widget'
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
@@ -88,6 +88,14 @@ class WidgetService < ApiService
     widget_id
   end
 
+  def self.delete(token, widget_id)
+    @conn.delete do |req|
+      req.url "widget/#{widget_id}"
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+    end
+  end
+
   def self.create_metadata(token, metadata_params, widget_id, dataset_id)
     @conn.post do |req|
       req.url "dataset/#{dataset_id}/widget/#{widget_id}/metadata"
@@ -99,7 +107,7 @@ class WidgetService < ApiService
 
   def self.update_metadata(token, metadata_params, widget_id, dataset_id)
     @conn.put do |req|
-      req.url "dataset/#{dataset_id}//widget/#{widget_id}/metadata"
+      req.url "/widget/#{widget_id}/metadata"
       req.headers['Authorization'] = "Bearer #{token}"
       req.headers['Content-Type'] = 'application/json'
       req.body = metadata_params
