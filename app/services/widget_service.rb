@@ -41,7 +41,8 @@ class WidgetService < ApiService
   end
 
   def self.update(token, widget_params)
-    widget = Widget.new widget_params
+    widget = Widget.new
+    widget.set_attributes widget_params
     begin
       Rails.logger.info 'Creating Widget in the API.'
       Rails.logger.info "Widget: #{widget}"
@@ -50,7 +51,7 @@ class WidgetService < ApiService
         req.url 'widget'
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
-        req.body = widget
+        req.body = widget.attributes.to_json
       end
 
       Rails.logger.info "Response from widget creation endpoint: #{res.body}"
@@ -85,6 +86,17 @@ class WidgetService < ApiService
       return nil
     end
     widget_id
+  end
+
+  def self.create_metadata(token, metadata_params)
+    save_metadata(token, dataset_id, application, name, tags_array, metadata) do |body|
+      @conn.post do |req|
+        req.url "/dataset/#{dataset_id}/metadata"
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = body
+      end
+    end
   end
 
 end

@@ -16,7 +16,8 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def create
-    WidgetService.create(session[:user_token], widget_parameters)
+    created = WidgetService.create(session[:user_token], widget_parameters)
+    #WidgetService.create_metadata(session[:user_token], metadata_parameters) if created
   end
 
   private
@@ -31,6 +32,10 @@ class Management::WidgetStepsController < ManagementController
           .permit(:id, :name, :description,
                   :published, :default, :dataset)
           .merge(widgetConfig: all_options)
+  end
+
+  def metadata_parameters
+    params.require(:metadata)
   end
 
   def set_site
