@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import WidgetEditor, { Modal, Tooltip, Icons, setConfig } from 'widget-editor';
+import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme, getConfig } from 'widget-editor';
 
 import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
@@ -32,7 +32,17 @@ class EditWidgetPage extends React.Component {
     });
 
     this.state = {
-      widgetConfigError: false
+      // Error while retrieving the widgetConfig from the widget-editor
+      widgetConfigError: false,
+      // Whether we're using the advanced editor
+      advancedEditor: !props.widget.widget_config
+        || !props.widget.widget_config.paramsConfig,
+      // State of the advanced editor
+      widgetConfig: props.widget.widget_config || {},
+      // Whether the preview of the avanced editor is loading
+      previewLoading: false,
+      // Error while saving the widget
+      saveError: false
     };
   }
 
@@ -41,18 +51,107 @@ class EditWidgetPage extends React.Component {
     this.props.setDescription(this.props.widget.description);
   }
 
+  componentDidMount() {
+    if (this.state.advancedEditor) {
+      this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
+        mode: 'javascript',
+        autoCloseTags: true,
+        lineWrapping: true,
+        lineNumbers: true
+      });
+
+      this.codeMirror.on('change', () => {
+        try {
+          const widgetConfig = JSON.parse(this.codeMirror.getValue());
+          this.setState({ widgetConfig });
+        } catch (e) {
+          // If there's an error in the JSON, we reset the widgetConfig
+          // so the user sees the preview is empty
+          this.setState({ widgetConfig: {} });
+        }
+      });
+    }
+  }
+
   /**
    * Event handler executed when the user clicks the "Update"
    * button
    */
   onClickUpdate() {
-    // TODO: implement save method
+    new Promise((resolve, reject) => { // eslint-disable-line no-new
+      if (this.state.advancedEditor) {
+        resolve(this.state.widgetConfig);
+      } else {
+        this.getWidgetConfig()
+          .then(resolve)
+          .catch(reject);
+      }
+    }).then((widgetConfig) => {
+      const widgetObj = Object.assign(
+        {},
+        {
+          name: this.props.title || null,
+          description: this.props.description
+        },
+        { widgetConfig }
+      );
+
+      let metadataObj = null;
+      if (this.props.caption) {
+        metadataObj = {
+          info: {
+            caption: this.props.caption
+          }
+        };
+      }
+
+      const widget = Object.assign({}, widgetObj, {
+        application: [getConfig().applications],
+        published: false,
+        default: false,
+        dataset: this.props.widget.dataset
+      });
+
+      const metadata = !metadataObj
+        ? null
+        : Object.assign({}, metadataObj, {
+          language: getConfig().locale,
+          application: getConfig().applications
+        });
+
+      fetch(this.props.queryUrl, {
+        method: 'PUT',
+        body: JSON.stringify(Object.assign(
+          {},
+          { widget },
+          { ...(this.state.advancedEditor ? {} : { metadata }) }
+        )),
+        credentials: 'include',
+        headers: new Headers({
+          'content-type': 'application/json'
+        })
+      }).then((res) => {
+        if (res.ok) {
+          window.location = this.props.redirectUrl;
+        } else {
+          throw new Error(res.statusText);
+        }
+      }).catch(() => {
+        this.setState({ saveError: true });
+      });
+    }).catch(() => {
+      // We display a warning in the UI
+      this.setState({ widgetConfigError: true });
+    });
   }
 
   render() {
     // eslint-disable-next-line no-shadow
     const { currentStep, setStep, setTitle, setDescription, setCaption,
       title, description, caption, widget } = this.props;
+
+    const { widgetConfigError, advancedEditor,
+      widgetConfig, previewLoading, saveError } = this.state;
 
     const content = (
       <div>
@@ -71,23 +170,44 @@ class EditWidgetPage extends React.Component {
                 <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
               </div>
             </div>
-            <WidgetEditor
-              datasetId={widget.dataset}
-              {...(widget ? { widgetId: widget.id } : {})}
-              widgetTitle={title}
-              widgetCaption={caption}
-              saveButtonMode="never"
-              embedButtonMode="never"
-              onChangeWidgetTitle={t => setTitle(t)}
-              onChangeWidgetCaption={c => setCaption(c)}
-              provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
-            />
+            { !advancedEditor && (
+              <WidgetEditor
+                datasetId={widget.dataset}
+                {...(widget ? { widgetId: widget.id } : {})}
+                widgetTitle={title}
+                widgetCaption={caption}
+                saveButtonMode="never"
+                embedButtonMode="never"
+                onChangeWidgetTitle={t => setTitle(t)}
+                onChangeWidgetCaption={c => setCaption(c)}
+                provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+              />
+            )}
+            { advancedEditor && (
+              <div className="advanced-editor">
+                <div>
+                  <textarea
+                    ref={(el) => { this.advancedEditor = el; }}
+                    defaultValue={JSON.stringify(widgetConfig)}
+                  />
+                </div>
+                <div className="preview">
+                  { previewLoading && <div className="c-loading-spinner -bg" /> }
+                  <VegaChart
+                    data={widgetConfig}
+                    theme={getVegaTheme()}
+                    showLegend
+                    reloadOnResize
+                    toggleLoading={loading => this.setState({ previewLoading: loading })}
+                    getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
     );
-
-    const { widgetConfigError } = this.state;
 
     return (
       <div>
@@ -104,6 +224,15 @@ class EditWidgetPage extends React.Component {
             content="Unable to create the widget"
             additionalContent="Make sure the visualization is correctly previewed before submitting the widget."
             onClose={() => this.setState({ widgetConfigError: false })}
+          />
+        )}
+
+        {saveError && (
+          <Notification
+            type="error"
+            content="Unable to update the widget"
+            additionalContent="Please try again later."
+            onClose={() => this.setState({ saveError: false })}
           />
         )}
 
@@ -137,7 +266,9 @@ EditWidgetPage.propTypes = {
   setStep: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
-  setCaption: PropTypes.func.isRequired
+  setCaption: PropTypes.func.isRequired,
+  queryUrl: PropTypes.string.isRequired,
+  redirectUrl: PropTypes.string.isRequired
 };
 
 EditWidgetPage.defaultProps = {

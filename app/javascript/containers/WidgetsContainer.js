@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import APISerializer from 'wri-json-api-serializer';
-
 
 import ManagementContainer from 'containers/shared/ManagementContainer';
 import EditWidgetPage from 'pages/management/widgets/EditWidgetPage';
@@ -12,7 +10,11 @@ function WidgetsContainer(props) {
   if (props.widget) {
     return (
       <ManagementContainer>
-        <EditWidgetPage widget={APISerializer(props.widget)} />
+        <EditWidgetPage
+          widget={props.widget}
+          queryUrl={props.queryUrl}
+          redirectUrl={props.redirectUrl}
+        />
       </ManagementContainer>
     );
   }
