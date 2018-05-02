@@ -1,6 +1,8 @@
 class Management::WidgetStepsController < ManagementController
 
   before_action :set_site
+  before_action :authenticate_user_for_site!
+  before_action :ensure_management_user, only: :destroy
 
   def new
     @datasets = get_datasets
@@ -47,6 +49,10 @@ class Management::WidgetStepsController < ManagementController
     end
 
     render status: 200, json: {}
+  end
+
+  def destroy
+    #TODO
   end
 
   private

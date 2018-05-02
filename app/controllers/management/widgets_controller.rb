@@ -13,6 +13,12 @@ class Management::WidgetsController < ManagementController
     # TODO ---> the widgets must be per dataset
     #widgets = Widget.where(dataset_id: dataset_ids)
     @widgets = WidgetService.get_widgets
+    @widgets = @widgets.map do |x|
+      { widget: x,
+        edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
+        delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+    end
+    @widgets
   end
 
   def destroy
