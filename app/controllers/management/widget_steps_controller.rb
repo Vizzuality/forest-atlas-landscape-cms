@@ -16,7 +16,9 @@ class Management::WidgetStepsController < ManagementController
   def update
     dataset_id = widget_parameters[:dataset]
     begin
-      WidgetService.update(session[:user_token], widget_parameters)
+      widget_id = WidgetService.update(session[:user_token],
+                                       dataset_id,
+                                       widget_parameters, params[:id])
     rescue Exception => e
       render json: { widget_error: e.to_s }.to_json, status: 500 and return
     end

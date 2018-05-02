@@ -40,15 +40,15 @@ class WidgetService < ApiService
     widget
   end
 
-  def self.update(token, widget_params)
+  def self.update(token, dataset_id, widget_params, widget_id)
     widget = Widget.new
     widget.set_attributes widget_params
     begin
       Rails.logger.info 'Creating Widget in the API.'
       Rails.logger.info "Widget: #{widget}"
 
-      res = @conn.put do |req|
-        req.url 'widget'
+      res = @conn.patch do |req|
+        req.url "dataset/#{dataset_id}/widget/#{widget_id}"
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
         req.body = widget.attributes.to_json
