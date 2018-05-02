@@ -97,9 +97,9 @@ class WidgetService < ApiService
     end
   end
 
-  def self.update_metadata(token, metadata_params, widget_id)
+  def self.update_metadata(token, metadata_params, widget_id, dataset_id)
     @conn.put do |req|
-      req.url "/widget/#{widget_id}/metadata"
+      req.url "dataset/#{dataset_id}//widget/#{widget_id}/metadata"
       req.headers['Authorization'] = "Bearer #{token}"
       req.headers['Content-Type'] = 'application/json'
       req.body = metadata_params
