@@ -126,7 +126,8 @@ class NewWidgetPage extends React.Component {
           {},
           { widget },
           { ...(this.state.advancedEditor ? {} : { metadata }) }
-        ))
+        )),
+        credentials: 'include'
       }).then((res) => {
         if (res.ok) {
           window.location = this.props.redirectUrl;
