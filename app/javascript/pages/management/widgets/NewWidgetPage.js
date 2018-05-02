@@ -133,7 +133,7 @@ class NewWidgetPage extends React.Component {
         })
       }).then((res) => {
         if (res.ok) {
-          // window.location = this.props.redirectUrl;
+          window.location = this.props.redirectUrl;
         } else {
           throw new Error(res.statusText);
         }
