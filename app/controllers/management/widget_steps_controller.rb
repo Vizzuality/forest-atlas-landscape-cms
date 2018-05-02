@@ -16,8 +16,20 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def create
-    created = WidgetService.create(session[:user_token], widget_parameters)
-    #WidgetService.create_metadata(session[:user_token], metadata_parameters) if created
+    dataset_id = widget_parameters[:dataset]
+    begin
+      widget_id = WidgetService.create(session[:user_token], widget_parameters, dataset_id)
+    rescue Exception => e
+      render json: { widget_error: e.to_s }.to_json, status: 500 and return
+    end
+
+    begin
+      WidgetService.create_metadata(session[:user_token], metadata_parameters, widget_id, dataset_id) if widget_id
+    rescue Exception => e
+      render json: { metadata_error: e.to_s }.to_json, status: 500 and return
+    end
+
+    render status: 200, json: {}
   end
 
   private

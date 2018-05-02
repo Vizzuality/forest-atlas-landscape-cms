@@ -64,7 +64,7 @@ class WidgetService < ApiService
 
   end
 
-  def self.create(token, widget_params)
+  def self.create(token, widget_params, dataset_id)
     widget = Widget.new
     widget.set_attributes(widget_params)
     widget.application = ['forest-atlas']
@@ -73,7 +73,7 @@ class WidgetService < ApiService
       Rails.logger.info "Widget: #{widget}"
 
       res = @conn.post do |req|
-        req.url 'widget'
+        req.url "dataset/#{dataset_id}/widget"
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
         req.body = widget.attributes.to_json
@@ -88,14 +88,21 @@ class WidgetService < ApiService
     widget_id
   end
 
-  def self.create_metadata(token, metadata_params)
-    save_metadata(token, dataset_id, application, name, tags_array, metadata) do |body|
-      @conn.post do |req|
-        req.url "/dataset/#{dataset_id}/metadata"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
-      end
+  def self.create_metadata(token, metadata_params, widget_id, dataset_id)
+    @conn.post do |req|
+      req.url "dataset/#{dataset_id}/widget/#{widget_id}/metadata"
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = metadata_params.to_json
+    end
+  end
+
+  def self.update_metadata(token, metadata_params, widget_id)
+    @conn.put do |req|
+      req.url "/widget/#{widget_id}/metadata"
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = metadata_params
     end
   end
 
