@@ -10,7 +10,7 @@ class Management::WidgetStepsController < ManagementController
 
   def edit
     @datasets = nil
-    @widget = WidgetService.get_widgets(params[:id])
+    @widget = WidgetService.widget(params[:id])
   end
 
   def update
