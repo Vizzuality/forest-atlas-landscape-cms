@@ -12,11 +12,11 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def update
-    WidgetService.update(widget_parameters)
+    WidgetService.update(session[:user_token], widget_parameters)
   end
 
   def create
-    WidgetService.create(widget_parameters)
+    WidgetService.create(session[:user_token], widget_parameters)
   end
 
   private
@@ -26,11 +26,11 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def widget_parameters
+    all_options = params.require(:widget).fetch(:widgetConfig, nil).try(:permit!)
     params.require(:widget)
-          .permit(:id, :user_id, :application, :slug, :name, :description,
-                  :source, :source_url, :layer_id, :dataset, :authors,
-                  :query_url, :widget_config, :template, :default,
-                  :protected, :status, :published, :freeze, :verified)
+          .permit(:id, :name, :description,
+                  :published, :default, :dataset)
+          .merge(widgetConfig: all_options)
   end
 
   def set_site

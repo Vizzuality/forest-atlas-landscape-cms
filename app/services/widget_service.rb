@@ -40,7 +40,7 @@ class WidgetService < ApiService
     widget
   end
 
-  def self.update(widget_params)
+  def self.update(token, widget_params)
     widget = Widget.new widget_params
     begin
       Rails.logger.info 'Creating Widget in the API.'
@@ -63,8 +63,10 @@ class WidgetService < ApiService
 
   end
 
-  def self.create(widget_params)
-    widget = Widget.new widget_params
+  def self.create(token, widget_params)
+    widget = Widget.new
+    widget.set_attributes(widget_params)
+    widget.application = ['forest-atlas']
     begin
       Rails.logger.info 'Creating Widget in the API.'
       Rails.logger.info "Widget: #{widget}"
@@ -73,7 +75,7 @@ class WidgetService < ApiService
         req.url '/widget'
         req.headers['Authorization'] = "Bearer #{token}"
         req.headers['Content-Type'] = 'application/json'
-        req.body = widget
+        req.body = widget.attributes.to_json
       end
 
       Rails.logger.info "Response from widget creation endpoint: #{res.body}"

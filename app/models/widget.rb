@@ -52,10 +52,10 @@ class Widget
     @source = data[:attributes][:source]
     @source_url = data[:attributes][:source_url]
     @layer_id = data[:attributes][:layer_id]
-    @dataset = data[:attributes][:dataser]
+    @dataset = data[:attributes][:dataset]
     @authors = data[:attributes][:authors]
     @query_sql = data[:attributes][:query_sql]
-    @widget_config = data[:attributes][:widget_config]
+    @widget_config = data[:attributes][:widgetConfig]
     @template = data[:attributes][:template]
     @default = data[:attributes][:default]
     @protected = data[:attributes][:protected]
@@ -66,7 +66,7 @@ class Widget
   end
 
   def set_attributes(data)
-    return unless data.is_a? Hash
+    return if data.try(:keys).nil?
     @id = data[:id]
     @user_id = data[:user_id]
     @application = data[:application]
@@ -76,10 +76,10 @@ class Widget
     @source = data[:source]
     @source_url = data[:source_url]
     @layer_id = data[:layer_id]
-    @dataset = data[:dataser]
+    @dataset = data[:dataset]
     @authors = data[:authors]
     @query_sql = data[:query_sql]
-    @widget_config = data[:widget_config]
+    @widget_config = data[:widgetConfig]
     @template = data[:template]
     @default = data[:default]
     @protected = data[:protected]
@@ -104,7 +104,7 @@ class Widget
       dataset: @dataset,
       authors: @authors,
       query_sql: @query_sql,
-      widget_config: @widget_config,
+      widgetConfig: @widget_config,
       template: @template,
       default: @default,
       protected: @protected,
