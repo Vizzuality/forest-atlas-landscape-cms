@@ -12,11 +12,11 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def update
-    DatasetService.update(widget_parameters)
+    WidgetService.update(widget_parameters)
   end
 
   def create
-    DatasetService.create(widget_parameters)
+    WidgetService.create(widget_parameters)
   end
 
   private
