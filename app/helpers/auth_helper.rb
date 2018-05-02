@@ -17,7 +17,7 @@ module AuthHelper
   end
 
   def ensure_logged_in
-    connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
+    connect = Faraday.new(url: "#{ENV['CONTROL_TOWER_URL']}") do |faraday|
       faraday.use FaradayMiddleware::FollowRedirects
       faraday.request :url_encoded # form-encode POST params
       faraday.response :logger # log requests to STDOUThttps://github.com/tiagojsag/githooks
