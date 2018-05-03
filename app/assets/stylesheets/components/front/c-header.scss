@@ -334,6 +334,7 @@
               cursor: auto;
               opacity: 0;
               visibility: hidden;
+              display: none; // Also hide paint calculations
               will-change: transform, opacity;
 
               li {
@@ -377,6 +378,7 @@
                 transition: opacity .2s ease-out;
                 opacity: 1;
                 visibility: visible;
+                display: block;
               }
             }
 

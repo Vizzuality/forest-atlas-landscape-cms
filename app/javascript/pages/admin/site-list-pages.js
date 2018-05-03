@@ -13,6 +13,7 @@ const SiteListPages = ({ admin }) => (
         data={admin.pages}
         actions={['toggle', 'edit', 'delete']}
       />
+
     </div>
   </div>
 );

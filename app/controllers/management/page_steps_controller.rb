@@ -137,7 +137,6 @@ class Management::PageStepsController < ManagementController
       when 'position'
         set_current_page_state
         move_forward
-
       when 'title'
         set_current_page_state
         # If the user has selected the type of page already it doesn't show the type page
@@ -151,6 +150,10 @@ class Management::PageStepsController < ManagementController
             move_forward wizard_steps[3]
         end
       when 'type'
+        if @page.content_type == 7
+          @page.dashboard_version = 2
+        end
+
         set_current_page_state
         move_forward
 

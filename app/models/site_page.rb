@@ -46,20 +46,21 @@ class SitePage < Page
 
     case self.content_type
       when ContentType::OPEN_CONTENT
-        steps = {pages: %w[position title type open_content open_content_preview],
-                 names: %w(Position Title Type Content Preview)}
+        steps = {pages: %w[position type title open_content open_content_preview],
+                 names: %w(Position Type Details Content Preview)}
       when ContentType::ANALYSIS_DASHBOARD
-        steps = {pages: %w[position title type dataset filters columns preview],
-                 names: %w[Position Title Type Dataset Filters Columns Preview]}
+      when ContentType::DASHBOARD_V2
+        steps = {pages: %w[position type title dataset filters columns preview],
+                 names: %w[Position Type Details Dataset Filters Columns Preview]}
       when ContentType::LINK
-        steps = {pages: %w[position title type link],
-                 names: %w[Position Title Type Link]}
+        steps = {pages: %w[position type title link],
+                 names: %w[Position Type Details Link]}
       when ContentType::STATIC_CONTENT
-        steps = {pages: %w[title type open_content open_content_preview],
-                 names: %w(Title Type Content Preview)}
+        steps = {pages: %w[type title open_content open_content_preview],
+                 names: %w(Type Details Content Preview)}
       when ContentType::MAP
-        steps = {pages: %w[position title type map],
-                 names: %w[Position Title Type Map]}
+        steps = {pages: %w[position type title map],
+                 names: %w[Position Type Details Map]}
       when ContentType::HOMEPAGE
         steps = {pages: %w[open_content open_content_preview],
                  names: ['Open Content', 'Open Content Preview']}

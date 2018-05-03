@@ -48,7 +48,7 @@ class Page < ApplicationRecord
   end
 
   def deletable?
-    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD].include? self.content_type
+    [ContentType::LINK, ContentType::OPEN_CONTENT, ContentType::ANALYSIS_DASHBOARD, ContentType::DASHBOARD_V2].include? self.content_type
   end
 
   def disableable?
