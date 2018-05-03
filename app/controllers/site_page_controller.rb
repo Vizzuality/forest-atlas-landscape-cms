@@ -28,7 +28,11 @@ class SitePageController < ApplicationController
                }
              })
     gon.page = @site_page
-    gon.content = OpenStruct.new(@site_page.content).json
+    if @site_page.content.kind_of?(Array)
+      gon.content = @site_page.content
+    else
+      gon.content = OpenStruct.new(@site_page.content).json
+    end
   end
 
 

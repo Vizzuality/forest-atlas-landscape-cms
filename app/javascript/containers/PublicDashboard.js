@@ -2,10 +2,11 @@ import React from 'react';
 
 import PublicContainer from 'containers/shared/PublicContainer';
 
-import { Wysiwyg } from 'vizz-wysiwyg';
+import Wysiwyg from 'vizz-wysiwyg';
 
 export default class PublicDashboard extends PublicContainer {
   render() {
-    return <Wysiwyg readOnly data={[]} />;
+    const { content } = this.props.page;
+    return <Wysiwyg readOnly items={content.length ? content : []} />;
   }
 }

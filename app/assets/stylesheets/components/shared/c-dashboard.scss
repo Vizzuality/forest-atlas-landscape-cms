@@ -1,0 +1,60 @@
+$this: 'fa-dashboard';
+
+$dasboard_text__color: #555555;
+$dashboard_text__size: 19px;
+$dashboard_text_line: 32px;
+$dashboard_text_weight: 300;
+$dashboard_text_width: 700px;
+
+.#{$this} {
+  max-width: $body-max-width;
+  margin: 0 auto;
+
+  ul { list-style-type: none; }
+
+  .ql-container.ql-disabled .ql-tooltip {
+    display: none;
+  }
+
+  // https://type-scale.com/
+  .ql-editor h1 { font-size: 3.998em; }
+  .ql-editor h2 { font-size: 2.827em; }
+  .ql-editor h3 { font-size: 1.999em; }
+  .ql-editor h4 { font-size: 1.414em; }
+  .ql-editor h5 { font-size: 1em; }
+
+  .ql-editor h1, h2, h3 {
+    text-align: center;
+    color: $dasboard_text__color;
+    font-weight: $dashboard_text_weight;
+  }
+
+  .ql-editor p {
+    color: $dasboard_text__color;
+    font-size: $dashboard_text__size;
+    line-height: $dashboard_text_line;
+    font-weight: $dashboard_text_weight;
+    max-width: $dashboard_text_width;
+    margin: 0 auto;
+  }
+
+  &__summary {
+    margin: 0 auto;
+    padding: 40px 0;
+
+    color: $dasboard_text__color;
+    font-size: $dashboard_text__size;
+    line-height: $dashboard_text_line;
+    font-weight: $dashboard_text_weight;
+    max-width: $dashboard_text_width;
+  }
+
+  &__description {
+    display: block;
+  }
+
+  &__widgetEditor {
+    display: block;
+  }
+
+}
