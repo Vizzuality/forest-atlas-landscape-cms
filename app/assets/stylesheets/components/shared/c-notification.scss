@@ -33,6 +33,10 @@
     .dialog-buttons {
       margin-top: 15px;
 
+      button + button {
+        margin-left: 15px;
+      }
+
       @media #{$mq-tablet} {
         margin-top: 0;
       }

@@ -12,7 +12,8 @@ export function setEnvVars() {
       apiEnv: global.api_env,
       apiApplications: global.api_applications,
       controlTowerUrl: global.control_tower_url,
-      user: global.user
+      user: global.user,
+      admin: global.admin
     }
   };
 }

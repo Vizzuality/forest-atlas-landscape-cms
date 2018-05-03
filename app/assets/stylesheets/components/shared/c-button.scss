@@ -32,7 +32,8 @@
     font-weight: $font-weight-normal;
   }
 
-  &.-disabled {
+  &.-disabled,
+  &[disabled] {
     cursor: default;
     opacity: .3;
   }

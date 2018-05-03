@@ -12,6 +12,10 @@
     transform: translateX(-50%);
   }
 
+  .c-button + .c-button {
+    margin-left: 15px;
+  }
+
   &.-wide {
     @media #{$mq-body-width} {
       left: 0;

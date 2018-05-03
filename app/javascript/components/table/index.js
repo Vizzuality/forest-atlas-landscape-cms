@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Fuse from 'fuse.js';
 import classnames from 'classnames';
 
-import TableActions from 'components/admin/table/TableActions';
-import Toolbar from 'components/admin/table/Toolbar';
-import TableFooter from 'components/admin/table/TableFooter';
+import TableActions from 'components/table/TableActions';
+import Toolbar from 'components/table/Toolbar';
+import TableFooter from 'components/table/TableFooter';
 
 const fuseOptions = {
   shouldSort: true,
@@ -107,10 +107,10 @@ class Table extends React.Component {
   formatRow(d) {
     const { actions } = this.props;
     return (
-      <tr role="row" key={d + Math.random()}>
+      <tr role="row" key={Math.random()}>
         {this.formatCols(d)}
-        {actions.map(a =>
-          <TableActions data={d} action={a} onClickAction={this.props.onClickAction} />)}
+        {actions.map((a, k) =>
+          <TableActions key={k} data={d} action={a} onClickAction={this.props.onClickAction} />)}
       </tr>
     );
   }

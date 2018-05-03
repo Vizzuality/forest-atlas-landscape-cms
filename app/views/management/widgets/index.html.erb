@@ -4,6 +4,6 @@
 <%= render partial: 'management/tabs'%>
 
 <%= javascript_pack_tag 'application' %>
-<%= react_component('WidgetsPage', {
-  widgets: @formattedWidgets
+<%= react_component('WidgetsContainer', {
+  widgets: @widgets
 } ) %>

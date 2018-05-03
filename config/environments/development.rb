@@ -63,4 +63,6 @@ Rails.application.configure do
 
   config.web_console.whitelisted_ips = '172.18.0.0/16'
 
+  # Don't check webpack integrity in dev
+  config.webpacker.check_yarn_integrity = false
 end

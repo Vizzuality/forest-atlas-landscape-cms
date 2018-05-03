@@ -34,9 +34,7 @@ const TableActions = ({ data, action, onClickAction }) => {
       </td>);
   }
 
-  if (action === 'delete' &&
-  'delete' in data &&
-  data.delete.value !== null) {
+  if (action === 'delete') {
     return (
       <td key={action}>
         <span className="row-content">
