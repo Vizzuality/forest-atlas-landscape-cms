@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TableActions = ({ data, actions, onClickAction }) => actions.map((action) => {
+const TableActions = ({ data, action, onClickAction }) => {
   if (action === 'toggle' && 'enable' in data && 'enabled' in data && data.enable.value !== null) {
     return (
       <td key={action}>
@@ -64,12 +64,12 @@ const TableActions = ({ data, actions, onClickAction }) => actions.map((action) 
     );
   }
 
-  return null;
-});
+  return <td key={action}>-</td>;
+};
 
 TableActions.propTypes = {
   data: PropTypes.object.isRequired,
-  actions: PropTypes.array.isRequired,
+  action: PropTypes.string.isRequired,
   onClickAction: PropTypes.func.isRequired
 };
 

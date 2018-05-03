@@ -31,7 +31,7 @@ class WidgetsPage extends React.Component {
       method: 'DELETE',
       credentials: 'include'
     }).then(() => {
-      window.reload();
+      window.location.reload();
     }).catch(() => {
       this.setState({
         deleteSuccess: false,
