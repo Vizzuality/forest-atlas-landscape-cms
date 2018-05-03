@@ -252,6 +252,8 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
+    #all_options = params.require(:site_page)
+    #                    .fetch(:content, nil).try(:permit!)
     params.require(:site_page).permit(
       :name,
       :description,
@@ -260,14 +262,14 @@ class Management::PageStepsController < ManagementController
       :show_on_menu,
       :parent_id,
       :content_type,
-      content: [:url, :target_blank, :body, :json, :settings, :version],
+      :content,
       dataset_setting: [
         :dataset_id,
         :filters,
         :widgets,
         visible_fields: []
       ]
-    )
+    )#.merge(content: all_options)
   end
 
   # Sets the current site from the url
@@ -475,8 +477,12 @@ class Management::PageStepsController < ManagementController
     dataset_array = []
     @site.contexts.each {|c| c.context_datasets.each {|d| dataset_array << d.dataset_id}}
     dataset_array.uniq!
-    widgets = Widget.where(dataset_id: dataset_array)
-    widgets.map{|w| {id: w.id, name: w.name, visualization: w.visualization, description: w.description}}
+    #widgets = Widget.where(dataset_id: dataset_array)
+    widgets = WidgetService.from_datasets dataset_array
+    widgets.map do |w|
+      { id: w.id, name: w.name,
+        visualization: w.visualization, description: w.description }
+    end
   end
 
   def ensure_session_keys_exist

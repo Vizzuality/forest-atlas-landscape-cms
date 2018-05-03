@@ -114,4 +114,33 @@ class WidgetService < ApiService
     end
   end
 
+  def self.from_datasets(dataset_ids, status = 'saved')
+    widgets_request = @conn.get 'dataset',
+                                'ids': dataset_ids.join(','),
+                                'includes': 'widgets',
+                                'page[number]': '1', 'page[size]': '10000',
+                                'status': status,
+                                'application': ENV.fetch('API_APPLICATIONS'),
+                                'env': ENV.fetch('API_ENV'),
+                                '_': Time.now.to_s
+
+    widgets_json = JSON.parse widgets_request.body
+
+    widgets = []
+    begin
+      widgets_json['data'].each do |data|
+        next if data['widget'].blank?
+        data['widget'].each do |data_widget|
+          widget = Widget.new data_widget
+          widgets.push widget
+        end
+      end
+    rescue Exception => e
+      # TODO All this methods should throw an exception caught in the controller...
+      # ... to render a different page
+      Rails.logger.error "::WidgetService.get_widgets: #{e}"
+    end
+
+    widgets
+  end
 end
