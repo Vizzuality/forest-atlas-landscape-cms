@@ -13,7 +13,7 @@
                 ''
               end
         %>
-        <%= link_to step_names[i], wizard_path(step), 'tabindex': tab_index, class: html_class %>
+        <%= link_to step_names[i], wizard_path(step), 'tabindex': tab_index, class: html_class,  data: { turbolinks: 'false' } %>
       </li>
       <% end %>
     </ul>

@@ -62,7 +62,6 @@ class EditWidgetPage extends React.Component {
       this.codeMirror.on('change', () => {
         try {
           const widgetConfig = JSON.parse(this.codeMirror.getValue());
-          console.log(widgetConfig);
           this.setState({ widgetConfig });
         } catch (e) {
           // If there's an error in the JSON, we reset the widgetConfig
