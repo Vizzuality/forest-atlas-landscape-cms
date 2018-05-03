@@ -1,15 +1,23 @@
 <%= Gon::Base.render_data %>
+<%= javascript_pack_tag 'application' %>
 
-<div class="l-dashboard-v2">
-  <div class="wrapper">
-    <div class="description">
-      <%= @site_page.description %>
-    </div>
-    <%= javascript_pack_tag 'application' %>
-    <%= react_component('PublicDashboard', {
-      page: @site_page
-    } ) %>
+<%= react_component('Cover', {
+  page: @site_page,
+  site: @site_page.site,
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: @site_title_only,
+  image: @main_image,
+  pageSize: defined?(size) ? size : nil
+} ) %>
+
+<div class="fa-dashboard">
+  <div class="fa-dashboard__summary">
+    <%= @site_page.description %>
   </div>
+
+  <%= react_component('PublicDashboard', {
+    page: @site_page
+  } ) %>
 </div>
 
 <%= render 'front/footer' %>
