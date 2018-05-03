@@ -63,7 +63,7 @@
       this._displaySavingNotification();
 
       $.ajax({
-        url: gon.update_structure_path,
+        url: gon.updateStructurePath,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ collection: [this.treeStructureView.getTree()] })
