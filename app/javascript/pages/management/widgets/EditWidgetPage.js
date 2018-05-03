@@ -19,7 +19,6 @@ const STEPS = [
 class EditWidgetPage extends React.Component {
   constructor(props) {
     super(props);
-
     // We set the config of the widget editor
     const { env } = props;
     setConfig({
@@ -63,6 +62,7 @@ class EditWidgetPage extends React.Component {
       this.codeMirror.on('change', () => {
         try {
           const widgetConfig = JSON.parse(this.codeMirror.getValue());
+          console.log(widgetConfig);
           this.setState({ widgetConfig });
         } catch (e) {
           // If there's an error in the JSON, we reset the widgetConfig
@@ -115,6 +115,7 @@ class EditWidgetPage extends React.Component {
       const metadata = !metadataObj
         ? null
         : Object.assign({}, metadataObj, {
+          id: this.props.widget.id,
           language: getConfig().locale,
           application: getConfig().applications
         });

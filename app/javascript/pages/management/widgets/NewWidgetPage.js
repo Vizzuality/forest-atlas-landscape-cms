@@ -117,6 +117,7 @@ class NewWidgetPage extends React.Component {
         ? null
         : Object.assign({}, metadataObj, {
           language: getConfig().locale,
+          id: this.props.widget.id,
           application: getConfig().applications
         });
 
