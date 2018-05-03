@@ -1,6 +1,14 @@
 <%= Gon::Base.render_data %>
+<%= javascript_pack_tag 'application' %>
 
-<!-- render 'front/cover', image: @alternative_image, size: 'small' -->
+<%= react_component('Cover', {
+  page: @site_page,
+  site: @site_page.site,
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: @site_title_only,
+  image: @main_image,
+  pageSize: defined?(size) ? size : nil
+} ) %>
 
 <div class="l-analysis-dashboard">
   <div class="bookmarks">
@@ -34,7 +42,6 @@
 
     <hr/>
 
-    <%= javascript_pack_tag 'application' %>
     <%= react_component('PublicTableView', {
       dashboard: if @setting then @setting.get_filtered_dataset else nil end
     } ) %>
