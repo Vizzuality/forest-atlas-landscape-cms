@@ -17,19 +17,19 @@ $dashboard_text_width: 700px;
   }
 
   // https://type-scale.com/
-  .ql-editor h1 { font-size: 3.998em; }
-  .ql-editor h2 { font-size: 2.827em; }
-  .ql-editor h3 { font-size: 1.999em; }
-  .ql-editor h4 { font-size: 1.414em; }
-  .ql-editor h5 { font-size: 1em; }
+  .ql-editor h1, h1 { font-size: 3.998em; }
+  .ql-editor h2, h2 { font-size: 2.827em; }
+  .ql-editor h3, h3 { font-size: 1.999em; }
+  .ql-editor h4, h4 { font-size: 1.414em; }
+  .ql-editor h5, h5 { font-size: 1em; }
 
-  .ql-editor h1, h2, h3 {
+  .ql-editor h1, h2, h3, h1, h2, h3 {
     text-align: center;
     color: $dasboard_text__color;
     font-weight: $dashboard_text_weight;
   }
 
-  .ql-editor p {
+  .ql-editor p, p {
     color: $dasboard_text__color;
     font-size: $dashboard_text__size;
     line-height: $dashboard_text_line;
@@ -53,8 +53,34 @@ $dashboard_text_width: 700px;
     display: block;
   }
 
-  &__widgetEditor {
-    display: block;
+  &__reports {
+    position: relative;
+    margin: 70px 0 0 0;
+    padding: 40px 0 0 0;
+
+    &:before {
+      content: "";
+      position: absolute;
+
+      background: #D6D6D9;
+      height: 1px;
+      width: 200vw;
+      transform: translateX(-50%);
+
+      top: 0;
+      left: 0;
+    }
+
+    h1 {
+      margin: 0;
+      line-height: 1;
+    }
+
+    p {
+      padding: 30px 0;
+      text-align: center;
+    }
+
   }
 
 }
