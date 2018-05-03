@@ -27,7 +27,7 @@ class Management::WidgetStepsController < ManagementController
     begin
       if widget_id && params[:metadata].present?
         WidgetService.update_metadata(session[:user_token], params[:metadata],
-                                      dataset_id, params[:metadata][:id])
+                                      dataset_id, widget_id)
       end
     rescue Exception => e
       render json: { metadata_error: e.to_s }.to_json, status: 500 and return
