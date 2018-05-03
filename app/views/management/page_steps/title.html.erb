@@ -1,3 +1,5 @@
+<%= javascript_pack_tag 'application' %>
+
 <% content_for :extended_header do %>
   <div class="c-extended-header">
     <div class="wrapper">
@@ -42,10 +44,8 @@
       </div>
     </div>
   </div>
-
   <% if @page.dashboard_version > 1 %>
     <!-- New dashboards will have the content with the new fancy wysiwyg editor -->
-    <%= javascript_pack_tag 'application' %>
     <%= react_component('EditDashboardPage', {
       page: @page
     } ) %>

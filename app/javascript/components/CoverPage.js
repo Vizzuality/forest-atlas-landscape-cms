@@ -5,10 +5,10 @@ import classnames from 'classnames';
 
 class CoverPage extends React.Component {
   render () {
-    const { site, secondary } = this.props;
+    const { site, secondary, usePageTitle } = this.props;
 
     const { current, page, meta } = site;
-    const { pageSize, image, siteTitleOnly } = meta;
+    const { pageSize, image } = meta;
 
     const coverBackground = {
       backgroundImage: `url(${image})`
@@ -23,7 +23,7 @@ class CoverPage extends React.Component {
       <div className={ClsMainWrapper} style={coverBackground}>
 
         <div className="wrapper">
-          <h2 className="cover-title">{current.name}</h2>
+          <h2 className="cover-title">{usePageTitle ? page.name : current.name}</h2>
         </div>
 
         {image &&
