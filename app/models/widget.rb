@@ -28,6 +28,9 @@ class Widget
   #has_many :pages, through: :page_widgets
 
 
+  DEFAULT_WIDGET = { application: 'forest-atlas',
+                     info: { caption: '' },
+                     language: 'en' }.freeze
 
   attr_accessor :id, :user_id, :application, :slug, :name, :description,
                 :source, :source_url, :layer_id, :dataset, :authors, :query_url,

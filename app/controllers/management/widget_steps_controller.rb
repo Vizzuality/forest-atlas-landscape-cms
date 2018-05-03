@@ -15,6 +15,7 @@ class Management::WidgetStepsController < ManagementController
 
   def update
     dataset_id = widget_parameters[:dataset]
+
     begin
       widget_id = WidgetService.update(session[:user_token],
                                        dataset_id,
@@ -24,8 +25,9 @@ class Management::WidgetStepsController < ManagementController
     end
 
     begin
-      if widget_id && params[:metadata]
-        WidgetService.update_metadata(session[:user_token], params[:metadata], widget_id, dataset_id)
+      if widget_id && params[:metadata].present?
+        WidgetService.update_metadata(session[:user_token], params[:metadata],
+                                      dataset_id, params[:metadata][:id])
       end
     rescue Exception => e
       render json: { metadata_error: e.to_s }.to_json, status: 500 and return
@@ -36,15 +38,22 @@ class Management::WidgetStepsController < ManagementController
 
   def create
     dataset_id = widget_parameters[:dataset]
+    params_metadata = if params[:metadata].present?
+                        params[:metadata]
+                      else
+                        Widget::DEFAULT_WIDGET
+                      end
     begin
-      widget_id = WidgetService.create(session[:user_token], widget_parameters, dataset_id)
+      widget_id = WidgetService.create(session[:user_token],
+                                       widget_parameters, dataset_id)
     rescue Exception => e
       render json: { widget_error: e.to_s }.to_json, status: 500 and return
     end
 
     begin
-      if widget_id && params[:metadata]
-        WidgetService.create_metadata(session[:user_token], params[:metadata], widget_id, dataset_id)
+      if widget_id
+        WidgetService.create_metadata(session[:user_token], params_metadata,
+                                      widget_id, dataset_id)
       end
     rescue Exception => e
       render json: { metadata_error: e.to_s }.to_json, status: 500 and return
@@ -70,7 +79,8 @@ class Management::WidgetStepsController < ManagementController
   end
 
   def widget_parameters
-    all_options = params.require(:widget).fetch(:widgetConfig, nil).try(:permit!)
+    all_options = params.require(:widget)
+                    .fetch(:widgetConfig, nil).try(:permit!)
     params.require(:widget)
           .permit(:id, :name, :description,
                   :published, :default, :dataset)
