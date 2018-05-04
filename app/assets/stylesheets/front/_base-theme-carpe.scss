@@ -68,8 +68,6 @@ body {
 
       }
     }
-
-
   }
 
   a {
@@ -78,6 +76,10 @@ body {
     color: #FFF;
 
     text-decoration: none;
+  }
+
+  .breadcrumbs {
+    li { display: inline-block; }
   }
 
 }
