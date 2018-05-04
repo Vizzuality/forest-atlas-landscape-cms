@@ -481,7 +481,7 @@ class Management::PageStepsController < ManagementController
     widgets = WidgetService.from_datasets dataset_array
     widgets.map do |w|
       { id: w.id, name: w.name,
-        visualization: w.visualization, description: w.description }
+        visualization: w.widget_config, description: w.description }
     end
   end
 

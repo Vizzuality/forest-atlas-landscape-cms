@@ -117,7 +117,7 @@ class WidgetService < ApiService
   def self.from_datasets(dataset_ids, status = 'saved')
     widgets_request = @conn.get 'dataset',
                                 'ids': dataset_ids.join(','),
-                                'includes': 'widgets',
+                                'includes': 'widget',
                                 'page[number]': '1', 'page[size]': '10000',
                                 'status': status,
                                 'application': ENV.fetch('API_APPLICATIONS'),
@@ -129,8 +129,8 @@ class WidgetService < ApiService
     widgets = []
     begin
       widgets_json['data'].each do |data|
-        next if data['widget'].blank?
-        data['widget'].each do |data_widget|
+        next if data['attributes']['widget'].blank?
+        data['attributes']['widget'].each do |data_widget|
           widget = Widget.new data_widget
           widgets.push widget
         end
