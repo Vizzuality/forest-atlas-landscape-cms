@@ -21,7 +21,7 @@
           <div class="template">
             <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
             <% if f.object.id %>
-              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), disabled: :true,  :id => ('template-' + template.id.to_s) %>
+              <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id),  :id => ('template-' + template.id.to_s) %>
           <% else %>
               <%= f.radio_button :site_template_id, template.id, :checked => f.object.site_template_id.equal?(template.id), :id => ('template-' + template.id.to_s) %>
           <% end %>

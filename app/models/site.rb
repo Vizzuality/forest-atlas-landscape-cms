@@ -38,7 +38,6 @@ class Site < ApplicationRecord
   #validates_presence_of :managers, if: -> { required_for_step? :managers }
   #validates_presence_of :publishers, if: -> { required_for_step? :publishers }
 
-  validate :template_not_changed
   validate :edition_has_one_context
 
   before_validation :generate_slug
@@ -284,6 +283,7 @@ class Site < ApplicationRecord
   end
 
   # Validates if the template was changed
+  # TODO: (Tomas) removed this validation for now, this makes it imposible to use another template ?
   def template_not_changed
     if self.site_template_id_changed? && self.persisted?
       self.errors << 'Cannot change the template of a site'
