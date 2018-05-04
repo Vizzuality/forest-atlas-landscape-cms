@@ -1,7 +1,7 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Icon } from 'components'
+import { Icon } from 'components';
 
 export default function Modal({ show, children, onClose }) {
   if (!show) {
@@ -17,12 +17,13 @@ export default function Modal({ show, children, onClose }) {
           {children}
         </div>
       </div>
-      <div className="modal__backdrop" onClick={() => onClose()}></div>
+      <div className="modal__backdrop" onClick={() => onClose()} />
     </div>
   );
 }
 
 Modal.propTypes = {
-  name: PropTypes.string,
-  className: PropTypes.string
+  show: PropTypes.bool.isRequired,
+  children: PropTypes.array.isRequired,
+  onClose: PropTypes.func.isRequired
 };
