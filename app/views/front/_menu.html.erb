@@ -65,7 +65,7 @@
     </div>
     <div class="menu-container">
       <div class="menu">
-        <ul>
+        <ul class="js-desktop-menu is-hidden">
           <% @menu_root.children.each do |child_page| -%>
               <% next unless (child_page.show_on_menu && child_page.visible?) %>
               <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">

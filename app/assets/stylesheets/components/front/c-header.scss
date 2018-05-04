@@ -3,6 +3,29 @@
   font-family: $font-family-1; // Needed as the map CSS overrides it
   z-index: 8;
 
+  &.-overflow {
+    > .mobile-menu {
+      @media #{$mq-navbar} {
+        display: flex;
+      }
+    }
+    > mobile-drawer {
+      @media #{$mq-navbar} {
+        display: block;
+      }
+    }
+
+    > .desktop-menu {
+       @media #{$mq-navbar} {
+         display: none;
+
+         .menu {
+           display: none;
+         }
+       }
+     }
+  }
+
   @if $theme == 2 {
     color: $color-3;
   } @else {
@@ -400,6 +423,7 @@
           > li {
             &:last-of-type {
               padding-right: 0;
+              padding-left: 35px;
             }
           }
         }
