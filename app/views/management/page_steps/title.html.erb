@@ -47,7 +47,8 @@
   <% if @page.dashboard_version > 1 %>
     <!-- New dashboards will have the content with the new fancy wysiwyg editor -->
     <%= react_component('EditDashboardPage', {
-      page: @page
+      page: @page,
+      widgets: @widgets
     } ) %>
     <%= f.hidden_field :content %>
   <% end %>

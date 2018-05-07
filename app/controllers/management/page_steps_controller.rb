@@ -61,6 +61,13 @@ class Management::PageStepsController < ManagementController
       when 'position'
         assign_position
       when 'title'
+        @widgets = WidgetService.get_widgets
+        @widgets = @widgets.map do |x|
+          { widget: x,
+            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
+            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        end
+        @widgets
       when 'type'
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
