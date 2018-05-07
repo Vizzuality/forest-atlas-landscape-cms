@@ -4,14 +4,23 @@ import PublicContainer from 'containers/shared/PublicContainer';
 
 import Wysiwyg from 'vizz-wysiwyg';
 
-import WidgetReports from 'components/WidgetReports';
+import { WidgetBlock } from 'components/wysiwyg';
 
 export default class PublicDashboard extends PublicContainer {
   render() {
     const { content } = this.props.page;
     return (
       <div>
-        <Wysiwyg readOnly items={content.length ? content : []} />
+        <Wysiwyg
+          readOnly
+          items={JSON.parse(content).length ? JSON.parse(content) : []}
+          blocks={{
+            widget: {
+              Component: WidgetBlock,
+              label: 'Visualization'
+            }
+          }}
+        />
         {/* <WidgetReports /> */}
       </div>
     );
