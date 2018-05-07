@@ -6,6 +6,8 @@ import Wysiwyg from 'vizz-wysiwyg';
 
 import { WidgetBlock } from 'components/wysiwyg';
 
+import WidgetReports from 'components/WidgetReports';
+
 export default class PublicDashboard extends PublicContainer {
   render() {
     const { content } = this.props.page;

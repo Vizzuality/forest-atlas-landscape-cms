@@ -39,6 +39,11 @@ $dashboard_text_width: 700px;
     margin: 0 auto;
   }
 
+  .cw-wysiwyg-item-content.-widget {
+    margin: 30px 0;
+    width: 100%;
+  }
+
   &__summary {
     margin: 0 auto;
     padding: 40px 0;
