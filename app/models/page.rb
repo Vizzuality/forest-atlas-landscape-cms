@@ -69,8 +69,9 @@ class Page < ApplicationRecord
   end
 
   def synchronise_page_widgets(page_params_hash)
-    return unless page_params_hash.key?('content') and page_params_hash['content'].key?('json')
-    content_after = JSON.parse(page_params_hash['content']['json'])
+    content = page_params_hash['content']
+    return unless content.is_a?(Hash) && content['json'].present?
+    content_after = JSON.parse(content['json'])
     widget_ids_after = get_widget_ids_from_object(content_after).flatten.compact
     current_widget_ids = page_widgets.pluck(:widget_id)
     removed_widget_ids = current_widget_ids.select{ |id| !widget_ids_after.include?(id) }
