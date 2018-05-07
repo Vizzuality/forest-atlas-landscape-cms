@@ -28,16 +28,6 @@ class SitePageController < ApplicationController
                }
              })
     gon.page = @site_page
-    if @site_page.content.kind_of?(Array)
-      gon.content = @site_page.content
-    else
-      begin
-        # TODO: @Tomas, please check this cause I'm not sure what you want
-        gon.content = @site_page.content
-          #OpenStruct.new(JSON.parse(@site_page.content).first).to_json
-      rescue
-      end
-    end
   end
 
 
