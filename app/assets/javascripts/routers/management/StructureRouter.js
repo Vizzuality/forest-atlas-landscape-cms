@@ -151,7 +151,7 @@
     _onClickAddPage: function (e) {
       e.preventDefault();
       var node = $(e.target).closest('.js-draggable')[0];
-      window.location = '' + gon.add_page_path + '?parent=' + $(node).attr('id').match(/\d+/)[0];
+      window.location = '' + gon.addPagePath + '?parent=' + $(node).attr('id').match(/\d+/)[0];
     },
 
     /**
