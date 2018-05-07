@@ -8,7 +8,7 @@ import { CoverPage, WysiwygEditor, Footer } from 'components';
 const StaticPage = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} secondary />
-    <WysiwygEditor content={JSON.parse(site.page.content.json)} />
+    <WysiwygEditor content={JSON.parse(site.page.content)} />
     <Footer site={site} />
   </div>
 );

@@ -20,13 +20,13 @@
 
       <div class="wrapper">
         <div class="c-wysiwyg">
-          <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
+          <%= f.fields_for :content, @page.content do |ff| %>
             <div class="js-content">
               <% unless params[:page_id] %>
                 <p><em>Write here the content of the page.</em></p>
               <% end %>
             </div>
-            <%= ff.hidden_field :json, class: 'js-json-content' %>
+            <%= f.hidden_field :content, class: 'js-json-content' %>
           <% end %>
         </div>
       </div>

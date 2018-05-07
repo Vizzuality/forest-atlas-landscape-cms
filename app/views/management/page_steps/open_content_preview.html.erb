@@ -5,7 +5,7 @@
 <div class="c-content">
   <div class="wrapper">
     <div class="js-content"></div>
-    <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@page.content).json unless @page.content.blank? || OpenStruct.new(@page.content).json.blank? %>" />
+    <input type="hidden" class="js-json-content" value="<%= @page.content %>" />
   </div>
 </div>
 
