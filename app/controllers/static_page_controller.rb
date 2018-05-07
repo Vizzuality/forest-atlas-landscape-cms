@@ -9,16 +9,12 @@ class StaticPageController < ApplicationController
   # Gets the data of a widget
   # GET widget_data
   def widget_data
-    widget = Widget.find(params[:widget_id])
-    data = widget.get_filtered_dataset false, 10000
-    metadata = Dataset.get_metadata_for_frontend(session[:user_token], widget.dataset_id)
+    widget = WidgetService.widget(params[:widget_id])
     render json: {
       id: widget.id,
-      visualization: widget.visualization,
+      visualization: widget.widget_config,
       name: widget.name,
-      description: widget.description,
-      data: data['data'],
-      metadata: metadata
+      description: widget.description
     }
   end
 end

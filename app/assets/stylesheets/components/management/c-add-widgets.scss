@@ -1,0 +1,41 @@
+.fa-add-widget {
+  padding: 20px 30px;
+
+  h3 {
+    font-size: 34px;
+    font-weight: 300;
+    line-height: 1;
+    margin: 20px 0;
+  }
+
+  ul {
+    list-style: none;
+    width: 100%;
+  }
+
+  li {
+    display: block;
+    position: relative;
+    border-bottom: 1px solid #e8e8e8; &:last-child { border-bottom: 1px solid transparent; }
+    padding: 10px 0;
+
+    h4 {
+      display: inline-block;
+      max-width: calc(100% - 80px);
+    }
+
+    button {
+      position: absolute;
+      right: 0;
+      transform: translateY(-50%);
+      top: 50%;
+      border: none;
+      padding: 10px 20px;
+      background: #6faf3a;
+      color: #FFF;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 30px;    }
+
+  }
+}
