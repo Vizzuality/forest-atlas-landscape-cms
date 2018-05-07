@@ -28,6 +28,8 @@ $dashboard_text_width: 700px;
     text-align: center;
     color: $dasboard_text__color;
     font-weight: $dashboard_text_weight;
+    max-width: $dashboard_text_width;
+    margin: 0 auto;
   }
 
   .ql-editor p, p {
@@ -38,7 +40,10 @@ $dashboard_text_width: 700px;
     max-width: $dashboard_text_width;
     margin: 0 auto;
   }
-
+  .cw-wysiwyg-list {
+    width: 100%;
+    .cw-wysiwyg-list-item { display: block; }
+  }
   .cw-wysiwyg-item-content.-widget {
     margin: 30px 0;
     width: 100%;
