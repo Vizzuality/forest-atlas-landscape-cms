@@ -19,7 +19,7 @@
 
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
-        serializedContent: content ? JSON.parse(content) : null,
+        serializedContent: content ? JSON.parse(content) : {},
         readOnly: true
       });
       $('.-raw-html').fitVids();

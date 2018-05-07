@@ -12,10 +12,11 @@
     },
 
     index: function () {
+      var content = document.querySelector('.js-json-content').value;
       // We instantiate the wysiwyg editor
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
-        serializedContent: JSON.parse(document.querySelector('.js-json-content').value),
+        serializedContent: content ? JSON.parse(content) : {},
         readOnly: true
       });
     }
