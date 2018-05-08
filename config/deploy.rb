@@ -14,9 +14,10 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 set :deploy_to, '/var/www/facms'
 
 
-before 'deploy:publishing', 'node_modules:generate'
+
 before 'deploy:publishing', 'site_settings:update'
 before "deploy:publishing", "assets:precompile_sites"
+before 'deploy:assets:precompile', 'node_modules:generate'
 
 namespace :deploy do
   after :finishing, 'deploy:cleanup'
@@ -51,6 +52,7 @@ namespace :deploy do
       on roles(fetch(:assets_roles)) do
         within release_path do
           with rails_env: fetch(:rails_env) do
+            execute('pwd')
             execute('yarn build')
           end
         end
