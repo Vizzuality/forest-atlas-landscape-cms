@@ -49,7 +49,7 @@ yarn-error.log
 
 
 /db/*.dump
-/public/packs
+# /public/packs
 /public/packs-test
 yarn-debug.log*
 .yarn-integrity
