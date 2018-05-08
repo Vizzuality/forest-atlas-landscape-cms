@@ -24,11 +24,10 @@
 
     index: function () {
       var serializedContent = document.querySelector('.js-json-content').value;
-
       // We instantiate the wysiwyg editor
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
-        serializedContent: serializedContent.length ? JSON.parse(serializedContent) : {},
+        serializedContent: JSON.parse(serializedContent) || null,
         widgets: this.widgets
       });
 
