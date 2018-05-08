@@ -349,6 +349,7 @@
     },
 
     render: function () {
+
       // Disable the debug mode
       Quill.debug(false);
 

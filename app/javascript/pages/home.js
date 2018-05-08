@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 
 import { CoverPage, WysiwygEditor, Footer } from 'components';
 
+import { getDbContent } from 'utils';
+
 const Home = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} />
-    <WysiwygEditor content={JSON.parse(site.page.content.json)} />
+    <WysiwygEditor content={getDbContent(site.page.content)} />
     <Footer site={site} />
   </div>
 );

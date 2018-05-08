@@ -20,14 +20,26 @@
 
       <div class="wrapper">
         <div class="c-wysiwyg">
-          <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
-            <div class="js-content">
-              <% unless params[:page_id] %>
-                <p><em>Write here the content of the page.</em></p>
-              <% end %>
-            </div>
-            <%= ff.hidden_field :json, class: 'js-json-content' %>
-          <% end %>
+
+        <% if @page.content.instance_of?(String) %>
+          <div class="js-content">
+            <% unless params[:page_id] %>
+              <p><em>Write here the content of the page.</em></p>
+            <% end %>
+          </div>
+          <%= f.hidden_field :content, class: 'js-json-content', :value => @page.content %>
+        <% else %>
+
+            <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
+              <div class="js-content">
+                <% unless params[:page_id] %>
+                  <p><em>Write here the content of the page.</em></p>
+                <% end %>
+              </div>
+              <%= ff.hidden_field :json, class: 'js-json-content' %>
+            <% end %>
+
+        <% end %>
         </div>
       </div>
   </div>

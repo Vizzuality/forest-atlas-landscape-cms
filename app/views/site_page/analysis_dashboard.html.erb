@@ -37,14 +37,15 @@
     <div class="widgets">
         <div class="large-widget js-widget-1"></div>
         <div class="widget js-widget-2"></div>
-        <div class="widget js-widget-3"></div>
     </div>
 
-    <hr/>
 
     <%= react_component('PublicTableView', {
       dashboard: if @setting then @setting.get_filtered_dataset else nil end
     } ) %>
+
+    <hr/>
+
 
   </div>
 </div>
