@@ -25,7 +25,13 @@ test:
 
 staging:
   <<: *default
-  database: falcms_staging
+# TODO: create a database for staging
+#  database: falcms_staging
+  database: falcms_prod
+  host: localhost
+  port: 5432
+  username: <%= ENV['FA_CMS_DATABASE_USER'] %>
+  password: <%= ENV['FA_CMS_DATABASE_PASSWORD'] %>
 
 production:
   <<: *default
