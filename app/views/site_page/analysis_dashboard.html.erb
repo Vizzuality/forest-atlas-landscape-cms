@@ -18,34 +18,61 @@
   </div>
 
   <div class="wrapper">
+
     <div class="description">
-      <% if @site_page.description.length > 200 %>
-        <%= @site_page.description[0, 200].strip + '…' %><br/>
-        <button type="button" class="read-more js-read-more">Read more</button>
-        <div class="full-description js-description">
-          <%= @site_page.description %>
-        </div>
-        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
+      <% if @site_page.description.length > 250 %>
+        <%= @site_page.description[0, 250].strip + '…' %>
       <% else %>
         <%= @site_page.description %>
-        <button type="button" class="c-table-action-button -info js-metadata-info metadata-button -hidden"></button>
       <% end %>
     </div>
-    <div class="filters js-filters">
-    </div>
+
+    <div class="filters js-filters"></div>
 
     <div class="widgets">
         <div class="large-widget js-widget-1"></div>
         <div class="widget js-widget-2"></div>
+        <%= react_component('PublicTableView', {
+          dashboard: if @setting then @setting.get_filtered_dataset else nil end
+        } ) %>
     </div>
 
+    <div class="tabs">
 
-    <%= react_component('PublicTableView', {
-      dashboard: if @setting then @setting.get_filtered_dataset else nil end
-    } ) %>
+      <div class="tab">
+          <input type="radio" id="tab-1" name="tab-group-1" checked>
+          <label for="tab-1">Tab One</label>
 
-    <hr/>
+          <div class="content">
+              stuff 1
+          </div>
+      </div>
 
+      <div class="tab">
+          <input type="radio" id="tab-2" name="tab-group-1">
+          <label for="tab-2">Tab Two</label>
+
+          <div class="content">
+              stuff 2
+          </div>
+      </div>
+
+        <div class="tab">
+          <input type="radio" id="tab-3" name="tab-group-1">
+          <label for="tab-3">Tab Three</label>
+
+          <div class="content">
+              stuff 3
+          </div>
+      </div>
+
+    </div>
+
+    <% if @site_page.description.length > 250 %>
+      <div class="description description__full">
+        <%= @site_page.description %>
+      </div>
+    <% end %>
 
   </div>
 </div>
