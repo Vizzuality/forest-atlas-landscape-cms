@@ -9,10 +9,9 @@ export default (data) => {
     o = JSON.parse(data);
   } catch (i) { o = data; }
 
-  if ('json' in o) {
+  if (o && 'json' in o) {
     if (typeof o.json === 'string') return JSON.parse(o.json);
     return o.json;
   }
   return o;
-
 };

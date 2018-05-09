@@ -1,0 +1,57 @@
+.tabs {
+  position: relative;
+  clear: both;
+  margin: 50px 0 25px 0;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    line-height: 1;
+   }
+
+  &__menu {
+    background: #eff5e0;
+    border-bottom: 1px solid #97BE32;
+    text-align: center;
+    li {
+      display: inline-block;
+      height: 50px;
+    }
+
+  }
+
+  &__btn {
+    border: none;
+    padding: 0 60px;
+    margin: 0;
+    line-height: 51px;
+    font-size: 13px;
+    background: transparent;
+    color: rgba(0,0,0,0.66);
+    z-index: 20;
+    position: relative;
+    bottom: 0px;
+    cursor: pointer;
+    outline: none;
+
+    &.active {
+      background: #FFF;
+      border-top: 1px solid #97BE32;
+      border-right: 1px solid #97BE32;
+      border-left: 1px solid #97BE32;
+    }
+
+  }
+
+  &__items {
+    display: block;
+    padding: 40px 20px;
+    max-width: 1050px;
+    margin: 0 auto;
+
+    > div {
+      display: none; &.active { display: block; }
+    }
+  }
+
+}
