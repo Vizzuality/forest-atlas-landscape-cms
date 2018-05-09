@@ -48,7 +48,8 @@ class Admin::UserStepsController < AdminController
       elsif step == 'contexts'
         url = @user.admin ? admin_sites_url : management_url
         api_response = @user.send_to_api(session[:user_token], url)
-        if api_response[:valid]
+        # When the api returns "Email exist" the user should be created
+        if api_response[:valid] || api_response[:error] == 'Email exist'
           @user.save
           delete_session_key(:user, @user_id)
           redirect_to next_wizard_path, notice: 'User was successfully created. Please check your email to login.'
