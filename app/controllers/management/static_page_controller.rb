@@ -8,8 +8,7 @@ class Management::StaticPageController < ManagementController
       @sites = Site.joins(:users).where(users: {id: current_user.id})
     end
 
-    @sites = @sites.paginate(:page => params[:page], :per_page => params[:per_page])
-               .order(params[:order] || 'created_at ASC')
+    @sites = @sites.order('created_at ASC')
 
     respond_to do |format|
       format.html { render layout: 'management' }

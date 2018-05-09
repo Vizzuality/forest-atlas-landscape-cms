@@ -4,7 +4,7 @@ class Admin::ContextsController < AdminController
   # GET /contexts
   # GET /contexts.json
   def index
-    @contexts = Context.all.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+    @contexts = Context.all.order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
       format.html { render :index }

@@ -4,7 +4,7 @@ class Admin::UsersController < AdminController
   # GET /users
   # GET /users.json
   def index
-    @users = User.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+    @users = User.order(params[:order] || 'created_at ASC')
 
     @formattedUsers = @users.map do |user|
       {

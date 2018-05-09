@@ -9,7 +9,6 @@ class Management::SitesController < ManagementController
   def index
     @sites = Site.joins(:users)
                .where(users: {id: current_user.id})
-               .paginate(:page => params[:page], :per_page => params[:per_page])
                .order(params[:order] || 'created_at ASC')
 
     respond_to do |format|
