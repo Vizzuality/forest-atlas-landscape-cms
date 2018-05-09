@@ -6,7 +6,7 @@ class Admin::SitesController < AdminController
   # GET /admin/sites
   # GET /admin/sites.json
   def index
-    @sites = Site.paginate(:page => params[:page], :per_page => params[:per_page]).order(params[:order] || 'created_at ASC')
+    @sites = Site.order('created_at ASC')
 
     @formattedSites = @sites.map do |site|
       {
