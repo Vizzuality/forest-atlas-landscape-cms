@@ -9,6 +9,7 @@ const TableView = ({ admin }) => (
   <div className="l-page-list">
     <div className="wrapper">
       <Table
+        searchable
         columns={'columns' in admin.meta ? admin.meta.columns : []}
         data={'datapoint' in admin.meta ? admin[admin.meta.datapoint] : []}
         actions={'actions' in admin.meta ? admin.meta.actions : []}

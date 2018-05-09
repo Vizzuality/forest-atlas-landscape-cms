@@ -9,11 +9,11 @@ const SiteListPages = ({ admin }) => (
   <div className="l-page-list">
     <div className="wrapper">
       <Table
+        searchable
         columns={['Title', 'Url', 'Type']}
         data={admin.pages}
         actions={['toggle', 'edit', 'delete']}
       />
-
     </div>
   </div>
 );

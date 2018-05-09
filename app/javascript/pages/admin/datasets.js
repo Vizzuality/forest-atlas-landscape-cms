@@ -9,6 +9,7 @@ const Datasets = ({ admin }) => (
   <div className="l-page-list">
     <div className="wrapper">
       <Table
+        searchable
         columns={['Title', 'Contexts', 'Connector', 'Function', 'Tags', 'Status']}
         data={admin.datasets}
         modal={DatasetModal}
