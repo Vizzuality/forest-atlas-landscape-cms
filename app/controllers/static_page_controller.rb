@@ -4,6 +4,8 @@ class StaticPageController < ApplicationController
 
   # GET /no-permissions
   def no_permissions
+    # Creates an empty user
+    @user = User.new
   end
 
   # Gets the data of a widget
