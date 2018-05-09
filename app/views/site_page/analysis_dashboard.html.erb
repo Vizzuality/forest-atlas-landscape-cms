@@ -27,44 +27,33 @@
       <% end %>
     </div>
 
+    <!--
     <div class="filters js-filters"></div>
-
-    <div class="widgets">
-        <div class="large-widget js-widget-1"></div>
-        <div class="widget js-widget-2"></div>
-        <%= react_component('PublicTableView', {
-          dashboard: if @setting then @setting.get_filtered_dataset else nil end
-        } ) %>
-    </div>
+    -->
 
     <div class="tabs">
+        <ul class="tabs__menu">
+          <li><button class="tabs__btn active" data-tab="chart">Chart</button></li>
+          <li><button class="tabs__btn" data-tab="map">Map</button></li>
+          <li><button class="tabs__btn" data-tab="table">Table</button></li>
+        </ul>
 
-      <div class="tab">
-          <input type="radio" id="tab-1" name="tab-group-1" checked>
-          <label for="tab-1">Tab One</label>
-
-          <div class="content">
-              stuff 1
+        <div class="tabs__items">
+          <div class="tabs__tab active" id="tabs__chart">
+            <div class="large-widget widget js-widget-2"></div>
           </div>
-      </div>
 
-      <div class="tab">
-          <input type="radio" id="tab-2" name="tab-group-1">
-          <label for="tab-2">Tab Two</label>
-
-          <div class="content">
-              stuff 2
+          <div class="tabs__tab" id="tabs__map">
+            <div class="large-widget js-widget-1"></div>
           </div>
-      </div>
 
-        <div class="tab">
-          <input type="radio" id="tab-3" name="tab-group-1">
-          <label for="tab-3">Tab Three</label>
-
-          <div class="content">
-              stuff 3
+          <div class="tabs__tab" id="tabs__table">
+            <%= react_component('PublicTableView', {
+              dashboard: if @setting then @setting.get_filtered_dataset else nil end
+            } ) %>
           </div>
-      </div>
+
+        </div>
 
     </div>
 
@@ -81,4 +70,17 @@
 
 <script type="text/javascript">
   window.route = 'Dashboard';
+
+  // Untill we render this in react
+  // It would be more hazzle to make react work with this old logic
+  $(function () {
+    $('.tabs__btn').on('click', function (e) {
+      $('.tabs__btn').removeClass('active');
+      $(this).addClass('active');
+
+      $('.tabs__tab').removeClass('active');
+      $('#tabs__' + $(this).attr('data-tab')).addClass('active');
+    });
+  });
+
 </script>
