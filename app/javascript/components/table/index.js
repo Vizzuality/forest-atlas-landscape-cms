@@ -355,7 +355,8 @@ Table.defaultProps = {
 
     if (action === 'toggle' && 'enable' in data) {
       fetch(window.location.origin + data.enable.value, {
-        method: 'PUT'
+        method: 'PUT',
+        credentials: 'same-origin'
       }).then(() => {
         window.location.reload();
       });
@@ -364,7 +365,10 @@ Table.defaultProps = {
     if (action === 'delete') {
       const shouldDelete = window.confirm('are you sure you want to remove this?');
       if (shouldDelete) {
-        fetch(window.location.origin + data[action].value, { method: 'DELETE' }).then(() => {
+        fetch(window.location.origin + data[action].value, {
+          method: 'DELETE',
+          credentials: 'same-origin'
+        }).then(() => {
           window.location.reload();
         });
       }
