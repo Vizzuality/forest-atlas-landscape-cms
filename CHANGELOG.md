@@ -176,3 +176,13 @@
 - Added editor for map builder versions
 - Added user login through GFW
 - Widgets are saved in GFW API
+
+### 9 May 2018
+- Added react-rails & webpacker so now we are using react, redux for our front end logic
+- Using vizzuality widget editor for widget creation
+- Using react for tables
+- New simplified pagination logic, and better in memory search for tabular data
+- Added new wysiwyg, "vizz-wyziwyg" for advanced dashboard creation
+- Dashboard now using tabs for visualizations
+- Remove turbolinks for creation steps
+- Dont depend on gon for data, now using webpacker instead
