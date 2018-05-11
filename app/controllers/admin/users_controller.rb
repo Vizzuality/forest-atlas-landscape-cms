@@ -13,7 +13,7 @@ class Admin::UsersController < AdminController
         'role' => {'value' => (user.admin ? User::ADMIN_ROLE_NAME : User::NON_ADMIN_ROLE_NAME), 'searchable' => true, 'sortable' => true},
         'sites' => {'value' => !user.admin ? user.sites.map{|x| x.name} : nil, 'searchable' => true, 'sortable' => true},
         # 'edit' => {'value' => edit_admin_user_user_step_path(user_id: user.id, id: 'identity'), 'method' => 'get'},
-        # 'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
+        'delete' => {'value' => admin_user_path(user), 'method' => 'delete'}
       }
     end
 
