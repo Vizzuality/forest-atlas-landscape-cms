@@ -1,8 +1,11 @@
 class Management::SitesController < ManagementController
   include TreeStructureHelper
-  before_action :set_site, only: [:structure, :update_structure]
-  before_action :get_pages, only: [:structure, :update_structure]
+  before_action :set_site, only: %i[structure update_structure
+                                    associations update_associations]
+  before_action :get_pages, only: %i[structure update_structure]
   before_action :authenticate_user_for_site!
+  before_action :authorize, only: %i[associations update_associations]
+
 
   # GET /management/sites
   # GET /management/sites.json
@@ -38,6 +41,28 @@ class Management::SitesController < ManagementController
     redirect_to action: "structure", anchor: "success"
   end
 
+  def associations
+    @site.build_user_site_associations_for_users(non_admin_users)
+  end
+
+  def update_associations
+    user_site_associations_attributes = {}
+    if site_params[:user_site_associations_attributes]
+      site_params[:user_site_associations_attributes].to_h.each do |i, usa|
+        usa['_destroy'] = true if usa['selected'] != '1'
+        user_site_associations_attributes[i] = usa
+      end
+      @site.user_site_associations_attributes =
+        user_site_associations_attributes
+      @site.save
+      redirect_to "/management/sites/#{@site.slug}/users",
+                  notice: 'Publishers updated'
+    else
+      redirect_to "/management/sites/#{@site.slug}/users",
+                  error: 'There was a problem with the request'
+    end
+  end
+
   private
   # Update the tree nodes to their current position
   def update_tree_nodes(node, parent_id, position)
@@ -71,4 +96,19 @@ class Management::SitesController < ManagementController
                .order(params[:order] || 'created_at ASC')
   end
 
+  def authorize
+    unless user_site_manager?(@site)
+      flash[:error] = 'You do not have permissions to view this page'
+      redirect_to :no_permissions
+    end
+  end
+
+  def non_admin_users
+    User.where(admin: false).order(:name)
+  end
+
+  def site_params
+    params.require(:site)
+      .permit(user_site_associations_attributes: [:id, :user_id, :role, :selected])
+  end
 end

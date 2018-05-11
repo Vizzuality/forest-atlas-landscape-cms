@@ -1,9 +1,0 @@
-<%= render partial: 'management/extended_header', locals: {type: 'users'} %>
-<%= include_gon %>
-
-<%= render partial: 'management/tabs'%>
-
-<%= javascript_pack_tag 'application' %>
-<%= react_component('UsersContainer', {
-  users: @user_sites
-} ) %>

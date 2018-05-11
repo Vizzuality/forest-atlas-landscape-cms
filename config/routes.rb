@@ -73,9 +73,13 @@ Rails.application.routes.draw do
               constraints: lambda { |req| req.format == :json }
         end
       end
-      resources :users
+      resources :users, only: [:new, :create]
+
       get '/structure', to: 'sites#structure'
       put :update_structure
+
+      get '/users', to: 'sites#associations'
+      put 'update_associations', to: 'sites#update_associations'
 
       resources :contexts, only: [:index, :destroy] do
         resources :context_steps, only: [:edit, :show, :update]

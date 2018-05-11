@@ -1,0 +1,41 @@
+<%= render partial: 'management/extended_header'%>
+<%= include_gon %>
+
+<div class="l-tabs">
+  <div class="wrapper">
+    <%= render partial: 'management/tabs'%>
+  </div>
+</div>
+
+<%= form_for @site, url: management_site_update_associations_path, method: :put do |f| %>
+  <div class="l-site-creation -users">
+    <div class="wrapper">
+      <div class="c-cards-list">
+        <%= f.fields_for :user_site_associations, @site.user_site_associations.sort do |ff| %>
+          <%= ff.hidden_field :id %>
+          <%= ff.hidden_field :user_id %>
+          <div class="card">
+            <label for="user-<%= ff.object.user.id %>"><%= ff.object.user.name %></label>
+            <%= ff.check_box :selected, id: ('user-' + ff.object.user.id.to_s) %>
+
+            <div class="content">
+              <h3><%= ff.object.user.name %></h3>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="c-action-bar">
+    <div class="wrapper">
+      <div>
+        <%= f.button 'Save', type: 'submit', method: 'put', class: 'c-button' %>
+      </div>
+    </div>
+  </div>
+
+
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @site } %>
