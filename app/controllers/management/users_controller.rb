@@ -1,5 +1,6 @@
 class Management::UsersController < ManagementController
   before_action :load_site
+  before_action :authorize, only: %i[index update]
 
   def new
     @user = User.new
@@ -17,7 +18,22 @@ class Management::UsersController < ManagementController
     end
   end
 
+  def index
+    @user_sites = @site.user_site_associations
+  end
+
+  def update
+
+  end
+
   private
+
+  def authorize
+    unless user_site_manager?(@site)
+      flash[:error] = 'You do not have permissions to view this page'
+      redirect_to :no_permissions
+    end
+  end
 
   def user_params
     params.require(:user).permit(

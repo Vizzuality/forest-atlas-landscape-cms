@@ -14,4 +14,9 @@
     <li class="tab" <%= "aria-selected=true" if request.url.include?("contexts") %>>
         <a href="/management/sites/<%= params[:site_slug] %>/contexts">Contexts</a>
     </li>
+    <% if user_site_manager?(@site) %>
+    <li class="tab" <%= "aria-selected=true" if request.url.include?("users") %>>
+      <a href="/management/sites/<%= params[:site_slug] %>/users">Users</a>
+    </li>
+    <% end %>
 </ul>

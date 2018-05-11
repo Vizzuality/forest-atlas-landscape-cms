@@ -31,7 +31,7 @@
 * Added a selector to chose version of map builder to use
 * Added a section to add new versions for map builder
 
-## Website users can access map builder subcriptions via CMS
+## Website users can access map builder subscriptions via CMS
 
 ASK TIAGO
 

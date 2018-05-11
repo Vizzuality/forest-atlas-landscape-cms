@@ -49,6 +49,17 @@ module PermissionsHelper
     end
   end
 
+  def user_site_manager?(site)
+    return false unless current_user && site
+    if current_user_is_admin || (site.users.exists?(current_user) &&
+      current_user.user_site_associations.find_by(site_id: site.id).role == UserType::MANAGER)
+      return true
+    else
+      return false
+    end
+
+  end
+
   def unset_user_gon
     gon.global.admin = false
     gon.global.user = {}
