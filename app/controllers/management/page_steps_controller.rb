@@ -259,8 +259,8 @@ class Management::PageStepsController < ManagementController
   private
   def page_params
     # TODO: To have different permissions for different steps
-    #all_options = params.require(:site_page)
-    #                    .fetch(:content, nil).try(:permit!)
+    all_options = params.require(:site_page)
+                        .fetch(:content, nil).try(:permit!)
     params.require(:site_page).permit(
       :name,
       :description,
@@ -276,7 +276,7 @@ class Management::PageStepsController < ManagementController
         :widgets,
         visible_fields: []
       ]
-    )#.merge(content: all_options)
+    ).merge(content: all_options)
   end
 
   # Sets the current site from the url
