@@ -83,7 +83,7 @@
     _toggleTab: function (index, focus) {
       if (this.options.redirect) {
         var url = this.options.tabs[index].url;
-        Turbolinks.visit(url);
+        window.location.href = url;
       } else {
         this.options.currentTab = index;
         this._cleanTabs();
