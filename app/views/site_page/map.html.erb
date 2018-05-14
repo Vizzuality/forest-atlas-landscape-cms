@@ -222,6 +222,10 @@
       var mapConfig = Object.assign(mapDatabaseConfig, {
         language: 'en',
         title: '<%= @site_page.site.name %>',
+        hideHeader: false,
+        includeMyGFWLogin: true,
+        includeDocumentsTab: true,
+        includeMeasurementTab: true,
         labels: {
           en: {
             title: '<%= @site_page.site.name %>',
@@ -233,7 +237,7 @@
       var ll = new MapBuilder({
         el: 'root', // We need a div ID, not a class
         config: mapConfig,
-        version: '<%= @site_page.content['version'] || '1.1.12' %>'//,
+        version: '<%= @site_page.content['version'] || '1.1.15' %>'//,
         //base: ""
       });
     </script>
