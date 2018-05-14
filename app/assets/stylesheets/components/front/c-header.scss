@@ -1,7 +1,7 @@
 .c-header {
   position: relative;
   font-family: $font-family-1; // Needed as the map CSS overrides it
-  z-index: 8;
+  z-index: 12;
 
   @if $theme == 2 {
     color: $color-3;
@@ -413,7 +413,6 @@
       height: 0; // Trick so the content will be on top of what's following
       color: $color-3;
       font-size: $font-size-small;
-
       // Background of the sub-menu (breadcrumbs) menu
       &::after {
         display: block;
@@ -533,3 +532,8 @@
     }
   }
 }
+
+// Map specific styles
+// We want to hide the container for now.
+.app-header__logo-container { display: none; }
+.app-header__title-container { display: none; }

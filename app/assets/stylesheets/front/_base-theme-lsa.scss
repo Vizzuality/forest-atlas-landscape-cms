@@ -87,7 +87,7 @@ a {
 
 // We hide the map header
 .app-header {
-  display: none !important;
+  top: 30px !important; // We need to override map builder styles
 }
 
 @media (max-width:950px) {
