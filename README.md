@@ -174,3 +174,9 @@ URL of the API gateway. Used for user authentication.
 #### GLOBAL_GA_KEY
 
 Key for Google Analytics. Used on all sites. For site-specific GA integration, use the admin interface.
+
+#### Usefull links
+
+Map builder - https://github.com/wri/gfw-mapbuilder
+React rails - https://github.com/reactjs/react-rails
+webpacker - https://github.com/rails/webpacker
