@@ -26,7 +26,7 @@
           App.Helper.Notifications.page.datasetRegistration,
           {
             continueCallback: function () {
-              Turbolinks.visit(e.target.href);
+              window.location.href = e.target.href;
             }
           }
         ));

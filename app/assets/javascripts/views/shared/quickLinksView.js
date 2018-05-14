@@ -59,7 +59,7 @@
      */
     _onChangeDropdown: function (id) {
       var link = _.findWhere(this.options.links, { id: id });
-      Turbolinks.visit(link.url);
+      window.location.href = link.url;
     },
 
     /**
