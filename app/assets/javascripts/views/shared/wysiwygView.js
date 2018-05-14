@@ -196,6 +196,7 @@
      * Remove the event listeners of the wysiwyg
      */
     _removeListeners: function () {
+      if (!this.editor || !this.editor.emitter) return;
       this.editor.emitter.eventNames().forEach(function(e) { this.editor.emitter.removeAllListeners(e); }.bind(this));
       window.editor.emitter.eventNames().forEach(function(e) { window.editor.emitter.removeAllListeners(e); });
     },
@@ -284,6 +285,7 @@
      * Restore the content of the wysiwyg
      */
     _restoreContent: function () {
+      if (!this.sidebar) return;
       this.editor.setContents(this.options.serializedContent);
     },
 
@@ -417,10 +419,12 @@
         this._restoreContent();
       }
       if (this.options.readOnly) {
-        this._removeListeners();
-        var content = this.editor.container.cloneNode(true);
-        this.el.innerHTML = '';
-        this.el.innerHTML = content.innerHTML;
+        if (this.editor.container) {
+          this._removeListeners();
+          var content = this.editor.container.cloneNode(true);
+          this.el.innerHTML = '';
+          this.el.innerHTML = content.innerHTML;
+        }
       }
     }
 

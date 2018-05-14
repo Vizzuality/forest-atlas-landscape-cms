@@ -81,20 +81,8 @@
      * @param {Boolean} if the tab needs to be focused on
      */
     _toggleTab: function (index, focus) {
-      if (this.options.redirect) {
-        var url = this.options.tabs[index].url;
-        window.location.href = url;
-      } else {
-        this.options.currentTab = index;
-        this._cleanTabs();
-        this._setCurrentTab(index);
-        if (focus) this.$tabs.eq(index).focus();
-
-        // Triggers a Backbone event with the name of the tab selected to
-        // communicate other views that tab has been selected
-        var tabName = this.options.tabs[index].name;
-        App.Events.trigger('tab:selected', { tab: tabName });
-      }
+      var url = this.options.tabs[index].url;
+      window.location.href = url;
     },
 
     /**

@@ -15,7 +15,8 @@
       });
 
       // We instantiate the wysiwyg editor
-      var content = document.querySelector('.js-json-content').value;
+      var content = document.querySelector('.js-json-content');
+      content = content && 'value' in content ? content.value : null;
       this.wysiwygView = new App.View.WysiwygView({
         el: '.js-content',
         serializedContent: content ? JSON.parse(content) : {},

@@ -183,6 +183,7 @@
      * Remove the focus of all the options
      */
     _removeOptionsFocus: function () {
+      if (!this.el) return;
       var options = this.el.querySelectorAll('.js-option');
       Array.prototype.slice.call(options).forEach(function (option) {
         option.setAttribute('tabindex', -1);
@@ -213,6 +214,7 @@
      * Hide the dropdown
      */
     _hideDropdown: function () {
+      if (!this.dropdown) return;
       this._removeOptionsFocus();
       this.dropdown.classList.remove('-visible');
     },
@@ -224,17 +226,18 @@
     },
 
     render: function () {
-      this.el.innerHTML = this.template({
-        options: this.options.options,
-        activeOption: this.options.activeOption,
-        fixedOption: this.options.fixedOption,
-        useShortName: this.options.useShortName,
-        align: this.options.align,
-        arrowPosition: this.options.arrowPosition,
-        fixedWidth: this.options.fixedWidth
-      });
-
-      this.dropdown = this.el.querySelector('.js-dropdown');
+      if (this.el) {
+        this.el.innerHTML = this.template({
+          options: this.options.options,
+          activeOption: this.options.activeOption,
+          fixedOption: this.options.fixedOption,
+          useShortName: this.options.useShortName,
+          align: this.options.align,
+          arrowPosition: this.options.arrowPosition,
+          fixedWidth: this.options.fixedWidth
+        });
+        this.dropdown = this.el.querySelector('.js-dropdown');
+      }
     }
 
   });
