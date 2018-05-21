@@ -61,13 +61,6 @@ class Management::PageStepsController < ManagementController
       when 'position'
         assign_position
       when 'title'
-        @widgets = WidgetService.get_widgets
-        @widgets = @widgets.map do |x|
-          { widget: x,
-            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
-            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
-        end
-        @widgets
       when 'type'
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
@@ -112,6 +105,14 @@ class Management::PageStepsController < ManagementController
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
         gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.parsed_legend
         gon.test = @dataset_setting
+
+        @widgets = WidgetService.get_widgets
+        @widgets = @widgets.map do |x|
+          { widget: x,
+            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
+            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        end
+        @widgets
 
         @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 

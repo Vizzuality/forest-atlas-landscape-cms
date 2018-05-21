@@ -1,3 +1,5 @@
+<%= javascript_pack_tag 'application' %>
+
 <% content_for :extended_header do %>
   <!--suppress ALL -->
     <div class="c-extended-header">
@@ -57,17 +59,31 @@
       </div>
 
       <div class="wrapper">
+
+        <% if @page.dashboard_version > 1 %>
         <div class="description">
-          <% if @page.description.length > 200 %>
-            <%= @page.description[0, 200].strip + '…' %><br/>
-            <button type="button" class="js-read-more">Read more</button>
-            <div class="full-description js-description">
-              <%= @page.description %>
-            </div>
-          <% else %>
-            <%= @page.description %>
-          <% end %>
+          <%= react_component('EditDashboardPage', {
+            page: @page,
+            widgets: @widgets
+          } ) %>
+          <%= f.hidden_field :content %>
         </div>
+        <% end %>
+
+        <% if @page.dashboard_version == 1 %>
+          <div class="description">
+            <% if @page.description.length > 200 %>
+              <%= @page.description[0, 200].strip + '…' %><br/>
+              <button type="button" class="js-read-more">Read more</button>
+              <div class="full-description js-description">
+                <%= @page.description %>
+              </div>
+            <% else %>
+              <%= @page.description %>
+            <% end %>
+          </div>
+        <% end %>
+
         <div class="filters">
           <% @analysis_user_filters.each do |filter| %>
             <div class="c-select -small">
@@ -78,14 +94,31 @@
           <% end %>
         </div>
 
-        <div class="widgets">
-          <div class="large-widget js-widget-1"></div>
-          <div class="widget js-widget-2"></div>
-          <div class="widget js-widget-3"></div>
+        <div class="tabs">
+          <ul class="tabs__menu">
+            <li><button class="tabs__btn active" data-tab="chart">Chart</button></li>
+            <li><button class="tabs__btn" data-tab="map">Map</button></li>
+            <li><button class="tabs__btn" data-tab="table">Table</button></li>
+          </ul>
+
+          <div class="tabs__items">
+            <div class="tabs__tab active" id="tabs__chart">
+              <div class="large-widget widget js-widget-2"></div>
+            </div>
+
+            <div class="tabs__tab" id="tabs__map">
+              <div class="large-widget js-widget-1"></div>
+            </div>
+
+            <div class="tabs__tab" id="tabs__table">
+              <%= react_component('PublicTableView', {
+                dashboard: if @dataset_setting then @dataset_setting.get_filtered_dataset else nil end
+              } ) %>
+            </div>
+          </div>
+
         </div>
 
-        <hr/>
-        <div class="table js-table"></div>
       </div>
     </div>
   </div>
@@ -93,3 +126,18 @@
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page} %>
+
+<script type="text/javascript">
+  // Untill we render this in react
+  // It would be more hazzle to make react work with this old logic
+  $(function () {
+    $('.tabs__btn').on('click', function (e) {
+      e.preventDefault()
+      $('.tabs__btn').removeClass('active');
+      $(this).addClass('active');
+      $('.tabs__tab').removeClass('active');
+      $('#tabs__' + $(this).attr('data-tab')).addClass('active');
+    });
+  });
+
+</script>

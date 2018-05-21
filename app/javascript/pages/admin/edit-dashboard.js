@@ -8,29 +8,26 @@ import Wysiwyg from 'vizz-wysiwyg';
 import { WidgetBlock, WidgetBlockCreation } from 'components/wysiwyg';
 
 const EditDashboard = ({ admin }) => (
-  <div className="l-page-list">
-    <div className="wrapper">
-      <h1>Dashboard Content</h1>
-      <Wysiwyg
-        items={JSON.parse(admin.page.content) || []}
-        onChange={(d) => {
-          const el = document.getElementById('site_page_content');
-          if (el) {
-            el.value = JSON.stringify(d);
-          }
-        }}
-        blocks={{
-          widget: {
-            Component: WidgetBlock,
-            EditionComponent: WidgetBlockCreation,
-            admin,
-            icon: 'icon-widget',
-            label: 'Visualization',
-            renderer: 'modal'
-          }
-        }}
-      />
-    </div>
+  <div className="wrapper">
+    <Wysiwyg
+      items={JSON.parse(admin.page.content) || []}
+      onChange={(d) => {
+        const el = document.getElementById('site_page_content');
+        if (el) {
+          el.value = JSON.stringify(d);
+        }
+      }}
+      blocks={{
+        widget: {
+          Component: WidgetBlock,
+          EditionComponent: WidgetBlockCreation,
+          admin,
+          icon: 'icon-widget',
+          label: 'Visualization',
+          renderer: 'modal'
+        }
+      }}
+    />
   </div>
 );
 
