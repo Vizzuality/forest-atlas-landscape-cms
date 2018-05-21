@@ -320,11 +320,14 @@
           &.dropdown-item {
             cursor: pointer;
             z-index: 1; // On top of the breadcrumbs/section menu
-            display: flex;
-            flex-direction: column;
+            display: block;
+            position: relative;
             align-items: center;
 
             ul {
+              position: absolute;
+              right: 0;
+              top: 90%;
               margin: 5px 0 0;
               width: calc(100% + 30px);
               transition: opacity .2s ease-out, visibility 0s .2s;
