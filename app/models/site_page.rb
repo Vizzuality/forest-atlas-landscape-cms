@@ -45,27 +45,27 @@ class SitePage < Page
              names: %w[Position Title Type]}
 
     case self.content_type
-      when ContentType::OPEN_CONTENT
-        steps = {pages: %w[position type title open_content open_content_preview],
-                 names: %w(Position Type Details Content Preview)}
-      when ContentType::ANALYSIS_DASHBOARD
-        steps = {pages: %w[position title type dataset filters columns preview],
-                 names: %w[Position Title Type Dataset Filters Columns Preview]}
-      when ContentType::DASHBOARD_V2
-        steps = {pages: %w[position type title dataset filters columns preview],
-                 names: %w[Position Type Details Dataset Filters Columns Preview]}
-      when ContentType::LINK
-        steps = {pages: %w[position type title link],
-                 names: %w[Position Type Details Link]}
-      when ContentType::STATIC_CONTENT
-        steps = {pages: %w[type title open_content open_content_preview],
-                 names: %w(Type Details Content Preview)}
-      when ContentType::MAP
-        steps = {pages: %w[position type title map],
-                 names: %w[Position Type Details Map]}
-      when ContentType::HOMEPAGE
-        steps = {pages: %w[open_content open_content_preview],
-                 names: ['Open Content', 'Open Content Preview']}
+    when ContentType::OPEN_CONTENT
+      steps = { pages: %w[position title type open_content open_content_preview],
+                names: %w[Position Details Type Content Preview] }
+    when ContentType::ANALYSIS_DASHBOARD
+      steps = { pages: %w[position title type dataset filters columns preview],
+                names: %w[Position Title Type Dataset Filters Columns Preview] }
+    when ContentType::DASHBOARD_V2
+      steps = { pages: %w[position title type dataset filters columns preview],
+                names: %w[Position Details Type Dataset Filters Columns Preview] }
+    when ContentType::LINK
+      steps = { pages: %w[position title type link],
+                names: %w[Position Details Type Link] }
+    when ContentType::STATIC_CONTENT
+      steps = { pages: %w[title type open_content open_content_preview],
+                names: %w[Details Type Content Preview] }
+    when ContentType::MAP
+      steps = { pages: %w[position title type map],
+                names: %w[Position Details Type Map] }
+    when ContentType::HOMEPAGE
+      steps = { pages: %w[open_content open_content_preview],
+                names: ['Open Content', 'Open Content Preview'] }
     end
     steps
   end
