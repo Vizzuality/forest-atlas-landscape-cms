@@ -72,12 +72,8 @@
 
         <% if @page.dashboard_version == 1 %>
           <div class="description">
-            <% if @page.description.length > 200 %>
-              <%= @page.description[0, 200].strip + '…' %><br/>
-              <button type="button" class="js-read-more">Read more</button>
-              <div class="full-description js-description">
-                <%= @page.description %>
-              </div>
+            <% if @page.description.length > 250 %>
+              <%= @page.description[0, 250].strip + '…' %>
             <% else %>
               <%= @page.description %>
             <% end %>
