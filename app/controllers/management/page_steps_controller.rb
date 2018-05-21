@@ -262,22 +262,25 @@ class Management::PageStepsController < ManagementController
     # TODO: To have different permissions for different steps
     all_options = params.require(:site_page)
                         .fetch(:content, nil).try(:permit!)
-    params.require(:site_page).permit(
-      :name,
-      :description,
-      :position,
-      :uri,
-      :show_on_menu,
-      :parent_id,
-      :content_type,
-      :content,
-      dataset_setting: [
-        :dataset_id,
-        :filters,
-        :widgets,
-        visible_fields: []
-      ]
-    ).merge(content: all_options)
+    filtered_params =
+      params.require(:site_page).permit(
+        :name,
+        :description,
+        :position,
+        :uri,
+        :show_on_menu,
+        :parent_id,
+        :content_type,
+        :content,
+        dataset_setting: [
+          :dataset_id,
+          :filters,
+          :widgets,
+          visible_fields: []
+        ]
+      )
+    filtered_params.merge(content: all_options) if all_options.present?
+    filtered_params
   end
 
   # Sets the current site from the url
