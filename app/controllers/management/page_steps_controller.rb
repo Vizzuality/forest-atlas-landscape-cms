@@ -279,7 +279,7 @@ class Management::PageStepsController < ManagementController
           visible_fields: []
         ]
       )
-    filtered_params.merge(content: all_options) if all_options.present?
+    filtered_params[:content] = all_options if all_options.present?
     filtered_params
   end
 
