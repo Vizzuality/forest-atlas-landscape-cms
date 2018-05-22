@@ -61,13 +61,6 @@ class Management::PageStepsController < ManagementController
       when 'position'
         assign_position
       when 'title'
-        @widgets = WidgetService.get_widgets
-        @widgets = @widgets.map do |x|
-          { widget: x,
-            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
-            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
-        end
-        @widgets
       when 'type'
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
@@ -112,6 +105,14 @@ class Management::PageStepsController < ManagementController
         gon.analysis_timestamp = @dataset_setting.fields_last_modified
         gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.parsed_legend
         gon.test = @dataset_setting
+
+        @widgets = WidgetService.get_widgets
+        @widgets = @widgets.map do |x|
+          { widget: x,
+            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
+            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        end
+        @widgets
 
         @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 
@@ -261,22 +262,25 @@ class Management::PageStepsController < ManagementController
     # TODO: To have different permissions for different steps
     all_options = params.require(:site_page)
                         .fetch(:content, nil).try(:permit!)
-    params.require(:site_page).permit(
-      :name,
-      :description,
-      :position,
-      :uri,
-      :show_on_menu,
-      :parent_id,
-      :content_type,
-      :content,
-      dataset_setting: [
-        :dataset_id,
-        :filters,
-        :widgets,
-        visible_fields: []
-      ]
-    ).merge(content: all_options)
+    filtered_params =
+      params.require(:site_page).permit(
+        :name,
+        :description,
+        :position,
+        :uri,
+        :show_on_menu,
+        :parent_id,
+        :content_type,
+        :content,
+        dataset_setting: [
+          :dataset_id,
+          :filters,
+          :widgets,
+          visible_fields: []
+        ]
+      )
+    filtered_params.merge(content: all_options) if all_options.present?
+    filtered_params
   end
 
   # Sets the current site from the url
