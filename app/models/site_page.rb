@@ -130,6 +130,7 @@ class SitePage < Page
       self.errors['description'] << 'You must type a valid description for the page' if self.description.blank? || self.description.strip.blank?
       self.errors['uri'] << 'You must type a valid uri for the page' \
         if (self.content_type != ContentType::HOMEPAGE) && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
+      self.errors['uri'] << 'There\'s already a page with this name' if SitePage.where(site_id: site_id, uri: uri).any?
     end
 
     # Validate type

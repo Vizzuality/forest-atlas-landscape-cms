@@ -147,6 +147,10 @@ class Management::PageStepsController < ManagementController
         move_forward
       when 'title'
         set_current_page_state
+        unless @page.valid?
+          render_wizard
+          return
+        end
         # If the user has selected the type of page already it doesn't show the type page
         move_forward next_step and return if @page_id == :new
         case @page.content_type
