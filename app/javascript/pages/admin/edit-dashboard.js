@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Wysiwyg from 'vizz-wysiwyg';
 
-import { WidgetBlock, WidgetBlockCreation } from 'components/wysiwyg';
+import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview } from 'components/wysiwyg';
 
 const EditDashboard = ({ admin }) => (
   <div className="wrapper">
@@ -25,6 +25,13 @@ const EditDashboard = ({ admin }) => (
           icon: 'icon-widget',
           label: 'Visualization',
           renderer: 'modal'
+        },
+        image: {
+          Component: ImagePreview,
+          EditionComponent: ImageUpload,
+          icon: 'icon-image',
+          label: 'Image',
+          renderer: 'tooltip'
         }
       }}
     />
