@@ -21,12 +21,12 @@
 
     initNameStep: function () {
       var formattedUrls = (window.gon && window.gon.global) ? gon.global.url_array : [];
-      formattedUrls = formattedUrls.map(function (url) {
+      formattedUrls = formattedUrls ? formattedUrls.map(function (url) {
         return {
           url: url.host,
           id: url.id
         };
-      });
+      }) : [];
 
       new App.View.UrlsInputView({
         el: '.js-urls',

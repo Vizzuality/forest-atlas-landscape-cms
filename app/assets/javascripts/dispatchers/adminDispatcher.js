@@ -6,7 +6,8 @@
       'users(/)': 'Users',
       '(sites)(/)': 'Sites',
       '(map_versions)(/)': 'MapVersions',
-      'sites/:slug/site_steps/:step(/)': 'SiteEdition'
+      'sites/:slug/site_steps/:step(/)': 'SiteEdition',
+      'site_steps/(:step)': 'SiteCreation'
     }
   });
 
