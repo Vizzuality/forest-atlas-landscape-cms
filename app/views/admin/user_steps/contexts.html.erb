@@ -23,7 +23,6 @@
             <%= check_box_tag "user[context_ids][]", context.id, f.object.contexts.include?(context), id: ('context-' + context.id.to_s) %>
             <div class="content">
               <h3><%= context.name %></h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
             </div>
           </div>
         <% end %>
