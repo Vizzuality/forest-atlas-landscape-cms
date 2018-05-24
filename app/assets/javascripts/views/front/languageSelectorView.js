@@ -1,3 +1,4 @@
+/* eslint-disable */
 ((function (App) {
   'use strict';
 
@@ -24,7 +25,6 @@
       if (!Transifex) return;
 
       Transifex.live.onFetchLanguages(function (languages) {
-
         this.options.languages = this._getSiteLanguages(languages);
 
         var currentLanguageCode = Transifex.live.getSelectedLanguageCode();
