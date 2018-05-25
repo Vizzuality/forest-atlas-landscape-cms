@@ -25,10 +25,9 @@
       if (!Transifex) return;
 
       Transifex.live.onFetchLanguages(function (languages) {
+        this.options.transifexLanguages = languages;
         this.options.languages = this._getSiteLanguages(languages);
-
-        var currentLanguageCode = Transifex.live.getSelectedLanguageCode();
-        this.options.currentLanguage = _.findWhere(this.options.languages, { code: currentLanguageCode });
+        this.options.currentLanguage = Transifex.live.getSelectedLanguageCode();
 
         // If the user is seeing the standalone map, we need to update its language
         // Nevertheless, it seems the map doesn't have any API so we're doing kind of
@@ -56,11 +55,9 @@
         return languages;
       }
 
-      const result = languages.filter(function(elem) {
-        return window.gon.translations[elem.code];
+      return languages.map(function(lang) {
+        return lang.code;
       });
-
-      return result;
     },
 
     /**
@@ -89,7 +86,7 @@
      * @return {object[]}
      */
     _getSelectorOptions: function () {
-      return this.options.languages.map(function (language) {
+      return this.options.transifexLanguages.map(function (language) {
         return {
           id: language.code,
           name: language.name,
@@ -102,11 +99,18 @@
      * Return the active option for the selector
      */
     _getSelectorActiveOption: function () {
-      return {
-        id: this.options.currentLanguage.code,
-        name: this.options.currentLanguage.name,
-        shortName: this.options.currentLanguage.code.toUpperCase()
-      };
+      var self = this;
+      var selected = this.options.transifexLanguages.filter(function(lang) {
+        return lang.code === self.options.currentLanguage;
+      })
+      if (selected && selected.length) {
+        return {
+          id: selected[0].code,
+          name: selected[0].name,
+          shortName: selected[0].code.toUpperCase()
+        };
+      }
+      return null;
     },
 
     /**
@@ -125,7 +129,6 @@
     },
 
     render: function () {
-      if (!this.dropdownSelectorView) {
         this.dropdownSelectorView = new App.View.DropdownSelectorView({
           el: this.el,
           options: this._getSelectorOptions(),
@@ -134,7 +137,6 @@
           align: 'right',
           onChangeCallback: this._onLanguageChange.bind(this)
         });
-      }
     }
 
   });
