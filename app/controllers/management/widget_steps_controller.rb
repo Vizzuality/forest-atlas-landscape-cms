@@ -43,6 +43,19 @@ class Management::WidgetStepsController < ManagementController
                       else
                         Widget::DEFAULT_WIDGET
                       end
+    # Starts by creating the layers, if present
+    begin
+      if layer_parameters.present?
+        layer_id = WidgetService.create_layer(session[:user_token],
+                                              layer_parameters, dataset_id)
+        params['widget']['widgetConfig']['layer_id'] = layer_id
+        params['widget']['widgetConfig']['paramsConfig']['layer'] = layer_id
+      end
+    rescue Exception => e
+      render json: { widget_error: e.to_s }.to_json, status: 500 and return
+    end
+
+    # Creates the widget
     begin
       widget_id = WidgetService.create(session[:user_token],
                                        widget_parameters, dataset_id)
@@ -50,6 +63,7 @@ class Management::WidgetStepsController < ManagementController
       render json: { widget_error: e.to_s }.to_json, status: 500 and return
     end
 
+    # Creates the widget metadata
     begin
       if widget_id
         WidgetService.create_metadata(session[:user_token], params_metadata,
@@ -85,6 +99,16 @@ class Management::WidgetStepsController < ManagementController
           .permit(:id, :name, :description,
                   :published, :default, :dataset)
           .merge(widgetConfig: all_options)
+  end
+
+  def layer_parameters
+    params.require(:layer)
+      .permit(:name, :description, :dataset, :provider, application: [],
+              layerConfig: [
+                :account, body: [
+                  :minzoom, :maxzoom, layers: [
+                    :type, options: [
+                        :sql, :cartocss, :cartocss_version ]]]])
   end
 
   def set_site

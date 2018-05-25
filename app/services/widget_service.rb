@@ -105,6 +105,17 @@ class WidgetService < ApiService
     end
   end
 
+  def self.create_layer(token, layer_params, dataset_id)
+    res =
+        @conn.post do |req|
+        req.url "dataset/#{dataset_id}/layer"
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = layer_params.to_json
+      end
+    JSON.parse(res.body)['data']['id']
+  end
+
   def self.update_metadata(token, metadata_params, dataset_id, widget_id)
     @conn.patch do |req|
       req.url "dataset/#{dataset_id}/widget/#{widget_id}/metadata"
