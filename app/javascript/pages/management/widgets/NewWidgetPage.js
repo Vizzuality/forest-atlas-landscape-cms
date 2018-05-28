@@ -87,7 +87,14 @@ class NewWidgetPage extends React.Component {
           .then(resolve)
           .catch(reject);
       }
-    }).then((widgetConfig) => {
+    }).then(async (widgetConfig) => {
+      let layerObj;
+      if (this.getLayer) {
+        try {
+          layerObj = await this.getLayer();
+        } catch (err) {} // eslint-disable-line no-empty
+      }
+
       const widgetObj = Object.assign(
         {},
         {
@@ -120,12 +127,19 @@ class NewWidgetPage extends React.Component {
           application: getConfig().applications
         });
 
+      const layer = !layerObj
+        ? null
+        : Object.assign({}, layerObj, {
+          application: getConfig().applications.split(',')
+        });
+
       fetch(this.props.queryUrl, {
         method: 'POST',
         body: JSON.stringify(Object.assign(
           {},
           { widget },
-          { ...(this.state.advancedEditor ? {} : { metadata }) }
+          { ...(this.state.advancedEditor ? {} : { metadata }) },
+          { ...(this.state.advancedEditor ? {} : { layer }) }
         )),
         credentials: 'include',
         headers: new Headers({
@@ -212,9 +226,11 @@ class NewWidgetPage extends React.Component {
                   widgetCaption={caption}
                   saveButtonMode="never"
                   embedButtonMode="never"
+                  useLayerEditor
                   onChangeWidgetTitle={t => setTitle(t)}
                   onChangeWidgetCaption={c => setCaption(c)}
                   provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                  provideLayer={(func) => { this.getLayer = func; }}
                 />
               )}
               { advancedEditor && (
