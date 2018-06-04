@@ -6,6 +6,7 @@ import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme
 import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
 import Notification from 'components/Notification';
+import ThemeSelector from 'components/ThemeSelector';
 
 import { setStep, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
 
@@ -19,6 +20,7 @@ const STEPS = [
 class EditWidgetPage extends React.Component {
   constructor(props) {
     super(props);
+
     // We set the config of the widget editor
     const { env } = props;
     setConfig({
@@ -41,7 +43,11 @@ class EditWidgetPage extends React.Component {
       // Whether the preview of the avanced editor is loading
       previewLoading: false,
       // Error while saving the widget
-      saveError: false
+      saveError: false,
+      // Theme of the widget
+      theme: props.widget && props.widget.widget_config && props.widget.widget_config.config
+        ? props.widget.widget_config.config
+        : getVegaTheme()
     };
   }
 
@@ -145,13 +151,43 @@ class EditWidgetPage extends React.Component {
     });
   }
 
+  /**
+   * Event handler executed when the user changes the theme
+   * of the widget
+   * @param {object} themeConfiguration Theme configuration
+   */
+  onChangeTheme(themeConfiguration) {
+    const defaultTheme = getVegaTheme();
+    const theme = Object.assign({}, defaultTheme, {
+      name: themeConfiguration.name,
+      range: Object.assign({}, defaultTheme.range, {
+        category: themeConfiguration.category,
+        category20: themeConfiguration.category
+      }),
+      mark: Object.assign({}, defaultTheme.mark, {
+        fill: themeConfiguration.mainColor
+      }),
+      symbol: Object.assign({}, defaultTheme.symbol, {
+        fill: themeConfiguration.mainColor
+      }),
+      rect: Object.assign({}, defaultTheme.rect, {
+        fill: themeConfiguration.mainColor
+      }),
+      line: Object.assign({}, defaultTheme.line, {
+        stroke: themeConfiguration.mainColor
+      })
+    });
+
+    this.setState({ theme });
+  }
+
   render() {
     // eslint-disable-next-line no-shadow
     const { currentStep, setStep, setTitle, setDescription, setCaption,
       title, description, caption, widget } = this.props;
 
     const { widgetConfigError, advancedEditor,
-      widgetConfig, previewLoading, saveError } = this.state;
+      widgetConfig, previewLoading, saveError, theme } = this.state;
 
     const content = (
       <div>
@@ -169,6 +205,13 @@ class EditWidgetPage extends React.Component {
                 <label htmlFor="description">Description</label>
                 <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
               </div>
+              <div className="container">
+                <label>Widget theme</label>
+                <ThemeSelector
+                  defaultTheme={(theme && theme.name) || 'default'}
+                  onChange={t => this.onChangeTheme(t)}
+                />
+              </div>
             </div>
             { !advancedEditor && (
               <WidgetEditor
@@ -176,6 +219,7 @@ class EditWidgetPage extends React.Component {
                 {...(widget ? { widgetId: widget.id } : {})}
                 widgetTitle={title}
                 widgetCaption={caption}
+                theme={this.state.theme}
                 saveButtonMode="never"
                 embedButtonMode="never"
                 onChangeWidgetTitle={t => setTitle(t)}
@@ -195,6 +239,7 @@ class EditWidgetPage extends React.Component {
                   { previewLoading && <div className="c-loading-spinner -bg" /> }
                   <VegaChart
                     data={widgetConfig}
+                    theme={widgetConfig.config || this.state.theme}
                     theme={getVegaTheme()}
                     showLegend
                     reloadOnResize

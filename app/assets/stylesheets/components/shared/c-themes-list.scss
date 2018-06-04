@@ -1,0 +1,21 @@
+.c-themes-list {
+  @extend .c-cards-list;
+
+  .card {
+    > input:checked + .content {
+      color: inherit;
+      background: transparent;
+    }
+
+    .content {
+      border-width: 3px;
+
+      > .theme {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
