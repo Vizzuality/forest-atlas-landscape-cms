@@ -48,5 +48,14 @@
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
   <%= yield %>
+
+  <script>
+      $(function () {
+      if (window.App) {
+        new App.View.HeaderView()
+      }
+    })
+  </script>
+
 </body>
 </html>
