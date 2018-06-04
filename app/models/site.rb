@@ -240,11 +240,18 @@ class Site < ApplicationRecord
   def compile_erb
     Rails.logger.debug "Compiling ERB for site #{self.id}"
 
-    if self.site_template.name.eql? 'Forest Atlas'
-      template = 'front/template-fa.css'
-    else
-      template = 'front/template-lsa.css'
+    case self.site_template.name
+      when 'Forest Atlas'
+        template = 'front/template-fa.css'
+      when 'Landscape Application'
+        template = 'front/template-lsa.css'
+      when 'CARPE Landscape'
+        template = 'front/template-carpe.css'
+      else
+        Rails.logger.error "Couldn't find template name for #{self.id}"
+        return
     end
+
 
     env = Rails.application.assets
 
