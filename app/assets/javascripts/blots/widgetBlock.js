@@ -80,7 +80,7 @@ var WidgetBlot = function (_Embed) {
   _createClass(WidgetBlot, [{
     key: '_fetchWidget',
     value: function _fetchWidget() {
-      var id = this.domNode.dataset.id;
+      var id = WidgetBlot.value(this.domNode).id;
 
       var url = '/widget_data.json?widget_id=' + id;
       if (this.editor.options.readOnly) {
