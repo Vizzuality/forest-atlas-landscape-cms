@@ -347,4 +347,11 @@ namespace :db do
     create_contexts
     add_analysis_dashboard
   end
+
+
+  desc 'Create new CAPRE template pages'
+  task capre_templates: :environment do
+    @capre_template = SiteTemplate.find_by name: 'CAPRE Landscape'
+    PageTemplate.find_each { |pt| pt.site_templates << @capre_template; pt.save }
+  end
 end
