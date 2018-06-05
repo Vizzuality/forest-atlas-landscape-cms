@@ -60,25 +60,13 @@
 
       <div class="wrapper">
 
-        <% if @page.dashboard_version > 1 %>
-        <div class="description">
-          <%= react_component('EditDashboardPage', {
-            page: @page,
-            widgets: @widgets
-          } ) %>
-          <%= f.hidden_field :content %>
-        </div>
-        <% end %>
-
-        <% if @page.dashboard_version == 1 %>
-          <div class="description">
-            <% if @page.description.length > 250 %>
-              <%= @page.description[0, 250].strip + '…' %>
-            <% else %>
-              <%= @page.description %>
-            <% end %>
-          </div>
-        <% end %>
+      <div class="description">
+        <%= react_component('EditDashboardPage', {
+          page: @page,
+          widgets: @widgets
+        } ) %>
+        <%= f.hidden_field :content %>
+      </div>
 
         <div class="filters">
           <% @analysis_user_filters.each do |filter| %>

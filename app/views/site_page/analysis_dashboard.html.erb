@@ -19,6 +19,12 @@
 
   <div class="wrapper">
 
+    <div class="fa-dashboard">
+      <%= react_component('PublicDashboard', {
+        page: @site_page
+      } ) %>
+    </div>
+
     <div class="tabs">
         <ul class="tabs__menu">
           <li><button class="tabs__btn active" data-tab="chart">Chart</button></li>
