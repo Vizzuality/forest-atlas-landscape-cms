@@ -50,9 +50,13 @@
   <%= yield %>
 
   <script>
-      $(function () {
+    $(function () {
       if (window.App) {
-        new App.View.HeaderView()
+        if (!document.querySelector('.js-header').classList.contains('initialized')) {
+        new App.View.HeaderView({
+          el: document.querySelector('.js-header')
+        })
+        }
       }
     })
   </script>
