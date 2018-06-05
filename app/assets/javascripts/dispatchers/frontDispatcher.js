@@ -7,7 +7,7 @@
     // chosen by a manager. In order to know which JS router/view to instantiate, we read
     // a global variable called "route" created inside the rails view matching each template
 
-    var routerName = 'Front' + window.route;
+    var routerName = 'Front' + (window.route || 'Homepage'); // Default to homepage.
 
     if (App.Router[routerName]) {
       // Because turbolinks doesn't fully reload the page, we need to stop the
@@ -29,6 +29,7 @@
           return gon.translations[elem];
         });
       }
+
       if (translate) {
         // NOTE: because there's two language selectors in the webpage, we need to maintain them in sync
         var desktopLanguageSelector = new App.View.LanguageSelectorView();

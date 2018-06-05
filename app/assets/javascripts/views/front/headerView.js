@@ -9,6 +9,7 @@
 
     initialize: function () {
       this.drawer = this.el.querySelector('.js-mobile-drawer');
+      this.el.classList.add('initialized');
     },
 
     toggleDrawer: function () {
