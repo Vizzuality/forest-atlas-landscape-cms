@@ -338,7 +338,7 @@ var WidgetBlot = function (_Embed) {
     key: 'formats',
     value: function formats(node) {
       var res = {
-        id: +node.dataset.id
+        id: node.dataset.id
       };
 
       var caption = node.querySelector('.js-caption');
