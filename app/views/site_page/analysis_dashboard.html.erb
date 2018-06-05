@@ -19,18 +19,6 @@
 
   <div class="wrapper">
 
-    <div class="description">
-      <% if @site_page.description.length > 250 %>
-        <%= @site_page.description[0, 250].strip + '…' %>
-      <% else %>
-        <%= @site_page.description %>
-      <% end %>
-    </div>
-
-    <!--
-    <div class="filters js-filters"></div>
-    -->
-
     <div class="tabs">
         <ul class="tabs__menu">
           <li><button class="tabs__btn active" data-tab="chart">Chart</button></li>
@@ -56,12 +44,6 @@
         </div>
 
     </div>
-
-    <% if @site_page.description.length > 250 %>
-      <div class="description description__full">
-        <%= @site_page.description %>
-      </div>
-    <% end %>
 
   </div>
 </div>

@@ -11,10 +11,6 @@
 } ) %>
 
 <div class="fa-dashboard">
-  <div class="fa-dashboard__summary">
-    <%= @site_page.description %>
-  </div>
-
   <%= react_component('PublicDashboard', {
     page: @site_page
   } ) %>
