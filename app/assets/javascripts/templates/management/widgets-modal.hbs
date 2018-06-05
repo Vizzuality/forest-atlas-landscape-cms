@@ -14,8 +14,8 @@
     {{/unless}}
     {{#each widgets}}
       <div class="widget">
-        <label for="widget-{{id}}"></label>
-        <input type="radio" id="widget-{{id}}" name="widget" value="{{id}}" />
+        <label for="{{id}}"></label>
+        <input type="radio" id="{{id}}" name="widget" value="{{id}}" />
         <div class="content">
           <div class="graph js-chart" data-id="{{id}}" data-type="{{type}}"></div>
           <h3>{{name}}</h3>
