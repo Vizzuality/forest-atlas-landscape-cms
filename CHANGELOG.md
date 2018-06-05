@@ -1,5 +1,15 @@
 # Forest Atlas: CHANGELOG
 
+## Bug fixes and improvements
+* Select theme within widget editor
+* Fixed issue with mobile menu not opening
+* Remove description on dashboards, rely on new wysiwyg editor
+* Add missing CARPE theme in page settings
+* Widget shows more than 50 rows if available
+* Add new wysiwyg editor to analysis dashboard instead of description
+* General copy changes
+* minor js bug fixes and performance fixes
+
 ## Improved design of analysis dashboard implemented
 
 * Added a new way to create dashboard called Dashboard V2
