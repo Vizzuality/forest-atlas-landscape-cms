@@ -7,10 +7,11 @@
             <li><%= link_to 'New dataset', new_management_site_dataset_step_path, class: 'c-button -outline' %></li>
           <% elsif  local_assigns[:type] == 'widget' %>
             <li><%= link_to 'New widget', new_management_site_widget_step_path, class: 'c-button -outline' %></li>
+            <% elsif local_assigns[:type] == 'user' %>
+            <li><%= link_to 'New user', new_management_site_user_path(@site.slug), class: 'c-button -outline' %></li>
         <% else %>
             <li><%= link_to 'New page', new_management_site_page_step_path, class: 'c-button -outline' %></li>
          <% end %>
-         <li><%= link_to 'New user', new_management_site_user_path(@site.slug), class: 'c-button -outline' %></li>
           <% if @url.present? %><li><a href="<%= @url %>" class="c-button">Go to site</a></li><% end %>
         </ul>
       </div>
