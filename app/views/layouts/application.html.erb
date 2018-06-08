@@ -51,7 +51,7 @@
 
   <script>
     $(function () {
-      if (window.App) {
+      if (window.App && window.route === 'Homepage') {
         if (!document.querySelector('.js-header').classList.contains('initialized')) {
         new App.View.HeaderView({
           el: document.querySelector('.js-header')
