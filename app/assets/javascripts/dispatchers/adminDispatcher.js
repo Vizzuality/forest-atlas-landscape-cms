@@ -41,6 +41,5 @@
     new App.View.UserLinksView();
   };
 
-  // We need for the DOM to be ready
-  document.addEventListener('turbolinks:load', init);
+
 }).call(this, this.App);
