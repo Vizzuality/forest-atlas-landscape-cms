@@ -28,14 +28,6 @@
         this.options.transifexLanguages = languages;
         this.options.languages = this._getSiteLanguages(languages);
         this.options.currentLanguage = Transifex.live.getSelectedLanguageCode();
-
-        // If the user is seeing the standalone map, we need to update its language
-        // Nevertheless, it seems the map doesn't have any API so we're doing kind of
-        // a trick here
-        if (window.route === 'Map') {
-          this._setMapLanguage(currentLanguageCode);
-        }
-
         this.render();
       }.bind(this));
     },
