@@ -58,14 +58,6 @@
     _onLanguageChange: function (languageCode) {
       Transifex.live.translateTo(languageCode, true);
       this._setMapLanguage(languageCode);
-
-      // We update the URL with the new language choice
-      var search = location.search.replace(/l=[a-z]{2}/, 'l=' + languageCode);
-      // NOTE: adding { turbolinks: {} } is mandatory to avoid breaking the browser's back button
-      // because Turbolinks doesn't handle well the URL changes
-      // Check here: https://github.com/turbolinks/turbolinks/issues/219
-      history.replaceState({ turbolinks: {} }, '', search);
-
       this.trigger('state:change', {
         currentLanguage: _.findWhere(this.options.languages, { code: languageCode })
       });
