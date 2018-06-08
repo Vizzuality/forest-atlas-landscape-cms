@@ -3,11 +3,11 @@
 // modal should not take up 100% of the width
 .modal-wrapper {
   .modal {
-    // Reset context position
-    left: auto;
-    transform: translateX(0);
-
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
     margin: 0 20px;
-    width: calc(100vw - 40px);
+    width: 300px;
+    max-height: 400px;
   }
 }

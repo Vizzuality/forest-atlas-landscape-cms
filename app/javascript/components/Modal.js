@@ -8,16 +8,16 @@ export default function Modal({ show, children, onClose }) {
     return null;
   }
   return (
-    <div className="modal">
-      <div className="modal__wrapper">
-        <button type="button" className="modal__close" onClick={() => onClose()}>
+    <div className="modal_react">
+      <div className="modal_react__wrapper">
+        <button type="button" className="modal_react__close" onClick={() => onClose()}>
           <Icon name="icon-close" />
         </button>
-        <div className="modal__body">
+        <div className="modal_react__body">
           {children}
         </div>
       </div>
-      <div className="modal__backdrop" onClick={() => onClose()} />
+      <div className="modal_react__backdrop" onClick={() => onClose()} />
     </div>
   );
 }
