@@ -103,7 +103,11 @@
      */
     _setMapLanguage: function (languageCode) {
       var languagePicker = document.querySelector('.app-header__language[data-lang="' + languageCode + '"]');
-      if (languagePicker) languagePicker.click();
+      if (languagePicker) {
+        languagePicker.click()
+      } else {
+        console.log('Language not found for map builder', languageCode)
+      }
     },
 
     updateCurrentLanguage: function (lang) {
