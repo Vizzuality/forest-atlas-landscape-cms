@@ -32,8 +32,9 @@
         if (window.route === 'Map') {
           // Dont block the stack,
           // put it in the event que so we can render the language selector before translating the map
+          var self = this;
           setTimeout(function () {
-            this._setMapLanguage(this.options.currentLanguage);
+            self._setMapLanguage(self.options.currentLanguage);
           }, 0)
         }
 
