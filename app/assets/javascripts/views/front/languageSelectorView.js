@@ -28,6 +28,15 @@
         this.options.transifexLanguages = languages;
         this.options.languages = this._getSiteLanguages(languages);
         this.options.currentLanguage = Transifex.live.getSelectedLanguageCode();
+
+        if (window.route === 'Map') {
+          // Dont block the stack,
+          // put it in the event que so we can render the language selector before translating the map
+          setTimeout(function () {
+            this._setMapLanguage(this.options.currentLanguage);
+          }, 0)
+        }
+
         this.render();
       }.bind(this));
     },
