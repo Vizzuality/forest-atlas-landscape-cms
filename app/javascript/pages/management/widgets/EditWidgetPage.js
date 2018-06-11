@@ -237,15 +237,17 @@ class EditWidgetPage extends React.Component {
                 </div>
                 <div className="preview">
                   { previewLoading && <div className="c-loading-spinner -bg" /> }
-                  <VegaChart
-                    data={widgetConfig}
-                    theme={widgetConfig.config || this.state.theme}
-                    theme={getVegaTheme()}
-                    showLegend
-                    reloadOnResize
-                    toggleLoading={loading => this.setState({ previewLoading: loading })}
-                    getForceUpdate={(func) => { this.forceChartUpdate = func; }}
-                  />
+                  {widgetConfig && widgetConfig.data && (
+                    <VegaChart
+                      data={widgetConfig}
+                      theme={widgetConfig.config || this.state.theme}
+                      theme={getVegaTheme()}
+                      showLegend
+                      reloadOnResize
+                      toggleLoading={loading => this.setState({ previewLoading: loading })}
+                      getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                    />
+                  )}
                 </div>
               </div>
             )}
