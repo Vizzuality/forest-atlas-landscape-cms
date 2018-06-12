@@ -354,4 +354,42 @@ namespace :db do
     @capre_template = SiteTemplate.find_by name: 'CAPRE Landscape'
     PageTemplate.find_each { |pt| pt.site_templates << @capre_template; pt.save }
   end
+
+  desc 'Create new privacy policy template and pages'
+  task privacy_policy: :environment do
+    ActiveRecord::Base.transaction do
+      site_templates = SiteTemplate.all
+      pp_page = PageTemplate.new
+      pp_page.attributes =
+        {
+          name: 'Privacy Policy',
+          description: 'Privacy Policy',
+          uri: PageTemplate::PRIVACY_POLICY_SLUG,
+          parent: (PageTemplate.find_by name: 'Homepage'),
+          show_on_menu: false,
+          content_type: ContentType::STATIC_CONTENT,
+          site_templates: site_templates,
+          content: {json: File.read('lib/assets/privacy_policy_page.json')}
+        }
+      pp_page.save!
+
+      Site.find_each do |site|
+        site_page = SitePage.new
+        site_page.attributes =
+          {
+            name: pp_page.name,
+            description: pp_page.description,
+            content: pp_page.content,
+            uri: String.new(pp_page.uri),
+            site_id: site.id,
+            show_on_menu: pp_page.show_on_menu,
+            content_type: pp_page.content_type,
+            enabled: true,
+            parent: (SitePage.find_by site_id: site.id, uri: '')
+          }
+        site_page.save!
+        puts "Created for site: #{site.id}"
+      end
+    end
+  end
 end
