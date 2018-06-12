@@ -3,7 +3,7 @@
     <%= link_to 'Cancel', admin_users_path, class: 'c-button -outline -dark-text' %>
     <div>
       <% if @user.id %>
-        <% if local_assigns[:finish] %>
+        <% unless local_assigns[:finish] %>
           <%= f.button Admin::UserStepsController::CONTINUE, value: Admin::UserStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
         <% end %>
         <%= f.button Admin::UserStepsController::SAVE, value: Admin::UserStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>

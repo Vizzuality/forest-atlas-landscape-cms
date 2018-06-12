@@ -42,6 +42,16 @@ class Admin::UserStepsController < AdminController
 
   def update
     @user.form_step = step
+
+    if save_button? && @user.id
+      @user.user_site_associations.destroy_all if @user.admin?
+      @user.save
+      delete_session_key(:user, @user_id)
+      redirect_to admin_users_path,
+                  notice: 'User was successfully updated'
+      return
+    end
+
     if @user.valid?
       if step == 'sites' && @user.admin # If the user is an admin
         redirect_to wizard_path(wizard_steps[3])
@@ -123,5 +133,9 @@ class Admin::UserStepsController < AdminController
 
   def ensure_session_keys_exist
     session[:user] ||= {}
+  end
+
+  def save_button?
+    params[:button].upcase == SAVE.upcase
   end
 end
