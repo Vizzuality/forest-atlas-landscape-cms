@@ -21,6 +21,14 @@
             <div class="content">
               <h3><%= ff.object.user.name %></h3>
             </div>
+            <footer>
+              <div class="c-radio">
+                <%= ff.radio_button :role, UserType::MANAGER %>
+                <%= ff.label :role, 'Manager', value: UserType::MANAGER %>
+                <%= ff.radio_button :role, UserType::PUBLISHER %>
+                <%= ff.label :role, 'Publisher', value: UserType::PUBLISHER %>
+              </div>
+            </footer>
           </div>
         <% end %>
       </div>
