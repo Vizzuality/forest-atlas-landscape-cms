@@ -97,6 +97,9 @@ class Management::PageStepsController < ManagementController
         @fields = @dataset_setting.get_fields
 
       when 'preview'
+        gon.widgets = get_widgets_list
+        puts "-----------> #{gon.widgets.inspect}"
+
         build_current_dataset_setting
         gon.page_name = @page.name
         gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
