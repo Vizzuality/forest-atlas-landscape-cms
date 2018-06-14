@@ -44,7 +44,8 @@ class Admin::SiteStepsController < AdminController
       @site = current_site
       gon.global.url_controller_id = URL_CONTROLLER_ID
       gon.global.url_controller_name = URL_CONTROLLER_NAME
-      gon.global.url_array = @site.routes.to_a
+      gon.global.url_array =
+        @site.routes.order(main: :desc, id: :asc).to_a
     else
       @site = current_site
       if step == 'users'
@@ -93,6 +94,7 @@ class Admin::SiteStepsController < AdminController
           # only passes a list of current ones
           @site.mark_routes_for_destruction(session[:site][@site_id]['routes_attributes'])
           if @site.save
+            @site.routes.first.update(main: :true)
             delete_session_key(:site, @site_id)
             redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
           else
@@ -100,6 +102,7 @@ class Admin::SiteStepsController < AdminController
           end
         else
           @site.form_step = 'name'
+          params['site']['routes_attributes']['0']['main'] = true if site_params['routes_attributes'] && site_params['routes_attributes']['0']
           session[:site][@site_id] = site_params.to_h
 
           if @site.valid?
@@ -255,7 +258,7 @@ class Admin::SiteStepsController < AdminController
         :default_context,
         user_site_associations_attributes: [:id, :user_id, :role, :selected],
         context_sites_attributes: [:context_id, :id],
-        routes_attributes: [:host, :id],
+        routes_attributes: [:host, :id, :main],
         site_settings_attributes: [
           :id, :position, :value, :name, :image,
           :attribution_link, :attribution_label,

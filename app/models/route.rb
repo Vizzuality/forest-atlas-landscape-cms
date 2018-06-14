@@ -8,12 +8,14 @@
 #  path       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  main       :boolean          default(FALSE)
 #
 
 class Route < ApplicationRecord
   belongs_to :site, optional: true
   has_many :site_pages, through: :site
 
+  validates_uniqueness_of :main, scope: :site_id, if: :main
   after_save :update_routes
 
   # TODO potentially obsolete

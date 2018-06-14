@@ -13,6 +13,8 @@
 #  image_updated_at   :datetime
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  attribution_link   :text
+#  attribution_label  :text
 #
 
 class SiteSetting < ApplicationRecord

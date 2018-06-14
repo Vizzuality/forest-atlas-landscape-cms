@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180427122058) do
+ActiveRecord::Schema.define(version: 20180613112651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,8 +120,9 @@ ActiveRecord::Schema.define(version: 20180427122058) do
     t.integer  "site_id"
     t.string   "host"
     t.string   "path"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "main",       default: false
     t.index ["site_id"], name: "index_routes_on_site_id", using: :btree
   end
 

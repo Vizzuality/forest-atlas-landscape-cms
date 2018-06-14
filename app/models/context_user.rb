@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: context_users
+#
+#  id               :integer          not null, primary key
+#  is_context_admin :boolean
+#  context_id       :integer
+#  user_id          :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  role             :integer          default(1)
+#
+
  # == Schema Information
 #
 # Table name: context_users

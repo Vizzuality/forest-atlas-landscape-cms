@@ -70,7 +70,7 @@ class Site < ApplicationRecord
     keep_routes_ids = routes_attributes &&
       routes_attributes.values.reject{ |r| r[:id].blank? }.map{ |r| r[:id].to_i }
     routes.each do |r|
-      r.mark_for_destruction if r.persisted? && !keep_routes_ids.include?(r.id)
+      r.mark_for_destruction if r.persisted? && !keep_routes_ids&.include?(r.id)
     end
   end
 
