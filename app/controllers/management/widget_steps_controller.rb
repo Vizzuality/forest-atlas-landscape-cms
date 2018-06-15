@@ -89,7 +89,7 @@ class Management::WidgetStepsController < ManagementController
   private
 
   def get_datasets
-    DatasetService.get_datasets
+    @site.get_datasets_contexts.map { |d| d.last[:dataset] } rescue []
   end
 
   def widget_parameters
