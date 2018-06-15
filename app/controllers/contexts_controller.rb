@@ -1,4 +1,5 @@
 class ContextsController < ManagementController
+  before_action :ensure_management_user
   before_action :get_contexts, only: :index
 
   def index
