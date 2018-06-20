@@ -49,6 +49,9 @@ class SitePage < Page
     when ContentType::OPEN_CONTENT
       steps = { pages: %w[position title type open_content open_content_preview],
                 names: %w[Position Details Type Content Preview] }
+    when ContentType::OPEN_CONTENT_V2
+      steps = { pages: %w[position title type open_content open_content_preview],
+                names: %w[Position Details Type Content Preview] }
     when ContentType::ANALYSIS_DASHBOARD
       steps = { pages: %w[position title type dataset filters columns preview],
                 names: %w[Position Title Type Dataset Filters Columns Preview] }
