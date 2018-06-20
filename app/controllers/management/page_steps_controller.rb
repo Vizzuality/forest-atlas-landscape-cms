@@ -122,6 +122,8 @@ class Management::PageStepsController < ManagementController
       # OPEN CONTENT PATH
       when 'open_content'
         gon.widgets = get_widgets_list
+      when 'open_content_v2'
+        gon.widgets = get_widgets_list
       when 'open_content_preview'
         gon.widgets = get_widgets_list
 
@@ -201,6 +203,9 @@ class Management::PageStepsController < ManagementController
 
       # OPEN CONTENT PATH
       when 'open_content'
+        set_current_page_state
+        move_forward next_step, next_step, next_step
+      when 'open_content_v2'
         set_current_page_state
         move_forward next_step, next_step, next_step
 
