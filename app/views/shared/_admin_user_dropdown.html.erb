@@ -1,5 +1,5 @@
 <div class="c-dropdown -right">
-  <button><%= @user.name %></button>
+  <button><%= @user.name || 'change user' %></button>
   <ul class="options">
     <li class="option"><a href="/management/profile/<%= @user.id %>/edit">Edit profile</a></li>
     <li class="option"><a href="/auth/logout">Log out</a></li>

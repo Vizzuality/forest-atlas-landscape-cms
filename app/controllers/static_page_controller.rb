@@ -1,11 +1,14 @@
 class StaticPageController < ApplicationController
 
-  skip_before_action :set_current_user, only: [:no_permissions]
-
   # GET /no-permissions
   def no_permissions
     # Creates an empty user
-    @user = User.new
+    @user =
+      if @current_user.present?
+        User.find_by(email: @current_user[:email])
+      else
+        User.new
+      end
   end
 
   # Gets the data of a widget
