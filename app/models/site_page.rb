@@ -50,7 +50,7 @@ class SitePage < Page
       steps = { pages: %w[position title type open_content open_content_preview],
                 names: %w[Position Details Type Content Preview] }
     when ContentType::OPEN_CONTENT_V2
-      steps = { pages: %w[position title type open_content_v2 open_content_preview],
+      steps = { pages: %w[position title type open_content_v2],
                 names: %w[Position Details Type Content Preview] }
     when ContentType::ANALYSIS_DASHBOARD
       steps = { pages: %w[position title type dataset filters columns preview],

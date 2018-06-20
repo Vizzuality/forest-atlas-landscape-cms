@@ -1,3 +1,4 @@
+<%= javascript_pack_tag 'application' %>
 <% content_for :extended_header do %>
   <div class="c-extended-header">
     <div class="wrapper">
@@ -16,7 +17,13 @@
 
 <%= form_for(@page, url: wizard_path, method: :put, :html => { :class => 'js-form' }) do |f| %>
   <div class="l-page-creation -wysiwyg">
-      hello open content v2
+
+    <%= react_component('OpenContentPage', {
+      page: @page,
+      widgets: @widgets
+    } ) %>
+    <%= f.hidden_field :content %>
+
   </div>
 
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, no_continue: true, always_save: true, publish: !@page.enabled} %>
