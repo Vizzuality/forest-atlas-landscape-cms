@@ -7,6 +7,11 @@
   <meta name="description" content="<%= @site_page.description %>">
   <meta name="keywords" content="<%= @site_page.site.site_settings.keywords(@site_page.site_id).value %>">
   <meta name="author" content="World Resources Institute">
+
+  <meta property="og:title" content="<%= @site_page.site.name + ' - ' + @site_page.name %>" />
+  <meta property="og:url" content="<%= @site_page&.routes&.first&.host.to_s + @site_page.url %>" />
+  <meta property="og:image" content="<%= @site_page&.routes&.first&.host.to_s  + @site_page.site.site_settings.where(name: 'main_image').first&.image&.url %>" />
+
   <link rel="icon" type="image/png" href="<%= @favico %>" />
   <link rel="apple-touch-icon" href="<%= @favico %>">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.6/quill.core.css">
