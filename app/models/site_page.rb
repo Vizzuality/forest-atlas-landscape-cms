@@ -49,6 +49,9 @@ class SitePage < Page
     when ContentType::OPEN_CONTENT
       steps = { pages: %w[position title type open_content open_content_preview],
                 names: %w[Position Details Type Content Preview] }
+    when ContentType::OPEN_CONTENT_V2
+      steps = { pages: %w[position title type open_content_v2],
+                names: %w[Position Details Type Content] }
     when ContentType::ANALYSIS_DASHBOARD
       steps = { pages: %w[position title type dataset filters columns preview],
                 names: %w[Position Title Type Dataset Filters Columns Preview] }
@@ -131,7 +134,7 @@ class SitePage < Page
       self.errors['description'] << 'You must type a valid description for the page' if self.description.blank? || self.description.strip.blank?
       self.errors['uri'] << 'You must type a valid uri for the page' \
         if (self.content_type != ContentType::HOMEPAGE) && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
-      self.errors['uri'] << 'There\'s already a page with this name' if SitePage.where(site_id: site_id, uri: uri).any?
+      self.errors['uri'] << 'There\'s already a page with this name' if SitePage.where(site_id: site_id, uri: uri).where.not(id: self.id).any?
     end
 
     # Validate type

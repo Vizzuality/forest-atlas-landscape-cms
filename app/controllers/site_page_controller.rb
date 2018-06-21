@@ -81,6 +81,9 @@ class SitePageController < ApplicationController
   def open_content
   end
 
+  def open_content_v2
+  end
+
   def static_content
   end
 

@@ -122,6 +122,8 @@ class DynamicRouter
         target = 'site_page#homepage'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
+      when ContentType::OPEN_CONTENT_V2
+        target = 'site_page#open_content_v2'
       when ContentType::MAP
         target = 'site_page#map'
         # Create resources and report pages routes
