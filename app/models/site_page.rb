@@ -56,8 +56,8 @@ class SitePage < Page
       steps = { pages: %w[position title type dataset filters columns preview],
                 names: %w[Position Title Type Dataset Filters Columns Preview] }
     when ContentType::DASHBOARD_V2
-      steps = { pages: %w[position title type dataset filters columns preview],
-                names: %w[Position Details Type Dataset Filters Columns Preview] }
+      steps = { pages: %w[position title type preview],
+                names: %w[Position Details Type Preview] }
     when ContentType::LINK
       steps = { pages: %w[position title type link],
                 names: %w[Position Details Type Link] }

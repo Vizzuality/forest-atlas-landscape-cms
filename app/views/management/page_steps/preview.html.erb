@@ -6,7 +6,7 @@
     <div class="wrapper">
       <div class="description">
         <h1>Layout preview</h1>
-        <p>Please select the default charts and the map's zoom and position</p>
+        <p>Add elements to build your dashboard</p>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@
 
   <div class="l-page-creation -dashboard-preview">
     <div class="l-analysis-dashboard">
-      <div class="bookmarks">
+      <!-- <div class="bookmarks">
         <div class="wrapper">
           <div class="c-dashboard-bookmarks">
             <h3>Bookmarks:</h3>
@@ -56,19 +56,19 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="wrapper">
 
-      <div class="description">
-        <%= react_component('EditDashboardPage', {
-          page: @page,
-          widgets: @widgets
-        } ) %>
-        <%= f.hidden_field :content %>
-      </div>
+        <div class="description">
+          <%= react_component('EditDashboardPage', {
+            page: @page,
+            widgets: @widgets
+          } ) %>
+          <%= f.hidden_field :content %>
+        </div>
 
-        <div class="filters">
+        <!-- <div class="filters">
           <% @analysis_user_filters.each do |filter| %>
             <div class="c-select -small">
               <select aria-label="Filter by <%= filter %>">
@@ -76,9 +76,9 @@
               </select>
             </div>
           <% end %>
-        </div>
+        </div> -->
 
-        <div class="tabs">
+        <!-- <div class="tabs">
           <ul class="tabs__menu">
             <li><button class="tabs__btn active" data-tab="chart">Chart</button></li>
             <li><button class="tabs__btn" data-tab="map">Map</button></li>
@@ -101,7 +101,7 @@
             </div>
           </div>
 
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -114,7 +114,7 @@
 <script type="text/javascript">
   // Untill we render this in react
   // It would be more hazzle to make react work with this old logic
-  $(function () {
+  /* $(function () {
     $('.tabs__btn').on('click', function (e) {
       e.preventDefault()
       $('.tabs__btn').removeClass('active');
@@ -122,6 +122,6 @@
       $('.tabs__tab').removeClass('active');
       $('#tabs__' + $(this).attr('data-tab')).addClass('active');
     });
-  });
+  }); */
 
 </script>
