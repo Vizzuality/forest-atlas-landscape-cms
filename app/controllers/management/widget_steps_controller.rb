@@ -45,7 +45,7 @@ class Management::WidgetStepsController < ManagementController
                       end
     # Starts by creating the layers, if present
     begin
-      if layer_parameters.present?
+      if params[:layer].present?
         layer_id = WidgetService.create_layer(session[:user_token],
                                               layer_parameters, dataset_id)
         params['widget']['widgetConfig']['layer_id'] = layer_id
