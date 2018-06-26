@@ -9,7 +9,7 @@ export default function WidgetBlockCreation({ block, onSubmit }) {
       <ul>
         {widgets.map((w) => {
           return (
-            <li key={w.widget.name}>
+            <li key={w.widget.id}>
               <h4>{w.widget.name}</h4>
               <button onClick={() => onSubmit({
                 widgetId: w.widget.id,
