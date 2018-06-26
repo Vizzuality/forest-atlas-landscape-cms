@@ -8,7 +8,7 @@ import Wysiwyg from 'vizz-wysiwyg';
 import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview } from 'components/wysiwyg';
 
 const EditDashboard = ({ admin }) => (
-  <div className="wrapper vizz-wysiwyg">
+  <div className="vizz-wysiwyg">
     <Wysiwyg
       items={JSON.parse(admin.page.content) || []}
       onChange={(d) => {

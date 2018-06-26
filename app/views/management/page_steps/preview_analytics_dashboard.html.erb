@@ -1,0 +1,116 @@
+<%= javascript_pack_tag 'application' %>
+
+<% content_for :extended_header do %>
+  <!--suppress ALL -->
+    <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Layout preview</h1>
+        <p>Add elements to build your dashboard</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  nvalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
+<%= Gon::Base.render_data %>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+  <input type="hidden" type="text" id="widgets-settings" name="site_page[dataset_setting][widgets]" value="" class="js-widgets-input" />
+
+  <div class="l-page-creation -dashboard-preview">
+    <div class="l-analysis-dashboard">
+      <div class="bookmarks">
+        <div class="wrapper">
+          <div class="c-dashboard-bookmarks">
+            <h3>Bookmarks:</h3>
+            <div class="bookmarks-wrapper">
+              <ul class="bookmarks">
+                <li class="js-bookmark" tabindex="0">
+                  <span class="js-name">Bookmark #1</span>
+                  <div>
+                    <button type="button" class="apply js-apply" title="Apply bookmark" aria-label="Apply bookmark">Bookmark #1</button>
+                    <div class="floating-buttons">
+                      <button type="button" class="-edit js-edit" title="Edit bookmark name">Edit bookmark name<svg width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><path d="M11.279 0l3.711 3.711-9.278 9.278-3.711-3.71L11.279 0zM1.537 9.742l3.711 3.711-4.392.682.681-4.393z" fill="#FFF" fill-rule="evenodd"/></svg></button>
+                      <button type="button" class="-delete js-delete" title="Delete bookmark">Delete bookmark<svg width="10" height="14" viewBox="0 0 10 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1V0H3v1H0v2h10V1H7zM1 14h8V4H1v10z" fill="#555" fill-rule="evenodd"/></svg></button>
+                    </div>
+                  </div>
+                </li>
+                <li class="js-bookmark" tabindex="0">
+                  <span class="js-name">Bookmark #2</span>
+                  <div>
+                    <button type="button" class="apply js-apply" title="Apply bookmark" aria-label="Apply bookmark">Bookmark #2</button>
+                    <div class="floating-buttons">
+                      <button type="button" class="-edit js-edit" title="Edit bookmark name">Edit bookmark name<svg width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><path d="M11.279 0l3.711 3.711-9.278 9.278-3.711-3.71L11.279 0zM1.537 9.742l3.711 3.711-4.392.682.681-4.393z" fill="#FFF" fill-rule="evenodd"/></svg></button>
+                      <button type="button" class="-delete js-delete" title="Delete bookmark">Delete bookmark<svg width="10" height="14" viewBox="0 0 10 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1V0H3v1H0v2h10V1H7zM1 14h8V4H1v10z" fill="#555" fill-rule="evenodd"/></svg></button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="add-button">
+              <button type="button" class="js-add-bookmark">Create bookmark</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrapper">
+
+        <div class="description">
+          <%= react_component('EditDashboardPage', {
+            page: @page,
+            widgets: @widgets
+          } ) %>
+          <%= f.hidden_field :content %>
+        </div>
+
+        <div class="tabs">
+          <ul class="tabs__menu">
+            <li><button class="tabs__btn active" data-tab="chart">Chart</button></li>
+            <li><button class="tabs__btn" data-tab="map">Map</button></li>
+            <li><button class="tabs__btn" data-tab="table">Table</button></li>
+          </ul>
+
+          <div class="tabs__items">
+            <div class="tabs__tab active" id="tabs__chart">
+              <div class="large-widget widget js-widget-2"></div>
+            </div>
+
+            <div class="tabs__tab" id="tabs__map">
+              <div class="large-widget js-widget-1"></div>
+            </div>
+
+            <div class="tabs__tab" id="tabs__table">
+              <%= react_component('PublicTableView', {
+                dashboard: if @dataset_setting then @dataset_setting.get_filtered_dataset else nil end
+              } ) %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true, wide: true } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @page} %>
+
+<script type="text/javascript">
+  // Untill we render this in react
+  // It would be more hazzle to make react work with this old logic
+  $(function () {
+    $('.tabs__btn').on('click', function (e) {
+      e.preventDefault()
+      $('.tabs__btn').removeClass('active');
+      $(this).addClass('active');
+      $('.tabs__tab').removeClass('active');
+      $('#tabs__' + $(this).attr('data-tab')).addClass('active');
+    });
+  });
+
+</script>

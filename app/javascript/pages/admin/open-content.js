@@ -11,7 +11,7 @@ class OpenContent extends React.Component {
   render() {
     const { admin } = this.props;
     return (
-      <div className="wrapper vizz-wysiwyg">
+      <div className="vizz-wysiwyg">
         <Wysiwyg
           items={JSON.parse(admin.page.content) || []}
           onChange={(d) => {
