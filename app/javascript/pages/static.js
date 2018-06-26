@@ -15,7 +15,7 @@ const StaticPage = ({ site, version }) => (
   <div className="fa-page">
     <CoverPage site={site} secondary />
     {version <= 1 && <WysiwygEditor content={getDbContent(site.page.content)} />}
-    {version > 1 && <Wysiwyg
+    {version > 1 && <div className="vizz-wysiwyg"><Wysiwyg
       readOnly
       items={JSON.parse(site.page.content) || []}
       blocks={{
@@ -34,7 +34,7 @@ const StaticPage = ({ site, version }) => (
           renderer: 'tooltip'
         }
       }}
-    />}
+    /></div>}
 
     <Footer site={site} />
   </div>

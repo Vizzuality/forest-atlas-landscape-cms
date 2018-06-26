@@ -44,30 +44,6 @@ body {
     .dropdown-item {
       overflow: hidden;
     }
-
-    .menu > ul > li {
-      text-align: left;
-
-      &:last-of-type { padding-right: 20px!important; }
-
-      &:hover {
-        background: #FFF;
-        color: #000000;
-
-        a { color: inherit; }
-
-        ul {
-          border: none;
-          box-shadow: none;
-          border-top: 3px solid #000;
-          margin: 0;
-          padding: 0 20px;
-          position: relative;
-          width: 130%;
-        }
-
-      }
-    }
   }
 
   a {
