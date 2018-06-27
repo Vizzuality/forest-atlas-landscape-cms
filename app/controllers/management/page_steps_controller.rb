@@ -124,6 +124,13 @@ class Management::PageStepsController < ManagementController
         gon.widgets = get_widgets_list
       when 'open_content_v2'
         gon.widgets = get_widgets_list
+        @widgets = WidgetService.get_widgets
+        @widgets = @widgets.map do |x|
+          { widget: x,
+            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
+            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        end
+        @widgets
       when 'open_content_preview'
         gon.widgets = get_widgets_list
 
