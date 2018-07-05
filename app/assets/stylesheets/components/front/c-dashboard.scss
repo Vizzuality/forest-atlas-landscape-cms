@@ -1,0 +1,23 @@
+.c-dashboard {
+  padding: 50px 0;
+
+  .c-dashboard-filters {
+    max-width: $content-max-width;
+    margin: 0 auto;
+    margin-bottom: 30px;
+  }
+
+  .c-tabs {
+    margin-bottom: 45px;
+  }
+
+  .c-dashboard-chart-view {
+    max-width: $content-max-width;
+    margin: 0 auto;
+  }
+
+  .c-dashboard-table-view {
+    max-width: $content-max-width;
+    margin: 0 auto;
+  }
+}

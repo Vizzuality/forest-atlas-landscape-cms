@@ -7,12 +7,22 @@ import admin from 'redactions/admin';
 import management from 'redactions/management';
 import env from 'redactions/env';
 
+// Public dashboard reducers
+import DashboardReducer from 'components/public/Dashboard/dashboard.reducer';
+import DashboardChartViewReducer from 'components/public/DashboardChartView/dashboard-chart-view.reducer';
+import DashboardTableViewReducer from 'components/public/DashboardTableView/dashboard-table-view.reducer';
+import DashboardFiltersReducer from 'components/public/DashboardFilters/dashboard-filters.reducer';
+
 const rootReducer = combineReducers({
   site,
   admin,
   management,
   env,
-  ...widgetEditorReducers
+  ...widgetEditorReducers,
+  dashboard: DashboardReducer,
+  dashboardChart: DashboardChartViewReducer,
+  dashboardTable: DashboardTableViewReducer,
+  dashboardFilters: DashboardFiltersReducer
 });
 
 export default rootReducer;

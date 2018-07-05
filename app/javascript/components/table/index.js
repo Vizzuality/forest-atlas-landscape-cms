@@ -131,7 +131,11 @@ class Table extends React.Component {
 
     return Object.keys(d).map((key) => {
 
-      const value = d[key].value && d[key].value.length > 0 ? d[key].value : '-';
+      let { value } = d[key];
+      if (typeof d[key].value === 'string' && !d[key].value.length) {
+        value = '-';
+      }
+
       const cls = classnames({
         isLong: value.length > 15,
         isList: Array.isArray(value)

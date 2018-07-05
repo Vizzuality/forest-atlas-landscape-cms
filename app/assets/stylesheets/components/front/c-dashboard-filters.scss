@@ -1,0 +1,177 @@
+.c-dashboard-filters {
+  ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;;
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+
+      label,
+      .placeholder {
+        display: block;
+        font-size: $font-size-small;
+        font-weight: $font-weight-bold;
+        letter-spacing: .1px;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .field {
+    flex-basis: 170px;
+    flex-shrink: 0;
+    margin-right: 25px;
+
+    select {
+      border-radius: 4px;
+      padding-left: 10px;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    .slider {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 35px;
+
+      .rc-slider {
+        margin: 0 15px;
+
+        .rc-slider-track { background-color: $color-1; }
+        .rc-slider-handle { border-color: $color-1; }
+      }
+    }
+
+    .info {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 35px;
+    }
+
+    .Select {
+      max-width: none;
+
+      &.is-focused:not(.is-open) > .Select-control {
+        box-shadow: none;
+        border-color: $color-1;
+      }
+
+      .Select-control {
+        height: 35px;
+
+        .Select-multi-value-wrapper { margin: 0; }
+        .Select-input { height: 31px; }
+
+        .Select-value {
+          color: $color-4;
+          border-color: $color-1;
+          background-color: rgba($color-1, .1);
+
+          .Select-value-icon {
+            border-right-color: $color-1;
+
+            &:hover {
+              color: $color-4;
+              background: rgba($color-1, .2);
+            }
+          }
+        }
+      }
+
+      .Select-menu-outer {
+        z-index: 2;
+
+        .Select-option {
+          &.is-selected,
+          &.is-focused {
+            background: rgba($color-1, .1);
+          }
+        }
+      }
+    }
+
+    .date-pickers {
+      display: flex;
+      justify-content: flex-start;
+
+      > div {
+        flex-basis: calc(50% - 12.5px);
+        & + div { margin-left: 25px; }
+      }
+
+      input {
+        width: 100%;
+        padding: 0 10px;
+        height: 35px;
+        border-radius: 4px;
+        color: $color-4;
+        font-size: $font-size-small;
+        border: 1px solid #ccc;
+
+        &:focus,
+        &:active {
+          border-color: $color-1;
+          outline: none;
+        }
+      }
+    }
+  }
+
+  .actions {
+    flex-shrink: 0;
+    margin-left: 25px;
+
+    .delete-button {
+      position: relative;
+      font-family: $font-family-1;
+      font-size: $font-size-small;
+      color: $color-4;
+      border: 0;
+      background: none;
+      cursor: pointer;
+
+      &:after {
+        display: inline-block;
+        width: 10px;
+        height: 14px;
+        margin-left: 10px;
+        vertical-align: middle;
+        border: none;
+        background: image-url('icons/bin-icon.svg') no-repeat center center;
+        content: '';
+      }
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+
+    .c-button + .c-button {
+      margin-left: 15px;
+    }
+  }
+}
+
+.flatpickr-calendar {
+  .flatpickr-day.selected {
+    background: $color-1;
+    border-color: $color-1;
+  }
+}
