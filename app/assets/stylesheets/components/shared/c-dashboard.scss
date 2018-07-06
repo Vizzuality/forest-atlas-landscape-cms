@@ -9,7 +9,9 @@ $dashboard_text_width: 700px;
 .#{$this} {
   max-width: $body-max-width;
   margin: 0 auto;
-  overflow: hidden;
+  // The next line breaks the tooltip of the bookmark bar
+  // of the dashboard v2
+  // overflow: hidden;
 
   ul { list-style-type: none; }
 

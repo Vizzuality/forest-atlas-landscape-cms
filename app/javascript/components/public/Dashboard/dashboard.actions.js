@@ -6,7 +6,8 @@ import {
   SET_DATASET_LOADING,
   SET_DATASET_ERROR,
   SET_DATASET_DATA,
-  SET_WIDGET
+  SET_WIDGET,
+  SET_PAGE_SLUG
 } from 'components/public/Dashboard/dashboard.reducer';
 
 import {
@@ -88,3 +89,11 @@ export const fetchDataset = () => (
       .then(() => dispatch({ type: SET_DATASET_LOADING, payload: false }));
   }
 );
+
+/**
+ * Set the page slug in the store
+ */
+export const setPageSlug = pageSlug => ({
+  type: SET_PAGE_SLUG,
+  payload: pageSlug
+});

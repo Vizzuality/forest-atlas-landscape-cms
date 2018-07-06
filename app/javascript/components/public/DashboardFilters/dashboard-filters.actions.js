@@ -18,8 +18,8 @@ export const addFilter = filter => (
   }
 );
 
-export const removeFilter = (filter) => {
-  return (dispatch, getState) => {
+export const removeFilter = filter => (
+  (dispatch, getState) => {
     const availableFields = getAvailableFields(getState());
     dispatch({
       type: REMOVE_FILTER,
@@ -31,8 +31,8 @@ export const removeFilter = (filter) => {
     if (availableFields.length === 0) {
       dispatch(addFilter({}));
     }
-  };
-};
+  }
+);
 
 export const updateFilter = (filter, newFilter, checkCompleteness = true) => (
   (dispatch) => {
@@ -107,7 +107,14 @@ export const getFilterMinMax = filter => (
         {
           min: Math.floor(min),
           max: Math.ceil(max),
-          values: [Math.floor(min), Math.ceil(max)],
+          // The filter might have been restored from a bookmark
+          // In that case, we need to make sure we don't loose its
+          // settings, but that also, the filter is consistent with
+          // the current data of the dataset (which might have changed
+          // over time)
+          values: filter.min && filter.max
+            ? [Math.max(filter.min, min), Math.min(filter.max, max)]
+            : [Math.floor(min), Math.ceil(max)],
           loading: false
         }
       ))))
@@ -143,7 +150,18 @@ export const getFilterPossibleValues = filter => (
       .then(data => (data || []).map(d => d[filter.name]))
       .then(possibleValues => dispatch(updateFilter(
         filter,
-        Object.assign({}, filter, { possibleValues, values: [], loading: false })
+        Object.assign({}, filter, {
+          possibleValues,
+          // The filter might have been restored from a bookmark
+          // In that case, we need to make sure we don't loose its
+          // settings, but that also, the filter is consistent with
+          // the current data of the dataset (which might have changed
+          // over time)
+          values: filter.values && filter.values.length
+            ? filter.values.filter(v => possibleValues.indexOf(v) !== -1)
+            : [],
+          loading: false
+        })
       )))
       .catch((err) => {
         console.error(err);

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import DashboardComponent from 'components/public/Dashboard/dashboard.component';
 
-import { setSelectedTab, fetchFields, fetchDataset } from 'components/public/Dashboard/dashboard.actions';
+import { setSelectedTab, fetchFields, fetchDataset, setPageSlug } from 'components/public/Dashboard/dashboard.actions';
 import { fetchData } from 'components/public/DashboardTableView/dashboard-table-view.actions';
 import { getMapWidgets, getVegaWidgets } from 'components/public/Dashboard/dashboard.selectors';
 import { fetchVegaWidgetData } from 'components/public/DashboardChartView/dashboard-chart-view.actions';
@@ -23,7 +23,8 @@ const mapDispatchToProps = dispatch => ({
   fetchData: () => dispatch(fetchData()),
   fetchFields: () => dispatch(fetchFields()),
   fetchDataset: () => dispatch(fetchDataset()),
-  fetchChartData: () => dispatch(fetchVegaWidgetData())
+  fetchChartData: () => dispatch(fetchVegaWidgetData()),
+  setPageSlug: pageSlug => dispatch(setPageSlug(pageSlug))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardComponent);

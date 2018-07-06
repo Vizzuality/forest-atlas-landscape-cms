@@ -11,7 +11,7 @@
 } ) %>
 
 <div class="fa-dashboard">
-  <%= react_component('public/Dashboard') %>
+  <%= react_component('public/Dashboard', { pageSlug: @site_page.uri }) %>
 </div>
 
 <%= render 'front/footer' %>

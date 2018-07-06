@@ -6,6 +6,7 @@ export const SET_DATASET_LOADING = 'DASHBOARD/SET_DATASET_LOADING';
 export const SET_DATASET_ERROR = 'DASHBOARD/SET_DATASET_ERROR';
 export const SET_DATASET_DATA = 'DASHBOARD/SET_DATASET_DATA';
 export const SET_WIDGET = 'DASHBOARD/SET_WIDGET';
+export const SET_PAGE_SLUG = 'DASHBOARD/SET_PAGE_SLUG';
 
 const initialState = {
   tabs: [
@@ -15,6 +16,7 @@ const initialState = {
   ],
   selectedTab: 'Chart',
   datasetId: '5159fe6f-defd-44d2-9e7d-15665e14deeb',
+  pageSlug: null,
   fields: {
     loading: false,
     error: false,
@@ -70,6 +72,9 @@ export default (state = initialState, action) => {
 
     case SET_WIDGET:
       return Object.assign({}, state, { widget: action.payload });
+
+    case SET_PAGE_SLUG:
+      return Object.assign({}, state, { pageSlug: action.payload });
 
     default:
       return state;

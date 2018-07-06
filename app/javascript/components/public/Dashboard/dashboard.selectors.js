@@ -5,6 +5,7 @@ import { isMapWidget, isVegaWidget, getWidgetsFromDataset } from 'helpers/api';
 const getData = state => state.dashboard.data.data;
 const getFields = state => state.dashboard.fields.data;
 const getDataset = state => state.dashboard.dataset.data;
+const getPageSlugSelector = state => state.dashboard.pageSlug;
 
 /**
  * Return the data without the columns that are not
@@ -46,4 +47,12 @@ export const getMapWidgets = createSelector(
 export const getVegaWidgets = createSelector(
   [getWidgets],
   widgets => widgets.filter(w => isVegaWidget(w))
+);
+
+/**
+ * Return the page slug
+ */
+export const getPageSlug = createSelector(
+  [getPageSlugSelector],
+  pageSlug => pageSlug
 );
