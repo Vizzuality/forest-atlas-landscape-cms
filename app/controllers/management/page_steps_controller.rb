@@ -179,7 +179,6 @@ class Management::PageStepsController < ManagementController
         if @page.valid?
           move_forward
         else
-          @datasets_contexts = @site.get_datasets_contexts
           render_wizard
         end
       when 'dashboard_widget'
@@ -188,7 +187,6 @@ class Management::PageStepsController < ManagementController
         if @page.valid?
           move_forward
         else
-          @datasets_contexts = @site.get_datasets_contexts
           render_wizard
         end
       when 'preview_analytics_dashboard'
@@ -380,9 +378,9 @@ class Management::PageStepsController < ManagementController
         session[:invalid_steps][@page_id] = %w[type dashboard_widget preview]
         @dashboard_setting.widget_id = nil
       end
-
-      @dashboard_setting.assign_attributes(dataset_id: ds_id)
     end
+
+    @dashboard_setting.assign_attributes db_params
   end
 
   # Saves the current dashboard settings state in the session
