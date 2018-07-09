@@ -44,6 +44,8 @@ class NewWidgetPage extends React.Component {
       advancedEditorWarningAccepted: false,
       // Whether we're using the advanced editor
       advancedEditor: false,
+      // Whether we're loading the advanced editor
+      advancedEditorLoading: false,
       // State of the advanced editor
       widgetConfig: {},
       // Whether the preview of the avanced editor is loading
@@ -168,10 +170,33 @@ class NewWidgetPage extends React.Component {
    * the "normal" and avanced editor
    */
   onToggleAdvancedEditor() {
-    this.setState({
-      advancedEditor: !this.state.advancedEditor,
-      advancedEditorWarningAccepted: false
-    });
+    const toggleAdvancedEditor = () => {
+      this.setState({
+        advancedEditor: !this.state.advancedEditor,
+        advancedEditorWarningAccepted: false
+      });
+    };
+
+    if (this.state.advancedEditor) {
+      return toggleAdvancedEditor();
+    }
+
+    return new Promise(resolve => this.setState({ advancedEditorLoading: true }, resolve))
+      .then(() => this.getWidgetConfig())
+      .then((res) => {
+        const widgetConfig = Object.assign({}, res);
+        delete widgetConfig.paramsConfig;
+        delete widgetConfig.config;
+        return new Promise(resolve => this.setState({
+          widgetConfig,
+          advancedEditorLoading: false
+        }, resolve));
+      })
+      .catch(() => new Promise(resolve => this.setState({
+        widgetConfig: {},
+        advancedEditorLoading: false
+      }, resolve)))
+      .then(() => toggleAdvancedEditor());
   }
 
   /**
@@ -208,7 +233,7 @@ class NewWidgetPage extends React.Component {
     // eslint-disable-next-line no-shadow
     const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption, redirectUrl } = this.props;
-    const { widgetConfigError, advancedEditor,
+    const { widgetConfigError, advancedEditor, advancedEditorLoading,
       advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError } = this.state;
 
     let content;
@@ -255,7 +280,10 @@ class NewWidgetPage extends React.Component {
                 <footer>
                   <div className="c-checkbox">
                     <input type="checkbox" id="advanced-editor" name="advanced-editor" checked={advancedEditor} onClick={() => this.onToggleAdvancedEditor()} />
-                    <label htmlFor="advanced-editor">Use the advanced editor to create the widget manually</label>
+                    <label htmlFor="advanced-editor">
+                      { advancedEditorLoading && <div className="c-loading-spinner -inline -small" /> }
+                      &nbsp;Use the advanced editor to create the widget manually
+                    </label>
                   </div>
                 </footer>
               </div>
@@ -279,7 +307,7 @@ class NewWidgetPage extends React.Component {
                   <div>
                     <textarea
                       ref={(el) => { this.advancedEditor = el; }}
-                      defaultValue={JSON.stringify(widgetConfig)}
+                      defaultValue={JSON.stringify(widgetConfig, null, 2)}
                     />
                   </div>
                   <div className="preview">
