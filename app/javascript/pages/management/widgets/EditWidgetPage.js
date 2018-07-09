@@ -7,6 +7,7 @@ import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
 import Notification from 'components/Notification';
 import ThemeSelector from 'components/ThemeSelector';
+import ToggleSwitcher from 'components/shared/ToggleSwitcher';
 
 import { setStep, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
 
@@ -38,6 +39,12 @@ class EditWidgetPage extends React.Component {
       // Whether we're using the advanced editor
       advancedEditor: !props.widget.widget_config
         || !props.widget.widget_config.paramsConfig,
+      // Whether the user has dismissed the warning when switching to
+      // the advanced editor
+      advancedEditorWarningAccepted: !props.widget.widget_config
+        || !props.widget.widget_config.paramsConfig,
+      // Whether we're loading the advanced editor
+      advancedEditorLoading: false,
       // State of the advanced editor
       widgetConfig: props.widget.widget_config || {},
       // Whether the preview of the avanced editor is loading
@@ -78,6 +85,62 @@ class EditWidgetPage extends React.Component {
     }
   }
 
+  componentDidUpdate(_, prevState) {
+    if (!prevState.advancedEditor && this.state.advancedEditor && this.advancedEditor) {
+      this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
+        mode: 'javascript',
+        autoCloseTags: true,
+        lineWrapping: true,
+        lineNumbers: true
+      });
+
+      this.codeMirror.on('change', () => {
+        try {
+          const widgetConfig = JSON.parse(this.codeMirror.getValue());
+          this.setState({ widgetConfig });
+        } catch (e) {
+          // If there's an error in the JSON, we reset the widgetConfig
+          // so the user sees the preview is empty
+          this.setState({ widgetConfig: {} });
+        }
+      });
+    }
+  }
+
+  /**
+   * Event handler executed when the user toggles between
+   * the "normal" and avanced editor
+   */
+  onToggleAdvancedEditor() {
+    const toggleAdvancedEditor = () => {
+      this.setState({
+        advancedEditor: !this.state.advancedEditor,
+        advancedEditorWarningAccepted: false
+      });
+    };
+
+    if (this.state.advancedEditor) {
+      return toggleAdvancedEditor();
+    }
+
+    return new Promise(resolve => this.setState({ advancedEditorLoading: true }, resolve))
+      .then(() => this.getWidgetConfig())
+      .then((res) => {
+        const widgetConfig = Object.assign({}, res);
+        delete widgetConfig.paramsConfig;
+        delete widgetConfig.config;
+        return new Promise(resolve => this.setState({
+          widgetConfig,
+          advancedEditorLoading: false
+        }, resolve));
+      })
+      .catch(() => new Promise(resolve => this.setState({
+        widgetConfig: {},
+        advancedEditorLoading: false
+      }, resolve)))
+      .then(() => toggleAdvancedEditor());
+  }
+
   /**
    * Event handler executed when the user clicks the "Update"
    * button
@@ -85,6 +148,13 @@ class EditWidgetPage extends React.Component {
   onClickUpdate() {
     new Promise((resolve, reject) => { // eslint-disable-line no-new
       if (this.state.advancedEditor) {
+        // If the user hasn't defined any theme in the wysiwyg and if one
+        // has been selected in the theme selector, then we had it before
+        // creating the widget
+        if (this.state.widgetConfig && !this.state.widgetConfig.config && this.state.theme) {
+          resolve(Object.assign({}, this.state.widgetConfig, { config: this.state.theme }));
+        }
+
         resolve(this.state.widgetConfig);
       } else {
         this.getWidgetConfig()
@@ -186,8 +256,11 @@ class EditWidgetPage extends React.Component {
     const { currentStep, setStep, setTitle, setDescription, setCaption,
       title, description, caption, widget } = this.props;
 
-    const { widgetConfigError, advancedEditor,
-      widgetConfig, previewLoading, saveError, theme } = this.state;
+    const { widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
+      advancedEditorLoading, widgetConfig, previewLoading, saveError, theme } = this.state;
+
+    const createdWithAdvancedMode = !this.props.widget.widget_config
+      || !this.props.widget.widget_config.paramsConfig;
 
     const content = (
       <div>
@@ -213,44 +286,58 @@ class EditWidgetPage extends React.Component {
                 />
               </div>
             </div>
-            { !advancedEditor && (
-              <WidgetEditor
-                datasetId={widget.dataset}
-                {...(widget ? { widgetId: widget.id } : {})}
-                widgetTitle={title}
-                widgetCaption={caption}
-                theme={this.state.theme}
-                saveButtonMode="never"
-                embedButtonMode="never"
-                onChangeWidgetTitle={t => setTitle(t)}
-                onChangeWidgetCaption={c => setCaption(c)}
-                provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
-              />
-            )}
-            { advancedEditor && (
-              <div className="advanced-editor">
-                <div>
-                  <textarea
-                    ref={(el) => { this.advancedEditor = el; }}
-                    defaultValue={JSON.stringify(widgetConfig)}
-                  />
-                </div>
-                <div className="preview">
-                  { previewLoading && <div className="c-loading-spinner -bg" /> }
-                  {widgetConfig && widgetConfig.data && (
-                    <VegaChart
-                      data={widgetConfig}
-                      theme={widgetConfig.config || this.state.theme}
-                      theme={getVegaTheme()}
-                      showLegend
-                      reloadOnResize
-                      toggleLoading={loading => this.setState({ previewLoading: loading })}
-                      getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+            <div className="widget-container">
+              { advancedEditorLoading && <div className="c-loading-spinner -bg" /> }
+              { !createdWithAdvancedMode && (
+                <ToggleSwitcher
+                  elements={['Widget editor', 'Advanced editor']}
+                  selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
+                  onChange={(newSelected) => {
+                    const selected = advancedEditor ? 'Advanced editor' : 'Widget editor';
+                    if (selected !== newSelected) {
+                      this.onToggleAdvancedEditor();
+                    }
+                  }}
+                />
+              )}
+              { !advancedEditor && (
+                <WidgetEditor
+                  datasetId={widget.dataset}
+                  {...(widget ? { widgetId: widget.id } : {})}
+                  widgetTitle={title}
+                  widgetCaption={caption}
+                  theme={this.state.theme}
+                  saveButtonMode="never"
+                  embedButtonMode="never"
+                  onChangeWidgetTitle={t => setTitle(t)}
+                  onChangeWidgetCaption={c => setCaption(c)}
+                  provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                />
+              )}
+              { advancedEditor && (
+                <div className="advanced-editor">
+                  <div>
+                    <textarea
+                      ref={(el) => { this.advancedEditor = el; }}
+                      defaultValue={JSON.stringify(widgetConfig, null, 2)}
                     />
-                  )}
+                  </div>
+                  <div className="preview">
+                    { previewLoading && <div className="c-loading-spinner -bg" /> }
+                    {widgetConfig && widgetConfig.data && (
+                      <VegaChart
+                        data={widgetConfig}
+                        theme={widgetConfig.config || this.state.theme}
+                        showLegend
+                        reloadOnResize
+                        toggleLoading={loading => this.setState({ previewLoading: loading })}
+                        getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -280,6 +367,18 @@ class EditWidgetPage extends React.Component {
             content="Unable to update the widget"
             additionalContent="Please try again later."
             onClose={() => this.setState({ saveError: false })}
+          />
+        )}
+
+        {advancedEditor && !advancedEditorWarningAccepted && (
+          <Notification
+            type="warning"
+            content="Once you've updated the widget with the advanced editor, you won't be able to use the simple interface anymore."
+            dialogButtons
+            closeable={false}
+            onCancel={() => this.setState({ advancedEditor: false })}
+            onContinue={() => this.setState({ advancedEditorWarningAccepted: true })}
+            onClose={() => this.setState({ advancedEditor: false })}
           />
         )}
 
