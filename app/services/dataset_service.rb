@@ -8,9 +8,12 @@ class DatasetService < ApiService
   # ... so this will get the first 10000 records
   # Params
   # ++status++ the status of the dataset
-  def self.get_datasets(status = 'saved')
-    datasetRequest = @conn.get '/v1/dataset', {'page[number]': '1', 'page[size]': '10000', \
-      'status': status, 'application': 'forest-atlas,gfw,prep', '_': Time.now.to_s}
+  def self.get_datasets(status: 'saved', dataset_ids: nil)
+    datasetRequest = @conn.get '/v1/dataset',
+                               {'page[number]': '1', 'page[size]': '10000',
+                                'status': status, 'application': 'forest-atlas,gfw,prep',
+                                ids: dataset_ids,
+                                '_': Time.now.to_s}
 
     datasetsJSON = JSON.parse datasetRequest.body
 

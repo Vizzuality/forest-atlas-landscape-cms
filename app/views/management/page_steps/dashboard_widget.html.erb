@@ -1,0 +1,50 @@
+<%= javascript_pack_tag 'application' %>
+
+<% content_for :extended_header do %>
+  <!--suppress ALL -->
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Widget</h1>
+        <p>Choose the widget to add to the page</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  nvalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
+<%= Gon::Base.render_data %>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+  <div class="l-page-creation -dataset">
+    <div class="wrapper">
+      <div class="c-action-toolbar">
+        <ul class="buttons">
+        </ul>
+        <ul class="filters">
+          <li><div class="c-input-search js-dataset-search"></div></li>
+        </ul>
+      </div>
+      <div class="c-cards-list">
+        <% @widgets.each do |widget|%>
+          <div class="card js-dataset" data-id="<%= widget.id %>" data-name="<%= widget.name %>" >
+            <label for="widget-<%= widget.id %>"><%=widget.name %></label>
+            <%= radio_button_tag 'site_page[dashboard_setting][widget_id]', \
+                    widget.id, f.object.dashboard_setting ? (f.object.dashboard_setting.widget_id == widget.id) : nil, id: 'widget-' + widget.id %>
+            <div class="content">
+              <h3><%= widget.name %></h3>
+              <p><%= widget.description %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, wide: true } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @page} %>
+

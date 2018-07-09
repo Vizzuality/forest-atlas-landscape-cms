@@ -8,7 +8,7 @@ class DynamicRouter
   )
 
   def self.reload
-    Rails.logger.debug ">>> DynamicRouter.reload"
+    # Rails.logger.debug ">>> DynamicRouter.reload"
     Rails.application.routes_reloader.reload!
   end
 
@@ -19,7 +19,7 @@ class DynamicRouter
       Rails.logger.error "Pending migrations - cannot load dynamic routes"
       return
     end
-    Rails.logger.debug ">>> DynamicRouter.load"
+    # Rails.logger.debug ">>> DynamicRouter.load"
     if @route_cache.empty?
       SitePage.includes(:site, :routes).all.each do |site_page|
         site_page.routes.each do |route|
@@ -32,7 +32,7 @@ class DynamicRouter
   end
 
   def self.update_routes_for_site_page(site_page)
-    Rails.logger.debug ">>> DynamicRouter.update_routes_for_site_page #{site_page.try(:id) || 'NULL'}"
+    # Rails.logger.debug ">>> DynamicRouter.update_routes_for_site_page #{site_page.try(:id) || 'NULL'}"
     return if site_page.id.nil?
 
     @route_cache.remove('p:' + site_page.id.to_s)
@@ -45,7 +45,7 @@ class DynamicRouter
   end
 
   def self.update_routes_for_site(site)
-    Rails.logger.debug ">>> DynamicRouter.update_routes_for_site #{site.try(:id) || 'NULL'}"
+    # Rails.logger.debug ">>> DynamicRouter.update_routes_for_site #{site.try(:id) || 'NULL'}"
     return if site.id.nil?
 
     @route_cache.remove('s:' + site.id.to_s)
@@ -60,7 +60,7 @@ class DynamicRouter
   end
 
   def self.update_routes_for_route(route)
-    Rails.logger.debug ">>> DynamicRouter.update_routes_for_route #{route.try(:id) || 'NULL'}"
+    # Rails.logger.debug ">>> DynamicRouter.update_routes_for_route #{route.try(:id) || 'NULL'}"
     return if route.id.nil?
 
     @route_cache.remove('r:' + route.id.to_s)
@@ -73,7 +73,7 @@ class DynamicRouter
   end
 
   def self._build_routes_for_page_and_route(site_page, route)
-    Rails.logger.debug ">>> DynamicRouter._build_routes_for_page_and_route #{site_page.id}, #{route.id}"
+    # Rails.logger.debug ">>> DynamicRouter._build_routes_for_page_and_route #{site_page.id}, #{route.id}"
     main_route_host = route.main ? nil : site_page.site.routes.where(main: true).first&.host
 
     constraints = {}
@@ -157,7 +157,7 @@ class DynamicRouter
   end
 
   def self._declare_route(route)
-    Rails.logger.debug ">>> DynamicRouter._declare_route " + route.inspect
+    # Rails.logger.debug ">>> DynamicRouter._declare_route " + route.inspect
     Rails.application.routes.draw do
       if route.redirect_host
         route.path = '/' if route.path == '//' # the homepage has two slashes
@@ -174,7 +174,7 @@ class DynamicRouter
   end
 
   def self._load_routes_from_cache
-    Rails.logger.debug ">>> DynamicRouter._load_routes_from_cache"
+    # Rails.logger.debug ">>> DynamicRouter._load_routes_from_cache"
     @route_cache.all.each do |route|
       _declare_route(route)
     end
