@@ -87,6 +87,13 @@ class NewWidgetPage extends React.Component {
   onClickCreate() {
     new Promise((resolve, reject) => { // eslint-disable-line no-new
       if (this.state.advancedEditor) {
+        // If the user hasn't defined any theme in the wysiwyg and if one
+        // has been selected in the theme selector, then we had it before
+        // creating the widget
+        if (this.state.widgetConfig && !this.state.widgetConfig.config && this.state.theme) {
+          resolve(Object.assign({}, this.state.widgetConfig, { config: this.state.theme }));
+        }
+
         resolve(this.state.widgetConfig);
       } else {
         this.getWidgetConfig()
