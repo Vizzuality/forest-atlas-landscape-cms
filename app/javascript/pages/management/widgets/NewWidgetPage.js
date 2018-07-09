@@ -366,7 +366,7 @@ class NewWidgetPage extends React.Component {
         {advancedEditor && !advancedEditorWarningAccepted && (
           <Notification
             type="warning"
-            content="Onced you've created the widget with the advanced editor, you won't be able to use the simple interface."
+            content="Once you've created the widget with the advanced editor, you won't be able to use the simple interface."
             dialogButtons
             closeable={false}
             onCancel={() => this.setState({ advancedEditor: false })}
