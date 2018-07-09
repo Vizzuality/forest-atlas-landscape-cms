@@ -1,0 +1,32 @@
+.c-toggle-switcher {
+  display: flex;
+  justify-content: center;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid rgba($color-1, .3);
+    border-radius: 40px;
+  }
+
+  button {
+    display: block;
+    padding: 5px 25px;
+    color: $color-1;
+    line-height: 27px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 40px;
+    appearance: none;
+    font-family: $font-family-1;
+    font-size: $font-size-normal;
+    cursor: pointer;
+
+    &.-active {
+      background: $color-1;
+      color: $color-3;
+      pointer-events: none;
+    }
+  }
+}

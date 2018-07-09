@@ -7,6 +7,7 @@ import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
 import Notification from 'components/Notification';
 import ThemeSelector from 'components/ThemeSelector';
+import ToggleSwitcher from 'components/shared/ToggleSwitcher';
 
 import { setStep, setWidgetCreationDataset, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
 
@@ -277,54 +278,58 @@ class NewWidgetPage extends React.Component {
                     onChange={theme => this.onChangeTheme(theme)}
                   />
                 </div>
-                <footer>
-                  <div className="c-checkbox">
-                    <input type="checkbox" id="advanced-editor" name="advanced-editor" checked={advancedEditor} onClick={() => this.onToggleAdvancedEditor()} />
-                    <label htmlFor="advanced-editor">
-                      { advancedEditorLoading && <div className="c-loading-spinner -inline -small" /> }
-                      &nbsp;Use the advanced editor to create the widget manually
-                    </label>
-                  </div>
-                </footer>
               </div>
-              { !advancedEditor && (
-                <WidgetEditor
-                  datasetId={dataset}
-                  widgetTitle={title}
-                  widgetCaption={caption}
-                  theme={this.state.theme}
-                  saveButtonMode="never"
-                  embedButtonMode="never"
-                  useLayerEditor
-                  onChangeWidgetTitle={t => setTitle(t)}
-                  onChangeWidgetCaption={c => setCaption(c)}
-                  provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
-                  provideLayer={(func) => { this.getLayer = func; }}
+              <div className="widget-container">
+                { advancedEditorLoading && <div className="c-loading-spinner -bg" /> }
+                <ToggleSwitcher
+                  elements={['Widget editor', 'Advanced editor']}
+                  selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
+                  onChange={(newSelected) => {
+                    const selected = advancedEditor ? 'Advanced editor' : 'Widget editor';
+                    if (selected !== newSelected) {
+                      this.onToggleAdvancedEditor();
+                    }
+                  }}
                 />
-              )}
-              { advancedEditor && (
-                <div className="advanced-editor">
-                  <div>
-                    <textarea
-                      ref={(el) => { this.advancedEditor = el; }}
-                      defaultValue={JSON.stringify(widgetConfig, null, 2)}
-                    />
-                  </div>
-                  <div className="preview">
-                    { previewLoading && <div className="c-loading-spinner -bg" /> }
-                    {widgetConfig && widgetConfig.data && (
-                      <VegaChart
-                        data={widgetConfig}
-                        theme={widgetConfig.config || this.state.theme}
-                        showLegend
-                        reloadOnResize
-                        toggleLoading={loading => this.setState({ previewLoading: loading })}
-                        getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                { !advancedEditor && (
+                  <WidgetEditor
+                    datasetId={dataset}
+                    widgetTitle={title}
+                    widgetCaption={caption}
+                    theme={this.state.theme}
+                    saveButtonMode="never"
+                    embedButtonMode="never"
+                    useLayerEditor
+                    onChangeWidgetTitle={t => setTitle(t)}
+                    onChangeWidgetCaption={c => setCaption(c)}
+                    provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                    provideLayer={(func) => { this.getLayer = func; }}
+                  />
+                )}
+                { advancedEditor && (
+                  <div className="advanced-editor">
+                    <div>
+                      <textarea
+                        ref={(el) => { this.advancedEditor = el; }}
+                        defaultValue={JSON.stringify(widgetConfig, null, 2)}
                       />
-                    )}
+                    </div>
+                    <div className="preview">
+                      { previewLoading && <div className="c-loading-spinner -bg" /> }
+                      {widgetConfig && widgetConfig.data && (
+                        <VegaChart
+                          data={widgetConfig}
+                          theme={widgetConfig.config || this.state.theme}
+                          showLegend
+                          reloadOnResize
+                          toggleLoading={loading => this.setState({ previewLoading: loading })}
+                          getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

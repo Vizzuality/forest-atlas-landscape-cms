@@ -213,44 +213,46 @@ class EditWidgetPage extends React.Component {
                 />
               </div>
             </div>
-            { !advancedEditor && (
-              <WidgetEditor
-                datasetId={widget.dataset}
-                {...(widget ? { widgetId: widget.id } : {})}
-                widgetTitle={title}
-                widgetCaption={caption}
-                theme={this.state.theme}
-                saveButtonMode="never"
-                embedButtonMode="never"
-                onChangeWidgetTitle={t => setTitle(t)}
-                onChangeWidgetCaption={c => setCaption(c)}
-                provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
-              />
-            )}
-            { advancedEditor && (
-              <div className="advanced-editor">
-                <div>
-                  <textarea
-                    ref={(el) => { this.advancedEditor = el; }}
-                    defaultValue={JSON.stringify(widgetConfig)}
-                  />
-                </div>
-                <div className="preview">
-                  { previewLoading && <div className="c-loading-spinner -bg" /> }
-                  {widgetConfig && widgetConfig.data && (
-                    <VegaChart
-                      data={widgetConfig}
-                      theme={widgetConfig.config || this.state.theme}
-                      theme={getVegaTheme()}
-                      showLegend
-                      reloadOnResize
-                      toggleLoading={loading => this.setState({ previewLoading: loading })}
-                      getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+            <div className="widget-container">
+              { !advancedEditor && (
+                <WidgetEditor
+                  datasetId={widget.dataset}
+                  {...(widget ? { widgetId: widget.id } : {})}
+                  widgetTitle={title}
+                  widgetCaption={caption}
+                  theme={this.state.theme}
+                  saveButtonMode="never"
+                  embedButtonMode="never"
+                  onChangeWidgetTitle={t => setTitle(t)}
+                  onChangeWidgetCaption={c => setCaption(c)}
+                  provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                />
+              )}
+              { advancedEditor && (
+                <div className="advanced-editor">
+                  <div>
+                    <textarea
+                      ref={(el) => { this.advancedEditor = el; }}
+                      defaultValue={JSON.stringify(widgetConfig, null, 2)}
                     />
-                  )}
+                  </div>
+                  <div className="preview">
+                    { previewLoading && <div className="c-loading-spinner -bg" /> }
+                    {widgetConfig && widgetConfig.data && (
+                      <VegaChart
+                        data={widgetConfig}
+                        theme={widgetConfig.config || this.state.theme}
+                        theme={getVegaTheme()}
+                        showLegend
+                        reloadOnResize
+                        toggleLoading={loading => this.setState({ previewLoading: loading })}
+                        getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
