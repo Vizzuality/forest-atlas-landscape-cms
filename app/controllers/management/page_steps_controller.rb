@@ -220,9 +220,9 @@ class Management::PageStepsController < ManagementController
         move_forward
 
       when 'preview'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        @page.dataset_setting = @dataset_setting
+        build_current_dashboard_setting
+        set_current_dashboard_setting_state
+        @page.dashboard_setting = @dashboard_setting
         move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
