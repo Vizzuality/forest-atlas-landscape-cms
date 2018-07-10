@@ -363,7 +363,7 @@ class Management::PageStepsController < ManagementController
     if db_params[:id]
       @dashboard_setting = DashboardSetting.find(db_params[:id])
     elsif @page.dashboard_setting
-      @page.dashboard_setting = @page.dashboard_setting
+      @dashboard_setting = @page.dashboard_setting
     else
       @dashboard_setting = DashboardSetting.new
       @page.dashboard_setting = @dashboard_setting
