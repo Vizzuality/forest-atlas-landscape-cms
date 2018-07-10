@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import DashboardTableView from 'components/public/DashboardTableView/dashboard-table-view.component';
+import DashboardTableView from 'components/shared/DashboardTableView/dashboard-table-view.component';
 
-import { getDataColumns, getTableData } from 'components/public/DashboardTableView/dashboard-table-view.selectors';
+import { getDataColumns, getTableData } from 'components/shared/DashboardTableView/dashboard-table-view.selectors';
 
 const mapStateToProps = state => ({
   loading: state.dashboardTable.loading,

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import DashboardFilters from 'components/public/DashboardFilters/dashboard-filters.component';
+import DashboardFilters from 'components/shared/DashboardFilters/dashboard-filters.component';
 
-import { fetchData } from 'components/public/DashboardTableView/dashboard-table-view.actions';
-import { fetchVegaWidgetData } from 'components/public/DashboardChartView/dashboard-chart-view.actions';
-import { getAvailableFields } from 'components/public/DashboardFilters/dashboard-filters.selectors';
+import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
+import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
+import { getAvailableFields } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
-import { addFilter, removeFilter, updateFilter, resetFilters } from 'components/public/DashboardFilters/dashboard-filters.actions';
+import { addFilter, removeFilter, updateFilter, resetFilters } from 'components/shared/DashboardFilters/dashboard-filters.actions';
 
 const mapStateToProps = state => ({
   fields: getAvailableFields(state),

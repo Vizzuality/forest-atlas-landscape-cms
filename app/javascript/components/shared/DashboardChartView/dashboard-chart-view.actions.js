@@ -3,9 +3,9 @@ import {
   SET_LOADING,
   SET_ERROR,
   SET_DATA
-} from 'components/public/DashboardChartView/dashboard-chart-view.reducer';
+} from 'components/shared/DashboardChartView/dashboard-chart-view.reducer';
 
-import { getVegaWidgetDataQuery } from 'components/public/DashboardChartView/dashboard-chart-view.selectors';
+import { getVegaWidgetDataQuery } from 'components/shared/DashboardChartView/dashboard-chart-view.selectors';
 
 /**
  * Set the loading state of the data

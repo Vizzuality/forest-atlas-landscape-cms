@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import DashboardBookmarks from 'components/public/DashboardBookmarks/dashboard-bookmarks.component';
+import DashboardBookmarks from 'components/shared/DashboardBookmarks/dashboard-bookmarks.component';
 
 import {
   getBookmarksFromStorage,
@@ -9,10 +9,10 @@ import {
   updateBookmark,
   applyBookmark,
   setTooltipVisility
-} from 'components/public/DashboardBookmarks/dashboard-bookmarks.actions';
+} from 'components/shared/DashboardBookmarks/dashboard-bookmarks.actions';
 
-import { getBookmarks, getVisibilityTooltip } from 'components/public/DashboardBookmarks/dashboard-bookmarks.selectors';
-import { getPageSlug } from 'components/public/Dashboard/dashboard.selectors';
+import { getBookmarks, getVisibilityTooltip } from 'components/shared/DashboardBookmarks/dashboard-bookmarks.selectors';
+import { getPageSlug } from 'components/shared/Dashboard/dashboard.selectors';
 
 const mapStateToProps = state => ({
   pageSlug: getPageSlug(state),

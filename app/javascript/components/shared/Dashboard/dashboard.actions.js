@@ -8,7 +8,7 @@ import {
   SET_DATASET_DATA,
   SET_WIDGET,
   SET_PAGE_SLUG
-} from 'components/public/Dashboard/dashboard.reducer';
+} from 'components/shared/Dashboard/dashboard.reducer';
 
 import {
   isAcceptedType,

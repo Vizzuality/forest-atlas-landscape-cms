@@ -3,9 +3,9 @@ import {
   REMOVE_FILTER,
   UPDATE_FILTER,
   RESET_FILTERS
-} from 'components/public/DashboardFilters/dashboard-filters.reducer';
+} from 'components/shared/DashboardFilters/dashboard-filters.reducer';
 
-import { getAvailableFields } from 'components/public/DashboardFilters/dashboard-filters.selectors';
+import { getAvailableFields } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
 export const addFilter = filter => (
   (dispatch) => {

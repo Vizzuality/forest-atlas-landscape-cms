@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import DashboardChartView from 'components/public/DashboardChartView/dashboard-chart-view.component';
-import { getVegaWidgets } from 'components/public/Dashboard/dashboard.selectors';
-import { setChartLoading } from 'components/public/DashboardChartView/dashboard-chart-view.actions';
+import DashboardChartView from 'components/shared/DashboardChartView/dashboard-chart-view.component';
+import { getVegaWidgets } from 'components/shared/Dashboard/dashboard.selectors';
+import { setChartLoading } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 
 /**
  * Return the widget up-to-date with the filters

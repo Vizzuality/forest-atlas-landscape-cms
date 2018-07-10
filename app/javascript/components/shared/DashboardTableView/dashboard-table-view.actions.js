@@ -2,9 +2,9 @@ import {
   SET_DATA,
   SET_ERROR,
   SET_LOADING
-} from 'components/public/DashboardTableView/dashboard-table-view.reducer';
+} from 'components/shared/DashboardTableView/dashboard-table-view.reducer';
 
-import { getDataQuery } from 'components/public/DashboardTableView/dashboard-table-view.selectors';
+import { getDataQuery } from 'components/shared/DashboardTableView/dashboard-table-view.selectors';
 
 /**
  * Fetch the data of the dataset

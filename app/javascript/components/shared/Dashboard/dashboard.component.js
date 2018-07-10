@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import Tabs from 'components/public/Tabs';
-import DashboardBookmarks from 'components/public/DashboardBookmarks';
-import DashboardFilters from 'components/public/DashboardFilters';
-import DashboardChartView from 'components/public/DashboardChartView';
-import DashboardTableView from 'components/public/DashboardTableView';
+import Tabs from 'components/shared/Tabs';
+import DashboardBookmarks from 'components/shared/DashboardBookmarks';
+import DashboardFilters from 'components/shared/DashboardFilters';
+import DashboardChartView from 'components/shared/DashboardChartView';
+import DashboardTableView from 'components/shared/DashboardTableView';
 
 class Dashboard extends React.Component {
   componentWillMount() {
@@ -20,7 +20,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className="c-dashboard">
-        <DashboardBookmarks />
+        {!this.props.preview && <DashboardBookmarks />}
         <DashboardFilters />
         <Tabs
           selected={this.props.selectedTab}
@@ -55,7 +55,12 @@ Dashboard.propTypes = {
   setPageSlug: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  mapWidgets: PropTypes.array.isRequired
+  mapWidgets: PropTypes.array.isRequired,
+  preview: PropTypes.bool
+};
+
+Dashboard.defaultProps = {
+  preview: false
 };
 
 export default Dashboard;

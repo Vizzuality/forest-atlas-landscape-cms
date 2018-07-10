@@ -1,12 +1,11 @@
 <%= javascript_pack_tag 'application' %>
 
 <% content_for :extended_header do %>
-  <!--suppress ALL -->
     <div class="c-extended-header">
     <div class="wrapper">
       <div class="description">
         <h1>Layout preview</h1>
-        <p>Add elements to build your dashboard</p>
+        <p>Add some elements to build your dashboard.</p>
       </div>
     </div>
   </div>
@@ -22,21 +21,12 @@
   <input type="hidden" type="text" id="widgets-settings" name="site_page[dataset_setting][widgets]" value="" class="js-widgets-input" />
 
   <div class="l-page-creation -dashboard-preview">
-    <div class="l-analysis-dashboard">
-
-      <div class="wrapper">
-
-        <div class="description">
-          <%= react_component('EditDashboardPage', {
-            page: @page,
-            widgets: @widgets
-          } ) %>
-          <%= f.hidden_field :content %>
-        </div>
-      </div>
-
-      </div>
-    </div>
+    <%= react_component('EditDashboardPage', {
+      dataset: @dashboard_setting.dataset_id,
+      widget: @dashboard_setting.widget_id,
+      topContent: @dashboard_setting.content_top,
+      bottomContent: @dashboard_setting.content_bottom
+    }) %>
   </div>
 
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true, wide: true } %>

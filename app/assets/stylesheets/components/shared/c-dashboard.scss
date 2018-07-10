@@ -1,228 +1,87 @@
-$this: 'fa-dashboard';
+.c-dashboard {
+  padding: 0 0 50px;
 
-$dasboard_text__color: #555555;
-$dashboard_text__size: 19px;
-$dashboard_text_line: 32px;
-$dashboard_text_weight: 300;
-$dashboard_text_width: 700px;
-
-.#{$this} {
-  max-width: $body-max-width;
-  margin: 0 auto;
-  // The next line breaks the tooltip of the bookmark bar
-  // of the dashboard v2
-  // overflow: hidden;
-
-  ul { list-style-type: none; }
-
-  .ql-container.ql-disabled .ql-tooltip {
-    display: none;
+  .c-dashboard-filters {
+    max-width: $content-max-width;
+    margin: 0 auto;
+    margin-bottom: 30px;
   }
 
-  // https://type-scale.com/
-  .ql-editor h1, h1 { font-size: 3.998em; }
-  .ql-editor h2, h2 { font-size: 2.827em; }
-  .ql-editor h3, h3 { font-size: 1.999em; }
-  .ql-editor h4, h4 { font-size: 1.414em; }
-  .ql-editor h5, h5 { font-size: 1em; }
+  .c-tabs {
+    margin-bottom: 45px;
+  }
 
-  .ql-editor h1, h2, h3, h1, h2, h3 {
-    text-align: center;
-    color: $dasboard_text__color;
-    font-weight: $dashboard_text_weight;
-    max-width: $dashboard_text_width;
+  .c-dashboard-chart-view {
+    max-width: $content-max-width;
     margin: 0 auto;
   }
 
-  .ql-editor p, p {
-    color: $dasboard_text__color;
-    font-size: $dashboard_text__size;
-    line-height: $dashboard_text_line;
-    font-weight: $dashboard_text_weight;
-    max-width: $dashboard_text_width;
+  .c-dashboard-table-view {
+    max-width: $content-max-width;
     margin: 0 auto;
   }
-  .cw-wysiwyg-list {
-    width: 100%;
-    .cw-wysiwyg-list-item { display: block; }
-  }
-  .cw-wysiwyg-item-content.-widget {
-    margin: 30px 0;
-    width: 100%;
-  }
 
-  .wysiwyg-grid-row {
-    display: flex;
-    flex-flow: row;
-    width: 100%;
-    .column {
-      flex: 1;
-      align-items: center;
-    }
-  }
+  .c-dashboard-bookmarks {
+    max-width: none;
+    margin-bottom: 50px;
+    background: rgba($color-1, .1);
 
-  &__summary {
-    margin: 0 auto;
-    padding: 40px 0;
-
-    color: $dasboard_text__color;
-    font-size: $dashboard_text__size;
-    line-height: $dashboard_text_line;
-    font-weight: $dashboard_text_weight;
-    max-width: $dashboard_text_width;
-  }
-
-  &__description {
-    display: block;
-  }
-
-  &__reports {
-    position: relative;
-    margin: 70px 0 0 0;
-    padding: 40px 0 60px 0;
-
-    &:before {
-      content: "";
-      position: absolute;
-
-      background: #D6D6D9;
-      height: 1px;
-      width: 200vw;
-      transform: translateX(-50%);
-
-      top: 0;
-      left: 0;
-    }
-
-    h1 {
-      margin: 0;
-      line-height: 1;
-    }
-
-    p {
-      padding: 30px 0;
-      text-align: center;
-    }
-
-  }
-
-  // TODO: Move this to its own plugin
-  .carusel {
-    display: flex;
-    justify-content: flex-start;
-
-    &__wrapper { position: relative; }
-
-    &__dataContainer {
-      margin: 0 auto;
-      width: calc(100% - 180px);
-      overflow: hidden;
-    }
-
-    &__item {
-      display: block;
-      width: 340px;
-      margin: 0 20px 0 0;
-
-      flex-direction: column;
-    }
-
-    &__btn {
+    .info {
       position: absolute;
       top: 50%;
+      left: 0;
       transform: translateY(-50%);
 
-      width: 40px;
-      height: 40px;
-      border-radius: 40px;
-      border: none;
-      background: #97BE32;
-      text-indent: -9999px;
-      outline: none;
-
-      &--prev { left: 0;
-
-        &:before {
-          content: "";
-          width: 0;
-          height: 0;
-          border-top: 7px solid transparent;
-          border-bottom: 7px solid transparent;
-          border-right: 7px solid #FFF;
-          position: absolute;
-          top: 50%;
-          left: 44%;
-          transform: translate(-50%, -50%);
-        }
-
-        &:after {
-          content: "";
-          width: 0;
-          height: 0;
-          border-top: 7px solid transparent;
-          border-bottom: 7px solid transparent;
-          border-right: 7px solid #97BE32;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-
-      }
-      &--next { right: 0;
-
-        &:before {
-          content: "";
-          width: 0;
-          height: 0;
-          border-top: 7px solid transparent;
-          border-bottom: 7px solid transparent;
-          border-left: 7px solid #FFF;
-          position: absolute;
-          top: 50%;
-          left: 54%;
-          transform: translate(-50%, -50%);
-        }
-
-        &:after {
-          content: "";
-          width: 0;
-          height: 0;
-          border-top: 7px solid transparent;
-          border-bottom: 7px solid transparent;
-          border-left: 7px solid #97BE32;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-
-
+      .tooltip-container {
+        position: relative;
+        display: inline-block;
+        margin-left: 5px;
       }
 
-      cursor: pointer;
+      button {
+        width: 16px;
+        height: 16px;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNTU1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IC41MTJjMi4wNjMgMCAzLjgyNi43MzIgNS4yOSAyLjE5NyAxLjQ2NyAxLjQ2NCAyLjIgMy4yMjcgMi4yIDUuMjkxcy0uNzMyIDMuODI2LTIuMTk3IDUuMjljLTEuNDY2IDEuNDY3LTMuMjI5IDIuMi01LjI5MyAyLjJzLTMuODI2LS43MzItNS4yOS0yLjE5N0MxLjI0MyAxMS44MjcuNTEgMTAuMDY0LjUxIDhzLjczMi0zLjgyNiAyLjE5Ny01LjI5QzQuMTczIDEuMjQzIDUuOTM2LjUxIDggLjUxek03IDdoMnY1SDdWN3ptMC0zaDJ2Mkg3VjR6Ii8+PC9zdmc+Cg==") no-repeat center center;
+        border: none;
+        border-radius: 100%;
+        text-indent: -10000px;
+        appearance: none;
+        cursor: pointer;
+      }
+
+      .tooltip {
+        position: absolute;
+        left: 24px;
+        top: 50%;
+        width: 200px;
+        padding: 5px 8px;
+        transform: translateY(-50%);
+        background: $color-4;
+        color: $color-3;
+
+        &:after {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          width: 8px;
+          height: 8px;
+          background: $color-4;
+          transform: translate(-50%, -50%) rotate(-45deg);
+          z-index: -1;
+          content: '';
+        }
+      }
+    }
+
+    .bookmarks-wrapper {
+      position: relative;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    .add-button {
+      position: static;
+      transform: none;
     }
   }
-
-
-  &__reportPreview {
-    background: rgba(151, 190, 50, 0.05);
-    width: inherit;
-    h4 {
-      text-align: left;
-      font-size: 21px;
-      color: #97BE32;
-      font-weight: 300;
-      padding: 20px 30px 0 30px;
-      margin: 0;
-    }
-    p {
-      font-size: 14px;
-      color: #555555;
-      line-height: 1.3em;
-      padding: 20px 30px;
-      text-align: left;
-     }
-  }
-
 }

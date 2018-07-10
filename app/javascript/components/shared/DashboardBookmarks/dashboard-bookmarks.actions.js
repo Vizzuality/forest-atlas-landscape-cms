@@ -4,13 +4,13 @@ import {
   UPDATE_BOOKMARK,
   SET_BOOKMARKS,
   SET_TOOLTIP_VISIBILITY
-} from 'components/public/DashboardBookmarks/dashboard-bookmarks.reducer';
+} from 'components/shared/DashboardBookmarks/dashboard-bookmarks.reducer';
 
-import { getBookmarks } from 'components/public/DashboardBookmarks/dashboard-bookmarks.selectors';
-import { getPageSlug } from 'components/public/Dashboard/dashboard.selectors';
-import { getNonEmptyFilters, getFilters, getAvailableFields } from 'components/public/DashboardFilters/dashboard-filters.selectors';
+import { getBookmarks } from 'components/shared/DashboardBookmarks/dashboard-bookmarks.selectors';
+import { getPageSlug } from 'components/shared/Dashboard/dashboard.selectors';
+import { getNonEmptyFilters, getFilters, getAvailableFields } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
-import { resetFilters, addFilter, removeFilter } from 'components/public/DashboardFilters/dashboard-filters.actions';
+import { resetFilters, addFilter, removeFilter } from 'components/shared/DashboardFilters/dashboard-filters.actions';
 
 /**
  * Retrieve the bookmarks from the localStorage

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
-import DashboardComponent from 'components/public/Dashboard/dashboard.component';
+import DashboardComponent from 'components/shared/Dashboard/dashboard.component';
 
-import { setSelectedTab, fetchFields, fetchDataset, setPageSlug } from 'components/public/Dashboard/dashboard.actions';
-import { fetchData } from 'components/public/DashboardTableView/dashboard-table-view.actions';
-import { getMapWidgets, getVegaWidgets } from 'components/public/Dashboard/dashboard.selectors';
-import { fetchVegaWidgetData } from 'components/public/DashboardChartView/dashboard-chart-view.actions';
+import { setSelectedTab, fetchFields, fetchDataset, setPageSlug } from 'components/shared/Dashboard/dashboard.actions';
+import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
+import { getMapWidgets, getVegaWidgets } from 'components/shared/Dashboard/dashboard.selectors';
+import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 
 const mapStateToProps = state => ({
   tabs: state.dashboard.tabs,
