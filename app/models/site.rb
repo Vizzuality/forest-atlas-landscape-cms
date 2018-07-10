@@ -240,7 +240,7 @@ class Site < ApplicationRecord
   private
 
   def generate_slug
-    write_attribute(:slug, self.name.parameterize)
+    write_attribute(:slug, self.name.parameterize == '' ? self.id : self.name.parameterize)
   end
 
   def apply_settings

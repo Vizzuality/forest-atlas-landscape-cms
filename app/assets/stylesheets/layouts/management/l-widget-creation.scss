@@ -26,22 +26,28 @@
       align-items: center;
       justify-content: start;
 
-      > .c-inputs-container {
+      > .widget-container {
+        position: relative;
+        width: 100%;
+        margin-top: 70px;
+      }
+
+      .c-inputs-container {
         min-height: auto;
       }
 
-      > .c-we-widget-editor {
+      .c-we-widget-editor {
         width: 100%;
-        margin-top: 70px;
+        margin-top: 40px;
         z-index: 1;
       }
 
-      > .advanced-editor {
+      .advanced-editor {
         display: flex;
         justify-content: space-between;
         align-items: stretch;
         width: 100%;
-        margin-top: 70px;
+        margin-top: 20px;
 
         > * {
           flex-basis: 50%;

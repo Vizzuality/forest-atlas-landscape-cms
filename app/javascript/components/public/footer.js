@@ -72,6 +72,12 @@ class Footer extends React.PureComponent {
             <a href="/terms-and-privacy" className="site-link">Terms of Service</a>
           </li>
 
+          <li className="separator"> |</li>
+
+          <li className="site-link-item">
+            <a href="/privacy-policy" className="site-link">Privacy Policy</a>
+          </li>
+
           {settingsUtils.isset(settingsUtils.find('contact_email_address', settings)) &&
             this.listSeperator() && this.renderContactInfo()}
 
