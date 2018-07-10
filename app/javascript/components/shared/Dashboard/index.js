@@ -2,20 +2,13 @@ import { connect } from 'react-redux';
 
 import DashboardComponent from 'components/shared/Dashboard/dashboard.component';
 
-import { setSelectedTab, fetchFields, fetchDataset, setPageSlug } from 'components/shared/Dashboard/dashboard.actions';
+import { setSelectedTab, fetchFields, fetchDataset, fetchWidget, setPageSlug, setDatasetId, setWidgetId } from 'components/shared/Dashboard/dashboard.actions';
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
-import { getMapWidgets, getVegaWidgets } from 'components/shared/Dashboard/dashboard.selectors';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 
 const mapStateToProps = state => ({
   tabs: state.dashboard.tabs,
-  selectedTab: state.dashboard.selectedTab,
-  loading: state.dashboardTable.loading || state.dashboard.fields.loading
-    || state.dashboard.dataset.loading,
-  error: state.dashboardTable.error || state.dashboard.fields.error
-    || state.dashboard.dataset.error,
-  mapWidgets: getMapWidgets(state),
-  vegaWidgets: getVegaWidgets(state)
+  selectedTab: state.dashboard.selectedTab
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,8 +16,11 @@ const mapDispatchToProps = dispatch => ({
   fetchData: () => dispatch(fetchData()),
   fetchFields: () => dispatch(fetchFields()),
   fetchDataset: () => dispatch(fetchDataset()),
+  fetchWidget: () => dispatch(fetchWidget()),
   fetchChartData: () => dispatch(fetchVegaWidgetData()),
-  setPageSlug: pageSlug => dispatch(setPageSlug(pageSlug))
+  setPageSlug: pageSlug => dispatch(setPageSlug(pageSlug)),
+  setDatasetId: datasetId => dispatch(setDatasetId(datasetId)),
+  setWidgetId: widgetId => dispatch(setWidgetId(widgetId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardComponent);

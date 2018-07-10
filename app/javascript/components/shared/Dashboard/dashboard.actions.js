@@ -6,16 +6,17 @@ import {
   SET_DATASET_LOADING,
   SET_DATASET_ERROR,
   SET_DATASET_DATA,
-  SET_WIDGET,
+  SET_WIDGET_LOADING,
+  SET_WIDGET_ERROR,
+  SET_WIDGET_DATA,
+  SET_DATASET_ID,
+  SET_WIDGET_ID,
   SET_PAGE_SLUG
 } from 'components/shared/Dashboard/dashboard.reducer';
 
 import {
   isAcceptedType,
-  getStandardType,
-  getWidgetsFromDataset,
-  isVegaWidget,
-  getVegaWidgetQueryParams
+  getStandardType
 } from 'helpers/api';
 
 /**
@@ -72,21 +73,33 @@ export const fetchDataset = () => (
         }
         throw new Error(res.statusText);
       })
-      .then(({ data }) => {
-        dispatch({ type: SET_DATASET_DATA, payload: data });
-
-        // FIXME: the widget displayed in the dashboard
-        // should be chosen by the admin, not the first one
-        const widgets = getWidgetsFromDataset(data);
-        const widget = widgets.filter(w => isVegaWidget(w))[0];
-        const widgetQueryParams = getVegaWidgetQueryParams(widget);
-
-        if (widget && Object.keys(widgetQueryParams).length) {
-          dispatch({ type: SET_WIDGET, payload: widgetQueryParams });
-        }
-      })
+      .then(({ data }) => dispatch({ type: SET_DATASET_DATA, payload: data }))
       .catch(() => dispatch({ type: SET_DATASET_ERROR, payload: true }))
       .then(() => dispatch({ type: SET_DATASET_LOADING, payload: false }));
+  }
+);
+
+/**
+ * Fetch the widget of the dashboard
+ */
+export const fetchWidget = () => (
+  (dispatch, getState) => {
+    dispatch({ type: SET_WIDGET_LOADING, payload: true });
+    dispatch({ type: SET_WIDGET_ERROR, payload: false });
+
+    return fetch(`${ENV.API_URL}/widget/${getState().dashboard.widgetId}?includes=metadata&application=${ENV.API_APPLICATIONS}&env=${ENV.API_ENV}`)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error(res.statusText);
+      })
+      .then(({ data }) => dispatch({
+        type: SET_WIDGET_DATA,
+        payload: Object.assign({}, { id: data.id }, data.attributes)
+      }))
+      .catch(() => dispatch({ type: SET_WIDGET_ERROR, payload: true }))
+      .then(() => dispatch({ type: SET_WIDGET_LOADING, payload: false }));
   }
 );
 
@@ -96,4 +109,20 @@ export const fetchDataset = () => (
 export const setPageSlug = pageSlug => ({
   type: SET_PAGE_SLUG,
   payload: pageSlug
+});
+
+/**
+ * Set the ID of the dataset
+ */
+export const setDatasetId = datasetId => ({
+  type: SET_DATASET_ID,
+  payload: datasetId
+});
+
+/**
+ * Set the ID of the widget
+ */
+export const setWidgetId = widgetId => ({
+  type: SET_WIDGET_ID,
+  payload: widgetId
 });

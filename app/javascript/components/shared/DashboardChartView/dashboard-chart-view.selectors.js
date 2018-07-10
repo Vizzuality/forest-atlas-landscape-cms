@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 
+import { getVegaWidgetQueryParams } from 'helpers/api';
+
 const getDatasetId = state => state.dashboard.datasetId;
-const getWidget = state => state.dashboard.widget;
+const getWidget = state => state.dashboard.widget.data;
 const getFilters = state => state.dashboardFilters.filters;
 
 /**
@@ -14,11 +16,13 @@ export const getVegaWidgetDataQuery = createSelector(
       return null;
     }
 
-    const fields = Object.keys(widget).length
-      ? Object.keys(widget.fields).map(name => `${widget.fields[name].aggregation ? `${widget.fields[name].aggregation}(${widget.fields[name].name})` : widget.fields[name].name} as ${name}`)
+    const widgetParams = getVegaWidgetQueryParams(widget);
+
+    const fields = Object.keys(widgetParams).length
+      ? Object.keys(widgetParams.fields).map(name => `${widgetParams.fields[name].aggregation ? `${widgetParams.fields[name].aggregation}(${widgetParams.fields[name].name})` : widgetParams.fields[name].name} as ${name}`)
       : ['*'];
 
-    const filters = widget.filters.concat(dashboardFilters)
+    const filters = widgetParams.filters.concat(dashboardFilters)
       .map((filter) => {
         if (!filter.values || !filter.values.length) return null;
 
@@ -45,8 +49,8 @@ export const getVegaWidgetDataQuery = createSelector(
       SELECT ${fields}
       FROM ${datasetId}
       ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
-      ${widget.order ? `ORDER ${widget.order.field} ${widget.order.direction}` : ''}
-      LIMIT ${widget.limit}
+      ${widgetParams.order ? `ORDER ${widgetParams.order.field} ${widgetParams.order.direction}` : ''}
+      LIMIT ${widgetParams.limit}
     `;
   }
 );

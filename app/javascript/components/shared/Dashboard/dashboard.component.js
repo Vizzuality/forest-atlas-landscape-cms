@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Wysiwyg from 'vizz-wysiwyg';
 
 // Components
 import Tabs from 'components/shared/Tabs';
@@ -7,13 +8,16 @@ import DashboardBookmarks from 'components/shared/DashboardBookmarks';
 import DashboardFilters from 'components/shared/DashboardFilters';
 import DashboardChartView from 'components/shared/DashboardChartView';
 import DashboardTableView from 'components/shared/DashboardTableView';
+import { ImageUpload, ImagePreview } from 'components/wysiwyg';
 
 class Dashboard extends React.Component {
   componentWillMount() {
     this.props.setPageSlug(this.props.pageSlug);
+    this.props.setDatasetId(this.props.dataset);
+    this.props.setWidgetId(this.props.widget);
     this.props.fetchFields();
     this.props.fetchData();
-    this.props.fetchDataset()
+    Promise.all([this.props.fetchWidget(), this.props.fetchDataset()])
       .then(() => this.props.fetchChartData());
   }
 
@@ -21,6 +25,21 @@ class Dashboard extends React.Component {
     return (
       <div className="c-dashboard">
         {!this.props.preview && <DashboardBookmarks />}
+        {!this.props.preview && (
+          <Wysiwyg
+            readOnly
+            items={JSON.parse(this.props.topContent) || []}
+            blocks={{
+              image: {
+                Component: ImagePreview,
+                EditionComponent: ImageUpload,
+                icon: 'icon-image',
+                label: 'Image',
+                renderer: 'tooltip'
+              }
+            }}
+          />
+        )}
         <DashboardFilters />
         <Tabs
           selected={this.props.selectedTab}
@@ -30,12 +49,22 @@ class Dashboard extends React.Component {
         <div className="visualization-container">
           { this.props.selectedTab === 'Chart' && <DashboardChartView /> }
           { this.props.selectedTab === 'Table' && <DashboardTableView /> }
-          { !this.props.error && !this.props.loading && this.props.selectedTab === 'Map' && (
-            <ul>
-              {this.props.mapWidgets.map(w => <li key={w.id}>w.name</li>)}
-            </ul>
-          )}
         </div>
+        {!this.props.preview && (
+          <Wysiwyg
+            readOnly
+            items={JSON.parse(this.props.bottomContent) || []}
+            blocks={{
+              image: {
+                Component: ImagePreview,
+                EditionComponent: ImageUpload,
+                icon: 'icon-image',
+                label: 'Image',
+                renderer: 'tooltip'
+              }
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -53,14 +82,20 @@ Dashboard.propTypes = {
   fetchFields: PropTypes.func.isRequired,
   fetchDataset: PropTypes.func.isRequired,
   setPageSlug: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-  mapWidgets: PropTypes.array.isRequired,
-  preview: PropTypes.bool
+  setDatasetId: PropTypes.func.isRequired,
+  setWidgetId: PropTypes.func.isRequired,
+  fetchWidget: PropTypes.func.isRequired,
+  preview: PropTypes.bool,
+  dataset: PropTypes.string.isRequired,
+  widget: PropTypes.string.isRequired,
+  topContent: PropTypes.string,
+  bottomContent: PropTypes.string
 };
 
 Dashboard.defaultProps = {
-  preview: false
+  preview: false,
+  topContent: '',
+  bottomContent: ''
 };
 
 export default Dashboard;

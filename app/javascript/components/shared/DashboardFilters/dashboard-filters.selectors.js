@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 
-const getWidget = state => state.dashboard.widget;
+import { getVegaWidgetQueryParams } from 'helpers/api';
+
+const getWidget = state => state.dashboard.widget.data;
 const getFields = state => state.dashboard.fields.data;
 const getFiltersSelector = state => state.dashboardFilters.filters;
 
@@ -10,7 +12,10 @@ const getFiltersSelector = state => state.dashboardFilters.filters;
 export const getAvailableFields = createSelector(
   [getWidget, getFields, getFiltersSelector],
   (widget, fields, filters) => fields.filter(f => (
-    [...widget.filters, ...filters].findIndex(wf => wf.name === f.name) === -1
+    [
+      ...getVegaWidgetQueryParams(widget).filters,
+      ...filters
+    ].findIndex(wf => wf.name === f.name) === -1
   ))
 );
 

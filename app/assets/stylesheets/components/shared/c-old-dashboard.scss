@@ -4,7 +4,7 @@ $dasboard_text__color: #555555;
 $dashboard_text__size: 19px;
 $dashboard_text_line: 32px;
 $dashboard_text_weight: 300;
-$dashboard_text_width: 700px;
+$dashboard_text_width: $content-max-width;
 
 .#{$this} {
   max-width: $body-max-width;

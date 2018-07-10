@@ -5,7 +5,11 @@ export const SET_FIELDS_DATA = 'DASHBOARD/SET_FIELDS_DATA';
 export const SET_DATASET_LOADING = 'DASHBOARD/SET_DATASET_LOADING';
 export const SET_DATASET_ERROR = 'DASHBOARD/SET_DATASET_ERROR';
 export const SET_DATASET_DATA = 'DASHBOARD/SET_DATASET_DATA';
-export const SET_WIDGET = 'DASHBOARD/SET_WIDGET';
+export const SET_DATASET_ID = 'DASHBOARD/SET_DATASET_ID';
+export const SET_WIDGET_ID = 'DASHBOARD/SET_WIDGET_ID';
+export const SET_WIDGET_LOADING = 'DASHBOARD/SET_WIDGET_LOADING';
+export const SET_WIDGET_ERROR = 'DASHBOARD/SET_WIDGET_ERROR';
+export const SET_WIDGET_DATA = 'DASHBOARD/SET_WIDGET_DATA';
 export const SET_PAGE_SLUG = 'DASHBOARD/SET_PAGE_SLUG';
 
 const initialState = {
@@ -15,7 +19,8 @@ const initialState = {
     { name: 'Table' }
   ],
   selectedTab: 'Chart',
-  datasetId: '5159fe6f-defd-44d2-9e7d-15665e14deeb',
+  datasetId: null,
+  widgetId: null,
   pageSlug: null,
   fields: {
     loading: false,
@@ -28,10 +33,9 @@ const initialState = {
     data: null
   },
   widget: {
-    fields: [],
-    filters: [],
-    limit: 500,
-    order: null
+    loading: false,
+    error: false,
+    data: null
   }
 };
 
@@ -70,8 +74,26 @@ export default (state = initialState, action) => {
         dataset: Object.assign({}, state.dataset, { data: action.payload })
       });
 
-    case SET_WIDGET:
-      return Object.assign({}, state, { widget: action.payload });
+    case SET_DATASET_ID:
+      return Object.assign({}, state, { datasetId: action.payload });
+
+    case SET_WIDGET_ID:
+      return Object.assign({}, state, { widgetId: action.payload });
+
+    case SET_WIDGET_LOADING:
+      return Object.assign({}, state, {
+        widget: Object.assign({}, state.widget, { loading: action.payload })
+      });
+
+    case SET_WIDGET_ERROR:
+      return Object.assign({}, state, {
+        widget: Object.assign({}, state.widget, { error: action.payload })
+      });
+
+    case SET_WIDGET_DATA:
+      return Object.assign({}, state, {
+        widget: Object.assign({}, state.widget, { data: action.payload })
+      });
 
     case SET_PAGE_SLUG:
       return Object.assign({}, state, { pageSlug: action.payload });

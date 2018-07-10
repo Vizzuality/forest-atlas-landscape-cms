@@ -11,7 +11,13 @@
 } ) %>
 
 <div class="fa-dashboard">
-  <%= react_component('public/Dashboard', { pageSlug: @site_page.uri }) %>
+  <%= react_component('public/Dashboard', {
+    pageSlug: @site_page.uri,
+    dataset: @site_page.dashboard_setting.dataset_id,
+    widget: @site_page.dashboard_setting.widget_id,
+    topContent: @site_page.dashboard_setting.content_top,
+    bottomContent: @site_page.dashboard_setting.content_bottom
+  }) %>
 </div>
 
 <%= render 'front/footer' %>

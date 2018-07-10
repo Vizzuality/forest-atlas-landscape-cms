@@ -1,10 +1,8 @@
 import { createSelector } from 'reselect';
 
-import { isMapWidget, isVegaWidget, getWidgetsFromDataset } from 'helpers/api';
-
 const getData = state => state.dashboard.data.data;
 const getFields = state => state.dashboard.fields.data;
-const getDataset = state => state.dashboard.dataset.data;
+const getWidget = state => state.dashboard.widget.data;
 const getPageSlugSelector = state => state.dashboard.pageSlug;
 
 /**
@@ -26,27 +24,11 @@ export const getAvailableData = createSelector(
 );
 
 /**
- * Return the widgets associated with the dataset
+ * Return the widget
  */
-export const getWidgets = createSelector(
-  [getDataset],
-  dataset => getWidgetsFromDataset(dataset)
-);
-
-/**
- * Return the map widgets associated with the dataset
- */
-export const getMapWidgets = createSelector(
-  [getWidgets],
-  widgets => widgets.filter(w => isMapWidget(w))
-);
-
-/**
- * Return the vega widgets associated with the dataset
- */
-export const getVegaWidgets = createSelector(
-  [getWidgets],
-  widgets => widgets.filter(w => isVegaWidget(w))
+export const getVegaWidget = createSelector(
+  [getWidget],
+  widget => widget
 );
 
 /**

@@ -6,7 +6,4 @@ import Dashboard from 'components/shared/Dashboard';
 
 const store = configureStore();
 
-export default props => {
-  console.log(props);
-  return <Provider store={store}><Dashboard {...props} /></Provider>;
-};
+export default props => <Provider store={store}><Dashboard {...props} /></Provider>;

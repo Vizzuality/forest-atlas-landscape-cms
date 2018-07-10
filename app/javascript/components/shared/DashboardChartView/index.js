@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import DashboardChartView from 'components/shared/DashboardChartView/dashboard-chart-view.component';
-import { getVegaWidgets } from 'components/shared/Dashboard/dashboard.selectors';
+import { getVegaWidget } from 'components/shared/Dashboard/dashboard.selectors';
 import { setChartLoading } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 
 /**
@@ -10,9 +10,7 @@ import { setChartLoading } from 'components/shared/DashboardChartView/dashboard-
  * @param {any} state Redux store
  */
 const getUpdatedWidget = (state) => {
-  // FIXME: let the user which widget to display
-  // instead of selecting the first one of the dataset
-  const widget = getVegaWidgets(state)[0];
+  const widget = getVegaWidget(state);
   if (!widget) {
     return {};
   }
