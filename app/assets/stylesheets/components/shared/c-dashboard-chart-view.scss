@@ -1,0 +1,22 @@
+.c-dashboard-chart-view {
+  min-height: 400px;
+
+  .c-loading-spinner {
+    min-height: 400px;
+
+    &::before {
+      background-color: transparent;
+    }
+
+    &::after {
+      border-top-color: $color-1;
+      border-right-color: $color-1;
+    }
+  }
+
+  .c-we-chart {
+    height: 400px;
+
+    .chart { height: 100%; }
+  }
+}

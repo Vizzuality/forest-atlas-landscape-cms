@@ -23,6 +23,8 @@
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
+      'management/sites/:slug/(site_pages/:id/)page_steps/dashboard_dataset': 'DatasetStep',
+      'management/sites/:slug/(site_pages/:id)/page_steps/dashboard_widget': 'WidgetStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/columns': 'Index',
       'management/sites/:slug/(widgets/:id/)widget_steps/title': 'Index',
@@ -57,24 +59,24 @@
           // Better message to find the error
           // eslint-disable-next-line no-console
           console.error('File: ' + e.fileName + '\nLine: ' + e.lineNumber + '\nMessage: ' + e.message);
-        } finally {
-          // We instantiate the Quick links component
-          var quickLinksParams = {};
-
-          if (/^\/contexts?/.test(location.pathname)) {
-            quickLinksParams.activeLink = 'contexts';
-          } else if (/management\/profile/.test(location.pathname)) {
-            quickLinksParams.activeLink = 'management';
-          } else if (params.length && params[0]) {
-            quickLinksParams.activeLink = params[0];
-          }
-
-          new App.View.QuickLinksView(quickLinksParams);
-
-          // We instantiate the User links component
-          new App.View.UserLinksView();
         }
       }
+
+      // We instantiate the Quick links component
+      var quickLinksParams = {};
+
+      if (/^\/contexts?/.test(location.pathname)) {
+        quickLinksParams.activeLink = 'contexts';
+      } else if (/management\/profile/.test(location.pathname)) {
+        quickLinksParams.activeLink = 'management';
+      } else if (params.length && params[0]) {
+        quickLinksParams.activeLink = params[0];
+      }
+
+      new App.View.QuickLinksView(quickLinksParams);
+
+      // We instantiate the User links component
+      new App.View.UserLinksView();
     });
 
     // Because turbolinks doesn't fully reload the page, we need to stop the

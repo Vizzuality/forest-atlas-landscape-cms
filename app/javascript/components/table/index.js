@@ -130,8 +130,14 @@ class Table extends React.Component {
     const re = new RegExp(columns.join('|').toLowerCase());
 
     return Object.keys(d).map((key) => {
+      let { value } = d[key];
 
-      const value = d[key].value && d[key].value.length > 0 ? d[key].value : '-';
+      const isValueNullOrUndefined = value === null || value === undefined;
+      const isValueEmptyString = typeof d[key].value === 'string' && !d[key].value.length;
+      if (isValueNullOrUndefined || isValueEmptyString) {
+        value = '-';
+      }
+
       const cls = classnames({
         isLong: value.length > 15,
         isList: Array.isArray(value)

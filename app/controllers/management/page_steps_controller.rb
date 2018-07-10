@@ -52,16 +52,20 @@ class Management::PageStepsController < ManagementController
   end
 
   def show
-    if invalid_steps.include? step
-      redirect_to wizard_path(wizard_steps[0])
-      return
-    end
-
     case step
       when 'position'
         assign_position
       when 'title'
       when 'type'
+      when 'dashboard_dataset'
+        build_current_dashboard_setting
+        vega_widgets = @site.get_vega_widgets
+        @datasets_contexts = @site.get_vega_datasets(vega_widgets)
+      when 'dashboard_widget'
+        build_current_dashboard_setting
+        @widgets = @site.get_vega_widgets([@dashboard_setting.dataset_id])
+      when 'preview_analytics_dashboard'
+        build_current_dashboard_setting
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
       when 'filters'
@@ -98,26 +102,18 @@ class Management::PageStepsController < ManagementController
 
       when 'preview'
         gon.widgets = get_widgets_list
-        puts "-----------> #{gon.widgets.inspect}"
 
-        build_current_dataset_setting
+        build_current_dashboard_setting
         gon.page_name = @page.name
-        gon.analysis_user_filters = @dataset_setting.columns_changeable.blank? ? nil : (JSON.parse @dataset_setting.columns_changeable)
-        gon.analysis_widgets = @dataset_setting.widgets.blank? ? nil : (JSON.parse @dataset_setting.widgets)
-        gon.analysis_data = @dataset_setting.get_filtered_dataset
-        gon.analysis_timestamp = @dataset_setting.fields_last_modified
-        gon.legend = @dataset_setting.legend.blank? ? {} : @dataset_setting.parsed_legend
-        gon.test = @dataset_setting
 
-        @widgets = WidgetService.get_widgets
-        @widgets = @widgets.map do |x|
-          { widget: x,
-            edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
-            delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
-        end
-        @widgets
+        # @widgets = WidgetService.get_widgets
+        # @widgets = @widgets.map do |x|
+        #   { widget: x,
+        #     edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
+        #     delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        # end
+        # @widgets
 
-        @analysis_user_filters = @dataset_setting.columns_changeable.blank? ? [] : (JSON.parse @dataset_setting.columns_changeable)
 
       # OPEN CONTENT PATH
       when 'open_content'
@@ -144,11 +140,6 @@ class Management::PageStepsController < ManagementController
   end
 
   def update
-    # To avoid submitting forbidden data
-    if invalid_steps.include? step
-      redirect_to wizard_path(wizard_steps[0])
-      return
-    end
     session[:invalid_steps][@page_id] ||= []
     session[:invalid_steps][@page_id] << 'type' if @page.content_type and @page.valid?
 
@@ -181,6 +172,32 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward
 
+      # ANALYSIS DASHBOARD V2 PATH
+      when 'dashboard_dataset'
+        build_current_dashboard_setting
+        set_current_dashboard_setting_state
+        if @page.valid?
+          move_forward
+        else
+          render_wizard
+        end
+      when 'dashboard_widget'
+        build_current_dashboard_setting
+        set_current_dashboard_setting_state
+        if @page.valid?
+          move_forward
+        else
+          render_wizard
+        end
+      when 'preview_analytics_dashboard'
+        build_current_dashboard_setting
+        set_current_dashboard_setting_state
+        if @page.valid?
+          redirect_to next_wizard_path
+        else
+          render_wizard
+        end
+
       # ANALYSIS DASHBOARD PATH
       when 'dataset'
         build_current_dataset_setting
@@ -203,9 +220,9 @@ class Management::PageStepsController < ManagementController
         move_forward
 
       when 'preview'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        @page.dataset_setting = @dataset_setting
+        build_current_dashboard_setting
+        set_current_dashboard_setting_state
+        @page.dashboard_setting = @dashboard_setting
         move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
@@ -296,6 +313,12 @@ class Management::PageStepsController < ManagementController
           :filters,
           :widgets,
           visible_fields: []
+        ],
+        dashboard_setting: %i[
+          dataset_id
+          widget_id
+          content_top
+          content_bottom
         ]
       )
     filtered_params[:content] = all_options if all_options.present?
@@ -320,13 +343,49 @@ class Management::PageStepsController < ManagementController
 
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page][@page_id] if session[:page][@page_id]
-    @page.assign_attributes page_params.to_h.except(:dataset_setting) if params[:site_page] && page_params.to_h.except(:dataset_setting)
-
+    if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting)
+      @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting)
+    end
   end
 
   # Saves the current page state in session
   def set_current_page_state
     session[:page][@page_id] = @page.attributes
+  end
+
+
+  # Builds the current dashboard setting based on the database, session and params
+  def build_current_dashboard_setting
+    db_params = {}
+    db_params = page_params.to_h[:dashboard_setting] if params[:site_page] && page_params&.to_h[:dashboard_setting]
+
+    @dashboard_setting = nil
+    if db_params[:id]
+      @dashboard_setting = DashboardSetting.find(db_params[:id])
+    elsif @page.dashboard_setting
+      @dashboard_setting = @page.dashboard_setting
+    else
+      @dashboard_setting = DashboardSetting.new
+      @page.dashboard_setting = @dashboard_setting
+    end
+
+    @dashboard_setting.assign_attributes session[:dashboard_setting][@page_id] if session[:dashboard_setting][@page_id]
+
+    if ds_id = db_params[:dataset_id]
+      # If the user changed the id of the dataset, the entity is reset
+      if @dashboard_setting.dataset_id && @dashboard_setting.dataset_id != ds_id
+        delete_session_key(:dashboard_setting, @page_id)
+        session[:invalid_steps][@page_id] = %w[type dashboard_widget preview]
+        @dashboard_setting.widget_id = nil
+      end
+    end
+
+    @dashboard_setting.assign_attributes db_params
+  end
+
+  # Saves the current dashboard settings state in the session
+  def set_current_dashboard_setting_state
+    session[:dashboard_setting][@page_id] = @dashboard_setting ? @dashboard_setting.attributes : nil
   end
 
   # Builds the current dataset setting based on the database, session and params
@@ -378,7 +437,6 @@ class Management::PageStepsController < ManagementController
     if fields = ds_params[:widgets]
       @dataset_setting.widgets = fields
     end
-
   end
 
   # Saves the current data settings state in the session
@@ -516,6 +574,7 @@ class Management::PageStepsController < ManagementController
   end
 
   def ensure_session_keys_exist
+    session[:dashboard_setting] ||= {}
     session[:dataset_setting] ||= {}
     session[:invalid_steps] ||= {}
     session[:page] ||= {}
@@ -523,6 +582,7 @@ class Management::PageStepsController < ManagementController
 
   def reset_session
     pages = params['action'] == 'new' ? %w[type title] : %w[type]
+    reset_session_key(:dashboard_setting, @page_id, {})
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
     reset_session_key(:page, @page_id, {})

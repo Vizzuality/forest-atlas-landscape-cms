@@ -113,4 +113,15 @@
     }
   }
 
+  &.-dashboard-preview {
+    .c-dashboard {
+      margin: 70px auto;
+      max-width: $body-max-width;
+    }
+
+    .cw-wysiwyg-toolbar {
+      z-index: 1;
+    }
+  }
+
 }

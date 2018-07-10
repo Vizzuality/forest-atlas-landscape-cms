@@ -9,6 +9,7 @@ const SiteListPages = ({ admin }) => (
   <div className="l-page-list">
     <div className="wrapper">
       <Table
+        name="List of pages"
         searchable
         columns={['Title', 'Url', 'Type']}
         data={admin.pages}

@@ -144,9 +144,38 @@ class Site < ApplicationRecord
     context_datasets
   end
 
+  def get_vega_widgets(dataset_id = nil)
+    widgets = if dataset_id.nil?
+                WidgetService.get_widgets
+              else
+                WidgetService.from_datasets(dataset_id)
+              end
+    vega_widgets = []
+    widgets.each { |w| vega_widgets << w if w.widget_config&.dig('paramsConfig', 'visualizationType') == 'chart' }
+    vega_widgets
+  end
+
+  def get_vega_datasets(widgets)
+    dataset_ids = []
+    widgets.each { |w| dataset_ids << w.dataset }
+    get_datasets_contexts do
+      DatasetService.get_datasets(dataset_ids: dataset_ids.join(','))
+    end
+  end
+
+  def get_all_datasets_contexts
+    get_datasets_contexts do
+      DatasetService.get_datasets
+    end
+  end
+
   # Returns an array of datasets with an array of contexts they belong to
   def get_datasets_contexts
-    all_datasets = DatasetService.get_datasets
+    all_datasets = if block_given?
+                     yield
+                   else # Default method
+                     DatasetService.get_datasets
+                   end
     datasets_contexts = {}
 
     self.contexts.each do |context|

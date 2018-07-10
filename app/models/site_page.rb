@@ -25,7 +25,10 @@ class SitePage < Page
   has_many :routes, through: :site
   has_one :site_template, through: :site
   has_many :users, through: :site
-  has_one :dataset_setting, dependent: :destroy, inverse_of: :site_page, autosave: true
+  has_one :dataset_setting, dependent: :destroy,
+          inverse_of: :site_page, autosave: true
+  has_one :dashboard_setting,foreign_key: 'page_id', dependent: :destroy,
+          inverse_of: :site_page, autosave: true
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
@@ -56,8 +59,8 @@ class SitePage < Page
       steps = { pages: %w[position title type dataset filters columns preview_analytics_dashboard],
                 names: %w[Position Title Type Dataset Filters Columns Preview] }
     when ContentType::DASHBOARD_V2
-      steps = { pages: %w[position title type preview],
-                names: %w[Position Details Type Preview] }
+      steps = { pages: %w[position title type dashboard_dataset dashboard_widget preview],
+                names: %w[Position Details Type Dataset Widget Preview] }
     when ContentType::LINK
       steps = { pages: %w[position title type link],
                 names: %w[Position Details Type Link] }

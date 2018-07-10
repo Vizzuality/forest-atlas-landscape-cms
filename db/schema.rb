@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180613112651) do
+ActiveRecord::Schema.define(version: 20180706093737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,17 @@ ActiveRecord::Schema.define(version: 20180613112651) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "dashboard_settings", force: :cascade do |t|
+    t.integer  "page_id"
+    t.string   "widget_id"
+    t.string   "dataset_id"
+    t.json     "content_top"
+    t.json     "content_bottom"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["page_id"], name: "index_dashboard_settings_on_page_id", using: :btree
   end
 
   create_table "dataset_settings", force: :cascade do |t|

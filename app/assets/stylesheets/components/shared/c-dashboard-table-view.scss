@@ -1,0 +1,27 @@
+.c-dashboard-table-view {
+  min-height: 400px;
+
+  .c-loading-spinner {
+    min-height: 400px;
+
+    &::before {
+      background-color: transparent;
+    }
+
+    &::after {
+      border-top-color: $color-1;
+      border-right-color: $color-1;
+    }
+  }
+
+  .c-table {
+    th, td {
+      padding: 5px;
+    }
+  }
+
+  .note {
+    margin-bottom: 5px;
+    font-size: $font-size-small;
+  }
+}

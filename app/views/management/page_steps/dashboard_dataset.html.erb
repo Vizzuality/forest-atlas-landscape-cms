@@ -1,0 +1,50 @@
+<%= javascript_pack_tag 'application' %>
+
+<% content_for :extended_header do %>
+  <!--suppress ALL -->
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Dataset</h1>
+        <p>Select the dataset you want your dashboard to represent.</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  nvalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
+<%= Gon::Base.render_data %>
+
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+  <div class="l-page-creation -dataset">
+    <div class="wrapper">
+      <div class="c-action-toolbar">
+        <ul class="buttons">
+        </ul>
+        <ul class="filters">
+          <li><div class="c-input-search js-dataset-search"></div></li>
+        </ul>
+      </div>
+      <div class="c-cards-list">
+        <% @datasets_contexts.each do |id, dc|%>
+          <div class="card js-dataset" data-id="<%= id %>" data-name="<%= dc[:dataset].name %>" data-contexts="<%= dc[:contexts].join(',') %>">
+            <label for="dataset-<%= id %>"><%= dc[:dataset].name %></label>
+            <%= radio_button_tag 'site_page[dashboard_setting][dataset_id]', \
+                    id, f.object.dashboard_setting ? (f.object.dashboard_setting.dataset_id == id) : nil, id: 'dataset-' + id %>
+            <div class="content">
+              <h3><%= dc[:dataset].name %></h3>
+              <p>Contexts: <%= dc[:contexts].join(', ') %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, never_save: true, wide: true } %>
+<% end %>
+<%= render partial: 'shared/errors', locals: { resource: @page} %>
+
