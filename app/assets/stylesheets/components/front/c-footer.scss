@@ -50,17 +50,41 @@
   }
 
   .site-links-list {
-    > .site-link-item > .site-link {
-      @if $theme == 2 {
-        color: $color-1;
-      } @else {
-        color: $color-3;
-        text-decoration: none;
+    > li {
+      &:after {
+        display: inline-block;
+        margin: 0 3px;
+        content: '|';
+
+        @if $theme == 1 {
+          color: rgba($color-3, .3);
+        }
+
+        @if $theme == 2 {
+          color: rgba($color-1, .3);
+        }
       }
 
-      font-weight: $font-weight-light;
-      letter-spacing: .1px;
-      line-height: 1.7;
+      &:last-of-type {
+        &:after {
+          content: none;
+        }
+      }
+
+      > .site-link {
+        @if $theme == 1 {
+          color: $color-3;
+          text-decoration: none;
+        }
+
+        @if $theme == 2 {
+          color: $color-1;
+        }
+
+        font-weight: $font-weight-light;
+        letter-spacing: .1px;
+        line-height: 1.7;
+      }
     }
   }
 
