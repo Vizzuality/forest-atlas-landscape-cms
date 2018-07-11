@@ -28,6 +28,10 @@ body {
 
   &.-wide {
     max-width: none;
+
+    .c-header {
+      position: static;
+    }
   }
 }
 

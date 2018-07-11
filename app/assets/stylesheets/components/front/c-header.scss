@@ -71,7 +71,7 @@
       max-width: calc(100% - 63px);
       margin-right: 35px;
       text-transform: uppercase;
-      z-index: 1; // Make the logo on top of the flag border
+      z-index: 2; // Make the logo on top of the flag border
 
       .logo {
         display: inline-block;
@@ -289,7 +289,7 @@
       flex-shrink: 0;
       margin-right: 35px;
       text-transform: uppercase;
-      z-index: 1; // Make the logo on top of the flag border
+      z-index: 2; // Make the logo on top of the flag border
       pointer-events: none; // Its overflow the breadcrumbs
 
       .logo {
@@ -483,6 +483,8 @@
       height: 0; // Trick so the content will be on top of what's following
       color: $color-3;
       font-size: $font-size-small;
+      z-index: 1; // To be on top of the map's tiles
+
       // Background of the sub-menu (breadcrumbs) menu
       &::after {
         display: block;
