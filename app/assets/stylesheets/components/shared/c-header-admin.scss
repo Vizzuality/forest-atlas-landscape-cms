@@ -83,7 +83,12 @@
 .c-dropdown {
   position: relative;
 
+  &:hover .options {
+    display: block;
+  }
+
   button {
+    cursor: pointer;
     display: block;
     border: none;
     background: none;
