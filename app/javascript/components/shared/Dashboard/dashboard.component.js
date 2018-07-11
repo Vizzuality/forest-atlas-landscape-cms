@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div className="c-dashboard">
+      <div className="c-dashboard vizz-wysiwyg">
         {!this.props.preview && <DashboardBookmarks />}
         {!this.props.preview && (
           <Wysiwyg

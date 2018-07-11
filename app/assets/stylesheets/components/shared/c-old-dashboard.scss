@@ -20,28 +20,31 @@ $dashboard_text_width: $content-max-width;
   }
 
   // https://type-scale.com/
-  .ql-editor h1, h1 { font-size: 3.998em; }
-  .ql-editor h2, h2 { font-size: 2.827em; }
-  .ql-editor h3, h3 { font-size: 1.999em; }
-  .ql-editor h4, h4 { font-size: 1.414em; }
-  .ql-editor h5, h5 { font-size: 1em; }
+  .legacy-dashboard {
+    .ql-editor h1, h1 { font-size: 3.998em; }
+    .ql-editor h2, h2 { font-size: 2.827em; }
+    .ql-editor h3, h3 { font-size: 1.999em; }
+    .ql-editor h4, h4 { font-size: 1.414em; }
+    .ql-editor h5, h5 { font-size: 1em; }
 
-  .ql-editor h1, h2, h3, h1, h2, h3 {
-    text-align: center;
-    color: $dasboard_text__color;
-    font-weight: $dashboard_text_weight;
-    max-width: $dashboard_text_width;
-    margin: 0 auto;
+    .ql-editor h1, h2, h3, h1, h2, h3 {
+      text-align: center;
+      color: $dasboard_text__color;
+      font-weight: $dashboard_text_weight;
+      max-width: $dashboard_text_width;
+      margin: 0 auto;
+    }
+
+    .ql-editor p, p {
+      color: $dasboard_text__color;
+      font-size: $dashboard_text__size;
+      line-height: $dashboard_text_line;
+      font-weight: $dashboard_text_weight;
+      max-width: $dashboard_text_width;
+      margin: 0 auto;
+    }
   }
 
-  .ql-editor p, p {
-    color: $dasboard_text__color;
-    font-size: $dashboard_text__size;
-    line-height: $dashboard_text_line;
-    font-weight: $dashboard_text_weight;
-    max-width: $dashboard_text_width;
-    margin: 0 auto;
-  }
   .cw-wysiwyg-list {
     width: 100%;
     .cw-wysiwyg-list-item { display: block; }
