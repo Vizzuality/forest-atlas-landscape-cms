@@ -45,6 +45,18 @@ ul {
   }
 }
 
+// XXX : we default everything to inline layout like above
+// so we turn back to browser defaults for list items within the wysiwyg
+.ql-editor {
+  ul {
+    display: block;
+    list-style: initial;
+    li {
+      display: block;
+    }
+  }
+}
+
 a {
   text-decoration: none;
 }
