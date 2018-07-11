@@ -29,8 +29,17 @@
     .info {
       position: absolute;
       top: 50%;
-      left: 0;
+      left: $wrapper-mobile-padding;
       transform: translateY(-50%);
+
+
+      @media #{$mq-mobile} {
+        left: $wrapper-tablet-padding;
+      }
+
+      @media #{$mq-tablet} {
+        left: $wrapper-padding;
+      }
 
       .tooltip-container {
         position: relative;
@@ -76,6 +85,8 @@
     .bookmarks-wrapper {
       position: relative;
       justify-content: center;
+      width: auto;
+      max-width: $body-max-width;
       overflow: visible;
     }
 

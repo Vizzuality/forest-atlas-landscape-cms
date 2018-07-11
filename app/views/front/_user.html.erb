@@ -1,21 +1,23 @@
-<% if session[:current_user].present? %>
+<ul>
+  <% if session[:current_user].present? %>
 
-  <li class="dropdown-item">
-    <a href="#"><%= session[:current_user][:email] %></a>
-    <ul>
-      <li>
-        <a href="#" class="triggerMySubscriptions">My Subscriptions</a>
-      </li>
-      <li>
-        <a href="<%= logout_path %>">Logout</a>
-      </li>
-    </ul>
-  </li>
-
-<% else %>
-
-    <li>
-      <a href=<%= login_path %>>Login</a>
+    <li class="dropdown-item">
+      <a href="#"><%= session[:current_user][:email] %></a>
+      <ul>
+        <li>
+          <a href="#" class="triggerMySubscriptions">My Subscriptions</a>
+        </li>
+        <li>
+          <a href="<%= logout_path %>">Logout</a>
+        </li>
+      </ul>
     </li>
 
-<% end %>
+  <% else %>
+
+      <li>
+        <a href=<%= login_path %>>Login</a>
+      </li>
+
+  <% end %>
+</ul>

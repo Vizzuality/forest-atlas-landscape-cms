@@ -45,6 +45,15 @@
   > .wrapper {
     z-index: 1;
     margin-bottom: 50px;
+
+    @if $theme == 3 {
+      @media #{$mq-tablet} {
+        position: absolute;
+        top: 50%;
+        // Position container at the center , 50px = header height
+        transform: translateY(calc(-50% + 50px));
+      }
+    }
   }
 
   .cover-title {
@@ -55,11 +64,18 @@
     line-height: 1;
     text-align: left;
 
+    @if $theme == 3 {
+      text-align: center;
+      line-height: 1.2;
+    }
+
     @if $theme == 2 {
       font-size: $font-size-x-big;
       letter-spacing: .7px;
       text-transform: uppercase;
-    } @else {
+    }
+
+    @if $theme == 1 or $theme == 3 {
       font-family: $font-family-2;
       font-size: $font-size-x-big;
       letter-spacing: 1.25px;
@@ -83,7 +99,9 @@
     @if $theme == 2 {
       letter-spacing: .7px;
       text-transform: uppercase;
-    } @else {
+    }
+
+    @if $theme == 1 or $theme == 3 {
       font-family: $font-family-2;
       letter-spacing: 1.25px;
     }

@@ -1,5 +1,6 @@
 // Font families
 $font-family-1: 'Roboto Condensed', sans-serif;
+$font-family-2: 'Roboto Condensed', sans-serif;
 
 // Font sizes
 $font-size-small:    12px;
@@ -10,6 +11,7 @@ $font-size-medium:   21px;
 $font-size-big:      35px;
 $font-size-x-big:    40px;
 $font-size-huge:     47px;
+$font-size-x-huge:   70px;
 
 // Font weights
 $font-weight-light:  300;
@@ -29,9 +31,10 @@ $color-10: darken(saturate($color-1, 10%), 5%);
 $color-11: #fff00e;
 $color-12: #dd3e21;
 $color-13: #dededd;
-$color-14:  #ff706c;
-$color-15:  #404040;
+$color-14: #ff706c;
+$color-15: #404040;
 $color-16: tint($color-1, 85%);
+$color-17: #0B0908;
 
 // General layout
 $body-max-width:         1280px;
@@ -57,5 +60,5 @@ $mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
 $mq-body-width: 'screen and (min-width: #{$body-max-width})';
 
 // Theme
-$theme: 2; // Whats this ???
+$theme: 3;
 $admin: false;

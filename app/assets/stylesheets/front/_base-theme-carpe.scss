@@ -31,63 +31,73 @@ body {
   }
 }
 
-.c-header {
-  position: absolute;
-  width: 100vw;
-
-  background: rgba(11, 9, 8, 0.75);
-  > .desktop-menu {
-    margin: 0 auto;
-    background: none;
-    max-width: $body-max-width;
-
-    .dropdown-item {
-      overflow: hidden;
-    }
-  }
-
-  a {
-    font-size: 15px;
-    font-weight: 400;
-    color: #FFF;
-
-    text-decoration: none;
-  }
-
-  .breadcrumbs {
-    li { display: inline-block; }
-  }
-
-}
-
-.c-cover > .wrapper {
-  position: absolute;
-  width: 100vw;
+ul {
+  display: inline-block;
   margin: 0;
+  padding: 0;
 
-  // Position container at the center , -50 = header height
-  top: 50%;
-  transform: translateY(calc(-50% - -50px));
-
-  .cover-title {
-    text-align: center;
-    line-height: 1.2em;
+  > li {
+    display: inline-block;
+    list-style: none;
   }
-
 }
 
+a {
+  // Do not set inline-block here otherwise the links will be forced to be on online line
+  padding: 0 3px;
+  color: currentColor;
+  text-decoration: none;
+}
 
-.c-footer > .wrapper {
-  max-width: $body-max-width;
-  margin: 0 auto;
-  ul { list-style: none; }
+.wrapper {
+  width: 100%;
+  padding: 0 $wrapper-mobile-padding;
 
-  a {
-    text-decoration: none;
+  @media #{$mq-mobile} {
+    padding: 0 $wrapper-tablet-padding;
   }
 
-  .share-links-list {
-    padding: 0;
+  @media #{$mq-tablet} {
+    padding: 0 $wrapper-padding;
   }
+}
 
+.is-hidden {
+  display: none;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.turbolinks-progress-bar {
+  background-color: $color-1;
+}
+
+::selection {
+  background: rgba($color-1, .2);
+}
+
+::-moz-selection {
+  background: rgba($color-1, .2);
+}
+
+.app-header {
+  top: 30px !important; // We need to override map builder styles
+}
+
+@media (max-width:950px) {
+  .map-container{
+    top: 55px !important;
+    position: fixed !important;
+  }
+}
+
+.tab-buttons__tab.mobile-show[data-value="MORE"] {
+  display: none !important;
 }

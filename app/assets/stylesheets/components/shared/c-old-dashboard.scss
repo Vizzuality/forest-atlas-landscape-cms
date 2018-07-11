@@ -7,11 +7,14 @@ $dashboard_text_weight: 300;
 $dashboard_text_width: $content-max-width;
 
 .#{$this} {
-  max-width: $body-max-width;
   margin: 0 auto;
   // The next line breaks the tooltip of the bookmark bar
   // of the dashboard v2
   // overflow: hidden;
+
+  @if not $theme == 3 {
+    max-width: $body-max-width;
+  }
 
   ul { list-style-type: none; }
 
