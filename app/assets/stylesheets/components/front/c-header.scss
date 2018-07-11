@@ -6,6 +6,7 @@
   @if $theme == 3 {
     @media #{$mq-navbar} {
       position: absolute;
+      top: 0;
       width: 100vw;
       background: rgba($color-17, .75);
       color: $color-3;
