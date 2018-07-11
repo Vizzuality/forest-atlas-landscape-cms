@@ -15,6 +15,7 @@
   }
 
   .c-we-chart {
+    position: relative; // For the legend
     height: 400px;
 
     .chart { height: 100%; }
