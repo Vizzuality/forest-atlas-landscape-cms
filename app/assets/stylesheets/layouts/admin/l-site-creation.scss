@@ -53,7 +53,7 @@
 
         input {
           position: absolute;
-          left: -1000px;
+          left: -10000px;
 
           &:checked + .content {
             &::before {
