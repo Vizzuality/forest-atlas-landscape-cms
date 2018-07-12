@@ -1,4 +1,5 @@
 .c-dashboard-table-view {
+  position: relative; // Limit the size of the spinner's overlay
   min-height: 400px;
 
   .c-loading-spinner {
