@@ -112,8 +112,8 @@ export const getFilterMinMax = filter => (
           // settings, but that also, the filter is consistent with
           // the current data of the dataset (which might have changed
           // over time)
-          values: filter.min && filter.max
-            ? [Math.max(filter.min, min), Math.min(filter.max, max)]
+          values: filter.values && filter.values.length === 2
+            ? [Math.max(filter.values[0], min), Math.min(filter.values[1], max)]
             : [Math.floor(min), Math.ceil(max)],
           loading: false
         }
