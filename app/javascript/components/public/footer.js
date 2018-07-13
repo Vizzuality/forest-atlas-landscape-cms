@@ -49,12 +49,13 @@ class Footer extends React.PureComponent {
   preFooter() {
     const { settings } = this.props.site;
     return (
-      <div class="c-pre-footer">
-        <div class="wrapper">
-          {settingsUtils.getValue('pre_footer', settings)}
-        </div>
+      <div className="c-pre-footer">
+        <div
+          className="wrapper"
+          dangerouslySetInnerHTML={{ __html: settingsUtils.getValue('pre_footer', settings) }}
+        />
       </div>
-    )
+    );
   }
 
   render () {
