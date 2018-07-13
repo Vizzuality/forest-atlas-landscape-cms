@@ -392,4 +392,20 @@ namespace :db do
       end
     end
   end
+
+  namespace :update do
+    task privacy_policy: :environment do
+      ActiveRecord::Base.transaction do
+        pp_page = PageTemplate.find_by name: 'Privacy Policy'
+        pp_page.content = {json: File.read('lib/assets/privacy_policy_page.json')}
+        pp_page.save!
+
+        Site.find_each do |site|
+          s_page = site.site_pages.find_by name: 'Privacy Policy'
+          s_page.content = pp_page.content
+          s_page.save
+        end
+      end
+    end
+  end
 end
