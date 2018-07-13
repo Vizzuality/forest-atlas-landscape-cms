@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { CoverPage, WysiwygEditor, Footer } from 'components';
 
 import Wysiwyg from 'vizz-wysiwyg';
-import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview } from 'components/wysiwyg';
-
+import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
 import { getDbContent } from 'utils';
 
@@ -31,6 +30,12 @@ const StaticPage = ({ site, version }) => (
           EditionComponent: ImageUpload,
           icon: 'icon-image',
           label: 'Image',
+          renderer: 'tooltip'
+        },
+        html: {
+          Component: HtmlEmbedPreview,
+          icon: 'icon-embed',
+          label: 'Custom HTML',
           renderer: 'tooltip'
         }
       }}

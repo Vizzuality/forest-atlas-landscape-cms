@@ -8,7 +8,7 @@ import DashboardBookmarks from 'components/shared/DashboardBookmarks';
 import DashboardFilters from 'components/shared/DashboardFilters';
 import DashboardChartView from 'components/shared/DashboardChartView';
 import DashboardTableView from 'components/shared/DashboardTableView';
-import { ImageUpload, ImagePreview } from 'components/wysiwyg';
+import { ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
 class Dashboard extends React.Component {
   componentWillMount() {
@@ -36,6 +36,12 @@ class Dashboard extends React.Component {
                 icon: 'icon-image',
                 label: 'Image',
                 renderer: 'tooltip'
+              },
+              html: {
+                Component: HtmlEmbedPreview,
+                icon: 'icon-embed',
+                label: 'Custom HTML',
+                renderer: 'tooltip'
               }
             }}
           />
@@ -60,6 +66,12 @@ class Dashboard extends React.Component {
                 EditionComponent: ImageUpload,
                 icon: 'icon-image',
                 label: 'Image',
+                renderer: 'tooltip'
+              },
+              html: {
+                Component: HtmlEmbedPreview,
+                icon: 'icon-embed',
+                label: 'Custom HTML',
                 renderer: 'tooltip'
               }
             }}

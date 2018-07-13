@@ -214,17 +214,10 @@
   <script id="library-load" src="http://alpha.blueraster.io/gfw-mapbuilder/external-subscriptions/1.2.0.js"></script>
     <script>
         var mapDatabaseConfig = JSON.parse('<%= @site_page.content.nil? ? '{}' : @site_page.content['settings'].squish.gsub("'", %q(\\\')).html_safe %>')
-        var mapConfig = Object.assign(mapDatabaseConfig, {
-          language: 'en',
-          title: '<%= @site_page.site.name %>',
-          labels: {
-            en: {
-              title: '<%= @site_page.site.name %>',
-              subtitle: '<%= @site_page.description %>'
-            }
-          }
-        });
 
+        var mapConfig = Object.assign(mapDatabaseConfig, {
+          title: '<%= @site_page.site.name %>'
+        });
 
         var triggerCustom = function() {
         const subscriptions = [{
