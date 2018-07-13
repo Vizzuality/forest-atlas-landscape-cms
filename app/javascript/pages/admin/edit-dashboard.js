@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Wysiwyg from 'vizz-wysiwyg';
 
-import { ImageUpload, ImagePreview } from 'components/wysiwyg';
+import { ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 import Dashboard from 'components/shared/Dashboard';
 
 class EditDashboard extends React.Component {
@@ -30,6 +30,12 @@ class EditDashboard extends React.Component {
               icon: 'icon-image',
               label: 'Image',
               renderer: 'tooltip'
+            },
+            html: {
+              Component: HtmlEmbedPreview,
+              icon: 'icon-embed',
+              label: 'Custom HTML',
+              renderer: 'tooltip'
             }
           }}
         />
@@ -43,6 +49,12 @@ class EditDashboard extends React.Component {
               EditionComponent: ImageUpload,
               icon: 'icon-image',
               label: 'Image',
+              renderer: 'tooltip'
+            },
+            html: {
+              Component: HtmlEmbedPreview,
+              icon: 'icon-embed',
+              label: 'Custom HTML',
               renderer: 'tooltip'
             }
           }}

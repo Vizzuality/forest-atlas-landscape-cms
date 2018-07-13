@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Wysiwyg from 'vizz-wysiwyg';
 
-import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview } from 'components/wysiwyg';
+import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
 class OpenContent extends React.Component {
   render() {
@@ -34,6 +34,12 @@ class OpenContent extends React.Component {
               EditionComponent: ImageUpload,
               icon: 'icon-image',
               label: 'Image',
+              renderer: 'tooltip'
+            },
+            html: {
+              Component: HtmlEmbedPreview,
+              icon: 'icon-embed',
+              label: 'Custom HTML',
               renderer: 'tooltip'
             }
           }}
