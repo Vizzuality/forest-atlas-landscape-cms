@@ -98,16 +98,18 @@ Dashboard.propTypes = {
   setWidgetId: PropTypes.func.isRequired,
   fetchWidget: PropTypes.func.isRequired,
   preview: PropTypes.bool,
-  dataset: PropTypes.string.isRequired,
-  widget: PropTypes.string.isRequired,
+  dataset: PropTypes.string,
+  widget: PropTypes.string,
   topContent: PropTypes.string,
   bottomContent: PropTypes.string
 };
 
 Dashboard.defaultProps = {
   preview: false,
-  topContent: '',
-  bottomContent: ''
+  dataset: null,
+  widget: null,
+  topContent: null,
+  bottomContent: null
 };
 
 export default Dashboard;

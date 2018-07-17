@@ -6,6 +6,7 @@ import { Table } from 'components';
 
 export default class PublicTableView extends PublicContainer {
   render() {
-    return <Table data={this.props.dashboard.data} searchable={false} />;
+    const { dashboard } = this.props;
+    return <Table data={dashboard ? dashboard.data : []} searchable={false} />;
   }
 }

@@ -265,8 +265,8 @@ class Table extends React.Component {
 
             {filteredResults.length === 0 &&
             <tr role="row">
-              {q.length > 0 ? <td align="center">No results found for {q}</td> :
-              <td align="center">No items to display</td>}
+              {q.length > 0 ? <td style={{ textAlign: 'center' }}>No results found for {q}</td> :
+              <td style={{ textAlign: 'center' }}>No items to display</td>}
             </tr>}
 
           </tbody>
@@ -298,7 +298,7 @@ Table.propTypes = {
   /**
    * Name of the table (for screen readers)
    */
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   /**
    * Number of results per page
    */
@@ -326,13 +326,13 @@ Table.propTypes = {
    * ]
    * @type {Row[]} data
    */
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
   /**
    * Name of the columns
    * Make sure the name matches one attribute of the
    * rows (case insensitive)
    */
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string),
   /**
    * List of actions for each row
    * @type {'edit'|'delete'|'toggle'|'info'} actions
@@ -380,6 +380,13 @@ Table.defaultProps = {
       }
     }
   }
+};
+
+Table.defaultProps = {
+  name: null,
+  data: [],
+  columns: [],
+  limit: 0
 };
 
 export default Table;
