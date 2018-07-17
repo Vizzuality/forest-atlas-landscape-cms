@@ -13,15 +13,17 @@ function EditDashboardPage(props) {
 }
 
 EditDashboardPage.propTypes = {
-  dataset: PropTypes.string.isRequired,
-  widget: PropTypes.string.isRequired,
+  dataset: PropTypes.string,
+  widget: PropTypes.string,
   topContent: PropTypes.string,
   bottomContent: PropTypes.string
 };
 
 EditDashboardPage.defaultProps = {
-  topContent: '',
-  bottomContent: ''
+  topContent: null,
+  bottomContent: null,
+  widget: null,
+  dataset: null
 };
 
 export default EditDashboardPage;

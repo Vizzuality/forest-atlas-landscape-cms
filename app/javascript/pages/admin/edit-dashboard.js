@@ -9,6 +9,7 @@ import Dashboard from 'components/shared/Dashboard';
 class EditDashboard extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       topContent: props.topContent,
       bottomContent: props.bottomContent
@@ -18,8 +19,8 @@ class EditDashboard extends React.Component {
   render() {
     return (
       <div className="c-edit-dashboard">
-        <input type="hidden" name="site_page[dashboard_setting][content_top]" value={this.state.topContent} />
-        <input type="hidden" name="site_page[dashboard_setting][content_bottom]" value={this.state.bottomContent} />
+        <input type="hidden" name="site_page[dashboard_setting][content_top]" value={this.state.topContent || ''} />
+        <input type="hidden" name="site_page[dashboard_setting][content_bottom]" value={this.state.bottomContent || ''} />
         <Wysiwyg
           items={JSON.parse(this.props.topContent) || []}
           onChange={content => this.setState({ topContent: JSON.stringify(content) })}
@@ -65,15 +66,17 @@ class EditDashboard extends React.Component {
 }
 
 EditDashboard.propTypes = {
-  dataset: PropTypes.string.isRequired,
-  widget: PropTypes.string.isRequired,
+  dataset: PropTypes.string,
+  widget: PropTypes.string,
   topContent: PropTypes.string,
   bottomContent: PropTypes.string
 };
 
 EditDashboard.defaultProps = {
-  topContent: '',
-  bottomContent: ''
+  topContent: null,
+  bottomContent: null,
+  widget: null,
+  dataset: null
 };
 
 export default EditDashboard;
