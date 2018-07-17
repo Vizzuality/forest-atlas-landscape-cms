@@ -386,7 +386,7 @@ Table.defaultProps = {
   name: null,
   data: [],
   columns: [],
-  limit: 0
+  limit: 10
 };
 
 export default Table;
