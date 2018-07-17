@@ -348,6 +348,9 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
+  name: null,
+  data: [],
+  columns: [],
   limit: 10,
   searchable: false,
   actions: [],
@@ -382,11 +385,5 @@ Table.defaultProps = {
   }
 };
 
-Table.defaultProps = {
-  name: null,
-  data: [],
-  columns: [],
-  limit: 10
-};
 
 export default Table;
