@@ -87,6 +87,14 @@ class SitePageController < ApplicationController
   def static_content
   end
 
+  def map
+    begin
+      @map_html = MapVersion.find_by(version: @site_page.content['version']).html
+    rescue
+      @map_html = ''
+    end
+  end
+
   def login
   end
 
