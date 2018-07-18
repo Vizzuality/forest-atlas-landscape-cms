@@ -21,24 +21,36 @@ class DashboardBookmarks extends React.Component {
    * @param {{ name: string, filters: any[], editing: boolean }} bookmark Bookmark to update
    * @param {Event} e Event
    */
-  onKeydownName(bookmark, e) {
-    if (e.keyCode === 13) { // Enter key
-      this.onBlurName(bookmark, e);
+  onChangeName(bookmark, { currentTarget }) {
+    const newBookmarkName = currentTarget.value;
+    this.props.updateBookmark(bookmark, Object.assign({}, bookmark, {
+      name: newBookmarkName.length
+        ? newBookmarkName
+        : bookmark.name
+    }));
+  }
+  /**
+   * Event handler executed when the user types any character
+   * when changing a bookmark's name
+   * @param {{ name: string, filters: any[], editing: boolean }} bookmark Bookmark to update
+   * @param {Event} e Event
+   */
+  onKeyDown(bookmark, e) {
+    if (e.keyCode === 13) {
+      this.props.updateBookmark(bookmark, Object.assign({}, bookmark, {
+        editing: false,
+        active: false
+      }));
     }
   }
 
   /**
-   * Event handler executed when the user removes the focus
-   * from the element where he was changing the name of a bookmark
+   * Event handler executed when the user removes the focus from
+   * the input (when editing a bookmark's name)
    * @param {{ name: string, filters: any[], editing: boolean }} bookmark Bookmark to update
-   * @param {Event} e Event
    */
-  onBlurName(bookmark, { currentTarget }) {
-    const newBookmarkName = currentTarget.textContent;
+  onBlur(bookmark) {
     this.props.updateBookmark(bookmark, Object.assign({}, bookmark, {
-      name: newBookmarkName.length
-        ? newBookmarkName
-        : bookmark.name,
       editing: false,
       active: false
     }));
@@ -68,9 +80,11 @@ class DashboardBookmarks extends React.Component {
           </div>
           { !!this.props.bookmarks.length && (
             <ul className="bookmarks">
-              { this.props.bookmarks.map(bookmark => (
+              { this.props.bookmarks.map((bookmark, i) => (
                 <li
-                  key={bookmark.name}
+                  // NOTE: can't use the bookmark name as a key below
+                  // otherwise it re-renders the list while updating a name
+                  key={i} // eslint-disable-line react/no-array-index-key
                   tabIndex="0"
                   onFocus={() => !bookmark.editing && this.props.updateBookmark(
                     bookmark,
@@ -85,13 +99,17 @@ class DashboardBookmarks extends React.Component {
                     '-no-active': bookmark.editing
                   })}
                 >
-                  <span
-                    {...(bookmark.editing ? { contentEditable: true } : {})}
-                    onBlur={e => this.onBlurName(bookmark, e)}
-                    onKeyDown={e => this.onKeydownName(bookmark, e)}
-                  >
-                    {bookmark.name}
-                  </span>
+                  { !bookmark.editing && <span>{bookmark.name}</span>}
+                  { bookmark.editing && (
+                    <input
+                      type="text"
+                      aria-label="Bookmark name"
+                      value={bookmark.name}
+                      onChange={e => this.onChangeName(bookmark, e)}
+                      onKeyDown={e => this.onKeyDown(bookmark, e)}
+                      onBlur={() => this.onBlur(bookmark)}
+                    />
+                  )}
                   <div>
                     <button type="button" className="apply" title="Apply bookmark" aria-label="Apply bookmark" onClick={() => this.props.applyBookmark(bookmark)}>
                       {bookmark.name}
