@@ -143,7 +143,7 @@ class Table extends React.Component {
         isList: Array.isArray(value)
       });
 
-      if (re.test(key)) {
+      if (re.test(key.toLocaleLowerCase())) {
         if (typeof d[key] !== 'object') {
           return (
             <td key={key + d[key]} className={cls}>
