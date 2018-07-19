@@ -49,7 +49,8 @@ export const getVegaWidgetDataQuery = createSelector(
       SELECT ${fields}
       FROM ${datasetId}
       ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
-      ${widgetParams.order ? `ORDER ${widgetParams.order.field} ${widgetParams.order.direction}` : ''}
+      ${widgetParams.fields.y && widgetParams.fields.y.aggregation ? 'GROUP BY x' : ''}
+      ${widgetParams.order ? `ORDER BY ${widgetParams.order.field} ${widgetParams.order.direction}` : ''}
       LIMIT ${widgetParams.limit}
     `;
   }

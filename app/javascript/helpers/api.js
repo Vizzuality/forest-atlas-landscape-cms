@@ -49,29 +49,60 @@ export const getVegaWidgetQueryParams = (widget) => {
     return {};
   }
 
+  // We use the sort order as defined in paramsConfig
+  // but we also set defaults for some charts as defined in
+  // https://github.com/resource-watch/widget-editor/blob/1e3aea74533a982dde8f4cb1e90208f299857cde/src/helpers/WidgetHelper.js#L337
+  let orderBy = null;
+  if (widget.widgetConfig.paramsConfig.orderBy) {
+    orderBy = {
+      field: widget.widgetConfig.paramsConfig.orderBy.name,
+      direction: widget.widgetConfig.paramsConfig.orderBy.orderType
+    };
+  } else if (widget.widgetConfig.paramsConfig.chartType === 'line') {
+    orderBy = {
+      field: widget.widgetConfig.paramsConfig.category.name,
+      direction: 'asc'
+    };
+  } else if (widget.widgetConfig.paramsConfig.chartType === 'pie' || widget.widgetConfig.paramsConfig.chartType === 'bar' || widget.widgetConfig.paramsConfig.chartType === 'bar-horizontal') {
+    orderBy = {
+      field: widget.widgetConfig.paramsConfig.value.name,
+      direction: 'asc'
+    };
+  }
+
+  // The API doesn't support queries with ORDER BY count(yyy)
+  // Again, the reference is here:
+  // https://github.com/resource-watch/widget-editor/blob/1e3aea74533a982dde8f4cb1e90208f299857cde/src/helpers/WidgetHelper.js#L345
+  if (widget.widgetConfig.paramsConfig.value && widget.widgetConfig.paramsConfig.aggregateFunction
+    && orderBy && orderBy.field === widget.widgetConfig.paramsConfig.value.name) {
+    orderBy.field = 'y';
+  }
+
   return Object.assign(
     {
       fields: Object.assign(
         {
-          x: {
-            name: widget.widgetConfig.paramsConfig.category.name,
-            aggregation: widget.widgetConfig.paramsConfig.aggregateFunction || null,
-          }
+          x: { name: widget.widgetConfig.paramsConfig.category.name }
         },
         widget.widgetConfig.paramsConfig.value
-          ? { y: { name: widget.widgetConfig.paramsConfig.value.name } }
+          ? {
+            y: {
+              name: widget.widgetConfig.paramsConfig.value.name,
+              aggregation: widget.widgetConfig.paramsConfig.aggregateFunction || null
+            }
+          }
           : {}
       ),
-      filters: widget.widgetConfig.paramsConfig.filters.map(f => ({ field: f.name, values: f.value, type: f.type, notNull: f.notNull || false })),
+      filters: widget.widgetConfig.paramsConfig.filters.map(f => ({
+        field: f.name,
+        values: f.value,
+        type: f.type,
+        notNull: f.notNull || false
+      })),
       limit: widget.widgetConfig.paramsConfig.limit || 500
     },
-    widget.widgetConfig.paramsConfig.orderBy
-      ? {
-        order: {
-          field: widget.widgetConfig.paramsConfig.orderBy.name,
-          direction: widget.widgetConfig.paramsConfig.orderBy.orderType
-        }
-      }
+    orderBy
+      ? { order: { ...orderBy } }
       : {}
   );
 };
