@@ -366,7 +366,7 @@ class NewWidgetPage extends React.Component {
           <Notification
             type="error"
             content="Unable to create the widget"
-            additionalContent="Please try again later."
+            additionalContent={advancedEditor ? 'Make sure you followed the requirements above the editor. If so, please try again later.' : 'Please try again later.'}
             onClose={() => this.setState({ saveError: false })}
           />
         )}
