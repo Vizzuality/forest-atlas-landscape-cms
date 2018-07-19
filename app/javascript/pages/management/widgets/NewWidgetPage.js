@@ -315,7 +315,8 @@ class NewWidgetPage extends React.Component {
                 )}
                 { advancedEditor && (
                   <div className="advanced-editor">
-                    <div>
+                    <div className="textarea-container">
+                      <p>{`Make sure you're using a syntax compatible with Vega ${ENV.VEGA_VERSION.split('.')[0]}. Please remove the "$schema" attribute from the specification.`}</p>
                       <textarea
                         ref={(el) => { this.advancedEditor = el; }}
                         defaultValue={JSON.stringify(widgetConfig, null, 2)}

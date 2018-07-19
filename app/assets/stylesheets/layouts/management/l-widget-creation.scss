@@ -56,8 +56,14 @@
           overflow: hidden;
         }
 
+        .textarea-container {
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+        }
+
         .CodeMirror {
-          height: 100%;
+          flex-grow: 1;
         }
 
         .c-we-chart {
