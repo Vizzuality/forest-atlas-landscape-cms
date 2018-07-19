@@ -54,11 +54,13 @@ class WidgetService < ApiService
         req.body = widget.attributes.to_json
       end
 
+      raise JSON.parse(res.body)['errors'].first['detail'] unless res.status == 200
+
       Rails.logger.info "Response from widget creation endpoint: #{res.body}"
       widget_id = JSON.parse(res.body)['data']['id']
     rescue => e
       Rails.logger.error "Error creating new widget in the API: #{e}"
-      return nil
+      return e.message
     end
     widget_id
 
@@ -79,11 +81,13 @@ class WidgetService < ApiService
         req.body = widget.attributes.to_json
       end
 
+      raise JSON.parse(res.body)['errors'].first['detail'] unless res.status == 200
+
       Rails.logger.info "Response from widget creation endpoint: #{res.body}"
       widget_id = JSON.parse(res.body)['data']['id']
     rescue => e
       Rails.logger.error "Error creating new widget in the API: #{e}"
-      return nil
+      raise e.message
     end
     widget_id
   end
