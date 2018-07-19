@@ -262,6 +262,11 @@ class EditWidgetPage extends React.Component {
     const createdWithAdvancedMode = !this.props.widget.widget_config
       || !this.props.widget.widget_config.paramsConfig;
 
+    // We remove the config object from the widgetConfig because we don't
+    // want the user to manually update the theme
+    const widgetConfigWithoutConfig = Object.assign({}, widgetConfig);
+    delete widgetConfig.config;
+
     const content = (
       <div>
         <Modal />
@@ -327,7 +332,7 @@ class EditWidgetPage extends React.Component {
                     { previewLoading && <div className="c-loading-spinner -bg" /> }
                     {widgetConfig && widgetConfig.data && (
                       <VegaChart
-                        data={widgetConfig}
+                        data={widgetConfigWithoutConfig}
                         theme={widgetConfig.config || this.state.theme}
                         showLegend
                         reloadOnResize
