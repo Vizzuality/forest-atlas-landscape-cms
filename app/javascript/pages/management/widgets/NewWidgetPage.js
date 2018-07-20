@@ -17,6 +17,10 @@ const STEPS = [
     description: 'Pick the dataset you want to use for the widget.'
   },
   {
+    name: 'Name',
+    description: 'Give your widget a name and a description.'
+  },
+  {
     name: 'Visualization',
     description: 'Please use the selector to change the type of visualization and choose the columns you want to use.'
   }
@@ -261,12 +265,9 @@ class NewWidgetPage extends React.Component {
           </div>
         </div>
       );
-    } else {
+    } else if (currentStep === 1) {
       content = (
         <div>
-          <Modal />
-          <Tooltip />
-          <Icons />
           <div className="l-widget-creation -visualization">
             <div className="wrapper">
               <div className="c-inputs-container">
@@ -278,6 +279,20 @@ class NewWidgetPage extends React.Component {
                   <label htmlFor="description">Description</label>
                   <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      content = (
+        <div>
+          <Modal />
+          <Tooltip />
+          <Icons />
+          <div className="l-widget-creation -visualization">
+            <div className="wrapper">
+              <div className="c-inputs-container">
                 <div className="container">
                   <label>Widget theme</label>
                   <ThemeSelector
@@ -396,13 +411,13 @@ class NewWidgetPage extends React.Component {
                   Back
                 </button>
               )}
-              { currentStep === 0 && (
-                <button type="submit" className="c-button" disabled={!dataset} onClick={() => setStep(currentStep + 1)}>
+              { (currentStep === 0 || currentStep === 1) && (
+                <button type="submit" className="c-button" disabled={(currentStep === 0 && !dataset) || (currentStep === 1 && !title)} onClick={() => setStep(currentStep + 1)}>
                   Continue
                 </button>
               )}
-              { currentStep === 1 && (
-                <button type="submit" className="c-button" disabled={!title} onClick={() => this.onClickCreate()}>
+              { currentStep === 2 && (
+                <button type="submit" className="c-button" onClick={() => this.onClickCreate()}>
                   Create
                 </button>
               )}

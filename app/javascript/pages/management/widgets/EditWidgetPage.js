@@ -13,6 +13,10 @@ import { setStep, setWidgetCreationTitle, setWidgetCreationDescription, setWidge
 
 const STEPS = [
   {
+    name: 'Name',
+    description: 'Give your widget a name and a description.'
+  },
+  {
     name: 'Visualization',
     description: 'Please use the selector to change the type of visualization and choose the columns you want to use.'
   }
@@ -63,30 +67,8 @@ class EditWidgetPage extends React.Component {
     this.props.setDescription(this.props.widget.description);
   }
 
-  componentDidMount() {
-    if (this.state.advancedEditor) {
-      this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
-        mode: 'javascript',
-        autoCloseTags: true,
-        lineWrapping: true,
-        lineNumbers: true
-      });
-
-      this.codeMirror.on('change', () => {
-        try {
-          const widgetConfig = JSON.parse(this.codeMirror.getValue());
-          this.setState({ widgetConfig });
-        } catch (e) {
-          // If there's an error in the JSON, we reset the widgetConfig
-          // so the user sees the preview is empty
-          this.setState({ widgetConfig: {} });
-        }
-      });
-    }
-  }
-
-  componentDidUpdate(_, prevState) {
-    if (!prevState.advancedEditor && this.state.advancedEditor && this.advancedEditor) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.currentStep !== 1 && this.props.currentStep === 1 && this.advancedEditor) {
       this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
         mode: 'javascript',
         autoCloseTags: true,
@@ -267,12 +249,10 @@ class EditWidgetPage extends React.Component {
     const widgetConfigWithoutConfig = Object.assign({}, widgetConfig);
     delete widgetConfig.config;
 
-    const content = (
-      <div>
-        <Modal />
-        <Tooltip />
-        <Icons />
-        <div className="l-widget-creation -visualization">
+    let content;
+    if (currentStep === 0) {
+      content = (
+        <div className="l-widget-creation -dataset">
           <div className="wrapper">
             <div className="c-inputs-container">
               <div className="container -big">
@@ -283,71 +263,85 @@ class EditWidgetPage extends React.Component {
                 <label htmlFor="description">Description</label>
                 <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
               </div>
-              <div className="container">
-                <label>Widget theme</label>
-                <ThemeSelector
-                  defaultTheme={(theme && theme.name) || 'default'}
-                  onChange={t => this.onChangeTheme(t)}
-                />
-              </div>
-            </div>
-            <div className="widget-container">
-              { advancedEditorLoading && <div className="c-loading-spinner -bg" /> }
-              { !createdWithAdvancedMode && (
-                <ToggleSwitcher
-                  elements={['Widget editor', 'Advanced editor']}
-                  selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
-                  onChange={(newSelected) => {
-                    const selected = advancedEditor ? 'Advanced editor' : 'Widget editor';
-                    if (selected !== newSelected) {
-                      this.onToggleAdvancedEditor();
-                    }
-                  }}
-                />
-              )}
-              { !advancedEditor && (
-                <WidgetEditor
-                  datasetId={widget.dataset}
-                  {...(widget ? { widgetId: widget.id } : {})}
-                  widgetTitle={title}
-                  widgetCaption={caption}
-                  theme={this.state.theme}
-                  saveButtonMode="never"
-                  embedButtonMode="never"
-                  onChangeWidgetTitle={t => setTitle(t)}
-                  onChangeWidgetCaption={c => setCaption(c)}
-                  provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
-                />
-              )}
-              { advancedEditor && (
-                <div className="advanced-editor">
-                  <div className="textarea-container">
-                    <p>{`Make sure you're using a syntax compatible with Vega ${ENV.VEGA_VERSION.split('.')[0]}. Please remove the "$schema" attribute from the specification.`}</p>
-                    <textarea
-                      ref={(el) => { this.advancedEditor = el; }}
-                      defaultValue={JSON.stringify(widgetConfig, null, 2)}
-                    />
-                  </div>
-                  <div className="preview">
-                    { previewLoading && <div className="c-loading-spinner -bg" /> }
-                    {widgetConfig && widgetConfig.data && (
-                      <VegaChart
-                        data={widgetConfigWithoutConfig}
-                        theme={widgetConfig.config || this.state.theme}
-                        showLegend
-                        reloadOnResize
-                        toggleLoading={loading => this.setState({ previewLoading: loading })}
-                        getForceUpdate={(func) => { this.forceChartUpdate = func; }}
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      content = (
+        <div>
+          <Modal />
+          <Tooltip />
+          <Icons />
+          <div className="l-widget-creation -visualization">
+            <div className="wrapper">
+              <div className="c-inputs-container">
+                <div className="container">
+                  <label>Widget theme</label>
+                  <ThemeSelector
+                    defaultTheme={(theme && theme.name) || 'default'}
+                    onChange={t => this.onChangeTheme(t)}
+                  />
+                </div>
+              </div>
+              <div className="widget-container">
+                { advancedEditorLoading && <div className="c-loading-spinner -bg" /> }
+                { !createdWithAdvancedMode && (
+                  <ToggleSwitcher
+                    elements={['Widget editor', 'Advanced editor']}
+                    selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
+                    onChange={(newSelected) => {
+                      const selected = advancedEditor ? 'Advanced editor' : 'Widget editor';
+                      if (selected !== newSelected) {
+                        this.onToggleAdvancedEditor();
+                      }
+                    }}
+                  />
+                )}
+                { !advancedEditor && (
+                  <WidgetEditor
+                    datasetId={widget.dataset}
+                    {...(widget ? { widgetId: widget.id } : {})}
+                    widgetTitle={title}
+                    widgetCaption={caption}
+                    theme={this.state.theme}
+                    saveButtonMode="never"
+                    embedButtonMode="never"
+                    onChangeWidgetTitle={t => setTitle(t)}
+                    onChangeWidgetCaption={c => setCaption(c)}
+                    provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                  />
+                )}
+                { advancedEditor && (
+                  <div className="advanced-editor">
+                    <div className="textarea-container">
+                      <p>{`Make sure you're using a syntax compatible with Vega ${ENV.VEGA_VERSION.split('.')[0]}. Please remove the "$schema" attribute from the specification.`}</p>
+                      <textarea
+                        ref={(el) => { this.advancedEditor = el; }}
+                        defaultValue={JSON.stringify(widgetConfig, null, 2)}
+                      />
+                    </div>
+                    <div className="preview">
+                      { previewLoading && <div className="c-loading-spinner -bg" /> }
+                      {widgetConfig && widgetConfig.data && (
+                        <VegaChart
+                          data={widgetConfigWithoutConfig}
+                          theme={widgetConfig.config || this.state.theme}
+                          showLegend
+                          reloadOnResize
+                          toggleLoading={loading => this.setState({ previewLoading: loading })}
+                          getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div>
@@ -395,9 +389,23 @@ class EditWidgetPage extends React.Component {
             <button type="button" className="c-button -outline -dark-text" onClick={() => window.history.back()}>
               Cancel
             </button>
-            <button type="submit" className="c-button" onClick={() => this.onClickUpdate()}>
-              Update
-            </button>
+            <div>
+              { currentStep >= 1 && (
+                <button type="button" className="c-button -outline -dark-text" onClick={() => setStep(currentStep - 1)}>
+                  Back
+                </button>
+              )}
+              { currentStep === 0 && (
+                <button type="submit" className="c-button" disabled={!title} onClick={() => setStep(currentStep + 1)}>
+                  Continue
+                </button>
+              )}
+              { currentStep === 1 && (
+                <button type="submit" className="c-button" onClick={() => this.onClickUpdate()}>
+                  Update
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
