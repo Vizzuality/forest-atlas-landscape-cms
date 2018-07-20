@@ -71,6 +71,6 @@ class Admin::MapVersionsController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def map_params
-    params.require(:map_version).permit(:version, :position, :description)
+    params.require(:map_version).permit(:version, :position, :description, :html)
   end
 end
