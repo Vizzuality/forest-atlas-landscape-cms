@@ -1,0 +1,18 @@
+<%= javascript_pack_tag 'application' %>
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
+<div class="c-content">
+  <div class="wrapper">
+    <%= react_component('OpenContentPreviewPage', {
+      page: @page,
+      widgets: @widgets
+    } ) %>
+  </div>
+</div>
+
+<%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>
+<%= form_for @page, url: wizard_path, method: :put do |f| %>
+  <%= render partial: 'management/steps_shared/finish_footer', locals: {f: f} %>
+<% end %>

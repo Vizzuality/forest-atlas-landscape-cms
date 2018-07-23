@@ -120,6 +120,8 @@ class DynamicRouter
                               constraints, tags, main_route_host)
 
         target = 'site_page#homepage'
+      when ContentType::HOMEPAGE_V2
+        target = 'site_page#homepagev2'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
       when ContentType::OPEN_CONTENT_V2
