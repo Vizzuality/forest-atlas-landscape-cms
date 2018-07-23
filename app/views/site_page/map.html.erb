@@ -201,7 +201,7 @@
   </symbol>
 </svg>
 
-<%= @map_html.html_safe %>
+<%= @map_html.nil? ? '' : @map_html.html_safe %>
 
 <style>
   #root {
