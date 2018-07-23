@@ -7,10 +7,40 @@ import { CoverPage, WysiwygEditor, Footer } from 'components';
 
 import { getDbContent } from 'utils';
 
+import Wysiwyg from 'vizz-wysiwyg';
+import { WidgetBlock, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
+
 const Home = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} />
-    <WysiwygEditor content={getDbContent(site.page.content)} />
+    {/*  page content_type 9 equals homepagev2 */}
+    {site.page.content_type === 9 ?
+      <div className="vizz-wysiwyg">
+        <Wysiwyg
+          readOnly
+          items={JSON.parse(site.page.content) || []}
+          blocks={{
+            widget: {
+              Component: WidgetBlock,
+              icon: 'icon-widget',
+              label: 'Visualization',
+              renderer: 'modal'
+            },
+            image: {
+              Component: ImagePreview,
+              icon: 'icon-image',
+              label: 'Image',
+              renderer: 'tooltip'
+            },
+            html: {
+              Component: HtmlEmbedPreview,
+              icon: 'icon-embed',
+              label: 'Custom HTML',
+              renderer: 'tooltip'
+            }
+          }}
+        />
+      </div> : <WysiwygEditor content={getDbContent(site.page.content)} />}
     <Footer site={site} />
   </div>
 );
