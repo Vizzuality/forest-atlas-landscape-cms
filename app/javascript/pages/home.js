@@ -15,7 +15,7 @@ const Home = ({ site }) => (
     <CoverPage site={site} />
     {/*  page content_type 9 equals homepagev2 */}
     {site.page.content_type === 9 ?
-      <div className="vizz-wysiwyg">
+      <div className="vizz-wysiwyg c-content">
         <Wysiwyg
           readOnly
           items={JSON.parse(site.page.content) || []}
