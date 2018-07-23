@@ -88,7 +88,7 @@ class DynamicRouter
     routes_to_write = []
 
     case site_page.content_type
-      when ContentType::HOMEPAGE
+      when ContentType::HOMEPAGE, ContentType::HOMEPAGE_V2
         # Create error pages routes
         [
           {error: '/404', action: 'not_found'},
@@ -119,9 +119,7 @@ class DynamicRouter
                               { id: site_page.id },
                               constraints, tags, main_route_host)
 
-        target = 'site_page#homepage'
-      when ContentType::HOMEPAGE_V2
-        target = 'site_page#homepagev2'
+        target = ContentType::HOMEPAGE ? 'site_page#homepage' : 'site_page#homepagev2'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
       when ContentType::OPEN_CONTENT_V2

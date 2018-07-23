@@ -10,7 +10,6 @@ import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedP
 class OpenContentPreview extends React.Component {
   render() {
     const { admin } = this.props;
-    console.log('hello', admin)
     return (
       <div className="vizz-wysiwyg">
         <Wysiwyg
