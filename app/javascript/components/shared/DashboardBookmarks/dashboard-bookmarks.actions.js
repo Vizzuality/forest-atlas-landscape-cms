@@ -95,9 +95,9 @@ export const createBookmark = () => (
       payload: {
         name: `Bookmark #${bookmarksCount + 1}`,
         filters: getNonEmptyFilters(getState()).map(filter => (
-          // We remove the min, max and possibleValues attributes
-          // from the bookmark because the dataset can change
-          // over time
+          // We remove the min, max, possibleValues and some
+          // other attributes from the bookmark because the
+          // dataset can change over time
           Object.assign({}, { name: filter.name, type: filter.type, values: filter.values })
         ))
       }

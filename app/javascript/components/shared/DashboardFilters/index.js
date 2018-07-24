@@ -4,13 +4,13 @@ import DashboardFilters from 'components/shared/DashboardFilters/dashboard-filte
 
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
-import { getAvailableFields } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
+import { getAvailableFields, getFilters } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
 import { addFilter, removeFilter, updateFilter, resetFilters } from 'components/shared/DashboardFilters/dashboard-filters.actions';
 
 const mapStateToProps = state => ({
   fields: getAvailableFields(state),
-  filters: state.dashboardFilters.filters
+  filters: getFilters(state)
 });
 
 const mapDispatchToProps = dispatch => ({

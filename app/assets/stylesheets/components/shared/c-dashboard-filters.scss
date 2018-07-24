@@ -27,13 +27,64 @@
   }
 
   .field {
-    flex-basis: 170px;
+    flex-basis: 200px;
     flex-shrink: 0;
     margin-right: 25px;
 
     select {
       border-radius: 4px;
       padding-left: 10px;
+    }
+
+    .field-name {
+      display: flex;
+      align-items: center;
+    }
+
+    .c-select {
+      flex-grow: 1;
+      max-width: 170px;
+    }
+
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+      margin-left: 10px;
+
+      button {
+        width: 16px;
+        height: 16px;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNTU1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IC41MTJjMi4wNjMgMCAzLjgyNi43MzIgNS4yOSAyLjE5NyAxLjQ2NyAxLjQ2NCAyLjIgMy4yMjcgMi4yIDUuMjkxcy0uNzMyIDMuODI2LTIuMTk3IDUuMjljLTEuNDY2IDEuNDY3LTMuMjI5IDIuMi01LjI5MyAyLjJzLTMuODI2LS43MzItNS4yOS0yLjE5N0MxLjI0MyAxMS44MjcuNTEgMTAuMDY0LjUxIDhzLjczMi0zLjgyNiAyLjE5Ny01LjI5QzQuMTczIDEuMjQzIDUuOTM2LjUxIDggLjUxek03IDdoMnY1SDdWN3ptMC0zaDJ2Mkg3VjR6Ii8+PC9zdmc+Cg==") no-repeat center center;
+        border: none;
+        border-radius: 100%;
+        text-indent: -10000px;
+        appearance: none;
+        cursor: pointer;
+      }
+
+      .tooltip {
+        position: absolute;
+        left: 24px;
+        top: 50%;
+        width: 200px;
+        padding: 5px 8px;
+        transform: translateY(-50%);
+        background: $color-4;
+        color: $color-3;
+        z-index: 1; // To be on top of the slider/select
+
+        &:after {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          width: 8px;
+          height: 8px;
+          background: $color-4;
+          transform: translate(-50%, -50%) rotate(-45deg);
+          z-index: -1;
+          content: '';
+        }
+      }
     }
   }
 

@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 
 const getData = state => state.dashboard.data.data;
-const getFields = state => state.dashboard.fields.data;
+const getDataset = state => state.dashboard.dataset.data;
+const getFieldsSelector = state => state.dashboard.fields.data;
 const getWidget = state => state.dashboard.widget.data;
 const getPageSlugSelector = state => state.dashboard.pageSlug;
 
@@ -10,7 +11,7 @@ const getPageSlugSelector = state => state.dashboard.pageSlug;
  * supposed to be shown
  */
 export const getAvailableData = createSelector(
-  [getData, getFields],
+  [getData, getFieldsSelector],
   (data, fields) => (
     data.map((row) => {
       const availableColumns = Object.keys(row)
@@ -37,4 +38,45 @@ export const getVegaWidget = createSelector(
 export const getPageSlug = createSelector(
   [getPageSlugSelector],
   pageSlug => pageSlug
+);
+
+/**
+ * Return the metadata of the dataset
+ */
+export const getDatasetMetadata = createSelector(
+  [getDataset],
+  (dataset) => {
+    if (dataset && dataset.attributes.metadata && dataset.attributes.metadata.length) {
+      const FAMetadata = dataset.attributes.metadata.find(m => m.attributes.application === 'forest-atlas');
+      const enMetadata = dataset.attributes.metadata.find(m => m.attributes.language === 'en');
+
+      // We return, in priority, the metadata for forest-atlas or the one in English
+      return FAMetadata || enMetadata || dataset.attributes.metadata[0];
+    }
+
+    return null;
+  }
+);
+
+/**
+ * Return the fields with their corresponding metadata
+ */
+export const getFields = createSelector(
+  [getFieldsSelector, getDatasetMetadata],
+  (fields, metadata) => {
+    const res = [...fields];
+
+    if (metadata && metadata.attributes.columns) {
+      const fieldsMetadata = metadata.attributes.columns;
+      Object.keys(fieldsMetadata).forEach((f) => {
+        const field = res.find(fi => fi.name === f);
+        if (field) {
+          if (fieldsMetadata[f].alias) field.alias = fieldsMetadata[f].alias;
+          if (fieldsMetadata[f].description) field.description = fieldsMetadata[f].description;
+        }
+      });
+    }
+
+    return res;
+  }
 );

@@ -2,8 +2,9 @@ import { createSelector } from 'reselect';
 
 import { getVegaWidgetQueryParams } from 'helpers/api';
 
+import { getFields } from 'components/shared/Dashboard/dashboard.selectors';
+
 const getWidget = state => state.dashboard.widget.data;
-const getFields = state => state.dashboard.fields.data;
 const getFiltersSelector = state => state.dashboardFilters.filters;
 
 /**
@@ -16,7 +17,7 @@ export const getAvailableFields = createSelector(
       ...getVegaWidgetQueryParams(widget).filters,
       ...filters
     ].findIndex(wf => wf.name === f.name) === -1
-  ))
+  )).sort((a, b) => (a.alias || a.name).localeCompare(b.alias || b.name))
 );
 
 /**
@@ -28,6 +29,18 @@ export const getNonEmptyFilters = createSelector(
 );
 
 export const getFilters = createSelector(
-  [getFiltersSelector],
-  filters => filters
+  [getFiltersSelector, getFields],
+  (filters, fields) => filters.map((f) => {
+    const field = fields.find(fi => fi.name === f.name);
+
+    // We add the metadata info of the fields in the filters
+    if (field) {
+      return Object.assign({}, f, {
+        ...(field.alias ? { alias: field.alias } : {}),
+        ...(field.description ? { description: field.description } : {})
+      });
+    }
+
+    return f;
+  })
 );

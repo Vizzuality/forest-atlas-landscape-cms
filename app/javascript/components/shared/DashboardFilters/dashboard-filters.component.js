@@ -51,6 +51,19 @@ class DashboardFilters extends React.Component {
     };
   }
 
+  /**
+   * Set the visibility of the tooltip of the filter
+   * @param {any} filter Filter whose tooltip's visibility will be set
+   * @param {bool} visible Visibility of the tooltip
+   */
+  setTooltipVisility(filter, visible) {
+    this.props.onChangeFilter(filter, Object.assign(
+      {},
+      filter,
+      { tooltipOpen: visible }
+    ));
+  }
+
   render() {
     return (
       <div className="c-dashboard-filters">
@@ -59,23 +72,38 @@ class DashboardFilters extends React.Component {
             <li key={f.name || i}>
               <div className="field">
                 <label htmlFor={`field-${i}`}>Column</label>
-                {!!f.name && (
-                  <div className="c-select -small">
-                    <select id={`field-${i}`} disabled>
-                      <option>{f.name}</option>
-                    </select>
-                  </div>
-                )}
-                {!f.name && (
-                  <div className="c-select -small">
-                    <select id={`field-${i}`} defaultValue="" onChange={({ target }) => this.onSelectField(f, target.value)}>
-                      <option disabled value="">Select a column</option>
-                      { this.props.fields.map(field => (
-                        <option key={field.name} value={field.name}>{field.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+                <div className="field-name">
+                  {!!f.name && (
+                    <div className="c-select -small">
+                      <select id={`field-${i}`} disabled>
+                        <option>{f.alias || f.name}</option>
+                      </select>
+                    </div>
+                  )}
+                  { !!f.name && !!f.description && (
+                    <div className="tooltip-container">
+                      <button
+                        type="button"
+                        onMouseOver={() => this.setTooltipVisility(f, true)}
+                        onMouseOut={() => this.setTooltipVisility(f, false)}
+                        onClick={() => this.setTooltipVisility(f, !f.tooltipOpen)}
+                      >
+                        Info
+                      </button>
+                      { f.tooltipOpen && <div className="tooltip">{f.description}</div> }
+                    </div>
+                  )}
+                  {!f.name && (
+                    <div className="c-select -small">
+                      <select id={`field-${i}`} defaultValue="" onChange={({ target }) => this.onSelectField(f, target.value)}>
+                        <option disabled value="">Select a column</option>
+                        { this.props.fields.map(field => (
+                          <option key={field.name} value={field.name}>{field.alias || field.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="content">
                 { f.type === 'number' && <label>Range</label>}
