@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
         {!this.props.preview && (
           <Wysiwyg
             readOnly
-            items={JSON.parse(this.props.topContent) || []}
+            items={this.props.topContent ? JSON.parse(this.props.topContent) : []}
             blocks={{
               image: {
                 Component: ImagePreview,
@@ -59,7 +59,7 @@ class Dashboard extends React.Component {
         {!this.props.preview && (
           <Wysiwyg
             readOnly
-            items={JSON.parse(this.props.bottomContent) || []}
+            items={this.props.bottomContent ? JSON.parse(this.props.bottomContent) : []}
             blocks={{
               image: {
                 Component: ImagePreview,
