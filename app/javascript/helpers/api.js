@@ -31,7 +31,12 @@ export const ALLOWED_FIELD_TYPES = [
   { name: 'array', type: 'array' }
 ];
 
+export const FORBIDDEN_FIELDS = [
+  'cartodb_id'
+];
+
 export const isAcceptedType = type => ALLOWED_FIELD_TYPES.findIndex(t => t.name === type) !== -1;
+export const isAcceptedField = field => FORBIDDEN_FIELDS.findIndex(f => f === field) === -1;
 export const getStandardType = type => ALLOWED_FIELD_TYPES.find(t => t.name === type)
   ? ALLOWED_FIELD_TYPES.find(t => t.name === type).type
   : null;

@@ -16,6 +16,7 @@ import {
 
 import {
   isAcceptedType,
+  isAcceptedField,
   getStandardType
 } from 'helpers/api';
 
@@ -45,7 +46,7 @@ export const fetchFields = () => (
       })
       .then(({ fields: rawFields }) => {
         const fields = Object.keys(rawFields)
-          .filter(fieldName => isAcceptedType(rawFields[fieldName].type))
+          .filter(fieldName => isAcceptedType(rawFields[fieldName].type) && isAcceptedField(fieldName))
           .map(fieldName => ({
             name: fieldName,
             type: getStandardType(rawFields[fieldName].type)
