@@ -94,7 +94,7 @@ export const getVegaWidgetQueryParams = (widget) => {
           : {}
       ),
       filters: widget.widgetConfig.paramsConfig.filters.map(f => ({
-        field: f.name,
+        name: f.name,
         values: f.value,
         type: f.type,
         notNull: f.notNull || false
