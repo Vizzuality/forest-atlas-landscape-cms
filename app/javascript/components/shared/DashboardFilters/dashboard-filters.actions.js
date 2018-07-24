@@ -62,7 +62,9 @@ export const checkFilterCompleteness = filter => (
 
     const availableFields = getAvailableFields(getState());
 
-    if (filter.name && (isNumberFilter || isDateFilter) && (!filter.min || !filter.max)) {
+    if (filter.name && (isNumberFilter || isDateFilter) &&
+    (filter.min === null || filter.min === undefined
+    || filter.max === null || filter.max === undefined)) {
       dispatch(getFilterMinMax(filter));
 
       // We automatically add a new empty filter when the user
