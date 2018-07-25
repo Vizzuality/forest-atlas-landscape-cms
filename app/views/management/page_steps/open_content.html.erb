@@ -28,14 +28,7 @@
 <%= form_for(@page, url: wizard_path, method: :put, :html => { :class => 'js-form' }) do |f| %>
   <div class="l-page-creation -wysiwyg">
 
-      <% if params['migration'] == "1" %>
-        <%= react_component('MigrateOldHomepage', {
-          page: @page,
-          widgets: @widgets
-        } ) %>
-        <%= f.hidden_field :page_version, value: 2 %>
-        <%= f.hidden_field :migrating_homepage, value: 1, id: 'homepage_migration' %>
-      <% end %>
+      <% if @page.page_version == 1 %>
 
       <div class="wrapper">
         <div class="c-wysiwyg">
@@ -68,8 +61,27 @@
         <% end %>
         </div>
       </div>
-  </div>
+      <% else %>
+        <%= react_component('OpenContentPage', {
+          page: @page,
+          widgets: @widgets
+        } ) %>
+        <%= f.hidden_field :content %>
+      <% end %>
 
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f, no_continue: true, always_save: true, publish: !@page.enabled} %>
+
+      <% if params['migration'] == "1" %>
+      <%= react_component('MigrateOldHomepage', {
+        page: @page,
+        widgets: @widgets
+      } ) %>
+      <%= f.hidden_field :page_version, value: 2 %>
+      <%= f.hidden_field :migrating_homepage, value: 1, id: 'homepage_migration' %>
+    <% end %>
+
+  </div>
+  <% if params['migration'] != "1" %>
+    <%= render partial: 'management/steps_shared/footer', locals: {f: f, no_continue: true, always_save: true, publish: !@page.enabled} %>
+  <% end %>
   <%= render partial: 'shared/errors', locals: { resource: @page } %>
 <% end %>

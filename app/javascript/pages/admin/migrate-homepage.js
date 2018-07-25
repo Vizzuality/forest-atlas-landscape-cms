@@ -7,6 +7,18 @@ import Wysiwyg from 'vizz-wysiwyg';
 
 import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
+const btnStyle = {
+  display: 'block',
+  margin: '0 auto',
+  padding: '20px 60px',
+  border: 'none',
+  background: '#40e848',
+  color: '#FFF',
+  fontSize: '20px',
+  fontWeight: 700,
+  cursor: 'pointer'
+};
+
 class MigrateHomepage extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +38,7 @@ class MigrateHomepage extends React.Component {
     if (window.confirm('Are you sure?')) {
       const node = document.querySelector('.js-json-content');
       node.value = JSON.stringify(this.state.newCopy);
-      document.querySelector('.c-wysiwyg').style.display = 'none';
+      document.querySelector('.js-form').submit();
     }
   }
 
@@ -35,7 +47,7 @@ class MigrateHomepage extends React.Component {
     return (
       <div className="vizz-wysiwyg">
         <Wysiwyg
-          items={[{ id: 1532352632454, type: 'text', content: 'Copy and paste old content here' }]}
+          items={[{ id: 1532352632454, type: 'text', content: 'Move content from above here' }]}
           onChange={(d) => {
             this.setState({ newCopy: d });
           }}
@@ -63,7 +75,7 @@ class MigrateHomepage extends React.Component {
             }
           }}
         />
-        <button onClick={e => this.finishMigration(e)}>Im done</button>
+        <button onClick={e => this.finishMigration(e)} style={btnStyle}>Finish migration</button>
       </div>
     );
   }
