@@ -48,12 +48,17 @@ export const getDataQuery = createSelector(
  * Return the name of the columns of the data
  */
 export const getDataColumns = createSelector(
-  [getData],
-  (data) => {
+  [getData, getFields],
+  (data, fields) => {
     if (!data.length) {
       return [];
     }
-    return Object.keys(data[0]).filter(c => c !== '_id');
+
+    return Object.keys(data[0]).map((f) => {
+      const field = fields.find(fi => fi.name === f);
+      if (field) return field.alias || field.name;
+      return f;
+    });
   }
 );
 
@@ -61,10 +66,26 @@ export const getDataColumns = createSelector(
  * Return the data formatted for the table
  */
 export const getTableData = createSelector(
-  [getData],
-  data => data.map(r => (
+  [getData, getFields],
+  (data, fields) => data.map(r => (
     Object.keys(r)
-      .map(k => ({ [k]: { value: r[k], sortable: true } }))
+      .map((k) => {
+        const field = fields.find(f => f.name === k);
+
+        // We use the alias as key so the table can match
+        // the header cells with the content cells
+        const key = field ? (field.alias || field.name) : k;
+
+        return {
+          [key]: {
+            value: typeof r[k] === 'string' && r[k].length > 25
+              ? `${r[k].slice(0, 22)}...`
+              : r[k],
+            title: r[k],
+            sortable: true
+          }
+        };
+      })
       .reduce((res, o) => Object.assign(res, o), {})
   ))
 );

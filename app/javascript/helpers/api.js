@@ -32,6 +32,7 @@ export const ALLOWED_FIELD_TYPES = [
 ];
 
 export const FORBIDDEN_FIELDS = [
+  '_id',
   'cartodb_id'
 ];
 

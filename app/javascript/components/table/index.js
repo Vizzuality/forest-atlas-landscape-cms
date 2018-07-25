@@ -126,9 +126,6 @@ class Table extends React.Component {
   }
 
   formatCols(d) {
-    const { columns } = this.state;
-    const re = new RegExp(columns.join('|').toLowerCase());
-
     return Object.keys(d).map((key) => {
       let { value } = d[key];
 
@@ -143,40 +140,42 @@ class Table extends React.Component {
         isList: Array.isArray(value)
       });
 
-      if (re.test(key.toLocaleLowerCase())) {
-        if (typeof d[key] !== 'object') {
-          return (
-            <td key={key + d[key]} className={cls}>
-              <span className="row-content">
-                {d[key]}
-              </span>
-            </td>);
-        }
+      if (!d[key]) {
+        return null;
+      }
 
-        if ('link' in d[key]) {
-          return (
-            <td key={key + value} className={cls}>
-              <span className="row-content">
-                <a
-                  href={d[key].link.url}
-                  {...('external' in d[key].link && d[key].link.external ? {
-                    target: '__blank',
-                    rel: 'noopener noreferrer'
-                  } : {})}
-                >{value}
-                </a>
-              </span>
-            </td>
-          );
-        }
+      if (typeof d[key] !== 'object') {
         return (
-          <td key={key + value} className={cls}>
-            <span className="row-content">
-              {Array.isArray(value) ? value.join(' ') : value}
+          <td key={key + d[key]} className={cls}>
+            <span className="row-content" title={d[key].title || ''}>
+              {d[key]}
             </span>
           </td>);
       }
-      return null;
+
+      if ('link' in d[key]) {
+        return (
+          <td key={key + value} className={cls}>
+            <span className="row-content" title={d[key].title || ''}>
+              <a
+                href={d[key].link.url}
+                {...('external' in d[key].link && d[key].link.external ? {
+                  target: '__blank',
+                  rel: 'noopener noreferrer'
+                } : {})}
+              >{value}
+              </a>
+            </span>
+          </td>
+        );
+      }
+
+      return (
+        <td key={key + value} className={cls}>
+          <span className="row-content" title={d[key].title || ''}>
+            {Array.isArray(value) ? value.join(' ') : value}
+          </span>
+        </td>);
     });
   }
 
