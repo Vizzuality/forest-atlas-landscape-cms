@@ -309,6 +309,7 @@ class Management::PageStepsController < ManagementController
         :show_on_menu,
         :parent_id,
         :content_type,
+        :page_version,
         :content,
         dataset_setting: [
           :dataset_id,
