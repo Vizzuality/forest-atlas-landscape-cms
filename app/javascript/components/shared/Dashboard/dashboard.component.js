@@ -15,8 +15,8 @@ class Dashboard extends React.Component {
     this.props.setPageSlug(this.props.pageSlug);
     this.props.setDatasetId(this.props.dataset);
     this.props.setWidgetId(this.props.widget);
-    this.props.fetchFields();
-    this.props.fetchData();
+    this.props.fetchFields()
+      .then(() => this.props.fetchData());
     Promise.all([this.props.fetchWidget(), this.props.fetchDataset()])
       .then(() => this.props.fetchChartData());
   }

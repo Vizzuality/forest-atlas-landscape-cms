@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+import { getFields } from 'components/shared/Dashboard/dashboard.selectors';
+
 const getDatasetId = state => state.dashboard.datasetId;
 const getFilters = state => state.dashboardFilters.filters;
 const getData = state => state.dashboardTable.data;
@@ -8,10 +10,8 @@ const getData = state => state.dashboardTable.data;
  * Return the SQL query necessary to display the content of the table
  */
 export const getDataQuery = createSelector(
-  [getDatasetId, getFilters],
-  (datasetId, dashboardFilters) => {
-    const fields = ['*'];
-
+  [getDatasetId, getFields, getFilters],
+  (datasetId, fields, dashboardFilters) => {
     const filters = dashboardFilters
       .map((filter) => {
         if (!filter.values || !filter.values.length) return null;
@@ -36,7 +36,7 @@ export const getDataQuery = createSelector(
       .filter(f => !!f);
 
     return `
-      SELECT ${fields}
+      SELECT ${fields.map(f => f.name)}
       FROM ${datasetId}
       ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
       LIMIT 500
