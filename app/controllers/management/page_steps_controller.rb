@@ -169,7 +169,7 @@ class Management::PageStepsController < ManagementController
         end
       when 'type'
         if @page.content_type == 7
-          @page.dashboard_version = 2
+          @page.page_version = 2
         end
 
         set_current_page_state
