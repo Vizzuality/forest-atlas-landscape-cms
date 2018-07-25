@@ -7,7 +7,6 @@ class ContentType < EnumerateIt::Base
     link: [5, 'Link'],
     static_content: [6, 'Static Content'],
     dashboard_v2: [7, 'Dashboard V2'],
-    open_content_v2: [8, 'Open Content V2'],
-    homepage_v2: [9, 'Homepage V2']
+    open_content_v2: [8, 'Open Content V2']
   )
 end

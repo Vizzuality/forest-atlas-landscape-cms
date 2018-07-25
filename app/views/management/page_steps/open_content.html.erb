@@ -1,11 +1,19 @@
+<%= javascript_pack_tag 'application' %>
+
 <% content_for :extended_header do %>
   <div class="c-extended-header">
     <div class="wrapper">
-      <div class="description">
-        <h1>Page Content</h1>
-        <p>Write the content of your page.</p>
-      </div>
-      <div></div>
+      <% if @page.content_type == 3 %>
+        <div class="description">
+          <h1>Homepage Content</h1>
+          <p>Write the content of your homepage.</p>
+        </div>
+      <% else %>
+        <div class="description">
+          <h1>Page Content</h1>
+          <p>Write the content of your page.</p>
+        </div>
+      <% end %>
     </div>
   </div>
 <% end %>
@@ -16,7 +24,16 @@
 
 <%= form_for(@page, url: wizard_path, method: :put, :html => { :class => 'js-form' }) do |f| %>
   <div class="l-page-creation -wysiwyg">
-      <%= f.hidden_field :content_type %>
+
+      <% if params['migration'] == "1" %>
+        <%= react_component('MigrateOldHomepage', {
+          page: @page,
+          widgets: @widgets
+        } ) %>
+        <%= f.hidden_field :content_type, value: 9 %>
+      <% else %>
+       <%= f.hidden_field :content_type %>
+      <% end %>
 
       <div class="wrapper">
         <div class="c-wysiwyg">
@@ -36,7 +53,12 @@
                   <p><em>Write here the content of the page.</em></p>
                 <% end %>
               </div>
-              <%= ff.hidden_field :json, class: 'js-json-content' %>
+              <% if params['migration'] == "1" %>
+                <%= f.hidden_field :content, class: 'js-json-content' %>
+              <% else %>
+                <%= ff.hidden_field :json, class: 'js-json-content' %>
+              <% end %>
+
             <% end %>
 
         <% end %>

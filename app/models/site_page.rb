@@ -73,9 +73,6 @@ class SitePage < Page
     when ContentType::HOMEPAGE
       steps = { pages: %w[open_content open_content_preview],
                 names: ['Open Content', 'Open Content Preview'] }
-    when ContentType::HOMEPAGE_V2
-      steps = { pages: %w[open_content_v2 open_content_v2_preview],
-                names: ['Open Content', 'Open Content Preview'] }
     end
     steps
   end
@@ -131,7 +128,7 @@ class SitePage < Page
     if steps_list[:pages].index('position') <= step_index
       self.errors['position'] << 'You must select a position for the page' unless self.position
       self.errors['parent_id'] << 'You must select a parent for the current page' \
-        unless (self.parent || self.content_type == ContentType::HOMEPAGE || self.content_type == ContentType::HOMEPAGE_V2)
+        unless (self.parent || self.content_type == ContentType::HOMEPAGE)
     end
 
     # Validate Name & Description & URI
@@ -139,7 +136,7 @@ class SitePage < Page
       self.errors['name'] << 'You must type a valid title for the page' if self.name.blank? || self.name.strip.blank?
       self.errors['description'] << 'You must type a valid description for the page' if self.description.blank? || self.description.strip.blank?
       self.errors['uri'] << 'You must type a valid uri for the page' \
-        if (self.content_type != ContentType::HOMEPAGE && self.content_type != ContentType::HOMEPAGE_V2) && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
+        if self.content_type != ContentType::HOMEPAGE && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
       self.errors['uri'] << 'There\'s already a page with this name' if SitePage.where(site_id: site_id, uri: uri).where.not(id: self.id).any?
     end
 
