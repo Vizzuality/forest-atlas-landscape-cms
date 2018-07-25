@@ -7,8 +7,13 @@
         <div class="description">
           <h1>Homepage Content</h1>
           <p>Write the content of your homepage.</p>
-          <% if @page.page_version == 1 %>
-            <a href="?migration=1">Migrate to new homepage</a>
+          <% if @page.page_version == 1 && !params['migration'] %>
+            <a href="?migration=1" style="color: red;
+            background: #FFF;
+            padding: 4px 10px;
+            top: 10px;
+            position: relative;
+            font-weight: 700;">Using old homepage, Click here to start your migration</a>
           <% end %>
         </div>
       <% else %>
