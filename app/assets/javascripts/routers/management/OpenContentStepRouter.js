@@ -32,7 +32,7 @@
       });
 
       $('.js-form').on('submit', function () {
-        if (this.wysiwygView) {
+        if (this.wysiwygView && !document.getElementById('homepage_migration')) {
           var content = this.wysiwygView.getSerializedContent();
           document.querySelector('.js-json-content').value = JSON.stringify(content);
         }

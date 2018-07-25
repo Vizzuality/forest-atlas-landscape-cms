@@ -34,6 +34,7 @@
           widgets: @widgets
         } ) %>
         <%= f.hidden_field :page_version, value: 2 %>
+        <%= f.hidden_field :migrating_homepage, value: 1, id: 'homepage_migration' %>
       <% end %>
 
       <div class="wrapper">
@@ -56,7 +57,11 @@
                 <% end %>
               </div>
 
-              <%= ff.hidden_field :json, class: 'js-json-content' %>
+              <% if params['migration'] == "1" %>
+                <%= ff.hidden_field :json, class: 'js-json-content', name:'site_page[content]' %>
+              <% else %>
+                <%= ff.hidden_field :json, class: 'js-json-content' %>
+              <% end %>
 
             <% end %>
 
