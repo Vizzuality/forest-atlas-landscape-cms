@@ -4,9 +4,17 @@
 
 <div class="c-content">
   <div class="wrapper">
+
+  <% if @page.page_version == 1 %>
     <div class="js-content"></div>
     <input type="hidden" class="js-json-content" value="<%= OpenStruct.new(@page.content).json unless @page.content.blank? || OpenStruct.new(@page.content).json.blank? %>" />
-  </div>
+    <% else %>
+      <%= react_component('OpenContentPreviewPage', {
+        page: @page,
+        widgets: @widgets
+      } ) %>
+    <% end %>
+    </div>
 </div>
 
 <%= Gon::Base.render_data(camel_case: true, camel_depth: 3) %>

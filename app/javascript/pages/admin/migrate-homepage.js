@@ -21,7 +21,8 @@ class MigrateHomepage extends React.Component {
     this.setState({ oldCopy });
   }
 
-  finishMigration() {
+  finishMigration(e) {
+    e.preventDefault();
     if (window.confirm('Are you sure?')) {
       const node = document.querySelector('.js-json-content');
       node.value = JSON.stringify(this.state.newCopy);
@@ -62,7 +63,7 @@ class MigrateHomepage extends React.Component {
             }
           }}
         />
-        <button onClick={() => this.finishMigration()}>Im done</button>
+        <button onClick={e => this.finishMigration(e)}>Im done</button>
       </div>
     );
   }

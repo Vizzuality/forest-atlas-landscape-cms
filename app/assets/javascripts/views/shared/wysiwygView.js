@@ -378,9 +378,24 @@
       icons.list.ordered = '<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M4.41 7H3.004V2.338l-1.287.783-.639-.954L3.131.916H4.41V7zm.526 4.554c0 .918-.46 1.656-2.358 3.348h2.484L4.918 16H.94v-1.017c2.043-1.98 2.52-2.565 2.52-3.294 0-.504-.306-.801-.774-.801-.441 0-.747.198-1.098.63l-.846-.675C1.228 10.204 1.92 9.79 2.83 9.79c1.368 0 2.106.792 2.106 1.764zM8 4h8v1H8V4zm0 9h8v1H8v-1z" fill="#FFF" fill-rule="evenodd"/></svg>';
       /* eslint-enable max-len */
 
+      function getQueryParams(qs) {
+        qs = qs.split('+').join(' ');
+
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+      }
+
+      var qParams = getQueryParams(document.location.search);
+
       // We init the editor
       this.editor = new Quill(this.el, {
-        readOnly: this.options.readOnly,
+        readOnly: 'migration' in qParams ? true : this.options.readOnly,
         theme: 'bubble',
         modules: {
           toolbar: this.options.toolbar

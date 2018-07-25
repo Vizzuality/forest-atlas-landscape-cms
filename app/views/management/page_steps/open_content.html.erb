@@ -7,6 +7,9 @@
         <div class="description">
           <h1>Homepage Content</h1>
           <p>Write the content of your homepage.</p>
+          <% if @page.page_version == 1 %>
+            <a href="?migration=1">Migrate to new homepage</a>
+          <% end %>
         </div>
       <% else %>
         <div class="description">
@@ -30,13 +33,12 @@
           page: @page,
           widgets: @widgets
         } ) %>
-        <%= f.hidden_field :content_type, value: 9 %>
-      <% else %>
-       <%= f.hidden_field :content_type %>
+        <%= f.hidden_field :page_version, value: 2 %>
       <% end %>
 
       <div class="wrapper">
         <div class="c-wysiwyg">
+        <%= f.hidden_field :content_type %>
 
         <% if @page.content.instance_of?(String) %>
           <div class="js-content">
@@ -53,11 +55,8 @@
                   <p><em>Write here the content of the page.</em></p>
                 <% end %>
               </div>
-              <% if params['migration'] == "1" %>
-                <%= f.hidden_field :content, class: 'js-json-content' %>
-              <% else %>
-                <%= ff.hidden_field :json, class: 'js-json-content' %>
-              <% end %>
+
+              <%= ff.hidden_field :json, class: 'js-json-content' %>
 
             <% end %>
 

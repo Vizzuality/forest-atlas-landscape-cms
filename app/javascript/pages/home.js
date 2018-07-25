@@ -13,8 +13,7 @@ import { WidgetBlock, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg'
 const Home = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} />
-    {/*  page content_type 9 equals homepagev2 */}
-    {site.page.content_type === 9 ?
+    {site.page.page_version >= 2 ?
       <div className="vizz-wysiwyg c-content">
         <Wysiwyg
           readOnly
