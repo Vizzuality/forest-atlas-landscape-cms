@@ -13,10 +13,18 @@ class WidgetBlock extends React.Component {
       widget: null
     };
   }
+
   componentWillMount() {
     const { item } = this.props;
     this.getChart(item.content.widgetId);
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // This fixes a bug where the widgets would reload when hovering them
+    return this.state !== nextState
+      || this.props.item.content.widgetId !== nextProps.item.content.widgetId;
+  }
+
   getChart(widgetId) {
     fetch(`${window.location.origin}/widget_data.json?widget_id=${widgetId}`).then((res) => {
       return res.json();
@@ -27,6 +35,7 @@ class WidgetBlock extends React.Component {
       });
     });
   }
+
   render() {
     if (this.state.loading) { return null; }
     return (
