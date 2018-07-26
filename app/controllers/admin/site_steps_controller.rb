@@ -211,7 +211,7 @@ class Admin::SiteStepsController < AdminController
         else
           @site.form_step = 'style'
 
-          if @site.valid?
+          if @site.save
             redirect_to next_wizard_path
           else
             color_array = @site.site_settings.select{ |s| s.name == 'flag'}.first
