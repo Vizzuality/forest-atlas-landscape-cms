@@ -140,7 +140,7 @@ class Table extends React.Component {
         isList: Array.isArray(value)
       });
 
-      if (!d[key]) {
+      if (!this.state.columns.find(c => c.toLowerCase() === key.toLowerCase())) {
         return null;
       }
 
