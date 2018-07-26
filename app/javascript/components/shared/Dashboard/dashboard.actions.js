@@ -11,7 +11,8 @@ import {
   SET_WIDGET_DATA,
   SET_DATASET_ID,
   SET_WIDGET_ID,
-  SET_PAGE_SLUG
+  SET_PAGE_SLUG,
+  SET_DETAILS_VISIBILITY
 } from 'components/shared/Dashboard/dashboard.reducer';
 
 import {
@@ -126,4 +127,12 @@ export const setDatasetId = datasetId => ({
 export const setWidgetId = widgetId => ({
   type: SET_WIDGET_ID,
   payload: widgetId
+});
+
+/**
+ * Set the visibility of the dataset's details
+ */
+export const setDetailsVisibility = visible => ({
+  type: SET_DETAILS_VISIBILITY,
+  payload: visible
 });

@@ -2,13 +2,17 @@ import { connect } from 'react-redux';
 
 import DashboardComponent from 'components/shared/Dashboard/dashboard.component';
 
-import { setSelectedTab, fetchFields, fetchDataset, fetchWidget, setPageSlug, setDatasetId, setWidgetId } from 'components/shared/Dashboard/dashboard.actions';
+import { setSelectedTab, fetchFields, fetchDataset, fetchWidget, setPageSlug, setDatasetId, setWidgetId, setDetailsVisibility } from 'components/shared/Dashboard/dashboard.actions';
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
+import { getDatasetMetadata } from 'components/shared/Dashboard/dashboard.selectors';
 
 const mapStateToProps = state => ({
   tabs: state.dashboard.tabs,
-  selectedTab: state.dashboard.selectedTab
+  selectedTab: state.dashboard.selectedTab,
+  detailsVisible: state.dashboard.detailsVisible,
+  datasetData: state.dashboard.dataset.data,
+  datasetMetadata: getDatasetMetadata(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -20,7 +24,8 @@ const mapDispatchToProps = dispatch => ({
   fetchChartData: () => dispatch(fetchVegaWidgetData()),
   setPageSlug: pageSlug => dispatch(setPageSlug(pageSlug)),
   setDatasetId: datasetId => dispatch(setDatasetId(datasetId)),
-  setWidgetId: widgetId => dispatch(setWidgetId(widgetId))
+  setWidgetId: widgetId => dispatch(setWidgetId(widgetId)),
+  setDetailsVisibility: visible => dispatch(setDetailsVisibility(visible))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardComponent);

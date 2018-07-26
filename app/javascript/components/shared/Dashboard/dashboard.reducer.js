@@ -11,6 +11,7 @@ export const SET_WIDGET_LOADING = 'DASHBOARD/SET_WIDGET_LOADING';
 export const SET_WIDGET_ERROR = 'DASHBOARD/SET_WIDGET_ERROR';
 export const SET_WIDGET_DATA = 'DASHBOARD/SET_WIDGET_DATA';
 export const SET_PAGE_SLUG = 'DASHBOARD/SET_PAGE_SLUG';
+export const SET_DETAILS_VISIBILITY = 'DASHBOARD/SET_DETAILS_VISIBILITY';
 
 const initialState = {
   tabs: [
@@ -22,6 +23,7 @@ const initialState = {
   datasetId: null,
   widgetId: null,
   pageSlug: null,
+  detailsVisible: false,
   fields: {
     loading: false,
     error: false,
@@ -97,6 +99,9 @@ export default (state = initialState, action) => {
 
     case SET_PAGE_SLUG:
       return Object.assign({}, state, { pageSlug: action.payload });
+
+    case SET_DETAILS_VISIBILITY:
+      return Object.assign({}, state, { detailsVisible: action.payload });
 
     default:
       return state;

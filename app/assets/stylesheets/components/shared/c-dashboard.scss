@@ -102,4 +102,49 @@
 
     margin-bottom: 50px;
   }
+
+  .actions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+
+    .info {
+      width: 35px;
+      height: 35px;
+      border: 1px solid $color-1;
+      border-radius: 100%;
+      background: rgba($color-1, .1);
+      cursor: pointer;
+
+      svg {
+        width: 16px;
+        height: 16px;
+
+        use {
+          fill: $color-4;
+        }
+      }
+    }
+  }
+
+  .details-modal {
+    h1 {
+      margin: 0;
+      font-size: $font-size-medium;
+    }
+
+    h2 {
+      margin: 15px 0 0;
+      font-size: $font-size-normal;
+
+      & + p {
+        margin-top: 5px;
+      }
+    }
+
+    p {
+      margin: 15px 0;
+    }
+  }
 }

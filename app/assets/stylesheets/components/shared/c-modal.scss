@@ -78,6 +78,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 50; // To be on top of everything (header included)
 
   &__wrapper {
     max-width: 530px;
