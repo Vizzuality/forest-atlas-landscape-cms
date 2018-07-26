@@ -9,7 +9,6 @@
   var LINK = 5;
   var STATIC_CONTENT = 6;
   /* eslint-enable no-unused-vars */
-
   App.Router.ManagementPageEdition = Backbone.Router.extend({
 
     routes: {
@@ -29,6 +28,7 @@
     index: function () {
       var pageType = this._getPageType();
 
+
       if (pageType === OPEN_CONTENT || pageType === STATIC_CONTENT) {
         // We instantiate the wysiwyg editor
         this.wysiwygView = new App.View.WysiwygView({
@@ -38,7 +38,7 @@
 
       // Before the form is submitted, we need to save the output HTML
       $('.js-submit').on('click', function () {
-        if (this.wysiwygView) {
+        if (this.wysiwygView && !document.getElementById('homepage_migration')) {
           this.wysiwygView.saveHTML();
         }
 

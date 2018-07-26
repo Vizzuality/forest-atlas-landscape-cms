@@ -38,7 +38,9 @@
 
       if (pageType === OPEN_CONTENT || pageType === LINK) {
         $('.js-submit').on('click', function () {
-          if (this.wysiwygView) this.wysiwygView.saveHTML();
+          if (this.wysiwygView && !document.getElementById('homepage_migration')) {
+           this.wysiwygView.saveHTML();
+          }
 
           var form = document.querySelector('.js-form');
           if (form) form.submit();

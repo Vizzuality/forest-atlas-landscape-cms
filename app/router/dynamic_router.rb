@@ -119,7 +119,7 @@ class DynamicRouter
                               { id: site_page.id },
                               constraints, tags, main_route_host)
 
-        target = 'site_page#homepage'
+        target = ContentType::HOMEPAGE ? 'site_page#homepage' : 'site_page#homepagev2'
       when ContentType::OPEN_CONTENT
         target = 'site_page#open_content'
       when ContentType::OPEN_CONTENT_V2
