@@ -2,22 +2,22 @@
 #
 # Table name: pages
 #
-#  id                :integer          not null, primary key
-#  site_id           :integer
-#  name              :string
-#  description       :string
-#  uri               :string
-#  url               :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  content_type      :integer
-#  type              :text
-#  enabled           :boolean
-#  parent_id         :integer
-#  position          :integer
-#  content           :json
-#  show_on_menu      :boolean          default(TRUE)
-#  dashboard_version :integer          default(1)
+#  id           :integer          not null, primary key
+#  site_id      :integer
+#  name         :string
+#  description  :string
+#  uri          :string
+#  url          :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  content_type :integer
+#  type         :text
+#  enabled      :boolean
+#  parent_id    :integer
+#  position     :integer
+#  content      :json
+#  show_on_menu :boolean          default(TRUE)
+#  page_version :integer          default(1)
 #
 
 class SitePage < Page
@@ -53,8 +53,8 @@ class SitePage < Page
       steps = { pages: %w[position title type open_content open_content_preview],
                 names: %w[Position Details Type Content Preview] }
     when ContentType::OPEN_CONTENT_V2
-      steps = { pages: %w[position title type open_content_v2],
-                names: %w[Position Details Type Content] }
+      steps = { pages: %w[position title type open_content_v2 open_content_v2_preview],
+                names: %w[Position Details Type Content Preview] }
     when ContentType::ANALYSIS_DASHBOARD
       steps = { pages: %w[position title type dataset filters columns preview_analytics_dashboard],
                 names: %w[Position Title Type Dataset Filters Columns Preview] }
@@ -136,7 +136,7 @@ class SitePage < Page
       self.errors['name'] << 'You must type a valid title for the page' if self.name.blank? || self.name.strip.blank?
       self.errors['description'] << 'You must type a valid description for the page' if self.description.blank? || self.description.strip.blank?
       self.errors['uri'] << 'You must type a valid uri for the page' \
-        if (self.content_type != ContentType::HOMEPAGE) && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
+        if self.content_type != ContentType::HOMEPAGE && (self.uri.blank? || self.uri.gsub(/[^a-zA-Z0-9\-]/, '').blank?)
       self.errors['uri'] << 'There\'s already a page with this name' if SitePage.where(site_id: site_id, uri: uri).where.not(id: self.id).any?
     end
 

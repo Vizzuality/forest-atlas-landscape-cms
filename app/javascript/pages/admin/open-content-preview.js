@@ -3,30 +3,30 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { CoverPage, WysiwygEditor, Footer } from 'components';
-
-import { getDbContent } from 'utils';
-
 import Wysiwyg from 'vizz-wysiwyg';
-import { WidgetBlock, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
-const Home = ({ site }) => (
-  <div className="fa-page">
-    <CoverPage site={site} />
-    {site.page.page_version >= 2 ?
-      <div className="vizz-wysiwyg c-content">
+import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
+
+class OpenContentPreview extends React.Component {
+  render() {
+    const { admin } = this.props;
+    return (
+      <div className="vizz-wysiwyg">
         <Wysiwyg
           readOnly
-          items={JSON.parse(site.page.content) || []}
+          items={JSON.parse(admin.page.content) || []}
           blocks={{
             widget: {
               Component: WidgetBlock,
+              EditionComponent: WidgetBlockCreation,
+              admin,
               icon: 'icon-widget',
               label: 'Visualization',
               renderer: 'modal'
             },
             image: {
               Component: ImagePreview,
+              EditionComponent: ImageUpload,
               icon: 'icon-image',
               label: 'Image',
               renderer: 'tooltip'
@@ -39,15 +39,15 @@ const Home = ({ site }) => (
             }
           }}
         />
-      </div> : <WysiwygEditor content={getDbContent(site.page.content)} />}
-    <Footer site={site} />
-  </div>
-);
-
-function mapStateToProps(state) {
-  return { site: state.site };
+      </div>
+    );
+  }
 }
 
-Home.propTypes = { site: PropTypes.object.isRequired };
+function mapStateToProps(state) {
+  return { admin: state.admin };
+}
 
-export default connect(mapStateToProps, null)(Home);
+OpenContentPreview.propTypes = { admin: PropTypes.object.isRequired };
+
+export default connect(mapStateToProps, null)(OpenContentPreview);

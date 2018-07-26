@@ -28,6 +28,7 @@ class SiteCreator
           site: site,
           show_on_menu: page.show_on_menu,
           content_type: page.content_type,
+          page_version: page.page_version,
           enabled: true,
           parent: get_parent_content(page)
         }
