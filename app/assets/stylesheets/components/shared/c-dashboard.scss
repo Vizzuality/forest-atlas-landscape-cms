@@ -107,7 +107,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
+    margin: 15px auto 0;
+    width: 100%;
+    max-width: $body-max-width;
 
     .info,
     .download {
