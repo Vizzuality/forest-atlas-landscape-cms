@@ -109,9 +109,14 @@
     align-items: center;
     margin-top: 15px;
 
-    .info {
+    .info,
+    .download {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
       width: 35px;
       height: 35px;
+      margin-left: 10px;
       border: 1px solid $color-1;
       border-radius: 100%;
       background: rgba($color-1, .1);

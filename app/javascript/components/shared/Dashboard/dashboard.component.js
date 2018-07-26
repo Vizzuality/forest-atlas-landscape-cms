@@ -25,6 +25,14 @@ class Dashboard extends React.Component {
 
   render() {
     const metadata = this.props.datasetMetadata && this.props.datasetMetadata.attributes;
+
+    let downloadLink = null;
+    if (metadata && metadata.info) {
+      downloadLink = metadata.info.data_download_link
+        || metadata.info.data_download_original_link
+        || null;
+    }
+
     return (
       <div className="c-dashboard vizz-wysiwyg">
         {!this.props.preview && <DashboardBookmarks />}
@@ -62,14 +70,26 @@ class Dashboard extends React.Component {
         <div className="actions-container">
           <div />
           { this.props.datasetData && (
-            <button
-              type="button"
-              className="info"
-              aria-label="Widget details"
-              onClick={() => this.props.setDetailsVisibility(true)}
-            >
-              <Icon name="icon-info" />
-            </button>
+            <div>
+              <button
+                type="button"
+                className="info"
+                aria-label="Widget details"
+                onClick={() => this.props.setDetailsVisibility(true)}
+              >
+                <Icon name="icon-info" />
+              </button>
+              { downloadLink && (
+                <a
+                  className="download"
+                  aria-label="Download dataset"
+                  href={downloadLink}
+                  {...(metadata.info.data_download_original_link ? { target: '_blank', rel: 'noopener noreferrer' } : { download: true })}
+                >
+                  <Icon name="icon-download" />
+                </a>
+              )}
+            </div>
           )}
         </div>
         { this.props.datasetData && (
