@@ -67,8 +67,9 @@ class EditWidgetPage extends React.Component {
     this.props.setDescription(this.props.widget.description);
   }
 
-  componentDidUpdate(prevProps) {
-    if (!prevProps.currentStep !== 1 && this.props.currentStep === 1 && this.advancedEditor) {
+  componentDidUpdate(prevProps, prevState) {
+    if ((prevProps.currentStep !== 1 && this.props.currentStep === 1 && this.advancedEditor)
+      || (!prevState.advancedEditor && this.state.advancedEditor)) {
       this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
         mode: 'javascript',
         autoCloseTags: true,
