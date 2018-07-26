@@ -426,6 +426,7 @@
                   width: 100%;
                   height: 100%;
                   padding: 15px 5px;
+                  white-space: initial;
 
                   @if $theme == 3 {
                     color: $color-3;
