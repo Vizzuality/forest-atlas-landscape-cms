@@ -64,7 +64,7 @@ class Page < ApplicationRecord
 
   def has_visible_children?
     self.children.each do |child|
-      return true if child.visible?
+      return true if child.visible? && child.show_on_menu
     end
     return false
   end
