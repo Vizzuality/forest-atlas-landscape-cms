@@ -28,7 +28,11 @@ class WidgetBlock extends React.Component {
   getChart(widgetId) {
     fetch(`${window.location.origin}/widget_data.json?widget_id=${widgetId}`).then((res) => {
       return res.json();
-    }).then((widget) => {
+    }).then((w) => {
+      const widget = w;
+      if (widget.visualization.width !== undefined) delete widget.visualization.width;
+      if (widget.visualization.height !== undefined) delete widget.visualization.height;
+
       this.setState({
         loading: false,
         widget
