@@ -34,8 +34,8 @@ class ContextsController < ManagementController
         'name' => {'value' => context.name, 'searchable' => true, 'sortable' => true},
         'sites' => {'value' => context.sites.map{|s| s.name}, 'searchable' => true, 'sortable' => true},
         'datasets' => {'value' => datasets, 'searchable' => true, 'sortable' => true},
-        'owners' =>  {'value' => context.owners.map{|o| o.name}, 'searchable' => true, 'sortable' => true},
-        'writers' => {'value' => context.writers.map{|w| w.name}, 'searchable' => true, 'sortable' => true},
+        'owners' =>  {'value' => context.owners.map{|o| o.name}.uniq, 'searchable' => true, 'sortable' => true},
+        'writers' => {'value' => context.writers.map{|w| w.name}.uniq, 'searchable' => true, 'sortable' => true},
         'edit' => {'value' => edit_link, 'method' => 'get'},
         'delete' => {'value' => delete_link, 'method' => 'delete'}
       }
