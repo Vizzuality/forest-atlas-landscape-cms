@@ -44,9 +44,6 @@ class DashboardMapView extends React.Component {
     this.geometryLayer = L.esri.featureLayer({ url: this.props.layerUrl });
     this.geometryLayer.addTo(this.map);
 
-    // We filter the geometris
-    this.updateQuery();
-
     // We zoom on the geometries
     this.geometryLayer.once('load', () => {
       const bounds = L.latLngBounds([]);
@@ -57,6 +54,9 @@ class DashboardMapView extends React.Component {
       });
 
       this.map.fitBounds(bounds);
+
+      // We filter the geometris
+      this.updateQuery();
     });
   }
 
