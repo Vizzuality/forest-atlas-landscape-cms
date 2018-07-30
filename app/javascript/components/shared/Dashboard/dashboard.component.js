@@ -7,6 +7,7 @@ import Tabs from 'components/shared/Tabs';
 import DashboardBookmarks from 'components/shared/DashboardBookmarks';
 import DashboardFilters from 'components/shared/DashboardFilters';
 import DashboardChartView from 'components/shared/DashboardChartView';
+import DashboardMapView from 'components/shared/DashboardMapView';
 import DashboardTableView from 'components/shared/DashboardTableView';
 import { ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 import Icon from 'components/icon';
@@ -65,6 +66,7 @@ class Dashboard extends React.Component {
         />
         <div className="visualization-container">
           { this.props.selectedTab === 'Chart' && <DashboardChartView /> }
+          { this.props.selectedTab === 'Map' && <DashboardMapView /> }
           { this.props.selectedTab === 'Table' && <DashboardTableView /> }
         </div>
         <div className="actions-container">

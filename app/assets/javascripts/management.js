@@ -18,6 +18,7 @@
 //= require d3
 //= require vega
 //= require leaflet
+//= require esri-leaflet
 //= require handlebars
 //= require jquery-ui
 //= require jquery-nested-sortable

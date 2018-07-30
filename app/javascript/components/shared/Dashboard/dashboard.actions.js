@@ -1,4 +1,5 @@
 import {
+  SET_TABS,
   SET_TAB,
   SET_FIELDS_LOADING,
   SET_FIELDS_ERROR,
@@ -75,7 +76,20 @@ export const fetchDataset = () => (
         }
         throw new Error(res.statusText);
       })
-      .then(({ data }) => dispatch({ type: SET_DATASET_DATA, payload: data }))
+      .then(({ data }) => {
+        dispatch({ type: SET_DATASET_DATA, payload: data });
+
+        if (data.attributes.provider === 'featureservice') {
+          dispatch({
+            type: SET_TABS,
+            payload: [
+              { name: 'Chart' },
+              { name: 'Map' },
+              { name: 'Table' }
+            ]
+          });
+        }
+      })
       .catch(() => dispatch({ type: SET_DATASET_ERROR, payload: true }))
       .then(() => dispatch({ type: SET_DATASET_LOADING, payload: false }));
   }
