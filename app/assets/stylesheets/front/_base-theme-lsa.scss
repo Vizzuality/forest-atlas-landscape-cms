@@ -100,3 +100,8 @@ a {
 .tab-buttons__tab.mobile-show[data-value="MORE"] {
   display: none !important;
 }
+
+// Native language picker of Transifex
+.txlive-langselector {
+  display: none;
+}
