@@ -139,7 +139,7 @@ export const getFilterPossibleValues = filter => (
       false
     ));
 
-    const query = `SELECT ${filter.name} FROM ${getState().dashboard.datasetId} GROUP BY ${filter.name} ORDER BY ${filter.name}`;
+    const query = `SELECT ${filter.name} FROM ${getState().dashboard.datasetId} WHERE ${filter.name} IS NOT NULL GROUP BY ${filter.name} ORDER BY ${filter.name}`;
 
     fetch(`${ENV.API_URL}/query?sql=${query}`)
       .then((res) => {
