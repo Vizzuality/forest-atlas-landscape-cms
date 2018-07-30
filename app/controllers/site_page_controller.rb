@@ -96,10 +96,13 @@ class SitePageController < ApplicationController
   end
 
   def login
+    @return_link = request.headers['HTTP_REFERER'].remove(request.base_url) || '' rescue ''
+    @return_link = '?page=' + @return_link unless @return_link.blank?
   end
 
   def login_redirect
     token = params[:token]
+    page = params[:page]
 
     if token.blank?
       redirect_to controller: 'site_page', action: 'homepage',
@@ -110,8 +113,14 @@ class SitePageController < ApplicationController
     ensure_logged_in
     session[:current_user]
 
-    redirect_to controller: 'site_page', action: 'homepage',
-                id: @site_page.site.id
+    if page.blank?
+      redirect_to controller: 'site_page', action: 'homepage',
+                  id: @site_page.site.id
+    else
+      # To remove potentially harmful parameters
+      page = page.slice(0..(str.index('?'))).slice(0..(str.index(':')))
+      redirect_to request.base_url + page
+    end
   end
 
   def logout

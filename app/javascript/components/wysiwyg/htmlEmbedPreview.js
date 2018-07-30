@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 export default function HtmlEmbedPreview({ readOnly, onChange, item } ) {
 
   if (readOnly) {
-    return <div dangerouslySetInnerHTML={{ __html: item.content }} />;
+    return (<div
+      style={{
+        display: 'block',
+        width: '100%'
+      }}
+      dangerouslySetInnerHTML={{ __html: item.content }}
+    />);
   }
 
   return (

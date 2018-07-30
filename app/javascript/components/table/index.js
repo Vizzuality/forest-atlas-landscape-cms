@@ -353,7 +353,7 @@ Table.defaultProps = {
   limit: 10,
   searchable: false,
   actions: [],
-  onClickAction: (action, data) => {
+  onClickAction: (action, data, e) => {
     // By default, the value is a link, so just redirect to it
     if (action in data && action !== 'delete') {
       if ('value' in data[action]) {
@@ -373,13 +373,9 @@ Table.defaultProps = {
     if (action === 'delete') {
       const shouldDelete = window.confirm('are you sure you want to remove this?');
       if (shouldDelete) {
-        fetch(window.location.origin + data[action].value, {
-          method: 'DELETE',
-          credentials: 'same-origin'
-        }).then(() => {
-          window.location.reload();
-        });
+        return shouldDelete;
       }
+      e.preventDefault();
     }
   }
 };
