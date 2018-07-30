@@ -38,14 +38,15 @@ const TableActions = ({ data, action, onClickAction }) => {
     return (
       <td key={action}>
         <span className="row-content">
-          <button
-            type="button"
+          <a
+            href={window.location.origin + data[action].value}
+            data-method="delete"
             className="c-table-action-button -delete"
             title="Delete"
             onClick={() => onClickAction(action, data)}
           >
             Delete
-          </button>
+          </a>
         </span>
       </td>);
   }
@@ -56,7 +57,7 @@ const TableActions = ({ data, action, onClickAction }) => {
         <button
           type="button"
           className="c-table-action-button -info js-metadata-info"
-          onClick={() => onClickAction(action, data)}
+          onClick={e => onClickAction(action, data, e)}
         >
           Info
         </button>
