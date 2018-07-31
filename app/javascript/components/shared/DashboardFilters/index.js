@@ -4,6 +4,7 @@ import DashboardFilters from 'components/shared/DashboardFilters/dashboard-filte
 
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
+import { setSqlWhere } from 'components/shared/DashboardMapView/dashboard-map-view.actions';
 import { getAvailableFields, getFilters } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
 import { addFilter, removeFilter, updateFilter, resetFilters } from 'components/shared/DashboardFilters/dashboard-filters.actions';
@@ -21,10 +22,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(resetFilters());
     dispatch(fetchData());
     dispatch(fetchVegaWidgetData());
+    dispatch(setSqlWhere());
   },
   onApplyFilters: () => {
     dispatch(fetchData());
     dispatch(fetchVegaWidgetData());
+    dispatch(setSqlWhere());
   }
 });
 

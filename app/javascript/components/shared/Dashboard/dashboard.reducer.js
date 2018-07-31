@@ -1,3 +1,4 @@
+export const SET_TABS = 'DASHBOARD/SET_TABS';
 export const SET_TAB = 'DASHBOARD/SET_TAB';
 export const SET_FIELDS_LOADING = 'DASHBOARD/SET_FIELDS_LOADING';
 export const SET_FIELDS_ERROR = 'DASHBOARD/SET_FIELDS_ERROR';
@@ -16,7 +17,6 @@ export const SET_DETAILS_VISIBILITY = 'DASHBOARD/SET_DETAILS_VISIBILITY';
 const initialState = {
   tabs: [
     { name: 'Chart' },
-    // { name: 'Map' },
     { name: 'Table' }
   ],
   selectedTab: 'Chart',
@@ -43,6 +43,9 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_TABS:
+      return Object.assign({}, state, { tabs: action.payload });
+
     case SET_TAB:
       return Object.assign({}, state, { selectedTab: action.payload });
 

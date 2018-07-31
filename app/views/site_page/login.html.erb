@@ -1,8 +1,8 @@
 <div class="fa-login">
 <h2>Login with</h2>
-<a class="fb" href="<%=ENV['CONTROL_TOWER_URL']%>/auth/facebook?callbackUrl=<%= request.base_url + '/login_redirect' %>&token=true">Facebook</a>
-<a class="twitter" href="<%=ENV['CONTROL_TOWER_URL']%>/auth/twitter?callbackUrl=<%= request.base_url + '/login_redirect' %>&token=true">Twitter</a>
-<a class="google" href="<%=ENV['CONTROL_TOWER_URL']%>/auth/google?callbackUrl=<%= request.base_url + '/login_redirect' %>&token=true">Google</a>
+<a class="fb" href="<%=ENV['CONTROL_TOWER_URL']%>/auth/facebook?callbackUrl=<%= request.base_url + '/login_redirect' + @return_link %>&token=true">Facebook</a>
+<a class="twitter" href="<%=ENV['CONTROL_TOWER_URL']%>/auth/twitter?callbackUrl=<%= request.base_url + '/login_redirect' + @return_link %>&token=true">Twitter</a>
+<a class="google" href="<%=ENV['CONTROL_TOWER_URL']%>/auth/google?callbackUrl=<%= request.base_url + '/login_redirect' + @return_link %>&token=true">Google</a>
 
 <a class="back" href="javascript:history.back()">Or go back</a>
 

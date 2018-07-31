@@ -151,7 +151,7 @@ class DynamicRouter
       RouteDefinition.new(path, target, { id: site_page.id },
                           constraints, tags, main_route_host)
     routes_to_write.compact.each do |route|
-      Rails.logger.debug '>>>>>> Writing to cache ' + route.inspect
+      #Rails.logger.debug '>>>>>> Writing to cache ' + route.inspect
       @route_cache.write(route, route.tags)
     end
   end

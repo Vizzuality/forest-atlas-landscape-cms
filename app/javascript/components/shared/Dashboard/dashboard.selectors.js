@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 const getData = state => state.dashboard.data.data;
-const getDataset = state => state.dashboard.dataset.data;
+export const getDataset = state => state.dashboard.dataset.data;
 const getFieldsSelector = state => state.dashboard.fields.data;
 const getWidget = state => state.dashboard.widget.data;
 const getPageSlugSelector = state => state.dashboard.pageSlug;

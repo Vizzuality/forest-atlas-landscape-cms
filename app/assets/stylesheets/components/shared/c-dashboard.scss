@@ -16,6 +16,12 @@
     margin: 0 auto;
   }
 
+  .c-dashboard-map-view {
+    max-width: $body-max-width;
+    height: 600px;
+    margin: 0 auto;
+  }
+
   .c-dashboard-table-view {
     max-width: $content-max-width;
     margin: 0 auto;
