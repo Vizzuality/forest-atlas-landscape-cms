@@ -92,7 +92,7 @@ export const getFilterMinMax = filter => (
       false
     ));
 
-    const query = `SELECT min(${filter.name}) AS min, max(${filter.name}) AS max FROM ${getState().dashboard.datasetId}`;
+    const query = `SELECT MIN(${filter.name}) AS min, MAX(${filter.name}) AS max FROM ${getState().dashboard.datasetId}`;
 
     fetch(`${ENV.API_URL}/query?sql=${query}`)
       .then((res) => {
