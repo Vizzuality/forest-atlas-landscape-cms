@@ -7,7 +7,8 @@ export default function HtmlEmbedPreview({ readOnly, onChange, item } ) {
     return (<div
       style={{
         display: 'block',
-        width: '100%'
+        width: '100%',
+        fontSize: '13px'
       }}
       dangerouslySetInnerHTML={{ __html: item.content }}
     />);
