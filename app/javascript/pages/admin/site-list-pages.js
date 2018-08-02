@@ -1,28 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
-
 import { Table } from 'components';
 
-const SiteListPages = ({ admin }) => (
+const SiteListPages = ({ pages }) => (
   <div className="l-page-list">
     <div className="wrapper">
       <Table
         name="List of pages"
         searchable
         columns={['Title', 'Url', 'Type']}
-        data={admin.pages}
+        data={pages}
         actions={['toggle', 'edit', 'delete']}
       />
     </div>
   </div>
 );
 
-function mapStateToProps(state) {
-  return { admin: state.admin };
-}
+SiteListPages.propTypes = {
+  pages: PropTypes.array.isRequired
+};
 
-SiteListPages.propTypes = { admin: PropTypes.object.isRequired };
-
-export default connect(mapStateToProps, null)(SiteListPages);
+export default SiteListPages;

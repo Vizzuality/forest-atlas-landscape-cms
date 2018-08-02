@@ -1,29 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
-
 import { Table, DatasetModal } from 'components';
 
-const Datasets = ({ admin }) => (
+const Datasets = ({ datasets }) => (
   <div className="l-page-list">
     <div className="wrapper">
       <Table
         searchable
         columns={['Title', 'Contexts', 'Connector', 'Function', 'Tags', 'Status']}
-        data={admin.datasets}
+        data={datasets}
         modal={DatasetModal}
-        actions={['edit', 'info.metadata']}
+        actions={['edit']}
       />
     </div>
   </div>
 );
 
-function mapStateToProps(state) {
-  return { admin: state.admin };
-}
 
+Datasets.propTypes = { datasets: PropTypes.array.isRequired };
 
-Datasets.propTypes = { admin: PropTypes.object.isRequired };
-
-export default connect(mapStateToProps, null)(Datasets);
+export default Datasets;

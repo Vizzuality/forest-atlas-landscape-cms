@@ -21,8 +21,7 @@
 <%= react_component('AdminTableView', {
   meta: {
     columns: ['Version', 'Position', 'Description'],
-    actions: ['edit', 'delete'],
-    datapoint: 'maps'
+    actions: ['edit', 'delete']
   },
-  maps: @formattedMaps
+  data: @formattedMaps
 } ) %>
