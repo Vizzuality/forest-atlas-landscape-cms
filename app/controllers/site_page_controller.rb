@@ -117,8 +117,6 @@ class SitePageController < ApplicationController
       redirect_to controller: 'site_page', action: 'homepage',
                   id: @site_page.site.id
     else
-      # To remove potentially harmful parameters
-      page = page.slice(0..(str.index('?'))).slice(0..(str.index(':')))
       redirect_to request.base_url + page
     end
   end
