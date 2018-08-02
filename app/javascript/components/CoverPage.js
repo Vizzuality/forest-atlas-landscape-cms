@@ -23,7 +23,9 @@ class CoverPage extends React.Component {
       <div className={ClsMainWrapper} style={coverBackground}>
 
         <div className="wrapper">
-          <h2 className="cover-title">{usePageTitle ? page.name : current.name}</h2>
+          {/* content_type 3 === homepage */}
+          {page.content_type !== 3 && <h2 className="cover-subtitle">{current.name}</h2>}
+          <h2 className="cover-title">{page.name}</h2>
         </div>
 
         {image &&
