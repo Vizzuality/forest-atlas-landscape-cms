@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Wysiwyg from 'vizz-wysiwyg';
+import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
 
 // Components
 import Tabs from 'components/shared/Tabs';
@@ -42,6 +42,20 @@ class Dashboard extends React.Component {
             readOnly
             items={this.props.topContent ? JSON.parse(this.props.topContent) : []}
             blocks={{
+              text: {
+                Component: TextBlock,
+                placeholder: 'Type your text',
+                theme: 'bubble',
+                modules: {
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link'],
+                    [{ align: [] }]
+                  ]
+                }
+              },
               image: {
                 Component: ImagePreview,
                 EditionComponent: ImageUpload,
@@ -229,6 +243,20 @@ class Dashboard extends React.Component {
             readOnly
             items={this.props.bottomContent ? JSON.parse(this.props.bottomContent) : []}
             blocks={{
+              text: {
+                Component: TextBlock,
+                placeholder: 'Type your text',
+                theme: 'bubble',
+                modules: {
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link'],
+                    [{ align: [] }]
+                  ]
+                }
+              },
               image: {
                 Component: ImagePreview,
                 EditionComponent: ImageUpload,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import Wysiwyg from 'vizz-wysiwyg';
+import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
 
 import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
@@ -52,6 +52,20 @@ class MigrateHomepage extends React.Component {
             this.setState({ newCopy: d });
           }}
           blocks={{
+            text: {
+              Component: TextBlock,
+              placeholder: 'Type your text',
+              theme: 'bubble',
+              modules: {
+                toolbar: [
+                  [{ header: [1, 2, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['link'],
+                  [{ align: [] }]
+                ]
+              }
+            },
             widget: {
               Component: WidgetBlock,
               EditionComponent: WidgetBlockCreation,

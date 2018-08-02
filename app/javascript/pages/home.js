@@ -7,7 +7,7 @@ import { CoverPage, WysiwygEditor, Footer } from 'components';
 
 import { getDbContent } from 'utils';
 
-import Wysiwyg from 'vizz-wysiwyg';
+import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
 import { WidgetBlock, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 
 const Home = ({ site }) => (
@@ -19,6 +19,20 @@ const Home = ({ site }) => (
           readOnly
           items={JSON.parse(site.page.content) || []}
           blocks={{
+            text: {
+              Component: TextBlock,
+              placeholder: 'Type your text',
+              theme: 'bubble',
+              modules: {
+                toolbar: [
+                  [{ header: [1, 2, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['link'],
+                  [{ align: [] }]
+                ]
+              }
+            },
             widget: {
               Component: WidgetBlock,
               icon: 'icon-widget',

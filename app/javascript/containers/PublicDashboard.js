@@ -2,7 +2,7 @@ import React from 'react';
 
 import PublicContainer from 'containers/shared/PublicContainer';
 
-import Wysiwyg from 'vizz-wysiwyg';
+import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
 
 import { WidgetBlock } from 'components/wysiwyg';
 
@@ -17,6 +17,20 @@ export default class PublicDashboard extends PublicContainer {
           readOnly
           items={JSON.parse(content).length ? JSON.parse(content) : []}
           blocks={{
+            text: {
+              Component: TextBlock,
+              placeholder: 'Type your text',
+              theme: 'bubble',
+              modules: {
+                toolbar: [
+                  [{ header: [1, 2, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['link'],
+                  [{ align: [] }]
+                ]
+              }
+            },
             widget: {
               Component: WidgetBlock,
               label: 'Visualization'

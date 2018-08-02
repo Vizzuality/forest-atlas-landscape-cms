@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Wysiwyg from 'vizz-wysiwyg';
+import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
 
 import { ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 import Dashboard from 'components/shared/Dashboard';
@@ -24,6 +24,20 @@ class EditDashboard extends React.Component {
           items={this.props.topContent ? JSON.parse(this.props.topContent) : []}
           onChange={content => this.setState({ topContent: JSON.stringify(content) })}
           blocks={{
+            text: {
+              Component: TextBlock,
+              placeholder: 'Type your text',
+              theme: 'bubble',
+              modules: {
+                toolbar: [
+                  [{ header: [1, 2, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['link'],
+                  [{ align: [] }]
+                ]
+              }
+            },
             image: {
               Component: ImagePreview,
               EditionComponent: ImageUpload,
@@ -44,6 +58,20 @@ class EditDashboard extends React.Component {
           items={this.props.bottomContent ? JSON.parse(this.props.bottomContent) : []}
           onChange={content => this.setState({ bottomContent: JSON.stringify(content) })}
           blocks={{
+            text: {
+              Component: TextBlock,
+              placeholder: 'Type your text',
+              theme: 'bubble',
+              modules: {
+                toolbar: [
+                  [{ header: [1, 2, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['link'],
+                  [{ align: [] }]
+                ]
+              }
+            },
             image: {
               Component: ImagePreview,
               EditionComponent: ImageUpload,

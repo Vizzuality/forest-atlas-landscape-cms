@@ -6419,6 +6419,10 @@ normalize-url@^1.4.0:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+normalize-url@^3.0.1:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.2.0.tgz#98d0948afc82829f374320f405fe9ca55a5f8567"
+
 normalize.css@7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
@@ -7825,6 +7829,14 @@ quill-delta@^3.6.2:
     deep-equal "^1.0.1"
     extend "^3.0.1"
     fast-diff "1.1.2"
+
+quill-magic-url@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/quill-magic-url/-/quill-magic-url-1.0.0.tgz#d4cb89cc25174598c7190a3be11804eeb65e2ef5"
+  dependencies:
+    babel-loader "^7.1.4"
+    normalize-url "^3.0.1"
+    quill-delta "^3.6.2"
 
 quill@^1.2.6:
   version "1.3.6"
@@ -10410,9 +10422,9 @@ vinyl@^2.0.0:
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
 
-vizz-wysiwyg@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/vizz-wysiwyg/-/vizz-wysiwyg-2.0.5.tgz#0ad1f4d603f6a60e50e4d12ef7cbf840582aa55b"
+vizz-wysiwyg@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/vizz-wysiwyg/-/vizz-wysiwyg-2.0.6.tgz#6be016981a55c13a67e36b3b59bbcf3759e4748d"
   dependencies:
     autoprefixer "6.7.6"
     babel-core "^6.26.0"
@@ -10452,6 +10464,7 @@ vizz-wysiwyg@^2.0.5:
     postcss-loader "1.3.3"
     postcss-middleware "1.1.3"
     prop-types "^15.6.1"
+    quill-magic-url "^1.0.0"
     raw-loader "0.5.1"
     react "16.3.2"
     react-dom "16.3.2"
@@ -10461,7 +10474,7 @@ vizz-wysiwyg@^2.0.5:
     react-player "^0.24.6"
     react-popper "^0.7.4"
     react-portal "3.2.0"
-    react-quill "^1.1.0"
+    react-quill "1.1.0"
     react-redux "5.0.5"
     react-sortable-hoc "^0.6.8"
     react-transition-group "^2.2.0"
