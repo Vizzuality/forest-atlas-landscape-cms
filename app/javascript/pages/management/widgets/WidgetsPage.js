@@ -47,8 +47,8 @@ class WidgetsPage extends React.Component {
       id: { value: widget.id },
       name: { value: widget.name, sortable: true },
       description: { value: widget.description },
-      editURL: edit_url,
-      deleteURL: delete_url
+      edit: edit_url,
+      delete: delete_url
     }));
 
     const { deleteWarning, deleteSuccess, deleteError } = this.state;
