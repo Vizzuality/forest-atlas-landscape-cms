@@ -199,7 +199,7 @@ class DatasetService < ApiService
       @conn.post do |req|
         req.url "/dataset/#{dataset_id}/metadata"
         req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        req.headers['Content-Type'] = 'application/json'
         req.body = body
       end
     end
@@ -212,7 +212,7 @@ class DatasetService < ApiService
       @conn.patch do |req|
         req.url "/dataset/#{dataset_id}/metadata"
         req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        req.headers['Content-Type'] = 'application/json'
         req.body = body
       end
     end
