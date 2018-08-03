@@ -46,13 +46,24 @@ class Management::DatasetsController < ManagementController
 
   def update_metadata
     @dataset = Dataset.find_with_metadata(params[:id])
-    @dataset.metadata = params[:dataset][:metadata]
-    flash_message =
-      if @dataset.update_metadata(session[:user_token])
-        {notice: 'Metadata was successfully updated.'}
-      else
-        {alert: 'Metadata could not be updated.'}
-      end
+
+    if @dataset.metadata.present?
+      @dataset.metadata = params[:dataset][:metadata]
+      flash_message =
+        if @dataset.update_metadata(session[:user_token])
+          { notice: 'Metadata was successfully updated.' }
+        else
+          { alert: 'Metadata could not be updated.' }
+        end
+    else
+      @dataset.metadata = params[:dataset][:metadata]
+      flash_message =
+        if @dataset.create_metadata(session[:user_token])
+          { notice: 'Metadata was successfully created.' }
+        else
+          { alert: 'Metadata could not be created.' }
+        end
+    end
     redirect_to management_site_datasets_url(@site.slug), flash_message
   end
 

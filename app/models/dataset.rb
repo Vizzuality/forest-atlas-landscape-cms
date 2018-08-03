@@ -167,6 +167,13 @@ class Dataset
     )
   end
 
+  def create_metadata(token)
+    tags_array = tags && tags.split(',') || []
+    DatasetService.create_metadata(
+      token, id, 'forest-atlas', name, tags_array, metadata
+    )
+  end
+
   # TODO: have a feeling this does not return the metadata object
   def self.get_metadata_list(dataset_ids)
     DatasetService.get_metadata_list(dataset_ids)
