@@ -340,6 +340,12 @@
             @if $theme == 3 {
               color: $color-3;
             }
+
+            // Client asked for this color:
+            // https://www.pivotaltracker.com/story/show/159304131
+            @if $theme == 1 {
+              color: $color-6;
+            }
           }
 
           &.-active {
