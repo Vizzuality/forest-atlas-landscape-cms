@@ -35,12 +35,15 @@ export const getDataQuery = createSelector(
       })
       .filter(f => !!f);
 
-    return `
+    // NOTE: the encodeURIComponent function is called because Chrome won't
+    // allow requests with both \n, \r or \t and characters like > or <:
+    // https://www.chromestatus.com/feature/5735596811091968
+    return encodeURIComponent(`
       SELECT ${fields.map(f => f.name)}
       FROM ${datasetId}
       ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
       LIMIT 500
-    `;
+    `);
   }
 );
 
