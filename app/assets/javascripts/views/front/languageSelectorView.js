@@ -38,6 +38,12 @@
           }, 0)
         }
 
+        // We update the url
+        if (!/\?(.*)?l=[a-z]{2}/.test(location.search)) {
+          var url = (!location.search.length ? '?' : '&') + 'l=' + this.options.currentLanguage;
+          history.replaceState(null, '', url);
+        }
+
         this.render();
       }.bind(this));
     },
@@ -63,6 +69,13 @@
       this.trigger('state:change', {
         currentLanguage: _.findWhere(this.options.languages, { code: languageCode })
       });
+
+      // We update the URL with the new choice
+      var search = location.search.replace(/l=[a-z]{2}/, 'l=' + languageCode);
+      history.replaceState(null, '', search);
+
+      // We also update the localStorage
+      localStorage.setItem('language', languageCode);
     },
 
     /**
