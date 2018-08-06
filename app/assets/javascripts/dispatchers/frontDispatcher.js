@@ -53,5 +53,5 @@
   };
 
   // We need for the DOM to be ready
-  document.addEventListener('turbolinks:load', init);
+  window.addEventListener('DOMContentLoaded', init);
 }).call(this, this.App);
