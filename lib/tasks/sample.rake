@@ -350,10 +350,10 @@ namespace :db do
   end
 
 
-  desc 'Create new CAPRE template pages'
-  task capre_templates: :environment do
-    @capre_template = SiteTemplate.find_by name: 'CAPRE Landscape'
-    PageTemplate.find_each { |pt| pt.site_templates << @capre_template; pt.save }
+  desc 'Create new CARPE template pages'
+  task carpe_templates: :environment do
+    @carpe_template = SiteTemplate.find_by name: 'CARPE Landscape'
+    PageTemplate.find_each { |pt| pt.site_templates << @carpe_template; pt.save }
   end
 
   desc 'Create new privacy policy template and pages'
