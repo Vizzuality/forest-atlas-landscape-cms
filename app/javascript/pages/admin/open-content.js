@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icons } from 'widget-editor';
 
 import { connect } from 'react-redux';
 
@@ -12,6 +13,7 @@ class OpenContent extends React.Component {
     const { admin } = this.props;
     return (
       <div className="vizz-wysiwyg">
+        <Icons />
         <Wysiwyg
           items={JSON.parse(admin.page.content) || []}
           onChange={(d) => {

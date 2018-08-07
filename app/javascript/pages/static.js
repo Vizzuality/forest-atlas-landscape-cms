@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
+import { Icons } from 'widget-editor';
 
 import { CoverPage, WysiwygEditor, Footer } from 'components';
 
@@ -12,6 +13,7 @@ import { getDbContent } from 'utils';
 
 const StaticPage = ({ site, version }) => (
   <div className="fa-page">
+    <Icons />
     <CoverPage site={site} secondary />
     {version <= 1 && <WysiwygEditor content={getDbContent(site.page.content)} />}
     {version > 1 && <div className="vizz-wysiwyg"><Wysiwyg
