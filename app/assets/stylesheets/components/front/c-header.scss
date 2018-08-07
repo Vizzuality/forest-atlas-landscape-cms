@@ -259,6 +259,21 @@
         }
       }
     }
+
+    .profile-image {
+      width: 40px;
+      height: 40px;
+      margin-top: 5px;
+      border-radius: 100%;
+      background-color: $color-1;
+      background-position: center center;
+      background-size: cover;
+      color: $color-4;
+      line-height: 40px;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: $font-weight-bold;
+    }
   }
 
   > .desktop-menu {
@@ -329,7 +344,7 @@
           display: inline-block;
           position: relative;
           height: 100%;
-          padding: 0 25px;
+          padding: 0 15px;
           line-height: 50px;
           text-transform: uppercase;
           white-space: nowrap;
@@ -480,6 +495,25 @@
           }
         }
 
+      }
+
+      .profile-image {
+        width: 40px;
+        height: 40px;
+        margin-top: 5px;
+        border-radius: 100%;
+        background-color: $color-1;
+        background-position: center center;
+        background-size: cover;
+        color: $color-4;
+        line-height: 40px;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: $font-weight-bold;
+
+        & + ul {
+          min-width: 200px;
+        }
       }
     }
 
