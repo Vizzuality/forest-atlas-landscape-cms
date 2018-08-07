@@ -19,6 +19,25 @@
     flex-basis: 100%;
   }
 
+  .c-we-vega-chart-legend {
+    top: 10px;
+    right: 10px;
+
+    .toggle-button {
+      @extend .c-button.-mini;
+      border: 1px solid;
+      border-radius: 20px;
+      border-color: $color-1;
+      text-indent: -10000px;
+
+      span {
+        margin: 0;
+        text-indent: 0;
+        border: 0;
+      }
+    }
+  }
+
 
  .c-we-chart, .c-we-chart .chart, .c-we-chart .chart canvas {
   height: 250px;
