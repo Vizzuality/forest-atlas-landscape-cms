@@ -369,14 +369,6 @@ Table.defaultProps = {
         window.location.reload();
       });
     }
-
-    if (action === 'delete') {
-      const shouldDelete = window.confirm('are you sure you want to remove this?');
-      if (shouldDelete) {
-        return shouldDelete;
-      }
-      e.preventDefault();
-    }
   }
 };
 
