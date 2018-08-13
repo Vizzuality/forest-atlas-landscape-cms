@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Components
+import Confirm from './Confirm';
+
 const TableActions = ({ data, action, onClickAction }) => {
   if (action === 'toggle' && 'enable' in data && 'enabled' in data && data.enable.value !== null) {
     return (
@@ -38,15 +41,10 @@ const TableActions = ({ data, action, onClickAction }) => {
     return (
       <td key={action}>
         <span className="row-content">
-          <a
-            href={window.location.origin + data[action].value}
-            data-method="delete"
-            className="c-table-action-button -delete"
-            title="Delete"
-            onClick={() => onClickAction(action, data)}
-          >
-            Delete
-          </a>
+          <Confirm
+            msg="Are you sure you want to delete this?"
+            link={window.location.origin + data[action].value}
+          />
         </span>
       </td>);
   }
