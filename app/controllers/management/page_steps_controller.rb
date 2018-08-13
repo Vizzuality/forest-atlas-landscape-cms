@@ -517,7 +517,10 @@ class Management::PageStepsController < ManagementController
         if publish_step_name == Wicked::FINISH_STEP # only deletes the session if there are no more pages in queue
           delete_session_key(:page, @page_id) # delete 'new' session
           reset_session_key(:page, @page.id, {enabled: @page.enabled}) # start 'edit' session
+        else
+          session[:page][@page_id][:enabled] = @page.enabled
         end
+        # The enabled status must be stored in the session as it was changed
         redirect_to wizard_path(publish_step_name), notice: 'Page was successfully ' + notice_text
       else
         render_wizard
