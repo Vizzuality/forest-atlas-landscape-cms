@@ -23,7 +23,7 @@
 class Page < ApplicationRecord
   extend EnumerateIt
 
-  belongs_to :site
+  belongs_to :site, optional: true
   has_and_belongs_to_many :site_templates
   has_many :page_widgets, dependent: :destroy
   has_many :widgets, through: :page_widgets, validate: false

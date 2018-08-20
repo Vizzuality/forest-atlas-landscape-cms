@@ -345,8 +345,6 @@ namespace :db do
     create_vizzuality_staging_site_routes
     create_users
     create_user_sites
-    create_contexts
-    add_analysis_dashboard
   end
 
 
