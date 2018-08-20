@@ -20,12 +20,12 @@
       border: 1px solid;
       border-radius: 20px;
       border-color: $color-1;
-      text-indent: -10000px;
+      font-size: 0;
 
       span {
         margin: 0;
-        text-indent: 0;
         border: 0;
+        font-size: $font-size-small;
       }
     }
   }

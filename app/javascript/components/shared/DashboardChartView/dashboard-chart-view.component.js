@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { VegaChart } from 'widget-editor';
+import { VegaChart, Icons } from 'widget-editor';
 
 class DashboardChartView extends React.Component {
   render() {
     return (
       <div className="c-dashboard-chart-view">
+        <Icons />
         { !this.props.error && (this.props.loading || this.props.chartLoading) &&
           <div className="c-loading-spinner -bg" />
         }
