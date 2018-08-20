@@ -212,15 +212,6 @@ def create_users
       admin: true
     }
   )
-=begin
-  @thomas_maschler_user = User.create(
-    {
-      email: 'tmaschler@wri.org',
-      name: 'Thomas Maschler',
-      admin: true
-    }
-  )
-=end
   @daniel_caso_user = User.create(
     {
       email: 'daniel.caso@vizzuality.com',
@@ -291,14 +282,6 @@ def create_user_sites
       site: @staging_demo_site,
       role: UserType::MANAGER
     }, {
-      user: @hector_arce_user,
-      site: @base_site,
-      role: UserType::MANAGER
-    }, {
-      user: @hector_arce_user,
-      site: @staging_demo_site,
-      role: UserType::MANAGER
-    }, {
       user: @alvaro_leal_user,
       site: @staging_demo_site,
       role: UserType::MANAGER
@@ -339,7 +322,6 @@ namespace :db do
     @fa_template = SiteTemplate.find_by name: 'Forest Atlas'
     @la_template = SiteTemplate.find_by name: 'Landscape Application'
 
-    create_pages_templates
     create_sites
     create_routes
     create_vizzuality_staging_site_routes
