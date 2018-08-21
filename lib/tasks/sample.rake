@@ -80,15 +80,6 @@ def add_analysis_dashboard
 #  puts 'Added data to analysis dashboard successfully'
 end
 
-def clear
-  Site.delete_all
-  Page.delete_all
-  Route.delete_all
-  User.delete_all
-
-  puts 'Database clear'
-end
-
 def create_routes
   create_real_routes
   create_fake_routes
@@ -181,13 +172,6 @@ def create_users
     {
       email: 'joseangel.parreno@vizzuality.com',
       name: 'Jose Angel',
-      admin: false
-    }
-  )
-  @hector_arce_user = User.create(
-    {
-      email: 'hector.arce@vizzuality.com',
-      name: 'Hector Arce',
       admin: false
     }
   )
@@ -303,7 +287,9 @@ def create_contexts
     c = Context.create!(
       {
         name: "Context #{i}",
-        owner_ids: [@tiago_santos_user.id, @tiago_garcia_user.id, @clement_prodhomme_user.id, @daniel_caso_user.id, @david_gonzalez_user.id, @david_inga_user.id, @jose_angel_user.id, @hector_arce_user.id],
+        owner_ids: [@tiago_santos_user.id, @tiago_garcia_user.id,
+                    @clement_prodhomme_user.id, @daniel_caso_user.id,
+                    @david_gonzalez_user.id, @david_inga_user.id, @jose_angel_user.id],
         site_ids: [@base_site.id, @staging_demo_site.id]
       })
     datasets.each{|d| c.context_datasets.build(dataset_id: d)}
@@ -317,8 +303,6 @@ namespace :db do
   desc 'Create sample development data'
   task :sample => :environment do
 
-    clear
-
     @fa_template = SiteTemplate.find_by name: 'Forest Atlas'
     @la_template = SiteTemplate.find_by name: 'Landscape Application'
 
@@ -327,6 +311,7 @@ namespace :db do
     create_vizzuality_staging_site_routes
     create_users
     create_user_sites
+    create_contexts
   end
 
 
