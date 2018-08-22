@@ -28,8 +28,8 @@ gem 'wicked' # Multi-steps form
 gem 'faraday', '~> 0.9.2'
 gem 'faraday_middleware', '~> 0.11.0.1'
 
-gem 'webpacker' '~> 3.3.1'
-gem 'react-rails' '~> 2.4.4'
+gem 'webpacker', '~> 3.3.1'
+gem 'react-rails', '~> 2.4.4'
 
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
