@@ -14,7 +14,6 @@ Multisite content management system for Forest Atlas and Landscape Applications
 Ruby 2.3.1
 nodejs + npm
 
-
 ## Installation
 
 ### Without Docker
@@ -67,8 +66,6 @@ Perform the following steps:
 * Enter in the directory (cd forest-atlas-landscape-cms)
 
 Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
-
-
 
 ## Running
 
@@ -141,6 +138,11 @@ To keep a good and consistent quality code we use `eslint` (JS) and `sass-lint` 
 
 `eslint` rules are based on the Airbnb & [vizzuality](https://github.com/vizzuality/eslint-config-vizzuality) ones.
 `sass-lint` rules are based on [SMACSS](https://github.com/brigade/scss-lint/blob/master/data/property-sort-orders/smacss.txt) ones.
+
+### Common issues
+
+1. `React.createElement: type is invalid -- expected a string or a class/function but got: undefined`
+    *  you are most probably running the wrong version of some package. To solve this, you need to flush your files and clear yarn cashe by running this command: `rm yarn.lock && rm -rf node_modules && yarn cache clean && yarn install`.
 
 
 Have fun coding! 😁🌲
