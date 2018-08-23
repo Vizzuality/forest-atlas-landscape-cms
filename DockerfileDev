@@ -4,16 +4,23 @@ MAINTAINER Raul Requero <raul.requero@vizzuality.com>
 ENV NAME forest-atlas-landscape-cms
 
 # Install dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        postgresql-client \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
+    apt-get install -qq -y build-essential nodejs yarn \
+    libpq-dev \
+    postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
 RUN bundle install --jobs 20 --retry 5
+
+# Install node dependencies
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install
 
 # Create app directory
 ADD . /usr/src/$NAME
