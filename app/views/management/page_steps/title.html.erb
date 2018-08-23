@@ -23,11 +23,11 @@
           <%= f.label :name, 'Page title' %>
           <%= f.text_field :name, placeholder: 'My page' %>
         </div>
-        <% unless @page.content_type == ContentType::HOMEPAGE %>
           <div class="container">
             <%= f.label :description %>
             <%= f.text_area :description, placeholder: 'Add your description here' %>
           </div>
+        <% unless @page.content_type == ContentType::HOMEPAGE %>
           <div class="container">
             <%= f.label :uri %>
             <%= f.text_field :uri, placeholder: 'my-page', :readonly => @page.content_type == ContentType::STATIC_CONTENT %>

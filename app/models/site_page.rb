@@ -72,8 +72,8 @@ class SitePage < Page
       steps = { pages: %w[position title type map],
                 names: %w[Position Details Type Map] }
     when ContentType::HOMEPAGE
-      steps = { pages: %w[open_content open_content_preview],
-                names: ['Open Content', 'Open Content Preview'] }
+      steps = { pages: %w[title open_content open_content_preview],
+                names: ['Title', 'Open Content', 'Open Content Preview'] }
     end
     steps
   end
