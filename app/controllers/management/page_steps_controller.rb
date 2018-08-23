@@ -238,6 +238,9 @@ class Management::PageStepsController < ManagementController
       when 'open_content_preview'
         set_current_page_state
         move_forward
+      when 'open_content_v2_preview'
+        set_current_page_state
+        move_forward next_step, next_step, next_step
 
       # LINK PATH
       when 'link'
