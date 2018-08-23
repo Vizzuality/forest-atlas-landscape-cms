@@ -12,39 +12,44 @@ Multisite content management system for Forest Atlas and Landscape Applications
 ## Dependencies
 
 Ruby 2.3.1
-nodejs + npm
+nodejs 8.x
 
-## Installation
-
-### Without Docker
-
-Install global dependencies:
-
-    gem install bundler
-
-Install project dependencies:
-
-    bundle install
-    yarn install
+### Enviroment variables
 
 Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
 
+## Installation
+
+### With Docker
+
+Run this command to setup your docker machine `docker-compose -f docker-compose.dev.yml up`
+
+Create database `docker-compose -f docker-compose.dev.yml run web rake db:seed`
+Add some fake data: `docker-compose -f docker-compose.dev.yml run web rake db:sample`
+
+### Without Docker
+
+Install global dependencies: `gem install bundler`
+
+Install project dependencies: `bundle install && yarn install`
+
 Before setting up the database, you need to create a postgres user, install homebrew then, run:
 
-    $ brew install postgres
-    $ initdb /usr/local/var/postgres
-    $ /usr/local/Cellar/postgresql/<version>/bin/createuser -s postgres
+    ```bash
+    brew install postgres
+    initdb /usr/local/var/postgres
+    /usr/local/Cellar/postgresql/<version>/bin/createuser -s postgres
+    ```
 
 Then to set up the database, run:
 
+    ```bash
     bundle exec rake db:create
     bundle exec rake db:migrate
     bundle exec rake db:seed
+    ```
 
-If you're running a previous version of the application site settings, run:
-```
-bundle exec rake db:site_settings:update
-```
+If you're running a previous version of the application site settings, run: `bundle exec rake db:site_settings:update`
 
 If you are on a development environment, you might also want to load some sample data:
 
@@ -56,42 +61,7 @@ While not required, it's highly recommended that you use the included git hooks.
 
 You only have to do this once. Future changes to hooks will be loaded automatically.
 
-### With Docker
-
-#### First time user
-
-Perform the following steps:
-* [Install docker](https://docs.docker.com/engine/installation/)
-* Clone this repository: ```git@github.com:Vizzuality/forest-atlas-landscape-cms.git```
-* Enter in the directory (cd forest-atlas-landscape-cms)
-
-Set up environment variables by copying `.env.sample` to `.env` and filling up the necessary values accordingly
-
-## Running
-
-### Without Docker
-
-To run application:
-
-    bundle exec rails server
-
-### With Docker
-
-you open a terminal (if you have mac or windows, open a terminal with the 'Docker Quickstart Terminal') and execute the next command:
-
-```bash
-    ./service.sh develop
-
-```
-
-#### First time running the app with Docker
-To set up the database, run:
-
-    docker-compose -f docker-compose.dev.yml run web rake db:seed
-
-If you are on a development environment, you might also want to load some sample data:
-
-    docker-compose -f docker-compose.dev.yml run web rake db:sample
+To run application run: `bundle exec rails server`
 
 ## Development
 
