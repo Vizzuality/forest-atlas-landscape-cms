@@ -38,7 +38,8 @@ class SitePage < Page
   validates_presence_of :site_id
   before_create :cheat_with_position_on_create
   before_update :cheat_with_position_on_update
-  after_save :update_routes
+  after_create :update_routes
+  after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
 
   validate :step_validation
 
