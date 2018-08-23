@@ -34,6 +34,13 @@ docker-compose -f docker-compose.dev.yml run web rake db:seed
 
 Add some fake data: `docker-compose -f docker-compose.dev.yml run web rake db:sample`
 
+#### Running
+
+you open a terminal (if you have mac or windows, open a terminal with the 'Docker Quickstart Terminal') and execute the next command:
+ ```bash
+    ./service.sh develop
+ ```
+
 ### Without Docker
 
 Install global dependencies: `gem install bundler`
