@@ -20,11 +20,18 @@ Set up environment variables by copying `.env.sample` to `.env` and filling up t
 
 ## Installation
 
-### With Docker
+### With Docker (Recommended)
 
-Run this command to setup your docker machine `docker-compose -f docker-compose.dev.yml up`
+Run this command to setup your docker machine `docker-compose -f docker-compose.dev.yml up web`
 
-Create database `docker-compose -f docker-compose.dev.yml run web rake db:seed`
+#### Create database
+
+```
+docker-compose -f docker-compose.dev.yml run web rake db:create
+docker-compose -f docker-compose.dev.yml run web rake db:migrate
+docker-compose -f docker-compose.dev.yml run web rake db:seed
+```
+
 Add some fake data: `docker-compose -f docker-compose.dev.yml run web rake db:sample`
 
 ### Without Docker
