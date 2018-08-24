@@ -21,13 +21,13 @@ class WidgetsPage extends React.Component {
     if (action === 'delete') {
       this.setState({ deleteWarning: true, selectedRow: row });
     } else {
-      window.location = row.editURL;
+      window.location = row.edit;
     }
   }
 
   onClickDelete() {
     const { selectedRow } = this.state;
-    fetch(selectedRow.deleteURL, {
+    fetch(selectedRow.delete, {
       method: 'DELETE',
       credentials: 'include'
     }).then(() => {
