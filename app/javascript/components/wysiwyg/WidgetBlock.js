@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VegaChart, getVegaTheme } from 'widget-editor';
+import { VegaChart } from 'widget-editor';
 
 // /widget_data.json?widget_id=
 class WidgetBlock extends React.Component {
@@ -45,7 +45,6 @@ class WidgetBlock extends React.Component {
     return (
       <VegaChart
         data={this.state.widget.visualization}
-        theme={getVegaTheme()}
         reloadOnResize
       />
     );
