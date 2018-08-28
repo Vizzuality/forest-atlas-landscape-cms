@@ -74,7 +74,7 @@
       display: block;
       font-size: $font-size-small;
       padding: 5px;
-      color: $color-2;
+      color: rgba(00,00,00,0.6);
     }
 
     &--captionInput {
@@ -88,7 +88,7 @@
 
       font-size: $font-size-small;
       border: 1px solid $color-9;
-      color: $color-2;
+      color: rgba(00,00,00,0.6);
 
       resize: none;
     }
