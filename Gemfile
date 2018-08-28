@@ -77,5 +77,6 @@ group :development do
 end
 
 gem 'appsignal'
+gem 'newrelic_rpm'
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
