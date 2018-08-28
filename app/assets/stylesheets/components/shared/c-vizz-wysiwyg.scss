@@ -36,3 +36,62 @@
     width: 100%;
   }
 }
+
+.fa-wysiwyg-file {
+  &__form {
+    &--file {
+      padding: 9px;
+      margin: 0 0 10px 0;
+
+      border: 1px solid #e3e3e3;
+    }
+
+    &--caption {
+      width: 100%;
+
+      padding: 10px 10px;
+      margin: 0 0 10px 0;
+
+      font-size: 12px;
+      border: 1px solid #e3e3e3;
+      outline: none;
+    }
+
+    &--submit {
+      background: #565656;
+      padding: 10px 30px;
+
+      color: #FFF;
+      font-size: 13px;
+
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+  }
+
+  &__preview {
+    &--caption {
+      display: block;
+      font-size: 12px;
+      padding: 5px;
+      color: rgba(00,00,00,0.6);
+    }
+
+    &--captionInput {
+      display: block;
+
+      width: 100%;
+      min-height: 30px;
+
+      padding: 10px;
+      margin: 20px 0 0 0;
+
+      font-size: 12px;
+      border: 1px solid #e3e3e3;
+      color: rgba(00,00,00,0.6);
+
+      resize: none;
+    }
+
+  }
+}
