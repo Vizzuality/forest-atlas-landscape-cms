@@ -71,8 +71,6 @@ class Management::DatasetStepsController < ManagementController
             delete_session_key(:dataset_creation, @dataset_id)
             redirect_to_finish_wizard
           else
-            @dataset.errors['id'] <<
-              'There was an error creating the dataset in the API. Please try again later.'
             select_contexts
             render_wizard
           end

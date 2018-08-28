@@ -156,8 +156,20 @@ class Dataset
   # +token+:: The authentication for the API
   def upload(token)
     tags_array = tags && tags.split(',') || []
-    DatasetService.upload token, type, provider, connector_url, data_path,
+    result = DatasetService.upload token, type, provider, connector_url, data_path,
                           application, name, tags_array, legend, metadata
+    if result['data'] && (ds_id = result['data']['id'])
+      ds_id
+    else
+      msg = 'There was an error creating the dataset in the API. Please try again later.'
+      if result['errors']
+        msg << ' (Details: ' + result['errors'].map do |e|
+          [e['status'], e['detail']].join(': ')
+        end.join(', ') + ')'
+      end
+      errors[:base] << msg
+      nil
+    end
   end
 
   def update_metadata(token)

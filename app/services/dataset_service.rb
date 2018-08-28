@@ -261,15 +261,17 @@ class DatasetService < ApiService
       end
 
       Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
-      dataset_id = JSON.parse(res.body)['data']['id']
+      result = JSON.parse(res.body)
+      dataset_id = result['data'] && result['data']['id']
     rescue => e
-      Rails.logger.error "Error creating new dataset in the API: #{e}"
+      Rails.logger.error e.message
+      Rails.logger.error e.backtrace.join("\n")
       return nil
     end
 
     if dataset_id.present?
       create_metadata(token, dataset_id, application, name, tags_array, metadata)
     end
-    dataset_id
+    result
   end
 end
