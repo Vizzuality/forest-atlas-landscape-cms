@@ -43,7 +43,7 @@
       padding: 9px;
       margin: 0 0 10px 0;
 
-      border: 1px solid #e3e3e3;
+      border: 1px solid $color-9;
     }
 
     &--caption {
@@ -52,17 +52,17 @@
       padding: 10px 10px;
       margin: 0 0 10px 0;
 
-      font-size: 12px;
-      border: 1px solid #e3e3e3;
+      font-size: $font-size-small;
+      border: 1px solid $color-9;
       outline: none;
     }
 
     &--submit {
-      background: #565656;
+      background: $color-4;
       padding: 10px 30px;
 
-      color: #FFF;
-      font-size: 13px;
+      color: $color-3;
+      font-size: $font-size-small;
 
       border: 1px solid transparent;
       cursor: pointer;
@@ -72,9 +72,9 @@
   &__preview {
     &--caption {
       display: block;
-      font-size: 12px;
+      font-size: $font-size-small;
       padding: 5px;
-      color: rgba(00,00,00,0.6);
+      color: $color-2;
     }
 
     &--captionInput {
@@ -86,9 +86,9 @@
       padding: 10px;
       margin: 20px 0 0 0;
 
-      font-size: 12px;
-      border: 1px solid #e3e3e3;
-      color: rgba(00,00,00,0.6);
+      font-size: $font-size-small;
+      border: 1px solid $color-9;
+      color: $color-2;
 
       resize: none;
     }
