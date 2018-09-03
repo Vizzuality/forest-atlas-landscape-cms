@@ -20,7 +20,6 @@ set :default_env, {
 
 before 'deploy:publishing', 'site_settings:update'
 before "deploy:publishing", "assets:precompile_sites"
-before 'deploy:publishing', 'site:create_assets'
 before 'deploy:assets:precompile', 'node_modules:generate'
 
 namespace :deploy do
