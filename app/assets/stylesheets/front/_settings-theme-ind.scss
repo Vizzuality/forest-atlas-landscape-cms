@@ -20,9 +20,13 @@ $font-size-normal:   14px;
 $font-size-s-normal: 15px;
 $font-size-x-normal: 19px;
 $font-size-medium:   21px;
+$font-size-x-medium: 25px;
+$font-size-xx-medium: 30px;
 $font-size-big:      35px;
 $font-size-x-big:    40px;
 $font-size-huge:     47px;
+$font-size-v-huge:   55px;
+$font-size-vv-huge:   60px;
 $font-size-x-huge:   70px;
 
 // Font weights
@@ -63,11 +67,17 @@ $breakpoint-tablet:  768px;
 $breakpoint-laptop: 1024px;
 $breakpoint-navbar: 1033px;
 
+$breakpoint-smartphone-min: 568px;
+$breakpoint-smartphone-max: 812px;
+
+
 // Media queries
-$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
+$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile}) and (orientation: portrait)';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
 $mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
+$mq-smartphone: 'screen and (max-width: 811px) and (orientation: landscape)';
+$mq-smartphone-big: 'screen and (min-width: 812px) and (max-width: 823px) and (orientation: landscape)';
 
 $mq-body-width: 'screen and (min-width: #{$body-max-width})';
 

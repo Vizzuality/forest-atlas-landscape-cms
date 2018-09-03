@@ -14,7 +14,7 @@ const Home = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} />
     {site.page.page_version >= 2 ?
-      <div className="vizz-wysiwyg c-content">
+      <div className={` ${site.meta.siteTemplateName == 'INDIA' ? 'no_height' : 'vizz-wysiwyg c-content'}`}>
         <Wysiwyg
           readOnly
           items={JSON.parse(site.page.content) || []}
@@ -62,6 +62,6 @@ function mapStateToProps(state) {
   return { site: state.site };
 }
 
-Home.propTypes = { site: PropTypes.object.isRequired };
+Home.propTypes = { site: PropTypes.object.isRequired, siteTemplateName: PropTypes.string };
 
 export default connect(mapStateToProps, null)(Home);

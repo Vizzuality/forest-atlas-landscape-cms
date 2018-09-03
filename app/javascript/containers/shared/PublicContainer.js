@@ -32,7 +32,8 @@ class PublicContainer extends Component {
     store.dispatch(setMeta({
       image: props.image,
       pageSize: props.pageSize,
-      siteTitleOnly: props.siteTitleOnly
+      siteTitleOnly: props.siteTitleOnly,
+      siteTemplateName: props.siteTemplateName
     }));
     store.dispatch(setSiteSettings(props.siteSettings));
 
