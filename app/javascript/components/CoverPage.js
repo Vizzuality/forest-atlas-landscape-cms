@@ -25,18 +25,19 @@ class CoverPage extends React.Component {
     let cover_description;
     let atlas_button;
 
-    if(siteTemplateName != 'INDIA'){
+    if (siteTemplateName != 'INDIA') {
       page_title = <h2 className="cover-title"> {page.content_type == 3 ? current.name : page.name} </h2>;
-      cover_subtitle = page.content_type !== 3 && <h2 className="cover-subtitle">{current.name}</h2>;
-    }else{
-      if(page.content_type == 3){
-        page_title = <h2 className="cover-title-left">{current.name} </h2>;
-        cover_description = <div className="cover-desc-wrapper" ><h2 className="cover-description">{page.description}</h2></div>;
-        atlas_button = <div class="button_wrapper" height="0px"> <a href="/atlas" className="home_page_atlas_button">Launch Atlas</a> </div>;
+      cover_subtitle = page.content_type !== 3 && <h2 className="cover-subtitle"> {current.name} </h2>;
+    } else {
+      if (page.content_type == 3) {
 
-        cover_description_wrapper = <div className="cover-elem-wrapper" >{cover_description}{atlas_button}</div>;
-      }else{
-        cover_subtitle = <h2 className="cover-title-left-other-page">{page.name}</h2>;
+        page_title = <h2 className="cover-title-left">{current.name} </h2>;
+        cover_description = <div className="cover-desc-wrapper" > <h2 className="cover-description"> {page.description} </h2> </div>;
+        atlas_button = <div className="button_wrapper"> <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> </div>;
+        cover_description_wrapper = <div className="cover-elem-wrapper"> {cover_description} {atlas_button} </div>;
+      
+      } else {
+        cover_subtitle = <h2 className="cover-title-left-other-page"> {page.name} </h2>;
       }
     }
 

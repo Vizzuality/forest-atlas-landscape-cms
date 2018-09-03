@@ -190,6 +190,7 @@ body {
 
 .button_wrapper{
   text-align:center;
+  height="0px";
 
   @media #{$mq-laptop} {
     text-align: left;
