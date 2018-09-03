@@ -5,6 +5,7 @@
   site: @site_page.site,
   siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
   siteTitleOnly: @site_title_only,
+  siteTemplateName: @site_page.site.site_template.name,
   image: @main_image,
   pageSize: defined?(size) ? size : nil
 } ) %>

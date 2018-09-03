@@ -32,7 +32,9 @@
       <ul>
         <li class="notranslate js-language-selector-mobile"></li>
       </ul>
-      <%= render 'front/user'%>
+      <% if @site_page.site_template.name != 'INDIA' %>
+        <%= render 'front/user'%>
+      <% end %>
     </div>
   </div>
 
@@ -63,17 +65,48 @@
         <% end %>
       </a>
     </div>
+      <% if @site_page.depth > 0 and @site_page.site_template.name == 'INDIA' %>
+        <div class="sub-menu-background"></div>
+        <div class="sub-menu">
+          <div class="content">
+            <ul class="breadcrumbs">
+              <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
+                  <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
+              <% end %>
+            </ul>
+            <ul class="sections">
+              <% if @site_page.depth >= 2 %>
+                  <ul>
+                    <% (@site_page.depth == 2 ? @site_page.children : @site_page.parent.children).each do |child_page| -%>
+                      <% if child_page.visible? %>
+                          <li class="<%= (child_page.id == @site_page.id) ? '-active' : '' %>"><%= page_link child_page %></li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>    
     <div class="menu-container">
       <div class="menu">
         <ul>
           <% @menu_root.children.each do |child_page| -%>
               <% next unless (child_page.show_on_menu && child_page.visible?) %>
               <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
-                <%= page_link child_page %>
+                <% if @site_page.site_template.name == 'INDIA' and child_page.name == "About" %>
+                  <%= link_to child_page.name, "#" %>
+                <% else %>
+                  <%= page_link child_page %>
+                <% end %>
                 <% if child_page.has_visible_children? %>
                     <ul>
                       <li>
-                        <%= page_link child_page %>
+                        <% if @site_page.site_template.name == 'INDIA' and child_page.name == "About" %>
+                          <%= link_to "About the Atlas", child_page.name.downcase %>
+                        <% else %>
+                          <%= page_link child_page %>
+                        <% end %>
                       </li>
                       <% child_page.children.each do |grandchild_page| -%>
                           <% next unless (grandchild_page.show_on_menu && grandchild_page.visible?) %>
@@ -89,10 +122,12 @@
         <ul>
           <li class="notranslate js-language-selector"></li>
         </ul>
-        <%= render 'front/user'%>
+        <% if @site_page.site_template.name != 'INDIA' %>
+          <%= render 'front/user'%>
+        <% end %>
       </div>
 
-      <% if @site_page.depth > 0 %>
+      <% if @site_page.depth > 0 and @site_page.site_template.name != 'INDIA'%>
         <div class="sub-menu">
           <div class="content">
             <ul class="breadcrumbs">

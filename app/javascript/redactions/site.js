@@ -6,7 +6,8 @@ const initialState = {
     // Will be different, just setting up for now
     image: null,
     pageSize: null,
-    siteTitleOnly: false
+    siteTitleOnly: false,
+    siteTemplateName: null
   },
   dashboard: null
 };

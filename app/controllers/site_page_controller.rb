@@ -75,6 +75,14 @@ class SitePageController < ApplicationController
     end
   end
 
+  # def send_contact_email
+  #   user_name = params["name"]
+  #   user_email = params["email"]
+  #   subject = params["subject"]
+  #   message = params["message"]
+
+  # end
+
   def homepage
   end
 
@@ -192,5 +200,4 @@ class SitePageController < ApplicationController
   def create_menu_tree
     @menu_tree = @menu_root.hash_tree
   end
-
 end
