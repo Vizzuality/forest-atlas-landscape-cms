@@ -13,47 +13,49 @@ import { WidgetBlock, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg'
 const Home = ({ site }) => (
   <div className="fa-page">
     <CoverPage site={site} />
-    {site.page.page_version >= 2 ?
-      <div className={` ${site.meta.siteTemplateName == 'INDIA' ? 'no_height' : 'vizz-wysiwyg c-content'}`}>
-        <Wysiwyg
-          readOnly
-          items={JSON.parse(site.page.content) || []}
-          blocks={{
-            text: {
-              Component: TextBlock,
-              placeholder: 'Type your text',
-              theme: 'bubble',
-              modules: {
-                toolbar: [
-                  [{ header: [1, 2, false] }],
-                  ['bold', 'italic', 'underline'],
-                  [{ list: 'ordered' }, { list: 'bullet' }],
-                  ['link'],
-                  [{ align: [] }]
-                ]
+    {site.meta.siteTemplateName !== 'INDIA' && <React.Fragment>
+      {site.page.page_version >= 2 ?
+        <div className={'vizz-wysiwyg c-content'}>
+          <Wysiwyg
+            readOnly
+            items={JSON.parse(site.page.content) || []}
+            blocks={{
+              text: {
+                Component: TextBlock,
+                placeholder: 'Type your text',
+                theme: 'bubble',
+                modules: {
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link'],
+                    [{ align: [] }]
+                  ]
+                }
+              },
+              widget: {
+                Component: WidgetBlock,
+                icon: 'icon-widget',
+                label: 'Visualization',
+                renderer: 'modal'
+              },
+              image: {
+                Component: ImagePreview,
+                icon: 'icon-image',
+                label: 'Image',
+                renderer: 'tooltip'
+              },
+              html: {
+                Component: HtmlEmbedPreview,
+                icon: 'icon-embed',
+                label: 'Custom HTML',
+                renderer: 'tooltip'
               }
-            },
-            widget: {
-              Component: WidgetBlock,
-              icon: 'icon-widget',
-              label: 'Visualization',
-              renderer: 'modal'
-            },
-            image: {
-              Component: ImagePreview,
-              icon: 'icon-image',
-              label: 'Image',
-              renderer: 'tooltip'
-            },
-            html: {
-              Component: HtmlEmbedPreview,
-              icon: 'icon-embed',
-              label: 'Custom HTML',
-              renderer: 'tooltip'
-            }
-          }}
-        />
-      </div> : <WysiwygEditor content={getDbContent(site.page.content)} />}
+            }}
+          />
+        </div> : <WysiwygEditor content={getDbContent(site.page.content)} />}
+      </React.Fragment>}
     <Footer site={site} />
   </div>
 );
