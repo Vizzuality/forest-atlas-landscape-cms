@@ -1,0 +1,16 @@
+// This file is used in development only
+$color-1:#97BE32;
+
+@import
+'../../../node_modules/widget-editor/dist/styles.min',
+'../../../node_modules/rc-slider/assets/index',
+'../../../node_modules/react-select/dist/react-select',
+'../../../node_modules/vizz-wysiwyg/build/rw',
+'leaflet',
+'../helpers',
+'settings-theme-ind',
+'../layouts/shared/*',
+'../layouts/front/*',
+'../components/shared/**/*',
+'../components/front/**/*',
+'base-theme-ind'; // Theme specific styles below so it overwrites anything we need to without problems

@@ -27,7 +27,18 @@
           <% end %>
             <div class="content">
               <p><%= template.name %></p>
-              <%= image_tag (template.name == 'Forest Atlas' ? 'fa-preview.jpg' : (template.name === 'CAPRE Landscape') ? 'carpe-preview.png' : 'lsa-preview.jpg'), alt: template.name %>
+              <% template_name = nil %>
+              <% if template.name == 'Forest Atlas' 
+                  template_name = 'fa-preview.jpg'
+                elsif template.name == 'CARPE Landscape'
+                  template_name = 'carpe-preview.png'
+                elsif template.name == 'INDIA'
+                  template_name = 'ind-preview.png'
+                else
+                  template_name = 'lsa-preview.jpg'
+                end
+              %>
+              <%= image_tag (template_name), alt: template.name %>
             </div>
           </div>
         <% end %>

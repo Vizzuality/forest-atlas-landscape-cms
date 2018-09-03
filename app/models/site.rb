@@ -276,6 +276,8 @@ class Site < ApplicationRecord
         template = 'front/template-lsa.css'
       when 'CARPE Landscape'
         template = 'front/template-carpe.css'
+      when 'INDIA'
+        template = 'front/template-ind.css'
       else
         Rails.logger.error "Couldn't find template name for #{self.id}"
         return

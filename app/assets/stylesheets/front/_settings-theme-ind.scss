@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'Acumin Pro';
+  font-weight: 300;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-light.otf');
+}
+
+@font-face {
+  font-family: 'Acumin Pro';
+  font-weight: 700;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-bold.otf');
+}
+
+// Font families
+$font-family-1: 'Acumin Pro', sans-serif;
+$font-family-2: 'Acumin Pro', sans-serif;
+
+// Font sizes
+$font-size-small:    12px;
+$font-size-normal:   14px;
+$font-size-s-normal: 15px;
+$font-size-x-normal: 19px;
+$font-size-medium:   21px;
+$font-size-x-medium: 25px;
+$font-size-xx-medium: 30px;
+$font-size-big:      35px;
+$font-size-x-big:    40px;
+$font-size-huge:     47px;
+$font-size-v-huge:   55px;
+$font-size-vv-huge:   60px;
+$font-size-x-huge:   70px;
+
+// Font weights
+$font-weight-light:  300;
+$font-weight-normal: 400;
+$font-weight-bold:   700;
+
+// Colors
+$color-2:  #f7f7f7;
+$color-3:  #fff;
+$color-4:  #555;
+$color-5:  #000;
+$color-6:  #333;
+$color-7:  #3b3b3b;
+$color-8:  #f5f4f4;
+$color-9:  #eceaea;
+$color-10: darken(saturate($color-1, 10%), 5%);
+$color-11: #fff00e;
+$color-12: #dd3e21;
+$color-13: #dededd;
+$color-14: #ff706c;
+$color-15: #404040;
+$color-16: tint($color-1, 85%);
+$color-17: #0B0908;
+
+// General layout
+$body-max-width:         1280px;
+$content-max-width:       750px;
+$media-max-width:        1060px;
+$image-ratio:            0.6666; // width * ratio = height
+$wrapper-padding:          30px;
+$wrapper-tablet-padding:   30px;
+$wrapper-mobile-padding:   15px;
+
+// Breakpoints
+$breakpoint-mobile:  425px;
+$breakpoint-tablet:  768px;
+$breakpoint-laptop: 1024px;
+$breakpoint-navbar: 1033px;
+
+$breakpoint-smartphone-min: 568px;
+$breakpoint-smartphone-max: 812px;
+
+
+// Media queries
+$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile}) and (orientation: portrait)';
+$mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
+$mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
+$mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
+$mq-smartphone: 'screen and (max-width: 811px) and (orientation: landscape)';
+$mq-smartphone-big: 'screen and (min-width: 812px) and (max-width: 823px) and (orientation: landscape)';
+
+$mq-body-width: 'screen and (min-width: #{$body-max-width})';
+
+// Theme
+$theme: 3;
+$admin: false;
