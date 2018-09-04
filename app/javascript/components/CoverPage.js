@@ -21,21 +21,35 @@ class CoverPage extends React.Component {
 
     let page_title;
     let cover_subtitle;
-    let cover_description_wrapper;
-    let cover_description;
-    let atlas_button;
 
     if (siteTemplateName != 'INDIA') {
+
       page_title = <h2 className="cover-title"> {page.content_type == 3 ? current.name : page.name} </h2>;
       cover_subtitle = page.content_type !== 3 && <h2 className="cover-subtitle"> {current.name} </h2>;
+    
     } else {
       if (page.content_type == 3) {
-
-        page_title = <h2 className="cover-title-left">{current.name} </h2>;
-        cover_description = <div className="cover-desc-wrapper" > <h2 className="cover-description"> {page.description} </h2> </div>;
-        atlas_button = <div className="button_wrapper"> <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> </div>;
-        cover_description_wrapper = <div className="cover-elem-wrapper"> {cover_description} {atlas_button} </div>;
-      
+        page_title = (
+          <div className="cover-elem-wrapper">
+            <div className="cover_page_wrapper_envelope">
+              <div className="cover-page-wrapper"> 
+                <div className="restoration_image_div"> 
+                  <img className="restoration_image" alt="Logo" src="http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/RO_Atlas_white_png.png" /> 
+                </div> 
+                
+                <hr className="hr-homepage" />
+                
+                <p className="cover-title-para"> {current.name} </p>
+                <p className="cover-description-para"> {page.description} </p>
+              </div>
+            </div>
+            <div className="atlas_flex_div">
+              <div className="button_wrapper"> 
+                <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> 
+              </div>
+            </div>
+          </div>
+        );
       } else {
         cover_subtitle = <h2 className="cover-title-left-other-page"> {page.name} </h2>;
       }
@@ -50,7 +64,6 @@ class CoverPage extends React.Component {
           {cover_subtitle}
           
           {/* India Template specific changes */}
-          {cover_description_wrapper}
         </div>
 
         {image &&
