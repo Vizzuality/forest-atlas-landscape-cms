@@ -21,19 +21,6 @@ class CoverPage extends React.Component {
 
     let page_title;
     let cover_subtitle;
-    let cover_description;
-    let atlas_button;
-    let atlas_flex_div;
-    let logo_3_img_div;
-    let hr;
-    let cover_title_para;
-    let cover_description_para;
-    let cover_page_wrapper; 
-    let cover_page_wrapper_envelope ;
-
-
-
-
 
     if (siteTemplateName != 'INDIA') {
 
@@ -42,28 +29,27 @@ class CoverPage extends React.Component {
     
     } else {
       if (page.content_type == 3) {
-
-        cover_description = <div className="cover-desc-wrapper" > <h2 className="cover-description"> {page.description} </h2> </div>;
-
-        atlas_button = <div className="button_wrapper"> <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> </div>;
-
-        atlas_flex_div = <div className="atlas_flex_div"> {atlas_button} </div>;
-
-        logo_3_img_div = <div className="restoration_image_div"> <img className="restoration_image" alt="Logo" src="http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/RO_Atlas_white_png.png" /> </div>;
-
-        hr = <hr className="hr-homepage" />;
-
-        cover_title_para = <p className="cover-title-para"> {current.name} </p>;
-
-        cover_description_para = <p className="cover-description-para"> {page.description} </p>;
-
-        cover_page_wrapper = <div className="cover-page-wrapper"> {logo_3_img_div} {hr} {cover_title_para} {cover_description_para} </div>;
-
-        cover_page_wrapper_envelope = <div className="cover_page_wrapper_envelope"> {cover_page_wrapper} </div>
-
-        page_title = <div className="cover-elem-wrapper"> {cover_page_wrapper_envelope} {atlas_flex_div} </div>;
-
-      
+        page_title = (
+          <div className="cover-elem-wrapper">
+            <div className="cover_page_wrapper_envelope">
+              <div className="cover-page-wrapper"> 
+                <div className="restoration_image_div"> 
+                  <img className="restoration_image" alt="Logo" src="http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/RO_Atlas_white_png.png" /> 
+                </div> 
+                
+                <hr className="hr-homepage" />
+                
+                <p className="cover-title-para"> {current.name} </p>
+                <p className="cover-description-para"> {page.description} </p>
+              </div>
+            </div>
+            <div className="atlas_flex_div">
+              <div className="button_wrapper"> 
+                <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> 
+              </div>
+            </div>
+          </div>
+        );
       } else {
         cover_subtitle = <h2 className="cover-title-left-other-page"> {page.name} </h2>;
       }
