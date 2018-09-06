@@ -274,34 +274,43 @@ body {
 .vizz-wysiwyg{
   overflow: hidden !important;
   margin-left: 0px !important;
-  padding: 0 35px !important;
+  padding: 0 35px;
   max-width: 1280px !important;
   margin: 0 auto !important;
 
   @media #{$mq-smartphone}{
     padding: 0 35px !important;
     margin: 0 !important;
+    max-width: 1280px !important;
+
   }
 
   @media #{$mq-tablet}{
     padding: 0 50px !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    max-width: 1280px !important;
+
   }
 
   @media #{$mq-smartphone-big}{
     padding: 0 60px !important;
+    
   }
 
   @media #{$mq-laptop}{
     padding: 0 50px !important;
+    max-width: 1280px !important;
+
   }
 
   @media #{$mq-body-width}{
     padding: 0 50px !important;
+    max-width: 1280px !important;
+
   }
 
   .cw-wysiwyg{
-    margin: 0 !important;;
+    margin: 0 !important;
   }
 
 }
