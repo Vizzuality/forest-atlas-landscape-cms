@@ -217,7 +217,7 @@ body {
 
   position: relative !important;
   left: 15px !important;
-
+  top: 5px !important;
 
   @media #{$mq-s-mobile}{
     position: relative !important;
@@ -602,7 +602,7 @@ form{
 }
 
 .cover-description-para{
-
+  display: none;
   
   max-width: 100% !important;
   font-size: 15px !important;
@@ -643,6 +643,7 @@ form{
   font-weight: $font-weight-bold !important;
   margin: 0 !important;
   color: #97BD3D !important;
+  line-height: 1.5;
 
   @media #{$mq-tablet} {
     font-size: 22px !important;
@@ -653,14 +654,12 @@ form{
   @media #{$mq-laptop} {
     font-size: 27px!important;
     font-weight: $font-weight-bold!important;
-    margin: 0!important;
     color: #97BD3D!important;
   }
 
   @media #{$mq-body-width} {
     font-size: 33px !important;
     font-weight: $font-weight-bold !important;
-    margin: 0 !important;
     color: #97BD3D !important;
   }
 
@@ -682,6 +681,8 @@ form{
   margin-left: 0;
   color: #97BD3D;
   border: 0.5px solid;
+  margin-bottom: 20px !important;
+
 
   @media #{$mq-tablet}{
     max-width: 100%;
@@ -689,9 +690,21 @@ form{
     margin-left: 0;
     color: #97BD3D;
     border: 0.5px solid;
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+  }
+
+  @media #{$mq-laptop}{
+    max-width: 100%;
+    text-align: left;
+    margin-left: 0;
+    color: #97BD3D;
+    border: 0.5px solid;
+    margin-bottom: 35px !important;
   }
 
   @media #{$mq-smartphone-big}{
+    margin-bottom: 20px !important;
     max-width: 100%;
     text-align: left;
     margin-left: 0;
