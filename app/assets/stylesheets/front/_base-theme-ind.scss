@@ -38,7 +38,7 @@ body {
 
 .map-container{
 
-  top: 55px !important;
+  top: 65px !important;
   position: fixed !important;
   
   @media #{$mq-s-mobile} {
@@ -51,12 +51,12 @@ body {
   }
 
   @media #{$mq-tablet} {
-    top: 55px !important;
+    top: 83px !important;
     position: fixed !important;
   }
   
   @media #{$mq-smartphone-big}{
-    top: 55px !important;
+    top: 75px !important;
     position: fixed !important;
   }
 
@@ -80,11 +80,11 @@ body {
     }
 
     .desktop-menu{
-      height: 80px !important;
+      height: 83px !important;
       .logo-container{
         margin-top: 0px !important;
-        left: -15px;
-        position: relative;
+        left: -15px !important;
+        position: relative !important;
       }
       .menu{
         margin-top: 15px !important;
@@ -124,7 +124,7 @@ body {
         }
       }
       .sub-menu-background{
-        top: 80px !important; 
+        top: 83px !important; 
         position: absolute !important; 
         width: 100vw !important; 
         background-color: black !important; 
@@ -135,7 +135,7 @@ body {
       }
       .sub-menu{
         position: absolute !important;
-        top: 80px !important;
+        top: 83px !important;
         padding: 0 20px !important;
 
         &::after {
@@ -184,76 +184,75 @@ body {
       }
 
       @media #{$mq-laptop}{
-        left: 5px;
-        position: relative;
+        left: 5px !important;
+        position: relative !important;
       }
 
 
       .hamburger-menu {
-        width: 22px !important;
+        width: 22px !important !important;
         @media #{$mq-tablet} {
-          top: 20px;  
+          top: 20px !important;
         }
         @media #{$mq-laptop} {
-          top: 20px;  
+          top: 20px !important;
         }
       }
       .logo-container{
         margin-top: -15px !important;
-        left: -20px;
-        position: relative;
+        left: -20px !important;
+        position: relative !important;
 
 
         @media #{$mq-smartphone-big} {
-          position: relative;
-          top: 5px;
-          left: -30px;
+          position: relative !important;
+          top: 5px !important;
+          left: -30px !important;
         }        
       }      
     }
 }
 
-
 .logo-adjust{
 
-  position: relative;
-  left: 15px;
+  position: relative !important;
+  left: 15px !important;
 
 
   @media #{$mq-s-mobile}{
-    position: relative;
+    position: relative !important;
     top: 5px !important;
-    left: 25px;
+    left: 25px !important;
   }  
 
   @media #{$mq-smartphone} {
-    position: relative;
-    top: -2px;
-    left: 15px;
+    position: relative !important;
+    top: -2px !important;
+    left: 15px !important;
   }
 
   @media #{$mq-tablet} {
-    position: relative;
-    top: 0px;
-    left: 15px;
+    position: relative !important;
+    top: 0px !important;
+    left: 15px !important;
   }
 
   @media #{$mq-smartphone-big} {
-    position: relative;
-    top: -2px;
-    left: 25px;
+    position: relative !important;
+    top: -2px !important;
+    left: 25px !important;
   }
 
   @media #{$mq-laptop} {
-    position: relative;
-    top: 0px;
-    left: 10px;
+    position: relative !important;
+    top: 0px !important;
+    left: 10px !important;
   }
 
   @media #{$mq-body-width} {
-    position: relative;
-    top: 0px;
-    left: 10px;
+    position: relative !important;
+    top: 0px !important;
+    left: 10px !important;
   }
 
 }
@@ -273,7 +272,7 @@ body {
 }
 
 .vizz-wysiwyg{
-  overflow: hidden;
+  overflow: hidden !important;
   margin-left: 0px !important;
   padding: 0 35px !important;
   max-width: 1280px !important;
@@ -281,12 +280,12 @@ body {
 
   @media #{$mq-smartphone}{
     padding: 0 35px !important;
-    margin: 0;
+    margin: 0 !important;
   }
 
   @media #{$mq-tablet}{
     padding: 0 50px !important;
-    margin: 0;
+    margin: 0 !important;
   }
 
   @media #{$mq-smartphone-big}{
@@ -302,7 +301,7 @@ body {
   }
 
   .cw-wysiwyg{
-    margin: 0;
+    margin: 0 !important;;
   }
 
 }
