@@ -38,9 +38,14 @@
     </div>
   </div>
 
+  <% load_alternate_logo = (@site_page.site_template.name == 'INDIA' and @site_page.name != "Homepage") %>
+  <% if load_alternate_logo %>
+    <% @image_url = "http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/WRI-Atlas-logo_unit.png" %>
+  <% end %>
+
   <div class="mobile-menu wrapper">
     <div class="logo-container" href="/">
-      <a class="logo" href="/">
+      <a class="logo <%= load_alternate_logo ? 'logo-adjust' : ''%>" href="/">
         <% if @image_url && @image_url != '/' %>
           <%= image_tag(@image_url, alt: 'Logo') %>
         <% elsif @site_page.site_template.name.eql? 'Landscape Application' %>
@@ -57,7 +62,7 @@
 
   <div class="desktop-menu wrapper">
     <div class="logo-container">
-      <a class="logo" href="/">
+      <a class="logo <%= load_alternate_logo ? 'logo-adjust' : '' %>" href="/">
         <% if @image_url && @image_url != '/' %>
           <%= image_tag(@image_url, alt: 'Logo') %>
         <% elsif @site_page.site_template.name.eql? 'Landscape Application' %>

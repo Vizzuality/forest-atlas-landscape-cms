@@ -82,7 +82,9 @@ body {
     .desktop-menu{
       height: 80px !important;
       .logo-container{
-        margin-top: 20px !important;
+        margin-top: 0px !important;
+        left: -15px;
+        position: relative;
       }
       .menu{
         margin-top: 15px !important;
@@ -163,7 +165,7 @@ body {
 
       @media #{$mq-s-mobile} {
         position: static !important;
-        height: 55px !important;
+        height: 45px !important;
         margin-top: 10px !important;
       }
       
@@ -173,20 +175,88 @@ body {
       }
 
       @media #{$mq-tablet} {
-        height: 55px !important;
-        margin-top: 10px !important; 
+        height: 65px !important;
+        margin-top: 18px !important; 
       }
       @media #{$mq-smartphone-big}{
         margin: 10px !important;
-        height: 45px !important;
+        height: 55px !important;
       }
+
+      @media #{$mq-laptop}{
+        left: 5px;
+        position: relative;
+      }
+
+
       .hamburger-menu {
         width: 22px !important;
+        @media #{$mq-tablet} {
+          top: 20px;  
+        }
+        @media #{$mq-laptop} {
+          top: 20px;  
+        }
       }
+      .logo-container{
+        margin-top: -15px !important;
+        left: -20px;
+        position: relative;
+
+
+        @media #{$mq-smartphone-big} {
+          position: relative;
+          top: 5px;
+          left: -30px;
+        }        
+      }      
     }
 }
 
 
+.logo-adjust{
+
+  position: relative;
+  left: 15px;
+
+
+  @media #{$mq-s-mobile}{
+    position: relative;
+    top: 5px !important;
+    left: 25px;
+  }  
+
+  @media #{$mq-smartphone} {
+    position: relative;
+    top: -2px;
+    left: 15px;
+  }
+
+  @media #{$mq-tablet} {
+    position: relative;
+    top: 0px;
+    left: 15px;
+  }
+
+  @media #{$mq-smartphone-big} {
+    position: relative;
+    top: -2px;
+    left: 25px;
+  }
+
+  @media #{$mq-laptop} {
+    position: relative;
+    top: 0px;
+    left: 10px;
+  }
+
+  @media #{$mq-body-width} {
+    position: relative;
+    top: 0px;
+    left: 10px;
+  }
+
+}
 
 .c-footer{
   position: absolute !important;
@@ -203,17 +273,36 @@ body {
 }
 
 .vizz-wysiwyg{
-  
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-  padding: 0 25px !important;
+  overflow: hidden;
+  margin-left: 0px !important;
+  padding: 0 35px !important;
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+
+  @media #{$mq-smartphone}{
+    padding: 0 35px !important;
+    margin: 0;
+  }
 
   @media #{$mq-tablet}{
-    padding: 0 40px !important;
+    padding: 0 50px !important;
+    margin: 0;
   }
 
   @media #{$mq-smartphone-big}{
+    padding: 0 60px !important;
+  }
+
+  @media #{$mq-laptop}{
     padding: 0 50px !important;
+  }
+
+  @media #{$mq-body-width}{
+    padding: 0 50px !important;
+  }
+
+  .cw-wysiwyg{
+    margin: 0;
   }
 
 }
@@ -334,7 +423,7 @@ body {
   font-weight: $font-weight-bold;
   line-height: 1.4;
   text-align: left;
-  font-size: $font-size-medium;
+  font-size: $font-size-x-medium;
   top: 15vh;
   position: absolute;
   padding: 0 20px;
@@ -727,8 +816,8 @@ form{
   }
 
   @media #{$mq-body-width} {
-    height: 350px;
-    margin-left: -100px;
+    height: 300px;
+    margin-left: -85px;
     margin-bottom: -60px;
     margin-top: -40px;
   }
@@ -801,4 +890,32 @@ form{
     text-align: left !important;
     margin-top: 0  !important;;
   }
+}
+
+.dynamic_heading_1{
+
+  font-size: 21px;
+
+  @media #{$mq-s-mobile}{
+    font-size: $font-size-x-medium;
+  }
+  
+  @media #{$mq-smartphone}{
+    font-size: $font-size-x-medium;
+  }
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xx-medium;
+  }
+
+  @media #{$mq-smartphone-big}{
+    font-size: $font-size-x-medium;
+  }
+
+  @media #{$mq-laptop} {
+    font-size: $font-size-xx-medium;
+  }
+  @media #{$mq-body-width} {
+    font-size: $font-size-xx-medium;
+  }  
 }
