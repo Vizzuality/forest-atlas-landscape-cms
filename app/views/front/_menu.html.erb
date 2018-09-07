@@ -99,7 +99,7 @@
           <% @menu_root.children.each do |child_page| -%>
               <% next unless (child_page.show_on_menu && child_page.visible?) %>
               <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
-                <% if @site_page.site_template.name == 'INDIA' and child_page.name == "About" %>
+                <% if @site_page.site_template.name == 'INDIA' and child_page.has_visible_children? %>
                   <%= link_to child_page.name, "#" %>
                 <% else %>
                   <%= page_link child_page %>
@@ -107,8 +107,16 @@
                 <% if child_page.has_visible_children? %>
                     <ul>
                       <li>
-                        <% if @site_page.site_template.name == 'INDIA' and child_page.name == "About" %>
-                          <%= link_to "About the Atlas", child_page.name.downcase %>
+                        <% if @site_page.site_template.name == 'INDIA' %>
+                            <% if child_page.name == "About" %>
+                              <%= link_to "About the Atlas", child_page.uri %>
+                            
+                            <% elsif child_page.name == "Atlas" %>
+                              <%= link_to "Launch Atlas", child_page.uri %>
+                            <% else %>
+                              <%= link_to child_page.name, child_page.uri %>
+                            <% end %>
+                              
                         <% else %>
                           <%= page_link child_page %>
                         <% end %>

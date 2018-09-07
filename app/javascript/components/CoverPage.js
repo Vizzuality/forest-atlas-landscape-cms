@@ -37,15 +37,15 @@ class CoverPage extends React.Component {
                   <img className="restoration_image" alt="Logo" src="http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/RO_Atlas_white_png.png" /> 
                 </div> 
                 
-                <hr className="hr-homepage" />
+                <div className="hr_div"> <hr className="hr-homepage" /> </div>
+                <div className="atlas_flex_div">
+                  <div className="button_wrapper"> 
+                    <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> 
+                  </div>
+                </div>         
                 
                 <p className="cover-title-para"> {current.name} </p>
                 <p className="cover-description-para"> {page.description} </p>
-              </div>
-            </div>
-            <div className="atlas_flex_div">
-              <div className="button_wrapper"> 
-                <a href="/atlas" className="home_page_atlas_button"> Launch Atlas </a> 
               </div>
             </div>
           </div>

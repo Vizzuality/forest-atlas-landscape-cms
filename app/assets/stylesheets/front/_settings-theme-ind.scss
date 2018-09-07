@@ -75,6 +75,7 @@ $breakpoint-smartphone-max: 812px;
 // Media queries
 $mq-mobile: 'screen and (min-width: #{$breakpoint-mobile}) and (orientation: portrait)';
 $mq-s-mobile: 'screen and (max-width: #{$breakpoint-s-mobile}) and (orientation: portrait)';
+$mq-s-mobile-l: 'screen and (max-width: 640px) and (max-height: 360px) and (orientation: landscape)';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
 $mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';

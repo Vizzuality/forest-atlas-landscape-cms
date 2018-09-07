@@ -274,7 +274,7 @@ body {
 .vizz-wysiwyg{
   overflow: hidden !important;
   margin-left: 0px !important;
-  padding: 0 35px;
+  padding: 0 35px ;
   max-width: 1280px !important;
   margin: 0 auto !important;
 
@@ -388,6 +388,49 @@ body {
   }
 }
 
+.button_wrapper{
+
+  position: absolute !important;
+  text-align: center !important;
+
+
+  @media #{$mq-s-mobile}{
+    left: 23% !important;
+    top: 50vh !important;    
+  }
+
+  left: 26% !important;
+  top: 50vh !important;
+
+
+  @media #{$mq-smartphone} {
+    left: 28% !important;
+    top: 65vh !important;
+    position: absolute !important;
+    text-align: left !important;
+  }
+
+  @media #{$mq-s-mobile-l} {
+    left: 25% !important;
+    top: 85vh !important;
+    position: absolute !important;
+    text-align: left !important;
+  }
+
+  @media #{$mq-tablet} {
+    top: unset !important;
+    left: 35vw !important;
+    position: absolute !important;
+    text-align: left !important;
+  }
+
+  @media #{$mq-smartphone-big} {
+    top: unset !important;
+    position: absolute !important;
+    text-align: left !important;
+  }
+} 
+
 .home_page_atlas_button{
 
   text-decoration: none;
@@ -401,32 +444,66 @@ body {
   border-radius: 20px;
   cursor:pointer;
   
+  
   font-family: $font-family-1;
-  font-size: $font-size-s-normal;
+  font-size: 20px !important;
+  font-weight: 700;
   line-height: 1.5;
   letter-spacing: .7px;
 
+  
+
   @media #{$mq-smartphone}{
-    font-size: $font-size-normal;
+    font-size: 20px !important;
   }
 
   @media #{$mq-tablet} {
-    font-size: $font-size-x-normal; 
+    font-size: 22px !important;
+    margin-left: 100px !important;
   }
 
   @media #{$mq-smartphone-big}{
-    font-size: $font-size-s-normal;
+    font-size: 20px !important;
+    margin-left: 50px !important;
   }
 
   @media #{$mq-laptop} {
-    font-size: $font-size-medium;
+    font-size: 27px!important;
+    margin-left: 100px !important;
   }
 
   @media #{$mq-body-width} {
-    font-size: $font-size-xx-medium;
+    font-size: 33px !important;
+    margin-left: 50px !important;
   }  
 }
 
+.cover-title-para{
+  font-size: 20px !important;
+  font-weight: $font-weight-bold !important;
+  margin: 0 !important;
+  color: #97BD3D !important;
+  line-height: 1.5;
+
+  @media #{$mq-tablet} {
+    font-size: 22px !important;
+    font-weight: $font-weight-bold !important;
+    margin: 0 !important;
+    color: #97BD3D !important;
+  }
+  @media #{$mq-laptop} {
+    font-size: 27px!important;
+    font-weight: $font-weight-bold!important;
+    color: #97BD3D!important;
+  }
+
+  @media #{$mq-body-width} {
+    font-size: 33px !important;
+    font-weight: $font-weight-bold !important;
+    color: #97BD3D !important;
+  }
+
+}
 
 .cover-title-left-other-page{
   font-weight: $font-weight-bold;
@@ -536,7 +613,7 @@ a {
   top: 30px !important; // We need to override map builder styles
 }
 
-.tab-buttons__tab.mobile-show[data-value="MORE"] {
+.tab-972s__tab.mobile-show[data-value="MORE"] {
   display: none !important;
 }
 
@@ -701,36 +778,8 @@ form{
   }  
 }
 
-.cover-title-para{
-  font-size: 20px !important;
-  font-weight: $font-weight-bold !important;
-  margin: 0 !important;
-  color: #97BD3D !important;
-  line-height: 1.5;
-
-  @media #{$mq-tablet} {
-    font-size: 22px !important;
-    font-weight: $font-weight-bold !important;
-    margin: 0 !important;
-    color: #97BD3D !important;
-  }
-  @media #{$mq-laptop} {
-    font-size: 27px!important;
-    font-weight: $font-weight-bold!important;
-    color: #97BD3D!important;
-  }
-
-  @media #{$mq-body-width} {
-    font-size: 33px !important;
-    font-weight: $font-weight-bold !important;
-    color: #97BD3D !important;
-  }
-
-}
-
 .cover-page-wrapper{
   margin-right: 10px !important;
-  flex: 1 !important;
 
   @media #{$mq-mobile}{
     margin-right: 30px !important;
@@ -740,39 +789,39 @@ form{
 .hr-homepage{
 
   max-width: 100% !important;
-  text-align: left;
-  margin-left: 0;
-  color: #97BD3D;
-  border: 0.5px solid;
+  text-align: left !important;
+  margin-left: 0 !important;
+  color: #97BD3D !important;
+  border: 0.5px solid !important;
   margin-bottom: 20px !important;
 
 
   @media #{$mq-tablet}{
-    max-width: 100%;
-    text-align: left;
-    margin-left: 0;
-    color: #97BD3D;
-    border: 0.5px solid;
+    max-width: 100% !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    color: #97BD3D !important;
+    border: 0.5px solid !important;
     margin-bottom: 20px !important;
     margin-top: 20px !important;
   }
 
   @media #{$mq-laptop}{
-    max-width: 100%;
-    text-align: left;
-    margin-left: 0;
-    color: #97BD3D;
-    border: 0.5px solid;
+    max-width: 100% !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    color: #97BD3D !important;
+    border: 0.5px solid !important;
     margin-bottom: 35px !important;
   }
 
   @media #{$mq-smartphone-big}{
     margin-bottom: 20px !important;
-    max-width: 100%;
-    text-align: left;
-    margin-left: 0;
-    color: #97BD3D;
-    border: 0.5px solid;
+    max-width: 100% !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    color: #97BD3D !important;
+    border: 0.5px solid !important;
   }
 
 }
@@ -796,11 +845,19 @@ form{
     padding: 20px 5px 20px 20px;
   }
 
+  @media #{$mq-smartphone}{
+    background-color: rgba(11,8,9,0.7);
+    max-width: 150%;
+    padding: 30px 0px 30px 20px;
+    
+    height: auto;
+  }
+
   @media #{$mq-tablet}{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 30px 0px 30px 20px;
-    flex: 1;
+    
     height: auto;
   }
 
@@ -808,7 +865,7 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 20px;
-    flex: 1;
+    
     height: auto;
   }
 
@@ -816,7 +873,7 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 30px;
-    flex: 1;
+    
     height: auto;
   }
 
@@ -824,34 +881,42 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 30px;
-    flex: 1;
+    
     height: auto;
   }
 }
 
+.hr_div{
+  
+  width: 100% !important;
+  display: inline-block !important;
+  float: left !important;
+}
+
+
 .atlas_flex_div{
+
+
   @media #{$mq-tablet}{
-    position: relative;
-    flex: 1;
-    margin-left: 5px;
+
+    display: inline-block !important;
+    float: right !important;
   }
 
   @media #{$mq-smartphone-big}{
-    position: relative;
-    flex: 1;
-    margin-left: 5px;
+
+    display: inline-block !important;
+    float: right !important;
   }
 
   @media #{$mq-laptop}{
-    position: relative;
-    flex: 1;
-    margin-left: 5px;
+    display: inline-block !important;
+    float: right !important;
   }
 
   @media #{$mq-body-width}{
-    position: relative;
-    flex: 1;
-    margin-left: 5px;
+    display: inline-block !important;
+    float: right !important;
   }
   
 }
@@ -919,14 +984,12 @@ form{
   }
 
   @media #{$mq-tablet} {
-    display: flex;
     margin-left: 20px;
     top: -5vh;
     position: relative;
   }
 
   @media #{$mq-smartphone-big}{
-    display: flex;
     margin-left: 20px;
     top: -25vh;
     position: relative;
@@ -935,37 +998,15 @@ form{
 
 
   @media #{$mq-laptop} {
-    display: flex;
     margin-left: 25px;
     top: -5vh;
     position: relative;
   }
   @media #{$mq-body-width} {
-    display: flex;
     margin-left: 25px;
 
   }
 
-}
-
-.button_wrapper{
-  bottom: 0 !important;
-  position: relative !important;
-  text-align: center !important;
-  margin-top: 7vh  !important;
-
-
-  @media #{$mq-tablet} {
-    position: absolute !important;
-    text-align: left !important;
-    margin-top: 0  !important;;
-  }
-
-  @media #{$mq-smartphone-big} {
-    position: absolute !important;
-    text-align: left !important;
-    margin-top: 0  !important;
-  }
 }
 
 .dynamic_heading_1{
