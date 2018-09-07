@@ -10,8 +10,8 @@ class ContactController < ApplicationController
     message = Nokogiri::HTML(params["message"]).text
 
 
-	from = Email.new(email: 'landscapes@wri.org')
-	to = Email.new(email: 'landscapes@wri.org')
+	from = Email.new(email: 'kanchana.cb@gmail.com')
+	to = Email.new(email: 'kanchana.cb@gmail.com')
 	
 	mail_subject = "Restoration Opportunities Atlas - Message - #{subject}"
 
