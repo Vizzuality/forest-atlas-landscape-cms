@@ -311,6 +311,7 @@ body {
 
   .cw-wysiwyg{
     margin: 0 !important;
+    max-width: 100% !important;
   }
 
 }
@@ -1000,9 +1001,8 @@ form{
   bottom: 0 !important;
   left: 2% !important;
   right: 2% !important;
-  max-width: 1280px;
   width: 96% !important;
-  align: center;
+  align: center !important;
 }
 
 .alert{
