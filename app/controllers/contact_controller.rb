@@ -1,12 +1,13 @@
 class ContactController < ApplicationController
   require 'sendgrid-ruby'
   include SendGrid
+  require 'nokogiri'
   
   def send_contact_email
-    user_name = params["user_name"]
-    user_email = params["user_email"]
-    subject = params["subject"]
-    message = params["message"]
+    user_name = Nokogiri::HTML(params["user_name"]).text
+    user_email = Nokogiri::HTML(params["user_email"]).text
+    subject = Nokogiri::HTML(params["subject"]).text
+    message = Nokogiri::HTML(params["message"]).text
 
 
 	from = Email.new(email: 'landscapes@wri.org')
@@ -14,7 +15,7 @@ class ContactController < ApplicationController
 	
 	mail_subject = "Restoration Opportunities Atlas - Message - #{subject}"
 
-	mail_message = "\n \n Name: #{user_name} \n \n Email: #{user_email} \n \n Subject: #{subject} \n \n Message: #{message}"
+	mail_message = "\n Name: #{user_name} \n \n Email: #{user_email} \n \n Subject: #{subject} \n \n Message: #{message}"
 
 	content = Content.new(type: 'text/plain', value: mail_message)
 
