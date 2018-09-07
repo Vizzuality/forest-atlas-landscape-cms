@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     get '/', to: redirect('/admin/sites')
   end
 
+  match '/contact', to: 'contact#send_contact_email', via: [:get, :post]
+
   namespace :management do
     resources :profile, only: [:edit, :update]
 
@@ -95,6 +97,7 @@ Rails.application.routes.draw do
 
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
+  
 
   # Auth
   get 'auth/login', to: 'auth#login'

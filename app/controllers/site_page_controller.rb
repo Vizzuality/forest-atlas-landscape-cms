@@ -192,5 +192,4 @@ class SitePageController < ApplicationController
   def create_menu_tree
     @menu_tree = @menu_root.hash_tree
   end
-
 end

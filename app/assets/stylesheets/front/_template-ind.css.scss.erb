@@ -1,0 +1,17 @@
+<% variables.each do |property, value| %>
+  $<%= property %>: <%= value %>;
+<% end %>
+
+@import
+'../../../node_modules/widget-editor/dist/styles.min',
+'../../../node_modules/rc-slider/assets/index',
+'../../../node_modules/react-select/dist/react-select',
+'../../../node_modules/vizz-wysiwyg/build/rw',
+'leaflet',
+'../../app/assets/stylesheets/helpers',
+'../../app/assets/stylesheets/front/settings-theme-ind',
+'../../app/assets/stylesheets/front/base-theme-ind',
+'../../app/assets/stylesheets/layouts/shared/*',
+'../../app/assets/stylesheets/layouts/front/*',
+'../../app/assets/stylesheets/components/shared/**/*',
+'../../app/assets/stylesheets/components/front/**/*';

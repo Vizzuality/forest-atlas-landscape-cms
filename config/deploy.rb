@@ -13,6 +13,11 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 
 set :deploy_to, '/var/www/facms'
 
+set :default_env, {
+  NODE_ENV: 'production',
+  NODE_OPTIONS: '--max_old_space_size=2048'
+}
+
 before 'deploy:publishing', 'site_settings:update'
 before "deploy:publishing", "assets:precompile_sites"
 before 'deploy:assets:precompile', 'node_modules:generate'

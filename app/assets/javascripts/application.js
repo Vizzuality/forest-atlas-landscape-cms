@@ -36,6 +36,17 @@
 // = require_tree ./views/front
 // = require dispatchers/frontDispatcher
 
+$(document).ready(function(){
+  $(".close").click(function(){
+    $(".flash_container").hide(); 
+  });
+
+  setTimeout(function() {
+    $(".flash_container").hide();
+  }, 5000);
+});
+
+
 (function () {
   'use strict';
 

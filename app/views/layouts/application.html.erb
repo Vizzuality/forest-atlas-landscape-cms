@@ -23,6 +23,7 @@
   <%= stylesheet_link_tag 'front/application-theme-fa', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('Forest Atlas')) %>
   <%= stylesheet_link_tag 'front/application-theme-lsa', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('Landscape Application')) %>
   <%= stylesheet_link_tag 'front/application-theme-carpe', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('CARPE Landscape')) %>
+  <%= stylesheet_link_tag 'front/application-theme-ind', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('INDIA')) %>
 
   <%= stylesheet_link_tag "front/sites/#{@site_page.site.id}.css", media: 'all', 'data-turbolinks-track': 'reload' unless Rails.env.development?%>
 
@@ -54,7 +55,14 @@
   <%= Gon::Base.render_data %>
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
+
   <%= yield %>
+  <div class="flash_container">
+    <% flash.each do |key, value| %>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <div class="alert alert-<%= key %>"><%= value %></div>
+    <% end %>
+  </div>
 
   <script>
     $(function () {
@@ -67,6 +75,6 @@
       }
     })
   </script>
-
+   
 </body>
 </html>

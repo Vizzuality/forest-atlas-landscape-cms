@@ -31,11 +31,15 @@ gem 'faraday_middleware', '~> 0.11.0.1'
 gem 'webpacker', '~> 3.3.1'
 gem 'react-rails', '~> 2.4.4'
 
+gem 'sendgrid-ruby'
+
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
 # Assets Pipeline
 gem 'autoprefixer-rails'
+gem 'sendgrid-ruby'
+
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-d3', '~> 3.5.16'

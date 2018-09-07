@@ -44,8 +44,10 @@
 
     .templates {
       display: flex;
-      align-items: stretch;
-      justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      flex-flow: wrap;
 
       .template {
         position: relative;
