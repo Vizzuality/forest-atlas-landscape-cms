@@ -36,6 +36,8 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
 # Assets Pipeline
 gem 'autoprefixer-rails'
+gem 'sendgrid-ruby'
+
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-d3', '~> 3.5.16'

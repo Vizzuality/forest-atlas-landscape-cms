@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     get '/', to: redirect('/admin/sites')
   end
 
-  # get '/contact', to: 'site_page#send_contact_email'
+  match '/contact', to: 'contact#send_contact_email', via: [:get, :post]
 
   namespace :management do
     resources :profile, only: [:edit, :update]

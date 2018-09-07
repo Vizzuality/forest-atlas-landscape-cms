@@ -554,18 +554,16 @@ a {
 
 form{
   .text_input{
-    width: 30vw;
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 35px;
-    font-size: 18px;
-    font-family: 'Acumin Pro';
+    font-size: 15px;
+    font-family: 'Georgia';
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
     padding: 6px 12px;
   }
 
   .form_input_div{
-    width: 40%;
     margin-top: 5px;
     font-size: 15px;
   }
@@ -575,17 +573,70 @@ form{
   }
 
   .form_label{
-    font-size: 18px;
-    font-family: 'Acumin Pro';
+    font-size: 13px;
+    font-family: 'Georgia';
     font-weight: 600;
+
+    @media #{$mq-smartphone}{
+      font-size: 15px;
+    }
+
+    @media #{$mq-tablet}{
+      font-size: 15px;
+    }
+
+    @media #{$mq-smartphone-big}{
+      font-size: 15px;
+    }
+
+    @media #{$mq-laptop}{
+      font-size: 15px;
+    }
+
+  }
+
+  .form_element_wide{
+    width: 70vw;
+
+    @media #{$mq-smartphone}{
+      width: 70vw;
+    }
+
+    @media #{$mq-tablet}{
+      width: 50vw;
+    }
+
+    @media #{$mq-smartphone-big}{
+      width: 50vw;
+    }
+
+    @media #{$mq-laptop}{
+      width: 50vw;
+    }
+  }
+
+  .form_element_normal{
+    width: 70vw;
+
+    @media #{$mq-smartphone}{
+      width: 55vw;
+    }
+
+    @media #{$mq-tablet}{
+      width: 40vw;
+    }
+
+    @media #{$mq-laptop}{
+      width: 30vw;
+    }
+
   }
 
   .textarea_input{
-    width: 30vw;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 15px;
-    font-family: 'Acumin Pro';
+    font-family: 'Georgia';
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
     padding: 6px 12px;
 
@@ -604,9 +655,11 @@ form{
     margin: 10px;
     width: 80px;
     background-color: transparent;
-    font-family: 'Acumin Pro';
+    font-family: 'Georgia';
     font-weight: 600;
     font-size: 15px;
+    background-color: #6D8D72;
+    color: #fff;
   }
 }
 
@@ -801,6 +854,7 @@ form{
   }
   
 }
+
 .restoration_image{
 
   height: 175px;
@@ -909,34 +963,96 @@ form{
   @media #{$mq-smartphone-big} {
     position: absolute !important;
     text-align: left !important;
-    margin-top: 0  !important;;
+    margin-top: 0  !important;
   }
 }
 
 .dynamic_heading_1{
 
-  font-size: 21px;
+  font-size: 21px  !important;
 
   @media #{$mq-s-mobile}{
-    font-size: $font-size-x-medium;
+    font-size: $font-size-x-medium  !important;
   }
   
   @media #{$mq-smartphone}{
-    font-size: $font-size-x-medium;
+    font-size: $font-size-x-medium  !important;
   }
 
   @media #{$mq-tablet} {
-    font-size: $font-size-xx-medium;
+    font-size: $font-size-xx-medium  !important;
   }
 
   @media #{$mq-smartphone-big}{
-    font-size: $font-size-x-medium;
+    font-size: $font-size-x-medium  !important;
   }
 
   @media #{$mq-laptop} {
-    font-size: $font-size-xx-medium;
+    font-size: $font-size-xx-medium  !important;
   }
   @media #{$mq-body-width} {
-    font-size: $font-size-xx-medium;
+    font-size: $font-size-xx-medium  !important;
   }  
 }
+
+.flash_container{
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 2% !important;
+  right: 2% !important;
+  max-width: 1280px;
+  width: 96% !important;
+  align: center;
+}
+
+.alert{
+  padding: 15px !important;
+  margin-bottom: 20px !important;
+  border: 1px solid transparent !important;
+  border-radius: 4px !important;
+  font-size: 18px;
+}
+.alert-error {
+    background-color: #f2dede !important;
+    border-color: #eed3d7 !important;
+    color: #b94a48 !important;
+    text-align: center !important;
+ }
+
+.alert-alert {
+    background-color: #f2dede !important;
+    border-color: #eed3d7 !important;
+    color: #b94a48 !important;
+    text-align: center !important;
+ }
+
+.alert-success {
+    background-color: #dff0d8 !important;
+    border-color: #d6e9c6 !important;
+    color: #468847 !important;
+    text-align: center !important;
+ }
+
+.alert-notice {
+    background-color: #dff0d8 !important;
+    border-color: #d6e9c6 !important;
+    color: #468847 !important;
+    text-align: center !important;
+ }
+
+ .alert-dismissible{
+  padding-right: 15px !important;
+ }
+
+ .close{
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .2;
+  position: relative;
+  top: 10px;
+  right: 10px;
+ }

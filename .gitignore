@@ -41,6 +41,7 @@ yarn-error.log
 
 # Ignore environment variables
 /.env
+/.sendgrid.env
 
 /falcms_test
 

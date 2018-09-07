@@ -55,7 +55,14 @@
   <%= Gon::Base.render_data %>
   <%= render 'front/menu' %>
   <%= render 'front/icons' %>
+
   <%= yield %>
+  <div class="flash_container">
+    <% flash.each do |key, value| %>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <div class="alert alert-<%= key %>"><%= value %></div>
+    <% end %>
+  </div>
 
   <script>
     $(function () {
@@ -68,6 +75,6 @@
       }
     })
   </script>
-
+   
 </body>
 </html>
