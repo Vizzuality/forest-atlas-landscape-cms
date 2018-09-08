@@ -109,12 +109,12 @@
                       <li>
                         <% if @site_page.site_template.name == 'INDIA' %>
                             <% if child_page.name == "About" %>
-                              <%= link_to "About the Atlas", child_page.uri %>
+                              <%= link_to "About the Atlas", child_page.url %>
                             
                             <% elsif child_page.name == "Atlas" %>
-                              <%= link_to "Launch Atlas", child_page.uri %>
+                              <%= link_to "Launch Atlas", child_page.url %>
                             <% else %>
-                              <%= link_to child_page.name, child_page.uri %>
+                              <%= link_to child_page.name, child_page.url %>
                             <% end %>
                               
                         <% else %>
