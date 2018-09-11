@@ -186,7 +186,7 @@ class Table extends React.Component {
    */
   sortResults(rows) {
     return rows.sort((a, b) => {
-      const column = this.state.columns[this.state.sort.columnIndex].toLowerCase();
+      const column = this.state.columns[this.state.sort.columnIndex];
 
       const cellA = a[column];
       const cellB = b[column];
