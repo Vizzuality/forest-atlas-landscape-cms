@@ -9,7 +9,7 @@ const SiteListPages = ({ pages }) => (
       <Table
         name="List of pages"
         searchable
-        columns={['Title', 'Url', 'Type']}
+        columns={['title', 'url', 'type']}
         data={pages}
         actions={['toggle', 'edit', 'delete']}
       />
