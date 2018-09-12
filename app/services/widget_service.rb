@@ -28,6 +28,32 @@ class WidgetService < ApiService
     widgets
   end
 
+  # Returns the widgets of a list of datasets
+  def self.get_widgets_per_datasets(dataset_ids, status = 'saved')
+    widgets_request = @conn.get URI.encode("/v1/dataset?ids=#{dataset_ids.join(',')}&includes=widget"),
+                                'page[number]': '1', 'page[size]': '10000',
+                                'status': status,
+                                'application': ENV.fetch('API_APPLICATIONS'),
+                                'env': ENV.fetch('API_ENV'),
+                                '_': Time.now.to_s
+
+    datasets_json = JSON.parse widgets_request.body
+
+    widgets = []
+    begin
+      datasets_json['data'].each do |dataset_data|
+        dataset_data.dig('attributes', 'widget').each do |data|
+          widget = Widget.new data
+          widgets.push widget
+        end
+      end
+    rescue Exception => e
+      Rails.logger.error "::WidgetService.get_widgets: #{e}"
+    end
+
+    widgets
+  end
+
   def self.widget(id)
     begin
       widgets_request = @conn.get "/v1/widget/#{id}"
