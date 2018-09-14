@@ -8,7 +8,7 @@ class Management::WidgetsController < ManagementController
                        .map { |c| c.context_datasets.pluck(:dataset_id) }
                        .flatten.uniq
 
-    @widgets = WidgetService.get_widgets_per_datasets dataset_ids
+    @widgets = WidgetService.from_datasets dataset_ids
     @widgets = @widgets.map do |x|
       { widget: x,
         edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),

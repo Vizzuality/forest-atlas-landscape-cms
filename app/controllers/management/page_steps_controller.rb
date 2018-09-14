@@ -110,7 +110,12 @@ class Management::PageStepsController < ManagementController
         gon.widgets = get_widgets_list
       when 'open_content_v2'
         gon.widgets = get_widgets_list
-        @widgets = WidgetService.get_widgets
+
+        dataset_array = []
+        @site.contexts.each {|c| c.context_datasets.each {|d| dataset_array << d.dataset_id}}
+        dataset_array.uniq!
+
+        @widgets = WidgetService.from_datasets dataset_array
         @widgets = @widgets.map do |x|
           { widget: x,
             edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
@@ -123,7 +128,11 @@ class Management::PageStepsController < ManagementController
         build_current_dashboard_setting
         gon.page_name = @page.name
 
-        @widgets = WidgetService.get_widgets
+        dataset_array = []
+        @site.contexts.each {|c| c.context_datasets.each {|d| dataset_array << d.dataset_id}}
+        dataset_array.uniq!
+
+        @widgets = WidgetService.from_datasets dataset_array
         @widgets = @widgets.map do |x|
           { widget: x,
             edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
@@ -571,12 +580,10 @@ class Management::PageStepsController < ManagementController
   end
 
   # Returns the list of widgets for this site
-  # TODO: Check if we should see all the contexts
   def get_widgets_list
     dataset_array = []
     @site.contexts.each {|c| c.context_datasets.each {|d| dataset_array << d.dataset_id}}
     dataset_array.uniq!
-    #widgets = Widget.where(dataset_id: dataset_array)
     widgets = WidgetService.from_datasets dataset_array
     widgets.map do |w|
       { id: w.id, name: w.name,
