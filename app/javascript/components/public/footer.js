@@ -41,6 +41,17 @@ class Footer extends React.PureComponent {
       </li>);
   }
 
+  getTermsLabel(){
+    const { siteTemplateName } = this.props.site.meta;
+    let terms_label = "Terms of Service";
+
+    if (siteTemplateName == 'INDIA') {
+      terms_label = "Terms & Conditions";
+    }
+
+    return terms_label;    
+  }
+
   preFooter() {
     const { settings } = this.props.site;
     return (
@@ -65,7 +76,7 @@ class Footer extends React.PureComponent {
           <ul className="site-links-list">
 
           <li className="site-link-item">
-            <a href="/terms-and-privacy" className="site-link">Terms of Service</a>
+            <a href="/terms-and-privacy" className="site-link">{this.getTermsLabel()}</a>
           </li>
 
           <li className="site-link-item">
