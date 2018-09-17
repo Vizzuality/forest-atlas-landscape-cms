@@ -40,7 +40,7 @@
 
         // We update the url
         if (!/\?(.*)?l=[a-z]{2}/.test(location.search)) {
-          var url = (!location.search.length ? '?' : '&') + 'l=' + this.options.currentLanguage;
+          var url = (!location.search.length ? '?' : (location.search + '&')) + 'l=' + this.options.currentLanguage;
           history.replaceState(null, '', url);
         }
 
