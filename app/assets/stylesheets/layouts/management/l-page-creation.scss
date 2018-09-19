@@ -124,4 +124,15 @@
     }
   }
 
+  // Note used on the dashboard creation (steps dataset and widget)
+  .note {
+    max-width: $content-max-width;
+    line-height: 1.5;
+
+    a {
+      color: $color-1;
+      text-decoration: none;
+    }
+  }
+
 }

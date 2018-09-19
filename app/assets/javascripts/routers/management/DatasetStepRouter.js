@@ -17,6 +17,7 @@
       this.datasets = Array.prototype.slice.call(document.querySelectorAll('.js-dataset'));
 
       this._initSearch();
+      this._initNote();
 
       // Disable the register button and show a notification
       $('.js-register-dataset').on('click', function (e) {
@@ -72,7 +73,7 @@
         return {
           id: dataset.dataset.id,
           name: dataset.dataset.name,
-          contexts: dataset.dataset.contexts.split(',')
+          contexts: dataset.dataset.contexts ? dataset.dataset.contexts.split(',') : []
         };
       });
 
@@ -84,6 +85,24 @@
         threshold: 0.1,
         matchAllTokens: true,
         shouldSort: false
+      });
+    },
+
+    /**
+     * If the page contains a note, link it to the note details
+     */
+    _initNote: function () {
+      var note = document.querySelector('.js-note');
+      var noteDetails = document.querySelector('.js-note-details');
+      if (!note || !noteDetails) return;
+
+      var link = note.querySelector('a');
+      if (!link) return;
+
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var position = window.scrollY + noteDetails.getBoundingClientRect().top;
+        window.scrollTo(0, position);
       });
     },
 
