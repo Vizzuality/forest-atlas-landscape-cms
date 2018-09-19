@@ -4,11 +4,17 @@
     font-size: $font-size-normal;
   }
 
- .cw-wysiwyg-text {
+  .cw-wysiwyg-text {
     // Display the text elements with a 100% width
     // so the text can have some alignment
     flex-basis: 100%;
     max-width: none;
+  }
+
+  .cw-wysiwyg-list-item {
+    &.-image {
+      text-align: center;
+    }
   }
 
   .c-we-vega-chart-legend {
