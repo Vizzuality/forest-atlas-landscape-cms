@@ -30,7 +30,7 @@ class WidgetService < ApiService
 
   def self.widget(id)
     begin
-      widgets_request = @conn.get "/v1/widget/#{id}"
+      widgets_request = @conn.get "/v1/widget/#{id}?_=#{Time.now.to_s}"
       widget_json = JSON.parse widgets_request.body
       widget = Widget.new widget_json['data']
     rescue Exception
