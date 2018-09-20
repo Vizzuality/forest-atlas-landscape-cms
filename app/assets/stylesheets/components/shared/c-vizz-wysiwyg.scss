@@ -9,6 +9,23 @@
     // so the text can have some alignment
     flex-basis: 100%;
     max-width: none;
+
+    ul,
+    ol {
+      display: block;
+      margin-top: .5em;
+      margin-bottom: .5em;
+      list-style: initial;
+
+      li {
+        display: list-item;
+        line-height: 2;
+
+        &::before {
+          font-family: $font-family-1;
+        }
+      }
+    }
   }
 
   .cw-wysiwyg-list-item {
