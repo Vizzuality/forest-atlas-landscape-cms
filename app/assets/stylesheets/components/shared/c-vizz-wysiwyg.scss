@@ -28,6 +28,23 @@
     }
   }
 
+  // Reduce the height of the buttons container
+  // of the grid on the right size (basically the delete
+  // button) because it prevents the user from
+  // resizing the textarea of the HTML block
+  .wysiwyg-grid-column-actions.-inline {
+    height: auto;
+  }
+
+  .cw-wysiwyg-item-content.-html,
+  .wysiwyg-grid-column__item {
+    // Prevent the user from making the textarea
+    // bigger than the space available
+    textarea {
+      max-width: 100%;
+    }
+  }
+
   .cw-wysiwyg-list-item {
     &.-image {
       text-align: center;
