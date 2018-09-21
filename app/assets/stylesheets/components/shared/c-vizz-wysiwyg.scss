@@ -45,6 +45,10 @@
     }
   }
 
+  .wysiwyg-grid-column__item {
+    margin-top: 16px;
+  }
+
   .cw-wysiwyg-item-content {
     &.-html,
     &.-text {
@@ -79,6 +83,12 @@
   .cw-wysiwyg-list-item {
     &.-image {
       text-align: center;
+    }
+
+    &.-grid {
+      .wysiwyg-grid-column {
+        padding-bottom: 0;
+      }
     }
   }
 

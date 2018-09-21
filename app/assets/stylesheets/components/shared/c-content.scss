@@ -181,81 +181,82 @@
     }
   }
 
-  .-image {
-    margin: 50px 0;
-    text-align: center;
+  // Adds a lot of margin to the images on the homepage
+  // .-image {
+  //   margin: 50px 0;
+  //   text-align: center;
 
-    > div {
-      display: inline-block;
+  //   > div {
+  //     display: inline-block;
 
-      @media #{$mq-mobile} {
-        margin: 0 auto;
-      }
+  //     @media #{$mq-mobile} {
+  //       margin: 0 auto;
+  //     }
 
-      @media #{$mq-laptop} {
-        max-width: $content-max-width;
-      }
-    }
+  //     @media #{$mq-laptop} {
+  //       max-width: $content-max-width;
+  //     }
+  //   }
 
-    &.-large > div {
-      @media #{$mq-laptop} {
-        max-width: $media-max-width;
-      }
-    }
+  //   &.-large > div {
+  //     @media #{$mq-laptop} {
+  //       max-width: $media-max-width;
+  //     }
+  //   }
 
-    &.-cover {
-      width: $body-max-width;
-      margin-left: #{-1 * $wrapper-padding};
+  //   &.-cover {
+  //     width: $body-max-width;
+  //     margin-left: #{-1 * $wrapper-padding};
 
-      > div {
-        @media #{$mq-laptop} {
-          max-width: $body-max-width;
-        }
-      }
-    }
+  //     > div {
+  //       @media #{$mq-laptop} {
+  //         max-width: $body-max-width;
+  //       }
+  //     }
+  //   }
 
-    img {
-      display: block;
-      max-width: 100%;
+  //   img {
+  //     display: block;
+  //     max-width: 100%;
 
-      @media #{$mq-laptop} {
-        // If you update the next line, make sure to update the
-        // default parameters of the wysiwyg view
-        max-height: $content-max-width * $image-ratio;
-      }
-    }
+  //     @media #{$mq-laptop} {
+  //       // If you update the next line, make sure to update the
+  //       // default parameters of the wysiwyg view
+  //       max-height: $content-max-width * $image-ratio;
+  //     }
+  //   }
 
-    &.-large img {
-      @media #{$mq-laptop} {
-        max-height: $media-max-width * $image-ratio;
-      }
-    }
+  //   &.-large img {
+  //     @media #{$mq-laptop} {
+  //       max-height: $media-max-width * $image-ratio;
+  //     }
+  //   }
 
-    &.-cover img {
-      @media #{$mq-laptop} {
-        max-height: $body-max-width * $image-ratio;
-      }
-    }
+  //   &.-cover img {
+  //     @media #{$mq-laptop} {
+  //       max-height: $body-max-width * $image-ratio;
+  //     }
+  //   }
 
-    .caption {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      margin-top: 12px;
-      font-size: $font-size-s-normal;
-      font-style: italic;
-      font-weight: $font-weight-light;
-      text-align: right;
+  //   .caption {
+  //     display: block;
+  //     width: 100%;
+  //     max-width: 100%;
+  //     margin-top: 12px;
+  //     font-size: $font-size-s-normal;
+  //     font-style: italic;
+  //     font-weight: $font-weight-light;
+  //     text-align: right;
 
-      @if $theme == 1 {
-        font-family: $font-family-2;
-      }
+  //     @if $theme == 1 {
+  //       font-family: $font-family-2;
+  //     }
 
-      @media #{$mq-mobile} {
-        margin-top: 12px;
-      }
-    }
-  }
+  //     @media #{$mq-mobile} {
+  //       margin-top: 12px;
+  //     }
+  //   }
+  // }
 
   .-widget {
     width: 100%;
