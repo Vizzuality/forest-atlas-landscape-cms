@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
 
 // Components
+import Wysiwyg from 'components/shared/Wysiwyg';
 import Tabs from 'components/shared/Tabs';
 import DashboardBookmarks from 'components/shared/DashboardBookmarks';
 import DashboardFilters from 'components/shared/DashboardFilters';
 import DashboardChartView from 'components/shared/DashboardChartView';
 import DashboardMapView from 'components/shared/DashboardMapView';
 import DashboardTableView from 'components/shared/DashboardTableView';
-import { ImageUpload, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
 import Icon from 'components/icon';
 import Modal from 'components/Modal';
 
@@ -41,35 +40,7 @@ class Dashboard extends React.Component {
           <Wysiwyg
             readOnly
             items={this.props.topContent ? JSON.parse(this.props.topContent) : []}
-            blocks={{
-              text: {
-                Component: TextBlock,
-                placeholder: 'Type your text',
-                theme: 'bubble',
-                modules: {
-                  toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    ['link'],
-                    [{ align: [] }]
-                  ]
-                }
-              },
-              image: {
-                Component: ImagePreview,
-                EditionComponent: ImageUpload,
-                icon: 'icon-image',
-                label: 'Image',
-                renderer: 'tooltip'
-              },
-              html: {
-                Component: HtmlEmbedPreview,
-                icon: 'icon-embed',
-                label: 'Custom HTML',
-                renderer: 'tooltip'
-              }
-            }}
+            blocks={['text', 'image', 'html']}
           />
         )}
         <DashboardFilters />
@@ -242,35 +213,7 @@ class Dashboard extends React.Component {
           <Wysiwyg
             readOnly
             items={this.props.bottomContent ? JSON.parse(this.props.bottomContent) : []}
-            blocks={{
-              text: {
-                Component: TextBlock,
-                placeholder: 'Type your text',
-                theme: 'bubble',
-                modules: {
-                  toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    ['link'],
-                    [{ align: [] }]
-                  ]
-                }
-              },
-              image: {
-                Component: ImagePreview,
-                EditionComponent: ImageUpload,
-                icon: 'icon-image',
-                label: 'Image',
-                renderer: 'tooltip'
-              },
-              html: {
-                Component: HtmlEmbedPreview,
-                icon: 'icon-embed',
-                label: 'Custom HTML',
-                renderer: 'tooltip'
-              }
-            }}
+            blocks={['text', 'image', 'html']}
           />
         )}
       </div>
