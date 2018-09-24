@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { VegaChart } from 'widget-editor';
@@ -43,10 +43,20 @@ class WidgetBlock extends React.Component {
   render() {
     if (this.state.loading) { return null; }
     return (
-      <VegaChart
-        data={this.state.widget.visualization}
-        reloadOnResize
-      />
+      <Fragment>
+        <VegaChart
+          data={this.state.widget.visualization}
+          reloadOnResize
+        />
+        <div className="metadata">
+          <div className="title">{this.state.widget.name}</div>
+          {this.state.widget.metadata && !!this.state.widget.metadata.length && this.state.widget.metadata[0].attributes.info && (
+            <div className="caption">
+              {this.state.widget.metadata[0].attributes.info.caption}
+            </div>
+          )}
+        </div>
+      </Fragment>
     );
   }
 }
