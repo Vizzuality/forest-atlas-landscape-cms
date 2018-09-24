@@ -1,26 +1,30 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VizzWysiwyg, { TextBlock as VizzTextBlock } from 'vizz-wysiwyg';
+import VizzWysiwyg from 'vizz-wysiwyg';
 import { Icons } from 'widget-editor';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 
-// FIXME:
-import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview } from './blocks';
+// Components
+import { WidgetBlock, WidgetBlockCreation, ImageUpload, ImagePreview, HtmlEmbedPreview, TextBlock } from './blocks';
+import LinkHandler from './handlers/LinkHandler';
 
 const BLOCKS = {
   text: {
-    Component: VizzTextBlock,
+    Component: TextBlock,
     placeholder: 'Type your text',
     theme: 'bubble',
     modules: {
-      toolbar: [
-        [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        ['link'],
-        [{ align: [] }]
-      ]
+      toolbar: {
+        container: [
+          [{ header: [1, 2, false] }],
+          ['bold', 'italic', 'underline'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['link'],
+          [{ align: [] }]
+        ],
+        handlers: {}
+      },
     }
   },
   image: {
@@ -45,30 +49,64 @@ const BLOCKS = {
   }
 };
 
-const Wysiwyg = (props) => {
-  const { blocks: blockNames, widgets } = props
-  const vizzWysiwygProps = omit(props, ['blocks']);
+class Wysiwyg extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      linkHanderOpened: false
+    };
+  }
 
-  const blocks = pick(
-    Object.assign({},
-      BLOCKS,
-      {
-        widget: Object.assign({}, BLOCKS.widget, { widgets })
-      }
-    ),
-    blockNames
-  );
+  /**
+   * Return the blocks of the wysiwyg
+   */
+  getBlocks() {
+    const { blocks: blockNames, widgets } = this.props
 
-  return (
-    <Fragment>
-      <Icons />
-      <VizzWysiwyg
-        {...vizzWysiwygProps}
-        blocks={blocks}
-      />
-    </Fragment>
-  );
-};
+    const blocks = pick(
+      Object.assign({},
+        BLOCKS,
+        {
+          widget: Object.assign({}, BLOCKS.widget, { widgets })
+        }
+      ),
+      blockNames
+    );
+
+    // We add the toolbar handlers
+    if (blocks.text && blocks.text.modules && blocks.text.modules.toolbar) {
+      const self = this;
+      blocks.text.modules.toolbar.handlers = {
+        link: function() {
+          self.quill = this.quill;
+          self.setState({ linkHanderOpened: true });
+        }
+      };
+    }
+
+    return blocks;
+  }
+
+  render() {
+    const { linkHanderOpened } = this.state;
+    const vizzWysiwygProps = omit(this.props, ['blocks']);
+
+    const blocks = this.getBlocks();
+
+    return (
+      <Fragment>
+        <Icons />
+        <VizzWysiwyg
+          {...vizzWysiwygProps}
+          blocks={blocks}
+        />
+        { linkHanderOpened && (
+          <LinkHandler quill={this.quill} onClose={() => this.setState({ linkHanderOpened: false }) } />
+        )}
+      </Fragment>
+    );
+  }
+}
 
 
 Wysiwyg.propTypes = {

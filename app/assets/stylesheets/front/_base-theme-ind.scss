@@ -40,7 +40,7 @@ body {
 
   top: 65px !important;
   position: fixed !important;
-  
+
   @media #{$mq-s-mobile} {
     top: 55px !important;
     position: fixed !important;
@@ -54,7 +54,7 @@ body {
     top: 83px !important;
     position: fixed !important;
   }
-  
+
   @media #{$mq-smartphone-big}{
     top: 75px !important;
     position: fixed !important;
@@ -106,10 +106,10 @@ body {
               }
             }
             &.-active {
-              >a {color: #F0AB00 !important; } 
-            }            
+              >a {color: #F0AB00 !important; }
+            }
           }
-          li:hover{ 
+          li:hover{
             background-color: rgba(255, 255, 255, 0.1) !important;
             > a {color: #F0AB00 !important; }
           }
@@ -124,14 +124,14 @@ body {
         }
       }
       .sub-menu-background{
-        top: 83px !important; 
-        position: absolute !important; 
-        width: 100vw !important; 
-        background-color: black !important; 
-        opacity: 0.7 !important; 
-        height: 25px !important; 
+        top: 83px !important;
+        position: absolute !important;
+        width: 100vw !important;
+        background-color: black !important;
+        opacity: 0.7 !important;
+        height: 25px !important;
         left: 0 !important;
-        z-index: 1 !important; 
+        z-index: 1 !important;
       }
       .sub-menu{
         position: absolute !important;
@@ -152,11 +152,11 @@ body {
             li {
               text-transform: capitalize !important;
               font-weight: $font-weight-light !important;
-              font-size: $font-size-normal !important;              
+              font-size: $font-size-normal !important;
             }
           }
-        }      
-      }      
+        }
+      }
     }
 
     .mobile-menu {
@@ -168,7 +168,7 @@ body {
         height: 45px !important;
         margin-top: 10px !important;
       }
-      
+
       @media #{$mq-smartphone}{
         height: 55px !important;
         margin-top: 10px !important;
@@ -176,7 +176,7 @@ body {
 
       @media #{$mq-tablet} {
         height: 65px !important;
-        margin-top: 18px !important; 
+        margin-top: 18px !important;
       }
       @media #{$mq-smartphone-big}{
         margin: 10px !important;
@@ -208,8 +208,8 @@ body {
           position: relative !important;
           top: 5px !important;
           left: -30px !important;
-        }        
-      }      
+        }
+      }
     }
 }
 
@@ -223,7 +223,7 @@ body {
     position: relative !important;
     top: 5px !important;
     left: 25px !important;
-  }  
+  }
 
   @media #{$mq-smartphone} {
     position: relative !important;
@@ -294,7 +294,7 @@ body {
 
   @media #{$mq-smartphone-big}{
     padding: 0 60px !important;
-    
+
   }
 
   @media #{$mq-laptop}{
@@ -344,13 +344,13 @@ body {
     top: 0 !important;
     height: 25vh !important;
     margin-bottom: 10px !important;
-    
+
     @media #{$mq-smartphone}{
       height: 50vh !important;
     }
 
     @media #{$mq-tablet} {
-      height: 20vh !important;      
+      height: 20vh !important;
     }
 
     @media #{$mq-smartphone-big}{
@@ -396,7 +396,7 @@ body {
 
   @media #{$mq-s-mobile}{
     left: 23% !important;
-    top: 50vh !important;    
+    top: 50vh !important;
   }
 
   left: 26% !important;
@@ -429,29 +429,29 @@ body {
     position: absolute !important;
     text-align: left !important;
   }
-} 
+}
 
 .home_page_atlas_button{
 
   text-decoration: none;
-  background-color: rgba(11,9,8,1); 
-  border: none; 
-  color: #F0AB00; 
+  background-color: rgba(11,9,8,1);
+  border: none;
+  color: #F0AB00;
   padding: 10px 20px;
   text-align: center;
   display: inline-block;
   margin: 2px 2px;
   border-radius: 20px;
   cursor:pointer;
-  
-  
+
+
   font-family: $font-family-1;
   font-size: 20px !important;
   font-weight: 700;
   line-height: 1.5;
   letter-spacing: .7px;
 
-  
+
 
   @media #{$mq-smartphone}{
     font-size: 20px !important;
@@ -475,7 +475,7 @@ body {
   @media #{$mq-body-width} {
     font-size: 33px !important;
     margin-left: 50px !important;
-  }  
+  }
 }
 
 .cover-title-para{
@@ -526,7 +526,7 @@ body {
     font-size: $font-size-big;
     top: -7vh;
     position: absolute;
-  }    
+  }
 
   @media #{$mq-smartphone-big}{
     font-size: $font-size-xx-medium;
@@ -562,7 +562,6 @@ ul {
 
 a {
   // Do not set inline-block here otherwise the links will be forced to be on online line
-  padding: 0 3px;
   color: currentColor;
   text-decoration: none;
 }
@@ -581,7 +580,7 @@ a {
 
   @media #{$mq-smartphone} {
     padding: 0 $wrapper-mobile-padding !important;
-  }  
+  }
 }
 
 .is-hidden {
@@ -743,14 +742,14 @@ form{
 
 .cover-description-para{
   display: none;
-  
+
   max-width: 100% !important;
   font-size: 15px !important;
   font-weight: $font-weight-normal !important;
   line-height: 1.5 !important;
   margin: 0 !important;
   color: #fff !important;
-  
+
   @media #{$mq-tablet} {
     max-width: 110% !important;
     font-size: 17px !important;
@@ -775,7 +774,7 @@ form{
     line-height: 1.5 !important;
     margin: 0 !important;
     color: #fff !important;
-  }  
+  }
 }
 
 .cover-page-wrapper{
@@ -831,7 +830,7 @@ form{
 }
 
 .cover_page_wrapper_envelope{
-  
+
   max-width: 100%;
   height: auto;
   background-color: rgba(11,8,9,0.7);
@@ -849,7 +848,7 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 150%;
     padding: 30px 0px 30px 20px;
-    
+
     height: auto;
   }
 
@@ -857,7 +856,7 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 30px 0px 30px 20px;
-    
+
     height: auto;
   }
 
@@ -865,7 +864,7 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 20px;
-    
+
     height: auto;
   }
 
@@ -873,7 +872,7 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 30px;
-    
+
     height: auto;
   }
 
@@ -881,13 +880,13 @@ form{
     background-color: rgba(11,8,9,0.7);
     max-width: 50%;
     padding: 30px;
-    
+
     height: auto;
   }
 }
 
 .hr_div{
-  
+
   width: 100% !important;
   display: inline-block !important;
   float: left !important;
@@ -918,7 +917,7 @@ form{
     display: inline-block !important;
     float: right !important;
   }
-  
+
 }
 
 .restoration_image{
@@ -966,7 +965,7 @@ form{
 
 .cover-elem-wrapper{
   width: 80%;
-  
+
   top: 15vh;
   position: absolute;
   margin-left: 20px;
@@ -976,7 +975,7 @@ form{
     margin-left: 7px;
     top: 15vh;
   }
-  
+
   @media #{$mq-smartphone}{
     width: 50% !important;
     margin-left: 20vw;
@@ -1016,7 +1015,7 @@ form{
   @media #{$mq-s-mobile}{
     font-size: $font-size-x-medium  !important;
   }
-  
+
   @media #{$mq-smartphone}{
     font-size: $font-size-x-medium  !important;
   }
@@ -1034,7 +1033,7 @@ form{
   }
   @media #{$mq-body-width} {
     font-size: $font-size-xx-medium  !important;
-  }  
+  }
 }
 
 .flash_container{
@@ -1112,7 +1111,7 @@ form{
 
 
 .atlas_wrapper{
-  
+
   text-align: center;
   position: relative;
   margin-top: 10px;

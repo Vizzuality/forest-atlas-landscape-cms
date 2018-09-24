@@ -1,4 +1,8 @@
 .vizz-wysiwyg {
+  .cw-quill .ql-bubble .ql-tooltip {
+    z-index: 1;
+  }
+
   .ql-container {
     font-family: $font-family-1;
     font-size: $font-size-normal;
