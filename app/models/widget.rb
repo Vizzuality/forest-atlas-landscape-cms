@@ -34,7 +34,7 @@ class Widget
 
   attr_accessor :id, :user_id, :application, :slug, :name, :description,
                 :source, :source_url, :layer_id, :dataset, :authors, :query_url,
-                :widget_config, :template, :default, :protected, :status,
+                :widget_config, :metadata, :template, :default, :protected, :status,
                 :published, :freeze, :verified
 
 
@@ -59,6 +59,7 @@ class Widget
     @authors = data[:attributes][:authors]
     @query_sql = data[:attributes][:query_sql]
     @widget_config = data[:attributes][:widgetConfig]
+    @metadata = data[:attributes][:metadata]
     @template = data[:attributes][:template]
     @default = data[:attributes][:default]
     @protected = data[:attributes][:protected]
@@ -83,6 +84,7 @@ class Widget
     @authors = data[:authors]
     @query_sql = data[:query_sql]
     @widget_config = data[:widgetConfig]
+    @metadata = data[:metadata]
     @template = data[:template]
     @default = data[:default]
     @protected = data[:protected]
@@ -108,6 +110,7 @@ class Widget
       authors: @authors,
       query_sql: @query_sql,
       widgetConfig: @widget_config,
+      metadata: @metadata,
       template: @template,
       default: @default,
       protected: @protected,

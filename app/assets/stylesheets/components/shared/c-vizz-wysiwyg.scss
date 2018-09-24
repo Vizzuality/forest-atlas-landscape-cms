@@ -50,6 +50,8 @@
   }
 
   .cw-wysiwyg-item-content {
+    flex-wrap: wrap;
+
     &.-html,
     &.-text {
       h1 {
@@ -115,6 +117,16 @@
   .c-we-chart, .c-we-chart .chart {
     height: 250px;
     width: 100%;
+  }
+
+  .c-we-chart + .metadata {
+    flex-basis: 100%;
+    margin-top: 5px;
+    text-align: center;
+
+    .title {
+      font-weight: $font-weight-bold;
+    }
   }
 }
 
