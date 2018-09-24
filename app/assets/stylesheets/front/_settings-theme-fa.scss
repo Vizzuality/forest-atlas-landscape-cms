@@ -16,6 +16,17 @@
   src: font-url('fonts/FiraSansOT-Medium.otf');
 }
 
+// Trick: the Lato font doesn't exist in this project
+// so we hook it up to the Fira Sans
+// The font is used by the widgets rendered in the
+// open content pages (the font is part of the Vega
+// config)
+@font-face {
+  font-family: 'Lato';
+  font-weight: 400;
+  src: font-url('fonts/FiraSansOT-Regular.otf');
+}
+
 // Font families
 $font-family-1: 'Fira Sans', sans-serif;
 

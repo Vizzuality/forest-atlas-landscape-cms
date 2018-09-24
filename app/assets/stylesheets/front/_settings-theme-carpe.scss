@@ -2,6 +2,17 @@
 $font-family-1: 'Roboto Condensed', sans-serif;
 $font-family-2: 'Roboto Condensed', sans-serif;
 
+// Trick: the Lato font doesn't exist in this project
+// so we hook it up to the Roboto Condensed
+// The font is used by the widgets rendered in the
+// open content pages (the font is part of the Vega
+// config)
+@font-face {
+  font-family: 'Lato';
+  font-weight: 400;
+  src: local('Roboto Condensed');
+}
+
 // Font sizes
 $font-size-small:    12px;
 $font-size-normal:   14px;
