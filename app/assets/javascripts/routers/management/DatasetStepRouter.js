@@ -101,6 +101,11 @@
 
       link.addEventListener('click', function (e) {
         e.preventDefault();
+
+        // We trigger the animation every time
+        noteDetails.classList.remove('-highlighted');
+        noteDetails.classList.add('-highlighted');
+
         var position = window.scrollY + noteDetails.getBoundingClientRect().top;
         window.scrollTo(0, position);
       });

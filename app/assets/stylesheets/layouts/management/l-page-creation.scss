@@ -129,10 +129,29 @@
     max-width: $content-max-width;
     line-height: 1.5;
 
+    &.-highlighted {
+      animation-name: background-highlight;
+      animation-duration: 1s;
+      animation-iteration-count: 3;
+    }
+
     a {
       color: $color-1;
       text-decoration: none;
     }
   }
+}
 
+@keyframes background-highlight {
+  0% {
+    background-color: $color-3;
+  }
+
+  50% {
+    background-color: rgba($color-1, .3);
+  }
+
+  100% {
+    background-color: $color-3;
+  }
 }
