@@ -37,7 +37,9 @@
   // button) because it prevents the user from
   // resizing the textarea of the HTML block
   .wysiwyg-grid-column-actions.-inline {
-    height: auto;
+    height: 24px;
+    padding: 0;
+    transform: translate(100%, -50%);
   }
 
   .cw-wysiwyg-item-content.-html,
