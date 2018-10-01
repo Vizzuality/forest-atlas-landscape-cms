@@ -1,3 +1,5 @@
+# TODO: Remove
+
 class Admin::ContextsController < AdminController
   before_action :set_context, only: [:show, :edit, :update, :destroy]
 

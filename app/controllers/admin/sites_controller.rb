@@ -1,12 +1,14 @@
 class Admin::SitesController < AdminController
 
   before_action :set_site, only: [:show, :edit, :update, :destroy, :display]
+  before_action :acknowledge_admin
+  before_action :ensure_only_admin_user, only: :destroy
 
 
   # GET /admin/sites
   # GET /admin/sites.json
   def index
-    @sites = Site.order('created_at ASC')
+    @sites = fetch_sites
 
     @formattedSites = @sites.map do |site|
       {
@@ -81,5 +83,17 @@ class Admin::SitesController < AdminController
   def site_params
     params.require(:site).permit(:name, :site_template_id,
                                  {user_ids: []}, site_routes_attributes: [:id, :host, :path], site_settings_attributes: [:id, :value, :name, :image])
+  end
+
+  def acknowledge_admin
+    @admin = current_user.admin
+  end
+
+  def fetch_sites
+    if current_user.admin
+      Site.order('created_at ASC')
+    else
+      current_user.owned_sites.order('created_at ASC')
+    end
   end
 end
