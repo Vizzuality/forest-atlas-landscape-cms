@@ -62,7 +62,10 @@ module PermissionsHelper
   end
 
   def user_site_admin?(site_id)
-    return false unless current_user && site_id
+    return false unless current_user
+    # Tests new sites
+    return false if site_id.nil? && !current_user_is_admin
+    # Tests existing sites
     return false unless current_user_is_admin ||
       current_user.owned_sites.pluck(:site_id).include?(site_id)
     true
