@@ -5,10 +5,16 @@
     template: HandlebarsTemplates['management/dataset-connectors'],
     collection: new Backbone.Collection(),
     // Current selected connector
-    selectedConnector: { connector: 'cartodb', provider: 'cartodb', type: 'rest' },
+    selectedConnector: { connector: 'cartodb', provider: 'cartodb', type: 'rest', uploader: false },
 
     events: {
-      'change .js-connector': '_onChangeConnector'
+      'change .js-connector': '_onChangeConnector',
+      'change .js-uploader': '_onChangeUploader'
+    },
+
+    defaults: {
+      uploaderDisabled: true,
+      fileUploader: null
     },
 
     initialize: function (settings) {
@@ -27,11 +33,33 @@
       if (model) {
         this.options.selectedConnector = model.attributes;
         this.options.dataPathDisabled = false;
+        this.options.uploaderDisabled = !model.attributes.uploader;
+        if (this.options.uploaderDisabled) {
+          this.options.fileUploader = null;
+        }
         if (connector != 'json'){
           this.options.dataPathDisabled = true
         }
         this.render();
       }
+    },
+
+    /**
+     * Events handler for when the uploader is changed
+     */
+    _onChangeUploader: function (e) {
+      var uploader = e.target.value;
+      switch (uploader) {
+        case 'url':
+          this.options.fileUploader = 'url';
+          break;
+        case 'file':
+          this.options.fileUploader = 'file';
+          break;
+        default:
+          this.options.fileUploader = null;
+      }
+      this.render();
     },
 
     /**
@@ -47,7 +75,9 @@
       this.$el.html(this.template({
         connectors: this.options.collection.toJSON(),
         selected: this.options.selectedConnector,
-        dataPathDisabled: this.options.dataPathDisabled
+        dataPathDisabled: this.options.dataPathDisabled,
+        uploaderDisabled: this.options.uploaderDisabled,
+        fileUploader: this.options.fileUploader
       }));
 
       this._enhanceSelectors();

@@ -49,36 +49,46 @@ class Management::DatasetStepsController < ManagementController
     @dataset.form_step = step
     set_current_dataset_state
     case step
-      when 'title', 'connector', 'labels', 'metadata'
-        if @dataset.valid?
-          redirect_to next_wizard_path
-        else
+    when 'title', 'labels', 'metadata'
+      if @dataset.valid?
+        redirect_to next_wizard_path
+      else
+        render_wizard
+      end
+    when 'connector'
+      if params[:csv_uploader]
+        upload_csv
+        set_current_dataset_state
+      end
+      if @dataset.valid?
+        redirect_to next_wizard_path
+      else
+        render_wizard
+      end
+    when 'context'
+      if @dataset.valid?
+        build_context_datasets
+        if @context_ids.count == 0
+          @dataset.errors['id'] << 'You must choose at least one context'
+          select_contexts
           render_wizard
+          return
         end
-      when 'context'
-        if @dataset.valid?
-          build_context_datasets
-          if @context_ids.count == 0
-            @dataset.errors['id'] << 'You must choose at least one context'
-            select_contexts
-            render_wizard
-            return
-          end
 
-          ds_id = @dataset.upload session[:user_token]
-          if ds_id != nil
-            save_context_datasets ds_id
-            delete_session_key(:dataset_creation, @dataset_id)
-            redirect_to_finish_wizard
-          else
-            @dataset.errors['id'] <<
-              'There was an error creating the dataset in the API. Please try again later.'
-            select_contexts
-            render_wizard
-          end
+        ds_id = @dataset.upload session[:user_token]
+        if ds_id != nil
+          save_context_datasets ds_id
+          delete_session_key(:dataset_creation, @dataset_id)
+          redirect_to_finish_wizard
         else
+          @dataset.errors['id'] <<
+            'There was an error creating the dataset in the API. Please try again later.'
+          select_contexts
           render_wizard
         end
+      else
+        render_wizard
+      end
     end
   end
 
@@ -97,6 +107,24 @@ class Management::DatasetStepsController < ManagementController
       legend: [:lat, :long, :country, :region, :date],
       metadata: Dataset::API_PROPERTIES + Dataset::APPLICATION_PROPERTIES
     )
+  end
+
+  def upload_csv
+    begin
+      csv = params[:csv_uploader]
+
+      dir = Rails.root.join('public', 'uploads')
+      Dir.mkdir(dir) unless Dir.exist?(dir)
+
+      filename = Time.now.to_i.to_s + csv.original_filename
+
+      File.open(dir.join(csv.original_filename), 'wb') do |file|
+        file.write(csv.read)
+      end
+      @dataset.connector_url = ENV['FA_PUBLIC_FOLDER'] + '/public/uploads/' + filename
+    rescue
+      @dataset.errors.add(:connector_url, 'Error creating the file')
+    end
   end
 
   # Sets the current site from the url

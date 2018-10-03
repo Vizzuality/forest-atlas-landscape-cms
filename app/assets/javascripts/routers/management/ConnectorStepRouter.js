@@ -15,10 +15,10 @@
      */
     _getConnectors: function () {
       return [
-        { connector: 'cartodb', provider: 'cartodb', type: 'rest' },
-        { connector: 'csv', provider: 'csv', type: 'document' },
-        { connector: 'json', provider: 'json', type: 'document' },
-        { connector: 'arcgis', provider: 'featureservice', type: 'rest' }
+        { connector: 'cartodb', provider: 'cartodb', type: 'rest', uploader: false },
+        { connector: 'csv', provider: 'csv', type: 'document', uploader: true },
+        { connector: 'json', provider: 'json', type: 'document', uploader: false },
+        { connector: 'arcgis', provider: 'featureservice', type: 'rest', uploader: false }
       ];
     },
 
