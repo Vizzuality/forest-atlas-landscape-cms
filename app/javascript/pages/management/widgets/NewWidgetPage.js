@@ -57,6 +57,8 @@ class NewWidgetPage extends React.Component {
       previewLoading: false,
       // Error while saving the widget
       saveError: false,
+      // Disable the create button to prevent duplicate requests
+      disable: false,
       // Theme of the widget
       theme: getVegaTheme()
     };
@@ -89,6 +91,12 @@ class NewWidgetPage extends React.Component {
    * button on the second step
    */
   onClickCreate() {
+    const { disable } = this.state;
+
+    if (disable) return;
+
+    this.setState({ disable: true });
+
     new Promise((resolve, reject) => { // eslint-disable-line no-new
       if (this.state.advancedEditor) {
         // If the user hasn't defined any theme in the wysiwyg and if one
@@ -246,7 +254,7 @@ class NewWidgetPage extends React.Component {
     const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption, redirectUrl } = this.props;
     const { widgetConfigError, advancedEditor, advancedEditorLoading,
-      advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError } = this.state;
+      advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError, disable } = this.state;
 
     let content;
     if (currentStep === 0) {
@@ -417,7 +425,7 @@ class NewWidgetPage extends React.Component {
                 </button>
               )}
               { currentStep === 2 && (
-                <button type="submit" className="c-button" onClick={() => this.onClickCreate()}>
+                <button type="submit" className="c-button" disabled={disable} onClick={() => this.onClickCreate()}>
                   Create
                 </button>
               )}
