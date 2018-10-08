@@ -16,9 +16,9 @@ class Site < ApplicationRecord
   has_many :site_pages, dependent: :destroy
   has_many :user_site_associations, dependent: :destroy, autosave: true
   has_many :users, through: :user_site_associations
-  has_many :site_managers, -> {manager}, class_name: 'UserSiteAssociation'
-  has_many :managers, source: :user, through: :site_managers
-  has_many :site_publishers, -> {publisher}, class_name: 'UserSiteAssociation'
+  has_many :site_admins, -> { admin }, class_name: 'UserSiteAssociation'
+  has_many :admins, source: :user, through: :site_admins
+  has_many :site_publishers, -> { publisher }, class_name: 'UserSiteAssociation'
   has_many :publishers, source: :user, through: :site_publishers
   has_many :context_sites, dependent: :destroy, inverse_of: :site
   has_many :contexts, through: :context_sites
@@ -27,16 +27,13 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :site_settings
   accepts_nested_attributes_for :context_sites, allow_destroy: true
   accepts_nested_attributes_for :user_site_associations, allow_destroy: true
-  accepts_nested_attributes_for :managers
+  accepts_nested_attributes_for :admins
   accepts_nested_attributes_for :publishers
   accepts_nested_attributes_for :routes, reject_if: proc {|r| r['host'].blank?}
 
   validates_presence_of :name, if: -> { required_for_step? :name }
   validates_presence_of :routes, if: -> { required_for_step? :name }
   validates_presence_of :site_template_id, if: -> { required_for_step? :template }
-  # TODO Check if we still need managers/publishers
-  #validates_presence_of :managers, if: -> { required_for_step? :managers }
-  #validates_presence_of :publishers, if: -> { required_for_step? :publishers }
 
   validate :edition_has_one_context
 

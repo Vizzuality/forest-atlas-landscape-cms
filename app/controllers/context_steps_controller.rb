@@ -168,7 +168,7 @@ class ContextStepsController < ManagementController
   def permitted_owners
     @permitted_owners = User.
       joins('LEFT JOIN user_site_associations usa ON usa.user_id = users.id').
-      where(['(usa.site_id IN (?) AND usa.role = ?) OR admin', @context.sites.map(&:id), UserType::MANAGER])
+      where(['(usa.site_id IN (?) AND usa.role = ?) OR admin', @context.sites.map(&:id), UserType::ADMIN])
   end
 
   def permitted_writers

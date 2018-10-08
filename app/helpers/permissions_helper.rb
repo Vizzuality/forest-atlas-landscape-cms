@@ -43,9 +43,9 @@ module PermissionsHelper
     when 'access_admin'
       return current_user_is_admin || current_user_has_roles([UserType::ADMIN])
     when 'access_management'
-      return current_user_is_admin || current_user_has_roles([UserType::MANAGER])
+      return current_user_is_admin || current_user_has_roles([UserType::ADMIN])
     when 'access_publish'
-      return current_user_is_admin || current_user_has_roles([UserType::MANAGER, UserType::PUBLISHER])
+      return current_user_is_admin || current_user_has_roles([UserType::ADMIN, UserType::PUBLISHER])
     else
       false
     end
@@ -54,7 +54,7 @@ module PermissionsHelper
   def user_site_manager?(site)
     return false unless current_user && site
     if current_user_is_admin || (site.users.exists?(current_user) &&
-      current_user.user_site_associations.find_by(site_id: site.id).role == UserType::MANAGER)
+      current_user.user_site_associations.find_by(site_id: site.id).role == UserType::ADMIN)
       return true
     else
       return false

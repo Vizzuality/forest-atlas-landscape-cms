@@ -236,39 +236,39 @@ def create_user_sites
     {
       user: @daniel_caso_user,
       site: @staging_demo_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @daniel_caso_user,
       site: @base_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @david_gonzalez_user,
       site: @base_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @david_gonzalez_user,
       site: @staging_demo_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @david_inga_user,
       site: @base_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @david_inga_user,
       site: @staging_demo_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @jose_angel_user,
       site: @base_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @jose_angel_user,
       site: @staging_demo_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }, {
       user: @alvaro_leal_user,
       site: @staging_demo_site,
-      role: UserType::MANAGER
+      role: UserType::ADMIN
     }
   ]
 

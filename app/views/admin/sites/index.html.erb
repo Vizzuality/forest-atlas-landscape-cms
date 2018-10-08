@@ -21,16 +21,12 @@
   <% end %>
 </ul>
 
-<% if @admin %>
-  <% actions =  ['edit', 'delete'] %>
-<% else %>
-  <% actions =  ['edit'] %>
-<% end %>
+
 <%= javascript_pack_tag 'application' %>
 <%= react_component('AdminTableView', {
   meta: {
     columns: ['title', 'template', 'preview'],
-    actions: actions
+    actions: ['edit', 'delete']
   },
   data: @formattedSites
 } ) %>
