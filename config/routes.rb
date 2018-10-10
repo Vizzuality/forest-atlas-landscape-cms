@@ -46,10 +46,8 @@ Rails.application.routes.draw do
 
       resources :datasets, only: [:index, :destroy] do
         resources :dataset_steps, only: [:edit, :update, :show]
-        get :edit_metadata, on: :member
-        put :update_metadata, on: :member
       end
-      resources :dataset_steps, only: [:new, :update, :show]
+      resources :dataset_steps, only: [:new, :edit, :update, :show]
 
       resources :widgets, only: [:index, :destroy] do
         resources :widget_steps, only: [:edit, :update, :show] do
