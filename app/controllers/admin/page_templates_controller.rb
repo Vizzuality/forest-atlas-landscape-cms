@@ -1,5 +1,9 @@
+# TODO - Is this still supposed to exist?
+
 class Admin::PageTemplatesController < AdminController
+  before_action :ensure_only_admin_user
   before_action :set_page_template, only: [:show, :edit, :update, :destroy]
+
 
   # GET /admin/page_templates
   # GET /admin/page_templates.json

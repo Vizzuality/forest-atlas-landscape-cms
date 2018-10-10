@@ -4,10 +4,7 @@ class Management::WidgetsController < ManagementController
   before_action :ensure_management_user, only: :destroy
 
   def index
-    dataset_ids = @site.contexts
-                       .map { |c| c.context_datasets.pluck(:dataset_id) }
-                       .flatten.uniq
-
+    dataset_ids = @site.get_datasets(current_user).map(&:id)
     @widgets = WidgetService.from_datasets dataset_ids
     @widgets = @widgets.map do |x|
       { widget: x,

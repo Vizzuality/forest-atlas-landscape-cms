@@ -1,3 +1,5 @@
+# TODO: Remove
+
 class Admin::RoutesController < AdminController
   before_action :set_route, only: [:show, :edit, :update, :destroy]
 

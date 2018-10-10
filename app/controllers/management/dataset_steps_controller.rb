@@ -141,7 +141,7 @@ class Management::DatasetStepsController < ManagementController
     user = current_user
     @user_contexts = []
     @site.contexts.each do |c|
-      if user.admin || c.owners.include?(user) || c.managers.include?(user)
+      if user.admin || c.owners.include?(user) || c.writers.include?(user)
         @user_contexts << c
       end
     end

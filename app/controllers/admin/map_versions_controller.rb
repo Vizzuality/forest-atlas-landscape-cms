@@ -1,4 +1,5 @@
 class Admin::MapVersionsController < AdminController
+  before_action :ensure_only_admin_user
   before_action :set_map_version, only: :destroy
 
   def new

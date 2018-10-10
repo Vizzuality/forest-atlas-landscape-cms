@@ -24,6 +24,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   has_many :user_site_associations, dependent: :destroy
   has_many :sites, through: :user_site_associations
+  has_many :owned_site_associations, -> { where(role: UserType::ADMIN) },
+           class_name: 'UserSiteAssociation'
+  has_many :owned_sites, through: :owned_site_associations, source: :site
 
   has_many :context_users, dependent: :destroy
   has_many :contexts, through: :context_users

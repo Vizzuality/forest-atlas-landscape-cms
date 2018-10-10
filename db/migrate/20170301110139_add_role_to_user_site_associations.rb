@@ -35,7 +35,7 @@ class AddRoleToUserSiteAssociations < ActiveRecord::Migration[5.0]
     # Finally, populate role accordingly
     User.all.each do |user|
       usa_role = if user.role == UserType::ADMIN
-        UserType::MANAGER
+        UserType::ADMIN
       else
         user.role
       end

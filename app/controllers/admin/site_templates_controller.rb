@@ -1,4 +1,7 @@
+# TODO - Should this exist?
+
 class Admin::SiteTemplatesController < AdminController
+  before_action :ensure_only_admin_user
   before_action :set_site_template, only: [:show, :edit, :update, :destroy]
 
   # GET /site_templates

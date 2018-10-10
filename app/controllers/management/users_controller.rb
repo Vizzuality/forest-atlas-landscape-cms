@@ -34,7 +34,7 @@ class Management::UsersController < ManagementController
   def grant_access(role)
     @usa = @user.user_site_associations.find_by_site_id(@site.id)
     if @usa
-      @usa.role = role unless @usa.role == UserType::MANAGER
+      @usa.role = role unless @usa.role == UserType::ADMIN
     else
       @usa = @user.user_site_associations.build(site: @site, role: role)
     end

@@ -87,6 +87,6 @@ class Management::DatasetsController < ManagementController
   # TODO: Use cache for this
   # Gets the datasets from the API and sets them to the member variable
   def set_datasets
-    @datasets = @site.get_datasets
+    @datasets = @site.get_datasets(current_user)
   end
 end

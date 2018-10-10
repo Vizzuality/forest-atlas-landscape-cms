@@ -11,21 +11,17 @@
 class Context < ApplicationRecord
   has_many :context_datasets, dependent: :destroy
   has_many :datasets, through: :context_datasets
-  #has_many :dataset_settings, dependent: :destroy
-  #has_many :context_users
-  #has_many :users, through: :context_users
-  has_many :context_owners, -> {owner}, class_name: 'ContextUser', dependent: :destroy
+  has_many :context_owners, -> { owner }, class_name: 'ContextUser', dependent: :destroy
   has_many :owners, source: :user, through: :context_owners
-  has_many :context_writers, -> {writer}, class_name: 'ContextUser', dependent: :destroy
+  has_many :context_writers, -> { writer }, class_name: 'ContextUser', dependent: :destroy
   has_many :writers, source: :user, through: :context_writers
+  has_many :context_users
+  has_many :users, through: :context_users
   has_many :context_sites, dependent: :destroy
   has_many :sites, through: :context_sites
 
   validate :steps_validation
-#  validates_uniqueness_of :users, scope: :context_id, \
-#    message: 'You cannot have duplicated users, even for different roles' if Proc.new{|x| x.users.any?}
 
-  accepts_nested_attributes_for :owners
   accepts_nested_attributes_for :writers
 
   cattr_accessor :form_steps do
