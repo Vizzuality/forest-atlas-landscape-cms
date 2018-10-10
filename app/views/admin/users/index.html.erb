@@ -20,7 +20,7 @@
 <%= javascript_pack_tag 'application' %>
 <%= react_component('AdminTableView', {
   meta: {
-    columns: ['Name', 'Email', 'Role', 'Sites'],
+    columns: ['name', 'email', 'role', 'sites'],
     actions: ['edit', 'delete']
   },
   data: @formattedUsers

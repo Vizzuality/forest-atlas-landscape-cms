@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme, getConfig } from 'widget-editor';
+import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
 
 import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
@@ -51,6 +53,8 @@ class EditWidgetPage extends React.Component {
       advancedEditorLoading: false,
       // State of the advanced editor
       widgetConfig: props.widget.widget_config || {},
+      // State of the advanced editor without the "config" object
+      widgetConfigWithoutConfig: omit(props.widget.widget_config || {}, 'omit'),
       // Whether the preview of the avanced editor is loading
       previewLoading: false,
       // Error while saving the widget
@@ -80,11 +84,11 @@ class EditWidgetPage extends React.Component {
       this.codeMirror.on('change', () => {
         try {
           const widgetConfig = JSON.parse(this.codeMirror.getValue());
-          this.setState({ widgetConfig });
+          this.setState({ widgetConfig, widgetConfigWithoutConfig: omit(widgetConfig, 'config') });
         } catch (e) {
           // If there's an error in the JSON, we reset the widgetConfig
           // so the user sees the preview is empty
-          this.setState({ widgetConfig: {} });
+          this.setState({ widgetConfig: {}, widgetConfigWithoutConfig: {} });
         }
       });
     }
@@ -131,14 +135,7 @@ class EditWidgetPage extends React.Component {
   onClickUpdate() {
     new Promise((resolve, reject) => { // eslint-disable-line no-new
       if (this.state.advancedEditor) {
-        // If the user hasn't defined any theme in the wysiwyg and if one
-        // has been selected in the theme selector, then we had it before
-        // creating the widget
-        if (this.state.widgetConfig && !this.state.widgetConfig.config && this.state.theme) {
-          resolve(Object.assign({}, this.state.widgetConfig, { config: this.state.theme }));
-        }
-
-        resolve(this.state.widgetConfig);
+        resolve(Object.assign({}, this.state.widgetConfig, { config: this.state.theme }));
       } else {
         this.getWidgetConfig()
           .then(resolve)
@@ -231,7 +228,11 @@ class EditWidgetPage extends React.Component {
       })
     });
 
-    this.setState({ theme });
+    // Only set the theme if it's actually different
+    // This prevents VegaChart from crashing
+    if (!isEqual(this.state.theme, theme)) {
+      this.setState({ theme });
+    }
   }
 
   render() {
@@ -240,15 +241,11 @@ class EditWidgetPage extends React.Component {
       title, description, caption, widget } = this.props;
 
     const { widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
-      advancedEditorLoading, widgetConfig, previewLoading, saveError, theme } = this.state;
+      advancedEditorLoading, widgetConfig, widgetConfigWithoutConfig, previewLoading,
+      saveError, theme } = this.state;
 
     const createdWithAdvancedMode = !this.props.widget.widget_config
       || !this.props.widget.widget_config.paramsConfig;
-
-    // We remove the config object from the widgetConfig because we don't
-    // want the user to manually update the theme
-    const widgetConfigWithoutConfig = Object.assign({}, widgetConfig);
-    delete widgetConfig.config;
 
     let content;
     if (currentStep === 0) {
@@ -327,7 +324,7 @@ class EditWidgetPage extends React.Component {
                       {widgetConfig && widgetConfig.data && (
                         <VegaChart
                           data={widgetConfigWithoutConfig}
-                          theme={widgetConfig.config || this.state.theme}
+                          theme={this.state.theme}
                           showLegend
                           reloadOnResize
                           toggleLoading={loading => this.setState({ previewLoading: loading })}

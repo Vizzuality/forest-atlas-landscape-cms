@@ -43,8 +43,10 @@ ul {
   }
 }
 
-a {
+a,
+.ql-bubble .ql-editor a {
   color: $color-1;
+  text-decoration: none;
 }
 
 .wrapper {

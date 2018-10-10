@@ -43,12 +43,11 @@ ul {
   }
 }
 
-a {
+a,
+.ql-bubble .ql-editor a {
   // Do not set inline-block here otherwise the links will be forced to be on online line
-  padding: 0 3px;
-  color: currentColor;
+  color: $color-1;
   text-decoration: none;
-  background-color: rgba($color-1, .2);
 }
 
 .wrapper {

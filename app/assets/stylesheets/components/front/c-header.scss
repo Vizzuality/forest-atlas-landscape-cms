@@ -25,6 +25,7 @@
   a {
     @if $theme == 2 {
       background-color: transparent;
+      color: $color-2;
     }
 
     @if $theme == 1 or $theme == 3 {
@@ -453,7 +454,7 @@
                     color: $color-3;
                   }
 
-                  @if $theme == 1 {
+                  @if $theme == 2 or $theme == 1 {
                     color: $color-6;
                   }
                 }

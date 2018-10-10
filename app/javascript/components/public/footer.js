@@ -11,23 +11,22 @@ class Footer extends React.PureComponent {
     const { site } = this.props;
 
     const availableServices = {
-      facebook: 'http://www.facebook.com/sharer.php?u=',
-      twitter: 'https://twitter.com/share?url=',
-      gplus: 'https://plus.google.com/share?url=',
-      linkedin: 'https://www.linkedin.com/shareArticle?url='
+      facebook: 'http://www.facebook.com/sharer.php',
+      twitter: 'https://twitter.com/share',
+      gplus: 'https://plus.google.com/share',
+      linkedin: 'https://www.linkedin.com/shareArticle'
     }
+
+    const servicesParams = {};
 
     if (service === 'linkedin') {
-      const linkedInParams = {
-        url: window.location.href,
-        title: `${site.page.name}-${site.current.name}`,
-        summary: site.page.description
-      }
-      return availableServices['linkedin'] + `?${queryString.stringify(linkedInParams)}`;
-    }
-
-    const servicesParams = {
-      url: window.location.href
+      servicesParams.url = window.location.href;
+      servicesParams.title = `${site.page.name}-${site.current.name}`;
+      servicesParams.summary = site.page.description;
+    } else if (service === 'facebook') {
+      servicesParams.u = window.location.href;
+    } else {
+      servicesParams.url = window.location.href;
     }
 
     return availableServices[service] + `?${queryString.stringify(servicesParams)}`;
@@ -40,6 +39,17 @@ class Footer extends React.PureComponent {
         <a href={`mailto: ${settingsUtils.getValue('contact_email_address', settings)}`}
           className="site-link">Contact us</a>
       </li>);
+  }
+
+  getTermsLabel(){
+    const { siteTemplateName } = this.props.site.meta;
+    let terms_label = "Terms of Service";
+
+    if (siteTemplateName == 'INDIA') {
+      terms_label = "Terms & Conditions";
+    }
+
+    return terms_label;    
   }
 
   preFooter() {
@@ -66,7 +76,7 @@ class Footer extends React.PureComponent {
           <ul className="site-links-list">
 
           <li className="site-link-item">
-            <a href="/terms-and-privacy" className="site-link">Terms of Service</a>
+            <a href="/terms-and-privacy" className="site-link">{this.getTermsLabel()}</a>
           </li>
 
           <li className="site-link-item">
@@ -80,22 +90,22 @@ class Footer extends React.PureComponent {
             <span className="share-text">Share the Atlas</span>
             <ul className="share-links-list">
               <li className="share-link-item">
-                <a className="share-link -facebook" href={this.getShareUrl('facebook')} target="_blank">
+                <a className="share-link -facebook" href={this.getShareUrl('facebook')} target="_blank" rel="noopener noreferrer">
                   <Icon name="icon-Facebook" className="icon icon-Facebook"  />
                 </a>
               </li>
               <li className="share-link-item">
-                <a className="share-link -twitter" href={this.getShareUrl('twitter')} target="_blank">
+                <a className="share-link -twitter" href={this.getShareUrl('twitter')} target="_blank" rel="noopener noreferrer">
                   <Icon name="icon-Twitter" className="icon icon-Twitter"  />
                 </a>
               </li>
               <li className="share-link-item">
-                <a className="share-link -googleplus" href={this.getShareUrl('gplus')} target="_blank">
+                <a className="share-link -googleplus" href={this.getShareUrl('gplus')} target="_blank" rel="noopener noreferrer">
                   <Icon name="icon-Google" className="icon icon-Google"  />
                 </a>
               </li>
               <li className="share-link-item">
-                <a className="share-link -linkedin" href={this.getShareUrl('linkedin')} target="_blank">
+                <a className="share-link -linkedin" href={this.getShareUrl('linkedin')} target="_blank" rel="noopener noreferrer">
                   <Icon name="icon-Linkedin" className="icon icon-Linkedin"  />
                 </a>
               </li>

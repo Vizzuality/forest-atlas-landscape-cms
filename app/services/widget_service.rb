@@ -30,7 +30,7 @@ class WidgetService < ApiService
 
   def self.widget(id)
     begin
-      widgets_request = @conn.get "/v1/widget/#{id}"
+      widgets_request = @conn.get "/v1/widget/#{id}?includes=metadata&_=#{Time.now.to_s}"
       widget_json = JSON.parse widgets_request.body
       widget = Widget.new widget_json['data']
     rescue Exception
@@ -129,6 +129,7 @@ class WidgetService < ApiService
     end
   end
 
+  # Returns the widgets of a list of datasets
   def self.from_datasets(dataset_ids, status = 'saved')
     widgets_request = @conn.get 'dataset',
                                 'ids': dataset_ids.join(','),
@@ -145,14 +146,12 @@ class WidgetService < ApiService
     begin
       widgets_json['data'].each do |data|
         next if data['attributes']['widget'].blank?
-        data['attributes']['widget'].each do |data_widget|
+        data.dig('attributes', 'widget').each do |data_widget|
           widget = Widget.new data_widget
           widgets.push widget
         end
       end
     rescue Exception => e
-      # TODO All this methods should throw an exception caught in the controller...
-      # ... to render a different page
       Rails.logger.error "::WidgetService.get_widgets: #{e}"
     end
 

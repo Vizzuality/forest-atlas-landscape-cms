@@ -14,7 +14,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require backbone
-//= require turbolinks
 //= require d3
 //= require vega
 //= require leaflet

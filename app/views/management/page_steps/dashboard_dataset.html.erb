@@ -28,6 +28,7 @@
           <li><div class="c-input-search js-dataset-search"></div></li>
         </ul>
       </div>
+      <p class="note js-note"><strong>Don't see the dataset you're looking for?</strong> <a href="#">Click here</a></p>
       <div class="c-cards-list">
         <% @datasets_contexts.each do |id, dc|%>
           <div class="card js-dataset" data-id="<%= id %>" data-name="<%= dc[:dataset].name %>" data-contexts="<%= dc[:contexts].join(',') %>">
@@ -41,6 +42,10 @@
           </div>
         <% end %>
       </div>
+      <p class="note js-note-details">
+        <strong>Don't see the dataset you're looking for?</strong><br />
+        Dashboards need widgets created through the widget editor, not the advanced editor. If you can't find your dataset above, make sure it's used by at least one widget complying with the previous condition.
+      </p>
     </div>
   </div>
 

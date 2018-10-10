@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 
-import { CoverPage, WysiwygEditor, Footer } from 'components';
-
+// Utils
 import { getDbContent } from 'utils';
 
-import Wysiwyg, { TextBlock } from 'vizz-wysiwyg';
-import { WidgetBlock, ImagePreview, HtmlEmbedPreview } from 'components/wysiwyg';
+// Components
+import { CoverPage, WysiwygEditor, Footer } from 'components';
+import Wysiwyg from 'components/shared/Wysiwyg';
 
 const Home = ({ site }) => (
   <div className="fa-page">
@@ -19,40 +18,6 @@ const Home = ({ site }) => (
           <Wysiwyg
             readOnly
             items={JSON.parse(site.page.content) || []}
-            blocks={{
-              text: {
-                Component: TextBlock,
-                placeholder: 'Type your text',
-                theme: 'bubble',
-                modules: {
-                  toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    ['link'],
-                    [{ align: [] }]
-                  ]
-                }
-              },
-              widget: {
-                Component: WidgetBlock,
-                icon: 'icon-widget',
-                label: 'Visualization',
-                renderer: 'modal'
-              },
-              image: {
-                Component: ImagePreview,
-                icon: 'icon-image',
-                label: 'Image',
-                renderer: 'tooltip'
-              },
-              html: {
-                Component: HtmlEmbedPreview,
-                icon: 'icon-embed',
-                label: 'Custom HTML',
-                renderer: 'tooltip'
-              }
-            }}
           />
         </div> : <WysiwygEditor content={getDbContent(site.page.content)} />}
       </React.Fragment>}

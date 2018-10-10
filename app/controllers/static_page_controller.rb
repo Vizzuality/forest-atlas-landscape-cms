@@ -19,7 +19,8 @@ class StaticPageController < ApplicationController
       id: widget.id,
       visualization: widget.widget_config,
       name: widget.name,
-      description: widget.description
+      description: widget.description,
+      metadata: widget.metadata
     }
   end
 end

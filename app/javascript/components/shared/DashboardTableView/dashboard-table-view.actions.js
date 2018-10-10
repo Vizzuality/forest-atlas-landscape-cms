@@ -4,7 +4,7 @@ import {
   SET_LOADING
 } from 'components/shared/DashboardTableView/dashboard-table-view.reducer';
 
-import { getDataQuery } from 'components/shared/DashboardTableView/dashboard-table-view.selectors';
+import { getDatasetId, getDataBody } from 'components/shared/DashboardTableView/dashboard-table-view.selectors';
 
 /**
  * Fetch the data of the dataset
@@ -14,7 +14,13 @@ export const fetchData = () => (
     dispatch({ type: SET_LOADING, payload: true });
     dispatch({ type: SET_ERROR, payload: false });
 
-    return fetch(`${ENV.API_URL}/query?sql=${getDataQuery(getState())}`)
+    return fetch(`${ENV.API_URL}/query/${getDatasetId(getState())}`, {
+      method: 'POST',
+      body: getDataBody(getState()),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    })
       .then((res) => {
         if (res.ok) {
           return res.json();

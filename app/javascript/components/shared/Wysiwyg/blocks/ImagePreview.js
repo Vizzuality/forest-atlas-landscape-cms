@@ -16,10 +16,17 @@ class ImagePreview extends React.Component {
       <div className="fa-wysiwyg-file__preview">
         {image && image.length ? <img src={image} alt={this.item.id} /> : 'Invalid image'}
         {this.readOnly && caption && <span className="fa-wysiwyg-file__preview--caption">{caption}</span>}
-        {!this.readOnly && <textarea className="fa-wysiwyg-file__preview--captionInput" placeholder="image caption here" onChange={e => this.onChange({ content: {
-          caption: e.target.value,
-          image
-        } })}>{caption}</textarea>}
+        {!this.readOnly && (
+          <textarea
+            className="fa-wysiwyg-file__preview--captionInput"
+            placeholder="image caption here"
+            defaultValue={caption}
+            onChange={e => this.onChange({ content: {
+              caption: e.target.value,
+              image
+            } })}
+          />
+        )}
       </div>);
   }
 

@@ -1,14 +1,103 @@
 .vizz-wysiwyg {
+  .cw-quill .ql-bubble .ql-tooltip {
+    z-index: 1;
+  }
+
   .ql-container {
     font-family: $font-family-1;
     font-size: $font-size-normal;
   }
 
- .cw-wysiwyg-text {
+  .cw-wysiwyg-text {
     // Display the text elements with a 100% width
     // so the text can have some alignment
     flex-basis: 100%;
     max-width: none;
+
+    ul,
+    ol {
+      display: block;
+      margin-top: .5em;
+      margin-bottom: .5em;
+      list-style: initial;
+
+      li {
+        display: list-item;
+        line-height: 2;
+
+        &::before {
+          font-family: $font-family-1;
+        }
+      }
+    }
+  }
+
+  // Reduce the height of the buttons container
+  // of the grid on the right size (basically the delete
+  // button) because it prevents the user from
+  // resizing the textarea of the HTML block
+  .wysiwyg-grid-column-actions.-inline {
+    height: 24px;
+    padding: 0;
+    transform: translate(100%, -50%);
+  }
+
+  .cw-wysiwyg-item-content.-html,
+  .wysiwyg-grid-column__item {
+    // Prevent the user from making the textarea
+    // bigger than the space available
+    textarea {
+      max-width: 100%;
+    }
+  }
+
+  .wysiwyg-grid-column__item {
+    margin-top: 16px;
+  }
+
+  .cw-wysiwyg-item-content {
+    flex-wrap: wrap;
+
+    &.-html,
+    &.-text {
+      h1 {
+        margin: 40px auto 10px;
+        color: $color-4;
+        font-size: $font-size-huge;
+        font-weight: $font-weight-light;
+        letter-spacing: .3px;
+      }
+
+      h2 {
+        margin: 20px auto 5px;
+        color: $color-4;
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        letter-spacing: .2px;
+      }
+
+      p {
+        font-size: $font-size-normal;
+        letter-spacing: .1px;
+        line-height: 1.5;
+
+        & + p {
+          margin-top: .9em;
+        }
+      }
+    }
+  }
+
+  .cw-wysiwyg-list-item {
+    &.-image {
+      text-align: center;
+    }
+
+    &.-grid {
+      .wysiwyg-grid-column {
+        padding-bottom: 0;
+      }
+    }
   }
 
   .c-we-vega-chart-legend {
@@ -34,6 +123,16 @@
   .c-we-chart, .c-we-chart .chart {
     height: 250px;
     width: 100%;
+  }
+
+  .c-we-chart + .metadata {
+    flex-basis: 100%;
+    margin-top: 5px;
+    text-align: center;
+
+    .title {
+      font-weight: $font-weight-bold;
+    }
   }
 }
 

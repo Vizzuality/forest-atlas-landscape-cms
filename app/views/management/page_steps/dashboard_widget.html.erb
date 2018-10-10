@@ -28,6 +28,7 @@
           <li><div class="c-input-search js-dataset-search"></div></li>
         </ul>
       </div>
+      <p class="note js-note"><strong>Don't see the widget you're looking for?</strong> <a href="#">Click here</a></p>
       <div class="c-cards-list">
         <% @widgets.each do |widget|%>
           <div class="card js-dataset" data-id="<%= widget.id %>" data-name="<%= widget.name %>" >
@@ -41,6 +42,10 @@
           </div>
         <% end %>
       </div>
+      <p class="note js-note-details">
+        <strong>Don't see the widget you're looking for?</strong><br />
+        Dashboards need widgets created through the widget editor, not the advanced editor. If you can't find your widget above, make sure it complies with the previous condition.
+      </p>
     </div>
   </div>
 

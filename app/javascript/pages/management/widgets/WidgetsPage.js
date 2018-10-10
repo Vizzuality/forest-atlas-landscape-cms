@@ -88,7 +88,7 @@ class WidgetsPage extends React.Component {
           <Table
             name="List of widgets"
             searchable
-            columns={['Name', 'Description']}
+            columns={['name', 'description']}
             data={rows}
             actions={this.props.admin ? ['edit', 'delete'] : []}
             onClickAction={(...params) => this.onClickAction(...params)}

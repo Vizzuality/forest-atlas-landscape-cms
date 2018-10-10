@@ -31,24 +31,28 @@ class DashboardFilters extends React.Component {
    */
   getFlatPickerConfig(filter) {
     const timestampRange = filter.max - filter.min;
-    return {
-      minDate: filter.values.length
-        ? applyTimezoneOffset(filter.values[0])
-        : null,
-      maxDate: filter.values.length
-        ? applyTimezoneOffset(filter.values[1])
-        : null,
-      dateFormat: timestampRange <= 24 * 3600 * 1000 // eslint-disable-line no-nested-ternary
-        ? 'H:i'
-        : (timestampRange <= 7 * 24 * 3600 * 1000
-          ? 'd-m-Y H:i'
-          : 'd-m-Y'
-        ),
-      time_24hr: true,
-      noCalendar: timestampRange <= 24 * 3600 * 1000,
-      enableTime: timestampRange <= 7 * 24 * 3600 * 1000,
-      locale: { firstDayOfWeek: 1 }
-    };
+    return Object.assign(
+      {
+        minDate: filter.values.length
+          ? applyTimezoneOffset(filter.values[0])
+          : null,
+        maxDate: filter.values.length
+          ? applyTimezoneOffset(filter.values[1])
+          : null,
+        dateFormat: timestampRange <= 24 * 3600 * 1000 // eslint-disable-line no-nested-ternary
+          ? 'H:i'
+          : (timestampRange <= 7 * 24 * 3600 * 1000
+            ? 'd-m-Y H:i'
+            : 'd-m-Y'
+          ),
+        time_24hr: true,
+        noCalendar: timestampRange <= 24 * 3600 * 1000,
+        enableTime: timestampRange <= 7 * 24 * 3600 * 1000
+      },
+      timestampRange > 24 * 3600 * 1000
+        ? { locale: { firstDayOfWeek: 1 } }
+        : {}
+    );
   }
 
   /**

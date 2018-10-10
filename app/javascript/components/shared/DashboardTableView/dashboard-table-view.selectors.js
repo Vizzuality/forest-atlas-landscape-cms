@@ -2,14 +2,15 @@ import { createSelector } from 'reselect';
 
 import { getFields } from 'components/shared/Dashboard/dashboard.selectors';
 
-const getDatasetId = state => state.dashboard.datasetId;
+export const getDatasetId = state => state.dashboard.datasetId;
 const getFilters = state => state.dashboardFilters.filters;
 const getData = state => state.dashboardTable.data;
 
 /**
- * Return the SQL query necessary to display the content of the table
+ * Return the body of the request necessary to display the
+ * content of the table
  */
-export const getDataQuery = createSelector(
+export const getDataBody = createSelector(
   [getDatasetId, getFields, getFilters],
   (datasetId, fields, dashboardFilters) => {
     const filters = dashboardFilters
@@ -35,15 +36,14 @@ export const getDataQuery = createSelector(
       })
       .filter(f => !!f);
 
-    // NOTE: the encodeURIComponent function is called because Chrome won't
-    // allow requests with both \n, \r or \t and characters like > or <:
-    // https://www.chromestatus.com/feature/5735596811091968
-    return encodeURIComponent(`
-      SELECT ${fields.map(f => f.name)}
-      FROM ${datasetId}
-      ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
-      LIMIT 500
-    `);
+    return JSON.stringify({
+      sql: `
+        SELECT ${fields.map(f => f.name)}
+        FROM data
+        ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
+        LIMIT 500
+      `
+    });
   }
 );
 
