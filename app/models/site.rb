@@ -99,16 +99,25 @@ class Site < ApplicationRecord
   end
 
   # Gets the datasets available for a site
-  def get_datasets_ids
+  def get_datasets_ids(user = nil)
     datasets = []
-    self.contexts.each{|c| c.context_datasets.each{|d| datasets << d.dataset_id}}
+    if user && !user.admin
+      contexts = []
+      self.contexts.each do |c|
+        contexts << c if c.users.pluck(:user_id).include?(user.id)
+      end
+    else
+      contexts = self.contexts
+    end
+
+    contexts.each{|c| c.context_datasets.each{|d| datasets << d.dataset_id}}
     datasets.uniq!
     datasets
   end
 
   # Gets the datasets for this sites' contexts
-  def get_datasets
-    ids = get_datasets_ids
+  def get_datasets(user = nil)
+    ids = get_datasets_ids(user)
     meta = DatasetService.get_metadata_list(ids)
     datasets = []
     begin

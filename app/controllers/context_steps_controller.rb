@@ -61,44 +61,6 @@ class ContextStepsController < ManagementController
     @context.assign_attributes session[:context][@context_id] if session[:context][@context_id]
     @context.form_step = step
 
-
-=begin
-
-    if params[:context_id]
-      @context = Context.find(params[:context_id])
-    else
-      @context = Context.new
-    end
-    @context.form_step = step
-    @context = session[:context] if session[:context]
-
-    # To guarantee that changing the owners, the writers are not duplicated
-    if params[:context] && context_params['owners']
-      context_params['owners'].each do |owner|
-        @context.writers.delete_if{|w| w.id == owner}
-      end
-    end
-
-    if params[:context] && context_params['name']
-      @context.name = context_params['name']
-    end
-    if params[:context] && context_params['dataset_ids']
-      context_params['dataset_ids'].each do |dataset_id|
-        # TODO: This has to be done in another way
-        @context.context_datasets << ContextDataset.new(dataset_id: dataset_id)
-      end
-    end
-    if params[:context] && context_params['site_ids']
-      @context.site_ids = context_params['site_ids']
-    end
-    if params[:context] && context_params['owner_ids']
-      @context.owner_ids = context_params['owner_ids']
-    end
-    if params[:context] && context_params['writer_ids']
-      @context.writer_ids = context_params['writer_ids']
-    end
-    #@context.assign_attributes context_params.except('dataset_ids') if params[:context]
-=end
   end
 
   def save_context
@@ -160,7 +122,7 @@ class ContextStepsController < ManagementController
       if @current_user.admin
         Site.all
       else
-        @current_user.sites
+        @current_user.owned_sites
       end
   end
 
@@ -168,12 +130,14 @@ class ContextStepsController < ManagementController
   def permitted_owners
     @permitted_owners = User.
       joins('LEFT JOIN user_site_associations usa ON usa.user_id = users.id').
-      where(['(usa.site_id IN (?) AND usa.role = ?) OR admin', @context.sites.map(&:id), UserType::ADMIN])
+      where(['(usa.site_id IN (?) AND usa.role = ?) OR admin', @context.sites.map(&:id), UserType::ADMIN]).
+      distinct.order(:name)
   end
 
   def permitted_writers
     permitted_users = User.where(admin: false)
-    @permitted_writers = permitted_users.to_a.delete_if{|user| @context.owners.include?(user)}
+    @permitted_writers = (permitted_users.distinct.order(:name).to_a.delete_if{|user| @context.owners.include?(user)})
+
   end
 
   def get_datasets
