@@ -177,11 +177,11 @@ class NewWidgetPage extends React.Component {
           throw new Error(res.statusText);
         }
       }).catch(() => {
-        this.setState({ saveError: true });
+        this.setState({ saveError: true, disable: false });
       });
     }).catch(() => {
       // We display a warning in the UI
-      this.setState({ widgetConfigError: true });
+      this.setState({ widgetConfigError: true, disable: false });
     });
   }
 
