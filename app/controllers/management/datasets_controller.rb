@@ -1,7 +1,7 @@
 class Management::DatasetsController < ManagementController
 
-  before_action :ensure_management_user, only: [:destroy, :edit_metadata, :update_metadata]
-  before_action :set_site, only: [:index, :new, :create, :edit_metadata, :update_metadata]
+  before_action :ensure_management_user, only: [:destroy]
+  before_action :set_site, only: [:index, :new, :create]
   before_action :set_dataset, only: [:edit, :destroy]
   before_action :set_datasets, only: [:index]
 
@@ -23,9 +23,7 @@ class Management::DatasetsController < ManagementController
         'tags' => {'value' => dataset.tags[0..-2], 'searchable' => true, 'sortable' => false},
         'status' => {'value' => dataset.status, 'searchable' => true, 'sortable' => true},
         'metadata' => {'value' => @dataset_metadata[dataset.id], 'searchable' => false, 'sortable' => false, 'visible' => false},
-        # TODO: once both actions work properly, restore buttons
-        'edit' => {'value' => edit_metadata_management_site_dataset_path(@site.slug, dataset.id), 'method' => 'get'}
-        # 'delete' => {'value' => management_site_dataset_path(@site.slug, dataset.id), 'method' => 'delete'}
+        'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, id: :metadata), 'method' => 'get'}
       })
 
       # Untill we remove backbone, we need to keep this
@@ -38,33 +36,6 @@ class Management::DatasetsController < ManagementController
   def destroy
     #@dataset.destroy
     redirect_to controller: 'management/datasets', action: 'index', site_slug: @site.slug, notice: 'Dataset was successfully destroyed.'
-  end
-
-  def edit_metadata
-    @dataset = Dataset.find_with_metadata(params[:id])
-  end
-
-  def update_metadata
-    @dataset = Dataset.find_with_metadata(params[:id])
-
-    if @dataset.metadata.present?
-      @dataset.metadata = params[:dataset][:metadata]
-      flash_message =
-        if @dataset.update_metadata(session[:user_token])
-          { notice: 'Metadata was successfully updated.' }
-        else
-          { alert: 'Metadata could not be updated.' }
-        end
-    else
-      @dataset.metadata = params[:dataset][:metadata]
-      flash_message =
-        if @dataset.create_metadata(session[:user_token])
-          { notice: 'Metadata was successfully created.' }
-        else
-          { alert: 'Metadata could not be created.' }
-        end
-    end
-    redirect_to management_site_datasets_url(@site.slug), flash_message
   end
 
   private

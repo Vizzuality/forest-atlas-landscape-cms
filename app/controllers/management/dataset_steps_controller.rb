@@ -5,10 +5,10 @@ class Management::DatasetStepsController < ManagementController
   before_action :ensure_management_user, only: :destroy
   before_action :set_site, only: [:new, :edit, :show, :update]
   before_action :steps_names
+  before_action :setup_wizard
   prepend_before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
-  steps *Dataset.form_steps[:pages]
   attr_accessor :steps_names
   helper_method :disable_button?
   helper_method :active_button?
@@ -24,8 +24,10 @@ class Management::DatasetStepsController < ManagementController
   def edit
     reset_session_key(:dataset_creation, @dataset_id, {})
     reset_session_key(:context_datasets, @dataset_id, {})
+    @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    set_current_dataset_state
     redirect_to management_site_dataset_dataset_step_path(site_slug: params[:site_slug],\
-      dataset_id: params[:dataset_id], id: 'title')
+      dataset_id: params[:dataset_id], id: :metadata)
   end
 
   # Wicked Wizard's Show
@@ -49,9 +51,15 @@ class Management::DatasetStepsController < ManagementController
     @dataset.form_step = step
     set_current_dataset_state
     case step
-    when 'title', 'labels', 'metadata'
+    when 'title', 'labels'
       if @dataset.valid?
         redirect_to next_wizard_path
+      else
+        render_wizard
+      end
+    when 'metadata'
+      if @dataset.valid?
+        save_or_update_step
       else
         render_wizard
       end
@@ -61,7 +69,7 @@ class Management::DatasetStepsController < ManagementController
         set_current_dataset_state
       end
       if @dataset.valid?
-        redirect_to next_wizard_path
+        save_or_update_step
       else
         render_wizard
       end
@@ -109,6 +117,22 @@ class Management::DatasetStepsController < ManagementController
     )
   end
 
+  def save_or_update_step
+    if params['button'].eql?('CONTINUE')
+      redirect_to next_wizard_path
+      return
+    end
+
+    if @dataset.update session[:user_token]
+      delete_session_key(:dataset_creation, @dataset_id)
+      redirect_to_finish_wizard
+    else
+      @dataset.errors['id'] <<
+        'There was an error creating the dataset in the API. Please try again later.'
+      render_wizard
+    end
+  end
+
   def upload_csv
     begin
       csv = params[:csv_uploader]
@@ -133,7 +157,8 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def steps_names
-    self.steps_names = *Dataset.form_steps[:names]
+    self.steps = @dataset.form_steps[:pages]
+    self.steps_names = @dataset.form_steps[:names]
   end
 
   def select_contexts

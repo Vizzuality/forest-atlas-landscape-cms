@@ -218,6 +218,49 @@ class DatasetService < ApiService
     end
   end
 
+  # Updates the dataset in the API
+  # To do so, the attribute "overwrite" must be set to true
+  # And the must be a post request to /data-overwrite
+  def self.update(token, id, connector_url)
+    begin
+      body = {
+        overwrite: true
+      }.to_json
+
+      Rails.logger.info "Updating Dataset #{id} overwrite property."
+      Rails.logger.info "Body: #{body}"
+
+      res = @conn.patch do |req|
+        req.url "/dataset/#{id}"
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = body
+      end
+
+      Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
+      body = {
+        provider: 'csv',
+        url: connector_url
+      }.to_json
+
+      Rails.logger.info "Updating Dataset #{id} connectorUrl."
+      Rails.logger.info "Body: #{body}"
+
+      res = @conn.post do |req|
+        req.url "/dataset/#{id}/data-overwrite"
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = body
+      end
+
+      Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
+      return JSON.parse(res.body)['data']['id']
+    rescue => e
+      Rails.logger.error "Error creating new dataset in the API: #{e}"
+      return nil
+    end
+  end
+
   # Sends the dataset to the API
   def self.upload(token, connectorType, connectorProvider, connectorUrl, dataPath,
     application, name, tags_array = [], caption = {}, metadata = {})
