@@ -16,7 +16,7 @@ gem 'rails-assets-fitvids', '~> 1.2.0'
 gem 'dotenv-rails', '~> 2.1'
 
 gem 'closure_tree'
-gem 'paperclip', '~> 5.0.0'
+gem 'paperclip', '~> 5.2.0'
 gem 'will_paginate', '~> 3.1.0'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'activemodel-associations'
@@ -39,6 +39,12 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 # Assets Pipeline
 gem 'autoprefixer-rails'
 gem 'sendgrid-ruby'
+
+# Gems with known vulnerabilities in older versions
+gem 'ffi', '>= 1.9.24'
+gem 'loofah', '>= 2.2.1'
+gem 'sprockets', '>= 3.7.2'
+gem 'rails-html-sanitizer', '>= 1.0.4'
 
 
 source 'https://rails-assets.org' do
