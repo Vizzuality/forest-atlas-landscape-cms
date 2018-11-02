@@ -9,14 +9,13 @@ class Management::WidgetsController < ManagementController
     @widgets = @widgets.map do |x|
       { widget: x,
         edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
-        delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        delete_url: delete_url }
     end
+    gon.clement = @widgets
     @widgets
   end
 
-  def destroy
-
-  end
+  def destroy; end
 
   private
   # Use callbacks to share common setup or constraints between actions.
@@ -27,6 +26,12 @@ class Management::WidgetsController < ManagementController
       # We just want a valid URL for the site
       @url = @site.routes.first.host_with_scheme
     end
+  end
+
+  # Only shows the delete url in case the user is a site admin for this site
+  def delete_url
+    return unless current_user.owned_sites.include?(@site)
+    management_site_widget_step_path(params[:site_slug], x.id)
   end
 
 end
