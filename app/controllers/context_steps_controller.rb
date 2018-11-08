@@ -75,7 +75,7 @@ class ContextStepsController < ManagementController
     @current_user = current_user
     return if @current_user.admin
     if @context.id
-      unless @context.context_owners.include? @current_user
+      unless @context.context_owners.pluck(:user_id).include? @current_user.id
         redirect_to contexts_path, notice: 'You do not have permissions to edit this context'
         return
       end
