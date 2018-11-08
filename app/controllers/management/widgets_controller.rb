@@ -31,7 +31,7 @@ class Management::WidgetsController < ManagementController
   # Only shows the delete url in case the user is a site admin for this site
   def delete_url
     return unless current_user.owned_sites.include?(@site)
-    management_site_widget_step_path(params[:site_slug], x.id)
+    management_site_widget_step_path(params[:site_slug], @site.id)
   end
 
 end
