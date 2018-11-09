@@ -58,7 +58,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :widget_steps do
+      resources :widget_steps, except: [:destroy] do
         member do
           get :filtered_results,
               constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
@@ -95,7 +95,7 @@ Rails.application.routes.draw do
 
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
-  
+
 
   # Auth
   get 'auth/login', to: 'auth#login'

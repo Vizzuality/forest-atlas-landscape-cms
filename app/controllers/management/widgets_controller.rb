@@ -9,13 +9,20 @@ class Management::WidgetsController < ManagementController
     @widgets = @widgets.map do |x|
       { widget: x,
         edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
-        delete_url: delete_url }
+        delete_url: delete_url(x.dataset, x.id) }
     end
     gon.clement = @widgets
     @widgets
   end
 
-  def destroy; end
+  def destroy
+    response = WidgetService.delete(session[:user_token], params[:dataset],params[:id])
+    if response[:valid]
+      render :index, notice: response[:message]
+    else
+      render :index, error: response[:message]
+    end
+  end
 
   private
   # Use callbacks to share common setup or constraints between actions.
@@ -29,9 +36,8 @@ class Management::WidgetsController < ManagementController
   end
 
   # Only shows the delete url in case the user is a site admin for this site
-  def delete_url
-    return unless current_user.owned_sites.include?(@site)
-    management_site_widget_step_path(params[:site_slug], @site.id)
+  def delete_url(dataset_id, widget_id)
+    return unless current_user_is_admin || current_user.owned_sites.include?(@site)
+    management_site_widget_path(params[:site_slug], widget_id, action: :delete, dataset: dataset_id)
   end
-
 end

@@ -1,6 +1,5 @@
 class Admin::UsersController < AdminController
-  before_action :ensure_only_admin_user, only: :destroy
-  before_action :ensure_admin_user
+  before_action :ensure_only_admin_user
   before_action :set_user, only: :destroy
   before_action :acknowledge_admin
 

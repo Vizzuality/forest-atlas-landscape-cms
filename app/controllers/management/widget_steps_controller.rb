@@ -76,15 +76,6 @@ class Management::WidgetStepsController < ManagementController
     render status: 200, json: {}
   end
 
-  def destroy
-    begin
-      WidgetService.delete(session[:user_token], params[:id])
-    rescue Exception => e
-      render json: { widget_error: e.to_s }.to_json, status: 500 and return
-    end
-
-    render status: 200, json: {}
-  end
 
   private
 
