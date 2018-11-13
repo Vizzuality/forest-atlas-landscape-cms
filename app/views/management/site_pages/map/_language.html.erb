@@ -1,0 +1,21 @@
+<%= form.label :settings, 'Language Settings' %>
+<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+  <% fields = {
+      'language': %w[en fr pt es ka id zh],
+      'useAlternativeLanguage': :check_box,
+      'alternativeLanguage': ['', :en, :fr, :pt, :es, :ka, :id, :zh],
+      'alternativeWebMap': :text_field,
+      'alternativeLanguageTitle': :text_field,
+      'alternativeLanguageSubtitle': :text_field,
+      'alternativeNarrative': :text_field,
+      'alternativeWebmapMenuName': :text_field
+  } %>
+  <% fields.each do |field| %>
+    <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
+    <% if field.last.is_a? Array %>
+      <%= eval("settings.select '#{field.first}', #{field.last}")%>
+    <% else %>
+      <%= eval("settings.#{field.last} :#{field.first}") %>
+    <% end %>
+  <% end %>
+<% end %>

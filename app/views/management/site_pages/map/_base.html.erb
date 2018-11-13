@@ -1,0 +1,15 @@
+<%= form.label :settings, 'General Settings' %>
+<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+  <% fields = {
+      'webmap': :text_field, 'title': :text_field,
+      'subtitle': :text_field, 'webMenuName': :text_field,
+      'logoUrl': :text_field, 'logoLinkUrl': :text_field,
+      'printServiceUrl': :text_field, 'narrative': :text_area,
+      'includeSubscribeButton': :check_box, 'sharinghost': :text_field,
+      'analyticsCode': :text_field, 'iso': :text_field
+  } %>
+  <% fields.each do |field| %>
+    <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
+    <%= eval("settings.#{field.last} :#{field.first}") %>
+  <% end %>
+<% end %>

@@ -1,0 +1,10 @@
+<%= form.label :settings, 'Tab Settings' %>
+<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+  <% fields = {
+      'includeDocumentsTab': :check_box, 'includeMeasurementTab': :check_box
+  } %>
+  <% fields.each do |field| %>
+    <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
+    <%= eval("settings.#{field.last} :#{field.first}") %>
+  <% end %>
+<% end %>

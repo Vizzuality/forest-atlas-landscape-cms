@@ -26,8 +26,10 @@
             </div>
           </div>
           <div class="container">
-            <%= ff.label :settings, 'Map settings' %>
-            <%= ff.text_area :settings, class: 'js-editor' %>
+            <%= render partial: 'management/site_pages/map/base', locals: { form: ff } %>
+            <%= render partial: 'management/site_pages/map/language', locals: { form: ff } %>
+            <%= render partial: 'management/site_pages/map/tab', locals: { form: ff } %>
+            <%= render partial: 'management/site_pages/map/layer', locals: { form: ff } %>
           </div>
         <% end %>
       </div>
