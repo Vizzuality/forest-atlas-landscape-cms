@@ -5,6 +5,12 @@ class Management::WidgetsController < ManagementController
 
   def index
     dataset_ids = @site.get_datasets(current_user).map(&:id)
+
+    if dataset_ids.blank?
+      @widgets = []
+      return @widgets
+    end
+
     @widgets = WidgetService.from_datasets dataset_ids
     @widgets = @widgets.map do |x|
       { widget: x,
