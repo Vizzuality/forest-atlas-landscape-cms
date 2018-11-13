@@ -142,10 +142,10 @@ class Management::DatasetStepsController < ManagementController
 
       filename = Time.now.to_i.to_s + csv.original_filename
 
-      File.open(dir.join(csv.original_filename), 'wb') do |file|
+      File.open(dir.join(filename), 'wb') do |file|
         file.write(csv.read)
       end
-      @dataset.connector_url = ENV['FA_PUBLIC_FOLDER'] + '/public/uploads/' + filename
+      @dataset.connector_url = ENV['FA_PUBLIC_FOLDER'] + '/uploads/' + filename
     rescue
       @dataset.errors.add(:connector_url, 'Error creating the file')
     end
