@@ -1,5 +1,5 @@
 <%= form.label :settings, 'Layer Settings' %>
-<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
       'viirsFires': :check_box, 'modisFires': :check_box,
       'intactForests': :check_box, 'aboveGroundBiomass': :check_box,

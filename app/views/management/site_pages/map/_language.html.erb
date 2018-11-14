@@ -1,5 +1,5 @@
 <%= form.label :settings, 'Language Settings' %>
-<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
       'language': %w[en fr pt es ka id zh],
       'useAlternativeLanguage': :check_box,

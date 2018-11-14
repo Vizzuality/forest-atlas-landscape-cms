@@ -1,5 +1,5 @@
 <%= form.label :settings, 'General Settings' %>
-<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
       'webmap': :text_field, 'title': :text_field,
       'subtitle': :text_field, 'webMenuName': :text_field,

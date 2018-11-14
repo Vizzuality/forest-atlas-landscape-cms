@@ -100,6 +100,16 @@ class SitePage < Page
     end
   end
 
+  # Returns an object with the settings, ignoring the way it was saved
+  def settings_structure
+    return OpenStruct.new if content.nil?
+    if content['settings'].is_a? Hash
+      OpenStruct.new(content['settings'])
+    else
+      OpenStruct.new(JSON.parse(content['settings']))
+    end
+  end
+
   private
   def construct_url
     if self.content['url']

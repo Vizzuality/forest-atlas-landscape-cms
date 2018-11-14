@@ -1,5 +1,5 @@
 <%= form.label :settings, 'Tab Settings' %>
-<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
       'includeDocumentsTab': :check_box, 'includeMeasurementTab': :check_box
   } %>
