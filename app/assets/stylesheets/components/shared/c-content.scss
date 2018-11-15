@@ -137,10 +137,12 @@
   }
 
   blockquote {
-    margin: 30px auto;
-    font-size: $font-size-x-normal;
+    margin: 40px auto!important;
+    padding: 0 10px!important;
+    font-size: $font-size-big!important;
     font-weight: $font-weight-light;
     font-style: italic;
+    border-left: none!important;
 
     &::before {
       content: '“';
