@@ -1,0 +1,8 @@
+<h3>Analysis Module</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <div class="container">
+    <%= settings.label :analysis_module %>
+    <%= settings.text_area :analysisModules %>
+  </div>
+<% end %>
