@@ -1,0 +1,8 @@
+<h3>Layer Panel</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <div class="container">
+    <%= settings.label :layer_panel %>
+    <%= settings.text_area :layerPanel %>
+  </div>
+<% end %>
