@@ -1,10 +1,15 @@
-<%= form.label :settings, 'Tab Settings' %>
+<h3>Tab Settings</h3>
+
 <%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
       'includeDocumentsTab': :check_box, 'includeMeasurementTab': :check_box
   } %>
   <% fields.each do |field| %>
-    <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
-    <%= eval("settings.#{field.last} :#{field.first}") %>
+    <div class="container">
+      <div class="c-checkbox">
+        <%= settings.check_box field.first, id: field.first %>
+        <%= settings.label field.first.capitalize, for: field.first %>
+      </div>
+    </div>
   <% end %>
 <% end %>

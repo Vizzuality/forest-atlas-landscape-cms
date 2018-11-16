@@ -1,6 +1,7 @@
 .c-inputs-container {
   width: 100%;
   max-width: 570px;
+  margin-bottom: 40px;
 
   &.-large {
     max-width: 880px;
@@ -12,6 +13,7 @@
     border-right: 1px solid;
     border-left: 1px solid;
     border-color: $color-13;
+    max-width: 100%;
 
     &:first-of-type {
       border-top-left-radius: 4px;

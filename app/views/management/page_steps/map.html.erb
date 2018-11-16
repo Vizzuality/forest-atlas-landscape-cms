@@ -17,22 +17,34 @@
 <%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
   <div class="l-page-creation -map">
     <div class="wrapper">
-      <div class="c-inputs-container -large">
+
         <%= f.fields_for :content, OpenStruct.new(@page.content) do |ff| %>
-          <div class="container">
-            <label for="version">Version</label>
-            <div class="c-select -small">
-              <%= ff.select 'version', MapVersion.order(:position).pluck(:version) %>
+          <div class="c-inputs-container -large">
+            <div class="container">
+              <label for="version">Version</label>
+              <div class="c-select -small">
+                <%= ff.select 'version', MapVersion.order(:position).pluck(:version) %>
+              </div>
             </div>
           </div>
-          <div class="container">
+
+          <div class="c-inputs-container -large">
             <%= render partial: 'management/site_pages/map/base', locals: { form: ff } %>
+          </div>
+
+          <div class="c-inputs-container -large">
             <%= render partial: 'management/site_pages/map/language', locals: { form: ff } %>
+          </div>
+
+          <div class="c-inputs-container -large">
             <%= render partial: 'management/site_pages/map/tab', locals: { form: ff } %>
+          </div>
+
+          <div class="c-inputs-container -large">
             <%= render partial: 'management/site_pages/map/layer', locals: { form: ff } %>
           </div>
         <% end %>
-      </div>
+
     </div>
   </div>
 

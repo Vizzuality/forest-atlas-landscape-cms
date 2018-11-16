@@ -1,20 +1,15 @@
 source 'https://rubygems.org'
 
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
 ruby '2.3.1'
 gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
-gem 'sass-rails', '>= 5.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0' # REMOVE ME
-
-gem 'jquery-rails' # REMOVE ME
-gem 'turbolinks', '~> 5.x'
-gem 'jbuilder', '~> 2.0'
-gem 'rails-assets-fitvids', '~> 1.2.0'
-
 gem 'dotenv-rails', '~> 2.1'
-
 gem 'closure_tree'
 gem 'paperclip', '~> 5.2.0'
 gem 'will_paginate', '~> 3.1.0'
@@ -24,6 +19,7 @@ gem 'handlebars_assets'
 gem 'enumerate_it'
 gem 'gon'
 gem 'wicked' # Multi-steps form
+gem 'jbuilder', '~> 2.0'
 
 gem 'faraday', '~> 0.9.2'
 gem 'faraday_middleware', '~> 0.11.0.1'
@@ -38,7 +34,12 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
 # Assets Pipeline
 gem 'autoprefixer-rails'
-gem 'sendgrid-ruby'
+gem 'sass-rails', '>= 5.0'
+gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails', '~> 4.1.0'
+gem 'jquery-rails'
+gem 'turbolinks', '~> 5.x'
+gem 'rails-assets-fitvids', '~> 1.2.0'
 
 # Gems with known vulnerabilities in older versions
 gem 'ffi', '>= 1.9.24'
@@ -58,6 +59,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datalib', '1.7.3'
   gem 'rails-assets-SINTEF-9012--PruneCluster', '1.1.0'
   gem 'rails-assets-select2', '4.0.3'
+  gem 'rails-assets-summernote'
 end
 
 # Use ActiveModel has_secure_password

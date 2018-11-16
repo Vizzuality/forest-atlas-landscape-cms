@@ -1,4 +1,5 @@
-<%= form.label :settings, 'Language Settings' %>
+<h3>Language Settings</h3>
+
 <%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
       'language': %w[en fr pt es ka id zh],
@@ -11,11 +12,19 @@
       'alternativeWebmapMenuName': :text_field
   } %>
   <% fields.each do |field| %>
-    <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
-    <% if field.last.is_a? Array %>
-      <%= eval("settings.select '#{field.first}', #{field.last}")%>
-    <% else %>
-      <%= eval("settings.#{field.last} :#{field.first}") %>
-    <% end %>
+    <div class="container">
+      <% if field.last.is_a? Array %>
+        <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
+        <%= eval("settings.select '#{field.first}', #{field.last}")%>
+      <% elsif field.last.to_s == 'check_box' %>
+        <div class="c-checkbox">
+          <%= settings.check_box field.first, id: field.first %>
+          <%= settings.label field.first.capitalize, for: field.first %>
+        </div>
+      <% else %>
+        <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
+        <%= eval("settings.#{field.last} :#{field.first}") %>
+      <% end %>
+    </div>
   <% end %>
 <% end %>

@@ -1,5 +1,7 @@
-<%= form.label :settings, 'Layer Settings' %>
+<h3>Layer Settings</h3>
+
 <%= form.fields_for :settings, @page.settings_structure do |settings| %>
+
   <% fields = {
       'viirsFires': :check_box, 'modisFires': :check_box,
       'intactForests': :check_box, 'aboveGroundBiomass': :check_box,
@@ -7,8 +9,14 @@
       'sadAlerts': :check_box, 'gladAlerts': :check_box,
       'terralAlerts': :check_box, 'formaAlerts': :check_box,
   } %>
+
   <% fields.each do |field| %>
-    <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
-    <%= eval("settings.#{field.last} :#{field.first}") %>
+     <div class="container">
+      <div class="c-checkbox">
+        <%= settings.check_box field.first, id: field.first %>
+        <%= settings.label field.first.capitalize, for: field.first %>
+      </div>
+    </div>
   <% end %>
+
 <% end %>
