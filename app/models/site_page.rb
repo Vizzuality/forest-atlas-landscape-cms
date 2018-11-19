@@ -12,7 +12,7 @@
 #  updated_at   :datetime         not null
 #  content_type :integer
 #  type         :text
-#  enabled      :boolean
+#  enabled      :boolean          default(FALSE)
 #  parent_id    :integer
 #  position     :integer
 #  content      :json
@@ -29,6 +29,7 @@ class SitePage < Page
           inverse_of: :site_page, autosave: true
   has_one :dashboard_setting,foreign_key: 'page_id', dependent: :destroy,
           inverse_of: :site_page, autosave: true
+  has_many :tags, foreign_key: :page_id
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
@@ -42,6 +43,8 @@ class SitePage < Page
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
 
   validate :step_validation
+
+  accepts_nested_attributes_for :tags, allow_destroy: true
 
   attr_accessor :form_step
 

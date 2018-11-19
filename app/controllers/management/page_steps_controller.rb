@@ -161,6 +161,7 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward
       when 'title'
+        set_current_tags_state
         set_current_page_state
         unless @page.valid?
           render_wizard
@@ -334,7 +335,7 @@ class Management::PageStepsController < ManagementController
           widget_id
           content_top
           content_bottom
-        ]
+        ],
       )
     filtered_params[:content] = all_options if all_options.present?
     filtered_params
@@ -361,6 +362,7 @@ class Management::PageStepsController < ManagementController
     if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting)
       @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting)
     end
+    build_tags
   end
 
   # Saves the current page state in session
@@ -368,6 +370,31 @@ class Management::PageStepsController < ManagementController
     session[:page][@page_id] = @page.attributes
   end
 
+  # Saves the current tags state
+  def set_current_tags_state
+    return unless params[:site_page]
+    tags = params.dig('site_page', 'tags_attributes').split(' ')
+    new_tags = []
+
+    # Remove old ones
+    @page.tags.find_each { |t| new_tags << { id: t.id, _destroy: 1 } unless tags.include?(t.value) }
+
+    # Add new ones
+    tags.delete_if { |t| @page.tags.pluck(:value).include?(t) }
+
+    new_tags << tags.map { |t| { value: t } } if tags.any?
+    new_tags.flatten!
+
+    @page.tags_attributes = new_tags
+
+    session[:tags_attributes][@page_id] = new_tags
+  end
+
+  # Builds current tags
+  def build_tags
+    return if session[:tags_attributes][@page_id].blank?
+    @page.tags_attributes = session[:tags_attributes][@page_id]
+  end
 
   # Builds the current dashboard setting based on the database, session and params
   def build_current_dashboard_setting
@@ -515,6 +542,7 @@ class Management::PageStepsController < ManagementController
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
         delete_session_key(:page, @page_id)
+        delete_session_key(:tags_attributes, @page_id)
         @page.synchronise_page_widgets(page_params.to_h)
         redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page was successfully ' + notice_text
       else
@@ -528,11 +556,14 @@ class Management::PageStepsController < ManagementController
       if @page.save
         if publish_step_name == Wicked::FINISH_STEP # only deletes the session if there are no more pages in queue
           delete_session_key(:page, @page_id) # delete 'new' session
+          delete_session_key(:tags_attributes, @page_id)
           reset_session_key(:page, @page.id, {enabled: @page.enabled}) # start 'edit' session
         else
           session[:page][@page_id][:enabled] = @page.enabled
+          delete_session_key(:tags_attributes, @page_id)
         end
         # The enabled status must be stored in the session as it was changed
+        delete_session_key(:tags_attributes, @page_id)
         redirect_to wizard_path(publish_step_name), notice: 'Page was successfully ' + notice_text
       else
         render_wizard
@@ -596,6 +627,7 @@ class Management::PageStepsController < ManagementController
     session[:dataset_setting] ||= {}
     session[:invalid_steps] ||= {}
     session[:page] ||= {}
+    session[:tags_attributes] ||= {}
   end
 
   def reset_session
@@ -603,6 +635,7 @@ class Management::PageStepsController < ManagementController
     reset_session_key(:dashboard_setting, @page_id, {})
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
+    reset_session_key(:tags_attributes, @page_id, {})
     reset_session_key(:page, @page_id, {})
     reset_session_key(:page, :new, {})
   end

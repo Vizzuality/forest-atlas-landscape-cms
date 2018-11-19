@@ -12,7 +12,7 @@
 #  updated_at   :datetime         not null
 #  content_type :integer
 #  type         :text
-#  enabled      :boolean
+#  enabled      :boolean          default(FALSE)
 #  parent_id    :integer
 #  position     :integer
 #  content      :json
