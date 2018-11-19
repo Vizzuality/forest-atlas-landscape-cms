@@ -37,10 +37,11 @@
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
 
+      // TODO: Clement, these rules have change, let's discuss this
       // If the user isn't an admin, we remove the admin option
-      if (!window.gon || !gon.global || !gon.global.admin) {
-        this.options.links.splice(1, 1);
-      }
+      // if (!window.gon || !gon.global || !gon.global.admin) {
+      //   this.options.links.splice(1, 1);
+      // }
 
       this.collection.fetch()
         .done(function () {
