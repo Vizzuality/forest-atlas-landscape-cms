@@ -3,6 +3,21 @@
 <%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <div class="container">
     <%= settings.label :analysis_module %>
-    <%= settings.text_area :analysisModules %>
+    <%= settings.hidden_field :analysisModules %>
+
+    <div id="analysisModules"></div>
+
+    <script>
+      var analysisModulesInput = document.getElementById('site_page_content_settings_analysisModules');
+      var analysisModulesContainer = document.getElementById('analysisModules');
+      var analysisModulesEditor = new JSONEditor(analysisModulesContainer, {
+        onChangeJSON: function(json) {
+          analysisModulesInput.value = JSON.stringify(json);
+        }
+      });
+      var analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.to_json.html_safe %>');
+
+      analysisModulesEditor.set(analysisModulesValue);
+    </script>
   </div>
 <% end %>
