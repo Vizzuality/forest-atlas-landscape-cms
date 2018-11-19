@@ -324,6 +324,7 @@ class Management::PageStepsController < ManagementController
         :content_type,
         :page_version,
         :content,
+        :thumbnail,
         dataset_setting: [
           :dataset_id,
           :filters,

@@ -37,6 +37,26 @@
           <%= f.label :tags %>
           <%= f.text_field :tags_attributes, placeholder: 'tags', value: f.object.tags.pluck(:value).join(' ') %>
         </div>
+        <div class="container">
+          <div class="l-site-creation -settings">
+            <div class="settings">
+              <div class="logo">
+                <h3>Thumbnail</h3>
+                <%= f.file_field :thumbnail, id: 'thumbnail', accept: 'image/*', 'data-type': 'image'%>
+                <%= f.label :thumbnail, value: 'Change thumbnail', for: 'thumbnail', tabindex: '0' %>
+                <% if !@page.thumbnail.nil? && @page.thumbnail_file_name %>
+                <div class="preview js-preview">
+                  <%= image_tag @page.thumbnail.url, alt: 'Logo image' %>
+                </div>
+                <% else %>
+                <div class="placeholder js-placeholder">
+                  <span>Select file</span>
+                </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
         <% unless @page.content_type == ContentType::HOMEPAGE or @page.content_type == ContentType::STATIC_CONTENT %>
           <footer>
             <div class="c-checkbox">
