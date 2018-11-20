@@ -11,9 +11,10 @@
 // about supported directives.
 //
 //= require underscore
-//= require jquery
+//= require jquery3
 //= require jquery_ujs
 //= require backbone
+//= require summernote
 //= require d3
 //= require vega
 //= require leaflet
@@ -37,6 +38,7 @@
 // = require_tree ./views/shared
 // = require_tree ./views/management
 // = require dispatchers/managementDispatcher
+// = require ./views/admin/fileInputView
 
 (function () {
   'use strict';
@@ -50,3 +52,14 @@
     Blot: {}
   };
 }).call(this);
+
+$(window).on('load', function () {
+  $('#site_page_content_settings_narrative').summernote({
+    toolbar: [
+      ['link'],
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['strikethrough', 'superscript', 'subscript']],
+      ['para', ['ul', 'ol', 'paragraph']],
+    ]
+  });
+})

@@ -1,0 +1,25 @@
+<h3>General settings</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <% fields = {
+      'webmap': :text_field, 'title': :text_field,
+      'subtitle': :text_field, 'webMenuName': :text_field,
+      'logoUrl': :text_field, 'logoLinkUrl': :text_field,
+      'printServiceUrl': :text_field, 'narrative': :text_area,
+      'includeSubscribeButton': :check_box, 'sharinghost': :text_field,
+      'analyticsCode': :text_field, 'iso': :text_field
+  } %>
+  <% fields.each do |field| %>
+    <div class="container">
+      <% if field.last.to_s == 'check_box' %>
+        <div class="c-checkbox">
+          <%= settings.check_box field.first, id: field.first %>
+          <%= settings.label field.first.capitalize, for: field.first %>
+        </div>
+      <% else %>
+        <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
+        <%= eval("settings.#{field.last} :#{field.first}") %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

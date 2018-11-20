@@ -12,7 +12,7 @@
 #  updated_at   :datetime         not null
 #  content_type :integer
 #  type         :text
-#  enabled      :boolean
+#  enabled      :boolean          default(FALSE)
 #  parent_id    :integer
 #  position     :integer
 #  content      :json
@@ -27,6 +27,10 @@ class Page < ApplicationRecord
   has_and_belongs_to_many :site_templates
   has_many :page_widgets, dependent: :destroy
   has_many :widgets, through: :page_widgets, validate: false
+  has_attached_file :thumbnail, styles: {thumb: '100x100#'}
+  validates_attachment :thumbnail,
+                       content_type: {content_type: %w[image/jpg image/jpeg image/png]},
+                       styles: {thumb: '100x100#'}
 
   has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true

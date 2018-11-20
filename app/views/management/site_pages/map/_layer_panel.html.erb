@@ -1,0 +1,22 @@
+<h3>Layer Panel</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <div class="container">
+    <%= settings.label :layer_panel %>
+    <%= settings.hidden_field :layerPanel %>
+    <div id="layerPanelCode"></div>
+
+    <script>
+      var layerPanelInput = document.getElementById('site_page_content_settings_layerPanel');
+      var layerPanelContainer = document.getElementById('layerPanelCode');
+      var layerPanelEditor = new JSONEditor(layerPanelContainer, {
+        onChangeJSON: function(json) {
+          layerPanelInput.value = JSON.stringify(json);
+        }
+      });
+      var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.to_json.html_safe %>');
+
+      layerPanelEditor.set(layerPanelValue);
+    </script>
+  </div>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180813130657) do
+ActiveRecord::Schema.define(version: 20181119105913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,16 +110,20 @@ ActiveRecord::Schema.define(version: 20180813130657) do
     t.string   "description"
     t.string   "uri"
     t.string   "url"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "content_type"
     t.text     "type"
-    t.boolean  "enabled",      default: false
+    t.boolean  "enabled",                default: false
     t.integer  "parent_id"
     t.integer  "position"
     t.json     "content"
-    t.boolean  "show_on_menu", default: true
-    t.integer  "page_version", default: 1
+    t.boolean  "show_on_menu",           default: true
+    t.integer  "page_version",           default: 1
+    t.string   "thumbnail_file_name"
+    t.string   "thumbnail_content_type"
+    t.integer  "thumbnail_file_size"
+    t.datetime "thumbnail_updated_at"
     t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
   end
 
@@ -179,6 +183,13 @@ ActiveRecord::Schema.define(version: 20180813130657) do
     t.index ["site_template_id"], name: "index_sites_on_site_template_id", using: :btree
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string   "value",      null: false
+    t.integer  "page_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_site_associations", force: :cascade do |t|
     t.integer  "site_id"
     t.integer  "user_id"
@@ -210,6 +221,7 @@ ActiveRecord::Schema.define(version: 20180813130657) do
   end
 
   add_foreign_key "page_widgets", "pages"
+  add_foreign_key "tags", "pages"
   add_foreign_key "user_site_associations", "sites"
   add_foreign_key "user_site_associations", "users"
 end
