@@ -38,6 +38,7 @@
 // = require_tree ./views/shared
 // = require_tree ./views/management
 // = require dispatchers/managementDispatcher
+// = require ./views/admin/fileInputView
 
 (function () {
   'use strict';
@@ -52,7 +53,7 @@
   };
 }).call(this);
 
-$(window).on('load', function() {
+$(window).on('load', function () {
   $('#site_page_content_settings_narrative').summernote({
     toolbar: [
       ['link'],
