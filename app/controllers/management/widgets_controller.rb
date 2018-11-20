@@ -4,21 +4,30 @@ class Management::WidgetsController < ManagementController
   before_action :ensure_management_user, only: :destroy
 
   def index
-    dataset_ids = @site.contexts
-                       .map { |c| c.context_datasets.pluck(:dataset_id) }
-                       .flatten.uniq
+    dataset_ids = @site.get_datasets(current_user).map(&:id)
+
+    if dataset_ids.blank?
+      @widgets = []
+      return @widgets
+    end
 
     @widgets = WidgetService.from_datasets dataset_ids
     @widgets = @widgets.map do |x|
       { widget: x,
         edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
-        delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
+        delete_url: delete_url(x.dataset, x.id) }
     end
+    gon.clement = @widgets
     @widgets
   end
 
   def destroy
-
+    response = WidgetService.delete(session[:user_token], params[:dataset],params[:id])
+    if response[:valid]
+      render :index, notice: response[:message]
+    else
+      render :index, error: response[:message]
+    end
   end
 
   private
@@ -32,4 +41,9 @@ class Management::WidgetsController < ManagementController
     end
   end
 
+  # Only shows the delete url in case the user is a site admin for this site
+  def delete_url(dataset_id, widget_id)
+    return unless current_user_is_admin || current_user.owned_sites.include?(@site)
+    management_site_widget_path(params[:site_slug], widget_id, action: :delete, dataset: dataset_id)
+  end
 end

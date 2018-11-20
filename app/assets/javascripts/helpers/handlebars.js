@@ -134,3 +134,13 @@ Handlebars.registerHelper('humanize', function (value) {
     })
     .replace(/  +/g, ' ');
 });
+
+/**
+ * Not Equals helper
+ */
+Handlebars.registerHelper('ne', function (v1, v2, opts) {
+  if (v1 !== v2) {
+    return opts.fn(this);
+  }
+  return opts.inverse(this);
+});

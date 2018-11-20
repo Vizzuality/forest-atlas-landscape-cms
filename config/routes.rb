@@ -46,10 +46,8 @@ Rails.application.routes.draw do
 
       resources :datasets, only: [:index, :destroy] do
         resources :dataset_steps, only: [:edit, :update, :show]
-        get :edit_metadata, on: :member
-        put :update_metadata, on: :member
       end
-      resources :dataset_steps, only: [:new, :update, :show]
+      resources :dataset_steps, only: [:new, :edit, :update, :show]
 
       resources :widgets, only: [:index, :destroy] do
         resources :widget_steps, only: [:edit, :update, :show] do
@@ -60,7 +58,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :widget_steps do
+      resources :widget_steps, except: [:destroy] do
         member do
           get :filtered_results,
               constraints: lambda { |req| req.format == :json }, defaults: {id: 'filters'}
@@ -97,7 +95,7 @@ Rails.application.routes.draw do
 
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
-  
+
 
   # Auth
   get 'auth/login', to: 'auth#login'

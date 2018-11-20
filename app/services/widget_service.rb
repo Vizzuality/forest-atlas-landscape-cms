@@ -92,13 +92,18 @@ class WidgetService < ApiService
     widget_id
   end
 
-  def self.delete(token, widget_id)
-    @conn.delete do |req|
-      req.url "widget/#{widget_id}"
+  def self.delete(token, dataset_id, widget_id)
+    response = @conn.delete do |req|
+      req.url "dataset/#{dataset_id}/widget/#{widget_id}"
       req.headers['Authorization'] = "Bearer #{token}"
       req.headers['Content-Type'] = 'application/json'
     end
-  end
+    begin
+      return { valid: true, message: 'Widget deleted successfully' } if response.status == 200
+    rescue
+    end
+    { valid: false, message: 'Widget failed to delete' }
+end
 
   def self.create_metadata(token, metadata_params, widget_id, dataset_id)
     @conn.post do |req|

@@ -20,6 +20,7 @@ class Admin::SiteStepsController < AdminController
 
   before_action :get_site_pages
   before_action :set_site_id, only: [:new, :edit, :update, :show]
+  before_action :ensure_user_owns_site
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   # This action cleans the session
@@ -345,5 +346,11 @@ class Admin::SiteStepsController < AdminController
 
   def non_admin_users
     User.where(admin: false).order(:name)
+  end
+
+  def ensure_user_owns_site
+    return if user_site_admin?(@site_id)
+    flash[:alert] = 'You do not have permissions to view this page'
+    redirect_to :no_permissions
   end
 end

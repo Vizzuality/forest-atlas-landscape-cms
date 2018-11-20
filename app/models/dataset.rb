@@ -20,10 +20,26 @@ class Dataset
     :function, :geographic_coverage, :learn_more, :other, :resolution, :subtitle
   ]
 
-  cattr_accessor :form_steps do
-    {pages: %w[title connector labels metadata context],
-     names: %w[Title Connector Labels Metadata Context]}
+  def form_steps
+    if id.nil?
+      {
+        pages: %w[title connector labels metadata context],
+        names: %w[Title Connector Labels Metadata Context]
+      }
+    elsif provider.eql?('csv')
+      {
+        pages: %w[connector metadata],
+        names: %w[Connector Metadata]
+      }
+    else
+      {
+        pages: %w[metadata],
+        names: %w[Metadata]
+      }
+    end
   end
+
+
   attr_accessor :form_step
 
   validate :step_validation
@@ -160,6 +176,11 @@ class Dataset
                           application, name, tags_array, legend, metadata
   end
 
+  def update(token)
+    DatasetService.update token, id, connector_url if provider.eql? 'csv'
+    update_metadata(token)
+  end
+
   def update_metadata(token)
     tags_array = tags && tags.split(',') || []
     DatasetService.update_metadata(
@@ -203,11 +224,13 @@ class Dataset
   def step_validation
     step_index = form_steps[:pages].index(form_step)
 
-    if self.form_steps[:pages].index('title') <= step_index
+    title_step = form_steps[:pages].index('title')
+    if title_step && title_step <= step_index
       self.errors['name'] << 'You must enter a name for the dataset' if self.name.blank? || self.name.strip.blank?
     end
 
-    if self.form_steps[:pages].index('connector') <= step_index
+    connector_step = form_steps[:pages].index('connector')
+    if connector_step && connector_step == step_index
       self.errors['type'] << 'You must enter a connector type' unless CONNECTOR_TYPES.include? self.type
       self.errors['provider'] << 'You must enter a connector provider' unless CONNECTOR_PROVIDERS.include? self.provider
       self.errors['connector_url'] << 'You must enter a valid url' \
@@ -217,7 +240,8 @@ class Dataset
       end
     end
 
-    if self.form_steps[:pages].index('labels') <= step_index
+    pages_step = form_steps[:pages].index('labels')
+    if pages_step && pages_step <= step_index
       unless self.legend && self.legend.is_a?(Hash)
         self.errors['legend'] << 'Labels not correctly defined'
         return

@@ -8,6 +8,10 @@ class AdminController < ActionController::Base
   before_action :set_user_gon
   layout 'admin'
 
+  def ensure_only_admin_user
+    ensure_user_can 'access_admin_only'
+  end
+
   private
 
   def ensure_admin_user

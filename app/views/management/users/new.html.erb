@@ -23,8 +23,8 @@
         </div>
         <div class="container -big">
           <div class="c-radio">
-            <%= f.radio_button :site_role, UserType::MANAGER, checked: @usa.role == UserType::MANAGER %>
-            <%= f.label :site_role, 'Manager', value:  UserType::MANAGER %>
+            <%= f.radio_button :site_role, UserType::ADMIN, checked: @usa.role == UserType::ADMIN %>
+            <%= f.label :site_role, 'Site Admin', value:  UserType::ADMIN %>
             <%= f.radio_button :site_role, UserType::PUBLISHER, checked: @usa.role == UserType::PUBLISHER %>
             <%= f.label :site_role, 'Publisher', value:  UserType::PUBLISHER %>
           </div>

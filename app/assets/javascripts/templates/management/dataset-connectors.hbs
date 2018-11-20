@@ -31,7 +31,18 @@
     <input type="hidden" name="dataset[type]" value="{{selected.type}}">
   </div>
 
+  {{#if_eq uploaderDisabled false}}
   <div>
+    <label for="url_uploader">URL/File Uploader</label>
+    <select id="url_uploader" data-placeholder="Choose the csv" class="js-uploader">
+      <option></option>
+      <option value="url" {{#if_eq fileUploader 'url'}}selected="selected" {{/if_eq}}>URL</option>
+      <option value="file" {{#if_eq fileUploader 'file'}}selected="selected" {{/if_eq}}>File Upload</option>
+    </select>
+  </div>
+  {{/if_eq}}
+
+  <div class="input-container{{#if_eq fileUploader 'file'}}--disabled{{/if_eq}}">
     <label for="url">URL:</label>
     <input id="url" name="dataset[connector_url]" class="js-url" placeholder="Dataset URL" />
   </div>
@@ -39,5 +50,10 @@
   <div class="input-container{{#if dataPathDisabled}}--disabled{{/if}}">
     <label for="data_path">Data path:</label>
     <input id="data_path" name="dataset[data_path]" class="js-data-path" placeholder="JSON data path e.g. /results" {{#if dataPathDisabled}}disabled="disabled"{{/if}}/>
+  </div>
+
+  <div class="input-container{{#ne fileUploader 'file'}}--disabled{{/ne}}">
+    <label for="csv_uploader">CSV Uploader</label>
+    <input type="file" name="csv_uploader" id="csv_uploader" class="js-data-path" accept="text/csv">
   </div>
 </div>

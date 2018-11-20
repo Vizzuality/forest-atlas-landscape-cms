@@ -14,7 +14,7 @@ class UserSiteAssociation < ApplicationRecord
   belongs_to :site
   belongs_to :user
 
-  scope :manager, -> { where(role: UserType::MANAGER) }
+  scope :admin, -> { where(role: UserType::ADMIN) }
   scope :publisher, -> { where(role: UserType::PUBLISHER) }
 
   validates :user, uniqueness: {scope: :site}

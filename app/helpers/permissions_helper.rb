@@ -38,26 +38,37 @@ module PermissionsHelper
       return false
     end
     case action
-      when 'access_admin'
-        return current_user_is_admin
-      when 'access_management'
-        return current_user_is_admin || current_user_has_roles([UserType::MANAGER])
-      when 'access_publish'
-        return current_user_is_admin || current_user_has_roles([UserType::MANAGER, UserType::PUBLISHER])
-      else
-        false
+    when 'access_admin_only'
+      return current_user_is_admin
+    when 'access_admin'
+      return current_user_is_admin || current_user_has_roles([UserType::ADMIN])
+    when 'access_management'
+      return current_user_is_admin || current_user_has_roles([UserType::ADMIN])
+    when 'access_publish'
+      return current_user_is_admin || current_user_has_roles([UserType::ADMIN, UserType::PUBLISHER])
+    else
+      false
     end
   end
 
   def user_site_manager?(site)
     return false unless current_user && site
-    if current_user_is_admin || (site.users.exists?(current_user) &&
-      current_user.user_site_associations.find_by(site_id: site.id).role == UserType::MANAGER)
+    if current_user_is_admin || (site.users.exists?(current_user.id) &&
+      current_user.user_site_associations.find_by(site_id: site.id).role == UserType::ADMIN)
       return true
     else
       return false
     end
+  end
 
+  def user_site_admin?(site_id)
+    return false unless current_user
+    # Tests new sites
+    return false if site_id.nil? && !current_user_is_admin
+    # Tests existing sites
+    return false unless current_user_is_admin ||
+      current_user.owned_sites.pluck(:site_id).include?(site_id)
+    true
   end
 
   def unset_user_gon

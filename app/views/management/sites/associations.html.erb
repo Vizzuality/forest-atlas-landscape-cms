@@ -23,8 +23,8 @@
             </div>
             <footer>
               <div class="c-radio">
-                <%= ff.radio_button :role, UserType::MANAGER %>
-                <%= ff.label :role, 'Manager', value: UserType::MANAGER %>
+                <%= ff.radio_button :role, UserType::ADMIN %>
+                <%= ff.label :role, 'Site Admin', value: UserType::ADMIN %>
                 <%= ff.radio_button :role, UserType::PUBLISHER %>
                 <%= ff.label :role, 'Publisher', value: UserType::PUBLISHER %>
               </div>

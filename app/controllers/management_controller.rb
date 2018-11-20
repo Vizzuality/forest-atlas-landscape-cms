@@ -11,11 +11,11 @@ class ManagementController < ActionController::Base
   def authenticate_user_for_site!
     raise ScriptError, 'Expected site to be defined to validate authorization, but none found' if @site.nil?
 
-    unless user_can?('access_admin') || (user_can?('access_management') || (user_can?('access_publish')) \
-      && @site.users.exists?(current_user))
-      flash[:error] = 'You do not have permissions to view this page'
-      redirect_to :no_permissions
-    end
+    return if user_can?('access_admin_only')
+    return if (user_can?('access_management') || user_can?('access_publish')) && @site.users.exists?(current_user.id)
+
+    flash[:error] = 'You do not have permissions to view this page'
+    redirect_to :no_permissions
   end
 
   private

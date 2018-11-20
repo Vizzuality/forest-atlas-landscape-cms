@@ -47,11 +47,16 @@ class WidgetsPage extends React.Component {
       id: { value: widget.id },
       name: { value: widget.name, sortable: true },
       description: { value: widget.description },
-      edit: edit_url,
-      delete: delete_url
+      ...(edit_url ? { edit: edit_url } : {}),
+      ...(delete_url ? { delete: delete_url } : {})
     }));
 
     const { deleteWarning, deleteSuccess, deleteError } = this.state;
+
+    const actions = [
+      ...(rows.length && rows[0].edit ? ['edit'] : []),
+      ...(rows.length && rows[0].delete ? ['delete'] : [])
+    ];
 
     return (
       <div className="l-page-list">
@@ -90,7 +95,7 @@ class WidgetsPage extends React.Component {
             searchable
             columns={['name', 'description']}
             data={rows}
-            actions={this.props.admin ? ['edit', 'delete'] : []}
+            actions={actions}
             onClickAction={(...params) => this.onClickAction(...params)}
           />
         </div>
