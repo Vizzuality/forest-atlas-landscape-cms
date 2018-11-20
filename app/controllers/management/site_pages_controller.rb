@@ -11,10 +11,11 @@ class Management::SitePagesController < ManagementController
                .where(sites: {slug: params[:site_slug]})
                .order(params[:order] || 'created_at ASC')
 
-    publisher = (current_user.roles.include? UserType::PUBLISHER)
+    site = Site.find_by(slug: params[:site_slug])
+    admin = current_user.admin? || user_site_admin?(site.id)
 
     @formattedPages = @pages.map do |page|
-      delete = if publisher
+      delete = if !admin
                  {'value' => nil}
                else
                  if page.deletable?
