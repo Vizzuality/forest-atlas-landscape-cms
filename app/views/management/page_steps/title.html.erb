@@ -46,7 +46,7 @@
               <div class="logo">
                 <%= f.label :thumbnail, value: 'Change thumbnail', for: 'thumbnail', tabindex: '0' %>
                 <%= f.file_field :thumbnail, id: 'thumbnail', accept: 'image/*', 'data-type': 'image', class: 'js-data-path', placeholder: 'Select a file' %>
-                <div class="js-fake-input"></div>
+
                 <% if !@page.thumbnail.nil? && @page.thumbnail_file_name %>
                   <div class="preview js-preview">
                     <%= image_tag @page.thumbnail.url, alt: 'Logo image' %>
