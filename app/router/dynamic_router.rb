@@ -132,7 +132,7 @@ class DynamicRouter
                               { id: site_page.id },
                               constraints, tags, main_route_host)
         routes_to_write <<
-          RouteDefinition.new('/report.html', 'site_page#map_report',
+          RouteDefinition.new(path + '/report.html', 'site_page#map_report',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
       when ContentType::ANALYSIS_DASHBOARD

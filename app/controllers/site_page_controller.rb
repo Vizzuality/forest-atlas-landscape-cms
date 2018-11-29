@@ -88,11 +88,12 @@ class SitePageController < ApplicationController
   end
 
   def map
-    begin
-      @map_html = MapVersion.find_by(version: @site_page.content['version']).html
-    rescue
-      @map_html = ''
-    end
+    build_map_variables
+  end
+
+  def map_report
+    build_map_variables
+    @remove_header = true
   end
 
   def login
@@ -191,5 +192,24 @@ class SitePageController < ApplicationController
 
   def create_menu_tree
     @menu_tree = @menu_root.hash_tree
+  end
+
+  def build_map_variables
+    begin
+      @map_html = MapVersion.find_by(version: @site_page.content['version']).html
+    rescue
+      @map_html = ''
+    end
+
+    if @site_page.content.nil?
+      @map_content =  '{}'
+    elsif @site_page.content['settings'].is_a? Hash
+      @map_content = @site_page.content['settings']
+      @map_content['layerPanel'] = JSON.parse(@map_content['layerPanel'])
+      @map_content['analysisModules'] = JSON.parse(@map_content['analysisModules'])
+      @map_content = @map_content.to_json.squish.gsub("'", %q(\\\')).html_safe
+    else
+      @map_content = @site_page.content['settings'].to_s.squish.gsub("'", %q(\\\')).html_safe
+    end
   end
 end
