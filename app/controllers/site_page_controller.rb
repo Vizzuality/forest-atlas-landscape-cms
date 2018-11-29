@@ -95,6 +95,15 @@ class SitePageController < ApplicationController
     end
   end
 
+  def map_report
+    begin
+      @remove_header = true
+      @map_html = MapVersion.find_by(version: @site_page.content['version']).html
+    rescue
+      @map_html = ''
+    end
+  end
+
   def login
     @return_link = request.headers['HTTP_REFERER'].remove(request.base_url) || '' rescue ''
     @return_link = '?page=' + @return_link unless @return_link.blank?
