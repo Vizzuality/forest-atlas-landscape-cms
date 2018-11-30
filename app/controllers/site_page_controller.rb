@@ -11,6 +11,8 @@ class SitePageController < ApplicationController
   before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable, :sitemap]
   protect_from_forgery except: :map_resources
 
+  MAX_PAGE_SIZE = 10
+
   def load_site_page
     @site_page = SitePage.find(params[:id])
 
@@ -178,6 +180,12 @@ class SitePageController < ApplicationController
       format.html { render :sitemap }
       format.xml
     end
+  end
+
+  def search_results
+    @search_string = params[:search]
+    @page_number = params[:page] || 1
+    @search_results = []
   end
 
   private

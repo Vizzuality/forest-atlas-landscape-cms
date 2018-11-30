@@ -1,0 +1,22 @@
+<h1>Search Results</h1>
+
+Results for <%= @search_string %>.
+
+<div class="search-results"}>
+<% @search_results.each do |result| %>
+  <div class="search-result">
+    <a href="<%= page_link result %>">
+      <img src="<%= result.image %>">
+      <h1><%= result.name %></h1>
+      <p><%= result.description %></p>
+      </a>
+  </div>
+<% end %>
+</div>
+
+<% if @page_number > 1 %>
+<a href="<%= %>">Previous Page</a>
+<% end %>
+Page <%= @page_number %>
+<a href="<%= %>">Next Page</a>
+
