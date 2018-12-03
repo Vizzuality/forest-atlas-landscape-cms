@@ -1,22 +1,15 @@
-<h1>Search Results</h1>
+<%= javascript_pack_tag 'application' %>
 
-Results for <%= @search_string %>.
+<%= react_component('public/SearchResults', {
+  site: @site_page.site,
+  search: @search_string,
+  page: @page_number,
+  totalPages: 1,
+  results: @search_results
+}) %>
 
-<div class="search-results"}>
-<% @search_results.each do |result| %>
-  <div class="search-result">
-    <a href="<%= page_link result %>">
-      <img src="<%= result.image %>">
-      <h1><%= result.name %></h1>
-      <p><%= result.description %></p>
-      </a>
-  </div>
-<% end %>
-</div>
+<script type="text/javascript">
+  window.route = 'SearchResults';
+</script>
 
-<% if @page_number > 1 %>
-<a href="<%= %>">Previous Page</a>
-<% end %>
-Page <%= @page_number %>
-<a href="<%= %>">Next Page</a>
 
