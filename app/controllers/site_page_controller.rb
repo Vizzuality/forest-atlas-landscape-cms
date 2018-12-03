@@ -11,7 +11,7 @@ class SitePageController < ApplicationController
   before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable, :sitemap]
   protect_from_forgery except: :map_resources
 
-  MAX_PAGE_SIZE = 10
+  MAX_PAGE_SIZE = 9
 
   def load_site_page
     @site_page = SitePage.find(params[:id])
@@ -184,8 +184,10 @@ class SitePageController < ApplicationController
 
   def search_results
     @search_string = params[:search]
+    return [] unless @search_string
     @page_number = params[:page] || 1
-    @search_results = PgSearch.multisearch(params[:search]).page(@page_number).per_page(MAX_PAGE_SIZE)
+    @search_results = SitePage.search(params[:search]).
+      for_site(@site_page.site_id).page(@page_number).per_page(MAX_PAGE_SIZE)
   end
 
   private

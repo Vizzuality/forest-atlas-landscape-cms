@@ -38,7 +38,7 @@ class SearchResults extends PureComponent {
             <a
               href={`${location.origin}${
                 location.pathname
-              }?search=${encodeURIComponent(this.props.search)}&page=${this
+              }?search=${encodeURIComponent(this.props.search)}&page=${+this
                 .props.page - 1}`}
               className={classnames({
                 "c-button": true,
@@ -54,7 +54,7 @@ class SearchResults extends PureComponent {
             <a
               href={`${location.origin}${
                 location.pathname
-              }?search=${encodeURIComponent(this.props.search)}&page=${this
+              }?search=${encodeURIComponent(this.props.search)}&page=${+this
                 .props.page + 1}`}
               className={classnames({
                 "c-button": true,

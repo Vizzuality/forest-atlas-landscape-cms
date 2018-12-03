@@ -26,8 +26,10 @@ class SitePage < Page
                   associated_against: {
                     tags: :value
                   },
-                  against: { name: 'A', description: 'B', content: 'C'},
-                  order_within_rank: 'page.updated_at DESC'
+                  against: { name: 'A', description: 'B', content: 'C' },
+                  order_within_rank: 'pages.updated_at DESC'
+
+  scope :for_site, ->(site_id) { where(site_id: site_id)}
 
   belongs_to :site
   has_many :routes, through: :site
