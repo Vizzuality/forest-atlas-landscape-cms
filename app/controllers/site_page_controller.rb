@@ -11,7 +11,7 @@ class SitePageController < ApplicationController
   before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable, :sitemap]
   protect_from_forgery except: :map_resources
 
-  MAX_PAGE_SIZE = 9
+  MAX_PAGE_SIZE = 6
 
   def load_site_page
     @site_page = SitePage.find(params[:id])
@@ -183,11 +183,21 @@ class SitePageController < ApplicationController
   end
 
   def search_results
-    @search_string = params[:search]
-    return [] unless @search_string
-    @page_number = params[:page] || 1
-    @search_results = SitePage.search(params[:search]).
-      for_site(@site_page.site_id).page(@page_number).per_page(MAX_PAGE_SIZE)
+    @search_string = params[:search] || ''
+    @page_number = params[:page].to_i > 0 ? params[:page].to_i : 1 rescue 1
+    @search_results = []
+    @total_pages = 1
+    return if @search_string.blank?
+
+    @search_results =
+      SitePage.search(params[:search])
+        .for_site(@site_page.site_id).enabled
+        .limit(MAX_PAGE_SIZE)
+        .offset((@page_number - 1) * MAX_PAGE_SIZE)
+    @total_pages =
+      SitePage.search(params[:search])
+        .for_site(@site_page.site_id).enabled.count
+    @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
   end
 
   private

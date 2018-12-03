@@ -30,6 +30,7 @@ class SitePage < Page
                   order_within_rank: 'pages.updated_at DESC'
 
   scope :for_site, ->(site_id) { where(site_id: site_id)}
+  scope :enabled, -> { where(enabled: true) }
 
   belongs_to :site
   has_many :routes, through: :site
