@@ -118,6 +118,10 @@ class DynamicRouter
           RouteDefinition.new('/logout', 'site_page#logout',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
+        routes_to_write <<
+          RouteDefinition.new('/search_results', 'site_page#search_results',
+                              { id: site_page.id },
+                              constraints, tags, main_route_host)
 
         target = ContentType::HOMEPAGE ? 'site_page#homepage' : 'site_page#homepagev2'
       when ContentType::OPEN_CONTENT
