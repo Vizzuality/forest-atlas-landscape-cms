@@ -21,6 +21,14 @@
 #
 
 class SitePage < Page
+  include PgSearch
+  pg_search_scope :search,
+                  associated_against: {
+                    tags: :value
+                  },
+                  against: { name: 'A', description: 'B', content: 'C'},
+                  order_within_rank: 'page.updated_at DESC'
+
   belongs_to :site
   has_many :routes, through: :site
   has_one :site_template, through: :site

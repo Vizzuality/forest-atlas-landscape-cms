@@ -7,59 +7,61 @@ end
 
 ruby '2.3.1'
 gem 'rails', '>= 5.0.0', '< 5.1'
-gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.0'
-gem 'dotenv-rails', '~> 2.1'
-gem 'closure_tree'
-gem 'paperclip', '~> 5.2.0'
-gem 'will_paginate', '~> 3.1.0'
+
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'activemodel-associations'
-gem 'handlebars_assets'
+gem 'closure_tree'
+gem 'dotenv-rails', '~> 2.1'
 gem 'enumerate_it'
-gem 'gon'
-gem 'wicked' # Multi-steps form
-gem 'jbuilder', '~> 2.0'
-
 gem 'faraday', '~> 0.9.2'
 gem 'faraday_middleware', '~> 0.11.0.1'
-
-gem 'webpacker', '~> 3.3.1'
+gem 'gon'
+gem 'handlebars_assets'
+gem 'jbuilder', '~> 2.0'
+gem 'paperclip', '~> 5.2.0'
+gem 'pg', '~> 0.18'
+gem 'pg_search'
+gem 'puma', '~> 3.0'
 gem 'react-rails', '~> 2.4.4'
-
 gem 'sendgrid-ruby'
+gem 'webpacker', '~> 3.3.1'
+gem 'wicked' # Multi-steps form
+gem 'will_paginate', '~> 3.1.0'
+
 
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
 # Assets Pipeline
 gem 'autoprefixer-rails'
-gem 'sass-rails', '>= 5.0'
-gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
-gem 'turbolinks', '~> 5.x'
 gem 'rails-assets-fitvids', '~> 1.2.0'
+gem 'sass-rails', '>= 5.0'
+gem 'turbolinks', '~> 5.x'
+gem 'uglifier', '>= 1.3.0'
+
 
 # Gems with known vulnerabilities in older versions
 gem 'ffi', '>= 1.9.24'
 gem 'loofah', '>= 2.2.1'
-gem 'sprockets', '>= 3.7.2'
 gem 'rails-html-sanitizer', '>= 1.0.4'
+gem 'sprockets', '>= 3.7.2'
 
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-d3', '~> 3.5.16'
-  gem 'rails-assets-vega', '~> 2.6.3'
-  gem 'rails-assets-leaflet', '1.3.3'
-  gem 'rails-assets-esri-leaflet', '2.2.1'
   gem 'rails-assets-backbone'
-  gem 'rails-assets-jquery-ui'
-  gem 'rails-assets-fuse.js'
+  gem 'rails-assets-d3', '~> 3.5.16'
   gem 'rails-assets-datalib', '1.7.3'
-  gem 'rails-assets-SINTEF-9012--PruneCluster', '1.1.0'
+  gem 'rails-assets-esri-leaflet', '2.2.1'
+  gem 'rails-assets-fuse.js'
+  gem 'rails-assets-jquery-ui'
+  gem 'rails-assets-leaflet', '1.3.3'
   gem 'rails-assets-select2', '4.0.3'
+  gem 'rails-assets-SINTEF-9012--PruneCluster', '1.1.0'
   gem 'rails-assets-summernote'
+  gem 'rails-assets-vega', '~> 2.6.3'
+
 end
 
 # Use ActiveModel has_secure_password
@@ -74,18 +76,19 @@ end
 
 group :development do
   gem 'annotate'
-  gem 'web-console'
   gem 'listen', '~> 3.0.5'
+  gem 'pry-rails'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'pry-rails'
+  gem 'web-console'
 
   # Deploy
   gem 'capistrano', '3.7'
-  gem 'capistrano-rails'
   gem 'capistrano-bundler'
-  gem 'capistrano-rvm'
   gem 'capistrano-passenger'
+  gem 'capistrano-rails'
+  gem 'capistrano-rvm'
+
 end
 
 gem 'appsignal'

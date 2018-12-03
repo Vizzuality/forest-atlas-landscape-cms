@@ -185,7 +185,7 @@ class SitePageController < ApplicationController
   def search_results
     @search_string = params[:search]
     @page_number = params[:page] || 1
-    @search_results = []
+    @search_results = PgSearch.multisearch(params[:search]).page(@page_number).per_page(MAX_PAGE_SIZE)
   end
 
   private

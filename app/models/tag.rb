@@ -10,6 +10,8 @@
 #
 
 class Tag < ApplicationRecord
+  # include PgSearch
+  # multisearchable against: :value
   belongs_to :site_page, foreign_key: :page_id, optional: true
 
   validates_presence_of :value
