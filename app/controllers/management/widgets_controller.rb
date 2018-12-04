@@ -17,7 +17,6 @@ class Management::WidgetsController < ManagementController
         edit_url: edit_management_site_widget_step_path(params[:site_slug], x.id),
         delete_url: delete_url(x.dataset, x.id) }
     end
-    gon.clement = @widgets
     @widgets
   end
 
