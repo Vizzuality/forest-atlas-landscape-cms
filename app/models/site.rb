@@ -106,11 +106,13 @@ class Site < ApplicationRecord
       self.contexts.each do |c|
         contexts << c if c.users.pluck(:user_id).include?(user.id)
       end
+    elsif user && user.admin
+      contexts = Context.all
     else
       contexts = self.contexts
     end
 
-    contexts.each{|c| c.context_datasets.each{|d| datasets << d.dataset_id}}
+    contexts.each{ |c| c.context_datasets.each{|d| datasets << d.dataset_id} }
     datasets.uniq!
     datasets
   end
