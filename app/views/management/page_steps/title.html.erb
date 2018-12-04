@@ -27,18 +27,19 @@
             <%= f.label :description %>
             <%= f.text_area :description, placeholder: 'Add your description here' %>
           </div>
-        <% unless @page.content_type == ContentType::HOMEPAGE %>
+        <% unless [ContentType::HOMEPAGE, ContentType::SEARCH_RESULTS].include?(@page.content_type) %>
           <div class="container">
             <%= f.label :uri %>
             <%= f.text_field :uri, placeholder: 'my-page', :readonly => @page.content_type == ContentType::STATIC_CONTENT %>
           </div>
-        <% end %>
         <div class="container">
           <%= f.label :tags %>
           <%= f.text_field :tags_attributes, placeholder: 'tags', value: f.object.tags.pluck(:value).join(' ') %>
         </div>
+        <% end %>
       </div>
 
+      <% unless [ContentType::HOMEPAGE, ContentType::SEARCH_RESULTS].include?(@page.content_type) %>
       <h3>Thumbnail</h3>
       <div class="c-inputs-container">
         <div class="container">
@@ -57,6 +58,8 @@
             </div>
           </div>
         </div>
+        <% end %>
+
         <% unless @page.content_type == ContentType::HOMEPAGE or @page.content_type == ContentType::STATIC_CONTENT %>
           <footer>
             <div class="c-checkbox">

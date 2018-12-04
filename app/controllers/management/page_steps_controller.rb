@@ -141,7 +141,6 @@ class Management::PageStepsController < ManagementController
         @widgets
       when 'open_content_preview'
         gon.widgets = get_widgets_list
-
     end
 
     @breadcrumbs = [
@@ -252,13 +251,8 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward next_step, next_step, next_step
 
-      # LINK PATH
-      when 'link'
-        set_current_page_state
-        move_forward
-
-      # MAP PATH
-      when 'map'
+      # LINK, MAP, SEARCH PATH
+      when 'link', 'map', 'search_query'
         set_current_page_state
         move_forward
     end

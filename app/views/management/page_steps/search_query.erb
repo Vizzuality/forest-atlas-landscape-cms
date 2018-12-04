@@ -1,0 +1,31 @@
+<% content_for :extended_header do %>
+    <div class="c-extended-header -high">
+      <div class="wrapper">
+        <div class="description">
+          <h1>Search Query</h1>
+          <p>Please write the words for the search results page.</p>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+<%= render partial: 'shared/errors', locals: { resource: @page } %>
+
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <div class="l-page-creation -link">
+
+      <%= f.hidden_field :content_type %>
+
+      <div class="wrapper">
+        <div class="c-fieldset">
+          <%= f.text_field :content, placeholder: 'Search query', id: 'content' %>
+          <%= f.label 'Search query', for: 'content' %>
+        </div>
+      </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true} %>
+<% end %>
