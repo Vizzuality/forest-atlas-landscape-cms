@@ -54,7 +54,7 @@
 }).call(this);
 
 $(window).on('load', function () {
-  $('#site_page_content_settings_narrative').summernote({
+  $('#site_page_content_settings_narrative, #site_page_content_settings_alternativeNarrative').summernote({
     toolbar: [
       ['link'],
       ['style', ['bold', 'italic', 'underline', 'clear']],
