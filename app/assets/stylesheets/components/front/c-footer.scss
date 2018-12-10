@@ -2,11 +2,15 @@
   padding: 15px 0;
 
   @if $theme == 2 or $theme == 3 {
-    background-color: rgba($color-6, .2);
+    background-color: rgba($color-6, 0.2);
   }
 
   @if $theme == 1 {
-    background-color: rgba($color-1, .2);
+    background-color: rgba($color-1, 0.2);
+  }
+
+  @media print {
+    display: none;
   }
 }
 
@@ -14,7 +18,7 @@
   padding: 15px 0;
 
   @if $theme == 3 {
-    background-color: rgba($color-17, .75);
+    background-color: rgba($color-17, 0.75);
   }
 
   @if $theme == 2 {
@@ -29,6 +33,10 @@
   @media #{$mq-tablet} {
     height: 50px;
     padding: 0;
+  }
+
+  @media print {
+    display: none;
   }
 
   a {
@@ -60,7 +68,7 @@
     }
 
     @if $theme == 1 {
-      color: rgba($color-3, .1);
+      color: rgba($color-3, 0.1);
     }
   }
 
@@ -69,14 +77,14 @@
       &:after {
         display: inline-block;
         margin: 0 3px;
-        content: '|';
+        content: "|";
 
         @if $theme == 1 or $theme == 3 {
-          color: rgba($color-3, .3);
+          color: rgba($color-3, 0.3);
         }
 
         @if $theme == 2 {
-          color: rgba($color-1, .3);
+          color: rgba($color-1, 0.3);
         }
       }
 
@@ -97,13 +105,13 @@
         }
 
         font-weight: $font-weight-light;
-        letter-spacing: .1px;
+        letter-spacing: 0.1px;
         line-height: 1.7;
       }
     }
   }
 
-  .share  {
+  .share {
     display: flex;
     flex-direction: column;
     margin: 15px 0 0;
@@ -116,7 +124,7 @@
     > .share-text {
       color: $color-3;
       font-weight: $font-weight-light;
-      letter-spacing: .1px;
+      letter-spacing: 0.1px;
       line-height: 1.7;
     }
 

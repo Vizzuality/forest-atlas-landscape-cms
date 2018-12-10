@@ -8,7 +8,7 @@
       position: absolute;
       top: 0;
       width: 100vw;
-      background: rgba($color-17, .75);
+      background: rgba($color-17, 0.75);
       color: $color-3;
     }
   }
@@ -68,6 +68,10 @@
       display: none;
     }
 
+    @media print {
+      background-color: none !important;
+    }
+
     > .logo-container {
       max-width: calc(100% - 63px);
       margin-right: 35px;
@@ -97,12 +101,16 @@
       cursor: pointer;
       z-index: 12;
 
+      @media print {
+        display: none;
+      }
+
       > div {
         position: absolute;
         left: 0;
         width: 100%;
         height: 3px;
-        transition: transform .3s ease-out, opacity .3s ease-out;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         background-color: $color-3;
 
         &:first-of-type {
@@ -123,14 +131,14 @@
 
   > .mobile-drawer {
     position: fixed;
-    top:  0;
+    top: 0;
     left: -100%;
     width: 100%;
     height: 100vh;
     padding-top: 30px;
-    transition: transform .3s ease-out;
+    transition: transform 0.3s ease-out;
     color: $color-3;
-    box-shadow: 1px 0 1px 0 rgba($color-4, .2);
+    box-shadow: 1px 0 1px 0 rgba($color-4, 0.2);
     z-index: 10;
     will-change: transform;
     overflow-y: auto;
@@ -161,15 +169,19 @@
       display: none;
     }
 
-    a { color: currentColor; }
+    a {
+      color: currentColor;
+    }
 
     ul {
       display: block;
-      margin:  0 0 30px;
+      margin: 0 0 30px;
       padding: 0;
       list-style: none;
 
-      &:last-of-type { margin-bottom: 0; }
+      &:last-of-type {
+        margin-bottom: 0;
+      }
 
       li {
         display: block;
@@ -179,7 +191,6 @@
           padding-left: 15px;
         }
       }
-
     }
 
     &.-opened {
@@ -213,7 +224,6 @@
     }
 
     .c-dropdown-selector {
-
       > .options {
         padding: 0;
         right: auto;
@@ -284,7 +294,7 @@
     @if $theme == 3 {
       max-width: $body-max-width;
       margin: 0 auto;
-      background: transparent
+      background: transparent;
     }
 
     @if $theme == 2 {
@@ -299,6 +309,10 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
+    }
+
+    @media print {
+      background-color: none !important;
     }
 
     > .logo-container {
@@ -327,6 +341,10 @@
       flex-grow: 1;
       flex-wrap: wrap;
       justify-content: flex-end;
+
+      @media print {
+        display: none;
+      }
     }
 
     .menu {
@@ -337,7 +355,7 @@
       > ul {
         height: 100%;
         min-width: 45px;
-        margin:  0;
+        margin: 0;
         padding: 0;
         list-style: none;
 
@@ -366,11 +384,11 @@
 
           &.-active {
             @if $theme == 2 or $theme == 3 {
-              background-color: rgba($color-3, .1);
+              background-color: rgba($color-3, 0.1);
             }
 
             @if $theme == 1 {
-              background-color: rgba($color-1, .1);
+              background-color: rgba($color-1, 0.1);
             }
           }
 
@@ -378,11 +396,11 @@
           &:last-of-type {
             &:not(:first-of-type) {
               @if $theme == 2 {
-                border-right: 1px solid rgba($color-3, .1);
+                border-right: 1px solid rgba($color-3, 0.1);
               }
 
               @if $theme == 1 or $theme == 3 {
-                border-right: 1px solid rgba($color-1, .1);
+                border-right: 1px solid rgba($color-1, 0.1);
               }
             }
           }
@@ -399,10 +417,10 @@
               top: 90%;
               margin: 5px 0 0;
               width: calc(100% + 30px);
-              transition: opacity .2s ease-out, visibility 0s .2s;
+              transition: opacity 0.2s ease-out, visibility 0s 0.2s;
               background-color: $color-3;
               list-style: none;
-              box-shadow: 0 2px 3px 0 rgba($color-7, .3);
+              box-shadow: 0 2px 3px 0 rgba($color-7, 0.3);
               cursor: auto;
               opacity: 0;
               visibility: hidden;
@@ -410,7 +428,7 @@
               will-change: transform, opacity;
 
               @if $theme == 3 {
-                background-color: rgba($color-17, .75);
+                background-color: rgba($color-17, 0.75);
               }
 
               li {
@@ -420,7 +438,7 @@
                 text-transform: none;
 
                 @if $theme == 3 {
-                  border-bottom: 1px solid rgba($color-9, .2);
+                  border-bottom: 1px solid rgba($color-9, 0.2);
                 } @else {
                   border-bottom: 1px solid $color-9;
                 }
@@ -431,7 +449,7 @@
 
                 &:hover {
                   @if $theme == 3 {
-                    background-color: rgba($color-17, .3);
+                    background-color: rgba($color-17, 0.3);
                   }
 
                   @if $theme == 2 {
@@ -439,7 +457,7 @@
                   }
 
                   @if $theme == 1 {
-                    background-color: rgba($color-1, .1);
+                    background-color: rgba($color-1, 0.1);
                   }
                 }
 
@@ -467,7 +485,7 @@
 
             &:hover {
               > ul {
-                transition: opacity .2s ease-out;
+                transition: opacity 0.2s ease-out;
                 opacity: 1;
                 visibility: visible;
                 display: block;
@@ -478,7 +496,7 @@
               &.-active {
                 > ul {
                   li:first-of-type {
-                    background-color: rgba($color-3, .1);
+                    background-color: rgba($color-3, 0.1);
                   }
                 }
               }
@@ -495,7 +513,6 @@
             }
           }
         }
-
       }
 
       .profile-image {
@@ -533,23 +550,23 @@
         top: 55px;
         left: 0;
         width: 100%;
-        content: '';
+        content: "";
 
         @if $theme == 3 {
           top: 50px;
           height: 30px;
-          background-color: rgba($color-17, .9);
+          background-color: rgba($color-17, 0.9);
         }
 
         @if $theme == 2 {
           height: 25px;
-          background-color: rgba($color-7, .7);
+          background-color: rgba($color-7, 0.7);
         }
 
         @if $theme == 1 {
           top: 50px;
           height: 30px;
-          background-color: rgba($color-1, .7);
+          background-color: rgba($color-1, 0.7);
         }
       }
 
@@ -596,7 +613,7 @@
             }
 
             &:not(:last-of-type):after {
-              content: ' > ';
+              content: " > ";
             }
           }
         }
@@ -612,8 +629,8 @@
           li {
             height: 100%;
             padding: 0 14px;
-            border-left: 1px solid rgba($color-3, .2);
-            letter-spacing: .1px;
+            border-left: 1px solid rgba($color-3, 0.2);
+            letter-spacing: 0.1px;
 
             @if $theme == 1 or $theme == 3 {
               padding-top: 5px;
@@ -625,11 +642,11 @@
 
             &.-active {
               @if $theme == 2 or $theme == 3 {
-                background-color: rgba($color-3, .1);
+                background-color: rgba($color-3, 0.1);
               }
 
               @if $theme == 1 {
-                background-color: rgba($color-1, .1);
+                background-color: rgba($color-1, 0.1);
               }
             }
           }
@@ -655,6 +672,10 @@
       background-color: $color-1;
     }
 
+    @media print {
+      display: none;
+    }
+
     > div {
       flex-grow: 1;
 
@@ -667,5 +688,9 @@
 
 // Map specific styles
 // We want to hide the container for now.
-.app-header__logo-container { display: none; }
-.app-header__title-container { display: none; }
+.app-header__logo-container {
+  display: none;
+}
+.app-header__title-container {
+  display: none;
+}
