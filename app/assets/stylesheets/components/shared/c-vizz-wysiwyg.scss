@@ -1,6 +1,8 @@
 .vizz-wysiwyg {
   .cw-quill .ql-bubble .ql-tooltip {
-    z-index: 2e3;
+    // Must be below .c-action-bar and the modal
+    // for the link edition but over .cw-wysiwyg-toolbar
+    z-index: 9;
   }
 
   .ql-container {
@@ -247,4 +249,11 @@
   .modal-container {
     z-index: 1060;
   }
+}
+
+// Fixes a bug where the "Add" button is placed on top
+// of the link edition modal
+// Must be below .ql-tooltip and .c-actions-bar
+.cw-wysiwyg-toolbar {
+  z-index: 8;
 }
