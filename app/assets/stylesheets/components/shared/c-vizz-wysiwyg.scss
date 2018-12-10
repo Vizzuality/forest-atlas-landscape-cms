@@ -1,6 +1,6 @@
 .vizz-wysiwyg {
   .cw-quill .ql-bubble .ql-tooltip {
-    z-index: 2E3;
+    z-index: 2e3;
   }
 
   .ql-container {
@@ -17,8 +17,8 @@
     ul,
     ol {
       display: block;
-      margin-top: .5em;
-      margin-bottom: .5em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
       list-style: initial;
 
       li {
@@ -65,7 +65,7 @@
         color: $color-4;
         font-size: $font-size-huge;
         font-weight: $font-weight-light;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
       }
 
       h2 {
@@ -73,35 +73,35 @@
         color: $color-4;
         font-size: $font-size-medium;
         font-weight: $font-weight-bold;
-        letter-spacing: .2px;
+        letter-spacing: 0.2px;
       }
 
       p {
         font-size: $font-size-normal;
-        letter-spacing: .1px;
+        letter-spacing: 0.1px;
         line-height: 1.5;
 
         & + p {
-          margin-top: .9em;
+          margin-top: 0.9em;
         }
       }
     }
   }
 
   blockquote {
-    margin: 40px auto!important;
-    padding: 0 10px!important;
-    font-size: $font-size-big!important;
+    margin: 40px auto !important;
+    padding: 0 10px !important;
+    font-size: $font-size-big !important;
     font-weight: $font-weight-light;
     font-style: italic;
-    border-left: none!important;
+    border-left: none !important;
 
     &::before {
-      content: '“';
+      content: "“";
     }
 
     &::after {
-      content: '”';
+      content: "”";
     }
 
     @media #{$mq-mobile} {
@@ -120,7 +120,7 @@
 
     @if $theme == 2 {
       color: $color-4;
-      letter-spacing: .2px;
+      letter-spacing: 0.2px;
       line-height: 1.1;
     }
 
@@ -133,7 +133,6 @@
         line-height: 1.25;
       }
     }
-
   }
 
   .cw-wysiwyg-list-item {
@@ -167,8 +166,8 @@
     }
   }
 
-
-  .c-we-chart, .c-we-chart .chart {
+  .c-we-chart,
+  .c-we-chart .chart {
     height: 250px;
     width: 100%;
   }
@@ -239,6 +238,13 @@
 
       resize: none;
     }
+  }
+}
 
+// Fixes a bug where the user can't select a widget
+// in the modal because it's below the backdrop
+.cw-modal {
+  .modal-container {
+    z-index: 1060;
   }
 }
