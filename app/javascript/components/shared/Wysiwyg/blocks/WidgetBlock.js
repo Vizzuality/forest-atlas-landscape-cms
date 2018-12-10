@@ -44,18 +44,16 @@ class WidgetBlock extends React.Component {
     if (this.state.loading) { return null; }
     return (
       <Fragment>
+        <div className="c-we-chart-title">{this.state.widget.name}</div>
         <VegaChart
           data={this.state.widget.visualization}
           reloadOnResize
         />
-        <div className="metadata">
-          <div className="title">{this.state.widget.name}</div>
-          {this.state.widget.metadata && !!this.state.widget.metadata.length && this.state.widget.metadata[0].attributes.info && (
-            <div className="caption">
-              {this.state.widget.metadata[0].attributes.info.caption}
-            </div>
-          )}
-        </div>
+        {this.state.widget.metadata && !!this.state.widget.metadata.length && this.state.widget.metadata[0].attributes.info && (
+          <div className="c-we-chart-caption">
+            {this.state.widget.metadata[0].attributes.info.caption}
+          </div>
+        )}
       </Fragment>
     );
   }

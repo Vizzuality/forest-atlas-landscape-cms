@@ -174,14 +174,16 @@
     width: 100%;
   }
 
-  .c-we-chart + .metadata {
+  .c-we-chart-title {
     flex-basis: 100%;
-    margin-top: 5px;
     text-align: center;
+    font-weight: $font-weight-bold;
+  }
 
-    .title {
-      font-weight: $font-weight-bold;
-    }
+  .c-we-chart-caption {
+    flex-basis: 100%;
+    text-align: center;
+    font-size: $font-size-small;
   }
 }
 
