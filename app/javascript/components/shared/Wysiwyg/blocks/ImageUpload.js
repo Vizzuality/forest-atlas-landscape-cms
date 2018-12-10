@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -12,12 +12,11 @@ class ImageUpload extends React.Component {
     this.state = {
       image: null,
       caption: null
-    }
-
+    };
   }
 
   imageToBase64(file) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -27,8 +26,8 @@ class ImageUpload extends React.Component {
   }
 
   generateImage(e) {
-    this.imageToBase64(this.file.files[0]).then((base64) => {
-      this.setState({ image: base64 })
+    this.imageToBase64(this.file.files[0]).then(base64 => {
+      this.setState({ image: base64 });
     });
   }
 
@@ -53,20 +52,25 @@ class ImageUpload extends React.Component {
             name="wysiwyg-file"
             ref={input => (this.file = input)}
             onChange={e => this.generateImage(e)}
+            aria-label="Add image"
           />
         </div>
         <input
           type="text"
           name="wysiwyg-file-caption"
-          placeholder="add image caption"
+          placeholder="Add caption/alternative text"
           className="fa-wysiwyg-file__form--caption"
           ref={caption => (this.caption = caption)}
           onChange={e => this.setImageCaption(e)}
+          aria-label="Image caption/alternative text"
         />
         <button
           role="button"
           className="fa-wysiwyg-file__form--submit"
-          onClick={e => this.setImageData(e)}>Done</button>
+          onClick={e => this.setImageData(e)}
+        >
+          Done
+        </button>
       </form>
     );
   }

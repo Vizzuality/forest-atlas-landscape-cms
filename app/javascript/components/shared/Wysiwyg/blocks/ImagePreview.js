@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class ImagePreview extends React.Component {
   constructor(props) {
@@ -14,24 +14,34 @@ class ImagePreview extends React.Component {
     const { image, caption } = this.content;
     return (
       <div className="fa-wysiwyg-file__preview">
-        {image && image.length ? <img src={image} alt={this.item.id} /> : 'Invalid image'}
-        {this.readOnly && caption && <span className="fa-wysiwyg-file__preview--caption">{caption}</span>}
+        {image && image.length ? (
+          <img src={image} alt={caption} />
+        ) : (
+          "Invalid image"
+        )}
+        {this.readOnly && caption && (
+          <span className="fa-wysiwyg-file__preview--caption">{caption}</span>
+        )}
         {!this.readOnly && (
           <textarea
             className="fa-wysiwyg-file__preview--captionInput"
-            placeholder="image caption here"
+            placeholder="Add caption/alternative text"
+            aria-label="Image caption/alternative text"
             defaultValue={caption}
-            onChange={e => this.onChange({ content: {
-              caption: e.target.value,
-              image
-            } })}
+            onChange={e =>
+              this.onChange({
+                content: {
+                  caption: e.target.value,
+                  image
+                }
+              })
+            }
           />
         )}
-      </div>);
+      </div>
+    );
   }
-
 }
-
 
 ImagePreview.propTypes = {
   item: PropTypes.object.isRequired
