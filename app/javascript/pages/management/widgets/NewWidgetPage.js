@@ -42,6 +42,8 @@ class NewWidgetPage extends React.Component {
     });
 
     this.state = {
+      // Whether we're currently creating the widget in the API
+      creating: false,
       // Error while retrieving the widgetConfig from the widget-editor
       widgetConfigError: false,
       // Whether the user has dismissed the warning when switching to
@@ -89,6 +91,8 @@ class NewWidgetPage extends React.Component {
    * button on the second step
    */
   onClickCreate() {
+    this.setState({ creating: true });
+
     new Promise((resolve, reject) => { // eslint-disable-line no-new
       if (this.state.advancedEditor) {
         // If the user hasn't defined any theme in the wysiwyg and if one
@@ -169,11 +173,11 @@ class NewWidgetPage extends React.Component {
           throw new Error(res.statusText);
         }
       }).catch(() => {
-        this.setState({ saveError: true });
+        this.setState({ saveError: true, creating: false });
       });
     }).catch(() => {
       // We display a warning in the UI
-      this.setState({ widgetConfigError: true });
+      this.setState({ widgetConfigError: true, creating: false });
     });
   }
 
@@ -246,7 +250,7 @@ class NewWidgetPage extends React.Component {
     const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption, redirectUrl } = this.props;
     const { widgetConfigError, advancedEditor, advancedEditorLoading,
-      advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError } = this.state;
+      advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError, creating } = this.state;
 
     let content;
     if (currentStep === 0) {
@@ -417,8 +421,9 @@ class NewWidgetPage extends React.Component {
                 </button>
               )}
               { currentStep === 2 && (
-                <button type="submit" className="c-button" onClick={() => this.onClickCreate()}>
-                  Create
+                <button type="submit" className="c-button" onClick={() => this.onClickCreate()} disabled={creating}>
+                  { creating && <div className="c-loading-spinner -inline -btn" /> }
+                  { !creating && 'Create' }
                 </button>
               )}
             </div>

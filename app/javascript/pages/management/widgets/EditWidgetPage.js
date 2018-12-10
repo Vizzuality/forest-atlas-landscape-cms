@@ -40,6 +40,8 @@ class EditWidgetPage extends React.Component {
     });
 
     this.state = {
+      // Whether we're currently editing the widget in the API
+      editing: false,
       // Error while retrieving the widgetConfig from the widget-editor
       widgetConfigError: false,
       // Whether we're using the advanced editor
@@ -133,6 +135,8 @@ class EditWidgetPage extends React.Component {
    * button
    */
   onClickUpdate() {
+    this.setState({ editing: true });
+
     new Promise((resolve, reject) => { // eslint-disable-line no-new
       if (this.state.advancedEditor) {
         resolve(Object.assign({}, this.state.widgetConfig, { config: this.state.theme }));
@@ -193,11 +197,11 @@ class EditWidgetPage extends React.Component {
           throw new Error(res.statusText);
         }
       }).catch(() => {
-        this.setState({ saveError: true });
+        this.setState({ saveError: true, editing: false });
       });
     }).catch(() => {
       // We display a warning in the UI
-      this.setState({ widgetConfigError: true });
+      this.setState({ widgetConfigError: true, editing: false });
     });
   }
 
@@ -242,7 +246,7 @@ class EditWidgetPage extends React.Component {
 
     const { widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
       advancedEditorLoading, widgetConfig, widgetConfigWithoutConfig, previewLoading,
-      saveError, theme } = this.state;
+      saveError, theme, editing } = this.state;
 
     const createdWithAdvancedMode = !this.props.widget.widget_config
       || !this.props.widget.widget_config.paramsConfig;
@@ -399,8 +403,9 @@ class EditWidgetPage extends React.Component {
                 </button>
               )}
               { currentStep === 1 && (
-                <button type="submit" className="c-button" onClick={() => this.onClickUpdate()}>
-                  Update
+                <button type="submit" className="c-button" onClick={() => this.onClickUpdate()} disabled={editing}>
+                  { editing && <div className="c-loading-spinner -inline -btn" /> }
+                  { !editing && 'Update' }
                 </button>
               )}
             </div>
