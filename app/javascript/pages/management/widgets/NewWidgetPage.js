@@ -159,7 +159,7 @@ class NewWidgetPage extends React.Component {
         body: JSON.stringify(Object.assign(
           {},
           { widget },
-          { ...(this.state.advancedEditor ? {} : { metadata }) },
+          { ...(!metadata ? {} : { metadata }) },
           { ...(this.state.advancedEditor ? {} : { layer }) }
         )),
         credentials: 'include',
@@ -335,6 +335,14 @@ class NewWidgetPage extends React.Component {
                 { advancedEditor && (
                   <div className="advanced-editor">
                     <div className="textarea-container">
+                      <div className="caption-container">
+                        <div className="c-inputs-container">
+                          <div className="container">
+                            <label htmlFor="widget-caption">Widget caption</label>
+                            <input type="text" id="widget-caption" name="widget-caption" value={caption} onChange={({ target }) => setCaption(target.value)} />
+                          </div>
+                        </div>
+                      </div>
                       <p>{`Make sure you're using a syntax compatible with Vega ${ENV.VEGA_VERSION.split('.')[0]}. Please remove the "$schema" attribute from the specification.`}</p>
                       <textarea
                         ref={(el) => { this.advancedEditor = el; }}
