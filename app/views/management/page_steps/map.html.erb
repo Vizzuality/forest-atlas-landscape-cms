@@ -23,7 +23,7 @@
             <div class="container">
               <label for="version">Version</label>
               <div class="c-select -small">
-                <%= ff.select 'version', MapVersion.order(:position).pluck(:version) %>
+                <%= ff.select 'version', MapVersion.order(:position).pluck(:version), {}, class: 'js-version' %>
               </div>
             </div>
           </div>

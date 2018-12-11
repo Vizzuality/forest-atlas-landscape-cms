@@ -17,6 +17,8 @@
       });
       var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.to_json.html_safe %>');
 
+      layerPanelContainer.editor = layerPanelEditor;
+
       layerPanelEditor.set(layerPanelValue);
     </script>
   </div>

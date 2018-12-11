@@ -18,6 +18,8 @@
       });
       var analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.to_json.html_safe %>');
 
+      analysisModulesContainer.editor = analysisModulesEditor;
+
       analysisModulesEditor.set(analysisModulesValue);
     </script>
   </div>
