@@ -142,7 +142,10 @@ class Management::PageStepsController < ManagementController
       when 'open_content_preview'
         gon.widgets = get_widgets_list
       when 'map'
-        @page.content = MapVersion.order(:position).first.default_settings unless @page.persisted?
+        unless @page.persisted?
+          @page.content = MapVersion.order(:position).first.default_settings
+          gon.map_versions = MapVersion.order(:position)
+        end
     end
 
     @breadcrumbs = [
