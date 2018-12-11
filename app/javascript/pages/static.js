@@ -7,13 +7,12 @@ import { getDbContent } from 'utils';
 
 // Components
 import Wysiwyg from 'components/shared/Wysiwyg';
-import { CoverPage, WysiwygEditor, Footer } from 'components';
+import { WysiwygEditor, Footer } from 'components';
 import RelatedPages from 'components/public/RelatedPages';
 
 
 const StaticPage = ({ site, version, relatedPages }) => (
   <div className="fa-page">
-    <CoverPage site={site} secondary />
     {version <= 1 && <WysiwygEditor content={getDbContent(site.page.content)} />}
     {version > 1 && (
       <div className="vizz-wysiwyg">

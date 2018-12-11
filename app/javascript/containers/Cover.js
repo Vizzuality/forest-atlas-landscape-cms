@@ -5,6 +5,6 @@ import CoverPage from 'components/CoverPage';
 
 export default class Cover extends PublicContainer {
   render() {
-    return <CoverPage {...this.store.getState()} secondary usePageTitle />;
+    return <CoverPage {...this.props} />;
   }
 }
