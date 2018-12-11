@@ -143,12 +143,12 @@
         <% end %>
       </div>
 
-      <% if @site_page.depth > 0 and @site_page.site_template.name != 'INDIA'%>
+      <% if @site_page.site_template.name != 'INDIA'%>
         <div class="sub-menu">
           <div class="content">
             <ul class="breadcrumbs">
               <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
-                  <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
+                  <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : (@breadcrumbs.length > 1 ? 'Home' : '') %></a></li>
               <% end %>
             </ul>
             <ul class="sections">
