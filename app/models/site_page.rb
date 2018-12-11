@@ -33,6 +33,12 @@ class SitePage < Page
                   against: { name: 'A', description: 'B', content: 'C' },
                   order_within_rank: 'pages.updated_at DESC'
 
+  pg_search_scope :search_tags,
+                  associated_against: {
+                    tags: :value
+                  },
+                  order_within_rank: 'pages.updated_at DESC'
+
   scope :for_site, ->(site_id) { where(site_id: site_id)}
   scope :enabled, -> { where(enabled: true) }
 
@@ -48,7 +54,6 @@ class SitePage < Page
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
-  before_save :construct_uri, if: 'content_type.eql? ContentType::SEARCH_RESULTS'
 
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
@@ -93,9 +98,9 @@ class SitePage < Page
     when ContentType::HOMEPAGE
       steps = { pages: %w[title open_content open_content_preview],
                 names: ['Title', 'Open Content', 'Open Content Preview'] }
-      when ContentType::SEARCH_RESULTS
-        steps = { pages: %w[position title type search_query],
-                  names: ['Position', 'Details', 'Type', 'Search Query'] }
+    when ContentType::TAG_SEARCHING
+      steps = { pages: %w[position title type tag_searching],
+                names: ['Position', 'Details', 'Type', 'Tag Searching'] }
     end
     steps
   end
@@ -141,11 +146,6 @@ class SitePage < Page
         self.content = old_content
       end
     end
-  end
-
-  def construct_uri
-    write_attribute :uri, "search_results?search=#{content}"
-    regenerate_url
   end
 
   def set_defaults

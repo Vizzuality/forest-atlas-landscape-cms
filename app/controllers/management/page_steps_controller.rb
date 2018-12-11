@@ -256,8 +256,8 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward next_step, next_step, next_step
 
-      # LINK, MAP, SEARCH PATH
-      when 'link', 'map', 'search_query'
+      # LINK, MAP, TAG PATH
+      when 'link', 'map', 'tag_searching'
         set_current_page_state
         move_forward
     end

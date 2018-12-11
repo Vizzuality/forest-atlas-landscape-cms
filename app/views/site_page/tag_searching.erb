@@ -1,0 +1,15 @@
+<%= javascript_pack_tag 'application' %>
+
+<%= react_component('public/SearchResults', {
+  site: @site_page.site,
+  search: @search_string,
+  page: @page_number,
+  totalPages: @total_pages,
+  results: @search_results
+}) %>
+
+<script type="text/javascript">
+  window.route = 'SearchResults';
+</script>
+
+
