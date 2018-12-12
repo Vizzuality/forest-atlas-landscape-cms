@@ -10,11 +10,14 @@
       var layerPanelInput = document.getElementById('site_page_content_settings_layerPanel');
       var layerPanelContainer = document.getElementById('layerPanelCode');
       var layerPanelEditor = new JSONEditor(layerPanelContainer, {
+        mode: 'code',
         onChangeJSON: function(json) {
           layerPanelInput.value = JSON.stringify(json);
         }
       });
       var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.to_json.html_safe %>');
+
+      layerPanelContainer.editor = layerPanelEditor;
 
       layerPanelEditor.set(layerPanelValue);
     </script>

@@ -19,6 +19,9 @@ class Admin::MapVersionsController < AdminController
 
   def edit
     @map_version = MapVersion.find(params[:id])
+    return unless @map_version.default_settings
+    @map_version.default_settings =
+      @map_version.default_settings['settings']
   end
 
   def update
@@ -72,6 +75,7 @@ class Admin::MapVersionsController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def map_params
-    params.require(:map_version).permit(:version, :position, :description, :html)
+    params.require(:map_version).permit(
+      :version, :position, :description, :html, :default_settings)
   end
 end

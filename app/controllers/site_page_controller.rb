@@ -190,12 +190,30 @@ class SitePageController < ApplicationController
     return if @search_string.blank?
 
     @search_results =
-      SitePage.search(params[:search])
+      SitePage.search(@search_string)
         .for_site(@site_page.site_id).enabled
         .limit(MAX_PAGE_SIZE)
         .offset((@page_number - 1) * MAX_PAGE_SIZE)
     @total_pages =
-      SitePage.search(params[:search])
+      SitePage.search_tags(@search_string)
+        .for_site(@site_page.site_id).enabled.count
+    @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
+  end
+
+  def tag_searching
+    @search_string = @site_page.content
+    @search_results = []
+    @total_pages = 1
+    @page_number = params[:page].to_i > 0 ? params[:page].to_i : 1 rescue 1
+    return if @search_string.blank?
+
+    @search_results =
+      SitePage.search_tags(@search_string)
+        .for_site(@site_page.site_id).enabled
+        .limit(MAX_PAGE_SIZE)
+        .offset((@page_number - 1) * MAX_PAGE_SIZE)
+    @total_pages =
+      SitePage.search(@search_string)
         .for_site(@site_page.site_id).enabled.count
     @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
   end

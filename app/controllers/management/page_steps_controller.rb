@@ -141,6 +141,11 @@ class Management::PageStepsController < ManagementController
         @widgets
       when 'open_content_preview'
         gon.widgets = get_widgets_list
+      when 'map'
+        unless @page.persisted?
+          @page.content = MapVersion.order(:position).first.default_settings
+          gon.map_versions = MapVersion.order(:position)
+        end
     end
 
     @breadcrumbs = [
@@ -251,8 +256,8 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward next_step, next_step, next_step
 
-      # LINK, MAP, SEARCH PATH
-      when 'link', 'map', 'search_query'
+      # LINK, MAP, TAG PATH
+      when 'link', 'map', 'tag_searching'
         set_current_page_state
         move_forward
     end
