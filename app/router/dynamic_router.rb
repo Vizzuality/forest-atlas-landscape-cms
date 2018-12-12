@@ -147,6 +147,8 @@ class DynamicRouter
         target = 'site_page#static_content'
       when ContentType::LINK
         return
+    when ContentType::TAG_SEARCHING
+        target = 'site_page#tag_searching'
       else
         target = 'site_page#open_content'
     end
