@@ -143,6 +143,13 @@ class SitePage < Page
     SitePage.search_tags(self.tags.pluck(:value).join(', ')).limit(MAX_RELATED_PAGES_SIZE)
   end
 
+  def attributes
+    attrs = super
+    attrs[:thumbnail_url] = thumbnail_url
+    attrs[:tags] = tags
+    attrs
+  end
+
   private
   def construct_url
     if self.content['url']
@@ -245,10 +252,4 @@ class SitePage < Page
     self.thumbnail.url
   end
 
-  def attributes
-    attrs = super
-    attrs[:thumbnail_url] = thumbnail_url
-    attrs[:tags] = tags
-    attrs
-  end
 end
