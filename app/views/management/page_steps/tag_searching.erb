@@ -21,8 +21,8 @@
       <%= f.hidden_field :content_type %>
       <div class="c-inputs-container">
         <div class="container">
-          <%= f.label 'Tags', for: 'content' %>
-          <%= f.text_field :content, placeholder: 'Tags', id: 'content' %>
+          <%= f.label 'Tags', for: 'tags' %>
+          <%= f.select :content, [], {}, id: 'tags', class: 'js-select', multiple: 'multiple' %>
         </div>
       </div>
     </div>
