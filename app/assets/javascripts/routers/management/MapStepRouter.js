@@ -36,7 +36,7 @@
     },
 
     initTextAreas: function () {
-      var selector = '#site_page_content_settings_narrative, #site_page_content_settings_alternativeNarrative';
+      var selector = '#map-narrative, #map-alternativeNarrative';
       $(selector).summernote({
         toolbar: [
           ['link'],
@@ -52,7 +52,7 @@
       var keys = Object.keys(values);
 
       keys.forEach(function (key) {
-        var input = form.querySelector('[name="site_page[content][settings][' + key + ']"]');
+        var input = form.querySelector('[name="map-' + key + '"]');
         if (input) {
           if (input.tagName === 'INPUT') {
             if (input.type === 'text') {

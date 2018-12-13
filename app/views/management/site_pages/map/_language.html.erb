@@ -2,28 +2,67 @@
 
 <%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
-      'language': %w[en fr pt es ka id zh],
-      'useAlternativeLanguage': :check_box,
-      'alternativeLanguage': ['', :en, :fr, :pt, :es, :ka, :id, :zh],
-      'alternativeWebmap': :text_field,
-      'alternativeLanguageTitle': :text_field,
-      'alternativeLanguageSubtitle': :text_field,
-      'alternativeNarrative': :text_area,
-      'alternativeWebmapMenuName': :text_field
+      'language': {
+        type: %w[en fr pt es ka id zh],
+        description: "Specify the primary language for your map (en = English, fr = French, es = Spanish, ka = Georgian, id = Indonesian, zh = Chinese)."
+      },
+      'useAlternativeLanguage': {
+        type: :check_box,
+        description: "Check this if your map is translated into another language."
+      },
+      'alternativeLanguage': {
+        type: ['', :en, :fr, :pt, :es, :ka, :id, :zh],
+        description: "Specify the alternative language for your map. If your map is only available in one language this field should be left blank."
+      },
+      'alternativeWebmap': {
+        type: :text_field,
+        description: "The ArcGIS item ID for your webmap hosted on ArcGIS Online or Portal. The webmap should be translated into your alternative language. If your map is only available in one language this field should be left blank."
+      },
+      'alternativeLanguageTitle': {
+        type: :text_field,
+        description: "The title for your map in the alternative language, the title will be used in your map printout. If your map is only available in one language this field should be left blank."
+      },
+      'alternativeLanguageSubtitle': {
+        type: :text_field,
+        description: "The subtitle for your map in the alternative language, the subtitle will be used in your map printout. If your map is only available in one language this field should be left blank."
+      },
+      'alternativeNarrative': {
+        type: :text_area,
+        description: "Text in the alterative language for the narrative which will be visible in the information tab of the map panel. Users can use html to edit and customize the formatting of this text. If your map is only available in one language this field should be left blank."
+      },
+      'alternativeWebmapMenuName': {
+        type: :text_field,
+        description: "Heading in layer panel in the alternative language for the group of layers which are pulled from the webmap. If your map is only available in one language this field should be left blank."
+      },
   } %>
-  <% fields.each do |field| %>
+  <% fields.each do |key, value| %>
     <div class="container">
-      <% if field.last.is_a? Array %>
-        <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
-        <%= eval("settings.select '#{field.first}', #{field.last}")%>
-      <% elsif field.last.to_s == 'check_box' %>
+      <% if value[:type].is_a? Array %>
+        <label for="map-<%= key %>">
+            <%= key.capitalize %>
+            <% if !value[:description].blank? %>
+              <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+            <% end %>
+          </label>
+        <%= eval("settings.select :#{key}, #{value[:type]}, {}, id: 'map-#{key}'")%>
+      <% elsif value[:type].to_s == 'check_box' %>
         <div class="c-checkbox">
-          <%= settings.check_box field.first, id: field.first %>
-          <%= settings.label field.first.capitalize, for: field.first %>
+          <%= settings.check_box key, id: 'map-' + key.to_s %>
+          <label for="map-<%= key %>">
+            <%= key.capitalize %>
+            <% if !value[:description].blank? %>
+              <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+            <% end %>
+          </label>
         </div>
       <% else %>
-        <%= eval("settings.label :#{field.first}, '#{field.first.capitalize}'") %>
-        <%= eval("settings.#{field.last} :#{field.first}") %>
+        <label for="map-<%= key %>">
+          <%= key.capitalize %>
+          <% if !value[:description].blank? %>
+            <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+          <% end %>
+        </label>
+        <%= eval("settings.#{value[:type]} :#{key}, id: 'map-#{key}'") %>
       <% end %>
     </div>
   <% end %>

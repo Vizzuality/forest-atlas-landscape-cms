@@ -2,13 +2,25 @@
 
 <%= form.fields_for :settings, @page.settings_structure do |settings| %>
   <% fields = {
-      'includeDocumentsTab': :check_box, 'includeMeasurementTab': :check_box
+      'includeDocumentsTab': {
+        type: :check_box,
+        description: "Check this if you would like to include a documents tab in your map. You will want to include this tab if you have attached PDF documents to your shape."
+      },
+      'includeMeasurementTab': {
+        type: :check_box,
+        description: "Check this if you would like to Include the measurement tab in your map. This tab will include tools that let users measure area and distance."
+      }
   } %>
-  <% fields.each do |field| %>
+  <% fields.each do |key, value| %>
     <div class="container">
       <div class="c-checkbox">
-        <%= settings.check_box field.first, id: field.first %>
-        <%= settings.label field.first.capitalize, for: field.first %>
+        <%= settings.check_box key, id: 'map-' + key.to_s %>
+        <label for="map-<%= key %>">
+          <%= key.capitalize %>
+          <% if !value[:description].blank? %>
+            <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+          <% end %>
+        </label>
       </div>
     </div>
   <% end %>
