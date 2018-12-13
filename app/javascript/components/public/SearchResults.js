@@ -28,7 +28,7 @@ class SearchResults extends PureComponent {
                 <a href={result.url}>
                   <div
                     className="thumbnail"
-                    style={{ backgroundImage: `url(${result.image})` }}
+                    style={result.thumbnail_url ? { backgroundImage: `url(${result.thumbnail_url})` } : {}}
                   />
                   <h2>{result.name}</h2>
                   <p>{result.description}</p>

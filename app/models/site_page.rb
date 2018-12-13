@@ -240,4 +240,15 @@ class SitePage < Page
       siblings.where('position >= ?', self.position).update_all('position = position + 1')
     end
   end
+
+  def thumbnail_url
+    self.thumbnail.url
+  end
+
+  def attributes
+    attrs = super
+    attrs[:thumbnail_url] = thumbnail_url
+    attrs[:tags] = tags
+    attrs
+  end
 end
