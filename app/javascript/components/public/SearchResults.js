@@ -32,7 +32,7 @@ class SearchResults extends PureComponent {
                   />
                   <h2>{result.name}</h2>
                   <p>{result.description}</p>
-                  <p className="tags">{result.tags.map(t => <span key={t.value}>{t.value}</span>)}</p>
+                  <p className="tags">{result.tags.map(t => t.value).join(' ')}</p>
                 </a>
               </li>
             ))}
