@@ -61,7 +61,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-SINTEF-9012--PruneCluster', '1.1.0'
   gem 'rails-assets-summernote'
   gem 'rails-assets-vega', '~> 2.6.3'
-
+  gem 'rails-assets-bootstrap', '3.3.5'
 end
 
 # Use ActiveModel has_secure_password

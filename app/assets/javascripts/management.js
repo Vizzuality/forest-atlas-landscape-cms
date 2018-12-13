@@ -14,6 +14,7 @@
 //= require jquery3
 //= require jquery_ujs
 //= require backbone
+//= require bootstrap
 //= require summernote
 //= require d3
 //= require vega
