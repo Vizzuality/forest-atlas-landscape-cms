@@ -22,7 +22,8 @@
       <div class="c-inputs-container">
         <div class="container">
           <%= f.label 'Tags', for: 'tags' %>
-          <%= f.select :content, [], {}, id: 'tags', class: 'js-select', multiple: 'multiple' %>
+          <%#= select :content, @tags, {}, id: 'tags', class: 'js-select', multiple: 'multiple' %>
+          <%= select_tag  'site_page[content]', options_for_select(@tags, @page.content ), multiple: true, id: 'tags', class: 'js-select' %>
         </div>
       </div>
     </div>

@@ -68,6 +68,7 @@ class SitePage < Page
   accepts_nested_attributes_for :tags, allow_destroy: true
 
   attr_accessor :form_step
+  attr_accessor :thumbnail_url
 
   MAX_RELATED_PAGES_SIZE = 3
 
