@@ -22,8 +22,8 @@ class SearchResults extends PureComponent {
           </form>
           <ul className="results">
             {this.props.results.map(result => (
-              <li className="item" key={result.link}>
-                <a href={result.link}>
+              <li className="item" key={result.url}>
+                <a href={result.url}>
                   <div
                     className="thumbnail"
                     style={{ backgroundImage: `url(${result.image})` }}
