@@ -7,19 +7,21 @@ class SearchResults extends PureComponent {
     return (
       <div className="c-search-results">
         <div className="wrapper">
-          <form method="get">
-            <input
-              name="search"
-              type="search"
-              placeholder="Search for"
-              defaultValue={this.props.search}
-              aria-label="Search in the site"
-            />
-            <input type="hidden" name="page" value={this.props.page} />
-            <button type="submit" className="c-button">
-              Search
-            </button>
-          </form>
+          {!this.props.hideSearchBar && (
+            <form method="get">
+              <input
+                name="search"
+                type="search"
+                placeholder="Search for"
+                defaultValue={this.props.search}
+                aria-label="Search in the site"
+              />
+              <input type="hidden" name="page" value={this.props.page} />
+              <button type="submit" className="c-button">
+                Search
+              </button>
+            </form>
+          )}
           <ul className="results">
             {this.props.results.map(result => (
               <li className="item" key={result.url}>
@@ -79,14 +81,16 @@ SearchResults.propTypes = {
   page: PropTypes.number,
   totalPages: PropTypes.number,
   results: PropTypes.array,
-  search: PropTypes.string
+  search: PropTypes.string,
+  hideSearchBar: PropTypes.bool
 };
 
 SearchResults.defaultProps = {
   results: [],
   page: 1,
   totalPages: 1,
-  search: ""
+  search: "",
+  hideSearchBar: false
 };
 
 export default SearchResults;
