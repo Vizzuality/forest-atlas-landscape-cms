@@ -69,6 +69,8 @@ class SitePage < Page
 
   attr_accessor :form_step
 
+  MAX_RELATED_PAGES_SIZE = 3
+
   def form_steps
     steps = {pages: %w[position title type],
              names: %w[Position Title Type]}
@@ -135,6 +137,10 @@ class SitePage < Page
     else
       OpenStruct.new(JSON.parse(content['settings']))
     end
+  end
+
+  def related_pages
+    SitePage.search_tags(self.tags.pluck(:value).join(', ')).limit(MAX_RELATED_PAGES_SIZE)
   end
 
   private
