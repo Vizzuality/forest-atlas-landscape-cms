@@ -20,6 +20,8 @@
       'management/sites/:slug/(site_pages/:id/)page_steps/position': 'PositionStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/title': 'Index',
       'management/sites/:slug/(site_pages/:id/)page_steps/type': 'Index',
+      'management/sites/:slug/(site_pages/:id/)page_steps/tag_searching': 'Index',
+      'management/sites/:slug/(site_pages/:id/)page_steps/link': 'Index',
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content': 'OpenContentStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content_v2': 'OpenContentv2Step',
       'management/sites/:slug/(site_pages/:id/)page_steps/open_content_preview': 'OpenContentPreviewStep',
