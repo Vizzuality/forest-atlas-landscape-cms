@@ -116,6 +116,12 @@
     }
   }
 
+  .no-result {
+    text-align: center;
+    font-size: $font-size-x-normal;
+    color: rgba($color-4, .4);
+  }
+
   .pagination {
     margin-top: 20px;
     text-align: center;

@@ -34,6 +34,9 @@ class SearchResults extends PureComponent {
               </li>
             ))}
           </ul>
+          { !this.props.results.length && (
+            <div className="no-result">No result</div>
+          )}
           <div className="pagination">
             <a
               href={`${location.origin}${
