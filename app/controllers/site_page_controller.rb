@@ -201,7 +201,7 @@ class SitePageController < ApplicationController
   end
 
   def tag_searching
-    @search_string = @site_page.content
+    @search_string = @site_page.content.join(' ') rescue ''
     @search_results = []
     @total_pages = 1
     @page_number = params[:page].to_i > 0 ? params[:page].to_i : 1 rescue 1

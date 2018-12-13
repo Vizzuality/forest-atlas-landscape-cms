@@ -146,6 +146,10 @@ class Management::PageStepsController < ManagementController
           @page.content = MapVersion.order(:position).first.default_settings
           gon.map_versions = MapVersion.order(:position)
         end
+      when 'tag_searching'
+        @tags = Tag.joins(:site_page)
+                  .where(page_id: @page.site.site_pages.pluck(:id))
+                  .pluck(:value).uniq!
     end
 
     @breadcrumbs = [
@@ -322,8 +326,9 @@ class Management::PageStepsController < ManagementController
         :parent_id,
         :content_type,
         :page_version,
-        :content,
         :thumbnail,
+        :content,
+        content: [],
         dataset_setting: [
           :dataset_id,
           :filters,
