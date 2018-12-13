@@ -17,7 +17,8 @@
 
 <%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
   <%# TODO: Remove this and use shared errors%>
-  <div class="l-page-creation -link">
+  <div class="l-page-creation -title">
+    <div class="wrapper">
       <% if @page.errors.any? %>
           <div id="error_explanation">
             <h2><%= pluralize(site_page.errors.count, "error") %> prohibited this site_page from being saved:</h2>
@@ -32,22 +33,25 @@
 
       <%= f.hidden_field :content_type %>
 
-      <div class="wrapper">
-        <div class="c-fieldset">
-          <%= f.text_field :name, placeholder: 'Link\'s name', id: 'name' %>
+      <div class="c-inputs-container">
+        <div class="container -big">
           <%= f.label 'Link\'s name', for: 'name' %>
+          <%= f.text_field :name, placeholder: 'Link\'s name', id: 'name' %>
         </div>
         <%= f.fields_for :content, OpenStruct.new(f.object.content) do |ff| %>
-          <div class="c-fieldset">
-            <%= ff.text_field :url, placeholder: 'URL', id: 'url' %>
+          <div class="container">
             <%= ff.label 'URL', for: 'url' %>
+            <%= ff.text_field :url, placeholder: 'URL', id: 'url' %>
           </div>
-          <div class="c-checkbox">
-            <%= ff.check_box :target_blank, id: 'target_blank' %>
-            <%= ff.label 'Open in separate tab', for: 'target_blank' %>
+          <div class="container">
+            <div class="c-checkbox">
+              <%= ff.check_box :target_blank, id: 'target_blank' %>
+              <%= ff.label 'Open in separate tab', for: 'target_blank' %>
+            </div>
           </div>
         <% end %>
       </div>
+    </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true} %>
 <% end %>

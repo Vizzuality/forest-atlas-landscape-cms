@@ -13,19 +13,19 @@
 <%= render partial: 'shared/navigation_header', locals: \
   {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
-<%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
-  <div class="l-page-creation -link">
-
+  <div class="l-page-creation -title">
+    <div class="wrapper">
+      <%= render partial: 'shared/errors', locals: { resource: @page } %>
       <%= f.hidden_field :content_type %>
-
-      <div class="wrapper">
-        <div class="c-fieldset">
-          <%= f.text_field :content, placeholder: 'Tags', id: 'content' %>
+      <div class="c-inputs-container">
+        <div class="container">
           <%= f.label 'Tags', for: 'content' %>
+          <%= f.text_field :content, placeholder: 'Tags', id: 'content' %>
         </div>
       </div>
+    </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true} %>
 <% end %>
