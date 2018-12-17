@@ -1,19 +1,12 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
-class ImageUpload extends React.Component {
-  constructor(props) {
-    super(props);
-    this.file = null;
-    this.caption = null;
-    this.encodedFile = null;
-    this.onSubmit = props.onSubmit;
-
-    this.state = {
-      image: null,
-      caption: null
-    };
-  }
+class ImageUpload extends PureComponent {
+  state = {
+    image: null,
+    caption: null,
+    alternativeText: null
+  };
 
   imageToBase64(file) {
     return new Promise(resolve => {
@@ -25,22 +18,16 @@ class ImageUpload extends React.Component {
     });
   }
 
-  generateImage(e) {
+  generateImage() {
     this.imageToBase64(this.file.files[0]).then(base64 => {
       this.setState({ image: base64 });
     });
   }
 
-  setImageCaption(e) {
-    this.setState({
-      caption: this.caption.value
-    });
-  }
-
-  setImageData(e) {
-    e.preventDefault();
-    const { image, caption } = this.state;
-    this.onSubmit({ caption, image });
+  setImageData() {
+    const { onSubmit } = this.props;
+    const { image, caption, alternativeText } = this.state;
+    onSubmit({ caption, image, alternativeText });
   }
 
   render() {
@@ -51,23 +38,34 @@ class ImageUpload extends React.Component {
             type="file"
             name="wysiwyg-file"
             ref={input => (this.file = input)}
-            onChange={e => this.generateImage(e)}
+            onChange={() => this.generateImage()}
             aria-label="Add image"
           />
         </div>
         <input
           type="text"
           name="wysiwyg-file-caption"
-          placeholder="Add caption/alternative text"
+          placeholder="Add caption"
           className="fa-wysiwyg-file__form--caption"
-          ref={caption => (this.caption = caption)}
-          onChange={e => this.setImageCaption(e)}
-          aria-label="Image caption/alternative text"
+          onChange={({ target }) => this.setState({
+            caption: target.value
+          })}
+          aria-label="Image caption"
+        />
+        <input
+          type="text"
+          name="wysiwyg-file-alternative-text"
+          placeholder="Add alternative text"
+          className="fa-wysiwyg-file__form--caption"
+          onChange={({ target }) => this.setState({
+            alternativeText: target.value
+          })}
+          aria-label="Image alternative text"
         />
         <button
-          role="button"
+          type="button"
           className="fa-wysiwyg-file__form--submit"
-          onClick={e => this.setImageData(e)}
+          onClick={() => this.setImageData()}
         >
           Done
         </button>

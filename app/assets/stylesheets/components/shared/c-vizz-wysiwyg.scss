@@ -88,6 +88,20 @@
         }
       }
     }
+
+    &.-image {
+      .fa-wysiwyg-file__preview {
+        label {
+          display: block;
+          margin-bottom: 10px;
+          text-align: left;
+        }
+
+        textarea {
+          margin-top: 5px;
+        }
+      }
+    }
   }
 
   blockquote {
