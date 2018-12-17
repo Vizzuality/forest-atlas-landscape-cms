@@ -65,12 +65,12 @@
               } else {
                 // We assume it's a field with a JSONEditor instance
                 if (sibling.editor) {
+                  sibling.input.value = JSON.stringify(values[key]);
                   sibling.editor.set(values[key]);
                 }
               }
             }
           } else if (input.tagName === 'TEXTAREA') {
-            // FIXME: summernote fails here and throws an error
             try {
               $(input).summernote('reset');
               $(input).summernote('insertText', values[key]);

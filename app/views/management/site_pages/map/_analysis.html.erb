@@ -6,7 +6,7 @@
       ANALYSIS MODULES
       <button type="button" class="info-button" data-tippy="Use this panel to manage the analysis options which are included in your mapbuilder map. Users have the option to remove default analysis and can also add their own custom analysis. You may modify the json to remove analysis or add your own custom analysis. For more information on the configuration options for the analysis module consult the analysis module section of the mapbuilder wiki." data-tippy-interactive="true">Field information</button>
     </label>
-    <%= settings.hidden_field :analysisModules %>
+    <%= settings.hidden_field :analysisModules, { name: 'map-analysisModules' }  %>
 
     <div id="analysisModules"></div>
 
@@ -15,13 +15,18 @@
       var analysisModulesContainer = document.getElementById('analysisModules');
       var analysisModulesEditor = new JSONEditor(analysisModulesContainer, {
         mode: 'code',
-        onChangeJSON: function(json) {
-          analysisModulesInput.value = JSON.stringify(json);
+        onChangeText: function(str) {
+          // We only save valid JSON strings
+          try {
+            JSON.parse(str);
+            analysisModulesInput.value = str;
+          } catch (e) {}
         }
       });
       var analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.to_json.html_safe %>');
 
       analysisModulesContainer.editor = analysisModulesEditor;
+      analysisModulesContainer.input = analysisModulesInput;
 
       analysisModulesEditor.set(analysisModulesValue);
     </script>
