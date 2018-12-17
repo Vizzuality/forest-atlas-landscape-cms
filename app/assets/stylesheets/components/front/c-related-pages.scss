@@ -1,0 +1,70 @@
+.c-related-pages {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  max-width: 1080px; // Same as wysiwyg content
+  margin: 30px auto 10px; // The cards have a margin-bottom of 20px
+  padding: 0 20px;
+
+  @media #{$mq-laptop} {
+    padding: 0;
+  }
+
+  @media print {
+    display: none;
+  }
+
+  a {
+    flex-basis: 100%;
+    min-height: 150px;
+    padding: 20px;
+    background-color: rgba($color-1, 0.2);
+    margin-bottom: 20px;
+
+    @media #{$mq-mobile} {
+      flex-basis: calc((100% / 2) - (20px / 2));
+      margin-right: 20px;
+    }
+
+    @media #{$mq-tablet} {
+      flex-basis: calc((100% / 3) - ((2 * 20px) / 3));
+    }
+
+    &:nth-of-type(2n) {
+      @media #{$mq-mobile} {
+        margin-right: 0;
+      }
+
+      @media #{$mq-tablet} {
+        margin-right: 20px;
+      }
+    }
+
+    &:nth-of-type(3n) {
+      @media #{$mq-tablet} {
+        margin-right: 0;
+      }
+    }
+  }
+
+  h3 {
+    flex-basis: 100%;
+    margin-bottom: 20px;
+    font-size: $font-size-medium;
+    text-align: center;
+
+    @if $theme == 1 {
+      font-family: $font-family-2;
+    }
+  }
+
+  .title {
+    margin-bottom: 10px;
+    font-size: $font-size-x-normal;
+  }
+
+  .description {
+    color: $color-4;
+  }
+}

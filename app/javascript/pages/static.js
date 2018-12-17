@@ -8,9 +8,10 @@ import { getDbContent } from 'utils';
 // Components
 import Wysiwyg from 'components/shared/Wysiwyg';
 import { CoverPage, WysiwygEditor, Footer } from 'components';
+import RelatedPages from 'components/public/RelatedPages';
 
 
-const StaticPage = ({ site, version }) => (
+const StaticPage = ({ site, version, relatedPages }) => (
   <div className="fa-page">
     <CoverPage site={site} secondary />
     {version <= 1 && <WysiwygEditor content={getDbContent(site.page.content)} />}
@@ -22,6 +23,8 @@ const StaticPage = ({ site, version }) => (
         />
       </div>
     )}
+
+    {relatedPages && relatedPages.length && <RelatedPages pages={relatedPages} />}
 
     <Footer site={site} />
   </div>
