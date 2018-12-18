@@ -37,6 +37,9 @@ class SitePage < Page
                   associated_against: {
                     tags: :value
                   },
+                  using: {
+                    tsearch: { any_word: true }
+                  },
                   order_within_rank: 'pages.updated_at DESC'
 
   scope :for_site, ->(site_id) { where(site_id: site_id)}
@@ -141,7 +144,8 @@ class SitePage < Page
   end
 
   def related_pages
-    SitePage.search_tags(self.tags.pluck(:value).join(', ')).limit(MAX_RELATED_PAGES_SIZE)
+    SitePage.search_tags(self.tags.pluck(:value).join(', '))
+      .where.not(id: id).limit(MAX_RELATED_PAGES_SIZE)
   end
 
   def attributes
