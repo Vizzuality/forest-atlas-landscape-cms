@@ -5,7 +5,7 @@
 
     events: {
       'click .js-mobile-menu': 'toggleDrawer',
-      'click .js-search-button': 'toggleSearch',
+      'click .js-search-button': 'onClickSearchButton',
     },
 
     initialize: function () {
@@ -23,6 +23,10 @@
         if ($(e.target).closest(this.searchContainer).length) return;
         this.toggleSearch(false);
       }.bind(this));
+    },
+
+    onClickSearchButton: function () {
+      this.toggleSearch();
     },
 
     toggleDrawer: function () {
