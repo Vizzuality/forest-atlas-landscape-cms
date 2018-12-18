@@ -71,6 +71,14 @@ class EditWidgetPage extends React.Component {
   componentWillMount() {
     this.props.setTitle(this.props.widget.name);
     this.props.setDescription(this.props.widget.description);
+
+    if (this.state.advancedEditor && this.props.widget.metadata.length) {
+      const metadata = this.props.widget.metadata[0].attributes;
+      const caption = metadata.info && metadata.info.caption;
+      if (caption) {
+        this.props.setCaption(caption);
+      }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
