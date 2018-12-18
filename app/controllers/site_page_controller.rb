@@ -54,23 +54,27 @@ class SitePageController < ApplicationController
     @image_url = '/'
     @image_url = logo_image_setting.image if !logo_image_setting.blank? && !logo_image_setting.image_file_name.blank?
 
-    main_image_setting = SiteSetting.main_image(@site_page.site.id)
-    @homepage_cover = {
-      :url => main_image_setting.image_file_name.blank? ? nil : main_image_setting.image,
-      :attribution => (!main_image_setting.attribution_label.blank? || !main_image_setting.attribution_link.blank?) ? {
-        :url => main_image_setting.attribution_link,
-        :label => main_image_setting.attribution_label,
-      } : nil
-    } if !main_image_setting.blank?;
+    if main_image_setting = SiteSetting.main_image(@site_page.site.id)
+      attribution =
+        if main_image_setting.attribution_label.present? || main_image_setting.attribution_link.present?
+          { url: main_image_setting.attribution_link, label: main_image_setting.attribution_label }
+        end
+      @homepage_cover = {
+        url: main_image_setting.image.url,
+        attribution: attribution
+      }
+    end
 
-    alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
-    @page_cover = {
-      :url => alternative_image_setting.image_file_name.blank? ? nil : alternative_image_setting.image,
-      :attribution => (!alternative_image_setting.attribution_label.blank? || !alternative_image_setting.attribution_link.blank?) ? {
-        :url => alternative_image_setting.attribution_link,
-        :label => alternative_image_setting.attribution_label,
-      } : nil
-    } if !alternative_image_setting.blank?;
+    if alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
+      attribution =
+        if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
+          { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
+        end
+      @page_cover = {
+        url: alternative_image_setting.image.url,
+        attribution: attribution
+      }
+    end
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)
     @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?
