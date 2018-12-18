@@ -16,7 +16,7 @@ class RelatedPages extends PureComponent {
       <div className="c-related-pages">
         <h3>Related content</h3>
         {pages.map(page => (
-          <a href={page.url}>
+          <a href={page.url} key={page.url}>
             <div className="title">{page.name}</div>
             <div className="description">
               {`${(page.description || '').slice(0, 150)}${page.description && page.description.length > 150 ? '...' : ''}`}
