@@ -5,6 +5,6 @@ import Home from 'pages/home';
 
 export default class HomePage extends PublicContainer {
   render() {
-    return <Home store={this.store} />;
+    return <Home {...this.props} store={this.store} />;
   }
 }

@@ -54,17 +54,30 @@ class SitePageController < ApplicationController
     @image_url = '/'
     @image_url = logo_image_setting.image if !logo_image_setting.blank? && !logo_image_setting.image_file_name.blank?
 
-    main_image_setting = SiteSetting.main_image(@site_page.site.id)
-    @main_image = main_image_setting.image if !main_image_setting.blank? && !main_image_setting.image_file_name.blank?
+    if main_image_setting = SiteSetting.main_image(@site_page.site.id)
+      attribution =
+        if main_image_setting.attribution_label.present? || main_image_setting.attribution_link.present?
+          { url: main_image_setting.attribution_link, label: main_image_setting.attribution_label }
+        end
+      @homepage_cover = {
+        url: main_image_setting.image.url,
+        attribution: attribution
+      }
+    end
 
-    alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
-    @alternative_image = alternative_image_setting.image if !alternative_image_setting.blank? && !alternative_image_setting.image_file_name.blank?
+    if alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
+      attribution =
+        if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
+          { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
+        end
+      @page_cover = {
+        url: alternative_image_setting.image.url,
+        attribution: attribution
+      }
+    end
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)
     @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?
-
-    gon.main_image = @image_url
-    gon.alternative_image = @alternative_image
   end
 
   def load_flag

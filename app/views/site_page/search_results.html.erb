@@ -1,8 +1,16 @@
 <%= javascript_pack_tag 'application' %>
 
+<%= react_component('Cover', {
+  title: 'Search',
+  subtitle: @site_page.site.name,
+  image: @page_cover,
+  size: 'small',
+  template: @site_page.site.site_template.name
+} ) %>
+
 <%= react_component('public/SearchResults', {
   site: @site_page.site,
-  image: @alternative_image,
+  page: @site_page,
   search: @search_string,
   page: @page_number,
   totalPages: @total_pages,

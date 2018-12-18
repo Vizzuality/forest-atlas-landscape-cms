@@ -1,8 +1,9 @@
-<div class="c-cover -short" style="background-image: url('<%= @alternative_image %>');">
-  <div class="wrapper">
-    <h2 class="cover-title">Sitemap</h2>
-  </div>
-</div>
+<%= react_component('Cover', {
+  title: 'Sitemap',
+  image: @page_cover,
+  size: 'small',
+  template: @site_page.site.site_template.name
+} ) %>
 
 <div class="l-sitemap">
   <div class="wrapper">

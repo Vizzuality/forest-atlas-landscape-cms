@@ -1,13 +1,10 @@
-<% content_for :extended_header do %>
-  <div class="c-extended-header">
-    <div class="wrapper">
-      <div class="description">
-        <h1>Access restricted</h1>
-        <p>You don't have the permission to access this section</p>
-      </div>
-    </div>
-  </div>
-<% end %>
+<%= react_component('Cover', {
+  title: 'Access restricted',
+  subtitle: 'You don\'t have the permission to access this section',
+  image: @page_cover,
+  size: 'small',
+  template: @site_page.site.site_template.name
+} ) %>
 
 <div class="wrapper">
   <p>Please contact an admin if you think you should be granted access</p>
