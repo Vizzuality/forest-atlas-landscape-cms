@@ -8,19 +8,26 @@ class ImageUpload extends PureComponent {
     alternativeText: null
   };
 
-  imageToBase64(file) {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-    });
-  }
-
+  // TODO: endpoint does not exsist yet.. work in progress
   generateImage() {
-    this.imageToBase64(this.file.files[0]).then(base64 => {
-      this.setState({ image: base64 });
+    const { user, api_url } = window.gon.global;
+    const file = this.file.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    fetch(`localhost:3000/temporary_content_images`, {
+      method: 'POST',
+      headers: { Authorization: user.token },
+      body: formData
+    })
+    .then(response => response.json())
+    .then((response) => {
+      console.log('generating image', response);
+      this.setState({ image: response.url });
+    })
+    .catch((e) => {
+      // TODO: maybe a better error message?
+      console.error('Error', 'We couldn\'t upload the image. Try again');
     });
   }
 
