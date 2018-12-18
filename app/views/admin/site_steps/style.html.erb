@@ -85,7 +85,7 @@
               <hr/>
 
             <% when 'main_image' %>
-              <%= settings_form.hidden_field :position, value: '5'%>
+              <%= settings_form.hidden_field :position, value: settings_form.object.position || '5'%>
               <%= settings_form.hidden_field :name, value: 'main_image'%>
               <div class="homepage-cover-container">
                 <div class="homepage-cover">
@@ -95,8 +95,8 @@
                   <div>
                     <%= settings_form.file_field :image, id: 'main', accept: 'image/*', 'data-type': 'background' %>
                     <%= settings_form.label :image, value: 'Change homepage cover image', for: 'main', tabindex: '0' %>
-                    <% if !@main_image.nil? && @main_image.image_file_name %>
-                      <div class="preview -high js-preview" style="background-image: url('<%= @main_image.image.url %>');">
+                    <% if settings_form.object.present? && settings_form.object.image_file_name %>
+                      <div class="preview -high js-preview" style="background-image: url('<%= settings_form.object.image.url %>');">
                       </div>
                     <% else %>
                       <div class="placeholder -high js-placeholder">

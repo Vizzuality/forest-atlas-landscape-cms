@@ -61,8 +61,8 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'logo_image', site_id: site_id)
   end
 
-  def self.main_image(site_id)
-    SiteSetting.find_by(name: 'main_image', site_id: site_id)
+  def self.main_images(site_id)
+    SiteSetting.where(name: 'main_image', site_id: site_id)
   end
 
   def self.alternative_image(site_id)
