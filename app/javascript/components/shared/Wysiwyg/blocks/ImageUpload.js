@@ -9,24 +9,21 @@ class ImageUpload extends PureComponent {
   };
 
   // TODO: endpoint does not exsist yet.. work in progress
-  generateImage() {
+  uploadTemporaryImage() {
     const { user, api_url } = window.gon.global;
     const file = this.file.files[0];
     const formData = new FormData();
     formData.append('image', file);
-    
+        
     fetch(`localhost:3000/temporary_content_images`, {
       method: 'POST',
-      headers: { Authorization: user.token },
       body: formData
     })
     .then(response => response.json())
     .then((response) => {
-      console.log('generating image', response);
       this.setState({ image: response.url });
     })
     .catch((e) => {
-      // TODO: maybe a better error message?
       console.error('Error', 'We couldn\'t upload the image. Try again');
     });
   }
@@ -45,7 +42,7 @@ class ImageUpload extends PureComponent {
             type="file"
             name="wysiwyg-file"
             ref={input => (this.file = input)}
-            onChange={() => this.generateImage()}
+            onChange={() => this.uploadTemporaryImage()}
             aria-label="Add image"
           />
         </div>
