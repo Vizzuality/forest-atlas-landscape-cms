@@ -59,10 +59,10 @@ class SitePageController < ApplicationController
         if main_image_setting.attribution_label.present? || main_image_setting.attribution_link.present?
           { url: main_image_setting.attribution_link, label: main_image_setting.attribution_label }
         end
-      @homepage_cover = {
+      @homepage_cover = [{
         url: main_image_setting.image.url,
         attribution: attribution
-      }
+      }]
     end
 
     if alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
@@ -70,10 +70,10 @@ class SitePageController < ApplicationController
         if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
           { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
         end
-      @page_cover = {
+      @page_cover = [{
         url: alternative_image_setting.image.url,
         attribution: attribution
-      }
+      }]
     end
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)

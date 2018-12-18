@@ -2,7 +2,7 @@
 
 <%= react_component('Cover', {
   title: @site_page.site.name,
-  image: @homepage_cover,
+  images: @homepage_cover,
   template: @site_page.site.site_template.name
 } ) %>
 
@@ -12,7 +12,6 @@
   siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
   siteTitleOnly: @site_title_only,
   siteTemplateName: @site_page.site.site_template.name,
-  coverImage: @homepage_cover,
   pageSize: defined?(size) ? size : nil
 } ) %>
 
