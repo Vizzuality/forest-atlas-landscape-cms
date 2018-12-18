@@ -164,7 +164,7 @@
       flex-wrap: wrap;
       justify-content: flex-start;
 
-      > div {
+      div {
         position: relative;
 
         h3 {
@@ -271,14 +271,46 @@
         margin: 55px 0;
       }
 
-      > .homepage-cover {
-        flex-basis: calc(50% - 10px);
-        margin-right: 20px;
+      .homepage-cover-container {
+        flex-basis: 100%;
+        margin-bottom: 10px;
+
+        > .homepage-cover {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-wrap: wrap;
+
+          > h3,
+          > p {
+            flex-basis: 100%;
+            margin-top: 0;
+          }
+
+          > div {
+            flex-basis: calc(50% - 10px);
+            margin-right: 20px;
+            margin-bottom: 20px;
+
+            &:nth-of-type(2n) {
+              margin-right: 0;
+            }
+          }
+        }
       }
 
-      > .content-cover {
-        flex-basis: calc(50% - 10px);
+      .content-cover-container {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        > .content-cover {
+          flex-basis: calc(50% - 10px);
+        }
       }
+
 
       .cover-attribution {
         display: flex;
