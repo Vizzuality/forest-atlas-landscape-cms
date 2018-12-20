@@ -211,6 +211,15 @@ ActiveRecord::Schema.define(version: 20181220111112) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "temporary_content_images", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
   create_table "user_site_associations", force: :cascade do |t|
     t.integer  "site_id"
     t.integer  "user_id"
