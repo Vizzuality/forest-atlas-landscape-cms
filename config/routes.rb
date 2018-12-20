@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   namespace :management do
     resources :profile, only: [:edit, :update]
+    resources :temporary_content_images, only: [:create]
 
     resources :sites, param: :slug, only: :none do
       resources :site_pages, only: [:index, :destroy] do

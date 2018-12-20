@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181210180851) do
+ActiveRecord::Schema.define(version: 20181220111112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "content_images", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "page_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["page_id"], name: "index_content_images_on_page_id", using: :btree
+  end
 
   create_table "context_datasets", force: :cascade do |t|
     t.boolean  "is_confirmed"
@@ -230,6 +241,7 @@ ActiveRecord::Schema.define(version: 20181210180851) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "content_images", "pages", on_delete: :cascade
   add_foreign_key "page_widgets", "pages"
   add_foreign_key "tags", "pages"
   add_foreign_key "user_site_associations", "sites"

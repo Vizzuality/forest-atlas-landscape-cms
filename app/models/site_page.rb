@@ -51,6 +51,7 @@ class SitePage < Page
   has_one :dashboard_setting,foreign_key: 'page_id', dependent: :destroy,
           inverse_of: :site_page, autosave: true
   has_many :tags, foreign_key: :page_id
+  has_many :content_images, dependent: :destroy
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
@@ -62,6 +63,7 @@ class SitePage < Page
   before_update :cheat_with_position_on_update
   after_create :update_routes
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
+  before_save :update_temporary_content_images
 
   validate :step_validation
 
@@ -253,4 +255,8 @@ class SitePage < Page
     self.thumbnail.url
   end
 
+  # TODO
+  def update_temporary_content_images
+
+  end
 end
