@@ -10,17 +10,19 @@ class ImageUpload extends PureComponent {
 
   // TODO: endpoint does not exsist yet.. work in progress
   uploadTemporaryImage() {
-    const { user, api_url } = window.gon.global;
+    const { user } = window.gon.global;
     const file = this.file.files[0];
     const formData = new FormData();
     formData.append('image', file);
         
-    fetch(`localhost:3000/temporary_content_images`, {
+    fetch(`/management/temporary_content_images`, {
       method: 'POST',
+      headers: { Authorization: user.token },
       body: formData
     })
     .then(response => response.json())
     .then((response) => {
+      console.log('hello', response);
       this.setState({ image: response.url });
     })
     .catch((e) => {

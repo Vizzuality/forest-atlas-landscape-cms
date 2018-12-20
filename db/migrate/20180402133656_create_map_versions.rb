@@ -8,13 +8,5 @@ class CreateMapVersions < ActiveRecord::Migration[5.0]
       t.index :version
       t.timestamps
     end
-
-    a = MapVersion.new(version: '1.1.11', position: 1)
-    a.save(validate: false)
-    a = MapVersion.new(version: '1.1.12', position: 2)
-    a.save(validate: false)
-    a = MapVersion.new(version: '1.1.15', position: 3)
-    a.save(validate: false)
-
   end
 end
