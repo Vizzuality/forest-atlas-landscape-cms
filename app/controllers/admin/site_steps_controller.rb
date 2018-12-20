@@ -69,6 +69,7 @@ class Admin::SiteStepsController < AdminController
         @logo_image = @site.site_settings.where(name: 'logo_image').first
         @main_images = @site.site_settings.where(name: 'main_image')
                          .order(position: :asc)
+        gon.global.main_images = @main_images
         @alternative_image = @site.site_settings.where(name: 'alternative_image').first
         @favico = @site.site_settings.where(name: 'favico').first
       end
