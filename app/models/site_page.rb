@@ -256,6 +256,7 @@ class SitePage < Page
   end
 
   def update_temporary_content_images
+    return unless content
     new_content = content
     new_content.scan(/image":"([^"]*)"/).each do |tmp|
       tmp = tmp.first
