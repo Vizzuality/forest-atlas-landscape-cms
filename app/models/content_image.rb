@@ -11,5 +11,6 @@ class ContentImage < ApplicationRecord
     image.original_filename = Time.now.to_i.to_s + image.content_type.gsub('image/', '.')
     content_image.image = image
     content_image.save!
+    content_image.image.url
   end
 end
