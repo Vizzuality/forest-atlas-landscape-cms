@@ -63,7 +63,7 @@ class SitePage < Page
   before_update :cheat_with_position_on_update
   after_create :update_routes
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
-  before_save :update_temporary_content_images
+  after_save :update_temporary_content_images
 
   validate :step_validation
 
@@ -255,8 +255,19 @@ class SitePage < Page
     self.thumbnail.url
   end
 
-  # TODO
   def update_temporary_content_images
+    new_content = content
+    new_content.scan(/image":"([^"]*)"/).each do |tmp|
+      tmp = tmp.first
+      next unless tmp.include? '&temp_id='
+      tmp_id = tmp.scan(/temp_id=([^"]*)/).first
+      ci = ContentImage.new page_id: self.id, image: TemporaryContentImage.find(tmp_id.first).image
+      ci.save
+      new_content.gsub!(tmp, ci.image.url)
 
+      # Remove old image
+      TemporaryContentImage.find(tmp_id.first).destroy!
+    end
+    self.update_column :content, new_content
   end
 end
