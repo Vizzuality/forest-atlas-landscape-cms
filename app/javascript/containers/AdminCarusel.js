@@ -7,7 +7,7 @@ class AdminCarusel extends React.Component {
         super(props);
 
         this.state = {
-            main_images: gon.global.main_images,
+            main_images: [ ...gon.global.main_images.filter(i => i.value && i.value.length > 0), {} ],
         }
         this.inputs = [];
     }
@@ -73,33 +73,3 @@ class AdminCarusel extends React.Component {
 }
 
 export default AdminCarusel;
-
-{/* <div class="homepage-cover-container">
-<div class="homepage-cover">
-  <h3>Homepage cover images</h3>
-  <p>Add several images if you want a carousel.</p>
-  <!-- TODO: the next block should be duplicated (one per image) -->
-  <div>
-    <%= settings_form.file_field :image, id: 'main', accept: 'image/*', 'data-type': 'background' %>
-    <%= settings_form.label :image, value: 'Change homepage cover image', for: 'main', tabindex: '0' %>
-    <% if settings_form.object.present? && settings_form.object.image_file_name %>
-      <div class="preview -high js-preview" style="background-image: url('<%= settings_form.object.image.url %>');">
-      </div>
-    <% else %>
-      <div class="placeholder -high js-placeholder">
-        <span>Select file</span>
-      </div>
-    <% end %>
-    <div class="file-input-footer">
-      <div class="restrictions js-restrictions">
-        Recommended dimensions: 1280x500<br />
-        Max. size: 1MB
-      </div>
-      <div class="cover-attribution">
-        <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
-        <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
-      </div>
-    </div>
-  </div>
-  
-</div> */}
