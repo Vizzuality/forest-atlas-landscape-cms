@@ -7,7 +7,7 @@ class AdminCarusel extends React.Component {
         super(props);
 
         this.state = {
-            main_images: [ ...gon.global.main_images.filter(i => i.value && i.value.length > 0), {} ],
+            main_images: [ ...gon.global.main_images.filter(i => i.image_file_name && i.image_file_name.length > 0), { } ],
         }
         this.inputs = [];
     }
@@ -16,49 +16,67 @@ class AdminCarusel extends React.Component {
         this.inputs[i].click();
     }
 
-    generateHiddenInputs(formData) {
-        const { form } = this.props;
-        return <input 
-            type="file" 
-            name={`site[site_settings_attributes][4][image]`} 
-            value={formData}
-            style={{opacity: 0, filter: 'alpha(opacity=0)', width: 0, overflow: 'hidden' }}
-        />
-    }   
-
     renderInputs(image, i) {
         // XXX : warning, if backend changes the attributes for image, this needs to be changed
         // as of now each image gets appended after the 6th attribute
         const attributesOffset = 6;
-        return (
-        <div key={i}>
-            <div className="placeholder -high" onClick={() => this.openFileInput(i) }>
-                <span>Select file</span>
-            </div>
 
-            <div className="file-input-footer">
-                <div className="restrictions js-restrictions">
-                    Recommended dimensions: 1280x500<br />
-                    Max. size: 1MB
+        const { image_file_name, id, attribution_label, attribution_link } = image;
+
+        if (image_file_name) {
+            return (
+                <div key={i}>
+                    <div className="preview -high">
+                        <img src={`/system/site_settings/images/000/000/0${id}/original/${image_file_name}`}  alt={image_file_name} />
+                    </div>
+                    <div className="file-input-footer">
+                        <button>Remove</button>
+                        <input 
+                            ref={input => this.inputs.push(input)} 
+                            type="file" 
+                            name={`site[site_settings_attributes][${attributesOffset + i}][image]`} 
+                            accept="image/*"
+                            data-type="background"
+                        />
+                        <input type="hidden" name={`site[site_settings_attributes][${attributesOffset + i}][name]`} value="main_image" />
+                        <input type="hidden" name={`site[site_settings_attributes][${attributesOffset + i}][position]`} value={i} />
+                        <input type="text" value={attribution_label} placeholder="image attribution" name={`site[site_settings_attributes][${attributesOffset + i}][attribution_label]`} />
+                        <input type="text" value={attribution_link} placeholder="attribution link" name={`site[site_settings_attributes][${attributesOffset + i}][attribution_link]`} />
+                    </div>
                 </div>
-                <input 
-                    ref={input => this.inputs.push(input)} 
-                    type="file" 
-                    name={`site[site_settings_attributes][${attributesOffset + i}][image]`} 
-                    accept="image/*"
-                    data-type="background"
-                    />
-                <div className="cover-attribution">
-                    <input type="text" placeholder="image attribution" name={`site[site_settings_attributes][${attributesOffset + i}][attribution]`} />
-                    <input type="text" placeholder="attribution link" name={`site[site_settings_attributes][${attributesOffset + i}][link]`} />
+            )
+        } else {
+            return (
+            <div key={i}>
+                <div className="placeholder -high" onClick={() => this.openFileInput(i) }>
+                    <span>Select file</span>
+                </div>
+
+                <div className="file-input-footer">
+                    <div className="restrictions js-restrictions">
+                        Recommended dimensions: 1280x500<br />
+                        Max. size: 1MB
+                    </div>
+                    <input 
+                        ref={input => this.inputs.push(input)} 
+                        type="file" 
+                        name={`site[site_settings_attributes][${attributesOffset + i}][image]`} 
+                        accept="image/*"
+                        data-type="background"
+                        />
+                    <div className="cover-attribution">
+                        <input type="hidden" name={`site[site_settings_attributes][${attributesOffset + i}][name]`} value="main_image" />
+                        <input type="hidden" name={`site[site_settings_attributes][${attributesOffset + i}][position]`} value={i} />
+                        <input type="text" placeholder="image attribution" name={`site[site_settings_attributes][${attributesOffset + i}][attribution_label]`} />
+                        <input type="text" placeholder="attribution link" name={`site[site_settings_attributes][${attributesOffset + i}][attribution_link]`} />
+                    </div>
                 </div>
             </div>
-        </div>
-        )
+            )
+        }
     }
 
     render() {
-        console.log(this);
         return (
             <div className="homepage-cover-container">
                 <div className="homepage-cover">
