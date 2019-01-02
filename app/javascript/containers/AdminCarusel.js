@@ -65,6 +65,7 @@ class AdminCarusel extends React.Component {
                         data-type="background"
                     />
                     <div className="cover-attribution">
+                        <input type="hidden" name={`site[site_settings_attributes][${attributesOffset + i}][name]`} value="main_image" />
                         <input type="hidden" name={`site[site_settings_attributes][${attributesOffset + i}][position]`} value={attributesOffset + i} />
                         <input type="text" placeholder="image attribution" name={`site[site_settings_attributes][${attributesOffset + i}][attribution_label]`} />
                         <input type="text" placeholder="attribution link" name={`site[site_settings_attributes][${attributesOffset + i}][attribution_link]`} />
