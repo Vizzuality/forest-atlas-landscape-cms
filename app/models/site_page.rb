@@ -256,7 +256,8 @@ class SitePage < Page
   end
 
   def update_temporary_content_images
-    return unless content
+    return if content_type.blank? || content.blank?
+    return unless [ContentType::OPEN_CONTENT, ContentType::OPEN_CONTENT_V2].include?(content_type)
     new_content = content
     new_content.scan(/image":"([^"]*)"/).each do |tmp|
       tmp = tmp.first
