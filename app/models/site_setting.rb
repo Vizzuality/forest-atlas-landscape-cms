@@ -35,7 +35,7 @@ class SiteSetting < ApplicationRecord
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
-  validates_uniqueness_of :name, scope: :site_id
+  validates_uniqueness_of :name, scope: :site_id, unless: Proc.new { |setting| setting.name.eql? 'main_image' }
   # All settings have mandatory values, except for images and flag
   validates :value, presence: :true, if: :has_required_value?
   # All fields must have a name and position
