@@ -22,9 +22,9 @@ class Site < ApplicationRecord
   has_many :publishers, source: :user, through: :site_publishers
   has_many :context_sites, dependent: :destroy, inverse_of: :site
   has_many :contexts, through: :context_sites
-  has_many :site_settings, dependent: :destroy, inverse_of: :site
+  has_many :site_settings, dependent: :destroy, inverse_of: :site, autosave: true
 
-  accepts_nested_attributes_for :site_settings
+  accepts_nested_attributes_for :site_settings, allow_destroy: true
   accepts_nested_attributes_for :context_sites, allow_destroy: true
   accepts_nested_attributes_for :user_site_associations, allow_destroy: true
   accepts_nested_attributes_for :admins

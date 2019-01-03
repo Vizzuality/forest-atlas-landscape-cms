@@ -188,8 +188,14 @@ class Admin::SiteStepsController < AdminController
             settings[:site_settings_attributes].values.each do |attrs|
               site_setting = @site.site_settings.find_by position: attrs['position'] if attrs['position'].present?
               if site_setting
-                site_setting.assign_attributes(attrs)
+                if attrs[:_destroy] == '1'
+                  @site.site_settings.each { |ss| ss.mark_for_destruction if ss.id == site_setting.id }
+                else
+                  attrs.delete(:_destroy)
+                  site_setting.assign_attributes(attrs)
+                end
               else
+                attrs.delete(:_destroy)
                 @site.site_settings.build(attrs)
               end
             end
@@ -269,7 +275,7 @@ class Admin::SiteStepsController < AdminController
           :translate_english, :translate_french,
           :translate_spanish, :translate_georgian,
           :pre_footer, :analytics_key, :keywords, :contact_email_address,
-          :transifex_api_key
+          :transifex_api_key, :_destroy
         ]
       )
   end
