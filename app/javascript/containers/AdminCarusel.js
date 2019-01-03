@@ -19,7 +19,7 @@ class AdminCarusel extends React.Component {
     renderInputs(image, i) {
         // XXX : warning, if backend changes the attributes for image, this needs to be changed
         // as of now each image gets appended after the 6th attribute
-        const attributesOffset = 6;
+        const attributesOffset = 30;
 
         const { image_file_name, id, attribution_label, attribution_link } = image;
 
