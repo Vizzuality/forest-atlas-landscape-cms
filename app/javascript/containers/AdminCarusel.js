@@ -23,12 +23,13 @@ class AdminCarusel extends React.Component {
         console.log(this);
     }
 
-    fileInput(attributeId) {
+    fileInput(attributeId, inputId) {
         return (
         <input 
             ref={input => this.fileInputs.push(input)} 
             type="file" 
             name={`${attributeId}[image]`} 
+            id={inputId}
             accept="image/*"
             data-type="background"
         />
@@ -96,7 +97,7 @@ class AdminCarusel extends React.Component {
                         <img src={`/system/site_settings/images/000/000/0${id}/original/${image_file_name}`}  alt={image_file_name} />
                     </div>
                     <div className="file-input-footer">
-                        {this.fileInput(ATTRIBUTE_ID)}
+                        {this.fileInput(ATTRIBUTE_ID, INPUT_ID)}
                         <div className="restrictions">
                             <button type="button" className={deleteBtnClasses} onClick={() => this.toggleDeletion(i)}>{!!parseInt(_destroy) ? 'Restore' : 'Remove'}</button>
                         </div>
@@ -117,7 +118,7 @@ class AdminCarusel extends React.Component {
                         Recommended dimensions: 1280x500<br />
                         Max. size: 1MB
                     </div>
-                    {this.fileInput(ATTRIBUTE_ID)}
+                    {this.fileInput(ATTRIBUTE_ID, INPUT_ID)}
                     {this.coverAttributions(ATTRIBUTE_ID, attribution_label, attribution_link, _destroy, attributesOffset + i, i)}
                 </div>
             </div>
