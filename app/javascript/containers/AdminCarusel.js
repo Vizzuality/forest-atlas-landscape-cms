@@ -16,7 +16,6 @@ class AdminCarusel extends React.Component {
         this.state = {
             main_images: [ 
                 ...gon.global.main_images
-                    .filter(i => i.image_file_name && i.image_file_name.length > 0)
                     .map(i => { i._destroy = 0; return i; }), 
                     DEFAULT_EMPTY_IMAGE
             ],
@@ -94,12 +93,12 @@ class AdminCarusel extends React.Component {
         // as of now each image gets appended after the number bellow
         const attributesOffset = 30;
 
-        const { image_file_name, id, attribution_label, _destroy, attribution_link } = image;
+        const { image_url, image_file_name, id, attribution_label, _destroy, attribution_link } = image;
 
         const INPUT_ID = `main-image-${i}`;
         const ATTRIBUTE_ID = `site[site_settings_attributes][${attributesOffset + i}]`;
 
-        if (image_file_name || INPUT_ID in this.state.imagePreview) {
+        if (image_url || INPUT_ID in this.state.imagePreview) {
             const previewClasses = classNames({
                 preview: true, 
                 '-high': true,
@@ -114,7 +113,7 @@ class AdminCarusel extends React.Component {
             return (
                 <div key={i}>
                     <div className={previewClasses}>
-                        {image_file_name && <img src={`/system/site_settings/images/000/000/0${id}/original/${image_file_name}`}  alt={image_file_name} />}
+                        {image_url && <img src={image_url}  alt={image_file_name} />}
                         {INPUT_ID in this.state.imagePreview && <img src={this.state.imagePreview[INPUT_ID]} /> }
                     </div>
                     <div className="file-input-footer">
