@@ -8,19 +8,25 @@ class ImageUpload extends PureComponent {
     alternativeText: null
   };
 
-  imageToBase64(file) {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-    });
-  }
-
-  generateImage() {
-    this.imageToBase64(this.file.files[0]).then(base64 => {
-      this.setState({ image: base64 });
+  // TODO: endpoint does not exsist yet.. work in progress
+  uploadTemporaryImage() {
+    const { user } = window.gon.global;
+    const file = this.file.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+        
+    fetch(`/management/temporary_content_images`, {
+      method: 'POST',
+      headers: { Authorization: user.token },
+      body: formData
+    })
+    .then(response => response.json())
+    .then((response) => {
+      console.log('hello', response);
+      this.setState({ image: response.url });
+    })
+    .catch((e) => {
+      console.error('Error', 'We couldn\'t upload the image. Try again');
     });
   }
 
@@ -38,7 +44,7 @@ class ImageUpload extends PureComponent {
             type="file"
             name="wysiwyg-file"
             ref={input => (this.file = input)}
-            onChange={() => this.generateImage()}
+            onChange={() => this.uploadTemporaryImage()}
             aria-label="Add image"
           />
         </div>

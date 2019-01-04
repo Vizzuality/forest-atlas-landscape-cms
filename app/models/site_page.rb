@@ -54,6 +54,7 @@ class SitePage < Page
   has_one :dashboard_setting,foreign_key: 'page_id', dependent: :destroy,
           inverse_of: :site_page, autosave: true
   has_many :tags, foreign_key: :page_id
+  has_many :content_images, dependent: :destroy
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
@@ -65,6 +66,7 @@ class SitePage < Page
   before_update :cheat_with_position_on_update
   after_create :update_routes
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
+  after_save :update_temporary_content_images
 
   validate :step_validation
 
@@ -257,4 +259,21 @@ class SitePage < Page
     self.thumbnail.url
   end
 
+  def update_temporary_content_images
+    return if content_type.blank? || content.blank?
+    return unless [ContentType::OPEN_CONTENT, ContentType::OPEN_CONTENT_V2].include?(content_type)
+    new_content = content
+    new_content.scan(/image":"([^"]*)"/).each do |tmp|
+      tmp = tmp.first
+      next unless tmp.include? '&temp_id='
+      tmp_id = tmp.scan(/temp_id=([^"]*)/).first
+      ci = ContentImage.new page_id: self.id, image: TemporaryContentImage.find(tmp_id.first).image
+      ci.save
+      new_content.gsub!(tmp, ci.image.url)
+
+      # Remove old image
+      TemporaryContentImage.find(tmp_id.first).destroy!
+    end
+    self.update_column :content, new_content
+  end
 end
