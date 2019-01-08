@@ -119,7 +119,7 @@ class AdminCarusel extends React.Component {
     renderInputs(image, i) {
         // XXX : warning, if backend changes the attributes for image, this needs to be changed
         // as of now each image gets appended after the number bellow
-        const attributesOffset = 30;
+        const attributesOffset = 31;
 
         const { image_url, image_file_name, id, attribution_label, _destroy, attribution_link } = image;
 
@@ -176,7 +176,6 @@ class AdminCarusel extends React.Component {
 
     render() {
         const { main_images } = this.state;
-        console.log(this.state);
         return (
             <div className="homepage-cover-container">
                 <div className="homepage-cover">
