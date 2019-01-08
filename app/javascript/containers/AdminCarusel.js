@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const DEFAULT_EMPTY_IMAGE = {
-    _destroy: 0,
+    // We default to destroy, as no image is present
+    // This will be updated once the image is added
+    _destroy: 1,
     attribution_label: '',
     attribution_link: ''
 } 
@@ -16,6 +18,7 @@ class AdminCarusel extends React.Component {
         this.state = {
             main_images: [ 
                 ...gon.global.main_images
+                    .filter(i => i.image_url !== 'original/missing.png')
                     .map(i => { i._destroy = 0; return i; }), 
                     DEFAULT_EMPTY_IMAGE
             ],
@@ -25,33 +28,58 @@ class AdminCarusel extends React.Component {
         this.fileInputs = [];
     }
     
-    readFilePreview(index, inputId) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const patch = { ...this.state.imagePreview, [inputId]: e.target.result };
-            this.setState({ 
-                imagePreview: patch, 
-                main_images: [ 
-                    ...this.state.main_images, 
-                    DEFAULT_EMPTY_IMAGE
-                ] 
-            });
-        }
-        
-        reader.readAsDataURL(this.fileInputs[index].files[0]);
+    readFilePreview(e, index, inputId) {
+        const { main_images } = this.state;
+        const { user } = window.gon.global;
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        return fetch(`/admin/temporary_content_images`, {
+            method: 'POST',
+            headers: { Authorization: user.token },
+            body: formData
+        })
+        .then(response => response.json())
+        .then((response) => {
+            const image_url = response.url;
+            const patch = [
+                ...main_images.map((image, i) => { 
+                    if (i === index) {
+                        return { ...image, image_url, _destroy: 0 };
+                    }
+                    return image;
+                }),
+                DEFAULT_EMPTY_IMAGE
+            ];  
+            this.setState({ main_images: patch });
+            resolve(response);
+        })
+        .catch((e) => {
+            console.error('Error: We couldn\'t upload the image. Try again');
+            reject(e);
+        });
+
     }
 
-    fileInput(attributeId, inputId, index) {
+    fileInput(attributeId, inputId, index, filePath = '') {
         return (
-        <input 
-            ref={input => this.fileInputs[index] = input} 
-            onChange={() => this.readFilePreview(index, inputId)}
-            type="file" 
-            name={`${attributeId}[image]`} 
-            id={inputId}
-            accept="image/*"
-            data-type="background"
-        />
+        <React.Fragment>
+            <input 
+                ref={input => this.fileInputs[index] = input} 
+                onChange={e => this.readFilePreview(e, index, inputId)}
+                type="file" 
+                id={`${inputId}-file`}
+                accept="image/*"
+                datatype="background"
+            />
+            <input 
+                type="hidden" 
+                name={`${attributeId}[image]`} 
+                id={inputId}
+                value={filePath}
+            />
+        </React.Fragment>
         )
     }
 
@@ -117,7 +145,7 @@ class AdminCarusel extends React.Component {
                         {INPUT_ID in this.state.imagePreview && <img src={this.state.imagePreview[INPUT_ID]} /> }
                     </div>
                     <div className="file-input-footer">
-                        {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i)}
+                        {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i, image_url)}
                         <div className="restrictions">
                             <button type="button" className={deleteBtnClasses} onClick={() => this.toggleDeletion(i)}>{!!parseInt(_destroy) ? 'Restore' : 'Remove'}</button>
                         </div>
@@ -130,7 +158,7 @@ class AdminCarusel extends React.Component {
             <div key={i}>        
                 <div className="placeholder -high">
                     <span>Select file</span>
-                    <label htmlFor={INPUT_ID} tabIndex="0">Change main image</label>
+                    <label htmlFor={`${INPUT_ID}-file`} tabIndex="0">Change main image</label>
                 </div>
 
                 <div className="file-input-footer">
@@ -138,7 +166,7 @@ class AdminCarusel extends React.Component {
                         Recommended dimensions: 1280x500<br />
                         Max. size: 1MB
                     </div>
-                    {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i)}
+                    {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i, image_url)}
                     {this.coverAttributions(ATTRIBUTE_ID, attribution_label, attribution_link, _destroy, attributesOffset + i, i)}
                 </div>
             </div>
@@ -148,7 +176,7 @@ class AdminCarusel extends React.Component {
 
     render() {
         const { main_images } = this.state;
-        
+        console.log(this.state);
         return (
             <div className="homepage-cover-container">
                 <div className="homepage-cover">
