@@ -192,10 +192,20 @@ class Admin::SiteStepsController < AdminController
                   @site.site_settings.each { |ss| ss.mark_for_destruction if ss.id == site_setting.id }
                 else
                   attrs.delete(:_destroy)
+                  attrs.delete(:image) if attrs[:image].is_a? String
                   site_setting.assign_attributes(attrs)
                 end
               else
                 attrs.delete(:_destroy)
+                url = attrs[:image]
+                if url.is_a? String
+                  begin
+                    id = url.gsub(/.*temp_id=/, '')
+                    image = TemporaryContentImage.find id
+                    attrs[:image] = image.image
+                  rescue
+                  end
+                end
                 @site.site_settings.build(attrs)
               end
             end
