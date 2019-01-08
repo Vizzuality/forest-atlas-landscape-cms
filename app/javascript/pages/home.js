@@ -9,7 +9,7 @@ import { getDbContent } from 'utils';
 import { WysiwygEditor, Footer } from 'components';
 import Wysiwyg from 'components/shared/Wysiwyg';
 
-const Home = ({ site, coverImage }) => {
+const Home = ({ site }) => {
   return (
     <div className="fa-page">
       {site.meta.siteTemplateName !== 'INDIA' && <React.Fragment>

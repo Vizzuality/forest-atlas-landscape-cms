@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
+    resources :temporary_content_images, only: [:create]
     resources :sites, param: :slug do
       resources :site_steps, only: [:show, :update, :edit]
     end

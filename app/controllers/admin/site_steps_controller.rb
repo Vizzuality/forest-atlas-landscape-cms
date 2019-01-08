@@ -67,7 +67,9 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
         @logo_image = @site.site_settings.where(name: 'logo_image').first
-        @main_image = @site.site_settings.where(name: 'main_image').first
+        @main_images = @site.site_settings.where(name: 'main_image')
+                         .order(position: :asc)
+        gon.global.main_images = @main_images.map { |x| x.attributes.merge!(image_url: x.image.url) }
         @alternative_image = @site.site_settings.where(name: 'alternative_image').first
         @favico = @site.site_settings.where(name: 'favico').first
       end
@@ -184,10 +186,26 @@ class Admin::SiteStepsController < AdminController
           # If the user is editing
           if @site.id
             settings[:site_settings_attributes].values.each do |attrs|
-              site_setting = @site.site_settings.find { |s| s.name == attrs['name'] } if attrs['name'].present?
+              site_setting = @site.site_settings.find_by position: attrs['position'] if attrs['position'].present?
               if site_setting
-                site_setting.assign_attributes(attrs)
+                if attrs[:_destroy] == '1'
+                  @site.site_settings.each { |ss| ss.mark_for_destruction if ss.id == site_setting.id }
+                else
+                  attrs.delete(:_destroy)
+                  attrs.delete(:image) if attrs[:image].is_a? String
+                  site_setting.assign_attributes(attrs)
+                end
               else
+                attrs.delete(:_destroy)
+                url = attrs[:image]
+                if url.is_a? String
+                  begin
+                    id = url.gsub(/.*temp_id=/, '')
+                    image = TemporaryContentImage.find id
+                    attrs[:image] = image.image
+                  rescue
+                  end
+                end
                 @site.site_settings.build(attrs)
               end
             end
@@ -267,7 +285,7 @@ class Admin::SiteStepsController < AdminController
           :translate_english, :translate_french,
           :translate_spanish, :translate_georgian,
           :pre_footer, :analytics_key, :keywords, :contact_email_address,
-          :transifex_api_key
+          :transifex_api_key, :_destroy
         ]
       )
   end

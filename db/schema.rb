@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181220111112) do
+ActiveRecord::Schema.define(version: 20190103102624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,7 +185,6 @@ ActiveRecord::Schema.define(version: 20181220111112) do
     t.datetime "updated_at",         null: false
     t.text     "attribution_link"
     t.text     "attribution_label"
-    t.index ["site_id", "name"], name: "index_site_settings_on_site_id_and_name", unique: true, using: :btree
     t.index ["site_id"], name: "index_site_settings_on_site_id", using: :btree
   end
 

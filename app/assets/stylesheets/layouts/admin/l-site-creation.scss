@@ -164,7 +164,7 @@
       flex-wrap: wrap;
       justify-content: flex-start;
 
-      > div {
+      div {
         position: relative;
 
         h3 {
@@ -179,7 +179,7 @@
           left: 0;
           width: 100%;
           height: 170px;
-          top: 31px;
+          top: 0;
           text-indent: -10000px;
           cursor: pointer;
           z-index: 1;
@@ -238,6 +238,25 @@
             height: 170px;
           }
 
+          &.deletion {
+            position: relative;
+            &:before {
+              content: "Removed";
+              position: absolute;
+              z-index: 100;
+              top: 0;
+              left: 0;
+              width: inherit;
+              height: inherit;
+              text-align: center;
+              color: #ffffff;
+              background: #ffffffab;
+              line-height: 170px;
+              font-size: 36px;
+              text-transform: uppercase;
+            }
+          }
+
           > img {
             display: block;
             max-width: 100%;
@@ -249,6 +268,23 @@
           flex-basis: 50%;
           margin-top: 10px;
           font-size: $font-size-small;
+
+          .remove {
+            background: #ff4b4b;
+            padding: 6px 18px;
+            border: none;
+            color: #FFF;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &.restore {
+              background: #fdc206;
+            }
+
+          }
+  
         }
       }
 
@@ -271,14 +307,46 @@
         margin: 55px 0;
       }
 
-      > .homepage-cover {
-        flex-basis: calc(50% - 10px);
-        margin-right: 20px;
+      .homepage-cover-container {
+        flex-basis: 100%;
+        margin-bottom: 10px;
+
+        > .homepage-cover {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-wrap: wrap;
+
+          > h3,
+          > p {
+            flex-basis: 100%;
+            margin-top: 0;
+          }
+
+          > div {
+            flex-basis: calc(50% - 10px);
+            margin-right: 20px;
+            margin-bottom: 20px;
+
+            &:nth-of-type(2n) {
+              margin-right: 0;
+            }
+          }
+        }
       }
 
-      > .content-cover {
-        flex-basis: calc(50% - 10px);
+      .content-cover-container {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        > .content-cover {
+          flex-basis: calc(50% - 10px);
+        }
       }
+
 
       .cover-attribution {
         display: flex;
@@ -301,6 +369,7 @@
 
       .file-input-footer {
         display: flex;
+        min-height: 50px;
       }
     }
   }

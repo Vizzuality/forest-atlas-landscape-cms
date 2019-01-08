@@ -1,17 +1,19 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classnames from 'classnames';
+import Slider from 'react-slick';
+
 
 class CoverPage extends React.Component {
   static propTypes = {
     size: PropTypes.oneOf(['big', 'small']),
-    image: PropTypes.shape({
+    images: PropTypes.arrayOf(PropTypes.shape({
       url: PropTypes.string,
       attribution: PropTypes.shape({
         label: PropTypes.string,
         url: PropTypes.string,
       })
-    }),
+    })),
     title: PropTypes.string,
     subtitle: PropTypes.string,
     template: PropTypes.string,
@@ -19,7 +21,7 @@ class CoverPage extends React.Component {
 
   static defaultProps = {
     size: 'big',
-    image: {},
+    images: [],
     title: null,
     subtitle: null,
     template: null,
@@ -29,14 +31,14 @@ class CoverPage extends React.Component {
    * Code specific for the INDIA template
    */
   renderIndiaCover() {
-    const { image, size, title } = this.props;
+    const { images, size, title } = this.props;
 
     if (size === 'big') {
       return (
         <div
           className="c-cover -big"
-          style={image && image.url
-            ? { backgroundImage: `url(${image.url})` }
+          style={images.length && images[0].url
+            ? { backgroundImage: `url(${images[0].url})` }
             : {}
           }
         >
@@ -67,8 +69,8 @@ class CoverPage extends React.Component {
     return (
       <div
         className="c-cover"
-        style={image && image.url
-          ? { backgroundImage: `url(${image.url})` }
+        style={images.length && images[0].url
+          ? { backgroundImage: `url(${images[0].url})` }
           : {}
         }
       >
@@ -81,11 +83,22 @@ class CoverPage extends React.Component {
 
 
   render() {
-    const { image, size, title, subtitle, template } = this.props;
+    const { images, size, title, subtitle, template } = this.props;
+
+    const { main_images } = gon.global;
 
     if (template === 'INDIA') {
       return this.renderIndiaCover();
     }
+
+    const sliderSettings = {
+      infinite: true,
+      arrows: false,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      fade: true,
+      cssEase: 'linear',
+    };
 
     return (
       <div
@@ -93,11 +106,32 @@ class CoverPage extends React.Component {
           'c-cover': true,
           '-short': size === 'small'
         })}
-        style={image && image.url
-          ? { backgroundImage: `url(${image.url})` }
-          : {}
-        }
       >
+        { size === 'big' && (
+          <Slider {...sliderSettings}>
+            {main_images.filter(image => image.image_file_name !== null).map(image => (
+              <div className="slide" key={image.url}>
+                <div
+                  className="background"
+                  style={{ backgroundImage: `url(${image.image_url})` }}
+                />
+
+                {image.attribution && (
+                  <div className="cover-attribution">
+                    { image.attribution.url && (
+                      <a target="_blank" href={image.attribution.url} rel="noopener noreferrer">
+                        {image.attribution.label}
+                      </a>
+                    )}
+                    { !image.attribution.url && image.attribution.label && (
+                      <p>{image.attribution.label}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </Slider>
+        )}
         <div className="wrapper">
           { title && (
             <h2 className="cover-title">
@@ -110,19 +144,6 @@ class CoverPage extends React.Component {
             </h2>
           )}
         </div>
-
-        {image.attribution && (
-          <div className="cover-attribution">
-            { image.attribution.url && (
-              <a target="_blank" href={image.attribution.url} rel="noopener noreferrer">
-                {image.attribution.label}
-              </a>
-            )}
-            { !image.attribution.url && image.attribution.label && (
-              <p>{image.attribution.label}</p>
-            )}
-          </div>
-        )}
 
       </div>
     );

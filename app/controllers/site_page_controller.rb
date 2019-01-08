@@ -54,15 +54,18 @@ class SitePageController < ApplicationController
     @image_url = '/'
     @image_url = logo_image_setting.image if !logo_image_setting.blank? && !logo_image_setting.image_file_name.blank?
 
-    if main_image_setting = SiteSetting.main_image(@site_page.site.id)
-      attribution =
-        if main_image_setting.attribution_label.present? || main_image_setting.attribution_link.present?
-          { url: main_image_setting.attribution_link, label: main_image_setting.attribution_label }
-        end
-      @homepage_cover = {
-        url: main_image_setting.image.url,
-        attribution: attribution
-      }
+    if main_images_settings = SiteSetting.main_images(@site_page.site.id)
+      @homepage_covers = []
+      main_images_settings.each do |image|
+        attribution =
+          if image.attribution_label.present? || image.attribution_link.present?
+            { url: image.attribution_link, label: image.attribution_label }
+          end
+        @homepage_covers << {
+          url: image.image.url,
+          attribution: attribution
+        }
+      end
     end
 
     if alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
@@ -70,10 +73,10 @@ class SitePageController < ApplicationController
         if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
           { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
         end
-      @page_cover = {
+      @page_cover = [{
         url: alternative_image_setting.image.url,
         attribution: attribution
-      }
+      }]
     end
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)
