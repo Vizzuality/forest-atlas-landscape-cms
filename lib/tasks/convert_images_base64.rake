@@ -3,6 +3,7 @@ namespace :images do
   task convert: :environment do
     Paperclip::DataUriAdapter.register
     SitePage.find_each do |page|
+      next if page.content.blank?
       begin
         has_hash_content = page.content.is_a? Hash
         puts "Page: #{page.id}. Hash: #{has_hash_content}"
@@ -19,7 +20,24 @@ namespace :images do
           puts "Updated page #{page.id}. Has_hash_content: #{has_hash_content}"
         end
         page.content = JSON.parse(page.content) if has_hash_content
-        page.save!
+        page.update_column(:content, page.content)
+      rescue Exception => e
+        puts "ERROR IN PAGE #{page.id}. #{e.message}"
+      end
+    end
+  end
+
+  desc 'Fixes the extra bar at the end of string contents'
+  task string: :environment do
+    SitePage.find_each do |page|
+      next if page.content.blank?
+      begin
+        next if page.content.is_a? Hash
+        images = page.content.scan(/\/system\/content_images[^\\]*\\/)
+        images.each do |image|
+          page.content.gsub!(image, image[0...-1])
+        end
+        page.update_column(:content, page.content)
       rescue Exception => e
         puts "ERROR IN PAGE #{page.id}. #{e.message}"
       end
