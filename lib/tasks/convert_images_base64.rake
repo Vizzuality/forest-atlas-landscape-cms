@@ -4,6 +4,7 @@ namespace :images do
     Paperclip::DataUriAdapter.register
     SitePage.find_each do |page|
       has_hash_content = page.content.is_a? Hash
+      puts "Page: #{page.id}. Hash: #{has_hash_content}"
       page.content = page.content.to_json if has_hash_content
       images = page.content.scan(/"(data:image[^"]*)/)
       images.each do |image|
