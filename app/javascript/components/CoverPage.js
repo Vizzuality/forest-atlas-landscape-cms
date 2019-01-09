@@ -95,7 +95,7 @@ class CoverPage extends React.Component {
       infinite: true,
       arrows: false,
       autoplay: true,
-      autoplaySpeed: 2000,
+      autoplaySpeed: 4000,
       fade: true,
       cssEase: 'linear',
     };
