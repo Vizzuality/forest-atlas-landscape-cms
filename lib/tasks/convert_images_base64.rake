@@ -9,7 +9,8 @@ namespace :images do
       images.each do |image|
         base64 = image.first
         file_image_url = ContentImage.create_from_base64 page.id, base64
-        page.content.gsub!(base64, file_image_url)
+        page.content.gsub!(base64, file_image_url + '\\')
+        puts "Updated page #{page.id}. Has_hash_content: #{has_hash_content}"
       end
       page.content = JSON.parse(page.content) if has_hash_content
       page.save!
