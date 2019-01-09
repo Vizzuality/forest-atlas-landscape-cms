@@ -117,22 +117,30 @@
     width: 100%;
     max-width: $body-max-width;
 
+    .right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
     .info,
     .download {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      width: 35px;
+      display: inline-block;
+      min-width: 35px;
       height: 35px;
       margin-left: 10px;
+      padding: 0 10px;
       border: 1px solid $color-1;
-      border-radius: 100%;
+      border-radius: 30px;
       background: rgba($color-1, .1);
+      color: $color-4;
+      line-height: 35px;
       cursor: pointer;
 
       svg {
         width: 16px;
         height: 16px;
+        vertical-align: text-bottom;
 
         use {
           fill: $color-4;

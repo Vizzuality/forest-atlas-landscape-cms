@@ -6,6 +6,7 @@ import { setSelectedTab, fetchFields, fetchDataset, fetchWidget, setPageSlug, se
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 import { getDatasetMetadata } from 'components/shared/Dashboard/dashboard.selectors';
+import { fetchDataPromise } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 
 const mapStateToProps = state => ({
   tabs: state.dashboard.tabs,
@@ -25,7 +26,8 @@ const mapDispatchToProps = dispatch => ({
   setPageSlug: pageSlug => dispatch(setPageSlug(pageSlug)),
   setDatasetId: datasetId => dispatch(setDatasetId(datasetId)),
   setWidgetId: widgetId => dispatch(setWidgetId(widgetId)),
-  setDetailsVisibility: visible => dispatch(setDetailsVisibility(visible))
+  setDetailsVisibility: visible => dispatch(setDetailsVisibility(visible)),
+  downloadDashboardData: () => dispatch((_, getState) => fetchDataPromise(getState))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardComponent);
