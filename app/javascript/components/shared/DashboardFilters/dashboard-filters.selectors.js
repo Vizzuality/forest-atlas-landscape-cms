@@ -14,7 +14,7 @@ export const getAvailableFields = createSelector(
   [getWidget, getFields, getFiltersSelector],
   (widget, fields, filters) => fields.filter(f => (
     [
-      ...getVegaWidgetQueryParams(widget).filters,
+      ...(widget ? getVegaWidgetQueryParams(widget).filters : []),
       ...filters
     ].findIndex(wf => wf.name === f.name) === -1
   )).sort((a, b) => (a.alias || a.name).localeCompare(b.alias || b.name))

@@ -11,8 +11,14 @@ import DashboardMapView from 'components/shared/DashboardMapView';
 import DashboardTableView from 'components/shared/DashboardTableView';
 import Icon from 'components/icon';
 import Modal from 'components/Modal';
+import Notification from 'components/Notification';
 
 class Dashboard extends React.Component {
+  state = {
+    dataError: false,
+    dataDownloading: false
+  };
+
   componentWillMount() {
     this.props.setPageSlug(this.props.pageSlug);
     this.props.setDatasetId(this.props.dataset);
@@ -23,7 +29,31 @@ class Dashboard extends React.Component {
       .then(() => this.props.fetchChartData());
   }
 
+  async onClickDownload() {
+    const { downloadDashboardData } = this.props;
+
+    this.setState({ dataError: false, dataDownloading: true });
+
+    try {
+      const { data } = await downloadDashboardData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type : 'application/json' });
+
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Dashboard data.json';
+      a.click();
+      document.body.removeChild(a);
+
+      this.setState({ dataError: false, dataDownloading: false });
+    } catch (e) {
+      console.error(e);
+      this.setState({ dataError: true, dataDownloading: false });
+    }
+  }
+
   render() {
+    const { dataError, dataDownloading } = this.state;
     const metadata = this.props.datasetMetadata && this.props.datasetMetadata.attributes;
 
     let downloadLink = null;
@@ -35,6 +65,22 @@ class Dashboard extends React.Component {
 
     return (
       <div className="c-dashboard vizz-wysiwyg">
+        {dataError && (
+          <Notification
+            type="error"
+            content="The data of the dashboard couldn't be generated."
+            onClose={() => this.setState({ dataError: false })}
+          />
+        )}
+        {dataDownloading && (
+            <Notification
+              type="warning"
+              content="The data of the dashboard is being generated..."
+              closeable={false}
+              onClose={() => {}}
+            />
+          )}
+
         {!this.props.preview && <DashboardBookmarks />}
         {!this.props.preview && (
           <Wysiwyg
@@ -57,7 +103,7 @@ class Dashboard extends React.Component {
         <div className="actions-container">
           <div />
           { this.props.datasetData && (
-            <div>
+            <div className="right">
               <button
                 type="button"
                 className="info"
@@ -66,14 +112,21 @@ class Dashboard extends React.Component {
               >
                 <Icon name="icon-info" />
               </button>
+              <button
+                className="download"
+                aria-label="Download filtered dataset"
+                onClick={() => this.onClickDownload()}
+              >
+                <Icon name="icon-download" />
+              </button>
               { downloadLink && (
                 <a
                   className="download"
-                  aria-label="Download dataset"
+                  aria-label="Download original dataset"
                   href={downloadLink}
                   {...(metadata.info.data_download_original_link ? { target: '_blank', rel: 'noopener noreferrer' } : { download: true })}
                 >
-                  <Icon name="icon-download" />
+                  Original dataset <Icon name="icon-download" />
                 </a>
               )}
             </div>
