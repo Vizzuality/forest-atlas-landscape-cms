@@ -53,7 +53,7 @@
           flex-basis: calc(50% - 5px);
           flex-grow: 0;
           height: 500px;
-          overflow: hidden;
+          overflow: auto; // Should be able to see the entire chart
         }
 
         .textarea-container {
