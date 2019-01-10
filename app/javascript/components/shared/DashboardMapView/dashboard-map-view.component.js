@@ -51,6 +51,18 @@ class DashboardMapView extends React.Component {
       this.geometryLayer.eachFeature((layer) => {
         const layerBounds = layer.getBounds();
         bounds.extend(layerBounds);
+
+
+        const data = layer.feature.properties;
+        const { fieldsDisplayNames } = this.props;
+
+        const popup =  L.popup()
+        .setLatLng(layerBounds.getCenter())
+        .setContent(`
+          ${Object.keys(data).filter(key => !!fieldsDisplayNames[key]).map(key => `<div><strong>${fieldsDisplayNames[key]}:</strong> ${data[key] === null ? '–' : data[key]}</div>`).join('')}
+        `);
+
+        layer.bindPopup(popup)
       });
 
       this.map.fitBounds(bounds);
@@ -88,7 +100,8 @@ class DashboardMapView extends React.Component {
 
 DashboardMapView.propTypes = {
   layerUrl: PropTypes.string,
-  sqlWhere: PropTypes.string
+  sqlWhere: PropTypes.string,
+  fieldsDisplayNames: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 DashboardMapView.defaultProps = {
