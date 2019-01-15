@@ -11,7 +11,7 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   API_PROPERTIES = [
-    :language, :description, :citation, :source, :name, :application
+    :language, :description, :citation, :source, :name, :application, :columns
   ]
 
   APPLICATION_PROPERTIES = [
@@ -172,6 +172,7 @@ class Dataset
   # +token+:: The authentication for the API
   def upload(token)
     tags_array = tags && tags.split(',') || []
+    build_arcgis_metadata if provider.eql? 'featureservice'
     DatasetService.upload token, type, provider, connector_url, data_path,
                           application, name, tags_array, legend, metadata
   end
@@ -193,6 +194,19 @@ class Dataset
     DatasetService.create_metadata(
       token, id, 'forest-atlas', name, tags_array, metadata
     )
+  end
+
+  # Updates the metadata when the provider is feature service
+  # It connects to the feature service and extracts the description,
+  # name, and fields
+  def build_arcgis_metadata
+    arcgis_metadata = ArcgisService.build_metadata(self.connector_url)
+    metadata[:description] = arcgis_metadata['description']
+    metadata[:source] = arcgis_metadata['name']
+
+    columns = {}
+    arcgis_metadata['fields'].each {|f| columns[f['name']] = { 'alias': f['alias'] } }
+    metadata[:columns] = columns
   end
 
   # TODO: have a feeling this does not return the metadata object
