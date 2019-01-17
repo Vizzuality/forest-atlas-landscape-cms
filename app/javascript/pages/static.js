@@ -23,7 +23,7 @@ const StaticPage = ({ site, version, relatedPages }) => (
       </div>
     )}
 
-    {relatedPages && relatedPages.length && <RelatedPages pages={relatedPages} />}
+    {!!(relatedPages && relatedPages.length) && <RelatedPages pages={relatedPages} />}
 
     <Footer site={site} />
   </div>
