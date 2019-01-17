@@ -84,9 +84,6 @@ class CoverPage extends React.Component {
 
   render() {
     const { images, size, title, subtitle, template } = this.props;
-    
-    const { global = { main_images: [] } } = gon;
-    const { main_images } = global;
 
     if (template === 'INDIA') {
       return this.renderIndiaCover();
@@ -107,14 +104,18 @@ class CoverPage extends React.Component {
           'c-cover': true,
           '-short': size === 'small'
         })}
+        style={images.length && images[0].url && size === 'small'
+          ? { backgroundImage: `url(${images[0].url})` }
+          : {}
+        }
       >
-        { size === 'big' && main_images.length > 0 && (
+        { size === 'big' && images.length > 0 && (
           <Slider {...sliderSettings}>
-            {main_images.filter(image => image.image_file_name !== null).map(image => (
+            {images.map(image => (
               <div className="slide" key={image.url}>
                 <div
                   className="background"
-                  style={{ backgroundImage: `url(${image.image_url})` }}
+                  style={{ backgroundImage: `url(${image.url})` }}
                 />
 
                 {image.attribution && (
