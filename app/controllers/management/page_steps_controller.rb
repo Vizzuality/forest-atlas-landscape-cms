@@ -153,7 +153,7 @@ class Management::PageStepsController < ManagementController
       when 'tag_searching'
         @tags = Tag.joins(:site_page)
                   .where(page_id: @page.site.site_pages.pluck(:id))
-                  .pluck(:value).uniq!
+                  .pluck(:value).uniq
     end
 
     @breadcrumbs = [
