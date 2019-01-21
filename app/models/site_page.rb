@@ -44,6 +44,7 @@ class SitePage < Page
 
   scope :for_site, ->(site_id) { where(site_id: site_id)}
   scope :enabled, -> { where(enabled: true) }
+  scope :not_tag_page, -> { where.not(content_type: ContentType::TAG_SEARCHING)}
 
   belongs_to :site
   has_many :routes, through: :site

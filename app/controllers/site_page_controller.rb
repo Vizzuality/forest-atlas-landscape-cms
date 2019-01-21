@@ -224,12 +224,12 @@ class SitePageController < ApplicationController
     return if @search_string.blank?
 
     @search_results =
-      SitePage.search_tags(@search_string)
+      SitePage.not_tag_page.search_tags(@search_string)
         .for_site(@site_page.site_id).enabled
         .limit(MAX_PAGE_SIZE)
         .offset((@page_number - 1) * MAX_PAGE_SIZE)
     @total_pages =
-      SitePage.search(@search_string)
+      SitePage.not_tag_page.search(@search_string)
         .for_site(@site_page.site_id).enabled.count
     @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
   end
