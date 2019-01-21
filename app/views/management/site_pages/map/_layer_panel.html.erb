@@ -6,7 +6,7 @@
       LAYER PANEL
       <button type="button" class="info-button" data-tippy="Use this panel to manage the layers and layer groups which are included in your mapbuilder map. By default, the layer panel will include three layer groups (land cover dynamic, land cover, and the layers from your webmap). You may modify the json object to customize existing layer groups or add additional custom layer groups. For more information on the configuration options and formatting for the layer panel consult the layer panel section of the mapbuilder wiki." data-tippy-interactive="true">Field information</button>
     </label>
-    <%= settings.hidden_field :layerPanel, { name: 'map-layerPanel' } %>
+    <%= settings.hidden_field :layerPanel, { name: 'site_page[content][settings][layerPanel]' } %>
     <div id="layerPanelCode"></div>
 
     <script>
@@ -22,7 +22,7 @@
           } catch (e) {}
         }
       });
-      var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.to_json.html_safe %>');
+      var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.html_safe %>');
 
       layerPanelContainer.editor = layerPanelEditor;
       layerPanelContainer.input = layerPanelInput;

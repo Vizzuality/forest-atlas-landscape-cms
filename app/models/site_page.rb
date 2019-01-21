@@ -137,7 +137,7 @@ class SitePage < Page
 
   # Returns an object with the settings, ignoring the way it was saved
   def settings_structure
-    return OpenStruct.new if content.nil?
+    return OpenStruct.new if content.nil? || content['settings'].blank?
     if content['settings'].is_a? Hash
       OpenStruct.new(content['settings'])
     else

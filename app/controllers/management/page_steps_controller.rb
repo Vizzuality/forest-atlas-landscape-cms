@@ -143,7 +143,11 @@ class Management::PageStepsController < ManagementController
         gon.widgets = get_widgets_list
       when 'map'
         unless @page.persisted?
-          @page.content = MapVersion.order(:position).first.default_settings
+          @page.content = if MapVersion.order(:position).first.default_settings.blank?
+                            {}
+                          else
+                            MapVersion.order(:position).first.default_settings
+                          end
           gon.map_versions = MapVersion.order(:position)
         end
       when 'tag_searching'
