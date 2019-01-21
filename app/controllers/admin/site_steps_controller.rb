@@ -188,14 +188,16 @@ class Admin::SiteStepsController < AdminController
             settings[:site_settings_attributes].values.each do |attrs|
               site_setting = @site.site_settings.find_by position: attrs['position'] if attrs['position'].present?
               if site_setting
+                next if attrs[:_destroy] == '1' && attrs[:image].blank?
                 if attrs[:_destroy] == '1'
                   @site.site_settings.each { |ss| ss.mark_for_destruction if ss.id == site_setting.id }
                 else
                   attrs.delete(:_destroy)
-                  attrs.delete(:image) if attrs[:image].is_a? String
-                  site_setting.assign_attributes(attrs)
+                  attrs.delete(:image) if attrs[:image].is_a?(String) && !attrs[:image].include?('?temp_id=')
+                  @site.site_settings.each { |ss| ss.assign_attributes(attrs) if ss.id == site_setting.id }
                 end
               else
+                next if attrs[:_destroy] == '1'
                 attrs.delete(:_destroy)
                 url = attrs[:image]
                 if url.is_a? String
