@@ -16,10 +16,7 @@ class AdminCarousel extends React.Component {
     this.state = {
       main_images: [
         ...gon.global.main_images
-          .filter(i => i.image_url !== 'original/missing.png')
-          .map(i => Object.assign({}, {
-            _destroy: 0,
-          })),
+          .map(i => ({ ...i, _destroy: 0 })),
         DEFAULT_EMPTY_IMAGE
       ],
       imagePreview: {},
