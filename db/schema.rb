@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190103102624) do
+ActiveRecord::Schema.define(version: 20190122110500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,20 +122,24 @@ ActiveRecord::Schema.define(version: 20190103102624) do
     t.string   "description"
     t.string   "uri"
     t.string   "url"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "content_type"
     t.text     "type"
-    t.boolean  "enabled",                default: false
+    t.boolean  "enabled",                  default: false
     t.integer  "parent_id"
     t.integer  "position"
     t.json     "content"
-    t.boolean  "show_on_menu",           default: true
-    t.integer  "page_version",           default: 1
+    t.boolean  "show_on_menu",             default: true
+    t.integer  "page_version",             default: 1
     t.string   "thumbnail_file_name"
     t.string   "thumbnail_content_type"
     t.integer  "thumbnail_file_size"
     t.datetime "thumbnail_updated_at"
+    t.string   "cover_image_file_name"
+    t.string   "cover_image_content_type"
+    t.integer  "cover_image_file_size"
+    t.datetime "cover_image_updated_at"
     t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
   end
 

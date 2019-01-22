@@ -34,6 +34,9 @@ class Page < ApplicationRecord
   has_attached_file :thumbnail, styles: {original: '200x200#'}
   validates_attachment :thumbnail,
                        content_type: {content_type: %w[image/jpg image/jpeg image/png]}
+  has_attached_file :cover_image, styles: {original: '2000x1000#'}
+  validates_attachment :cover_image,
+                       content_type: {content_type: %w[image/jpg image/jpeg image/png]}
 
   has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true

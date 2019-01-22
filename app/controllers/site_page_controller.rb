@@ -73,10 +73,17 @@ class SitePageController < ApplicationController
         if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
           { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
         end
-      @page_cover = [{
-        url: alternative_image_setting.image.url,
-        attribution: attribution
-      }]
+      @page_cover = if @site_page.cover_image.url
+                      [{
+                         url: @site_page.cover_image.url,
+                         attribution: {url: nil, label: nil}
+                       }]
+                    else
+                      [{
+                         url: alternative_image_setting.image.url,
+                         attribution: attribution
+                       }]
+                    end
     end
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)

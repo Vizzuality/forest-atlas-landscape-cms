@@ -56,6 +56,23 @@
             </div>
           </div>
         </div>
+
+        <div class="container">
+          <div class="l-site-creation -settings">
+            <div class="settings">
+              <div class="logo">
+                <%= f.label :cover_image, value: 'Change Cover Image', for: 'cover_image', tabindex: '0' %>
+                <%= f.file_field :cover_image, id: 'cover_image', accept: 'image/*', 'data-type': 'image', class: 'js-data-path', placeholder: 'Select a file' %>
+
+                <% if !@page.cover_image.nil? && @page.cover_image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @page.thumbnail.url, alt: 'Logo image' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
         <% end %>
 
         <% unless @page.content_type == ContentType::HOMEPAGE or @page.content_type == ContentType::STATIC_CONTENT %>
