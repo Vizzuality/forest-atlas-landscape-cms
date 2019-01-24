@@ -40,6 +40,19 @@
         width: 100%;
         margin-top: 40px;
         z-index: 1;
+
+        .c-we-vega-chart-legend {
+          // Bootstrap default styles mess up with the
+          // chart's legend
+          // This happens in the wysiwyg in the management section
+          .legend .item .label {
+            color: $color-4;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            padding: inherit;
+          }
+        }
       }
 
       .advanced-editor {
