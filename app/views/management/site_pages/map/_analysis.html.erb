@@ -23,7 +23,7 @@
           } catch (e) {}
         }
       });
-      var analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.html_safe %>');
+      var analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.try(:html_safe) %>');
 
       analysisModulesContainer.editor = analysisModulesEditor;
       analysisModulesContainer.input = analysisModulesInput;

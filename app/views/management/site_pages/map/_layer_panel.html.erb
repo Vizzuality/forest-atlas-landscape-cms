@@ -22,7 +22,7 @@
           } catch (e) {}
         }
       });
-      var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.html_safe %>');
+      var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.try(:html_safe) %>');
 
       layerPanelContainer.editor = layerPanelEditor;
       layerPanelContainer.input = layerPanelInput;
