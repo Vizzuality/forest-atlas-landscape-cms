@@ -55,7 +55,7 @@
 
             <% if !@page.cover_image.nil? && @page.cover_image_file_name %>
               <div class="preview js-preview">
-                <%= image_tag @page.thumbnail.url, alt: 'Current cover image' %>
+                <%= image_tag @page.cover_image.url, alt: 'Current cover image' %>
               </div>
             <% end %>
           </div>
