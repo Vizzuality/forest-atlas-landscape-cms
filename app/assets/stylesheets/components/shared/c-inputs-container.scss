@@ -91,6 +91,15 @@
       appearance: none;
       cursor: pointer;
     }
+
+    .preview {
+      margin-top: 15px;
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+    }
   }
 
   > footer {
