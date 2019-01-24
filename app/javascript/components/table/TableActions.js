@@ -18,7 +18,7 @@ const TableActions = ({ data, action, onClickAction }) => {
       </td>);
   }
 
-  if (action === 'edit') {
+  if (action === 'edit' && data && data.edit && data.edit.value) {
     return (
       <td key={action}>
         <span className="row-content">
@@ -35,7 +35,7 @@ const TableActions = ({ data, action, onClickAction }) => {
     );
   }
 
-  if (action === 'delete') {
+  if (action === 'delete' && data && data.delete && data.delete.value) {
     return (
       <td key={action}>
         <span className="row-content">
