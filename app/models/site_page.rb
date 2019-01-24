@@ -54,7 +54,7 @@ class SitePage < Page
           inverse_of: :site_page, autosave: true
   has_one :dashboard_setting,foreign_key: 'page_id', dependent: :destroy,
           inverse_of: :site_page, autosave: true
-  has_many :tags, foreign_key: :page_id
+  has_many :tags, foreign_key: :page_id, dependent: :destroy
   has_many :content_images, dependent: :destroy, foreign_key: :page_id
 
   before_create :set_defaults
