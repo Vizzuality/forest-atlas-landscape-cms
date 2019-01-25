@@ -27,11 +27,13 @@
             <%= f.label :description %>
             <%= f.text_area :description, placeholder: 'Add your description here' %>
           </div>
-        <% unless [ContentType::HOMEPAGE, ContentType::TAG_SEARCHING].include?(@page.content_type) %>
+        <% unless [ContentType::HOMEPAGE].include?(@page.content_type) %>
           <div class="container">
             <%= f.label :uri %>
             <%= f.text_field :uri, placeholder: 'my-page', :readonly => @page.content_type == ContentType::STATIC_CONTENT %>
           </div>
+        <% end %>
+        <% unless [ContentType::HOMEPAGE, ContentType::TAG_SEARCHING].include?(@page.content_type) %>
           <div class="container">
             <%= f.label :tags %>
             <%= f.text_field :tags_attributes, placeholder: 'tags', value: f.object.tags.pluck(:value).join(' ') %>
