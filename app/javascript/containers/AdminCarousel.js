@@ -22,6 +22,8 @@ class AdminCarousel extends React.Component {
       imagePreview: {},
     }
 
+    this.previousPosition = 0;
+
     this.fileInputs = [];
   }
 
@@ -113,14 +115,11 @@ class AdminCarousel extends React.Component {
   }
 
   renderInputs(image, i) {
-    // XXX : warning, if backend changes the attributes for image, this needs to be changed
-    // as of now each image gets appended after the number bellow
-    const attributesOffset = 31;
-
-    const { image_url, image_file_name, attribution_label, _destroy, attribution_link } = image;
+    const { image_url, image_file_name, attribution_label, _destroy, attribution_link, position } = image;
+    const imagePosition = position || this.previousPosition + 1;
 
     const INPUT_ID = `main-image-${i}`;
-    const ATTRIBUTE_ID = `site[site_settings_attributes][${attributesOffset + i}]`;
+    const ATTRIBUTE_ID = `site[site_settings_attributes][${imagePosition}]`;
 
     if (image_url || INPUT_ID in this.state.imagePreview) {
       const previewClasses = classNames({
@@ -133,6 +132,10 @@ class AdminCarousel extends React.Component {
         remove: true,
         restore: !!parseInt(_destroy)
       })
+
+      this.previousPosition = imagePosition;
+
+      console.log(imagePosition);
 
       return (
         <div key={i}>
@@ -147,7 +150,7 @@ class AdminCarousel extends React.Component {
                 {!!parseInt(_destroy) ? 'Restore' : 'Remove'}
               </button>
             </div>
-            {this.coverAttributions(ATTRIBUTE_ID, attribution_label, attribution_link, _destroy, attributesOffset + i, i)}
+            {this.coverAttributions(ATTRIBUTE_ID, attribution_label, attribution_link, _destroy, imagePosition, i)}
           </div>
         </div>
       );
@@ -166,7 +169,7 @@ class AdminCarousel extends React.Component {
               Max. size: 1MB
             </div>
             {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i, image_url)}
-            {this.coverAttributions(ATTRIBUTE_ID, attribution_label, attribution_link, _destroy, attributesOffset + i, i)}
+            {this.coverAttributions(ATTRIBUTE_ID, attribution_label, attribution_link, _destroy, imagePosition, i)}
           </div>
         </div>
       );
