@@ -22,7 +22,7 @@ class AdminCarousel extends React.Component {
       imagePreview: {},
     }
 
-    this.previousPosition = 0;
+    this.previousPosition = 30;
 
     this.fileInputs = [];
   }
@@ -115,8 +115,9 @@ class AdminCarousel extends React.Component {
   }
 
   renderInputs(image, i) {
+    const { main_images } = this.state;
     const { image_url, image_file_name, attribution_label, _destroy, attribution_link, position } = image;
-    const imagePosition = position || this.previousPosition + 1;
+    const imagePosition = position || this.previousPosition + i;
 
     const INPUT_ID = `main-image-${i}`;
     const ATTRIBUTE_ID = `site[site_settings_attributes][${imagePosition}]`;
@@ -134,8 +135,6 @@ class AdminCarousel extends React.Component {
       })
 
       this.previousPosition = imagePosition;
-
-      console.log(imagePosition);
 
       return (
         <div key={i}>
@@ -178,6 +177,7 @@ class AdminCarousel extends React.Component {
 
   render() {
     const { main_images } = this.state;
+
     return (
       <div className="homepage-cover-container">
         <div className="homepage-cover">
