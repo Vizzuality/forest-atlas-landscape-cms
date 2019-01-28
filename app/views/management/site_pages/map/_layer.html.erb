@@ -56,7 +56,7 @@
   <% fields.each do |key, value| %>
      <div class="container">
       <div class="c-checkbox">
-        <%= settings.check_box key, id: 'map-' + key.to_s %>
+        <%= settings.check_box key, { id: 'map-' + key.to_s }, 'true', 'false' %>
         <label for="map-<%= key %>">
           <%= key.capitalize %>
           <% if !value[:description].blank? %>
