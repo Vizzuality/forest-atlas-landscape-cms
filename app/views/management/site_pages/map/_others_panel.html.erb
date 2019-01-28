@@ -1,0 +1,34 @@
+<h3>Other fields Module</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <div class="container">
+    <label>
+      OTHER FIELDS MODULE
+      <button type="button" class="info-button" data-tippy="Use this panel to manage the analysis options which are included in your mapbuilder map. Users have the option to remove default analysis and can also add their own custom analysis. You may modify the json to remove analysis or add your own custom analysis. For more information on the configuration options for the analysis module consult the analysis module section of the mapbuilder wiki." data-tippy-interactive="true">Field information</button>
+    </label>
+    <%= settings.hidden_field :otherFieldsModules, { name: 'site_page[content][settings][otherFieldsModules]' }  %>
+
+    <div id="otherFieldsModules"></div>
+
+    <script>
+      var otherFieldsModulesInput = document.getElementById('site_page_content_settings_otherFieldsModules');
+      var otherFieldsModulesContainer = document.getElementById('otherFieldsModules');
+      var otherFieldsModulesEditor = new JSONEditor(otherFieldsModulesContainer, {
+        mode: 'code',
+        onChangeText: function(str) {
+          // We only save valid JSON strings
+          try {
+            JSON.parse(str);
+            otherFieldsModulesInput.value = str;
+          } catch (e) {}
+        }
+      });
+      var otherFieldsModulesValue = JSON.parse('<%= settings.object.otherFieldsModules.try(:html_safe) %>');
+
+      otherFieldsModulesContainer.editor = otherFieldsModulesEditor;
+      otherFieldsModulesContainer.input = otherFieldsModulesInput;
+
+      otherFieldsModulesEditor.set(otherFieldsModulesValue);
+    </script>
+  </div>
+<% end %>
