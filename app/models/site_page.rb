@@ -59,6 +59,7 @@ class SitePage < Page
 
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
+  before_save :update_temporary_cover_and_thumb
 
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
@@ -68,6 +69,7 @@ class SitePage < Page
   after_create :update_routes
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
   after_save :update_temporary_content_images
+  after_save :destroy_temporary_cover_and_thumb
 
   validate :step_validation
 
@@ -75,6 +77,10 @@ class SitePage < Page
 
   attr_accessor :form_step
   attr_accessor :thumbnail_url
+  attr_accessor :temp_cover_image
+  attr_accessor :temp_thumbnail
+  attr_accessor :delete_thumbnail
+  attr_accessor :delete_cover_image
 
   MAX_RELATED_PAGES_SIZE = 3
 
@@ -155,6 +161,10 @@ class SitePage < Page
     attrs = super
     attrs[:thumbnail_url] = thumbnail_url
     attrs[:tags] = tags
+    attrs[:temp_cover_image] = temp_cover_image
+    attrs[:temp_thumbnail] = temp_thumbnail
+    attrs[:delete_cover_image] = delete_cover_image
+    attrs[:delete_thumbnail] = delete_thumbnail
     attrs
   end
 
@@ -258,6 +268,28 @@ class SitePage < Page
 
   def thumbnail_url
     self.thumbnail.url
+  end
+
+  def update_temporary_cover_and_thumb
+    if temp_cover_image.present?
+      self.cover_image = TemporaryContentImage.find(temp_cover_image).image
+    elsif delete_cover_image
+      self.cover_image.clear
+    end
+    if temp_thumbnail == '1'
+      self.thumbnail = TemporaryContentImage.find(temp_thumbnail).image
+    elsif self.delete_thumbnail == '1'
+      self.thumbnail.clear
+    end
+  end
+
+  def destroy_temporary_cover_and_thumb
+    if temp_cover_image.present?
+      TemporaryContentImage.find(temp_cover_image).destroy!
+    end
+    if temp_thumbnail.present?
+      TemporaryContentImage.find(temp_thumbnail).destroy!
+    end
   end
 
   def update_temporary_content_images

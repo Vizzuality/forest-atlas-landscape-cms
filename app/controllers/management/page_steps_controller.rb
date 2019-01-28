@@ -174,6 +174,7 @@ class Management::PageStepsController < ManagementController
         move_forward
       when 'title'
         set_current_tags_state
+        save_images_temporarily
         set_current_page_state
         unless @page.valid?
           render_wizard
@@ -494,6 +495,24 @@ class Management::PageStepsController < ManagementController
   # Saves the current data settings state in the session
   def set_current_dataset_setting_state
     session[:dataset_setting][@page_id] = @dataset_setting ? @dataset_setting.attributes : nil
+  end
+
+  def save_images_temporarily
+    if @page.cover_image.present?
+      temp_image = TemporaryContentImage.new
+      temp_image.image = @page.cover_image
+      temp_image.save
+      @page.temp_cover_image = temp_image.id
+      @page.cover_image = nil
+    end
+
+    if @page.thumbnail.present?
+      temp_image = TemporaryContentImage.new
+      temp_image.image = @page.thumbnail
+      temp_image.save
+      @page.temp_thumbnail = temp_image.id
+      @page.thumbnail = nil
+    end
   end
 
   # Sets the current steps
