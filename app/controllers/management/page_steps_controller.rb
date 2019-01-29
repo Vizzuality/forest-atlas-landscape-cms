@@ -373,7 +373,6 @@ class Management::PageStepsController < ManagementController
     if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting)
       @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting)
     end
-    build_tags
   end
 
   # Saves the current page state in session
@@ -399,12 +398,6 @@ class Management::PageStepsController < ManagementController
     @page.tags_attributes = new_tags
 
     session[:tags_attributes][@page_id] = new_tags
-  end
-
-  # Builds current tags
-  def build_tags
-    return if session[:tags_attributes][@page_id].blank?
-    @page.tags_attributes = session[:tags_attributes][@page_id]
   end
 
   # Builds the current dashboard setting based on the database, session and params
