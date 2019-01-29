@@ -11,7 +11,7 @@
 
 class Tag < ApplicationRecord
   belongs_to :site_page, foreign_key: :page_id,
-                         optional: true, dependent: :destroy
+                         optional: true
 
   validates_presence_of :value
   validates_uniqueness_of :value, scope: :page_id
