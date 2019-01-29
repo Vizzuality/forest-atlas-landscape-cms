@@ -3,14 +3,18 @@ import { createSelector } from 'reselect';
 import { getFields } from 'components/shared/Dashboard/dashboard.selectors';
 
 export const getDatasetId = state => state.dashboard.datasetId;
+const getDatasetProvider = state => !state.dashboard.dataset.loading && !state.dashboard.dataset.error
+  && state.dashboard.dataset.data
+  ? state.dashboard.dataset.data.attributes.provider
+  : null;
 const getFilters = state => state.dashboardFilters.filters;
 const getData = state => state.dashboardTable.data;
 
 /**
- * Return the body of the request necessary to display the
- * content of the table
+ * Return the SQL query used to fetch the data of the
+ * dashboard
  */
-export const getDataBody = createSelector(
+export const getSQLQuery = createSelector(
   [getDatasetId, getFields, getFilters],
   (datasetId, fields, dashboardFilters) => {
     const filters = dashboardFilters
@@ -36,15 +40,46 @@ export const getDataBody = createSelector(
       })
       .filter(f => !!f);
 
-    return JSON.stringify({
-      sql: `
-        SELECT ${fields.map(f => f.name)}
-        FROM data
-        ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
-        LIMIT 500
-      `
-    });
+    return `
+      SELECT ${fields.map(f => f.name)}
+      FROM data
+      ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
+      LIMIT 500
+    `;
   }
+);
+
+/**
+ * Return a dictionary of the file formats and their
+ * download URLs
+ */
+export const getDownloadUrls = createSelector(
+  [getDatasetId, getDatasetProvider, getSQLQuery],
+  (datasetId, datasetProvider, sql) => {
+    if (!sql || !datasetProvider) return {};
+
+    // The API doesn't implement the endpoint to download
+    // a dataset for all the providers, and when it does,
+    // it doesn't always expose the same formats
+    // https://github.com/resource-watch/doc-api/pull/24
+    const canDownloadCSV = ['rasdaman', 'nexgddp', 'loca', 'gee'].indexOf(datasetProvider) === -1;
+    const canDownloadJSON = ['rasdaman', 'nexgddp', 'loca'].indexOf(datasetProvider) === -1;
+
+    const query = `${ENV.API_URL}/download/${datasetId}?sql=${sql}`;
+    return {
+      ...(canDownloadCSV ? { csv: `${query}&format=csv` } : {}),
+      ...(canDownloadJSON ? { json: `${query}&format=json` } : {})
+    };
+  }
+);
+
+/**
+ * Return the body of the request necessary to display the
+ * content of the table
+ */
+export const getDataBody = createSelector(
+  [getSQLQuery],
+  sql => JSON.stringify({ sql })
 );
 
 /**
