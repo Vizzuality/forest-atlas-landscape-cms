@@ -60,6 +60,7 @@ class SitePage < Page
   before_create :set_defaults
   before_save :construct_url, if: 'content_type.eql? ContentType::LINK'
   before_save :update_temporary_cover_and_thumb
+  before_save :convert_booleans_in_map_pages
 
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
@@ -308,5 +309,21 @@ class SitePage < Page
       TemporaryContentImage.find(tmp_id.first).destroy!
     end
     self.update_column :content, new_content
+  end
+
+  def convert_booleans_in_map_pages
+    return unless content_type == ContentType::MAP
+
+    begin
+      self.content['settings'].each do |entry|
+        if entry.last == 'true'
+          content['settings'][entry.first] = true
+        elsif entry.last == 'false'
+          content['settings'][entry.first] = false
+        end
+      end
+    rescue Exception => e
+      Rails.logger.error e.message
+    end
   end
 end
