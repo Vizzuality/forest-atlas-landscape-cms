@@ -75,7 +75,7 @@
         // If the notification we want to hide is the one displayed, we just hide it
         currentNotification.hide();
       } else if (poolSize > 1) {
-        for (var i = 1, j = poolSize - 1; i < j; i++) {
+        for (var i = 1, j = poolSize - 1; i <= j; i++) {
           var notification = this.options.pool[i];
           if (notification.options.id === notificationId) {
             // We do not hide the notification because it hasn't been displayed yet,
@@ -92,7 +92,7 @@
      * @param {{ type: string, content: string }} config - bubble config
      */
     display: function (config) {
-      switch(config.type) {
+      switch (config.type) {
         case 'WidgetDeletionError':
           new App.View.WidgetDeletionErrorModal({ widget: gon.widget_pages[config.content] });
           break;
