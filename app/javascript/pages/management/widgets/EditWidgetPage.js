@@ -53,10 +53,8 @@ class EditWidgetPage extends React.Component {
         || !props.widget.widget_config.paramsConfig,
       // Whether we're loading the advanced editor
       advancedEditorLoading: false,
-      // State of the advanced editor
-      widgetConfig: props.widget.widget_config || {},
       // State of the advanced editor without the "config" object
-      widgetConfigWithoutConfig: omit(props.widget.widget_config || {}, 'omit'),
+      widgetConfig: omit(props.widget.widget_config || {}, 'config'),
       // Whether the preview of the avanced editor is loading
       previewLoading: false,
       // Error while saving the widget
@@ -94,11 +92,11 @@ class EditWidgetPage extends React.Component {
       this.codeMirror.on('change', () => {
         try {
           const widgetConfig = JSON.parse(this.codeMirror.getValue());
-          this.setState({ widgetConfig, widgetConfigWithoutConfig: omit(widgetConfig, 'config') });
+          this.setState({ widgetConfig });
         } catch (e) {
           // If there's an error in the JSON, we reset the widgetConfig
           // so the user sees the preview is empty
-          this.setState({ widgetConfig: {}, widgetConfigWithoutConfig: {} });
+          this.setState({ widgetConfig: {} });
         }
       });
     }
@@ -253,7 +251,7 @@ class EditWidgetPage extends React.Component {
       title, description, caption, widget } = this.props;
 
     const { widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
-      advancedEditorLoading, widgetConfig, widgetConfigWithoutConfig, previewLoading,
+      advancedEditorLoading, widgetConfig, previewLoading,
       saveError, theme, editing } = this.state;
 
     const createdWithAdvancedMode = !this.props.widget.widget_config
@@ -295,8 +293,8 @@ class EditWidgetPage extends React.Component {
                 </div>
               </div>
               <div className="widget-container">
-                { advancedEditorLoading && <div className="c-loading-spinner -bg" /> }
-                { !createdWithAdvancedMode && (
+                {advancedEditorLoading && <div className="c-loading-spinner -bg" />}
+                {!createdWithAdvancedMode && (
                   <ToggleSwitcher
                     elements={['Widget editor', 'Advanced editor']}
                     selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
@@ -308,7 +306,7 @@ class EditWidgetPage extends React.Component {
                     }}
                   />
                 )}
-                { !advancedEditor && (
+                {!advancedEditor && (
                   <WidgetEditor
                     datasetId={widget.dataset}
                     {...(widget ? { widgetId: widget.id } : {})}
@@ -322,7 +320,7 @@ class EditWidgetPage extends React.Component {
                     provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
                   />
                 )}
-                { advancedEditor && (
+                {advancedEditor && (
                   <div className="advanced-editor">
                     <div className="textarea-container">
                       <div className="caption-container">
@@ -340,10 +338,10 @@ class EditWidgetPage extends React.Component {
                       />
                     </div>
                     <div className="preview">
-                      { previewLoading && <div className="c-loading-spinner -bg" /> }
+                      {previewLoading && <div className="c-loading-spinner -bg" />}
                       {widgetConfig && widgetConfig.data && (
                         <VegaChart
-                          data={widgetConfigWithoutConfig}
+                          data={widgetConfig}
                           theme={this.state.theme}
                           showLegend
                           reloadOnResize
@@ -408,20 +406,20 @@ class EditWidgetPage extends React.Component {
               Cancel
             </button>
             <div>
-              { currentStep >= 1 && (
+              {currentStep >= 1 && (
                 <button type="button" className="c-button -outline -dark-text" onClick={() => setStep(currentStep - 1)}>
                   Back
                 </button>
               )}
-              { currentStep === 0 && (
+              {currentStep === 0 && (
                 <button type="submit" className="c-button" disabled={!title} onClick={() => setStep(currentStep + 1)}>
                   Continue
                 </button>
               )}
-              { currentStep === 1 && (
+              {currentStep === 1 && (
                 <button type="submit" className="c-button" onClick={() => this.onClickUpdate()} disabled={editing}>
-                  { editing && <div className="c-loading-spinner -inline -btn" /> }
-                  { !editing && 'Update' }
+                  {editing && <div className="c-loading-spinner -inline -btn" />}
+                  {!editing && 'Update'}
                 </button>
               )}
             </div>
