@@ -333,6 +333,8 @@ class Management::PageStepsController < ManagementController
         :page_version,
         :thumbnail,
         :cover_image,
+        :delete_cover_image,
+        :delete_thumbnail,
         :content,
         content: [],
         dataset_setting: [
@@ -491,7 +493,10 @@ class Management::PageStepsController < ManagementController
   end
 
   def save_images_temporarily
-    if @page.cover_image.present?
+    old_cover_image = @page.persisted? && Page.find(@page.id).cover_image.url == @page.cover_image.url
+    old_thumbnail = @page.persisted? && Page.find(@page.id).thumbnail.url == @page.thumbnail.url
+
+    if @page.cover_image.present? && !old_cover_image
       temp_image = TemporaryContentImage.new
       temp_image.image = @page.cover_image
       temp_image.save
@@ -499,7 +504,7 @@ class Management::PageStepsController < ManagementController
       @page.cover_image = nil
     end
 
-    if @page.thumbnail.present?
+    if @page.thumbnail.present? && !old_thumbnail
       temp_image = TemporaryContentImage.new
       temp_image.image = @page.thumbnail
       temp_image.save

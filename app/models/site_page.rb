@@ -271,24 +271,24 @@ class SitePage < Page
   end
 
   def update_temporary_cover_and_thumb
-    if temp_cover_image.present?
-      self.cover_image = TemporaryContentImage.find(temp_cover_image).image
-    elsif delete_cover_image
+    if delete_cover_image
       self.cover_image.clear
+    elsif temp_cover_image.present?
+      self.cover_image = TemporaryContentImage.find(temp_cover_image).image
     end
-    if temp_thumbnail == '1'
-      self.thumbnail = TemporaryContentImage.find(temp_thumbnail).image
-    elsif self.delete_thumbnail == '1'
+    if self.delete_thumbnail == '1'
       self.thumbnail.clear
+    elsif temp_thumbnail.present?
+      self.thumbnail = TemporaryContentImage.find(temp_thumbnail).image
     end
   end
 
   def destroy_temporary_cover_and_thumb
     if temp_cover_image.present?
-      TemporaryContentImage.find(temp_cover_image).destroy!
+      TemporaryContentImage.find(temp_cover_image).destroy
     end
     if temp_thumbnail.present?
-      TemporaryContentImage.find(temp_thumbnail).destroy!
+      TemporaryContentImage.find(temp_thumbnail).destroy
     end
   end
 
