@@ -40,7 +40,10 @@
         width: 100%;
         margin-top: 40px;
         z-index: 1;
+      }
 
+      .c-we-widget-editor,
+      .c-we-chart {
         .c-we-vega-chart-legend {
           // Bootstrap default styles mess up with the
           // chart's legend
