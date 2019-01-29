@@ -49,6 +49,13 @@
                 <%= image_tag @page.thumbnail.url, alt: 'Current thumbnail' %>
               </div>
             <% end %>
+            <div class="c-checkbox" style="margin-top: 15px">
+              <input type="checkbox" name="site_page[delete_thumbnail]" value="1" id="delete_thumbnail" />
+              <label for="delete_thumbnail">Remove thumbnail</label>
+            </div>
+            <p>
+              Use this checkbox to remove the current thumbnail. If you want to replace it, just upload a new image.
+            </p>
           </div>
 
           <div class="container">
@@ -60,6 +67,13 @@
                 <%= image_tag @page.cover_image.url, alt: 'Current cover image' %>
               </div>
             <% end %>
+            <div class="c-checkbox" style="margin-top: 15px">
+              <input type="checkbox" name="site_page[delete_cover_image]" value="1" id="delete_cover_image" />
+              <label for="delete_cover_image">Use default cover image instead</label>
+            </div>
+            <p>
+              If you don't upload any cover image, the default one from the admin section will be used instead. Use this checkbox to remove the custom cover image.
+            </p>
           </div>
         <% end %>
       </div>
