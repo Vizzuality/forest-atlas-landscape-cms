@@ -146,7 +146,7 @@ class Management::PageStepsController < ManagementController
           @page.content = if MapVersion.order(:position).first.default_settings.blank?
                             {}
                           else
-                            MapVersion.order(:position).first.default_settings
+                            build_default_map
                           end
           gon.map_versions = MapVersion.order(:position)
         end
@@ -607,6 +607,26 @@ class Management::PageStepsController < ManagementController
         render_wizard
       end
     end
+  end
+
+  def build_default_map
+    default_map = MapVersion.order(:position).first.default_settings
+
+    begin
+      default_map_hash = JSON.parse default_map['settings']
+      if default_map_hash['layerPanel']
+        default_map_hash['layerPanel'] = default_map_hash['layerPanel'].to_json
+        default_map['settings'] = default_map_hash.to_json
+      end
+      if default_map_hash['analysisModules']
+        default_map_hash['analysisModules'] = default_map_hash['analysisModules'].to_json
+        default_map['settings'] = default_map_hash.to_json
+      end
+      return default_map
+    rescue
+      return default_map
+    end
+
   end
 
   # Gets the pages tree structure and sends it to gon

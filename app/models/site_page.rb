@@ -148,7 +148,7 @@ class SitePage < Page
     if content['settings'].is_a? Hash
       OpenStruct.new(content['settings'])
     else
-      OpenStruct.new(JSON.parse(content['settings']))
+      OpenStruct.new(JSON.parse(content['settings'])) rescue OpenStruct.new
     end
   end
 
