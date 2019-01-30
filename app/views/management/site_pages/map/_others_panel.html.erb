@@ -23,7 +23,7 @@
           } catch (e) {}
         }
       });
-      var otherFieldsModulesValue = JSON.parse('<%= settings.object.otherFieldsModules.try(:squish).try(:html_safe) %>');
+      var otherFieldsModulesValue = JSON.parse('<%= settings.object.otherFieldsModules.squish.html_safe rescue {} %>');
 
       otherFieldsModulesContainer.editor = otherFieldsModulesEditor;
       otherFieldsModulesContainer.input = otherFieldsModulesInput;
