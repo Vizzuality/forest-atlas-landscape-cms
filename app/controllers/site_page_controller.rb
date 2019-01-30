@@ -73,7 +73,7 @@ class SitePageController < ApplicationController
         if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
           { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
         end
-      @page_cover = if @site_page.cover_image.url
+      @page_cover = if @site_page.cover_image.present?
                       [{
                          url: @site_page.cover_image.url,
                          attribution: {url: nil, label: nil}
