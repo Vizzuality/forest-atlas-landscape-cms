@@ -356,7 +356,7 @@ class Admin::SiteStepsController < AdminController
     if site && site.persisted?
       @site_id = site.id
     else
-      :new
+      @site_id = :new
     end
   end
 
