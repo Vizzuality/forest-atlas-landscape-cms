@@ -1,5 +1,11 @@
 // Specific styles for overwriting the map builder styles
 
+// Prevents the map's footer from being hidden
+#root {
+  min-height: 0 !important;
+  height: calc(100% - 50px) !important;
+}
+
 // modal should not take up 100% of the width
 .modal-wrapper {
   .modal {
