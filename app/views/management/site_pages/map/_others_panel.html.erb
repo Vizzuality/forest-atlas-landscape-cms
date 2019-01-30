@@ -6,12 +6,12 @@
       OTHER FIELDS MODULE
       <button type="button" class="info-button" data-tippy="Use this panel to manage the other options which are included in your mapbuilder map. Users have the option to remove default analysis and can also add their own custom analysis. You may modify the json to remove analysis or add your own custom analysis. For more information on the configuration options for the analysis module consult the analysis module section of the mapbuilder wiki." data-tippy-interactive="true">Field information</button>
     </label>
-    <%= settings.hidden_field :otherFieldsModules, { name: 'site_page[content][settings][otherFieldsModules]' }  %>
+    <%= settings.hidden_field :otherFieldsModules, { name: 'site_page[content][settings][otherFieldsModules]', id: 'map-otherFieldsModules' }  %>
 
     <div id="otherFieldsModules"></div>
 
     <script>
-      var otherFieldsModulesInput = document.getElementById('site_page_content_settings_otherFieldsModules');
+      var otherFieldsModulesInput = document.getElementById('map-otherFieldsModules');
       var otherFieldsModulesContainer = document.getElementById('otherFieldsModules');
       var otherFieldsModulesEditor = new JSONEditor(otherFieldsModulesContainer, {
         mode: 'code',

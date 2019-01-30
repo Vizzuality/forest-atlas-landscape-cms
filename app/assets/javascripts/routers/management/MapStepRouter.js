@@ -24,13 +24,14 @@
       var versionsSelector = document.querySelector('.js-version');
       versionsSelector.addEventListener('change', function (e) {
         var version = e.target.value;
-        var config = _.find(gon.map_versions, function(v) {
+        var config = _.find(gon.map_versions, function (v) {
           return v.default_settings && v.default_settings.version === version;
         });
 
         if (config) {
           var values = JSON.parse(config.default_settings.settings);
           this.setDefaultValues(values);
+          versionsSelector.focus();
         }
       }.bind(this));
     },
@@ -52,7 +53,7 @@
       var keys = Object.keys(values);
 
       keys.forEach(function (key) {
-        var input = form.querySelector('[name="map-' + key + '"]');
+        var input = form.querySelector('[id="map-' + key + '"]');
         if (input) {
           if (input.tagName === 'INPUT') {
             if (input.type === 'text') {
