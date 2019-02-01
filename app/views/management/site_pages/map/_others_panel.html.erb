@@ -23,7 +23,12 @@
           } catch (e) {}
         }
       });
-      var otherFieldsModulesValue = JSON.parse('<%= settings.object.otherFieldsModules.squish.html_safe rescue {} %>');
+      var otherFieldsModulesValue;
+      try {
+        otherFieldsModulesValue = JSON.parse('<%= settings.object.otherFieldsModules.gsub("'", "\\\\'").squish.html_safe rescue {} %>');
+      } catch (err) {
+        otherFieldsModulesValue = JSON.parse('{}');
+      }
 
       otherFieldsModulesContainer.editor = otherFieldsModulesEditor;
       otherFieldsModulesContainer.input = otherFieldsModulesInput;

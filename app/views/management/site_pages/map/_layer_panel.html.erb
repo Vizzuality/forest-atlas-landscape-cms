@@ -22,7 +22,13 @@
           } catch (e) {}
         }
       });
-      var layerPanelValue = JSON.parse('<%= settings.object.layerPanel.squish.html_safe rescue {} %>');
+      var layerPanelValue;
+      try {
+        layerPanelValue = JSON.parse('<%= settings.object.layerPanel.squish.gsub("'", "\\\\'").html_safe rescue {} %>');
+      } catch (err) {
+        console.log(err);
+        layerPanelValue = JSON.parse('{}');
+      }
 
       layerPanelContainer.editor = layerPanelEditor;
       layerPanelContainer.input = layerPanelInput;

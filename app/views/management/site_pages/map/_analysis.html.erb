@@ -23,7 +23,12 @@
           } catch (e) {}
         }
       });
-      var analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.squish.html_safe rescue {} %>');
+      var analysisModulesValue;
+      try {
+        analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.gsub("'", "\\\\'").squish.html_safe rescue {} %>');
+      } catch (err) {
+        analysisModulesValue = JSON.parse('{}');
+      }
 
       analysisModulesContainer.editor = analysisModulesEditor;
       analysisModulesContainer.input = analysisModulesInput;
