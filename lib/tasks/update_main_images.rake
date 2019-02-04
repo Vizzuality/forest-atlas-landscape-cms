@@ -6,9 +6,6 @@ namespace :db do
 
       ActiveRecord::Base.transaction do
         begin
-          SiteSetting.delete_all(name: 'logo_background')
-          puts 'Deleted all the logo background colors'
-
           SiteSetting.where("name = 'main_image' and position < 30").update_all(position: 60)
 
           puts 'Finished updating the position for the main images'

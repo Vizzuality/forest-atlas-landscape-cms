@@ -268,6 +268,7 @@ class SitePageController < ApplicationController
       @map_content = @site_page.content['settings']
       @map_content['layerPanel'] = JSON.parse(@map_content['layerPanel'])
       @map_content['analysisModules'] = JSON.parse(@map_content['analysisModules'])
+      @map_content['narrative'] = @map_content['narrative'].gsub('"', '\\"') rescue ''
       @map_content = @map_content.to_json.squish.gsub("'", %q(\\\')).html_safe
     else
       @map_content = @site_page.content['settings'].to_s.squish.gsub("'", %q(\\\')).html_safe
