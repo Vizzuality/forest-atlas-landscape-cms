@@ -63,8 +63,8 @@ export const checkFilterCompleteness = filter => (
     const availableFields = getAvailableFields(getState());
 
     if (filter.name && (isNumberFilter || isDateFilter) &&
-    (filter.min === null || filter.min === undefined
-    || filter.max === null || filter.max === undefined)) {
+      (filter.min === null || filter.min === undefined
+        || filter.max === null || filter.max === undefined)) {
       dispatch(getFilterMinMax(filter));
 
       // We automatically add a new empty filter when the user
@@ -139,7 +139,21 @@ export const getFilterPossibleValues = filter => (
       false
     ));
 
-    const query = `SELECT ${filter.name} FROM ${getState().dashboard.datasetId} WHERE ${filter.name} IS NOT NULL GROUP BY ${filter.name} ORDER BY ${filter.name}`;
+    const datasetId = getState().dashboard.datasetId;
+    const datasetProvider = !getState().dashboard.dataset.loading && !getState().dashboard.dataset.error
+      && getState().dashboard.dataset.data
+      ? getState().dashboard.dataset.data.attributes.provider
+      : null;
+
+    // Not all the featureservice datasets support "DISTINCT" so we selectively
+    // use it
+    const query = `
+      SELECT ${datasetProvider !== 'featureservice' ? 'DISTINCT' : ''} ${filter.name}
+      FROM ${datasetId}
+      WHERE ${filter.name} IS NOT NULL
+      GROUP BY ${filter.name}
+      ORDER BY ${filter.name}
+    `;
 
     fetch(`${ENV.API_URL}/query?sql=${query}`)
       .then((res) => {
@@ -150,6 +164,17 @@ export const getFilterPossibleValues = filter => (
       })
       .then(({ data }) => data)
       .then(data => (data || []).map(d => d[filter.name]))
+      .then(possibleValues => {
+        // For the featureservice dataset, we filter the values
+        // to only return unique values
+        // For the other datasets, the filtering is done in the query
+        if (datasetProvider === 'featureservice') {
+          const set = new Set(possibleValues);
+          return [...set];
+        }
+
+        return possibleValues;
+      })
       .then(possibleValues => dispatch(updateFilter(
         filter,
         Object.assign({}, filter, {
