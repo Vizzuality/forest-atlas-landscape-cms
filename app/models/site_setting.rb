@@ -144,7 +144,7 @@ class SiteSetting < ApplicationRecord
   def self.create_additional_settings site
     unless site.site_settings.exists?(name: 'logo_image')
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
-      site.site_settings.new(name: 'main_image', value: '', position: 5)
+      site.site_settings.new(name: 'main_image', value: '', position: 30)
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
       site.site_settings.new(name: 'favico', value: '', position: 3)
       site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'
