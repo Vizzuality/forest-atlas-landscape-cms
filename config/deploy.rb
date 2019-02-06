@@ -18,8 +18,7 @@ set :default_env, {
   NODE_OPTIONS: '--max_old_space_size=2048'
 }
 
-before 'deploy:publishing', 'site_settings:update'
-before "deploy:publishing", "assets:precompile_sites"
+before 'deploy:publishing', 'site:create_assets'
 before 'deploy:assets:precompile', 'node_modules:generate'
 
 namespace :deploy do
