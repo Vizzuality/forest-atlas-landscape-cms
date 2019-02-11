@@ -1,22 +1,80 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-
 import { VegaChart } from 'widget-editor';
+import { Promise } from 'es6-promise';
+
+import { isVegaWidget, getVegaWidgetQueryParams, getDatasetDownloadUrls } from 'helpers/api';
+import Icon from 'components/icon';
 
 // /widget_data.json?widget_id=
 class WidgetBlock extends React.Component {
+  /**
+   * Return the provider of the dataset
+   * @param {string} datasetId
+   */
+  static async getDatasetProvider(datasetId) {
+    const query = `${ENV.API_URL}/dataset/${datasetId}`;
+    const data = await fetch(query).then(res => res.json());
+    const { data: { attributes: { provider } } } = data;
+    return provider;
+  }
+
+  /**
+   * Return the URLs to download the data of the widget (in several formats)
+   * @param {object} widget
+   */
+  static async getDownloadUrls(widget) {
+    const isValidWidget = isVegaWidget({ widgetConfig: widget.visualization });
+    if (!isValidWidget) {
+      return {};
+    }
+
+    const datasetProvider = await WidgetBlock.getDatasetProvider(widget.dataset);
+    const { fields, filters, limit } = getVegaWidgetQueryParams({ widgetConfig: widget.visualization });
+
+    const serializedFilters = filters.map((filter) => {
+      if (!filter.values || !filter.values.length) return null;
+
+      if (filter.type === 'string') {
+        const whereClause = `${filter.name} IN ('${filter.values.join('\', \'')}')`;
+        return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
+      }
+
+      if (filter.type === 'number') {
+        const whereClause = `${filter.name} >= ${filter.values[0]} AND ${filter.name} <= ${filter.values[1]}`;
+        return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
+      }
+
+      if (filter.type === 'date') {
+        const whereClause = `${filter.name} >= '${filter.values[0]}' AND ${filter.name} <= '${filter.values[1]}'`;
+        return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
+      }
+
+      return null;
+    })
+      .filter(f => !!f);
+
+    const sqlQuery = `SELECT ${Object.values(fields).map(f => f.name)} FROM data ${serializedFilters.length ? `WHERE ${serializedFilters.join(' AND ')}` : ''} LIMIT ${limit || 500}`;
+
+    return getDatasetDownloadUrls(widget.dataset, datasetProvider, sqlQuery);
+  }
+
   constructor(props) {
     super(props);
     this.widgetConfig = null;
     this.state = {
       loading: true,
-      widget: null
+      widget: null,
+      downloadUrls: {}
     };
   }
 
   componentWillMount() {
     const { item } = this.props;
-    this.getChart(item.content.widgetId);
+    this.getChart(item.content.widgetId)
+      .then(async () => {
+        this.setState({ downloadUrls: await WidgetBlock.getDownloadUrls(this.state.widget) });
+      });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -26,34 +84,59 @@ class WidgetBlock extends React.Component {
   }
 
   getChart(widgetId) {
-    fetch(`${window.location.origin}/widget_data.json?widget_id=${widgetId}`).then((res) => {
+    return fetch(`${window.location.origin}/widget_data.json?widget_id=${widgetId}`).then((res) => {
       return res.json();
-    }).then((w) => {
+    }).then((w) => new Promise((resolve) => {
       const widget = w;
-      if (widget.visualization.width !== undefined) delete widget.visualization.width;
-      if (widget.visualization.height !== undefined) delete widget.visualization.height;
+      if (widget.visualization && widget.visualization.width !== undefined) delete widget.visualization.width;
+      if (widget.visualization && widget.visualization.height !== undefined) delete widget.visualization.height;
 
       this.setState({
         loading: false,
         widget
-      });
-    });
+      }, resolve);
+    }));
   }
 
   render() {
-    if (this.state.loading) { return null; }
+    const { loading, widget, downloadUrls } = this.state;
+
+    if (loading || !widget.visualization) { return null; }
+
     return (
       <Fragment>
-        <div className="c-we-chart-title">{this.state.widget.name}</div>
+        <div className="c-we-chart-title">{widget.name}</div>
         <VegaChart
-          data={this.state.widget.visualization}
+          data={widget.visualization}
           reloadOnResize
         />
-        {this.state.widget.metadata && !!this.state.widget.metadata.length && this.state.widget.metadata[0].attributes.info && (
+        {widget.metadata && !!widget.metadata.length && widget.metadata[0].attributes.info && (
           <div className="c-we-chart-caption">
-            {this.state.widget.metadata[0].attributes.info.caption}
+            {widget.metadata[0].attributes.info.caption}
           </div>
         )}
+        <div className="c-we-chart-download">
+          {downloadUrls.csv && (
+            <a
+              className="download"
+              aria-label="Download widget data in CSV format"
+              href={downloadUrls.csv}
+              download
+            >
+              CSV <Icon name="icon-download" />
+            </a>
+          )}
+          {downloadUrls.json && (
+            <a
+              className="download"
+              aria-label="Download widget data in JSON format"
+              href={downloadUrls.json}
+              download
+            >
+              JSON <Icon name="icon-download" />
+            </a>
+          )}
+        </div>
       </Fragment>
     );
   }

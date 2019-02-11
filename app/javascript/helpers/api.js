@@ -44,8 +44,8 @@ export const getStandardType = type => ALLOWED_FIELD_TYPES.find(t => t.name === 
 export const isMapWidget = widget => !!widget && !!widget.widgetConfig && ((!!widget.widgetConfig.paramsConfig && widget.widgetConfig.paramsConfig.visualizationType === 'map') || widget.widgetConfig.type === 'map');
 export const isVegaWidget = widget => !!widget && !!widget.widgetConfig && !!widget.widgetConfig.paramsConfig && widget.widgetConfig.paramsConfig.visualizationType === 'chart';
 export const getWidgetsFromDataset = dataset => dataset && dataset.attributes.widget && dataset.attributes.widget.length
-    ? dataset.attributes.widget.map(w => Object.assign({}, { id: w.id }, w.attributes))
-    : [];
+  ? dataset.attributes.widget.map(w => Object.assign({}, { id: w.id }, w.attributes))
+  : [];
 
 /**
  * Return the configuration of the query of a Vega widget
@@ -111,4 +111,27 @@ export const getVegaWidgetQueryParams = (widget) => {
       ? { order: { ...orderBy } }
       : {}
   );
+};
+
+/**
+ * Return the URLs to download the data of a dataset
+ * @param {string} datasetId ID of the dataset
+ * @param {string} datasetProvider Provider of the dataset
+ * @param {string} sqlQuery SQL query to apply to the dataset
+ */
+export const getDatasetDownloadUrls = (datasetId, datasetProvider, sqlQuery) => {
+  if (!sqlQuery || !datasetProvider) return {};
+
+  // The API doesn't implement the endpoint to download
+  // a dataset for all the providers, and when it does,
+  // it doesn't always expose the same formats
+  // https://github.com/resource-watch/doc-api/pull/24
+  const canDownloadCSV = ['rasdaman', 'nexgddp', 'loca', 'gee'].indexOf(datasetProvider) === -1;
+  const canDownloadJSON = ['rasdaman', 'nexgddp', 'loca'].indexOf(datasetProvider) === -1;
+
+  const query = `${ENV.API_URL}/download/${datasetId}?sql=${sqlQuery}`;
+  return {
+    ...(canDownloadCSV ? { csv: `${query}&format=csv` } : {}),
+    ...(canDownloadJSON ? { json: `${query}&format=json` } : {})
+  };
 };

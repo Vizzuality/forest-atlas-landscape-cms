@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+import { getDatasetDownloadUrls } from 'helpers/api';
 import { getFields } from 'components/shared/Dashboard/dashboard.selectors';
 
 export const getDatasetId = state => state.dashboard.datasetId;
@@ -56,20 +57,7 @@ export const getSQLQuery = createSelector(
 export const getDownloadUrls = createSelector(
   [getDatasetId, getDatasetProvider, getSQLQuery],
   (datasetId, datasetProvider, sql) => {
-    if (!sql || !datasetProvider) return {};
-
-    // The API doesn't implement the endpoint to download
-    // a dataset for all the providers, and when it does,
-    // it doesn't always expose the same formats
-    // https://github.com/resource-watch/doc-api/pull/24
-    const canDownloadCSV = ['rasdaman', 'nexgddp', 'loca', 'gee'].indexOf(datasetProvider) === -1;
-    const canDownloadJSON = ['rasdaman', 'nexgddp', 'loca'].indexOf(datasetProvider) === -1;
-
-    const query = `${ENV.API_URL}/download/${datasetId}?sql=${sql}`;
-    return {
-      ...(canDownloadCSV ? { csv: `${query}&format=csv` } : {}),
-      ...(canDownloadJSON ? { json: `${query}&format=json` } : {})
-    };
+    return getDatasetDownloadUrls(datasetId, datasetProvider, sql);
   }
 );
 
