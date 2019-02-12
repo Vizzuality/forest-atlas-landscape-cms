@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { getVegaWidgetQueryParams } from 'helpers/api';
+import { getVegaWidgetQueryParams, getSqlFilters } from 'helpers/api';
 
 const getDatasetId = state => state.dashboard.datasetId;
 const getWidget = state => state.dashboard.widget.data;
@@ -22,28 +22,7 @@ export const getVegaWidgetDataQuery = createSelector(
       ? Object.keys(widgetParams.fields).map(name => `${widgetParams.fields[name].aggregation ? `${widgetParams.fields[name].aggregation}(${widgetParams.fields[name].name})` : widgetParams.fields[name].name} as ${name}`)
       : ['*'];
 
-    const filters = widgetParams.filters.concat(dashboardFilters)
-      .map((filter) => {
-        if (!filter.values || !filter.values.length) return null;
-
-        if (filter.type === 'string') {
-          const whereClause = `${filter.name} IN ('${filter.values.join('\', \'')}')`;
-          return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-        }
-
-        if (filter.type === 'number') {
-          const whereClause = `${filter.name} >= ${filter.values[0]} AND ${filter.name} <= ${filter.values[1]}`;
-          return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-        }
-
-        if (filter.type === 'date') {
-          const whereClause = `${filter.name} >= '${filter.values[0]}' AND ${filter.name} <= '${filter.values[1]}'`;
-          return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-        }
-
-        return null;
-      })
-      .filter(f => !!f);
+    const filters = getSqlFilters(widgetParams.filters.concat(dashboardFilters));
 
     // NOTE: the encodeURIComponent function is called because Chrome won't
     // allow requests with both \n, \r or \t and characters like > or <:
@@ -51,7 +30,7 @@ export const getVegaWidgetDataQuery = createSelector(
     return encodeURIComponent(`
       SELECT ${fields}
       FROM ${datasetId}
-      ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
+      ${filters.length ? `WHERE ${filters}` : ''}
       ${widgetParams.fields.y && widgetParams.fields.y.aggregation ? 'GROUP BY x' : ''}
       ${widgetParams.order ? `ORDER BY ${widgetParams.order.field} ${widgetParams.order.direction}` : ''}
       LIMIT ${widgetParams.limit}

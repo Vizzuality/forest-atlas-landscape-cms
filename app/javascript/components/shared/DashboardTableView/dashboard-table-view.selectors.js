@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { getDatasetDownloadUrls } from 'helpers/api';
+import { getDatasetDownloadUrls, getSqlFilters } from 'helpers/api';
 import { getFields } from 'components/shared/Dashboard/dashboard.selectors';
 
 export const getDatasetId = state => state.dashboard.datasetId;
@@ -18,33 +18,12 @@ const getData = state => state.dashboardTable.data;
 export const getSQLQuery = createSelector(
   [getDatasetId, getFields, getFilters],
   (datasetId, fields, dashboardFilters) => {
-    const filters = dashboardFilters
-      .map((filter) => {
-        if (!filter.values || !filter.values.length) return null;
-
-        if (filter.type === 'string') {
-          const whereClause = `${filter.name} IN ('${filter.values.join('\', \'')}')`;
-          return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-        }
-
-        if (filter.type === 'number') {
-          const whereClause = `${filter.name} >= ${filter.values[0]} AND ${filter.name} <= ${filter.values[1]}`;
-          return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-        }
-
-        if (filter.type === 'date') {
-          const whereClause = `${filter.name} >= '${filter.values[0]}' AND ${filter.name} <= '${filter.values[1]}'`;
-          return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-        }
-
-        return null;
-      })
-      .filter(f => !!f);
+    const filters = getSqlFilters(dashboardFilters);
 
     return `
       SELECT ${fields.map(f => f.name)}
       FROM data
-      ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}
+      ${filters.length ? `WHERE ${filters}` : ''}
       LIMIT 500
     `;
   }

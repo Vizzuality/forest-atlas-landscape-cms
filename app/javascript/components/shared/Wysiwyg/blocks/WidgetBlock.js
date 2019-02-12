@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { VegaChart } from 'widget-editor';
 import { Promise } from 'es6-promise';
 
-import { isVegaWidget, getVegaWidgetQueryParams, getDatasetDownloadUrls } from 'helpers/api';
+import { isVegaWidget, getVegaWidgetQueryParams, getDatasetDownloadUrls, getSqlFilters } from 'helpers/api';
 import Icon from 'components/icon';
 
 // /widget_data.json?widget_id=
@@ -32,29 +32,9 @@ class WidgetBlock extends React.Component {
     const datasetProvider = await WidgetBlock.getDatasetProvider(widget.dataset);
     const { fields, filters, limit } = getVegaWidgetQueryParams({ widgetConfig: widget.visualization });
 
-    const serializedFilters = filters.map((filter) => {
-      if (!filter.values || !filter.values.length) return null;
+    const serializedFilters = getSqlFilters(filters);
 
-      if (filter.type === 'string') {
-        const whereClause = `${filter.name} IN ('${filter.values.join('\', \'')}')`;
-        return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-      }
-
-      if (filter.type === 'number') {
-        const whereClause = `${filter.name} >= ${filter.values[0]} AND ${filter.name} <= ${filter.values[1]}`;
-        return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-      }
-
-      if (filter.type === 'date') {
-        const whereClause = `${filter.name} >= '${filter.values[0]}' AND ${filter.name} <= '${filter.values[1]}'`;
-        return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-      }
-
-      return null;
-    })
-      .filter(f => !!f);
-
-    const sqlQuery = `SELECT ${Object.values(fields).map(f => f.name)} FROM data ${serializedFilters.length ? `WHERE ${serializedFilters.join(' AND ')}` : ''} LIMIT ${limit || 500}`;
+    const sqlQuery = `SELECT ${Object.values(fields).map(f => f.name)} FROM data ${serializedFilters.length ? `WHERE ${serializedFilters}` : ''} LIMIT ${limit || 500}`;
 
     return getDatasetDownloadUrls(widget.dataset, datasetProvider, sqlQuery);
   }
