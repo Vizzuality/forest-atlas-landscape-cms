@@ -154,7 +154,8 @@ class SitePage < Page
   end
 
   def related_pages
-    SitePage.not_tag_page.search_tags(self.tags.pluck(:value).join(', '))
+    SitePage.for_site(site_id).not_tag_page
+      .search_tags(self.tags.pluck(:value).join(', '))
       .where.not(id: id).limit(MAX_RELATED_PAGES_SIZE)
   end
 
