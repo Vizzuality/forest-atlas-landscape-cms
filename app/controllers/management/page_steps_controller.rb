@@ -389,6 +389,7 @@ class Management::PageStepsController < ManagementController
   # Saves the current tags state
   def set_current_tags_state
     return unless params.dig 'site_page', 'tags_attributes'
+    tags = params.dig('site_page', 'tags_attributes').split(' ')
     new_tags = []
 
     # Remove old ones
