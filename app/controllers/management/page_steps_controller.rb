@@ -412,6 +412,7 @@ class Management::PageStepsController < ManagementController
     db_params = page_params.to_h[:dashboard_setting] if params[:site_page] && page_params&.to_h[:dashboard_setting]
 
     @dashboard_setting = nil
+    return unless [ContentType::DASHBOARD_V2, ContentType::ANALYSIS_DASHBOARD].include?(@page.content_type)
     if db_params[:id]
       @dashboard_setting = DashboardSetting.find(db_params[:id])
     elsif @page.dashboard_setting
