@@ -10,7 +10,7 @@ class Management::PageStepsController < ManagementController
   prepend_before_action :set_steps
   prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
   prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
-  prepend_before_action :reset_session, only: [:new, :edit]
+  #prepend_before_action :reset_session, only: [:new, :edit]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
 
@@ -31,6 +31,7 @@ class Management::PageStepsController < ManagementController
   # This action cleans the session
   def new
     @page_id = :new
+    reset_session
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
@@ -48,6 +49,7 @@ class Management::PageStepsController < ManagementController
   # This action cleans the session
   def edit
     @page_id = @page.id
+    reset_session
     redirect_to wizard_path(steps[0])
   end
 
@@ -372,14 +374,16 @@ class Management::PageStepsController < ManagementController
 
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page][@page_id] if session[:page][@page_id]
-    if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting)
-      @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting)
+    if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting, :tags)
+      @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting, :tags)
     end
+
+    @page.tags_attributes = session[:tags_attributes]["#{@page_id}"] if session[:tags_attributes]["#{@page_id}"]
   end
 
   # Saves the current page state in session
   def set_current_page_state
-    session[:page][@page_id] = @page.attributes
+    session[:page][@page_id] = @page.attributes.except(:tags)
   end
 
   # Saves the current tags state
@@ -399,7 +403,7 @@ class Management::PageStepsController < ManagementController
 
     @page.tags_attributes = new_tags
 
-    session[:tags_attributes][@page_id] = new_tags
+    session[:tags_attributes]["#{@page_id}"] = new_tags
   end
 
   # Builds the current dashboard setting based on the database, session and params
@@ -682,7 +686,7 @@ class Management::PageStepsController < ManagementController
     reset_session_key(:dashboard_setting, @page_id, {})
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
-    reset_session_key(:tags_attributes, @page_id, {})
+    reset_session_key(:tags_attributes, "#{@page_id}", {})
     reset_session_key(:page, @page_id, {})
     reset_session_key(:page, :new, {})
   end
