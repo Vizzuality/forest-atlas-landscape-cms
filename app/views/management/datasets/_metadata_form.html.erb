@@ -1,6 +1,7 @@
   <div class="l-dataset-creation -labels">
     <div class="wrapper">
       <div class="inputs-container">
+        <%= hidden_field_tag 'dataset[metadata][id]', f.object.metadata[:id] %>
         <div>
           <%= f.label :language, for: 'dataset_metadata_language', :class => 'required' %>
           <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language], :required => true %>

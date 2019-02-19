@@ -11,7 +11,7 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   API_PROPERTIES = [
-    :language, :description, :citation, :source, :name, :application, :columns
+    :id, :language, :description, :citation, :source, :name, :application, :columns
   ]
 
   APPLICATION_PROPERTIES = [
@@ -147,13 +147,13 @@ class Dataset
     if data_attributes
       attributes = attributes.merge(data_attributes.except(:metadata))
       if data_attributes[:metadata] && data_attributes[:metadata].any?
-        # select metadata by current locale, otherwise first available
+        # select metadata by current locale, and app
         metadata = data_attributes[:metadata].find do |md|
-          md['attributes']['language'] == I18n.locale.to_s
+          md['attributes']['language'] == I18n.locale.to_s && md['attributes']['application'] == 'forest-atlas'
         end
-        metadata ||= data_attributes[:metadata].first
         if metadata.present? and metadata['attributes']
           metadata_attributes = metadata['attributes'].symbolize_keys
+          metadata_attributes[:id] = metadata['id']
           if metadata_attributes[:applicationProperties]
             metadata_attributes = metadata_attributes.merge(
               metadata_attributes[:applicationProperties].symbolize_keys
@@ -179,7 +179,11 @@ class Dataset
 
   def update(token)
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
-    update_metadata(token)
+    if metadata[:id]
+      update_metadata(token)
+    else
+      create_metadata(token)
+    end
   end
 
   def update_metadata(token)
