@@ -45,6 +45,7 @@ class SitePage < Page
   scope :for_site, ->(site_id) { where(site_id: site_id)}
   scope :enabled, -> { where(enabled: true) }
   scope :not_tag_page, -> { where.not(content_type: ContentType::TAG_SEARCHING)}
+  scope :not_link_page, -> { where.not(content_type: ContentType::LINK)}
 
   belongs_to :site
   has_many :routes, through: :site
@@ -287,10 +288,10 @@ class SitePage < Page
 
   def destroy_temporary_cover_and_thumb
     if temp_cover_image.present?
-      TemporaryContentImage.find(temp_cover_image).destroy
+      TemporaryContentImage.find(temp_cover_image).destroy rescue nil
     end
     if temp_thumbnail.present?
-      TemporaryContentImage.find(temp_thumbnail).destroy
+      TemporaryContentImage.find(temp_thumbnail).destroy rescue nil
     end
   end
 
