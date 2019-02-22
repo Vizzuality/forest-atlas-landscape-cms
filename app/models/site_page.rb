@@ -77,6 +77,8 @@ class SitePage < Page
 
   accepts_nested_attributes_for :tags, allow_destroy: true
 
+  has_attached_file :thumbnail, styles: { original: '800x>' }
+
   attr_accessor :form_step
   attr_accessor :thumbnail_url
   attr_accessor :temp_cover_image

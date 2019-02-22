@@ -1,5 +1,5 @@
 class TemporaryContentImage < ApplicationRecord
-  has_attached_file :image, styles: { cover: '1280x>', thumb: '800x200' }
+  has_attached_file :image, styles: { cover: '1280x>', thumb: '800x>' }
   validates_attachment_content_type :image, content_type: %r{^image\/.*}
 
   def self.remove_old
