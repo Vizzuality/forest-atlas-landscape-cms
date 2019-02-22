@@ -179,7 +179,7 @@ class Dataset
 
   def update(token)
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
-    if metadata[:id]
+    if metadata[:id].present?
       update_metadata(token)
     else
       create_metadata(token)
