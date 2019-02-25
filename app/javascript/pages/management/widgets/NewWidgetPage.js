@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme, getConfig } from 'widget-editor';
+import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getConfig, getVegaTheme } from 'widget-editor';
 
 import ExtendedHeader from 'components/ExtendedHeader';
 import StepsBar from 'components/StepsBar';
@@ -60,8 +60,10 @@ class NewWidgetPage extends React.Component {
       // Error while saving the widget
       saveError: false,
       // Theme of the widget
-      theme: getVegaTheme()
+      theme: undefined
     };
+
+    this.onCustomizeTheme = this.onCustomizeTheme.bind(this);
   }
 
   componentDidUpdate(_, prevState) {
@@ -113,7 +115,7 @@ class NewWidgetPage extends React.Component {
       if (this.getLayer) {
         try {
           layerObj = await this.getLayer();
-        } catch (err) {} // eslint-disable-line no-empty
+        } catch (err) { } // eslint-disable-line no-empty
       }
 
       const widgetObj = Object.assign(
@@ -225,7 +227,6 @@ class NewWidgetPage extends React.Component {
     const theme = Object.assign({}, defaultTheme, {
       name: themeConfiguration.name,
       range: Object.assign({}, defaultTheme.range, {
-        category: themeConfiguration.category,
         category20: themeConfiguration.category
       }),
       mark: Object.assign({}, defaultTheme.mark, {
@@ -242,6 +243,15 @@ class NewWidgetPage extends React.Component {
       })
     });
 
+    this.setState({ theme });
+  }
+
+  /**
+   * Event handler executed when the user modifies a
+   * theme
+   * @param {object} theme Customized theme
+   */
+  onCustomizeTheme(theme) {
     this.setState({ theme });
   }
 
@@ -300,13 +310,13 @@ class NewWidgetPage extends React.Component {
                 <div className="container">
                   <label>Widget theme</label>
                   <ThemeSelector
-                    defaultTheme="default"
+                    theme={this.state.theme ? this.state.theme.name : 'default'}
                     onChange={theme => this.onChangeTheme(theme)}
                   />
                 </div>
               </div>
               <div className="widget-container">
-                { advancedEditorLoading && <div className="c-loading-spinner -bg" /> }
+                {advancedEditorLoading && <div className="c-loading-spinner -bg" />}
                 <ToggleSwitcher
                   elements={['Widget editor', 'Advanced editor']}
                   selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
@@ -317,12 +327,13 @@ class NewWidgetPage extends React.Component {
                     }
                   }}
                 />
-                { !advancedEditor && (
+                {!advancedEditor && (
                   <WidgetEditor
                     datasetId={dataset}
                     widgetTitle={title}
                     widgetCaption={caption}
                     theme={this.state.theme}
+                    onChangeTheme={this.onCustomizeTheme}
                     saveButtonMode="never"
                     embedButtonMode="never"
                     useLayerEditor
@@ -332,7 +343,7 @@ class NewWidgetPage extends React.Component {
                     provideLayer={(func) => { this.getLayer = func; }}
                   />
                 )}
-                { advancedEditor && (
+                {advancedEditor && (
                   <div className="advanced-editor">
                     <div className="textarea-container">
                       <div className="caption-container">
@@ -350,7 +361,7 @@ class NewWidgetPage extends React.Component {
                       />
                     </div>
                     <div className="preview">
-                      { previewLoading && <div className="c-loading-spinner -bg" /> }
+                      {previewLoading && <div className="c-loading-spinner -bg" />}
                       {widgetConfig && widgetConfig.data && (
                         <VegaChart
                           data={widgetConfig}
@@ -418,20 +429,20 @@ class NewWidgetPage extends React.Component {
               Cancel
             </a>
             <div>
-              { currentStep >= 1 && (
+              {currentStep >= 1 && (
                 <button type="button" className="c-button -outline -dark-text" onClick={() => setStep(currentStep - 1)}>
                   Back
                 </button>
               )}
-              { (currentStep === 0 || currentStep === 1) && (
+              {(currentStep === 0 || currentStep === 1) && (
                 <button type="submit" className="c-button" disabled={(currentStep === 0 && !dataset) || (currentStep === 1 && !title)} onClick={() => setStep(currentStep + 1)}>
                   Continue
                 </button>
               )}
-              { currentStep === 2 && (
+              {currentStep === 2 && (
                 <button type="submit" className="c-button" onClick={() => this.onClickCreate()} disabled={creating}>
-                  { creating && <div className="c-loading-spinner -inline -btn" /> }
-                  { !creating && 'Create' }
+                  {creating && <div className="c-loading-spinner -inline -btn" />}
+                  {!creating && 'Create'}
                 </button>
               )}
             </div>

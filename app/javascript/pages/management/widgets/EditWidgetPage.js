@@ -39,6 +39,14 @@ class EditWidgetPage extends React.Component {
       userToken: env.user.token || undefined
     });
 
+    // The next few lines are only for the advanced editor
+    let theme = undefined;
+    if (!props.widget.widget_config) {
+      theme = { name: 'default' };
+    } else if (!props.widget.widget_config.paramsConfig) {
+      theme = props.widget.widget_config.config || { name: 'default' };
+    }
+
     this.state = {
       // Whether we're currently editing the widget in the API
       editing: false,
@@ -60,10 +68,10 @@ class EditWidgetPage extends React.Component {
       // Error while saving the widget
       saveError: false,
       // Theme of the widget
-      theme: props.widget && props.widget.widget_config && props.widget.widget_config.config
-        ? props.widget.widget_config.config
-        : getVegaTheme()
+      theme
     };
+
+    this.onCustomizeTheme = this.onCustomizeTheme.bind(this);
   }
 
   componentWillMount() {
@@ -221,7 +229,6 @@ class EditWidgetPage extends React.Component {
     const theme = Object.assign({}, defaultTheme, {
       name: themeConfiguration.name,
       range: Object.assign({}, defaultTheme.range, {
-        category: themeConfiguration.category,
         category20: themeConfiguration.category
       }),
       mark: Object.assign({}, defaultTheme.mark, {
@@ -243,6 +250,15 @@ class EditWidgetPage extends React.Component {
     if (!isEqual(this.state.theme, theme)) {
       this.setState({ theme });
     }
+  }
+
+  /**
+   * Event handler executed when the user modifies a
+   * theme
+   * @param {object} theme Customized theme
+   */
+  onCustomizeTheme(theme) {
+    this.setState({ theme });
   }
 
   render() {
@@ -287,7 +303,7 @@ class EditWidgetPage extends React.Component {
                 <div className="container">
                   <label>Widget theme</label>
                   <ThemeSelector
-                    defaultTheme={(theme && theme.name) || 'default'}
+                    theme={this.state.theme && this.state.theme.name}
                     onChange={t => this.onChangeTheme(t)}
                   />
                 </div>
@@ -313,6 +329,7 @@ class EditWidgetPage extends React.Component {
                     widgetTitle={title}
                     widgetCaption={caption}
                     theme={this.state.theme}
+                    onChangeTheme={this.onCustomizeTheme}
                     saveButtonMode="never"
                     embedButtonMode="never"
                     onChangeWidgetTitle={t => setTitle(t)}
