@@ -78,16 +78,6 @@ class Dashboard extends React.PureComponent {
                   CSV <Icon name="icon-download" />
                 </a>
               )}
-              {downloadUrls.json && (
-                <a
-                  className="download"
-                  aria-label="Download filtered dataset"
-                  href={downloadUrls.json}
-                  download
-                >
-                  JSON <Icon name="icon-download" />
-                </a>
-              )}
               {downloadLink && (
                 <a
                   className="download"

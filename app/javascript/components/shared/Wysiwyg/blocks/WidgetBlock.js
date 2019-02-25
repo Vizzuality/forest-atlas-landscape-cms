@@ -30,11 +30,11 @@ class WidgetBlock extends React.Component {
     }
 
     const datasetProvider = await WidgetBlock.getDatasetProvider(widget.dataset);
-    const { fields, filters, limit } = getVegaWidgetQueryParams({ widgetConfig: widget.visualization });
+    const { filters, limit } = getVegaWidgetQueryParams({ widgetConfig: widget.visualization });
 
     const serializedFilters = getSqlFilters(filters);
 
-    const sqlQuery = `SELECT ${Object.values(fields).map(f => f.name)} FROM data ${serializedFilters.length ? `WHERE ${serializedFilters}` : ''} LIMIT ${limit || 500}`;
+    const sqlQuery = `SELECT * FROM data ${serializedFilters.length ? `WHERE ${serializedFilters}` : ''} LIMIT ${limit || 500}`;
 
     return getDatasetDownloadUrls(widget.dataset, datasetProvider, sqlQuery);
   }
@@ -104,16 +104,6 @@ class WidgetBlock extends React.Component {
               download
             >
               CSV <Icon name="icon-download" />
-            </a>
-          )}
-          {downloadUrls.json && (
-            <a
-              className="download"
-              aria-label="Download widget data in JSON format"
-              href={downloadUrls.json}
-              download
-            >
-              JSON <Icon name="icon-download" />
             </a>
           )}
         </div>
