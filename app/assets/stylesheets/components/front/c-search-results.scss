@@ -5,6 +5,18 @@
     margin: 80px 0 30px;
   }
 
+  &.-standalone {
+    // The header is absolutely positioned for
+    // some templates so we add its height
+    @if $theme == 3 {
+      margin-top: 60px;
+
+      @media #{$mq-tablet} {
+        margin-top: 160px;
+      }
+    }
+  }
+
   form {
     max-width: $content-max-width;
     margin: 0 auto 20px;

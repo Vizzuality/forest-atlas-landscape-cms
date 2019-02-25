@@ -5,7 +5,7 @@ import classnames from "classnames";
 class SearchResults extends PureComponent {
   render() {
     return (
-      <div className="c-search-results">
+      <div className={`c-search-results ${this.props.className}`}>
         <div className="wrapper">
           {!this.props.hideSearchBar && (
             <form method="get">
@@ -37,15 +37,15 @@ class SearchResults extends PureComponent {
               </li>
             ))}
           </ul>
-          { !this.props.results.length && (
+          {!this.props.results.length && (
             <div className="no-result">No result</div>
           )}
           <div className="pagination">
             <a
               href={`${location.origin}${
                 location.pathname
-              }?search=${encodeURIComponent(this.props.search)}&page=${+this
-                .props.page - 1}`}
+                }?search=${encodeURIComponent(this.props.search)}&page=${+this
+                  .props.page - 1}`}
               className={classnames({
                 "c-button": true,
                 "-mini": true,
@@ -60,8 +60,8 @@ class SearchResults extends PureComponent {
             <a
               href={`${location.origin}${
                 location.pathname
-              }?search=${encodeURIComponent(this.props.search)}&page=${+this
-                .props.page + 1}`}
+                }?search=${encodeURIComponent(this.props.search)}&page=${+this
+                  .props.page + 1}`}
               className={classnames({
                 "c-button": true,
                 "-mini": true,
@@ -83,7 +83,8 @@ SearchResults.propTypes = {
   totalPages: PropTypes.number,
   results: PropTypes.array,
   search: PropTypes.string,
-  hideSearchBar: PropTypes.bool
+  hideSearchBar: PropTypes.bool,
+  className: PropTypes.string
 };
 
 SearchResults.defaultProps = {
@@ -91,7 +92,8 @@ SearchResults.defaultProps = {
   page: 1,
   totalPages: 1,
   search: "",
-  hideSearchBar: false
+  hideSearchBar: false,
+  className: ''
 };
 
 export default SearchResults;
