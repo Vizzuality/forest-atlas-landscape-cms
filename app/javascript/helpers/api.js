@@ -97,7 +97,15 @@ export const getVegaWidgetQueryParams = (widget) => {
               aggregation: widget.widgetConfig.paramsConfig.aggregateFunction || null
             }
           }
-          : {}
+          : {},
+        widget.widgetConfig.paramsConfig.color
+          ? {
+            color: {
+              name: widget.widgetConfig.paramsConfig.color.name,
+              aggregation: widget.widgetConfig.paramsConfig.aggregateFunction || null
+            }
+          }
+          : {},
       ),
       filters: widget.widgetConfig.paramsConfig.filters.map(f => ({
         name: f.name,

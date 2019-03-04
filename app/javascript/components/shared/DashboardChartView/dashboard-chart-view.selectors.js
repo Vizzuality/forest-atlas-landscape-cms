@@ -24,6 +24,21 @@ export const getVegaWidgetDataQuery = createSelector(
 
     const filters = getSqlFilters(widgetParams.filters.concat(dashboardFilters));
 
+    let order = widgetParams.order;
+    if (!order) {
+      if (widget.widgetConfig.paramsConfig.chartType === 'line') {
+        order = {
+          field: widgetParams.fields.x.name,
+          direction: 'desc'
+        };
+      } else if (widget.widgetConfig.paramsConfig.value && ['pie', 'bar', 'stacked-bar', 'bar-horizontal', 'stacked-bar-horizontal'].indexOf(widget.widgetConfig.paramsConfig.chartType) !== -1) {
+        order = {
+          field: widgetParams.fields.y.name,
+          direction: 'desc'
+        };
+      }
+    }
+
     // NOTE: the encodeURIComponent function is called because Chrome won't
     // allow requests with both \n, \r or \t and characters like > or <:
     // https://www.chromestatus.com/feature/5735596811091968
@@ -32,7 +47,7 @@ export const getVegaWidgetDataQuery = createSelector(
       FROM ${datasetId}
       ${filters.length ? `WHERE ${filters}` : ''}
       ${widgetParams.fields.y && widgetParams.fields.y.aggregation ? 'GROUP BY x' : ''}
-      ${widgetParams.order ? `ORDER BY ${widgetParams.order.field} ${widgetParams.order.direction}` : ''}
+      ${order ? `ORDER BY ${order.field} ${order.direction}` : ''}
       LIMIT ${widgetParams.limit}
     `);
   }
