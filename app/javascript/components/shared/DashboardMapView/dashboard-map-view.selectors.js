@@ -28,10 +28,15 @@ export const getSqlWhere = createSelector(
 
 /**
  * Return a key-value object where the keys are the names
- * of the fields and the values their display names (aliases
- * or original names)
+ * of the fields and the values are objects containing their
+ * display names (aliases or original names) and their types
  */
-export const getFieldsDisplayNames = createSelector(
+export const getFieldsInfo = createSelector(
   [getFields],
-  fields => fields.reduce((res, f) => Object.assign(res, { [f.name]: f.alias || f.name }), {})
+  fields => fields.reduce((res, f) => Object.assign(res, {
+    [f.name]: {
+      alias: f.alias || f.name,
+      type: f.type
+    }
+  }), {})
 );

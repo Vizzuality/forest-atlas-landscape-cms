@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import format from 'date-fns/format';
 
 class DashboardMapView extends React.Component {
   componentDidMount() {
@@ -54,12 +55,31 @@ class DashboardMapView extends React.Component {
 
 
         const data = layer.feature.properties;
-        const { fieldsDisplayNames } = this.props;
+        const { fieldsInfo } = this.props;
 
-        const popup =  L.popup()
-        .setLatLng(layerBounds.getCenter())
-        .setContent(`
-          ${Object.keys(data).filter(key => !!fieldsDisplayNames[key]).map(key => `<div><strong>${fieldsDisplayNames[key]}:</strong> ${data[key] === null ? '–' : data[key]}</div>`).join('')}
+        const popup = L.popup()
+          .setLatLng(layerBounds.getCenter())
+          .setContent(`
+          ${
+            Object.keys(data)
+              .filter(key => !!fieldsInfo[key])
+              .map(key => {
+                const field = fieldsInfo[key];
+
+                let value = data[key];
+                if (field.type === 'date' && value !== null && value !== undefined) {
+                  value = format(new Date(value), 'DD-MM-YYYY HH:mm:ss');
+                }
+
+                return `
+                  <div>
+                    <strong>${fieldsInfo[key].alias}:</strong>
+                    ${value === null ? '–' : value}
+                  </div>
+                `;
+              })
+              .join('')
+            }
         `);
 
         layer.bindPopup(popup)
@@ -101,7 +121,10 @@ class DashboardMapView extends React.Component {
 DashboardMapView.propTypes = {
   layerUrl: PropTypes.string,
   sqlWhere: PropTypes.string,
-  fieldsDisplayNames: PropTypes.objectOf(PropTypes.string).isRequired
+  fieldsInfo: PropTypes.objectOf(PropTypes.shape({
+    alias: PropTypes.string,
+    type: PropTypes.string
+  })).isRequired
 };
 
 DashboardMapView.defaultProps = {
