@@ -11042,10 +11042,10 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2 || 2"
 
-widget-editor@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/widget-editor/-/widget-editor-1.4.0.tgz#3a82bab34c21f8bdbba5e620e45307d13cd50f53"
-  integrity sha512-d1G6hnW38Tk+e/ft/K88a8WYzjg9LubdhTi37AfSI3BPf0vAoUPdtGQr7cc0hAHbtMYEbHm7+iK+9tH0MtA5fg==
+widget-editor@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/widget-editor/-/widget-editor-1.4.1.tgz#1e6e3f55a96337369a35563f6a747abb476b6d5c"
+  integrity sha512-/gEBn51+PXMnHIGhRURFwiUQwc0SRGGaI0wHAyab+NVeUK+AoGlgqs0gebELiCHp3peXFEUYtxRc2lSo8KKz1A==
   dependencies:
     autobind-decorator "^2.1.0"
     babel-runtime "^6.26.0"
