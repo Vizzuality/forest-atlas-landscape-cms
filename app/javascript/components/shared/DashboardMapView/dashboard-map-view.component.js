@@ -68,7 +68,7 @@ class DashboardMapView extends React.Component {
 
                 let value = data[key];
                 if (field.type === 'date' && value !== null && value !== undefined) {
-                  value = format(new Date(value), 'DD-MM-YYYY HH:mm:ss');
+                  value = format(new Date(value), 'DD-MM-YYYY');
                 }
 
                 return `

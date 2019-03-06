@@ -88,7 +88,7 @@ export const getTableData = createSelector(
         } else if (field.type === 'date' && r[k] !== null && r[k] !== undefined) {
           const date = new Date(r[k]);
 
-          value = format(date, 'DD-MM-YYYY HH:mm:ss');
+          value = format(date, 'DD-MM-YYYY');
         }
 
         return {
