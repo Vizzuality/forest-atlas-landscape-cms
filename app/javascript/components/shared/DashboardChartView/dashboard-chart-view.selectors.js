@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+import { getDataset } from 'components/shared/Dashboard/dashboard.selectors';
 import { getVegaWidgetQueryParams, getSqlFilters } from 'helpers/api';
 
 const getDatasetId = state => state.dashboard.datasetId;
@@ -10,8 +11,8 @@ const getFilters = state => state.dashboardFilters.filters;
  * Return the SQL query necessary to display the Vega widget
  */
 export const getVegaWidgetDataQuery = createSelector(
-  [getDatasetId, getWidget, getFilters],
-  (datasetId, widget, dashboardFilters) => {
+  [getDatasetId, getDataset, getWidget, getFilters],
+  (datasetId, dataset, widget, dashboardFilters) => {
     if (!datasetId || !widget) {
       return null;
     }
@@ -22,7 +23,7 @@ export const getVegaWidgetDataQuery = createSelector(
       ? Object.keys(widgetParams.fields).map(name => `${widgetParams.fields[name].aggregation ? `${widgetParams.fields[name].aggregation}(${widgetParams.fields[name].name})` : widgetParams.fields[name].name} as ${name}`)
       : ['*'];
 
-    const filters = getSqlFilters(widgetParams.filters.concat(dashboardFilters));
+    const filters = getSqlFilters(widgetParams.filters.concat(dashboardFilters), dataset.attributes.provider);
 
     let order = widgetParams.order;
     if (!order) {

@@ -22,8 +22,8 @@ export const getLayerUrl = createSelector(
 );
 
 export const getSqlWhere = createSelector(
-  [getNonEmptyFilters],
-  filters => getSqlFilters(filters)
+  [getDataset, getNonEmptyFilters],
+  (dataset, filters) => getSqlFilters(filters, dataset.attributes.provider)
 );
 
 /**

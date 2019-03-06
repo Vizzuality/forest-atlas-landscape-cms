@@ -32,7 +32,7 @@ class WidgetBlock extends React.Component {
     const datasetProvider = await WidgetBlock.getDatasetProvider(widget.dataset);
     const { filters, limit } = getVegaWidgetQueryParams({ widgetConfig: widget.visualization });
 
-    const serializedFilters = getSqlFilters(filters);
+    const serializedFilters = getSqlFilters(filters, datasetProvider);
 
     const sqlQuery = `SELECT * FROM data ${serializedFilters.length ? `WHERE ${serializedFilters}` : ''} LIMIT ${limit || 500}`;
 

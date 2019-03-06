@@ -17,9 +17,9 @@ const getData = state => state.dashboardTable.data;
  * dashboard
  */
 export const getSQLQuery = createSelector(
-  [getDatasetId, getFields, getFilters],
-  (datasetId, fields, dashboardFilters) => {
-    const filters = getSqlFilters(dashboardFilters);
+  [getDatasetProvider, getFields, getFilters],
+  (datasetProvider, fields, dashboardFilters) => {
+    const filters = getSqlFilters(dashboardFilters, datasetProvider);
 
     return `
       SELECT ${fields.map(f => f.name)}

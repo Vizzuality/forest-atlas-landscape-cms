@@ -126,8 +126,9 @@ export const getVegaWidgetQueryParams = (widget) => {
  * Return the serialized filters as they would be in an SQL query
  * The filters can be gotten from getVegaWidgetQueryParams
  * @param {{ type?: string, operation?: string, name: string, value: any, notNull?: boolean }[]} filters
+ * @param {string} provider Provider of the dataset
  */
-export const getSqlFilters = (filters) => {
+export const getSqlFilters = (filters, provider) => {
   return filters.map((filter) => {
     if (filter.values === null || filter.values === undefined) {
       return null;
@@ -211,38 +212,40 @@ export const getSqlFilters = (filters) => {
 
     if (filter.type === 'date') {
       let whereClause;
+      const getSerializedValue = v => (provider === 'featureservice' ? `date '${new Date(v).toISOString().split('T')[0]}'` : `'${v}'`);
+
       switch (filter.operation) {
         case 'not-between':
-          whereClause = `${filter.name} < '${filter.values[0]}' OR ${filter.name} > '${filter.values[1]}'`;
+          whereClause = `${filter.name} < ${getSerializedValue(filter.values[0])} OR ${filter.name} > ${getSerializedValue(filter.values[1])}`;
           break;
 
         case '>':
-          whereClause = `${filter.name} > '${filter.values}'`;
+          whereClause = `${filter.name} > ${getSerializedValue(filter.values)}`;
           break;
 
         case '>=':
-          whereClause = `${filter.name} >= '${filter.values}'`;
+          whereClause = `${filter.name} >= ${getSerializedValue(filter.values)}`;
           break;
 
         case '<':
-          whereClause = `${filter.name} < '${filter.values}'`;
+          whereClause = `${filter.name} < ${getSerializedValue(filter.values)}`;
           break;
 
         case '<=':
-          whereClause = `${filter.name} <= '${filter.values}'`;
+          whereClause = `${filter.name} <= ${getSerializedValue(filter.values)}`;
           break;
 
         case '=':
-          whereClause = `${filter.name} = '${filter.values}'`;
+          whereClause = `${filter.name} = ${getSerializedValue(filter.values)}`;
           break;
 
         case '!=':
-          whereClause = `${filter.name} <> '${filter.values}'`;
+          whereClause = `${filter.name} <> ${getSerializedValue(filter.values)}`;
           break;
 
         case 'between':
         default:
-          whereClause = `${filter.name} >= '${filter.values[0]}' AND ${filter.name} <= '${filter.values[1]}'`;
+          whereClause = `${filter.name} >= ${getSerializedValue(filter.values[0])} AND ${filter.name} <= ${getSerializedValue(filter.values[1])}`;
           break;
       }
 
