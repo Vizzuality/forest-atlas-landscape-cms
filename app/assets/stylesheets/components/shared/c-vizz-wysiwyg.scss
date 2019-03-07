@@ -54,7 +54,7 @@
   }
 
   .wysiwyg-grid-column__item {
-    margin-top: 16px;
+    margin-top: 50px;
   }
 
   .cw-wysiwyg-item-content {
@@ -196,6 +196,10 @@
   .c-we-chart {
     .vega-bindings {
       padding: 20px;
+
+      &:empty {
+        padding: 0;
+      }
 
       > .vega-bind {
         &:not(:first-child) {
