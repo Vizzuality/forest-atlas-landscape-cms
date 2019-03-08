@@ -34,7 +34,7 @@ class WidgetBlock extends React.Component {
 
     const serializedFilters = getSqlFilters(filters, datasetProvider);
 
-    const sqlQuery = `SELECT * FROM data ${serializedFilters.length ? `WHERE ${serializedFilters}` : ''} LIMIT ${limit || 500}`;
+    const sqlQuery = `SELECT * FROM data ${serializedFilters.length ? `WHERE ${serializedFilters}` : ''}`;
 
     return getDatasetDownloadUrls(widget.dataset, datasetProvider, sqlQuery);
   }

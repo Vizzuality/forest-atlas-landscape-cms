@@ -37,7 +37,7 @@ export const getSQLQuery = createSelector(
 export const getDownloadUrls = createSelector(
   [getDatasetId, getDatasetProvider, getSQLQuery],
   (datasetId, datasetProvider, sql) => {
-    return getDatasetDownloadUrls(datasetId, datasetProvider, sql);
+    return getDatasetDownloadUrls(datasetId, datasetProvider, sql.replace(/LIMIT \d+/, ''));
   }
 );
 
