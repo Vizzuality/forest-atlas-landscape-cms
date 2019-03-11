@@ -18,6 +18,7 @@ export const getVegaWidgetDataQuery = createSelector(
     }
 
     const widgetParams = getVegaWidgetQueryParams(widget);
+    const { order } = widgetParams;
 
     const fields = Object.keys(widgetParams).length
       ? Object.keys(widgetParams.fields).map(name => `${widgetParams.fields[name].aggregation ? `${widgetParams.fields[name].aggregation}(${widgetParams.fields[name].name})` : widgetParams.fields[name].name} as ${name}`)
@@ -25,18 +26,12 @@ export const getVegaWidgetDataQuery = createSelector(
 
     const filters = getSqlFilters(widgetParams.filters.concat(dashboardFilters), dataset.attributes.provider);
 
-    let order = widgetParams.order;
-    if (!order) {
-      if (widget.widgetConfig.paramsConfig.chartType === 'line') {
-        order = {
-          field: widgetParams.fields.x.name,
-          direction: 'desc'
-        };
-      } else if (widget.widgetConfig.paramsConfig.value && ['pie', 'bar', 'stacked-bar', 'bar-horizontal', 'stacked-bar-horizontal'].indexOf(widget.widgetConfig.paramsConfig.chartType) !== -1) {
-        order = {
-          field: widgetParams.fields.y.name,
-          direction: 'desc'
-        };
+    const groupBy = [];
+    if (widgetParams.fields.y && widgetParams.fields.y.aggregation) {
+      groupBy.push('x');
+
+      if (widgetParams.fields.color) {
+        groupBy.push('color');
       }
     }
 
@@ -47,8 +42,8 @@ export const getVegaWidgetDataQuery = createSelector(
       SELECT ${fields}
       FROM ${datasetId}
       ${filters.length ? `WHERE ${filters}` : ''}
-      ${widgetParams.fields.y && widgetParams.fields.y.aggregation ? 'GROUP BY x' : ''}
-      ${order ? `ORDER BY ${order.field} ${order.direction}` : ''}
+      ${groupBy && groupBy.length ? `GROUP BY ${groupBy}` : ''}
+      ${order ? `ORDER BY ${order.field} ${order.direction || 'desc'}` : ''}
       LIMIT ${widgetParams.limit}
     `);
   }

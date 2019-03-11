@@ -67,12 +67,12 @@ export const getVegaWidgetQueryParams = (widget) => {
   } else if (widget.widgetConfig.paramsConfig.chartType === 'line') {
     orderBy = {
       field: widget.widgetConfig.paramsConfig.category.name,
-      direction: 'asc'
+      direction: 'desc'
     };
-  } else if (widget.widgetConfig.paramsConfig.chartType === 'pie' || widget.widgetConfig.paramsConfig.chartType === 'bar' || widget.widgetConfig.paramsConfig.chartType === 'bar-horizontal') {
+  } else if (widget.widgetConfig.paramsConfig.value && ['pie', 'bar', 'stacked-bar', 'bar-horizontal', 'stacked-bar-horizontal'].indexOf(widget.widgetConfig.paramsConfig.chartType) !== -1) {
     orderBy = {
       field: widget.widgetConfig.paramsConfig.value.name,
-      direction: 'asc'
+      direction: 'desc'
     };
   }
 
@@ -101,8 +101,7 @@ export const getVegaWidgetQueryParams = (widget) => {
         widget.widgetConfig.paramsConfig.color
           ? {
             color: {
-              name: widget.widgetConfig.paramsConfig.color.name,
-              aggregation: widget.widgetConfig.paramsConfig.aggregateFunction || null
+              name: widget.widgetConfig.paramsConfig.color.name
             }
           }
           : {},
