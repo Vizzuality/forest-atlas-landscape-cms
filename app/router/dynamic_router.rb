@@ -33,13 +33,6 @@ class DynamicRouter
 
   def self.update_routes_for_site_page(site_page)
     # Rails.logger.debug ">>> DynamicRouter.update_routes_for_site_page #{site_page.try(:id) || 'NULL'}"
-    #
-    #
-    #
-    #
-    #
-    #
-    #
     return if site_page.id.nil?
 
     @route_cache.remove('p:' + site_page.id.to_s)
