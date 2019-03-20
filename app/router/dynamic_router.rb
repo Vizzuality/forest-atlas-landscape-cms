@@ -41,6 +41,10 @@ class DynamicRouter
       _build_routes_for_page_and_route(site_page, route)
     end
 
+    site_page.children.each do |child|
+      update_routes_for_site_page child
+    end
+
     self.reload
   end
 
