@@ -11,7 +11,7 @@ class Dataset
   CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
 
   API_PROPERTIES = [
-    :language, :description, :citation, :source, :name, :application
+    :id, :language, :description, :citation, :source, :name, :application, :columns
   ]
 
   APPLICATION_PROPERTIES = [
@@ -147,13 +147,13 @@ class Dataset
     if data_attributes
       attributes = attributes.merge(data_attributes.except(:metadata))
       if data_attributes[:metadata] && data_attributes[:metadata].any?
-        # select metadata by current locale, otherwise first available
+        # select metadata by current locale, and app
         metadata = data_attributes[:metadata].find do |md|
-          md['attributes']['language'] == I18n.locale.to_s
+          md['attributes']['language'] == I18n.locale.to_s && md['attributes']['application'] == 'forest-atlas'
         end
-        metadata ||= data_attributes[:metadata].first
         if metadata.present? and metadata['attributes']
           metadata_attributes = metadata['attributes'].symbolize_keys
+          metadata_attributes[:id] = metadata['id']
           if metadata_attributes[:applicationProperties]
             metadata_attributes = metadata_attributes.merge(
               metadata_attributes[:applicationProperties].symbolize_keys
@@ -172,13 +172,18 @@ class Dataset
   # +token+:: The authentication for the API
   def upload(token)
     tags_array = tags && tags.split(',') || []
+    build_arcgis_metadata if provider.eql? 'featureservice'
     DatasetService.upload token, type, provider, connector_url, data_path,
                           application, name, tags_array, legend, metadata
   end
 
   def update(token)
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
-    update_metadata(token)
+    if metadata[:id].present?
+      update_metadata(token)
+    else
+      create_metadata(token)
+    end
   end
 
   def update_metadata(token)
@@ -193,6 +198,19 @@ class Dataset
     DatasetService.create_metadata(
       token, id, 'forest-atlas', name, tags_array, metadata
     )
+  end
+
+  # Updates the metadata when the provider is feature service
+  # It connects to the feature service and extracts the description,
+  # name, and fields
+  def build_arcgis_metadata
+    arcgis_metadata = ArcgisService.build_metadata(self.connector_url)
+    metadata[:description] = arcgis_metadata['description']
+    metadata[:source] = arcgis_metadata['name']
+
+    columns = {}
+    arcgis_metadata['fields'].each {|f| columns[f['name']] = { 'alias': f['alias'] } }
+    metadata[:columns] = columns
   end
 
   # TODO: have a feeling this does not return the metadata object

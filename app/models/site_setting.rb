@@ -35,7 +35,7 @@ class SiteSetting < ApplicationRecord
   MAX_COLORS = 5
 
   # Makes sure the same site doesn't have a repeated setting
-  validates_uniqueness_of :name, scope: :site_id
+  validates_uniqueness_of :name, scope: :site_id, unless: Proc.new { |setting| setting.name.eql? 'main_image' }
   # All settings have mandatory values, except for images and flag
   validates :value, presence: :true, if: :has_required_value?
   # All fields must have a name and position
@@ -61,8 +61,8 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'logo_image', site_id: site_id)
   end
 
-  def self.main_image(site_id)
-    SiteSetting.find_by(name: 'main_image', site_id: site_id)
+  def self.main_images(site_id)
+    SiteSetting.where(name: 'main_image', site_id: site_id)
   end
 
   def self.alternative_image(site_id)
@@ -144,7 +144,7 @@ class SiteSetting < ApplicationRecord
   def self.create_additional_settings site
     unless site.site_settings.exists?(name: 'logo_image')
       site.site_settings.new(name: 'logo_image', value: '', position: 2)
-      site.site_settings.new(name: 'main_image', value: '', position: 5)
+      site.site_settings.new(name: 'main_image', value: '', position: 30)
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
       site.site_settings.new(name: 'favico', value: '', position: 3)
       site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'

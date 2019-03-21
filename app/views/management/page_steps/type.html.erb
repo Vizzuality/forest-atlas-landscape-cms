@@ -58,6 +58,22 @@
             <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::LINK}, class: 'c-button'  %>
           </div>
         </div>
+
+        <div class="card -footer-at-bottom">
+          <h3 class="title">Tag Searching</h3>
+          <p class="description">Add a listing of pages containing the chosen tags.</p>
+          <div class="footer">
+            <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::TAG_SEARCHING}, class: 'c-button'  %>
+          </div>
+        </div>
+
+        <div class="card -footer-at-bottom">
+          <h3 class="title">Map</h3>
+          <p class="description">Add another map.</p>
+          <div class="footer">
+            <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::MAP}, class: 'c-button'  %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

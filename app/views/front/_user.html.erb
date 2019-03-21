@@ -3,7 +3,7 @@
 
     <li class="dropdown-item">
       <div class="profile-image" style="background-image: url(<%= session[:current_user][:photo] %>);">
-        <%= session[:current_user][:name][0..1] unless session[:current_user][:photo] || session[:current_user][:name].blank? %>
+        <%= session[:current_user][:email][0..1] unless session[:current_user][:photo] %>
       </div>
       <ul>
         <li>

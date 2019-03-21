@@ -4,6 +4,7 @@
   align-items: flex-end;
   justify-content: center;
   padding: 50px 0 30px;
+  // The next lines are for the India template
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -31,15 +32,60 @@
     }
   }
 
-  &::after {
-    display: block;
+  @media print {
+    height: auto;
+    background-image: none !important;
+  }
+
+  // This interferes with the image attributions and
+  // the possibility to click on the link
+  // If this is not brought back, let's just remove it
+  // &::after {
+  //   display: block;
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 33%;
+  //   content: "";
+  //   background-image: linear-gradient(
+  //     to bottom,
+  //     rgba(0, 0, 0, 0),
+  //     rgba(0, 0, 0, 0.3)
+  //   );
+
+  //   @media print {
+  //     background-image: none;
+  //   }
+  // }
+
+  .slick-slider {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    height: 100%;
     width: 100%;
-    height: 33%;
-    content: '';
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0,0,0, 0.3));
+
+    .slick-list {
+      height: 100%;
+    }
+
+    .slick-track {
+      height: 100%;
+    }
+
+    .slick-slide > div {
+      height: 100%;
+    }
+
+    .slide {
+      height: 100%;
+
+      .background {
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+    }
   }
 
   > .wrapper {
@@ -53,6 +99,10 @@
         // Position container at the center , 50px = header height
         transform: translateY(calc(-50% + 50px));
       }
+    }
+
+    @media print {
+      margin-bottom: 0;
     }
   }
 
@@ -71,7 +121,7 @@
 
     @if $theme == 2 {
       font-size: $font-size-x-big;
-      letter-spacing: .7px;
+      letter-spacing: 0.7px;
       text-transform: uppercase;
     }
 
@@ -83,6 +133,10 @@
       @media #{$mq-tablet} {
         font-size: $font-size-huge;
       }
+    }
+
+    @media print {
+      color: $color-4;
     }
   }
 
@@ -97,7 +151,7 @@
     padding-bottom: 15px;
 
     @if $theme == 2 {
-      letter-spacing: .7px;
+      letter-spacing: 0.7px;
       text-transform: uppercase;
     }
 
@@ -136,6 +190,5 @@
     > p {
       line-height: 0;
     }
-
   }
 }

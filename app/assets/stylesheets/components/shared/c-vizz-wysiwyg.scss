@@ -1,6 +1,8 @@
 .vizz-wysiwyg {
   .cw-quill .ql-bubble .ql-tooltip {
-    z-index: 2E3;
+    // Must be below .c-action-bar and the modal
+    // for the link edition but over .cw-wysiwyg-toolbar
+    z-index: 9;
   }
 
   .ql-container {
@@ -17,8 +19,8 @@
     ul,
     ol {
       display: block;
-      margin-top: .5em;
-      margin-bottom: .5em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
       list-style: initial;
 
       li {
@@ -52,7 +54,7 @@
   }
 
   .wysiwyg-grid-column__item {
-    margin-top: 16px;
+    margin-top: 50px;
   }
 
   .cw-wysiwyg-item-content {
@@ -65,7 +67,7 @@
         color: $color-4;
         font-size: $font-size-huge;
         font-weight: $font-weight-light;
-        letter-spacing: .3px;
+        letter-spacing: 0.3px;
       }
 
       h2 {
@@ -73,35 +75,49 @@
         color: $color-4;
         font-size: $font-size-medium;
         font-weight: $font-weight-bold;
-        letter-spacing: .2px;
+        letter-spacing: 0.2px;
       }
 
       p {
         font-size: $font-size-normal;
-        letter-spacing: .1px;
+        letter-spacing: 0.1px;
         line-height: 1.5;
 
         & + p {
-          margin-top: .9em;
+          margin-top: 0.9em;
+        }
+      }
+    }
+
+    &.-image {
+      .fa-wysiwyg-file__preview {
+        label {
+          display: block;
+          margin-bottom: 10px;
+          text-align: left;
+        }
+
+        textarea {
+          margin-top: 5px;
         }
       }
     }
   }
 
   blockquote {
-    margin: 40px auto!important;
-    padding: 0 10px!important;
-    font-size: $font-size-big!important;
+    margin: 40px auto !important;
+    padding: 0 10px !important;
+    font-size: $font-size-big !important;
     font-weight: $font-weight-light;
     font-style: italic;
-    border-left: none!important;
+    border-left: none !important;
 
     &::before {
-      content: '“';
+      content: "“";
     }
 
     &::after {
-      content: '”';
+      content: "”";
     }
 
     @media #{$mq-mobile} {
@@ -120,7 +136,7 @@
 
     @if $theme == 2 {
       color: $color-4;
-      letter-spacing: .2px;
+      letter-spacing: 0.2px;
       line-height: 1.1;
     }
 
@@ -133,7 +149,6 @@
         line-height: 1.25;
       }
     }
-
   }
 
   .cw-wysiwyg-list-item {
@@ -165,21 +180,289 @@
         font-size: $font-size-small;
       }
     }
+
+    // Bootstrap default styles mess up with the
+    // chart's legend
+    // This happens in the wysiwyg in the management section
+    .legend .item .label {
+      color: $color-4;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      padding: inherit;
+    }
   }
 
+  .c-we-chart {
+    .vega-bindings {
+      padding: 20px;
 
-  .c-we-chart, .c-we-chart .chart {
-    height: 250px;
+      &:empty {
+        padding: 0;
+      }
+
+      > .vega-bind {
+        &:not(:first-child) {
+          margin: 10px 0 0 0;
+        }
+
+        > .vega-bind-name {
+          display: inline-block;
+          min-width: 35px;
+          margin-right: 20px;
+        }
+
+        > .vega-bind-radio {
+          > input {
+            position: absolute;
+            left: -10000px;
+            margin: 0 0 0 20px;
+
+            &:checked + label {
+              &:before {
+                border-color: $color-1;
+              }
+
+              &:after {
+                transform: translate(-50%, -50%) scale(1);
+              }
+            }
+          }
+
+          > label {
+            display: inline-block;
+            position: relative;
+            top: 0;
+            left: 0;
+            padding: 2px 0 2px 30px;
+            width: auto;
+            line-height: 1;
+            transition: color .1s linear;
+            cursor: pointer;
+
+            &:not(:first-of-type) {
+              margin-left: 15px;
+            }
+
+            &:before {
+              content: '';
+              display: inline-block;
+              position: absolute;
+              top: 50%;
+              left: 0;
+              width: 16px;
+              height: 16px;
+              border: 1px solid $color-1;
+              border-radius: 50%;
+              transform: translate(0, -50%);
+            }
+
+            &:after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 8px;
+              display: block;
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: $color-1;
+              transform: translate(-50%, -50%) scale(0);
+              transition: all 0.3s ease-in-out;
+            }
+          }
+        }
+
+        input[type="text"],
+        input[type="search"],
+        input[type="number"] {
+          height: 40px;
+          padding: 0 35px 0 15px;
+          border: 1px solid $color-13;
+          border-radius: 4px;
+          color: $color-4;
+          font-size: $font-size-normal;
+          line-height: 40px;
+
+          &::-webkit-input-placeholder {
+            color: $color-4;
+            opacity: 1;
+          }
+
+          &:-moz-placeholder {
+            color: $color-4;
+            opacity: 1;
+          }
+
+          &::-moz-placeholder {
+            color: $color-4;
+            opacity: 1;
+          }
+
+          &:-ms-input-placeholder {
+            color: $color-4;
+            opacity: 1;
+          }
+        }
+
+        input[type="range"] {
+          min-width: 200px;
+          vertical-align: middle;
+          -moz-appearance: none;
+          -webkit-appearance: none;
+
+          &:focus {
+            outline: none;
+          }
+
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+          }
+
+          &::-ms-track {
+            cursor: pointer;
+            background: transparent;
+            border-color: transparent;
+            color: transparent;
+          }
+
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 15px;
+            width: 15px;
+            margin-top: -6px;
+            border: 0;
+            border-radius: 100%;
+            background: $color-1;
+            cursor: pointer;
+          }
+
+          &::-moz-range-thumb {
+            -webkit-appearance: none;
+            height: 15px;
+            width: 15px;
+            border: 0;
+            border-radius: 100%;
+            background: $color-1;
+            cursor: pointer;
+          }
+
+          &::-ms-thumb {
+            -webkit-appearance: none;
+            height: 15px;
+            width: 15px;
+            border: 0;
+            border-radius: 100%;
+            background: $color-1;
+            cursor: pointer;
+          }
+
+          &::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 3px;
+            cursor: pointer;
+            background: $color-1;
+            border: 0;
+          }
+
+          &::-moz-range-track {
+            width: 100%;
+            height: 3px;
+            cursor: pointer;
+            background: $color-1;
+            border: 0;
+          }
+
+          &::-ms-fill-lower {
+            width: 100%;
+            height: 3px;
+            cursor: pointer;
+            background: $color-1;
+            border: 0;
+          }
+        }
+
+        select {
+          height: 40px;
+          padding: 0 37px 0 21px;
+          border-radius: 100px;
+          background-color: $color-16;
+          background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPScjNTU1JyBoZWlnaHQ9JzI0JyB2aWV3Qm94PScwIDAgMjQgMjQnIHdpZHRoPScy NCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cGF0aCBkPSdNNyAxMGw1IDUg NS01eicvPjxwYXRoIGQ9J00wIDBoMjR2MjRIMHonIGZpbGw9J25vbmUnLz48L3N2Zz4");
+          background-repeat: no-repeat;
+          background-position: calc(100% - 10px) 50%;
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-normal;
+          font-weight: $font-weight-normal;
+          letter-spacing: .1px;
+          line-height: 35px;
+          text-overflow: ellipsis;
+          -moz-appearance: none;
+          -webkit-appearance: none;
+
+          @if $theme == 2 {
+            border: 1px solid $color-1;
+            text-transform: uppercase;
+          }
+
+          @if $theme == 1 or $theme == 3 {
+            border: 0;
+          }
+
+          &[disabled] {
+            opacity: .8;
+            filter: grayscale(90%);
+          }
+        }
+      }
+    }
+  }
+
+  .c-we-chart,
+  .c-we-chart .chart {
+    min-height: 250px;
     width: 100%;
   }
 
-  .c-we-chart + .metadata {
+  .c-we-chart-title {
     flex-basis: 100%;
-    margin-top: 5px;
     text-align: center;
+    font-weight: $font-weight-bold;
+  }
 
-    .title {
-      font-weight: $font-weight-bold;
+  .c-we-chart-caption {
+    flex-basis: 100%;
+    text-align: center;
+    font-size: $font-size-small;
+  }
+
+  .c-we-chart-download {
+    display: flex;
+    justify-content: flex-end;
+    flex-basis: 100%;
+
+    .download {
+      display: inline-block;
+      min-width: 35px;
+      height: 35px;
+      margin-left: 10px;
+      padding: 0 10px;
+      border: 1px solid $color-1;
+      border-radius: 30px;
+      background: rgba($color-1, .1);
+      color: $color-4;
+      line-height: 35px;
+      cursor: pointer;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        vertical-align: text-bottom;
+
+        use {
+          fill: $color-4;
+        }
+      }
     }
   }
 }
@@ -239,6 +522,20 @@
 
       resize: none;
     }
-
   }
+}
+
+// Fixes a bug where the user can't select a widget
+// in the modal because it's below the backdrop
+.cw-modal {
+  .modal-container {
+    z-index: 1060;
+  }
+}
+
+// Fixes a bug where the "Add" button is placed on top
+// of the link edition modal
+// Must be below .ql-tooltip and .c-actions-bar
+.cw-wysiwyg-toolbar {
+  z-index: 8;
 }

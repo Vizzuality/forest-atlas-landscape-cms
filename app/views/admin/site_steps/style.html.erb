@@ -1,3 +1,5 @@
+<%= javascript_pack_tag 'application' %>
+
 <% content_for :extended_header do %>
   <div class="c-extended-header">
     <div class="wrapper">
@@ -84,65 +86,47 @@
               </div>
               <hr/>
 
-            <% when 'main_image' %>
-              <%= settings_form.hidden_field :position, value: '5'%>
-              <%= settings_form.hidden_field :name, value: 'main_image'%>
-              <div class="homepage-cover">
-                <h3>Homepage cover image</h3>
-                <%= settings_form.file_field :image, id: 'main', accept: 'image/*', 'data-type': 'background' %>
-                <%= settings_form.label :image, value: 'Change homepage cover image', for: 'main', tabindex: '0' %>
-                <% if !@main_image.nil? && @main_image.image_file_name %>
-                  <div class="preview -high js-preview" style="background-image: url('<%= @main_image.image.url %>');">
-                  </div>
-                <% else %>
-                  <div class="placeholder -high js-placeholder">
-                    <span>Select file</span>
-                  </div>
-                <% end %>
-                <div class="file-input-footer">
-                  <div class="restrictions js-restrictions">
-                    Recommended dimensions: 1280x500<br />
-                    Max. size: 1MB
-                  </div>
-                  <div class="cover-attribution">
-                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
-                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
-                  </div>
-                </div>
-              </div>
+              <%= react_component('AdminCarousel', {
+                form: settings_form.object,
+              } ) %>
 
             <% when 'alternative_image' %>
               <%= settings_form.hidden_field :position, value: '6'%>
               <%= settings_form.hidden_field :name, value: 'alternative_image'%>
-              <div class="content-cover">
-                <h3>Content cover image</h3>
-                <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
-                <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
-                <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
-                  <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
-                  </div>
-                <% else %>
-                  <div class="placeholder -high js-placeholder">
-                    <span>Select file</span>
-                  </div>
-                <% end %>
-                <div class="file-input-footer">
-                  <div class="restrictions js-restrictions">
-                    Recommended dimensions: 1280x250<br />
-                    Max. size: 1MB
-                  </div>
-                  <div class="cover-attribution">
-                    <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
-                    <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+              <div class="content-cover-container">
+                <div class="content-cover">
+                  <h3>Content cover image</h3>
+                  <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
+                  <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
+                    <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
+                    </div>
+                  <% else %>
+                    <div class="placeholder -high js-placeholder">
+                      <span>Select file</span>
+                      <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
+                    </div>
+                  <% end %>
+                  <div class="file-input-footer">
+                    <div class="restrictions js-restrictions">
+                      Recommended dimensions: 1280x250<br />
+                      Max. size: 1MB
+                    </div>
+                    <div class="cover-attribution">
+                      <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                      <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+                    </div>
                   </div>
                 </div>
               </div>
 
           <% end %>
         <% end %>
+
       </div>
     </div>
   </div>
   <%= render partial: 'footer', locals: { f: f} %>
 <% end %>
+
+
 <%= render partial: 'shared/errors', locals: { resource: @site } %>

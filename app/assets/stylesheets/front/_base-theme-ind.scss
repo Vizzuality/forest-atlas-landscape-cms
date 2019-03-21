@@ -316,8 +316,8 @@ body {
 
 }
 
-.c-cover{
-  height: calc(100vh - 55px ) !important;
+.c-cover {
+  height: calc(100vh - 55px) !important;
   padding: 0 !important;
 
   @media #{$mq-s-mobile}{
@@ -372,7 +372,6 @@ body {
 }
 
 .fa-page{
-  min-height: 100vh !important;
   padding: 0 0 130px !important;
   position: relative !important;
 

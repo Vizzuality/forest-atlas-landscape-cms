@@ -1,0 +1,32 @@
+<% content_for :extended_header do %>
+    <div class="c-extended-header -high">
+      <div class="wrapper">
+        <div class="description">
+          <h1>Tag Searching</h1>
+          <p>Please choose the tags you'd like to have on the page.</p>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: \
+  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
+
+<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+  <div class="l-page-creation -title">
+    <div class="wrapper">
+      <%= render partial: 'shared/errors', locals: { resource: @page } %>
+      <%= f.hidden_field :content_type %>
+      <div class="c-inputs-container">
+        <div class="container">
+          <%= f.label 'Tags', for: 'tags' %>
+          <%#= select :content, @tags, {}, id: 'tags', class: 'js-select', multiple: 'multiple' %>
+          <%= select_tag  'site_page[content]', options_for_select(@tags, @page.content ), multiple: true, id: 'tags', class: 'js-select' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, publish: true} %>
+<% end %>

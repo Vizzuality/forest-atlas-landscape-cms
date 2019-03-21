@@ -1,0 +1,10 @@
+.c-inputs-container {
+  > .container input[type="file"] {
+    font-size: 12px;
+  }
+
+  > .container input[type="checkbox"] {
+    margin-left: -20px;
+  }
+}
+

@@ -1,11 +1,19 @@
 <%= javascript_pack_tag 'application' %>
 
+<%= react_component('Cover', {
+  title:  @site_page.name,
+  subtitle: @site_page.site.name,
+  images: @page_cover,
+  size: 'small',
+  template: @site_page.site.site_template.name
+} ) %>
+
 <%= react_component('StaticPage', {
   page: @site_page,
   site: @site_page.site,
   siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
   siteTitleOnly: @site_title_only,
   siteTemplateName: @site_page.site.site_template.name,
-  image: @alternative_image,
-  pageSize: defined?(size) ? size : nil
+  pageSize: defined?(size) ? size : nil,
+  relatedPages: @site_page.related_pages
 } ) %>

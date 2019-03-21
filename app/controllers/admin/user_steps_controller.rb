@@ -19,7 +19,7 @@ class Admin::UserStepsController < AdminController
 
   # This action cleans the session
   def new
-    reset_session_key(:user, @user_id, {})
+    reset_session_key(:user, :new, {})
     redirect_to admin_user_step_path(id: Wicked::FIRST_STEP)
   end
 

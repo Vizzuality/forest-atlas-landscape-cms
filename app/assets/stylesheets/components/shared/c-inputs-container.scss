@@ -1,6 +1,7 @@
 .c-inputs-container {
   width: 100%;
   max-width: 570px;
+  margin-bottom: 40px;
 
   &.-large {
     max-width: 880px;
@@ -12,6 +13,7 @@
     border-right: 1px solid;
     border-left: 1px solid;
     border-color: $color-13;
+    max-width: 100%;
 
     &:first-of-type {
       border-top-left-radius: 4px;
@@ -76,6 +78,27 @@
       background-size: 12px auto;
       background-position: right 11px center;
       appearance: none;
+    }
+
+    .info-button {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNTU1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IC41MTJjMi4wNjMgMCAzLjgyNi43MzIgNS4yOSAyLjE5NyAxLjQ2NyAxLjQ2NCAyLjIgMy4yMjcgMi4yIDUuMjkxcy0uNzMyIDMuODI2LTIuMTk3IDUuMjljLTEuNDY2IDEuNDY3LTMuMjI5IDIuMi01LjI5MyAyLjJzLTMuODI2LS43MzItNS4yOS0yLjE5N0MxLjI0MyAxMS44MjcuNTEgMTAuMDY0LjUxIDhzLjczMi0zLjgyNiAyLjE5Ny01LjI5QzQuMTczIDEuMjQzIDUuOTM2LjUxIDggLjUxek03IDdoMnY1SDdWN3ptMC0zaDJ2Mkg3VjR6Ii8+PC9zdmc+Cg==") no-repeat center center;
+      border: none;
+      border-radius: 100%;
+      text-indent: -10000px;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .preview {
+      margin: 15px 0;
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
     }
   }
 

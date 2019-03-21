@@ -11,8 +11,9 @@ import DashboardMapView from 'components/shared/DashboardMapView';
 import DashboardTableView from 'components/shared/DashboardTableView';
 import Icon from 'components/icon';
 import Modal from 'components/Modal';
+import Notification from 'components/Notification';
 
-class Dashboard extends React.Component {
+class Dashboard extends React.PureComponent {
   componentWillMount() {
     this.props.setPageSlug(this.props.pageSlug);
     this.props.setDatasetId(this.props.dataset);
@@ -24,6 +25,7 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    const { downloadUrls } = this.props;
     const metadata = this.props.datasetMetadata && this.props.datasetMetadata.attributes;
 
     let downloadLink = null;
@@ -50,14 +52,14 @@ class Dashboard extends React.Component {
           onChange={this.props.onChangeTab}
         />
         <div className="visualization-container">
-          { this.props.selectedTab === 'Chart' && <DashboardChartView /> }
-          { this.props.selectedTab === 'Map' && <DashboardMapView /> }
-          { this.props.selectedTab === 'Table' && <DashboardTableView /> }
+          {this.props.selectedTab === 'Chart' && <DashboardChartView />}
+          {this.props.selectedTab === 'Map' && <DashboardMapView />}
+          {this.props.selectedTab === 'Table' && <DashboardTableView />}
         </div>
         <div className="actions-container">
           <div />
-          { this.props.datasetData && (
-            <div>
+          {this.props.datasetData && (
+            <div className="right">
               <button
                 type="button"
                 className="info"
@@ -66,20 +68,30 @@ class Dashboard extends React.Component {
               >
                 <Icon name="icon-info" />
               </button>
-              { downloadLink && (
+              {downloadUrls.csv && (
                 <a
                   className="download"
-                  aria-label="Download dataset"
+                  aria-label="Download filtered dataset"
+                  href={downloadUrls.csv}
+                  download
+                >
+                  CSV <Icon name="icon-download" />
+                </a>
+              )}
+              {downloadLink && (
+                <a
+                  className="download"
+                  aria-label="Download original dataset"
                   href={downloadLink}
                   {...(metadata.info.data_download_original_link ? { target: '_blank', rel: 'noopener noreferrer' } : { download: true })}
                 >
-                  <Icon name="icon-download" />
+                  Original dataset <Icon name="icon-download" />
                 </a>
               )}
             </div>
           )}
         </div>
-        { this.props.datasetData && (
+        {this.props.datasetData && (
           <Modal
             show={this.props.detailsVisible}
             onClose={() => this.props.setDetailsVisibility(false)}
@@ -88,45 +100,45 @@ class Dashboard extends React.Component {
               <h1>{this.props.datasetData.attributes.name}</h1>
               <p>{(this.props.datasetMetadata && metadata.description) || 'No description'}</p>
 
-              { metadata && metadata.info && metadata.info.technical_title && (
+              {metadata && metadata.info && metadata.info.technical_title && (
                 <div>
                   <h2>Formal name</h2>
                   <p>{metadata.info.technical_title}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.cautions && (
+              {metadata && metadata.info && metadata.info.cautions && (
                 <div>
                   <h2>Cautions</h2>
                   <p>{metadata.info.cautions}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.citation && (
+              {metadata && metadata.info && metadata.info.citation && (
                 <div>
                   <h2>Suggested citation</h2>
                   <p>{metadata.info.citation}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.citation && (
+              {metadata && metadata.info && metadata.info.citation && (
                 <div>
                   <h2>Suggested citation</h2>
                   <p>{metadata.info.citation}</p>
                 </div>
               )}
 
-              { this.props.datasetData.attributes.type && (
+              {this.props.datasetData.attributes.type && (
                 <div>
                   <h2>Data type</h2>
                   <p>{this.props.datasetData.attributes.type}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.sources && (
+              {metadata && metadata.info && metadata.info.sources && (
                 <div>
                   <h2>Sources</h2>
-                  { metadata.info.sources.map(source => (
+                  {metadata.info.sources.map(source => (
                     <p key={source['source-name']}>
                       {source['source-name']}<br />
                       {source['source-description']}
@@ -135,39 +147,39 @@ class Dashboard extends React.Component {
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.geographic_coverage && (
+              {metadata && metadata.info && metadata.info.geographic_coverage && (
                 <div>
                   <h2>Geographic coverage</h2>
                   <p>{metadata.info.geographic_coverage}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.spatial_resolution && (
+              {metadata && metadata.info && metadata.info.spatial_resolution && (
                 <div>
                   <h2>Spatial resolution</h2>
                   <p>{metadata.info.spatial_resolution}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.date_of_content && (
+              {metadata && metadata.info && metadata.info.date_of_content && (
                 <div>
                   <h2>Date of content</h2>
                   <p>{metadata.info.date_of_content}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.frequency_of_updates && (
+              {metadata && metadata.info && metadata.info.frequency_of_updates && (
                 <div>
                   <h2>Frequency of updates</h2>
                   <p>{metadata.info.frequency_of_updates}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.license && (
+              {metadata && metadata.info && metadata.info.license && (
                 <div>
                   <h2>License</h2>
                   <p>
-                    { metadata.info.license_link
+                    {metadata.info.license_link
                       ? <a href={metadata.info.license_link} target="_blank" rel="noopener noreferrer">{metadata.info.license}</a>
                       : metadata.info.license
                     }
@@ -175,14 +187,14 @@ class Dashboard extends React.Component {
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.summary_of_license && (
+              {metadata && metadata.info && metadata.info.summary_of_license && (
                 <div>
                   <h2>Summary of license</h2>
                   <p>{metadata.info.summary_of_license}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.link_to_license && (
+              {metadata && metadata.info && metadata.info.link_to_license && (
                 <div>
                   <h2>Link to full license</h2>
                   <p>
@@ -193,14 +205,14 @@ class Dashboard extends React.Component {
                 </div>
               )}
 
-              { metadata && metadata.language && (
+              {metadata && metadata.language && (
                 <div>
                   <h2>Published language</h2>
                   <p>{metadata.language}</p>
                 </div>
               )}
 
-              { metadata && metadata.info && metadata.info.language && metadata.info.language.toLowerCase() !== 'en' && (
+              {metadata && metadata.info && metadata.info.language && metadata.info.language.toLowerCase() !== 'en' && (
                 <div>
                   <h2>Translated title</h2>
                   <p>{metadata.info.translated_title}</p>
@@ -244,7 +256,8 @@ Dashboard.propTypes = {
   dataset: PropTypes.string,
   widget: PropTypes.string,
   topContent: PropTypes.string,
-  bottomContent: PropTypes.string
+  bottomContent: PropTypes.string,
+  downloadUrls: PropTypes.object.isRequired
 };
 
 Dashboard.defaultProps = {

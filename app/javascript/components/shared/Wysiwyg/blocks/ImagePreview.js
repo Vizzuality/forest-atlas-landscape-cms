@@ -1,37 +1,62 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent, Fragment } from "react";
+import PropTypes from "prop-types";
 
-class ImagePreview extends React.Component {
-  constructor(props) {
-    super(props);
-    this.item = props.item;
-    this.content = this.item.content;
-    this.readOnly = props.readOnly;
-    this.onChange = props.onChange;
-  }
-
+class ImagePreview extends PureComponent {
   render() {
-    const { image, caption } = this.content;
+    const { onChange, readOnly, item } = this.props;
+    const { image, caption, alternativeText } = item.content;
     return (
       <div className="fa-wysiwyg-file__preview">
-        {image && image.length ? <img src={image} alt={this.item.id} /> : 'Invalid image'}
-        {this.readOnly && caption && <span className="fa-wysiwyg-file__preview--caption">{caption}</span>}
-        {!this.readOnly && (
-          <textarea
-            className="fa-wysiwyg-file__preview--captionInput"
-            placeholder="image caption here"
-            defaultValue={caption}
-            onChange={e => this.onChange({ content: {
-              caption: e.target.value,
-              image
-            } })}
-          />
+        {image && image.length ? (
+          <img src={image} alt={alternativeText || caption || ''} />
+        ) : (
+          "Invalid image"
         )}
-      </div>);
+        {readOnly && caption && (
+          <span className="fa-wysiwyg-file__preview--caption">{caption}</span>
+        )}
+        {!readOnly && (
+          <Fragment>
+            <label>
+              Caption
+              <textarea
+                className="fa-wysiwyg-file__preview--captionInput"
+                placeholder="Add caption"
+                defaultValue={caption}
+                onChange={e =>
+                  onChange({
+                    content: {
+                      alternativeText,
+                      caption: e.target.value,
+                      image
+                    }
+                  })
+                }
+              />
+            </label>
+            <label>
+              Alternative text
+              <textarea
+                className="fa-wysiwyg-file__preview--captionInput"
+                placeholder="Add alternative text"
+                defaultValue={alternativeText}
+                onChange={e =>
+                  onChange({
+                    content: {
+                      alternativeText: e.target.value,
+                      caption,
+                      image
+                    }
+                  })
+                }
+              />
+            </label>
+          </Fragment>
+        )}
+      </div>
+    );
   }
-
 }
-
 
 ImagePreview.propTypes = {
   item: PropTypes.object.isRequired

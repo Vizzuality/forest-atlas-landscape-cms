@@ -1,0 +1,39 @@
+<h3>Analysis Modules</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <div class="container">
+    <label>
+      ANALYSIS MODULES
+      <button type="button" class="info-button" data-tippy="Use this panel to manage the analysis options which are included in your mapbuilder map. Users have the option to remove default analysis and can also add their own custom analysis. You may modify the json to remove analysis or add your own custom analysis. For more information on the configuration options for the analysis module consult the analysis module section of the mapbuilder wiki." data-tippy-interactive="true">Field information</button>
+    </label>
+    <%= settings.hidden_field :analysisModules, { name: 'site_page[content][settings][analysisModules]', id: 'map-analysisModules' }  %>
+
+    <div id="analysisModules"></div>
+
+    <script>
+      var analysisModulesInput = document.getElementById('map-analysisModules');
+      var analysisModulesContainer = document.getElementById('analysisModules');
+      var analysisModulesEditor = new JSONEditor(analysisModulesContainer, {
+        mode: 'code',
+        onChangeText: function(str) {
+          // We only save valid JSON strings
+          try {
+            JSON.parse(str);
+            analysisModulesInput.value = str;
+          } catch (e) {}
+        }
+      });
+      var analysisModulesValue;
+      try {
+        analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.gsub("'", "\\\\'").squish.html_safe rescue {} %>');
+      } catch (err) {
+        analysisModulesValue = JSON.parse('{}');
+      }
+
+      analysisModulesContainer.editor = analysisModulesEditor;
+      analysisModulesContainer.input = analysisModulesInput;
+
+      analysisModulesEditor.set(analysisModulesValue);
+    </script>
+  </div>
+<% end %>

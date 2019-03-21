@@ -8,6 +8,10 @@
     margin: 60px 0 90px;
   }
 
+  @media print {
+    margin: 0;
+  }
+
   // Undoing some styles of the wysiwyg editor
   .ql-disabled {
     font-family: inherit;
@@ -45,7 +49,7 @@
   h1 {
     margin: 20px auto 5px;
     font-size: $font-size-medium;
-    letter-spacing: .2px;
+    letter-spacing: 0.2px;
 
     @media #{$mq-mobile} {
       font-size: $font-size-big;
@@ -86,18 +90,18 @@
 
     @if $theme == 2 {
       color: $color-4;
-      letter-spacing: .2px;
+      letter-spacing: 0.2px;
     }
 
     @if $theme == 1 {
       color: $color-1;
-      letter-spacing: -.3px;
+      letter-spacing: -0.3px;
     }
   }
 
   p,
   .-intro {
-    letter-spacing: .1px;
+    letter-spacing: 0.1px;
 
     & + .paragraph,
     & + p,
@@ -123,8 +127,8 @@
   ul,
   ol {
     display: block;
-    margin-top: .5em;
-    margin-bottom: .5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 
     li {
       display: list-item;
@@ -137,19 +141,19 @@
   }
 
   blockquote {
-    margin: 40px auto!important;
-    padding: 0 10px!important;
-    font-size: $font-size-big!important;
+    margin: 40px auto !important;
+    padding: 0 10px !important;
+    font-size: $font-size-big !important;
     font-weight: $font-weight-light;
     font-style: italic;
-    border-left: none!important;
+    border-left: none !important;
 
     &::before {
-      content: '“';
+      content: "“";
     }
 
     &::after {
-      content: '”';
+      content: "”";
     }
 
     @media #{$mq-mobile} {
@@ -168,7 +172,7 @@
 
     @if $theme == 2 {
       color: $color-4;
-      letter-spacing: .2px;
+      letter-spacing: 0.2px;
       line-height: 1.1;
     }
 

@@ -16,7 +16,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onAddFilter: filter => dispatch(addFilter(filter)),
-  onRemoveFilter: filter => dispatch(removeFilter(filter)),
+  onRemoveFilter: filter => {
+    dispatch(removeFilter(filter));
+
+    // We apply the filters again
+    dispatch(fetchData());
+    dispatch(fetchVegaWidgetData());
+    dispatch(setSqlWhere());
+  },
   onChangeFilter: (filter, newFilter) => dispatch(updateFilter(filter, newFilter)),
   onResetFilters: () => {
     dispatch(resetFilters());

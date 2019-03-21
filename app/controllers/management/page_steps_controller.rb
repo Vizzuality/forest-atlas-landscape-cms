@@ -10,7 +10,7 @@ class Management::PageStepsController < ManagementController
   prepend_before_action :set_steps
   prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
   prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
-  prepend_before_action :reset_session, only: [:new, :edit]
+  #prepend_before_action :reset_session, only: [:new, :edit]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
 
@@ -31,6 +31,7 @@ class Management::PageStepsController < ManagementController
   # This action cleans the session
   def new
     @page_id = :new
+    reset_session
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
@@ -48,6 +49,7 @@ class Management::PageStepsController < ManagementController
   # This action cleans the session
   def edit
     @page_id = @page.id
+    reset_session
     redirect_to wizard_path(steps[0])
   end
 
@@ -141,7 +143,19 @@ class Management::PageStepsController < ManagementController
         @widgets
       when 'open_content_preview'
         gon.widgets = get_widgets_list
-
+      when 'map'
+        unless @page.persisted?
+          @page.content = if MapVersion.order(:position).first.default_settings.blank?
+                            {}
+                          else
+                            build_default_map
+                          end
+          gon.map_versions = MapVersion.order(:position)
+        end
+      when 'tag_searching'
+        @tags = Tag.joins(:site_page)
+                  .where(page_id: @page.site.site_pages.pluck(:id))
+                  .pluck(:value).uniq
     end
 
     @breadcrumbs = [
@@ -161,6 +175,8 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward
       when 'title'
+        set_current_tags_state
+        save_images_temporarily
         set_current_page_state
         unless @page.valid?
           render_wizard
@@ -251,13 +267,8 @@ class Management::PageStepsController < ManagementController
         set_current_page_state
         move_forward next_step, next_step, next_step
 
-      # LINK PATH
-      when 'link'
-        set_current_page_state
-        move_forward
-
-      # MAP PATH
-      when 'map'
+      # LINK, MAP, TAG PATH
+      when 'link', 'map', 'tag_searching'
         set_current_page_state
         move_forward
     end
@@ -322,7 +333,12 @@ class Management::PageStepsController < ManagementController
         :parent_id,
         :content_type,
         :page_version,
+        :thumbnail,
+        :cover_image,
+        :delete_cover_image,
+        :delete_thumbnail,
         :content,
+        content: [],
         dataset_setting: [
           :dataset_id,
           :filters,
@@ -334,7 +350,7 @@ class Management::PageStepsController < ManagementController
           widget_id
           content_top
           content_bottom
-        ]
+        ],
       )
     filtered_params[:content] = all_options if all_options.present?
     filtered_params
@@ -358,16 +374,37 @@ class Management::PageStepsController < ManagementController
 
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page][@page_id] if session[:page][@page_id]
-    if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting)
-      @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting)
+    if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting, :tags)
+      @page.assign_attributes page_params.to_h.except(:dataset_setting, :dashboard_setting, :tags)
     end
+
+    @page.tags_attributes = session[:tags_attributes]["#{@page_id}"] if session[:tags_attributes]["#{@page_id}"]
   end
 
   # Saves the current page state in session
   def set_current_page_state
-    session[:page][@page_id] = @page.attributes
+    session[:page][@page_id] = @page.attributes.except(:tags)
   end
 
+  # Saves the current tags state
+  def set_current_tags_state
+    return unless params.dig 'site_page', 'tags_attributes'
+    tags = params.dig('site_page', 'tags_attributes').split(' ')
+    new_tags = []
+
+    # Remove old ones
+    @page.tags.find_each { |t| new_tags << { id: t.id, _destroy: 1 } unless tags.include?(t.value) }
+
+    # Add new ones
+    tags.delete_if { |t| @page.tags.pluck(:value).include?(t) }
+
+    new_tags << tags.map { |t| { value: t } } if tags.any?
+    new_tags.flatten!
+
+    @page.tags_attributes = new_tags
+
+    session[:tags_attributes]["#{@page_id}"] = new_tags
+  end
 
   # Builds the current dashboard setting based on the database, session and params
   def build_current_dashboard_setting
@@ -375,6 +412,7 @@ class Management::PageStepsController < ManagementController
     db_params = page_params.to_h[:dashboard_setting] if params[:site_page] && page_params&.to_h[:dashboard_setting]
 
     @dashboard_setting = nil
+    return unless [ContentType::DASHBOARD_V2, ContentType::ANALYSIS_DASHBOARD].include?(@page.content_type)
     if db_params[:id]
       @dashboard_setting = DashboardSetting.find(db_params[:id])
     elsif @page.dashboard_setting
@@ -459,6 +497,27 @@ class Management::PageStepsController < ManagementController
     session[:dataset_setting][@page_id] = @dataset_setting ? @dataset_setting.attributes : nil
   end
 
+  def save_images_temporarily
+    old_cover_image = @page.persisted? && Page.find(@page.id).cover_image.url == @page.cover_image.url
+    old_thumbnail = @page.persisted? && Page.find(@page.id).thumbnail.url == @page.thumbnail.url
+
+    if @page.cover_image.present? && !old_cover_image
+      temp_image = TemporaryContentImage.new
+      temp_image.image = @page.cover_image
+      temp_image.save
+      @page.temp_cover_image = temp_image.id
+      @page.cover_image = nil
+    end
+
+    if @page.thumbnail.present? && !old_thumbnail
+      temp_image = TemporaryContentImage.new
+      temp_image.image = @page.thumbnail
+      temp_image.save
+      @page.temp_thumbnail = temp_image.id
+      @page.thumbnail = nil
+    end
+  end
+
   # Sets the current steps
   def set_steps
     invalid_steps = []
@@ -515,6 +574,7 @@ class Management::PageStepsController < ManagementController
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
         delete_session_key(:page, @page_id)
+        delete_session_key(:tags_attributes, @page_id)
         @page.synchronise_page_widgets(page_params.to_h)
         redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page was successfully ' + notice_text
       else
@@ -528,11 +588,14 @@ class Management::PageStepsController < ManagementController
       if @page.save
         if publish_step_name == Wicked::FINISH_STEP # only deletes the session if there are no more pages in queue
           delete_session_key(:page, @page_id) # delete 'new' session
+          delete_session_key(:tags_attributes, @page_id)
           reset_session_key(:page, @page.id, {enabled: @page.enabled}) # start 'edit' session
         else
           session[:page][@page_id][:enabled] = @page.enabled
+          delete_session_key(:tags_attributes, @page_id)
         end
         # The enabled status must be stored in the session as it was changed
+        delete_session_key(:tags_attributes, @page_id)
         redirect_to wizard_path(publish_step_name), notice: 'Page was successfully ' + notice_text
       else
         render_wizard
@@ -547,6 +610,26 @@ class Management::PageStepsController < ManagementController
         render_wizard
       end
     end
+  end
+
+  def build_default_map
+    default_map = MapVersion.order(:position).first.default_settings
+
+    begin
+      default_map_hash = JSON.parse default_map['settings']
+      if default_map_hash['layerPanel']
+        default_map_hash['layerPanel'] = default_map_hash['layerPanel'].to_json
+        default_map['settings'] = default_map_hash.to_json
+      end
+      if default_map_hash['analysisModules']
+        default_map_hash['analysisModules'] = default_map_hash['analysisModules'].to_json
+        default_map['settings'] = default_map_hash.to_json
+      end
+      return default_map
+    rescue
+      return default_map
+    end
+
   end
 
   # Gets the pages tree structure and sends it to gon
@@ -596,6 +679,7 @@ class Management::PageStepsController < ManagementController
     session[:dataset_setting] ||= {}
     session[:invalid_steps] ||= {}
     session[:page] ||= {}
+    session[:tags_attributes] ||= {}
   end
 
   def reset_session
@@ -603,6 +687,7 @@ class Management::PageStepsController < ManagementController
     reset_session_key(:dashboard_setting, @page_id, {})
     reset_session_key(:dataset_setting, @page_id, {})
     reset_session_key(:invalid_steps, @page_id, pages)
+    reset_session_key(:tags_attributes, "#{@page_id}", {})
     reset_session_key(:page, @page_id, {})
     reset_session_key(:page, :new, {})
   end

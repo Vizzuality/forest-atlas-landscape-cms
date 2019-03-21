@@ -1,0 +1,11 @@
+<%= form.fields_for :settings, OpenStruct.new(JSON.parse(@page.content['settings'])) do |settings| %>
+  <% fields = {
+      'aboutlink': '', 'downloadLink': '',
+      'mapThemeIds': '', 'mapThemes': '',
+      'hideFooter': :false, 'hideHeader': :false,
+      'includeMyGFWLogin': :true, 'gladAlerts': :navLinksInNewTab
+  } %>
+  <% fields.each do |field| %>
+    <%= eval("settings.hidden_field :#{field.first} , value: #{field.last}") %>
+  <% end %>
+<% end %>

@@ -18,32 +18,19 @@ set :default_env, {
   NODE_OPTIONS: '--max_old_space_size=2048'
 }
 
-before 'deploy:publishing', 'site_settings:update'
-before "deploy:publishing", "assets:precompile_sites"
+before 'deploy:publishing', 'site:create_assets'
 before 'deploy:assets:precompile', 'node_modules:generate'
 
 namespace :deploy do
   after :finishing, 'deploy:cleanup'
   after 'deploy:publishing', 'deploy:restart'
 
-  namespace :assets do
-    task :precompile_sites do
+  namespace :site do
+    task :create_assets do
       on roles(fetch(:assets_roles)) do
         within release_path do
           with rails_env: fetch(:rails_env) do
             execute(:rake, "site:create_assets")
-          end
-        end
-      end
-    end
-  end
-
-  namespace :site_settings do
-    task :update do
-      on roles(fetch(:assets_roles)) do
-        within release_path do
-          with rails_env: fetch(:rails_env) do
-            execute(:rake, 'db:site_settings:update')
           end
         end
       end

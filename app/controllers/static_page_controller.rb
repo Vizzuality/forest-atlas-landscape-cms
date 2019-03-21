@@ -17,6 +17,7 @@ class StaticPageController < ApplicationController
     widget = WidgetService.widget(params[:widget_id])
     render json: {
       id: widget.id,
+      dataset: widget.dataset,
       visualization: widget.widget_config,
       name: widget.name,
       description: widget.description,

@@ -2,22 +2,26 @@
 #
 # Table name: pages
 #
-#  id           :integer          not null, primary key
-#  site_id      :integer
-#  name         :string
-#  description  :string
-#  uri          :string
-#  url          :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  content_type :integer
-#  type         :text
-#  enabled      :boolean
-#  parent_id    :integer
-#  position     :integer
-#  content      :json
-#  show_on_menu :boolean          default(TRUE)
-#  page_version :integer          default(1)
+#  id                     :integer          not null, primary key
+#  site_id                :integer
+#  name                   :string
+#  description            :string
+#  uri                    :string
+#  url                    :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  content_type           :integer
+#  type                   :text
+#  enabled                :boolean          default(FALSE)
+#  parent_id              :integer
+#  position               :integer
+#  content                :json
+#  show_on_menu           :boolean          default(TRUE)
+#  page_version           :integer          default(1)
+#  thumbnail_file_name    :string
+#  thumbnail_content_type :string
+#  thumbnail_file_size    :integer
+#  thumbnail_updated_at   :datetime
 #
 
 class Page < ApplicationRecord
@@ -27,6 +31,12 @@ class Page < ApplicationRecord
   has_and_belongs_to_many :site_templates
   has_many :page_widgets, dependent: :destroy
   has_many :widgets, through: :page_widgets, validate: false
+  has_attached_file :thumbnail, styles: {original: '200x200#'}
+  validates_attachment :thumbnail,
+                       content_type: {content_type: %w[image/jpg image/jpeg image/png]}
+  has_attached_file :cover_image, styles: {original: '2000x1000#'}
+  validates_attachment :cover_image,
+                       content_type: {content_type: %w[image/jpg image/jpeg image/png]}
 
   has_closure_tree order: 'position', dependent: :destroy
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
@@ -54,6 +64,7 @@ class Page < ApplicationRecord
      ContentType::OPEN_CONTENT_V2,
      ContentType::ANALYSIS_DASHBOARD,
      ContentType::DASHBOARD_V2,
+     ContentType::TAG_SEARCHING,
      ContentType::MAP].include? self.content_type
   end
 

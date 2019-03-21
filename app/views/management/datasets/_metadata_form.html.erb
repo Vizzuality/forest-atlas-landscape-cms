@@ -1,14 +1,17 @@
   <div class="l-dataset-creation -labels">
     <div class="wrapper">
       <div class="inputs-container">
+        <%= hidden_field_tag 'dataset[metadata][id]', f.object.metadata[:id] %>
         <div>
           <%= f.label :language, for: 'dataset_metadata_language', :class => 'required' %>
           <%= text_field_tag 'dataset[metadata][language]', f.object.metadata[:language], :required => true %>
         </div>
+        <% unless @dataset.provider.eql? 'featureservice' %>
         <div>
           <%= f.label :description, for: 'dataset_metadata_description' %>
           <%= text_field_tag 'dataset[metadata][description]', f.object.metadata[:description] %>
         </div>
+        <% end %>
         <div>
           <%= f.label :subtitle, for: 'dataset_metadata_subtitle' %>
           <%= text_field_tag 'dataset[metadata][subtitle]', f.object.metadata[:subtitle] %>
@@ -25,10 +28,12 @@
           <%= f.label :geographic_coverage, for: 'dataset_metadata_geographic_coverage' %>
           <%= text_field_tag 'dataset[metadata][geographic_coverage]', f.object.metadata[:geographic_coverage] %>
         </div>
+        <% unless @dataset.provider.eql? 'featureservice' %>
         <div>
           <%= f.label :source, for: 'dataset_metadata_source' %>
           <%= text_field_tag 'dataset[metadata][source]', f.object.metadata[:source] %>
         </div>
+        <% end %>
         <div>
           <%= f.label :frequency_of_updates, for: 'dataset_metadata_frequency_of_updates' %>
           <%= text_field_tag 'dataset[metadata][frequency_of_updates]', f.object.metadata[:frequency_of_updates] %>

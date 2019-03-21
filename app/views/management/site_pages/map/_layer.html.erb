@@ -1,0 +1,70 @@
+<h3>Layer Settings</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+
+  <% fields = {
+      'viirsFires': {
+        type: :check_box,
+        description: "Check this if you would like to include the Viirs Fires alert layer from NASA in your map."
+      },
+      'modisFires': {
+        type: :check_box,
+        description: "Check this if you would like to include the Modis Fires alert layer from NASA in your map."
+      },
+      'intactForests': {
+        type: :check_box,
+        description: "Check this if you would like to include the intact forests layer in your map."
+      },
+      'aboveGroundBiomass': {
+        type: :check_box,
+        description: "Check this if you would like to include the GFW above ground woody biomass layer in your map"
+      },
+      'landCover': {
+        type: :check_box,
+        description: "Check this if you would like to include the GFW land cover layer from the European Space Agency (ESA) in your map"
+      },
+      'mangroves': {
+        type: :check_box,
+        description: "Check this if you would like to include the GFW mangrove forest layer from global mangrove watch in your map. "
+      },
+      'sadAlerts': {
+        type: :check_box,
+        description: "Check this if you would like to include Sad tree cover loss alerts in your map. Sad alerts are only available for the Brazilian Amazon."
+      },
+      'gladAlerts': {
+        type: :check_box,
+        description: "Check this if you would like to include GLAD tree cover loss alerts in your map. GLAD alerts are available for all latitudes between 30 degrees north to 30 degrees south."
+      },
+      'terraIAlerts': {
+        type: :check_box,
+        description: "Check this if you would like to include Terra I tree cover loss alerts in your map. Terra I alerts are only available in the tropics."
+      },
+      'forma': {
+        type: :check_box,
+        description: "Check this if you like to would to include Forma alerts in your map. Forma alerts are only available for areas in the humid tropical forest biome."
+      },
+      'primaryForests': {
+        type: :check_box,
+        description: 'Check this if you like to would to include the GFW primary forest layer in your map.'
+      },
+      'recentImagery': {
+        type: :check_box,
+        description: 'Check this if you would like to include to recent satellite imagery in your map, recent imagery includes imagery from Sentinal and Landsat satellites acquired within the past year.'
+      }
+  } %>
+
+  <% fields.each do |key, value| %>
+     <div class="container">
+      <div class="c-checkbox">
+        <%= settings.check_box key, { id: 'map-' + key.to_s }, 'true', 'false' %>
+        <label for="map-<%= key %>">
+          <%= key.capitalize %>
+          <% if !value[:description].blank? %>
+            <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+          <% end %>
+        </label>
+      </div>
+    </div>
+  <% end %>
+
+<% end %>

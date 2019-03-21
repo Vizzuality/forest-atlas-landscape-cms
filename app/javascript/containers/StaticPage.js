@@ -5,6 +5,6 @@ import StaticPages from 'pages/static';
 
 export default class StaticPage extends PublicContainer {
   render() {
-    return <StaticPages store={this.store} version={this.props.version || 1} />;
+    return <StaticPages {...this.props} store={this.store} version={this.props.version || 1} />;
   }
 }

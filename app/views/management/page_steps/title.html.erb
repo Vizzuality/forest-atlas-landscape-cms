@@ -27,12 +27,57 @@
             <%= f.label :description %>
             <%= f.text_area :description, placeholder: 'Add your description here' %>
           </div>
-        <% unless @page.content_type == ContentType::HOMEPAGE %>
+        <% unless [ContentType::HOMEPAGE].include?(@page.content_type) %>
           <div class="container">
             <%= f.label :uri %>
             <%= f.text_field :uri, placeholder: 'my-page', :readonly => @page.content_type == ContentType::STATIC_CONTENT %>
           </div>
         <% end %>
+        <% unless [ContentType::HOMEPAGE, ContentType::TAG_SEARCHING].include?(@page.content_type) %>
+          <div class="container">
+            <%= f.label :tags %>
+            <%= f.text_field :tags_attributes, placeholder: 'tags', value: f.object.tags.pluck(:value).join(' ') %>
+          </div>
+        <% end %>
+        <% unless [ContentType::HOMEPAGE, ContentType::TAG_SEARCHING].include?(@page.content_type) %>
+          <div class="container">
+            <%= f.label :thumbnail, value: 'Change thumbnail', for: 'thumbnail', tabindex: '0' %>
+            <%= f.file_field :thumbnail, id: 'thumbnail', accept: 'image/*', 'data-type': 'image', class: 'js-data-path', placeholder: 'Select a file' %>
+
+            <% if !@page.thumbnail.nil? && @page.thumbnail_file_name %>
+              <div class="preview js-preview">
+                <%= image_tag @page.thumbnail.url, alt: 'Current thumbnail' %>
+              </div>
+            <% end %>
+            <div class="c-checkbox" style="margin-top: 15px">
+              <input type="checkbox" name="site_page[delete_thumbnail]" value="1" id="delete_thumbnail" />
+              <label for="delete_thumbnail">Remove thumbnail</label>
+            </div>
+            <p>
+              Use this checkbox to remove the current thumbnail. If you want to replace it, just upload a new image.
+            </p>
+          </div>
+
+          <div class="container">
+            <%= f.label :cover_image, value: 'Change cover image', for: 'cover_image', tabindex: '0' %>
+            <%= f.file_field :cover_image, id: 'cover_image', accept: 'image/*', 'data-type': 'image', class: 'js-data-path', placeholder: 'Select a file' %>
+
+            <% if !@page.cover_image.nil? && @page.cover_image_file_name %>
+              <div class="preview js-preview">
+                <%= image_tag @page.cover_image.url, alt: 'Current cover image' %>
+              </div>
+            <% end %>
+            <div class="c-checkbox" style="margin-top: 15px">
+              <input type="checkbox" name="site_page[delete_cover_image]" value="1" id="delete_cover_image" />
+              <label for="delete_cover_image">Use default cover image instead</label>
+            </div>
+            <p>
+              If you don't upload any cover image, the default one from the admin section will be used instead. Use this checkbox to remove the custom cover image.
+            </p>
+          </div>
+        <% end %>
+      </div>
+
         <% unless @page.content_type == ContentType::HOMEPAGE or @page.content_type == ContentType::STATIC_CONTENT %>
           <footer>
             <div class="c-checkbox">
@@ -41,7 +86,6 @@
             </div>
           </footer>
         <% end %>
-      </div>
     </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', locals: {f: f} %>

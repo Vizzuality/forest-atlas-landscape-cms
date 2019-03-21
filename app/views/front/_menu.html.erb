@@ -28,6 +28,14 @@
               </li>
             <% end -%>
         <% end -%>
+        <li>
+          <form method="get" action="<%= search_results_path(id: @site_page.site_id) %>">
+            <div class="c-input-search">
+              <input type="input" placeholder="Search" name="search" />
+              <button type="submit">Search</button>
+            </div>
+          </form>
+        </li>
       </ul>
       <ul>
         <li class="notranslate js-language-selector-mobile"></li>
@@ -38,7 +46,7 @@
     </div>
   </div>
 
-  <% load_alternate_logo = (@site_page.site_template.name == 'INDIA' and @site_page.name != "Homepage") %>
+  <% load_alternate_logo = (@site_page.site_template.name == 'INDIA' and @site_page.content_type != ContentType::HOMEPAGE) %>
   <% if load_alternate_logo %>
     <% @image_url = "http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/WRI-Atlas-logo_unit.png" %>
   <% end %>
@@ -92,7 +100,7 @@
             </ul>
           </div>
         </div>
-      <% end %>    
+      <% end %>
     <div class="menu-container">
       <div class="menu">
         <ul>
@@ -110,15 +118,12 @@
                         <% if @site_page.site_template.name == 'INDIA' %>
                             <% if child_page.name == "About" %>
                               <%= link_to "About the Atlas", child_page.url %>
-                            
+
                             <% elsif child_page.name == "Atlas" %>
                               <%= link_to "Launch Atlas", child_page.url %>
                             <% else %>
                               <%= link_to child_page.name, child_page.url %>
                             <% end %>
-                              
-                        <% else %>
-                          <%= page_link child_page %>
                         <% end %>
                       </li>
                       <% child_page.children.each do |grandchild_page| -%>
@@ -131,6 +136,19 @@
                 <% end -%>
               </li>
           <% end -%>
+          <li class="dropdown-item search js-search">
+            <button type="button" class="search-button js-search-button" href="<%= search_results_path(id: @site_page.site_id) %>">Search</button>
+            <ul>
+              <li>
+                <form method="get" action="<%= search_results_path(id: @site_page.site_id) %>">
+                  <div class="c-input-search">
+                    <input type="input" placeholder="Search" name="search" />
+                    <button type="submit">Search</button>
+                  </div>
+                </form>
+              </li>
+            </ul>
+          </li>
         </ul>
         <ul>
           <li class="notranslate js-language-selector"></li>
@@ -140,12 +158,12 @@
         <% end %>
       </div>
 
-      <% if @site_page.depth > 0 and @site_page.site_template.name != 'INDIA'%>
+      <% if @site_page.site_template.name != 'INDIA'%>
         <div class="sub-menu">
           <div class="content">
             <ul class="breadcrumbs">
               <% @breadcrumbs.each_with_index do |breadcrumb, index| -%>
-                  <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : 'Home' %></a></li>
+                  <li><a href="<%= breadcrumb.url %>"><%= (index > 0) ? breadcrumb.name : (@breadcrumbs.length > 1 ? 'Home' : '') %></a></li>
               <% end %>
             </ul>
             <ul class="sections">

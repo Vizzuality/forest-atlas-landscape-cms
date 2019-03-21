@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import format from 'date-fns/format';
 
 class DashboardMapView extends React.Component {
   componentDidMount() {
@@ -51,6 +52,37 @@ class DashboardMapView extends React.Component {
       this.geometryLayer.eachFeature((layer) => {
         const layerBounds = layer.getBounds();
         bounds.extend(layerBounds);
+
+
+        const data = layer.feature.properties;
+        const { fieldsInfo } = this.props;
+
+        const popup = L.popup()
+          .setLatLng(layerBounds.getCenter())
+          .setContent(`
+          ${
+            Object.keys(data)
+              .filter(key => !!fieldsInfo[key])
+              .map(key => {
+                const field = fieldsInfo[key];
+
+                let value = data[key];
+                if (field.type === 'date' && value !== null && value !== undefined) {
+                  value = format(new Date(value), 'DD-MM-YYYY');
+                }
+
+                return `
+                  <div>
+                    <strong>${fieldsInfo[key].alias}:</strong>
+                    ${value === null ? '–' : value}
+                  </div>
+                `;
+              })
+              .join('')
+            }
+        `);
+
+        layer.bindPopup(popup)
       });
 
       this.map.fitBounds(bounds);
@@ -88,7 +120,11 @@ class DashboardMapView extends React.Component {
 
 DashboardMapView.propTypes = {
   layerUrl: PropTypes.string,
-  sqlWhere: PropTypes.string
+  sqlWhere: PropTypes.string,
+  fieldsInfo: PropTypes.objectOf(PropTypes.shape({
+    alias: PropTypes.string,
+    type: PropTypes.string
+  })).isRequired
 };
 
 DashboardMapView.defaultProps = {

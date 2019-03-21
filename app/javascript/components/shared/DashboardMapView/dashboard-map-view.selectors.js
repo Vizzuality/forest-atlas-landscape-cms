@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
-import { getDataset } from 'components/shared/Dashboard/dashboard.selectors';
+import { getSqlFilters } from 'helpers/api';
+import { getDataset, getFields } from 'components/shared/Dashboard/dashboard.selectors';
 import { getNonEmptyFilters } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
 export const getSqlWhereSelector = state => state.dashboardMap.sqlWhere;
@@ -21,27 +22,21 @@ export const getLayerUrl = createSelector(
 );
 
 export const getSqlWhere = createSelector(
-  [getNonEmptyFilters],
-  filters => filters.map((filter) => {
-    if (!filter.values || !filter.values.length) return null;
+  [getDataset, getNonEmptyFilters],
+  (dataset, filters) => getSqlFilters(filters, dataset.attributes.provider)
+);
 
-    if (filter.type === 'string') {
-      const whereClause = `${filter.name} IN ('${filter.values.join('\', \'')}')`;
-      return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
+/**
+ * Return a key-value object where the keys are the names
+ * of the fields and the values are objects containing their
+ * display names (aliases or original names) and their types
+ */
+export const getFieldsInfo = createSelector(
+  [getFields],
+  fields => fields.reduce((res, f) => Object.assign(res, {
+    [f.name]: {
+      alias: f.alias || f.name,
+      type: f.type
     }
-
-    if (filter.type === 'number') {
-      const whereClause = `${filter.name} >= ${filter.values[0]} AND ${filter.name} <= ${filter.values[1]}`;
-      return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-    }
-
-    if (filter.type === 'date') {
-      const whereClause = `${filter.name} >= '${filter.values[0]}' AND ${filter.name} <= '${filter.values[1]}'`;
-      return filter.notNull ? `${whereClause} AND ${filter.name} IS NOT NULL` : whereClause;
-    }
-
-    return null;
-  })
-    .filter(f => !!f)
-    .join(' AND ')
+  }), {})
 );

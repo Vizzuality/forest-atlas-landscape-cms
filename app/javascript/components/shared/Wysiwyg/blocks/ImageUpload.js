@@ -1,47 +1,39 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 
-class ImageUpload extends React.Component {
-  constructor(props) {
-    super(props);
-    this.file = null;
-    this.caption = null;
-    this.encodedFile = null;
-    this.onSubmit = props.onSubmit;
+class ImageUpload extends PureComponent {
+  state = {
+    image: null,
+    caption: null,
+    alternativeText: null
+  };
 
-    this.state = {
-      image: null,
-      caption: null
-    }
-
-  }
-
-  imageToBase64(file) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
+  // TODO: endpoint does not exsist yet.. work in progress
+  uploadTemporaryImage() {
+    const { user } = window.gon.global;
+    const file = this.file.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+        
+    fetch(`/management/temporary_content_images`, {
+      method: 'POST',
+      headers: { Authorization: user.token },
+      body: formData
+    })
+    .then(response => response.json())
+    .then((response) => {
+      console.log('hello', response);
+      this.setState({ image: response.url });
+    })
+    .catch((e) => {
+      console.error('Error', 'We couldn\'t upload the image. Try again');
     });
   }
 
-  generateImage(e) {
-    this.imageToBase64(this.file.files[0]).then((base64) => {
-      this.setState({ image: base64 })
-    });
-  }
-
-  setImageCaption(e) {
-    this.setState({
-      caption: this.caption.value
-    });
-  }
-
-  setImageData(e) {
-    e.preventDefault();
-    const { image, caption } = this.state;
-    this.onSubmit({ caption, image });
+  setImageData() {
+    const { onSubmit } = this.props;
+    const { image, caption, alternativeText } = this.state;
+    onSubmit({ caption, image, alternativeText });
   }
 
   render() {
@@ -52,21 +44,37 @@ class ImageUpload extends React.Component {
             type="file"
             name="wysiwyg-file"
             ref={input => (this.file = input)}
-            onChange={e => this.generateImage(e)}
+            onChange={() => this.uploadTemporaryImage()}
+            aria-label="Add image"
           />
         </div>
         <input
           type="text"
           name="wysiwyg-file-caption"
-          placeholder="add image caption"
+          placeholder="Add caption"
           className="fa-wysiwyg-file__form--caption"
-          ref={caption => (this.caption = caption)}
-          onChange={e => this.setImageCaption(e)}
+          onChange={({ target }) => this.setState({
+            caption: target.value
+          })}
+          aria-label="Image caption"
+        />
+        <input
+          type="text"
+          name="wysiwyg-file-alternative-text"
+          placeholder="Add alternative text"
+          className="fa-wysiwyg-file__form--caption"
+          onChange={({ target }) => this.setState({
+            alternativeText: target.value
+          })}
+          aria-label="Image alternative text"
         />
         <button
-          role="button"
+          type="button"
           className="fa-wysiwyg-file__form--submit"
-          onClick={e => this.setImageData(e)}>Done</button>
+          onClick={() => this.setImageData()}
+        >
+          Done
+        </button>
       </form>
     );
   }

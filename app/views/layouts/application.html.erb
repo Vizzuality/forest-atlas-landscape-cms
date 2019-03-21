@@ -10,7 +10,7 @@
 
   <meta property="og:title" content="<%= @site_page.site.name + ' - ' + @site_page.name %>" />
   <meta property="og:url" content="<%= @site_page&.routes&.first&.host.to_s + @site_page.url %>" />
-  <meta property="og:image" content="<%= @site_page&.routes&.first&.host.to_s  + @site_page.site.site_settings.where(name: 'main_image').first&.image&.url %>" />
+  <meta property="og:image" content="<%= @site_page&.routes&.first&.host.to_s  + @site_page.site.site_settings.where(name: 'main_image').first&.image&.url.to_s %>" />
 
   <link rel="icon" type="image/png" href="<%= @favico %>" />
   <link rel="apple-touch-icon" href="<%= @favico %>">
@@ -53,8 +53,8 @@
 
 <body <%= yield :body_class %>>
   <%= Gon::Base.render_data %>
-  <%= render 'front/menu' %>
-  <%= render 'front/icons' %>
+  <%= render 'front/menu' unless @remove_header %>
+  <%= render 'front/icons' unless @remove_header %>
 
   <%= yield %>
   <div class="flash_container">
@@ -75,6 +75,6 @@
       }
     })
   </script>
-   
+
 </body>
 </html>

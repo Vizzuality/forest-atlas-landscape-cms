@@ -11,6 +11,8 @@ class SitePageController < ApplicationController
   before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable, :sitemap]
   protect_from_forgery except: :map_resources
 
+  MAX_PAGE_SIZE = 6
+
   def load_site_page
     @site_page = SitePage.find(params[:id])
 
@@ -52,17 +54,40 @@ class SitePageController < ApplicationController
     @image_url = '/'
     @image_url = logo_image_setting.image if !logo_image_setting.blank? && !logo_image_setting.image_file_name.blank?
 
-    main_image_setting = SiteSetting.main_image(@site_page.site.id)
-    @main_image = main_image_setting.image if !main_image_setting.blank? && !main_image_setting.image_file_name.blank?
+    if main_images_settings = SiteSetting.main_images(@site_page.site.id)
+      @homepage_covers = []
+      main_images_settings.each do |image|
+        attribution =
+          if image.attribution_label.present? || image.attribution_link.present?
+            { url: image.attribution_link, label: image.attribution_label }
+          end
+        @homepage_covers << {
+          url: image.image.url,
+          attribution: attribution
+        }
+      end
+    end
 
-    alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
-    @alternative_image = alternative_image_setting.image if !alternative_image_setting.blank? && !alternative_image_setting.image_file_name.blank?
+    if alternative_image_setting = SiteSetting.alternative_image(@site_page.site.id)
+      attribution =
+        if alternative_image_setting.attribution_label.present? || alternative_image_setting.attribution_link.present?
+          { url: alternative_image_setting.attribution_link, label: alternative_image_setting.attribution_label }
+        end
+      @page_cover = if @site_page.cover_image.present?
+                      [{
+                         url: @site_page.cover_image.url,
+                         attribution: {url: nil, label: nil}
+                       }]
+                    else
+                      [{
+                         url: alternative_image_setting.image.url,
+                         attribution: attribution
+                       }]
+                    end
+    end
 
     favico_image_setting = SiteSetting.favico(@site_page.site.id)
     @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?
-
-    gon.main_image = @image_url
-    gon.alternative_image = @alternative_image
   end
 
   def load_flag
@@ -88,11 +113,12 @@ class SitePageController < ApplicationController
   end
 
   def map
-    begin
-      @map_html = MapVersion.find_by(version: @site_page.content['version']).html
-    rescue
-      @map_html = ''
-    end
+    build_map_variables
+  end
+
+  def map_report
+    build_map_variables
+    @remove_header = true
   end
 
   def login
@@ -179,6 +205,46 @@ class SitePageController < ApplicationController
     end
   end
 
+  def search_results
+    @search_string = params[:search] || ''
+    @page_number = params[:page].to_i > 0 ? params[:page].to_i : 1 rescue 1
+    @search_results = []
+    @total_pages = 1
+    return if @search_string.blank?
+
+    @search_results =
+      SitePage.not_tag_page.not_link_page
+        .search(@search_string)
+        .for_site(@site_page.site_id).enabled
+        .limit(MAX_PAGE_SIZE)
+        .offset((@page_number - 1) * MAX_PAGE_SIZE)
+    @total_pages =
+      SitePage.not_tag_page.not_link_page
+        .search_tags(@search_string)
+        .for_site(@site_page.site_id).enabled.count
+    @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
+  end
+
+  def tag_searching
+    @search_string = @site_page.content.join(' ') rescue ''
+    @search_results = []
+    @total_pages = 1
+    @page_number = params[:page].to_i > 0 ? params[:page].to_i : 1 rescue 1
+    return if @search_string.blank?
+
+    @search_results =
+      SitePage.not_tag_page.not_link_page
+        .search_tags(@search_string)
+        .for_site(@site_page.site_id).enabled
+        .limit(MAX_PAGE_SIZE)
+        .offset((@page_number - 1) * MAX_PAGE_SIZE)
+    @total_pages =
+      SitePage.not_tag_page.not_link_page
+        .search(@search_string)
+        .for_site(@site_page.site_id).enabled.count
+    @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
+  end
+
   private
 
   def get_menu_item(node)
@@ -191,5 +257,25 @@ class SitePageController < ApplicationController
 
   def create_menu_tree
     @menu_tree = @menu_root.hash_tree
+  end
+
+  def build_map_variables
+    begin
+      @map_html = MapVersion.find_by(version: @site_page.content['version']).html
+    rescue
+      @map_html = ''
+    end
+
+    if @site_page.content.nil?
+      @map_content =  '{}'
+    elsif @site_page.content['settings'].is_a? Hash
+      @map_content = @site_page.content['settings']
+      @map_content['layerPanel'] = JSON.parse(@map_content['layerPanel']) rescue {}
+      @map_content['analysisModules'] = JSON.parse(@map_content['analysisModules']) rescue {}
+      @map_content['narrative'] = @map_content['narrative'].gsub('"', '\\"') rescue ''
+      @map_content = @map_content.to_json.squish.gsub("'", %q(\\\')).html_safe
+    else
+      @map_content = @site_page.content['settings'].to_s.squish.gsub("'", %q(\\\')).html_safe
+    end
   end
 end

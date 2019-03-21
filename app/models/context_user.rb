@@ -26,7 +26,7 @@
 
 class ContextUser < ApplicationRecord
   belongs_to :context, optional: true
-  belongs_to :user
+  belongs_to :user, optional: true
 
   scope :owner, -> { where(role: 1) }
   scope :writer, -> { where(role: 2) }

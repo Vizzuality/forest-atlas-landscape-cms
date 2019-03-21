@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 const THEMES = [
@@ -67,17 +67,10 @@ const THEMES = [
   }
 ];
 
-class ThemeSelector extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      theme: null
-    };
-  }
-
+class ThemeSelector extends PureComponent {
   componentDidMount() {
-    if (this.props.defaultTheme) {
-      const theme = this.props.themes.find(t => t.name === this.props.defaultTheme);
+    if (this.props.theme) {
+      const theme = this.props.themes.find(t => t.name === this.props.theme);
       if (theme) {
         this.onClickTheme(theme);
       }
@@ -89,11 +82,15 @@ class ThemeSelector extends React.Component {
    * @param {object} theme Theme
    */
   onClickTheme(theme) {
-    this.setState({ theme });
     this.props.onChange(theme);
   }
 
   render() {
+    let selectedTheme = null;
+    if (this.props.theme) {
+      selectedTheme = this.props.themes.find(t => t.name === this.props.theme);
+    }
+
     return (
       <div className="c-themes-list">
         {this.props.themes.map(theme => (
@@ -105,8 +102,8 @@ class ThemeSelector extends React.Component {
               type="radio"
               name="theme"
               id={`theme-selector-${theme.name.replace(' ', '-')}`}
-              onClick={() => this.onClickTheme(theme)}
-              checked={this.state.theme === theme}
+              onChange={() => this.onClickTheme(theme)}
+              checked={selectedTheme === theme}
             />
             <div className="content">
               <h3>{theme.name}</h3>
@@ -121,6 +118,23 @@ class ThemeSelector extends React.Component {
             </div>
           </div>
         ))}
+        {this.props.theme === 'user-custom' && (
+          <div className="card">
+            <label htmlFor={`theme-selector-custom`}>
+              Custom
+            </label>
+            <input
+              type="radio"
+              name="theme"
+              id={`theme-selector-custom`}
+              checked
+              readOnly
+            />
+            <div className="content">
+              <h3>Custom</h3>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -128,14 +142,14 @@ class ThemeSelector extends React.Component {
 
 ThemeSelector.defaultProps = {
   themes: THEMES,
-  defaultTheme: null
+  theme: null
 };
 
 ThemeSelector.propTypes = {
   /**
-   * Name of the default theme
+   * Name of the theme
    */
-  defaultTheme: PropTypes.string,
+  theme: PropTypes.string,
   /**
    * List of themes to display
    * Check https://vega.github.io/vega/docs/schemes/

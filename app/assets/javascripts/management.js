@@ -11,9 +11,11 @@
 // about supported directives.
 //
 //= require underscore
-//= require jquery
+//= require jquery3
 //= require jquery_ujs
 //= require backbone
+//= require bootstrap
+//= require summernote
 //= require d3
 //= require vega
 //= require leaflet
@@ -37,6 +39,7 @@
 // = require_tree ./views/shared
 // = require_tree ./views/management
 // = require dispatchers/managementDispatcher
+// = require ./views/admin/fileInputView
 
 (function () {
   'use strict';

@@ -42,6 +42,22 @@
         z-index: 1;
       }
 
+      .c-we-widget-editor,
+      .c-we-chart {
+        .c-we-vega-chart-legend {
+          // Bootstrap default styles mess up with the
+          // chart's legend
+          // This happens in the wysiwyg in the management section
+          .legend .item .label {
+            color: $color-4;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            padding: inherit;
+          }
+        }
+      }
+
       .advanced-editor {
         display: flex;
         justify-content: space-between;
@@ -50,16 +66,26 @@
         margin-top: 20px;
 
         > * {
-          flex-basis: 50%;
+          flex-basis: calc(50% - 5px);
           flex-grow: 0;
           height: 500px;
-          overflow: hidden;
+          overflow: auto; // Should be able to see the entire chart
         }
 
         .textarea-container {
           display: flex;
           flex-direction: column;
           flex-wrap: nowrap;
+          margin-right: 10px;
+
+          .c-inputs-container {
+            margin-bottom: 20px;
+
+            .container {
+              padding-top: 15px;
+              padding-bottom: 15px;
+            }
+          }
         }
 
         .CodeMirror {

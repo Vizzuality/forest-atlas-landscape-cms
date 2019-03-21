@@ -6,13 +6,15 @@ import { setSelectedTab, fetchFields, fetchDataset, fetchWidget, setPageSlug, se
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 import { getDatasetMetadata } from 'components/shared/Dashboard/dashboard.selectors';
+import { getDownloadUrls } from 'components/shared/DashboardTableView/dashboard-table-view.selectors';
 
 const mapStateToProps = state => ({
   tabs: state.dashboard.tabs,
   selectedTab: state.dashboard.selectedTab,
   detailsVisible: state.dashboard.detailsVisible,
   datasetData: state.dashboard.dataset.data,
-  datasetMetadata: getDatasetMetadata(state)
+  datasetMetadata: getDatasetMetadata(state),
+  downloadUrls: getDownloadUrls(state)
 });
 
 const mapDispatchToProps = dispatch => ({

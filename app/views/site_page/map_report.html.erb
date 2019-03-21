@@ -1,0 +1,76 @@
+<% content_for :body_class do %>
+  class="tundra" data-turbolinks="false"
+<% end %>
+
+<div class="report inner">
+  <header class="report-header flex">
+    <div class="report-header__logo-container">
+      <a id="logo-anchor" target="_blank">
+        <img class="report-header__logo" id="logo"/>
+      </a>
+    </div>
+    <div class="report-header__title-container">
+      <h1 class="report-header__title" id="report-title"></h1>
+      <h2 class="report-header__subtitle" id="report-subtitle"></h2>
+    </div>
+  </header>
+  <div class="map" id="map"></div>
+  <div class="popup-content" id="popup-content"></div>
+  <div class="results-container" id="results-container"></div>
+</div>
+
+
+<% content_for :external_js do %>
+  <script id="report-load" src="//wri-sites.s3.amazonaws.com/gfw-mapbuilder.org/library.gfw-mapbuilder.org/sprint2/reportLib.<%= @site_page.content['version'] || '1.1.15' %>.js"></script>
+  <script>
+    var mapDatabaseConfig = JSON.parse('<%= @map_content %>')
+
+    var mapConfig = Object.assign(mapDatabaseConfig, {
+      title: '<%= @site_page.site.name %>'
+    });
+
+    var triggerCustom = function() {
+      const subscriptions = [{
+        'type': 'subscription',
+        'id': '5af2197db824a311006f38ed',
+        'attributes': {
+          'name': 'test for date',
+          'createdAt': '2018-05-08T21:41:17.808Z',
+          'userId': '588f5dda35c8259767ed15ab',
+          'resource': {
+            'type': 'EMAIL',
+            'content': 'lc07@uw.edu'
+          },
+          'datasets': ['umd-loss-gain'],
+          'params': {
+            'iso': {
+              'subRegion': null,
+              'region': null,
+              'country': null
+            },
+            'wdpaid': null,
+            'use': null,
+            'useid': null,
+            'geostore': '8dcf1b5fe27b2b8dfa392b346f778f5f'
+          },
+          'confirmed': false,
+          'language': 'en',
+          'datasetsQuery': []
+        }
+      }];
+
+      const customEvent = new CustomEvent('listenToThisSubscriptionCall', { detail: subscriptions});
+      console.log('customEvent', customEvent);
+      window.dispatchEvent(customEvent);
+    }
+
+    var ll = new MapBuilderReport({
+      el: 'root', // We need a div ID, not a class
+      config: mapConfig,
+      subscriptionEventName: 'listenToThisSubscriptionCall',
+      version: '<%= @site_page.content['version'] || '1.1.15' %>',
+      html: '<%= @map_html %>',
+      //base: ""
+    });
+  </script>
+<%end%>

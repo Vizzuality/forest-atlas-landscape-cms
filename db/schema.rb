@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180813130657) do
+ActiveRecord::Schema.define(version: 20190122110500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "content_images", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "page_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["page_id"], name: "index_content_images_on_page_id", using: :btree
+  end
 
   create_table "context_datasets", force: :cascade do |t|
     t.boolean  "is_confirmed"
@@ -80,12 +91,13 @@ ActiveRecord::Schema.define(version: 20180813130657) do
   end
 
   create_table "map_versions", force: :cascade do |t|
-    t.string   "version",     null: false
+    t.string   "version",          null: false
     t.integer  "position"
     t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.text     "html"
+    t.jsonb    "default_settings"
     t.index ["version"], name: "index_map_versions_on_version", using: :btree
   end
 
@@ -110,22 +122,39 @@ ActiveRecord::Schema.define(version: 20180813130657) do
     t.string   "description"
     t.string   "uri"
     t.string   "url"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "content_type"
     t.text     "type"
-    t.boolean  "enabled",      default: false
+    t.boolean  "enabled",                  default: false
     t.integer  "parent_id"
     t.integer  "position"
     t.json     "content"
-    t.boolean  "show_on_menu", default: true
-    t.integer  "page_version", default: 1
+    t.boolean  "show_on_menu",             default: true
+    t.integer  "page_version",             default: 1
+    t.string   "thumbnail_file_name"
+    t.string   "thumbnail_content_type"
+    t.integer  "thumbnail_file_size"
+    t.datetime "thumbnail_updated_at"
+    t.string   "cover_image_file_name"
+    t.string   "cover_image_content_type"
+    t.integer  "cover_image_file_size"
+    t.datetime "cover_image_updated_at"
     t.index ["site_id"], name: "index_pages_on_site_id", using: :btree
   end
 
   create_table "pages_site_templates", id: false, force: :cascade do |t|
     t.integer "page_id",          null: false
     t.integer "site_template_id", null: false
+  end
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text     "content"
+    t.string   "searchable_type"
+    t.integer  "searchable_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id", using: :btree
   end
 
   create_table "routes", force: :cascade do |t|
@@ -160,7 +189,6 @@ ActiveRecord::Schema.define(version: 20180813130657) do
     t.datetime "updated_at",         null: false
     t.text     "attribution_link"
     t.text     "attribution_label"
-    t.index ["site_id", "name"], name: "index_site_settings_on_site_id_and_name", unique: true, using: :btree
     t.index ["site_id"], name: "index_site_settings_on_site_id", using: :btree
   end
 
@@ -177,6 +205,22 @@ ActiveRecord::Schema.define(version: 20180813130657) do
     t.datetime "updated_at",       null: false
     t.text     "slug"
     t.index ["site_template_id"], name: "index_sites_on_site_template_id", using: :btree
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "value",      null: false
+    t.integer  "page_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "temporary_content_images", force: :cascade do |t|
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "user_site_associations", force: :cascade do |t|
@@ -209,7 +253,9 @@ ActiveRecord::Schema.define(version: 20180813130657) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "content_images", "pages", on_delete: :cascade
   add_foreign_key "page_widgets", "pages"
+  add_foreign_key "tags", "pages"
   add_foreign_key "user_site_associations", "sites"
   add_foreign_key "user_site_associations", "users"
 end

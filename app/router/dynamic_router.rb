@@ -41,6 +41,10 @@ class DynamicRouter
       _build_routes_for_page_and_route(site_page, route)
     end
 
+    site_page.children.each do |child|
+      update_routes_for_site_page child
+    end
+
     self.reload
   end
 
@@ -118,6 +122,10 @@ class DynamicRouter
           RouteDefinition.new('/logout', 'site_page#logout',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
+        routes_to_write <<
+          RouteDefinition.new('/search_results', 'site_page#search_results',
+                              { id: site_page.id },
+                              constraints, tags, main_route_host)
 
         target = ContentType::HOMEPAGE ? 'site_page#homepage' : 'site_page#homepagev2'
       when ContentType::OPEN_CONTENT
@@ -132,7 +140,7 @@ class DynamicRouter
                               { id: site_page.id },
                               constraints, tags, main_route_host)
         routes_to_write <<
-          RouteDefinition.new('/report.html', 'site_page#map_report',
+          RouteDefinition.new(path + '/report.html', 'site_page#map_report',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
       when ContentType::ANALYSIS_DASHBOARD
@@ -143,6 +151,8 @@ class DynamicRouter
         target = 'site_page#static_content'
       when ContentType::LINK
         return
+    when ContentType::TAG_SEARCHING
+        target = 'site_page#tag_searching'
       else
         target = 'site_page#open_content'
     end

@@ -41,13 +41,6 @@
       // We attach event listeners for the buttons in the action bar
       $('.js-submit').on('click', this._onClickSubmit.bind(this));
       $('.js-reset').on('click', this._onClickReset.bind(this));
-
-      // If the tree has been saved successfully, we display a notification
-      if (state && state === 'success') {
-        App.notifications.broadcast(App.Helper.Notifications.structure.update);
-
-        this.navigate('/', { replace: true });
-      }
     },
 
     /**
@@ -59,6 +52,7 @@
 
       this._hideSaveWarning();
       this._hideVisibilityWarning();
+      this._hideSavedNotification();
       this._hideErrorNotification();
       this._displaySavingNotification();
 
@@ -67,7 +61,10 @@
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ collection: [this.treeStructureView.getTree()] })
-      }).fail(function () {
+      }).done(function () {
+        this._hideSavingNotification();
+        this._displaySavedNotification();
+      }.bind(this)).fail(function () {
         this._hideSavingNotification();
         this._displayErrorNotification();
       }.bind(this));
@@ -200,8 +197,9 @@
      * the page
      */
     _hideSaveWarning: function () {
-      if (this.saveWarningNotificationId) {
+      if (this.saveWarningNotificationId !== undefined) {
         App.notifications.hide(this.saveWarningNotificationId);
+        this.saveWarningNotificationId = undefined;
       }
     },
 
@@ -218,8 +216,9 @@
      * that as disabled ancestors, it won't be visible until they are all enabled
      */
     _hideVisibilityWarning: function () {
-      if (this.visibilityWarningNotificationId) {
+      if (this.visibilityWarningNotificationId !== undefined) {
         App.notifications.hide(this.visibilityWarningNotificationId);
+        this.visibilityWarningNotificationId = undefined;
       }
     },
 
@@ -234,8 +233,26 @@
      * Hide the notification to inform the user the tree is saving
      */
     _hideSavingNotification: function () {
-      if (this.savingNotificationId) {
+      if (this.savingNotificationId !== undefined) {
         App.notifications.hide(this.savingNotificationId);
+        this.savingNotificationId = undefined;
+      }
+    },
+
+    /**
+     * Display a success notification if the structure was saved in the backend
+     */
+    _displaySavedNotification: function () {
+      this.savedNotificationId = App.notifications.broadcast(App.Helper.Notifications.structure.update);
+    },
+
+    /**
+     * Hide the success notification when the structure is saved in the backend
+     */
+    _hideSavedNotification: function () {
+      if (this.savedNotificationId !== undefined) {
+        App.notifications.hide(this.savedNotificationId);
+        this.savedNotificationId = undefined;
       }
     },
 
@@ -250,8 +267,9 @@
      * Hide the error telling the user the structure couldn't be saved
      */
     _hideErrorNotification: function () {
-      if (this.errorNotificationId) {
+      if (this.errorNotificationId !== undefined) {
         App.notifications.hide(this.errorNotificationId);
+        this.errorNotificationId = undefined;
       }
     },
 

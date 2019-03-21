@@ -1,0 +1,77 @@
+<h3>General settings</h3>
+
+<%= form.fields_for :settings, @page.settings_structure do |settings| %>
+  <% fields = {
+      'webmap': {
+        type: :text_field,
+        description: "The ArcGIS item ID for a webmap hosted on ArcGIS Online or Portal containing your custom layers"
+      },
+      'title': {
+        type: :text_field,
+        description: "The title for your mapbuilder application, the title will be used in your map printout"
+      },
+      'subtitle': {
+        type: :text_field,
+        description: "The subtitle for your mapbuilder application, the subtitle will be used in the map printout"
+      },
+      'webmapMenuName': {
+        type: :text_field,
+        description: "Heading in layer panel for the group of layers which are pulled from the webmap"
+      },
+      'logoUrl': {
+        type: :text_field,
+        description: "Url for an image of your organization logo"
+      },
+      'logoLinkUrl': {
+        type: :text_field,
+        description: "Url for the website your application will link to when users click on your organization logo"
+      },
+      'printServiceUrl': {
+        type: :text_field,
+        description: "Webservice which generates the printed map/ PDF. This must be a link to an Export Web Map Geoprocessing Service. If you have a country specific geoprocessing service enter the url here. If you have not created your own processing service you may choose to use the standard mapbuilder service: <a href=\"https://gis.forest-atlas.org/server/rest/services/print/ExportWebMap/GPServer/Export%20Web%20Map\" target=\"_blank\" rel=\"noopener noreferrer\">https://gis.forest-atlas.org/server/rest/services/print/ExportWebMap/GPServer/Export%20Web%20Map</a>"
+      },
+      'narrative': {
+        type: :text_area,
+        description: "Text for the narrative which will be visible in the information tab of the map panel. Users can use html to edit and customize this text."
+      },
+      'includeSubscribeButton': {
+        type: :check_box,
+        description: "Check this if you would like to allow users to subscribe to receive alerts (i.e: fire or forest loss alerts) on a specific area of interest."
+      },
+      'sharinghost': {
+        type: :text_field,
+        description: "Url for the sharing host where your webmap is hosted, this will typically be ArcGIS Online (<a href=\"https://www.arcgis.com\" target=\"_blank\” rel=\"noopener noreferrer\">https://www.arcgis.com</a>). If you are using ArcGIS Portal to host your webmap enter the url for your ArcGIS Portal."
+      },
+      'analyticsCode': {
+        type: :text_field,
+        description: "Google Analytics code for your site. If you do not have a google analytics code you may leave this blank."
+      },
+      'iso': {
+        type: :text_field,
+        description: "Three letter iso country code for your country of focus, a mask will be applied over all countries except for your country of focus. If you do not wish to apply a mask you may choose to leave this blank."
+      },
+  } %>
+  <% fields.each do |key, value| %>
+    <div class="container">
+      <% if value[:type].to_s == 'check_box' %>
+        <div class="c-checkbox">
+          <%= settings.check_box key, { id: 'map-' + key.to_s }, 'true', 'false' %>
+          <label for="map-<%= key %>">
+            <%= key.capitalize %>
+            <% if !value[:description].blank? %>
+              <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+            <% end %>
+          </label>
+        </div>
+      <% else %>
+        <label for="map-<%= key %>">
+          <%= key.capitalize %>
+          <% if !value[:description].blank? %>
+            <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+          <% end %>
+        </label>
+        <%= eval("settings.#{value[:type]} :#{key}, id: 'map-#{key}'") %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

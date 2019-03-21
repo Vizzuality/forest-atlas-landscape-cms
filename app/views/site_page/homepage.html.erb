@@ -1,12 +1,17 @@
 <%= javascript_pack_tag 'application' %>
 
+<%= react_component('Cover', {
+  title: @site_page.site.name,
+  images: @homepage_covers,
+  template: @site_page.site.site_template.name
+} ) %>
+
 <%= react_component('HomePage', {
   page: @site_page,
   site: @site_page.site,
   siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
   siteTitleOnly: @site_title_only,
   siteTemplateName: @site_page.site.site_template.name,
-  image: @main_image,
   pageSize: defined?(size) ? size : nil
 } ) %>
 
