@@ -38,7 +38,7 @@
 
       // Before the form is submitted, we need to save the output HTML
       $('.js-submit').on('click', function () {
-        if (this.wysiwygView && !document.getElementById('homepage_migration')) {
+        if (this.wysiwygView) {
           this.wysiwygView.saveHTML();
         }
 

@@ -38,7 +38,7 @@
 
       if (pageType === OPEN_CONTENT || pageType === LINK) {
         $('.js-submit').on('click', function () {
-          if (this.wysiwygView && !document.getElementById('homepage_migration')) {
+          if (this.wysiwygView) {
            this.wysiwygView.saveHTML();
           }
 
