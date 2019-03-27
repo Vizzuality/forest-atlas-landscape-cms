@@ -36,7 +36,7 @@ class CoverPage extends React.Component {
     if (size === 'big') {
       return (
         <div
-          className="c-cover -big"
+          className="c-cover"
           style={images.length && images[0].url
             ? { backgroundImage: `url(${images[0].url})` }
             : {}
@@ -68,7 +68,7 @@ class CoverPage extends React.Component {
 
     return (
       <div
-        className="c-cover"
+        className="c-cover -short"
         style={images.length && images[0].url
           ? { backgroundImage: `url(${images[0].url})` }
           : {}
@@ -109,7 +109,7 @@ class CoverPage extends React.Component {
           : {}
         }
       >
-        { size === 'big' && images.length > 0 && (
+        {size === 'big' && images.length > 0 && (
           <Slider {...sliderSettings}>
             {images.map(image => (
               <div className="slide" key={image.url}>
@@ -120,12 +120,12 @@ class CoverPage extends React.Component {
 
                 {image.attribution && (
                   <div className="cover-attribution">
-                    { image.attribution.url && (
+                    {image.attribution.url && (
                       <a target="_blank" href={image.attribution.url} rel="noopener noreferrer">
                         {image.attribution.label}
                       </a>
                     )}
-                    { !image.attribution.url && image.attribution.label && (
+                    {!image.attribution.url && image.attribution.label && (
                       <p>{image.attribution.label}</p>
                     )}
                   </div>
@@ -135,12 +135,12 @@ class CoverPage extends React.Component {
           </Slider>
         )}
         <div className="wrapper">
-          { title && (
+          {title && (
             <h2 className="cover-title">
               {title}
             </h2>
           )}
-          { subtitle && (
+          {subtitle && (
             <h2 className="cover-subtitle">
               {subtitle}
             </h2>
