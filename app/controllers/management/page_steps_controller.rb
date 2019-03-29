@@ -66,6 +66,8 @@ class Management::PageStepsController < ManagementController
       when 'dashboard_widget'
         build_current_dashboard_setting
         @widgets = @site.get_vega_widgets([@dashboard_setting.dataset_id])
+      when 'columns_selection'
+        build_current_dashboard_setting
       when 'preview_analytics_dashboard'
         build_current_dashboard_setting
       when 'dataset'
@@ -201,15 +203,7 @@ class Management::PageStepsController < ManagementController
         move_forward
 
       # ANALYSIS DASHBOARD V2 PATH
-      when 'dashboard_dataset'
-        build_current_dashboard_setting
-        set_current_dashboard_setting_state
-        if @page.valid?
-          move_forward
-        else
-          render_wizard
-        end
-      when 'dashboard_widget'
+      when 'dashboard_dataset', 'dashboard_widget', 'columns_selection'
         build_current_dashboard_setting
         set_current_dashboard_setting_state
         if @page.valid?
@@ -350,6 +344,7 @@ class Management::PageStepsController < ManagementController
           widget_id
           content_top
           content_bottom
+          columns
         ],
       )
     filtered_params[:content] = all_options if all_options.present?

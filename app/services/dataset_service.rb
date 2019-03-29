@@ -15,12 +15,13 @@ class DatasetService < ApiService
                                 ids: dataset_ids,
                                 '_': Time.now.to_s}
 
-    datasetsJSON = JSON.parse datasetRequest.body
-
-    datasets = []
+    # TODO: If the number of datasets exceeds X, we should perform several requests
+    # otherwise the URL might be too long
     begin
+      datasetsJSON = JSON.parse datasetRequest.body
+
+      datasets = []
       datasetsJSON['data'].each do |data|
-        # TODO: Refactor!!! The service can't depend on the model
         dataset = Dataset.new data
         datasets.push dataset
       end
@@ -28,6 +29,7 @@ class DatasetService < ApiService
       # TODO All this methods should throw an exception caught in the controller...
       # ... to render a different page
       Rails.logger.error "::DatasetService.get_datasets: #{e}"
+      return []
     end
 
     datasets

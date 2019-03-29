@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190122110500) do
+ActiveRecord::Schema.define(version: 20190329115214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20190122110500) do
     t.json     "content_bottom"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "columns"
     t.index ["page_id"], name: "index_dashboard_settings_on_page_id", using: :btree
   end
 
