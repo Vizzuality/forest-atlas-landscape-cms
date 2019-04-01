@@ -42,7 +42,7 @@ class StaticPageController < ApplicationController
 
       subscriptions = res.body
       render json: subscriptions
-    rescue
+    rescue 
       render json: { error: 'Cannot access subscriptions' }
     end
   end

@@ -28,12 +28,16 @@
         // Get subscriptions
         fetch('<%= ENV['FA_PUBLIC_FOLDER']%>/subscriptions', {
           method: 'GET',
+          headers: {
+            Authorization: 'Bearer <%= session[:user_token] %>'            
+          }
         }).then(function(response) {
           return response.json();
         })
         .then(function(subscriptions) {
+          console.log('subscriptiosn', subscriptions);
           triggerCustom = function() {
-            var customEvent = new CustomEvent('subscriptionCall', { detail: subscriptions.data });
+            var customEvent = new CustomEvent('subscriptionCall', { detail: subscriptions.data || 'no subscriptions'});
             window.dispatchEvent(customEvent);
           }
         });
@@ -54,6 +58,7 @@
   window.route = 'Map';
   $( "body" ).on( "click", ".triggerMySubscriptions", function(e) {
     e.preventDefault();
+    console.log(triggerCustom());
     triggerCustom();
   });
 </script>
