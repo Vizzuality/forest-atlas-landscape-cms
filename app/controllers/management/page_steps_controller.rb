@@ -9,8 +9,9 @@ class Management::PageStepsController < ManagementController
   prepend_before_action :load_wizard
   prepend_before_action :set_steps
   prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
+  prepend_before_action :reset_session, only: [:new, :edit]
+  prepend_before_action :set_page, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
   prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
-  #prepend_before_action :reset_session, only: [:new, :edit]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
 
@@ -30,8 +31,6 @@ class Management::PageStepsController < ManagementController
 
   # This action cleans the session
   def new
-    @page_id = :new
-    reset_session
     if params[:parent]
       parent = Page.find(params[:parent])
       if parent
@@ -48,8 +47,6 @@ class Management::PageStepsController < ManagementController
 
   # This action cleans the session
   def edit
-    @page_id = @page.id
-    reset_session
     redirect_to wizard_path(steps[0])
   end
 
@@ -361,17 +358,20 @@ class Management::PageStepsController < ManagementController
     @site = Site.find_by({slug: params[:site_slug]})
   end
 
-  # Builds the current page state based on the database, session and params
-  def build_current_page_state
+  # Sets the page id
+  def set_page
     # Verify if the manager is editing a page or creating a new one
     @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
     @page_id = if @page && @page.persisted?
-      @page.id
-    else
-      :new
-    end
+                 @page.id
+               else
+                 :new
+               end
+  end
 
+  # Builds the current page state based on the database, session and params
+  def build_current_page_state
     # Update the page with the attributes saved on the session
     @page.assign_attributes session[:page][@page_id] if session[:page][@page_id]
     if params[:site_page] && page_params.to_h.except(:dataset_setting, :dashboard_setting, :tags)
@@ -574,7 +574,7 @@ class Management::PageStepsController < ManagementController
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
         delete_session_key(:page, @page_id)
-        delete_session_key(:tags_attributes, @page_id)
+        delete_session_key(:tags_attributes, "#{@page_id}")
         @page.synchronise_page_widgets(page_params.to_h)
         redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page was successfully ' + notice_text
       else
@@ -588,14 +588,12 @@ class Management::PageStepsController < ManagementController
       if @page.save
         if publish_step_name == Wicked::FINISH_STEP # only deletes the session if there are no more pages in queue
           delete_session_key(:page, @page_id) # delete 'new' session
-          delete_session_key(:tags_attributes, @page_id)
           reset_session_key(:page, @page.id, {enabled: @page.enabled}) # start 'edit' session
         else
           session[:page][@page_id][:enabled] = @page.enabled
-          delete_session_key(:tags_attributes, @page_id)
         end
         # The enabled status must be stored in the session as it was changed
-        delete_session_key(:tags_attributes, @page_id)
+        delete_session_key(:tags_attributes, "#{@page_id}")
         redirect_to wizard_path(publish_step_name), notice: 'Page was successfully ' + notice_text
       else
         render_wizard
