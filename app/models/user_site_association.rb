@@ -11,7 +11,7 @@
 #
 
 class UserSiteAssociation < ApplicationRecord
-  belongs_to :site
+  belongs_to :site, optional: true
   belongs_to :user, optional: true
 
   scope :admin, -> { where(role: UserType::ADMIN) }
