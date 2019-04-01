@@ -20,7 +20,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onChangeTab: tab => dispatch(setSelectedTab(tab)),
   fetchData: () => dispatch(fetchData()),
-  fetchFields: () => dispatch(fetchFields()),
+  fetchFields: (...params) => dispatch(fetchFields(...params)),
   fetchDataset: () => dispatch(fetchDataset()),
   fetchWidget: () => dispatch(fetchWidget()),
   fetchChartData: () => dispatch(fetchVegaWidgetData()),

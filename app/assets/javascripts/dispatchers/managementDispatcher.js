@@ -28,6 +28,7 @@
       'management/sites/:slug/(site_pages/:id/)page_steps/dataset': 'DatasetStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/dashboard_dataset': 'DatasetStep',
       'management/sites/:slug/(site_pages/:id)/page_steps/dashboard_widget': 'DatasetStep',
+      'management/sites/:slug/(site_pages/:id)/page_steps/columns_selection': 'Index',
       'management/sites/:slug/(site_pages/:id/)page_steps/filters': 'DatasetFiltersStep',
       'management/sites/:slug/(site_pages/:id/)page_steps/columns': 'Index',
       'management/sites/:slug/(widgets/:id/)widget_steps/title': 'Index',

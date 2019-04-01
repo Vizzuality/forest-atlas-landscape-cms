@@ -5,8 +5,8 @@
   <div class="c-extended-header">
     <div class="wrapper">
       <div class="description">
-        <h1>Columns Selection</h1>
-        <p>Choose which columns will be shown on the widget.</p>
+        <h1>Columns</h1>
+        <p>Choose which columns you want to hide from the dashboard.</p>
       </div>
     </div>
   </div>
@@ -19,6 +19,17 @@
 <%= Gon::Base.render_data %>
 
 <%= form_for @page, url: wizard_path, method: :put do |f| %>
+  <div class="l-page-creation -title">
+    <div class="wrapper">
+      <%= render partial: 'shared/errors', locals: { resource: @page } %>
+      <%= f.hidden_field :content_type %>
+      <%= react_component('ManagementDashboardColumnsPage', {
+        datasetId: @dashboard_setting.dataset_id,
+        selectedFields: @dashboard_setting.columns.blank? ? [] : @dashboard_setting.columns.split(',')
+      } ) %>
+    </div>
+  </div>
+
   <%= render partial: 'management/steps_shared/footer', locals: {f: f, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page} %>
