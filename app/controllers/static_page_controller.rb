@@ -24,4 +24,27 @@ class StaticPageController < ApplicationController
       metadata: widget.metadata
     }
   end
+
+  def subscriptions
+    begin
+      token = request.headers['Authorization']
+
+      @conn ||= Faraday.new(:url => ENV.fetch("GFW_URL")) do |faraday|
+        faraday.request :url_encoded
+        faraday.response :logger
+        faraday.adapter Faraday.default_adapter
+      end
+
+      res = @conn.get do |req|
+        req.url ENV['SUBSCRIPTIONS_ENDPOINT']
+        req.headers['Authorization'] = token
+        req.headers['Content-Type'] = 'application/json'
+      end
+
+      subscriptions = res.body
+      render json: subscriptions
+    rescue 
+      render json: { error: 'Cannot access subscriptions' }
+    end
+  end
 end

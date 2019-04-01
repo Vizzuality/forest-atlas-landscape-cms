@@ -9,57 +9,48 @@
 
 <% content_for :external_js do %>
   <script id="library-load" src="//wri-sites.s3.amazonaws.com/gfw-mapbuilder.org/library.gfw-mapbuilder.org/<%= @site_page.content['version'] || '1.1.15' %>.js"></script>
-  <script>
-        var mapDatabaseConfig = JSON.parse('<%= @map_content %>')
+  <script type="text/javascript">  
+  var triggerCustom;
 
+  function ready(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+
+  ready(function () {
+    var mapDatabaseConfig = JSON.parse('<%= @map_content %>');
         var mapConfig = Object.assign(mapDatabaseConfig, {
           title: '<%= @site_page.site.name %>'
         });
-
-        var triggerCustom = function() {
-        const subscriptions = [{
-            'type': 'subscription',
-            'id': '5af2197db824a311006f38ed',
-            'attributes': {
-                'name': 'test for date',
-                'createdAt': '2018-05-08T21:41:17.808Z',
-                'userId': '588f5dda35c8259767ed15ab',
-                'resource': {
-                    'type': 'EMAIL',
-                    'content': 'lc07@uw.edu'
-                },
-                'datasets': ['umd-loss-gain'],
-                'params': {
-                    'iso': {
-                        'subRegion': null,
-                        'region': null,
-                        'country': null
-                    },
-                    'wdpaid': null,
-                    'use': null,
-                    'useid': null,
-                    'geostore': '8dcf1b5fe27b2b8dfa392b346f778f5f'
-                },
-                'confirmed': false,
-                'language': 'en',
-                'datasetsQuery': []
-            }
-        }];
-
-        const customEvent = new CustomEvent('listenToThisSubscriptionCall', { detail: subscriptions});
-        console.log('customEvent', customEvent);
-        window.dispatchEvent(customEvent);
-      }
+        // Get subscriptions
+        fetch('<%= ENV['FA_PUBLIC_FOLDER']%>/subscriptions', {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer <%= session[:user_token] %>'            
+          }
+        }).then(function(response) {
+          return response.json();
+        })
+        .then(function(subscriptions) {
+          console.log('subscriptiosn', subscriptions);
+          triggerCustom = function() {
+            var customEvent = new CustomEvent('subscriptionCall', { detail: subscriptions.data || 'no subscriptions'});
+            window.dispatchEvent(customEvent);
+          }
+        });
 
         var ll = new MapBuilder({
           el: 'root', // We need a div ID, not a class
           config: mapConfig,
-          subscriptionEventName: 'listenToThisSubscriptionCall',
+          subscriptionEventName: 'subscriptionCall',
           version: '<%= @site_page.content['version'] || '1.1.15' %>',
           html: '<%= @map_html %>',
           //base: ""
         });
-
+      });
     </script>
 <% end %>
 
@@ -67,6 +58,7 @@
   window.route = 'Map';
   $( "body" ).on( "click", ".triggerMySubscriptions", function(e) {
     e.preventDefault();
+    console.log(triggerCustom());
     triggerCustom();
   });
 </script>
