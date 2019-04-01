@@ -30,6 +30,7 @@ class SiteCreator
           content_type: page.content_type,
           page_version: page.page_version,
           enabled: true,
+          position: page.position,
           parent: get_parent_content(page)
         }
       )
