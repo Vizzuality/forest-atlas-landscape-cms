@@ -417,7 +417,7 @@ class Management::PageStepsController < ManagementController
       @page.dashboard_setting = @dashboard_setting
     end
 
-    @dashboard_setting.assign_attributes session[:dashboard_setting][@page_id] if session[:dashboard_setting][@page_id]
+    @dashboard_setting.assign_attributes session[:dashboard_setting]["#{@page_id}"] if session[:dashboard_setting]["#{@page_id}"]
 
     if ds_id = db_params[:dataset_id]
       # If the user changed the id of the dataset, the entity is reset
