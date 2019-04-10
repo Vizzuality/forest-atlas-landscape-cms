@@ -15,7 +15,8 @@
     dataset: @site_page.dashboard_setting.dataset_id,
     widget: @site_page.dashboard_setting.widget_id,
     topContent: @site_page.dashboard_setting.content_top,
-    bottomContent: @site_page.dashboard_setting.content_bottom
+    bottomContent: @site_page.dashboard_setting.content_bottom,
+    hiddenFields: @site_page.dashboard_setting.columns.blank? ? [] : @site_page.dashboard_setting.columns.split(',')
   }) %>
 </div>
 

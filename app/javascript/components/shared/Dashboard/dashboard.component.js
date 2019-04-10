@@ -18,7 +18,7 @@ class Dashboard extends React.PureComponent {
     this.props.setPageSlug(this.props.pageSlug);
     this.props.setDatasetId(this.props.dataset);
     this.props.setWidgetId(this.props.widget);
-    this.props.fetchFields()
+    this.props.fetchFields(this.props.hiddenFields)
       .then(() => this.props.fetchData());
     Promise.all([this.props.fetchWidget(), this.props.fetchDataset()])
       .then(() => this.props.fetchChartData());
@@ -257,7 +257,8 @@ Dashboard.propTypes = {
   widget: PropTypes.string,
   topContent: PropTypes.string,
   bottomContent: PropTypes.string,
-  downloadUrls: PropTypes.object.isRequired
+  downloadUrls: PropTypes.object.isRequired,
+  hiddenFields: PropTypes.arrayOf(PropTypes.string)
 };
 
 Dashboard.defaultProps = {
@@ -265,7 +266,8 @@ Dashboard.defaultProps = {
   dataset: null,
   widget: null,
   topContent: null,
-  bottomContent: null
+  bottomContent: null,
+  hiddenFields: []
 };
 
 export default Dashboard;

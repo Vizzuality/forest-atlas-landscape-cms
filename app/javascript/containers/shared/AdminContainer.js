@@ -66,7 +66,7 @@ class AdminContainer extends Component {
 }
 
 AdminContainer.propTypes = {
-  children: PropTypes.object.isRequired
+  children: PropTypes.object
 };
 
 export default AdminContainer;

@@ -24,7 +24,7 @@ class EditDashboard extends React.Component {
           onChange={content => this.setState({ topContent: JSON.stringify(content) })}
           blocks={['text', 'image', 'html']}
         />
-        <Dashboard preview pageSlug="preview" dataset={this.props.dataset} widget={this.props.widget} />
+        <Dashboard preview pageSlug="preview" dataset={this.props.dataset} widget={this.props.widget} hiddenFields={this.props.hiddenFields} />
         <Wysiwyg
           items={this.props.bottomContent ? JSON.parse(this.props.bottomContent) : []}
           onChange={content => this.setState({ bottomContent: JSON.stringify(content) })}
@@ -39,14 +39,16 @@ EditDashboard.propTypes = {
   dataset: PropTypes.string,
   widget: PropTypes.string,
   topContent: PropTypes.string,
-  bottomContent: PropTypes.string
+  bottomContent: PropTypes.string,
+  hiddenFields: PropTypes.arrayOf(PropTypes.string)
 };
 
 EditDashboard.defaultProps = {
   topContent: null,
   bottomContent: null,
   widget: null,
-  dataset: null
+  dataset: null,
+  hiddenFields: []
 };
 
 export default EditDashboard;
