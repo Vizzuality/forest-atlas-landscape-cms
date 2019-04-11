@@ -19,6 +19,7 @@ module TreeStructureHelper
       position: node_key.position,
       enabled: node_key.enabled,
       content_type: node_key.content_type,
+      show_on_menu: node_key.show_on_menu,
       disableable: node_key.disableable?,
       deletable: node_key.deletable?,
       deleteUrl:
@@ -32,7 +33,7 @@ module TreeStructureHelper
     unless node_value.blank?
       children = []
       node_value.each do |key, value|
-        children << format_tree(key,value) if key.show_on_menu
+        children << format_tree(key,value)
       end
       tree.merge!({children: children})
     end
