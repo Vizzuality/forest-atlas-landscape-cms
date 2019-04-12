@@ -8,6 +8,7 @@ class ContentType < EnumerateIt::Base
     static_content: [6, 'Static Content'],
     dashboard_v2: [7, 'Dashboard V2'],
     open_content_v2: [8, 'Open Content V2'],
-    tag_searching: [9, 'Tag Searching']
+    tag_searching: [9, 'Tag Searching'],
+    group: [10, 'Group']
   )
 end

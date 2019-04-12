@@ -124,6 +124,9 @@ class SitePage < Page
     when ContentType::TAG_SEARCHING
       steps = { pages: %w[position title type tag_searching],
                 names: ['Position', 'Details', 'Type', 'Tag Searching'] }
+    when ContentType::GROUP
+      steps = { pages: %w[position title type confirmation],
+                names: %w[Position Details Type Confirmation] }
     end
     steps
   end

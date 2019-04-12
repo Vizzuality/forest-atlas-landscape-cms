@@ -4,6 +4,7 @@ module ApplicationHelper
   end
 
   def page_link(page)
+    return page.name if page.content_type == ContentType::GROUP
     href = page.content_type.equal?(ContentType::LINK) ? page.content['url'] : page.url
     no_turbolinks = 'data-turbolinks="false"' if page.content_type.equal?(ContentType::MAP) or page.content_type.equal?(ContentType::LINK)
     target_blank = 'target="_blank"' if page.content_type.equal?(ContentType::LINK) and page.content['target_blank'].eql? '1'
