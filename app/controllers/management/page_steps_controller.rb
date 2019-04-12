@@ -56,6 +56,7 @@ class Management::PageStepsController < ManagementController
         assign_position
       when 'title'
       when 'type'
+      when 'confirmation'
       when 'dashboard_dataset'
         build_current_dashboard_setting
         vega_widgets = @site.get_vega_widgets
@@ -191,7 +192,7 @@ class Management::PageStepsController < ManagementController
           else
             move_forward wizard_steps[3]
         end
-      when 'type'
+      when 'type', 'confirmation'
         if @page.content_type == 7
           @page.page_version = 2
         end
