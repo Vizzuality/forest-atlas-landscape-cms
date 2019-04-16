@@ -9,6 +9,7 @@ class ContentType < EnumerateIt::Base
     dashboard_v2: [7, 'Dashboard V2'],
     open_content_v2: [8, 'Open Content V2'],
     tag_searching: [9, 'Tag Searching'],
-    group: [10, 'Group']
+    group: [10, 'Group'],
+    feedback: [11, 'Feedback']
   )
 end

@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   end
 
   match '/contact', to: 'contact#send_contact_email', via: [:get, :post]
+  post 'send-contact', to: 'contact#send_contact'
 
   namespace :management do
     resources :profile, only: [:edit, :update]
