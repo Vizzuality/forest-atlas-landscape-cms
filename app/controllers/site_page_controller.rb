@@ -122,7 +122,7 @@ class SitePageController < ApplicationController
   end
 
   def feedback
-    @contact_email = SiteSetting.contact_email_address(@site_page.site_id)
+    @contact_email = SiteSetting.contact_email_address(@site_page.site_id).value rescue nil
   end
 
   def login

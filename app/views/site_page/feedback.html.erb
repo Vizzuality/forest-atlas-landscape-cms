@@ -1,8 +1,8 @@
 <%= form_tag 'send-feedback', method: :post do %>
-  <%= text_field_tag 'name', placeholder: 'Your name' %>
-  <%= text_field_tag 'email', placeholder: 'Your email' %>
-  <%= text_field_tag 'subject', placeholder: 'Subject' %>
-  <%= text_field_tag 'message', placeholder: 'Type your message...' %>
-  <%= text_area_tag 'Send Feedback' %>
+  <%= text_field_tag 'user_name', nil, placeholder: 'Your name' %>
+  <%= text_field_tag 'user_email', nil, placeholder: 'Your email' %>
+  <%= text_field_tag 'subject', nil, placeholder: 'Subject' %>
+  <%= text_area_tag 'message', nil, placeholder: 'Type your message...' %>
+  <%= submit_tag 'Send Feedback' %>
   <%= hidden_field_tag 'to', @contact_email %>
 <% end %>

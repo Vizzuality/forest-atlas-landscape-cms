@@ -27,14 +27,14 @@ class ContactController < ApplicationController
     redirect_to request.base_url + "/about/contact"
   end
 
-  def send_contact
+  def send_feedback
     user_name = Nokogiri::HTML(params["user_name"]).text
     user_email = Nokogiri::HTML(params["user_email"]).text
     subject = Nokogiri::HTML(params["subject"]).text
     message = Nokogiri::HTML(params["message"]).text
 
-    from = Nokogiri::HTML(params["to"]).text
-    to = Nokogiri::HTML(params["to"]).text
+    from = Email.new(email: Nokogiri::HTML(params["to"]).text)
+    to = Email.new(email: Nokogiri::HTML(params["to"]).text)
 
     mail_subject = "Restoration Opportunities Atlas - Message - #{subject}"
 
@@ -47,7 +47,11 @@ class ContactController < ApplicationController
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     response = sg.client.mail._('send').post(request_body: mail.to_json)
 
-    flash[:notice] = "Thank you for reaching out to us!"
-    redirect_to request.base_url + "/about/contact"
+    if response.status_code == "202"
+      flash[:notice] = 'Thank you for reaching out to us!'
+    else
+      flash[:error] = 'There was a problem with your contact. Please try again later.'
+    end
+    redirect_to request.base_url + "/feedback"
   end
 end
