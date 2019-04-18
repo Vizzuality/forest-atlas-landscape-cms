@@ -123,7 +123,7 @@
      */
     _getPageTemplate: function () {
       return '\
-        <div class="page {{#unless enabled}} -disabled {{/unless}} {{#if highlighted}}-highlight{{/if}} js-handle">\
+        <div class="page {{#unless enabled}} -disabled {{else}}{{#unless visible}} -disabled {{/unless}}{{/unless}}{{#unless show_on_menu}} -detached{{/unless}} js-handle">\
           <span>{{name}}</span>\
         </div>\
       ';

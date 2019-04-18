@@ -83,6 +83,10 @@
       color: $color-3;
     }
 
+    &.-detached {
+      background-color: rgba($color-4, .1);
+    }
+
     &.-disabled {
       opacity: .5;
 
