@@ -33,12 +33,13 @@ class Footer extends React.PureComponent {
   }
 
   renderContactInfo() {
-    const { settings } = this.props.site;
-    return (<li
-      className="site-link-item">
-        <a href={`mailto: ${settingsUtils.getValue('contact_email_address', settings)}`}
-          className="site-link">Contact us</a>
-      </li>);
+    return (
+      <li className="site-link-item">
+        <a href="/feedback" className="site-link">
+          Contact us
+        </a>
+      </li>
+    );
   }
 
   getTermsLabel(){
@@ -49,7 +50,7 @@ class Footer extends React.PureComponent {
       terms_label = "Terms & Conditions";
     }
 
-    return terms_label;    
+    return terms_label;
   }
 
   preFooter() {
