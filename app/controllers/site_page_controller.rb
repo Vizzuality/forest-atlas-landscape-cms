@@ -121,6 +121,13 @@ class SitePageController < ApplicationController
     @remove_header = true
   end
 
+  def feedback
+    @contact_email = SiteSetting.contact_email_address(@site_page.site_id).value rescue nil
+    # Overriding the homepage properties to display the values for the feedback page
+    @site_page.name = 'Feedback'
+    @site_page.description = 'Page for the users to provide feedback'
+  end
+
   def login
     @return_link = request.headers['HTTP_REFERER'].remove(request.base_url) || '' rescue ''
     @return_link = '?page=' + @return_link unless @return_link.blank?
