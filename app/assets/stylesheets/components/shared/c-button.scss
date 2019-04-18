@@ -8,16 +8,23 @@
   font-family: $font-family-1; // Mandatory for button.c-button
   font-size: $font-size-normal; // Mandatory for button.c-button
   font-weight: $font-weight-bold;
+  text-decoration: none !important;
   cursor: pointer;
 
   @if $theme == 2 {
     text-transform: uppercase;
   }
 
+  &:hover,
+  &:focus {
+    color: $color-3;
+  }
+
+
   &.-monochrome {
     border-color: $color-4;
     background: $color-4;
-    &.-outline { color: $color-4; }
+    &.-outline, &.-outline:hover, &.-outline:focus { color: $color-4; }
   }
 
   &.-outline {
@@ -26,6 +33,7 @@
 
   &.-dark-text {
     color: $color-4;
+    &:hover, a:focus { color: $color-4; }
   }
 
   &.-normal-weight {
@@ -103,6 +111,8 @@
     color: $color-4;
     font-size: $font-size-small;
     font-weight: $font-weight-normal;
+
+    &:hover, &:focus { color: $color-4; }
 
     &.-arrow-left,
     &.-arrow-right {
