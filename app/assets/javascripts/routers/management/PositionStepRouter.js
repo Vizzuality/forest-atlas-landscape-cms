@@ -76,7 +76,7 @@
       // Position of the "Drag this" item if editing a page
       var draggable = {
         position: (window.gon && gon.position !== null && gon.position !== undefined) ? gon.position : null,
-        parentId: (window.gon && gon.parentId !== null && gon.parentId !== undefined) ? gon.parentId : null
+        parentId: (window.gon && gon.parent_id !== null && gon.parent_id !== undefined) ? gon.parent_id : null
       };
 
       /**
@@ -123,7 +123,7 @@
      */
     _getPageTemplate: function () {
       return '\
-        <div class="page {{#unless enabled}} -disabled {{/unless}} {{#if highlighted}}-highlight{{/if}} js-handle">\
+        <div class="page {{#unless enabled}}-disabled {{else}}{{#unless visible}} -disabled {{/unless}}{{#if highlighted}} -highlight{{/if}}{{/unless}}{{#unless show_on_menu}} -detached{{/unless}} js-handle">\
           <span>{{name}}</span>\
         </div>\
       ';
