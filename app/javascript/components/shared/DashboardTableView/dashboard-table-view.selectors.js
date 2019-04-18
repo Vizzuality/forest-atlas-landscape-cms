@@ -60,11 +60,13 @@ export const getDataColumns = createSelector(
       return [];
     }
 
+    // The order of the columns must be the same as the order of the data returned by getTableDada,
+    // that's why the columns are computed based on the data rather than only on the fields
     return Object.keys(data[0]).map((f) => {
       const field = fields.find(fi => fi.name === f);
       if (field) return field.alias || field.name;
-      return f;
-    });
+      return undefined;
+    }).filter(column => !!column);
   }
 );
 
@@ -73,20 +75,20 @@ export const getDataColumns = createSelector(
  */
 export const getTableData = createSelector(
   [getData, getFields],
-  (data, fields) => data.map(r => (
-    Object.keys(r)
-      .map((k) => {
-        const field = fields.find(f => f.name === k);
-
+  (data, fields) => data.map(row => (
+    Object.keys(row)
+      .map(key => fields.find(f => f.name === key))
+      .filter(field => !!field)
+      .map((field) => {
         // We use the alias as key so the table can match
         // the header cells with the content cells
-        const key = field ? (field.alias || field.name) : k;
+        const key = field.alias || field.name;
 
-        let value = r[k];
-        if (field.type === 'string' && r[k] && r[k].length > 25) {
-          value = `${r[k].slice(0, 22)}...`;
-        } else if (field.type === 'date' && r[k] !== null && r[k] !== undefined) {
-          const date = new Date(r[k]);
+        let value = row[field.name];
+        if (field.type === 'string' && value && value.length > 25) {
+          value = `${value.slice(0, 22)}...`;
+        } else if (field.type === 'date' && value !== null && value !== undefined) {
+          const date = new Date(value);
 
           value = format(date, 'DD-MM-YYYY');
         }
@@ -94,7 +96,7 @@ export const getTableData = createSelector(
         return {
           [key]: {
             value,
-            title: r[k],
+            title: value,
             sortable: true
           }
         };
