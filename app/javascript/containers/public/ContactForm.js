@@ -7,7 +7,6 @@ import ContactForm from "components/public/ContactForm";
 
 class ContactFormContainer extends PublicContainer {
   render() {
-    console.log(this.props);
     return (
       <div>
         <ContactForm {...this.props} />

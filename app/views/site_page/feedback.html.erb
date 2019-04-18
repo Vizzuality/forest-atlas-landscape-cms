@@ -10,6 +10,12 @@
 
 <%= react_component('public/ContactForm', {
   site: @site_page.site,
+  page: {
+    name: 'Contact us',
+    description: 'Contact us'
+  },
+  siteTemplateName: @site_page.site.site_template.name,
+  siteSettings: @site_page.site.site_settings,
   email: @contact_email,
 }) %>
 
