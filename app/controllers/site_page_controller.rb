@@ -123,6 +123,9 @@ class SitePageController < ApplicationController
 
   def feedback
     @contact_email = SiteSetting.contact_email_address(@site_page.site_id).value rescue nil
+    # Overriding the homepage properties to display the values for the feedback page
+    @site_page.name = 'Feedback'
+    @site_page.description = 'Page for the users to provide feedback'
   end
 
   def login
