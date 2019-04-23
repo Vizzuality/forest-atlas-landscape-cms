@@ -25,9 +25,38 @@
       if (!Transifex) return;
 
       Transifex.live.onFetchLanguages(function (languages) {
-        this.options.transifexLanguages = languages;
         this.options.languages = this._getSiteLanguages(languages);
-        this.options.currentLanguage = Transifex.live.getSelectedLanguageCode();
+
+        var selectedLanguage = Transifex.live.getSelectedLanguageCode();
+        var existSelectedLanguage = this.options.languages.some(function(language) {
+          return language.code === selectedLanguage;
+        });
+        if (!existSelectedLanguage) {
+          // This case might happen if Transifex is configured so the source language is Zulu
+          // but this language is not actually shown as an option as it is just used to translate
+          // all the strings of the site into anything else
+
+          if (window.gon && window.gon.default_site_language) {
+            var existDefaultLanguage = this.options.languages.some(function(language) {
+              return language.code === window.gon.default_site_language;
+            });
+            if (existDefaultLanguage) {
+              this.options.currentLanguage = window.gon.default_site_language;
+            } else if (this.options.languages.length) {
+              this.options.currentLanguage = this.options.languages[0].code;
+            }
+          } else if (this.options.languages.length) {
+            this.options.currentLanguage = this.options.languages[0].code;
+          }
+
+          if (!this.options.currentLanguage) {
+            console.warn('Unable to set the default language due to a wrong configuration');
+          } else {
+            Transifex.live.translateTo(this.options.currentLanguage, true);
+          }
+        } else {
+          this.options.currentLanguage = selectedLanguage;
+        }
 
         if (window.route === 'Map') {
           // Dont block the stack,
@@ -53,8 +82,8 @@
         return languages;
       }
 
-      return languages.map(function(lang) {
-        return lang.code;
+      return languages.filter(function(language) {
+        return window.gon.translations[language.code];
       });
     },
 
@@ -83,7 +112,7 @@
      * @return {object[]}
      */
     _getSelectorOptions: function () {
-      return this.options.transifexLanguages.map(function (language) {
+      return this.options.languages.map(function (language) {
         return {
           id: language.code,
           name: language.name,
@@ -97,7 +126,7 @@
      */
     _getSelectorActiveOption: function () {
       var self = this;
-      var selected = this.options.transifexLanguages.filter(function(lang) {
+      var selected = this.options.languages.filter(function(lang) {
         return lang.code === self.options.currentLanguage;
       })
       if (selected && selected.length) {
@@ -123,6 +152,7 @@
       }
     },
 
+    // This method is called from the outside (see frontDispatcher)
     updateCurrentLanguage: function (lang) {
       this.options.currentLanguage = lang;
       this.dropdownSelectorView.setActive(this._getSelectorActiveOption());
