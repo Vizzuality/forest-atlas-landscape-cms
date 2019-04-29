@@ -126,6 +126,7 @@ class SitePageController < ApplicationController
     # Overriding the homepage properties to display the values for the feedback page
     @site_page.name = 'Feedback'
     @site_page.description = 'Page for the users to provide feedback'
+    @authenticity_token = session[:_csrf_token] ||= SecureRandom.base64(32)
   end
 
   def login

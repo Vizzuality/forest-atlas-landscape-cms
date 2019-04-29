@@ -27,7 +27,8 @@ class ContactForm extends PureComponent {
               </div>
               <footer>
                 <button type="submit" className="c-button" data-disable-with="Sending...">Send message</button>
-                <input type="hidden" name="to" id="to" value="clement.prodhomme@vizzuality.com" />
+                <input type="hidden" name="to" id="to" value={this.props.email} />
+                <input type="hidden" name="authenticity_token" value={this.props.authenticityToken}/>
               </footer>
             </div>
           </form>
@@ -39,6 +40,7 @@ class ContactForm extends PureComponent {
 
 ContactForm.propTypes = {
   email: PropTypes.string.isRequired,
+  authenticityToken: PropTypes.string.isRequired,
   className: PropTypes.string
 };
 
