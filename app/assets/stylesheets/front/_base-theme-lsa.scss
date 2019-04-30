@@ -30,6 +30,12 @@ body {
   &.-wide {
     max-width: none;
   }
+
+  &.-map-report {
+    .c-header {
+      margin-bottom: 50px;
+    }
+  }
 }
 
 ul {

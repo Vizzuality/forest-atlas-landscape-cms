@@ -118,7 +118,7 @@ class SitePageController < ApplicationController
 
   def map_report
     build_map_variables
-    @remove_header = true
+    # @remove_header = true
   end
 
   def feedback

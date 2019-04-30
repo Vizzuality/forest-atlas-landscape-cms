@@ -33,6 +33,12 @@ body {
       position: static;
     }
   }
+
+  &.-map-report {
+    .c-header {
+      margin-bottom: 50px;
+    }
+  }
 }
 
 ul {
