@@ -50,6 +50,7 @@ class SitePage < Page
   scope :enabled, -> { where(enabled: true) }
   scope :not_tag_page, -> { where.not(content_type: ContentType::TAG_SEARCHING)}
   scope :not_link_page, -> { where.not(content_type: ContentType::LINK)}
+  scope :not_group_page, -> { where.not(content_type: ContentType::GROUP)}
 
   belongs_to :site
   has_many :routes, through: :site
@@ -164,7 +165,8 @@ class SitePage < Page
   end
 
   def related_pages
-    SitePage.for_site(site_id).not_tag_page.enabled
+    SitePage.for_site(site_id).not_tag_page
+      .not_group_page.enabled
       .search_tags(self.tags.pluck(:value).join(', '))
       .where.not(id: id).limit(MAX_RELATED_PAGES_SIZE)
   end
