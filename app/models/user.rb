@@ -52,7 +52,7 @@ class User < ApplicationRecord
     api_role = if self.admin
                   'ADMIN'
                else
-                  'USER'
+                  'MANAGER'
                end
 
     UserService.create(token, self.email, api_role, url)
