@@ -2,7 +2,7 @@ class ContactController < ApplicationController
   require 'sendgrid-ruby'
   include SendGrid
   require 'nokogiri'
-  
+
   def send_contact_email
     user_name = Nokogiri::HTML(params["user_name"]).text
     user_email = Nokogiri::HTML(params["user_email"]).text
@@ -48,10 +48,9 @@ class ContactController < ApplicationController
     response = sg.client.mail._('send').post(request_body: mail.to_json)
 
     if response.status_code == "202"
-      flash[:notice] = 'Thank you for reaching out to us!'
+      redirect_to request.base_url + "/feedback?success"
     else
-      flash[:error] = 'There was a problem with your contact. Please try again later.'
+      redirect_to request.base_url + "/feedback?error"
     end
-    redirect_to request.base_url + "/feedback"
   end
 end
