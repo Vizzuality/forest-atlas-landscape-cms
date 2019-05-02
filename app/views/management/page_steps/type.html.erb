@@ -20,14 +20,6 @@
     <div class="wrapper">
       <div class="c-card-list">
         <div class="card -footer-at-bottom">
-          <h3 class="title">Open Content page</h3>
-          <p class="description">Create a new page with any type of content you want in.</p>
-          <div class="footer">
-            <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::OPEN_CONTENT}, class: 'c-button'  %>
-          </div>
-        </div>
-
-        <div class="card -footer-at-bottom">
           <h3 class="title">(V2) Open Content page</h3>
           <p class="description">Create a new page with any type of content you want in.</p>
           <div class="footer">
@@ -40,14 +32,6 @@
           <p class="description">New FA dashboard</p>
           <div class="footer">
             <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::DASHBOARD_V2}, class: 'c-button'  %>
-          </div>
-        </div>
-
-        <div class="card -footer-at-bottom">
-          <h3 class="title">Analysis Dashboard</h3>
-          <p class="description">Build a dashboard based on a dataset.</p>
-          <div class="footer">
-            <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::ANALYSIS_DASHBOARD}, class: 'c-button'  %>
           </div>
         </div>
 
