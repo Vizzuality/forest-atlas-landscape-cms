@@ -45,6 +45,7 @@ class ContactForm extends PureComponent {
             onSubmit={e => this.onSubmit(e)}
           >
             <input type="hidden" name="to" id="to" value={this.props.email} />
+            <input type="hidden" name="atlas" id="atlas" value={this.props.site.name} />
             <input type="hidden" name="authenticity_token" value={this.props.authenticityToken}/>
             <div className={classnames({ 'c-inputs-container': true, '-submitted': submitted })}>
               <div className="container">

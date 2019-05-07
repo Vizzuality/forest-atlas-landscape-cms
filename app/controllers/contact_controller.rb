@@ -32,11 +32,12 @@ class ContactController < ApplicationController
     user_email = Nokogiri::HTML(params["user_email"]).text
     subject = Nokogiri::HTML(params["subject"]).text
     message = Nokogiri::HTML(params["message"]).text
+    atlas = Nokogiri::HTML(params["atlas"]).text
 
     from = Email.new(email: Nokogiri::HTML(params["to"]).text)
     to = Email.new(email: Nokogiri::HTML(params["to"]).text)
 
-    mail_subject = "Restoration Opportunities Atlas - Message - #{subject}"
+    mail_subject = "Atlas #{atlas} - Message - #{subject}"
 
     mail_message = "\n Name: #{user_name} \n \n Email: #{user_email} \n \n Subject: #{subject} \n \n Message: #{message}"
 
