@@ -11,7 +11,7 @@ import Wysiwyg from 'components/shared/Wysiwyg';
 
 const Home = ({ site }) => {
   return (
-    <div className="fa-page">
+    <div className="fa-page -homepage">
       {site.meta.siteTemplateName !== 'INDIA' && <React.Fragment>
         {site.page.page_version >= 2 ?
           <div className={'vizz-wysiwyg c-content'}>

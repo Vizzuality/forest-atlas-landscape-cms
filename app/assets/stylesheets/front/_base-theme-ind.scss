@@ -378,9 +378,12 @@ body {
 }
 
 .fa-page{
-  min-height: calc(70vh - 10px);
   padding: 0 0 130px !important;
   position: relative !important;
+
+  &:not(.-homepage) {
+    min-height: calc(70vh - 10px);
+  }
 
   @media #{$mq-smartphone}{
     padding: 0 0 130px !important;
