@@ -92,7 +92,7 @@
           node.children[i] = parseNode(node.children[i], level + 1, node.id);
 
           // If the element is the draggable, we remove its readonly attribute
-          if (node.id === draggable.parentId && i === draggable.position) {
+          if (node.id === draggable.parentId && node.children[i].position === draggable.position) {
             delete node.children[i].readonly;
             node.children[i].id = 0;
             node.children[i].name = 'Drag this';
