@@ -1,3 +1,7 @@
+import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
+import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
+import { setSqlWhere } from 'components/shared/DashboardMapView/dashboard-map-view.actions';
+
 import {
   ADD_FILTER,
   REMOVE_FILTER,
@@ -200,3 +204,9 @@ export const getFilterPossibleValues = filter => (
       });
   }
 );
+
+export const applyFilters = () => (dispatch) => {
+  dispatch(fetchData());
+  dispatch(fetchVegaWidgetData());
+  dispatch(setSqlWhere());
+};
