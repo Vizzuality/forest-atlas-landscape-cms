@@ -411,6 +411,10 @@
             position: relative;
             align-items: center;
 
+            &.-group {
+              cursor: default;
+            }
+
             ul {
               position: absolute;
               right: 0;

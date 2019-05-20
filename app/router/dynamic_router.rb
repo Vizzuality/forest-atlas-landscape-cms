@@ -126,6 +126,10 @@ class DynamicRouter
           RouteDefinition.new('/search_results', 'site_page#search_results',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
+        routes_to_write <<
+          RouteDefinition.new('/feedback', 'site_page#feedback',
+                              { id: site_page.id },
+                              constraints, tags, main_route_host)
 
         target = ContentType::HOMEPAGE ? 'site_page#homepage' : 'site_page#homepagev2'
       when ContentType::OPEN_CONTENT
@@ -151,7 +155,9 @@ class DynamicRouter
         target = 'site_page#static_content'
       when ContentType::LINK
         return
-    when ContentType::TAG_SEARCHING
+      when ContentType::GROUP
+        return
+      when ContentType::TAG_SEARCHING
         target = 'site_page#tag_searching'
       else
         target = 'site_page#open_content'

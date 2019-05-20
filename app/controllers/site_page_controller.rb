@@ -118,7 +118,15 @@ class SitePageController < ApplicationController
 
   def map_report
     build_map_variables
-    @remove_header = true
+    # @remove_header = true
+  end
+
+  def feedback
+    @contact_email = SiteSetting.contact_email_address(@site_page.site_id).value rescue nil
+    # Overriding the homepage properties to display the values for the feedback page
+    @site_page.name = 'Feedback'
+    @site_page.description = 'Page for the users to provide feedback'
+    @authenticity_token = session[:_csrf_token] ||= SecureRandom.base64(32)
   end
 
   def login
@@ -213,13 +221,15 @@ class SitePageController < ApplicationController
     return if @search_string.blank?
 
     @search_results =
-      SitePage.not_tag_page.not_link_page
+      SitePage.not_tag_page
+        .not_link_page.not_group_page
         .search(@search_string)
         .for_site(@site_page.site_id).enabled
         .limit(MAX_PAGE_SIZE)
         .offset((@page_number - 1) * MAX_PAGE_SIZE)
     @total_pages =
-      SitePage.not_tag_page.not_link_page
+      SitePage.not_tag_page
+        .not_link_page.not_group_page
         .search_tags(@search_string)
         .for_site(@site_page.site_id).enabled.count
     @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1
@@ -233,13 +243,15 @@ class SitePageController < ApplicationController
     return if @search_string.blank?
 
     @search_results =
-      SitePage.not_tag_page.not_link_page
+      SitePage.not_tag_page
+        .not_link_page.not_group_page
         .search_tags(@search_string)
         .for_site(@site_page.site_id).enabled
         .limit(MAX_PAGE_SIZE)
         .offset((@page_number - 1) * MAX_PAGE_SIZE)
     @total_pages =
-      SitePage.not_tag_page.not_link_page
+      SitePage.not_tag_page
+        .not_link_page.not_group_page
         .search(@search_string)
         .for_site(@site_page.site_id).enabled.count
     @total_pages = (@total_pages / MAX_PAGE_SIZE) + 1

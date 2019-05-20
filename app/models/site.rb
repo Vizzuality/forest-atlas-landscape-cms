@@ -164,6 +164,7 @@ class Site < ApplicationRecord
   def get_vega_datasets(widgets)
     dataset_ids = []
     widgets.each { |w| dataset_ids << w.dataset }
+    dataset_ids.uniq!
     get_datasets_contexts do
       DatasetService.get_datasets(dataset_ids: dataset_ids.join(','))
     end

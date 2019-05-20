@@ -157,7 +157,7 @@
      */
     _getPageTemplate: function () {
       return '\
-         <div class="page {{#unless enabled}} -disabled {{else}}{{#unless visible}} -disabled {{/unless}}{{/unless}} js-handle">\
+         <div class="page {{#unless enabled}} -disabled {{else}}{{#unless visible}} -disabled {{/unless}}{{/unless}}{{#unless show_on_menu}} -detached{{/unless}} js-handle">\
           <span>{{name}}</span>\
           <ul class="action-buttons">\
             {{#if disableable}}\

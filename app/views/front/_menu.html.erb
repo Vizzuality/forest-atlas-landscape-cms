@@ -106,7 +106,7 @@
         <ul>
           <% @menu_root.children.each do |child_page| -%>
               <% next unless (child_page.show_on_menu && child_page.visible?) %>
-              <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
+              <li class="<%= 'dropdown-item' if child_page.has_visible_children? %><%= ' -group' if child_page.content_type.equal?(ContentType::GROUP) %><%= (child_page.id == @active_menu_item) ? ' -active' : ''%>">
                 <% if @site_page.site_template.name == 'INDIA' and child_page.has_visible_children? %>
                   <%= link_to child_page.name, "#" %>
                 <% else %>

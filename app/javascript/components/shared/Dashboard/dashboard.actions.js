@@ -33,8 +33,9 @@ export const setSelectedTab = tab => ({
 
 /**
  * Fetch the fields of the dataset
+ * @param {string[]} hiddenFields Fields to hide from the UI
  */
-export const fetchFields = () => (
+export const fetchFields = (hiddenFields = []) => (
   (dispatch, getState) => {
     dispatch({ type: SET_FIELDS_LOADING, payload: true });
     dispatch({ type: SET_FIELDS_ERROR, payload: false });
@@ -48,7 +49,7 @@ export const fetchFields = () => (
       })
       .then(({ fields: rawFields }) => {
         const fields = Object.keys(rawFields)
-          .filter(fieldName => isAcceptedType(rawFields[fieldName].type) && isAcceptedField(fieldName))
+          .filter(fieldName => isAcceptedType(rawFields[fieldName].type) && isAcceptedField(fieldName) && hiddenFields.indexOf(fieldName) === -1)
           .map(fieldName => ({
             name: fieldName,
             type: getStandardType(rawFields[fieldName].type)

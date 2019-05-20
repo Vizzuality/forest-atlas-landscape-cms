@@ -10,7 +10,7 @@ import { getBookmarks } from 'components/shared/DashboardBookmarks/dashboard-boo
 import { getPageSlug } from 'components/shared/Dashboard/dashboard.selectors';
 import { getNonEmptyFilters, getFilters, getAvailableFields } from 'components/shared/DashboardFilters/dashboard-filters.selectors';
 
-import { resetFilters, addFilter, removeFilter } from 'components/shared/DashboardFilters/dashboard-filters.actions';
+import { resetFilters, addFilter, removeFilter, applyFilters } from 'components/shared/DashboardFilters/dashboard-filters.actions';
 
 /**
  * Retrieve the bookmarks from the localStorage
@@ -81,6 +81,8 @@ export const applyBookmark = bookmark => (
     if (bookmark.filters.length && filters.length && !filters[0].name) {
       dispatch(removeFilter(filters[0]));
     }
+
+    dispatch(applyFilters());
   }
 );
 

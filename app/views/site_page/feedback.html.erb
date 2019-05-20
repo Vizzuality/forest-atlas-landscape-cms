@@ -1,0 +1,26 @@
+<%= javascript_pack_tag 'application' %>
+
+<%= react_component('Cover', {
+  title:  'Contact us',
+  subtitle: @site_page.site.name,
+  images: @page_cover,
+  size: 'small',
+  template: @site_page.site.site_template.name
+} ) %>
+
+<%= react_component('public/ContactForm', {
+  site: @site_page.site,
+  page: {
+    name: 'Contact us',
+    description: 'Contact us'
+  },
+  siteTemplateName: @site_page.site.site_template.name,
+  siteSettings: @site_page.site.site_settings,
+  email: @contact_email,
+  authenticityToken: @authenticity_token
+}) %>
+
+<script type="text/javascript">
+  window.route = 'ContactForm';
+</script>
+

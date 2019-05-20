@@ -77,6 +77,10 @@
       content: '';
     }
 
+    &.-detached {
+      background-color: rgba($color-4, .1);
+    }
+
     &.-highlight {
       border-color: $color-1;
       background-color: $color-1;

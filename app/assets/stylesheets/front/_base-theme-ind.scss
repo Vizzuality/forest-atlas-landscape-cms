@@ -30,6 +30,12 @@ body {
   &.-wide {
     max-width: none !important;
   }
+
+  &.-map-report {
+    .c-header {
+      margin-bottom: 50px;
+    }
+  }
 }
 
   #root{
@@ -374,6 +380,10 @@ body {
 .fa-page{
   padding: 0 0 130px !important;
   position: relative !important;
+
+  &:not(.-homepage) {
+    min-height: calc(70vh - 10px);
+  }
 
   @media #{$mq-smartphone}{
     padding: 0 0 130px !important;

@@ -13,7 +13,6 @@ class Footer extends React.PureComponent {
     const availableServices = {
       facebook: 'http://www.facebook.com/sharer.php',
       twitter: 'https://twitter.com/share',
-      gplus: 'https://plus.google.com/share',
       linkedin: 'https://www.linkedin.com/shareArticle'
     }
 
@@ -33,12 +32,13 @@ class Footer extends React.PureComponent {
   }
 
   renderContactInfo() {
-    const { settings } = this.props.site;
-    return (<li
-      className="site-link-item">
-        <a href={`mailto: ${settingsUtils.getValue('contact_email_address', settings)}`}
-          className="site-link">Contact us</a>
-      </li>);
+    return (
+      <li className="site-link-item">
+        <a href="/feedback" className="site-link">
+          Contact us
+        </a>
+      </li>
+    );
   }
 
   getTermsLabel(){
@@ -49,7 +49,7 @@ class Footer extends React.PureComponent {
       terms_label = "Terms & Conditions";
     }
 
-    return terms_label;    
+    return terms_label;
   }
 
   preFooter() {
@@ -97,11 +97,6 @@ class Footer extends React.PureComponent {
               <li className="share-link-item">
                 <a className="share-link -twitter" href={this.getShareUrl('twitter')} target="_blank" rel="noopener noreferrer">
                   <Icon name="icon-Twitter" className="icon icon-Twitter"  />
-                </a>
-              </li>
-              <li className="share-link-item">
-                <a className="share-link -googleplus" href={this.getShareUrl('gplus')} target="_blank" rel="noopener noreferrer">
-                  <Icon name="icon-Google" className="icon icon-Google"  />
                 </a>
               </li>
               <li className="share-link-item">

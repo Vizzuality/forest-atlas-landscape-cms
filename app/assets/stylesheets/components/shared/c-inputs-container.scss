@@ -7,6 +7,17 @@
     max-width: 880px;
   }
 
+  &.-submitted > .container {
+    > input,
+    > textarea,
+    > select {
+      &:invalid {
+        box-shadow: none;
+        border-bottom: 2px solid $color-12;
+      }
+    }
+  }
+
   > .container {
     padding: 25px 35px;
     border-top: 1px solid;
@@ -26,7 +37,7 @@
       border-bottom-right-radius: 4px;
     }
 
-    label {
+    > label {
       display: block;
       margin-bottom: 10px;
       font-size: $font-size-small;
@@ -35,7 +46,7 @@
       text-transform: uppercase;
     }
 
-    input {
+    > input {
       display: block;
       width: 100%;
       margin: 0;
@@ -78,6 +89,56 @@
       background-size: 12px auto;
       background-position: right 11px center;
       appearance: none;
+    }
+
+    .Select {
+      max-width: none;
+
+      &.is-focused:not(.is-open) > .Select-control {
+        box-shadow: none;
+        border-color: $color-1;
+      }
+
+      .Select-input input {
+        line-height: 1;
+      }
+
+      .Select-control {
+        height: 35px;
+
+        .Select-multi-value-wrapper { margin: 0; }
+
+        .Select-value {
+          color: $color-4;
+          border-color: $color-1;
+          background-color: rgba($color-1, .1);
+          margin: 5px 0 0 5px;
+
+          .Select-value-label {
+            word-break: normal;
+          }
+
+          .Select-value-icon {
+            border-right-color: $color-1;
+
+            &:hover {
+              color: $color-4;
+              background: rgba($color-1, .2);
+            }
+          }
+        }
+      }
+
+      .Select-menu-outer {
+        z-index: 2;
+
+        .Select-option {
+          &.is-selected,
+          &.is-focused {
+            background: rgba($color-1, .1);
+          }
+        }
+      }
     }
 
     .info-button {

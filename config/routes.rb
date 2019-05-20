@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   end
 
   match '/contact', to: 'contact#send_contact_email', via: [:get, :post]
+  post 'send-feedback', to: 'contact#send_feedback'
 
   namespace :management do
     resources :profile, only: [:edit, :update]
@@ -97,6 +98,7 @@ Rails.application.routes.draw do
 
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
+  get '/subscriptions', to: 'static_page#subscriptions'
 
 
   # Auth
