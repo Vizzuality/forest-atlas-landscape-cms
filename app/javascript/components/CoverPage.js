@@ -47,7 +47,7 @@ class CoverPage extends React.Component {
               <div className="cover_page_wrapper_envelope">
                 <div className="cover-page-wrapper">
                   <div className="restoration_image_div">
-                    <img className="restoration_image" alt="Logo" src="http://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/RO_Atlas_white_png.png" />
+                    <img className="restoration_image" alt="Logo" src="https://wri-sites.s3.amazonaws.com/ifmt/NationalAtlasPartnerLogo/Atlas/RO_Atlas_white_png.png" />
                   </div>
 
                   <div className="hr_div"> <hr className="hr-homepage" /> </div>
