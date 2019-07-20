@@ -1248,3 +1248,18 @@ form{
   display: none;
 }
 // Template:TeamPage style end
+
+// Template:CollapsibleContent style start
+.wri-accordion-title {
+  cursor: pointer;
+  color: #F0AB00;
+  font-size:25px;
+
+  @media #{$mq-laptop} {
+    font-size: 30px;
+  }
+  @media #{$mq-body-width} {
+    font-size: 30px;
+  }
+}
+// Template:CollapsibleContent style end

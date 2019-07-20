@@ -22,12 +22,11 @@ class AccordionSection extends Component {
     return (
       <div
         style={{
-          background: isOpen ? "white" : "white",
           borderTop: "0.5px solid #9b9b9b",
           padding: "10px 15px"
         }}
       >
-        <div onClick={onClick} style={{ cursor: "pointer", color: "#F0AB00", fontSize:'30px' }}>
+        <div onClick={onClick} className="wri-accordion-title">
           <div>{label}
             <div style={{ float: "right" }}>
               {!isOpen && <span><b>+</b></span>}
