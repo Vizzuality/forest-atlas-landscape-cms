@@ -10,6 +10,7 @@ import Wysiwyg from 'components/shared/Wysiwyg';
 import { WysiwygEditor, Footer } from 'components';
 import RelatedPages from 'components/public/RelatedPages';
 import { AccordionWrapper } from 'components/shared/Accordion/accordion-wrapper';
+import TeamPage from 'components/public/TeamPage';
 
 
 const StaticPage = ({ site, version, relatedPages }) => (
@@ -27,13 +28,18 @@ const renderContent = ({ page: { content: contentStr }, meta }) => {
   let content = JSON.parse(contentStr);
   if (meta.siteTemplateName === 'INDIA') {
     if (content.length > 0 && content[0].content.includes('Template:CollapsibleContent')) {
-      return (<div className="vizz-wysiwyg" style={{paddingTop: '10px', paddingBottom: '10px'}}> 
+      return (<div className="vizz-wysiwyg" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Wysiwyg
           readOnly
           items={[content[1]] || []}
         />
-        <AccordionWrapper style={{ marginLeft: '10px',paddingTop: '10px' }} contents={content.slice(2)} />
-    </div>)
+        <AccordionWrapper style={{ marginLeft: '10px', paddingTop: '10px' }} contents={content.slice(2)} />
+      </div>)
+    } else if (content.length > 0 && content[0].content.includes('Template:TeamPage')) {
+      let members = JSON.parse(content[1].content.replace(/\r?\n|\r/g, ''));
+      return(
+        <TeamPage members = {members}/>
+      )
     }
   }
   return <div className="vizz-wysiwyg">

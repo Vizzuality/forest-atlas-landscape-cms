@@ -1155,3 +1155,96 @@ form{
   text-transform: uppercase;
   background-color: #fff;
  }
+
+// Template:TeamPage style start
+ .profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-gap: 60px;
+}
+
+.profile-card {
+  border-radius: 5px;
+  cursor: pointer;
+  width: 250px;
+  height: auto;
+  text-align: center;
+  margin: 20px auto;
+  box-shadow: 0px 0px 10px #ccc;
+
+  .profile-header {
+    height: 2 40px;
+
+    img {
+      width: 250px;
+      height: 250px;
+    }
+  }
+
+  .profile-body {
+    background-color: var(--white);
+    padding: 10px 10px 10px 10px;
+
+    .name {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .intro {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+      margin: 10px 0px 10px 0px;
+      color: grey;
+    }
+  }
+}
+
+.modal {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+
+  .modal-main {
+    position:fixed;
+    background: white;
+    width: 90%;
+    max-width: 1100px;
+    height: auto;
+    overflow: scroll;
+    top:50%;
+    left:50%;
+    padding: 20px;
+    transform: translate(-50%,-50%);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    transition: all 200ms;
+    font-size: 45px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #F0AB00;
+  }
+  .modal-close:hover {
+    color: #F0AB00;
+    cursor: pointer;
+  }
+
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+// Template:TeamPage style end
