@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "[![Build Status](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms.svg?branch=master)](https://travis-ci.org/Vizzuality/forest-atlas-landscape-cms)",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
