@@ -6,8 +6,6 @@
     "es6": true
   },
   "globals": {
-    "vg": true,
-    "d3": true,
     "$": true,
     "L": true,
     "Backbone": true,
@@ -15,15 +13,10 @@
     "HandlebarsTemplates": true,
     "_": true,
     "Turbolinks": true,
-    "Quill": true,
     "gon": true,
     "Fuse": true,
-    "Jiminy": true,
-    "PruneClusterForLeaflet": true,
-    "PruneCluster": true,
     "CodeMirror": true,
     "Transifex": true,
-    "pica": true,
     "ENV": true
   },
   "extends": "vizzuality",

@@ -16,8 +16,6 @@
 //= require backbone
 //= require bootstrap
 //= require summernote
-//= require d3
-//= require vega
 //= require leaflet
 //= require esri-leaflet
 //= require handlebars
@@ -25,25 +23,19 @@
 //= require jquery-nested-sortable
 //= require fuse.js/fuse
 //= require object-assign-polyfill
-//= require datalib
-//= require jiminy
 //= require select2
-//= require PruneCluster/PruneCluster
 
 //= require_self
 
 // = require_tree ./helpers
 // = require_tree ./routers/management
 // = require_tree ./templates
-// = require_tree ./blots
 // = require_tree ./views/shared
 // = require_tree ./views/management
 // = require dispatchers/managementDispatcher
 // = require ./views/admin/fileInputView
 
 (function () {
-  'use strict';
-
   this.App = {
     Events: _.extend(Backbone.Events),
     View: {},
