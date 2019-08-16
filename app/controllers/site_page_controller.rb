@@ -161,29 +161,6 @@ class SitePageController < ApplicationController
     redirect_to request.referrer
   end
 
-  def analysis_dashboard
-    gon.page_name = @site_page.name
-
-    @setting = @site_page.dataset_setting
-    if @setting
-      # Query the API in the dataset_setting
-
-      # Fill the gon for:
-      # ... user filters
-      gon.analysis_user_filters = JSON.parse @setting.columns_changeable
-      # ... widgets
-      gon.analysis_widgets = @setting.widgets.blank? ? nil : (JSON.parse @setting.widgets)
-      # ... data
-      gon.analysis_data = @setting.get_filtered_dataset
-      # ... metadata
-      gon.metadata = Dataset.get_metadata_for_frontend(session[:user_token], @setting.dataset_id)
-      # ... last modification of the fields
-      gon.analysis_timestamp = @setting.fields_last_modified
-      # ... legend fields
-      gon.legend = @setting.legend
-    end
-  end
-
   def get_active_menu_item
     if @site_page.root?
       @active_menu_item = nil

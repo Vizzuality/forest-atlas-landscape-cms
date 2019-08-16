@@ -147,8 +147,6 @@ class DynamicRouter
           RouteDefinition.new(path + '/report.html', 'site_page#map_report',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
-      when ContentType::ANALYSIS_DASHBOARD
-        target = 'site_page#analysis_dashboard'
       when ContentType::DASHBOARD_V2
         target = 'site_page#dashboard_v2'
       when ContentType::STATIC_CONTENT

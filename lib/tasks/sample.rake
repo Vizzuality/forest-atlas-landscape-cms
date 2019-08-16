@@ -60,26 +60,6 @@ def create_sites
   puts 'Base site created successfully'
 end
 
-def add_analysis_dashboard
-
-  general_dataset_setting = {
-    context_id: Context.last.id,
-    dataset_id: '299ff5ce-af92-4616-9c09-5f3ca981eb65',
-    api_table_name: 'index_299ff5ceaf9246169c095f3ca981eb65',
-    columns_changeable: %w[track scan bright_ti4 confidence].to_json,
-    columns_visible: %w[confidence bright_ti4 bright_ti5 latitude longitude track scan].to_json,
-    filters: [name: 'bright_ti5', from: '0', to: '330'].to_json,
-    widgets: [{type: 'map', lat: '10.59243', lng: '-33.2855068', zoom: '3'}, {type: 'chart', chart: 'scatter', x: 'track', y: 'scan'}, {type: 'chart', chart: 'pie', x: 'confidence'}].to_json
-  }
-
-#  @staging_demo_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @base_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @site_two.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @site_three.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @site_four.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  puts 'Added data to analysis dashboard successfully'
-end
-
 def create_routes
   create_real_routes
   create_fake_routes

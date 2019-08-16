@@ -66,8 +66,6 @@ class Management::PageStepsController < ManagementController
         @widgets = @site.get_vega_widgets([@dashboard_setting.dataset_id])
       when 'columns_selection'
         build_current_dashboard_setting
-      when 'preview_analytics_dashboard'
-        build_current_dashboard_setting
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
       when 'filters'
@@ -209,36 +207,6 @@ class Management::PageStepsController < ManagementController
         else
           render_wizard
         end
-      when 'preview_analytics_dashboard'
-        build_current_dashboard_setting
-        set_current_dashboard_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
-
-      # ANALYSIS DASHBOARD PATH
-      when 'dataset'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          @datasets_contexts = @site.get_datasets_contexts
-          render_wizard
-        end
-
-      when 'filters'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        move_forward
-
-      when 'columns'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        move_forward
-
       when 'preview'
         build_current_dashboard_setting
         set_current_dashboard_setting_state
@@ -408,7 +376,7 @@ class Management::PageStepsController < ManagementController
     db_params = page_params.to_h[:dashboard_setting] if params[:site_page] && page_params&.to_h[:dashboard_setting]
 
     @dashboard_setting = nil
-    return unless [ContentType::DASHBOARD_V2, ContentType::ANALYSIS_DASHBOARD].include?(@page.content_type)
+    return unless [ContentType::DASHBOARD_V2].include?(@page.content_type)
     if db_params[:id]
       @dashboard_setting = DashboardSetting.find(db_params[:id])
     elsif @page.dashboard_setting
