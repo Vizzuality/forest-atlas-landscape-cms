@@ -106,8 +106,6 @@ class Management::PageStepsController < ManagementController
         build_current_dashboard_setting
         gon.page_name = @page.name
       # OPEN CONTENT PATH
-      when 'open_content'
-        gon.widgets = get_widgets_list
       when 'open_content_v2'
         gon.widgets = get_widgets_list
 
@@ -139,8 +137,6 @@ class Management::PageStepsController < ManagementController
             delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
         end
         @widgets
-      when 'open_content_preview'
-        gon.widgets = get_widgets_list
       when 'map'
         unless @page.persisted?
           @page.content = if MapVersion.order(:position).first.default_settings.blank?
@@ -191,9 +187,6 @@ class Management::PageStepsController < ManagementController
             move_forward wizard_steps[3]
         end
       when 'type', 'confirmation'
-        if @page.content_type == 7
-          @page.page_version = 2
-        end
 
         set_current_page_state
         move_forward
@@ -214,15 +207,9 @@ class Management::PageStepsController < ManagementController
         move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
-      when 'open_content'
-        set_current_page_state
-        move_forward next_step, next_step, next_step
       when 'open_content_v2'
         set_current_page_state
         move_forward next_step, next_step, next_step
-      when 'open_content_preview'
-        set_current_page_state
-        move_forward
       when 'open_content_v2_preview'
         set_current_page_state
         move_forward next_step, next_step, next_step

@@ -103,9 +103,6 @@ class SitePageController < ApplicationController
   def homepage
   end
 
-  def open_content
-  end
-
   def open_content_v2
   end
 

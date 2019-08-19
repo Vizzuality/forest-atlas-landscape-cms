@@ -1,6 +1,5 @@
 class ContentType < EnumerateIt::Base
   associate_values(
-    open_content: [1, 'Open Content'],
     homepage: [3, 'Homepage'],
     map: [4, 'Map'],
     link: [5, 'Link'],

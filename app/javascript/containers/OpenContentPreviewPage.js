@@ -1,3 +1,5 @@
+// TODO: @Clement, is this still necessary?
+
 import React from 'react';
 
 import AdminContainer from 'containers/shared/AdminContainer';
