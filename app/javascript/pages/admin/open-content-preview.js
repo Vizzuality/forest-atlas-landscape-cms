@@ -1,5 +1,3 @@
-// TODO: @Clement, is this still necessary?
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
