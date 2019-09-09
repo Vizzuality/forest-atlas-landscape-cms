@@ -1,8 +1,10 @@
+<%= javascript_pack_tag 'application' %>
+
 <div class="c-extended-header">
   <div class="wrapper">
     <div class="description">
       <h1>Metadata</h1>
-      <p></p>
+      <p>Metadata is used to provide users with additional information about your dataset. It should be entered in the primary language of your site, but can be also be translated if your site supports multiple language.</p>
     </div>
   </div>
 </div>
@@ -11,6 +13,8 @@
 <%= Gon::Base.render_data %>
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+  <%= react_component('ManagementDatasetMetadata', {}) %>
+
   <%= render partial: 'management/datasets/metadata_form', locals: {f: f} %>
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
 <% end %>
