@@ -46,6 +46,34 @@
     }
   }
 
+  &.-tertiary {
+    color: $color-4;
+    background-color: $color-8;
+    border-bottom: 1px solid $color-9;
+
+    > .tab {
+      padding: 0 30px;
+      text-transform: none;
+      border: 0;
+
+      &[aria-selected='true'] {
+        position: relative;
+        background: none;
+
+        &:after {
+          display: block;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          width: 100%;
+          background-color: $color-1;
+          content: '';
+        }
+      }
+    }
+  }
+
   > .tab {
     line-height: 50px;
     text-align: center;
