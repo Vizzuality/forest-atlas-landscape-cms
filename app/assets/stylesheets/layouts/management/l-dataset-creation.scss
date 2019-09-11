@@ -18,6 +18,13 @@
   }
 
   &.-metadata {
+    padding-top: 0;
+
+    .intro {
+      max-width: 570px;
+      margin: 40px auto;
+    }
+
     .c-inputs-container > .container {
       > textarea {
         min-height: 120px;
