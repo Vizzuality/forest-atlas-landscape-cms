@@ -33,8 +33,8 @@ class Dataset
       }
     else
       {
-        pages: %w[metadata],
-        names: %w[Metadata]
+        pages: %w[metadata options],
+        names: %w[Metadata Options]
       }
     end
   end

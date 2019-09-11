@@ -1,0 +1,13 @@
+<div class="c-extended-header">
+  <div class="wrapper">
+    <div class="description">
+      <h1>Options</h1>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data %>
+
+<%= render partial: 'shared/errors', locals: { resource: @dataset } %>
