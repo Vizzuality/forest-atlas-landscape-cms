@@ -1,3 +1,5 @@
+<%= javascript_pack_tag 'application' %>
+
 <div class="c-extended-header">
   <div class="wrapper">
     <div class="description">
@@ -9,5 +11,23 @@
 
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
+
+<%= react_component('ManagementDatasetAliases', {
+  columns: [
+    {
+      name: 'capacity',
+      alias: 'Capacity (MWh)',
+      description: '',
+    },
+    {
+      name: 'brightness',
+    },
+    {
+      name: 'date',
+      alias: 'Year',
+      description: 'Year during which the values have been averaged. Year starts on January 1st, 0AM UTC and finished on December 31st, 12PM UTC.'
+    }
+  ]
+}) %>
 
 <%= render partial: 'shared/errors', locals: { resource: @dataset } %>
