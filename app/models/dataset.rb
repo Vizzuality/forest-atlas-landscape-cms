@@ -34,7 +34,7 @@ class Dataset
     else
       {
         pages: %w[metadata options],
-        names: %w[Metadata Options]
+        names: %w[Metadata Aliases]
       }
     end
   end
