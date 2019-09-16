@@ -42,6 +42,9 @@ class Management::DatasetStepsController < ManagementController
       when 'labels'
       when 'context'
         select_contexts
+      when 'metadata'
+        get_languages
+        get_metadata
     end
     render_wizard
   end
@@ -183,10 +186,11 @@ class Management::DatasetStepsController < ManagementController
     else
       :new
     end
+
     # Update the dataset with the attributes saved on the session
     @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
 
-    @dataset.application = 'forest-atlas' unless @dataset.application
+    @dataset.application = (ENV['API_APPLICATIONS'] || 'forest-atlas') unless @dataset.application
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
     @dataset.metadata = {} unless @dataset.metadata
@@ -220,5 +224,22 @@ class Management::DatasetStepsController < ManagementController
   def ensure_session_keys_exist
     session[:dataset_creation] ||= {}
     session[:context_datasets] ||= {} # TODO: is this used?
+  end
+
+  def get_languages
+    @languages = SiteSetting.languages(@site.id)
+    @default_language = SiteSetting.default_site_language(@site.id).value
+  end
+
+  def get_metadata
+    formatted_metadata = {}
+    metadata = DatasetService.metadata_find_by_ids(session[:user_token], [@dataset.id])
+    metadata.each do |metadata|
+      formatted_metadata[metadata['attributes']['language']] =
+        metadata['attributes']
+      formatted_metadata[metadata['attributes']['language']]['id'] =
+        metadata['id']
+    end
+    @metadata = formatted_metadata
   end
 end
