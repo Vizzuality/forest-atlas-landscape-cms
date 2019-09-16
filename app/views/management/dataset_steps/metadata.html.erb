@@ -14,19 +14,9 @@
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
   <%= react_component('ManagementDatasetMetadata', {
-    languages: { en: 'English', fr: 'French' },
-    defaultLanguage: 'fr',
-    metadata: {
-      en: {
-        description: 'I\'m a description',
-        citation: 'I\'m a citation',
-        source: 'I\'m a source'
-      },
-      fr: {
-        description: 'Je suis une description',
-        citation: 'Je suis une citation'
-      }
-    }
+    languages: @languages,
+    defaultLanguage: @default_language,
+    metadata: @metadata
   }) %>
 
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>

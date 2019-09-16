@@ -106,6 +106,7 @@ class Management::DatasetStepsController < ManagementController
 
   private
   def dataset_params
+    metadata_params = Dataset::API_PROPERTIES + Dataset::APPLICATION_PROPERTIES
     params.require(:dataset).permit(
       :name,
       :tags,
@@ -116,7 +117,12 @@ class Management::DatasetStepsController < ManagementController
       :data_path,
       context_ids: [],
       legend: [:lat, :long, :country, :region, :date],
-      metadata: Dataset::API_PROPERTIES + Dataset::APPLICATION_PROPERTIES
+      metadata: {
+        es: metadata_params,
+        en: metadata_params,
+        fr: metadata_params,
+        gr: metadata_params
+      }
     )
   end
 
@@ -191,6 +197,9 @@ class Management::DatasetStepsController < ManagementController
     @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
 
     @dataset.application = (ENV['API_APPLICATIONS'] || 'forest-atlas') unless @dataset.application
+
+    process_metadata(ds_params) if ds_params[:metadata]
+
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
     @dataset.metadata = {} unless @dataset.metadata
@@ -241,5 +250,12 @@ class Management::DatasetStepsController < ManagementController
         metadata['id']
     end
     @metadata = formatted_metadata
+  end
+
+  def process_metadata(ds_params)
+    ds_params[:metadata] = ds_params[:metadata].map do |language, info|
+      info['language'] = language
+      info
+    end
   end
 end

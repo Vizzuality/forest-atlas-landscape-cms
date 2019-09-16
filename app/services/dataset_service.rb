@@ -176,46 +176,49 @@ class DatasetService < ApiService
     metadata_body = {
       application: application,
       name: name,
-      applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).
-      merge(tags: tags_array)
+      language: metadata[:language],
+      applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).merge(tags: tags_array.join(','))
     }.merge(
       metadata.slice(*Dataset::API_PROPERTIES)
-      ).to_json
+    )
 
-      begin
-        Rails.logger.info 'Saving dataset Metadata in the API.'
-        Rails.logger.info "Body: #{metadata_body}"
+    metadata_body = metadata_body.to_json
+    begin
+      Rails.logger.info 'Saving dataset Metadata in the API.'
+      Rails.logger.info "Body: #{metadata_body}"
 
-        metadata_res = yield(metadata_body)
+      metadata_res = yield(metadata_body)
 
-        Rails.logger.info "Response from dataset metadata endpoint: #{metadata_res.body}"
-      rescue => e
-        Rails.logger.error "Error updating dataset metadata in the API: #{e}"
-        return nil
-      end
-      true
+      Rails.logger.info "Response from dataset metadata endpoint: #{metadata_res.body}"
+    rescue => e
+      Rails.logger.error "Error updating dataset metadata in the API: #{e}"
+      return nil
     end
+    true
+  end
 
   def self.create_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
-    save_metadata(token, dataset_id, application, name, tags_array, metadata) do |body|
-      @conn.post do |req|
-        req.url "/dataset/#{dataset_id}/metadata"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
+    (metadata.is_a?(Array) ? metadata : [metadata]).each do |metadata_info|
+      save_metadata(token, dataset_id, application, name, tags_array, metadata_info) do |body|
+        @conn.post do |req|
+          req.url "/dataset/#{dataset_id}/metadata"
+          req.headers['Authorization'] = "Bearer #{token}"
+          req.headers['Content-Type'] = 'application/json'
+          req.body = body
+        end
       end
     end
   end
 
   def self.update_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
-    save_metadata(token, dataset_id, application, name, tags_array, metadata) do |body|
-
-
-      @conn.patch do |req|
-        req.url "/dataset/#{dataset_id}/metadata"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
+    (metadata.is_a?(Array) ? metadata : [metadata]).each do |metadata_info|
+      save_metadata(token, dataset_id, application, name, tags_array, metadata_info) do |body|
+        @conn.patch do |req|
+          req.url "/dataset/#{dataset_id}/metadata"
+          req.headers['Authorization'] = "Bearer #{token}"
+          req.headers['Content-Type'] = 'application/json'
+          req.body = body
+        end
       end
     end
   end
@@ -292,7 +295,9 @@ class DatasetService < ApiService
           tags: tags_array
         }
       }
-    }).to_json
+    })
+
+    body = body.to_json
 
     begin
       Rails.logger.info 'Creating Dataset in the API.'

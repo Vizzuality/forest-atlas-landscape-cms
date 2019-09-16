@@ -84,7 +84,7 @@ class Dataset
     @id = data[:id]
     @name = data[:name]
     @application = data[:application]
-    @metadata = (data[:metadata] || {}).symbolize_keys
+    @metadata = (data[:metadata] || [{}]).map { |m| m.symbolize_keys }
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
@@ -148,19 +148,21 @@ class Dataset
       attributes = attributes.merge(data_attributes.except(:metadata))
       if data_attributes[:metadata] && data_attributes[:metadata].any?
         # select metadata by current locale, and app
-        metadata = data_attributes[:metadata].find do |md|
-          md['attributes']['language'] == I18n.locale.to_s && md['attributes']['application'] == 'forest-atlas'
+        metadata = data_attributes[:metadata].select do |md|
+          md['attributes']['application'] == 'forest-atlas'
         end
-        if metadata.present? and metadata['attributes']
-          metadata_attributes = metadata['attributes'].symbolize_keys
-          metadata_attributes[:id] = metadata['id']
-          if metadata_attributes[:applicationProperties]
-            metadata_attributes = metadata_attributes.merge(
-              metadata_attributes[:applicationProperties].symbolize_keys
+        metadata_attributes = metadata.map do |md|
+          next unless md['attributes']
+          md_attributes = md['attributes'].symbolize_keys
+          md_attributes[:id] = md['id']
+          if md_attributes[:applicationProperties]
+            md_attributes = md_attributes.merge(
+              md_attributes[:applicationProperties].symbolize_keys
             )
           end
-          attributes = attributes.merge({metadata: metadata_attributes})
+          md_attributes
         end
+        attributes = attributes.merge({metadata: metadata_attributes})
       end
     end
     dataset.set_attributes(attributes)
@@ -179,24 +181,27 @@ class Dataset
 
   def update(token)
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
-    if metadata[:id].present?
-      update_metadata(token)
-    else
-      create_metadata(token)
+
+    (metadata.is_a?(Array) ? metadata : [metadata]).each do |metadata_info|
+      if metadata_info[:id].present?
+        update_metadata(token, metadata_info)
+      else
+        create_metadata(token, metadata_info)
+      end
     end
   end
 
-  def update_metadata(token)
+  def update_metadata(token, metadata = metadata)
     tags_array = tags && tags.split(',') || []
     DatasetService.update_metadata(
-      token, id, 'forest-atlas', name, tags_array, metadata
+      token, id, ENV['API_APPLICATIONS'] || 'forest-atlas', name, tags_array, metadata
     )
   end
 
-  def create_metadata(token)
+  def create_metadata(token, metadata = metadata)
     tags_array = tags && tags.split(',') || []
     DatasetService.create_metadata(
-      token, id, 'forest-atlas', name, tags_array, metadata
+      token, id, ENV['API_APPLICATIONS'] || 'forest-atlas', name, tags_array, metadata
     )
   end
 
