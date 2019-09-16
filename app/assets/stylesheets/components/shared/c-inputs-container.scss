@@ -42,7 +42,41 @@
       border-bottom-right-radius: 4px;
     }
 
-    > label {
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      flex-wrap: wrap;
+      padding: 20px 0;
+
+      &:first-of-type {
+        padding-top: 0;
+      }
+
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+
+      @for $index from 2 through 4 {
+        .column {
+          padding: 0 15px;
+
+          &.column-#{$index} {
+            flex-basis: calc(100% / #{$index});
+
+            &:first-of-type {
+              padding-left: 0;
+            }
+
+            &:last-of-type {
+              padding-right: 0;
+            }
+          }
+        }
+      }
+    }
+
+    label {
       display: block;
       margin-bottom: 10px;
       font-size: $font-size-small;
@@ -51,7 +85,7 @@
       text-transform: uppercase;
     }
 
-    > input {
+    input {
       display: block;
       width: 100%;
       margin: 0;
@@ -67,7 +101,7 @@
       font-weight: $font-weight-light;
     }
 
-    > textarea {
+    textarea {
       width: 100%;
       margin: 0;
       padding: 0;
@@ -79,7 +113,7 @@
       line-height: 1.5;
     }
 
-    > select {
+    select {
       width: 100%;
       margin: 0;
       padding: 9px 35px 0 15px;
