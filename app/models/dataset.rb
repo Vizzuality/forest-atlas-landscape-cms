@@ -85,7 +85,7 @@ class Dataset
     @name = data[:name]
     @application = data[:application]
     @metadata = (data[:metadata].is_a?(Array) ? metadata : [metadata || {}])
-      .map { |m| m.symbolize_keys }
+      &.map { |m| m&.symbolize_keys }
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
