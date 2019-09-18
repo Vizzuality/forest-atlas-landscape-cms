@@ -223,6 +223,26 @@ class DatasetService < ApiService
     end
   end
 
+  def self.delete_metadata(token, dataset_id, application, language)
+    begin
+      Rails.logger.info 'Deleting dataset metadata in the API'
+      Rails.logger.info "Dataset: #{dataset_id}"
+      Rails.logger.info "Application: #{application}"
+      Rails.logger.info "Language: #{language}"
+
+      metadata_res = @conn.delete do |req|
+        req.url "/dataset/#{dataset_id}/metadata?application=#{application}&language=#{language}"
+        req.headers['Authorization'] = "Bearer #{token}"
+      end
+
+      Rails.logger.info "Response from dataset metadata endpoint: #{metadata_res.body}"
+    rescue => e
+      Rails.logger.error "Error deleting dataset metadata in the API: #{e}"
+      return nil
+    end
+    true
+  end
+
   # Updates the dataset in the API
   # To do so, the attribute "overwrite" must be set to true
   # And the must be a post request to /data-overwrite

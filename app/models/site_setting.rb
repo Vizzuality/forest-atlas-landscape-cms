@@ -37,7 +37,7 @@ class SiteSetting < ApplicationRecord
     spanish: 'es',
     english: 'en',
     french: 'fr',
-    georgian: 'gr'
+    georgian: 'ka'
   }
 
   # Makes sure the same site doesn't have a repeated setting
