@@ -23,8 +23,8 @@ class Dataset
   def form_steps
     if id.nil?
       {
-        pages: %w[title connector labels metadata context],
-        names: %w[Title Connector Labels Metadata Context]
+        pages: %w[title connector labels context],
+        names: %w[Title Connector Labels Context]
       }
     elsif provider.eql?('csv')
       {
@@ -84,8 +84,7 @@ class Dataset
     @id = data[:id]
     @name = data[:name]
     @application = data[:application]
-    @metadata = (data[:metadata].is_a?(Array) ? metadata : [metadata || {}])
-      &.map { |m| m&.symbolize_keys }
+    @metadata = (data[:metadata] || {}).symbolize_keys
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
@@ -124,11 +123,13 @@ class Dataset
   end
 
   def connector_url=(value)
-    if (not @connector.eql? 'arcgis' or value.include? 'f=pjson')
+    if !@connector.eql? 'arcgis' or value.include? 'f=pjson'
       @connector_url = value and return
     end
 
-    if (value.include? '?')
+    return unless value
+
+    if value.include? '?'
       @connector_url = value+'&f=pjson'
     else
       @connector_url = value+'?f=pjson'
@@ -152,7 +153,8 @@ class Dataset
         metadata = data_attributes[:metadata].select do |md|
           md['attributes']['application'] == 'forest-atlas'
         end
-        metadata_attributes = metadata.map do |md|
+        metadata_attributes = {}
+        metadata.each do |md|
           next unless md['attributes']
           md_attributes = md['attributes'].symbolize_keys
           md_attributes[:id] = md['id']
@@ -161,7 +163,7 @@ class Dataset
               md_attributes[:applicationProperties].symbolize_keys
             )
           end
-          md_attributes
+          metadata_attributes[md_attributes[:language]] = md_attributes
         end
         attributes = attributes.merge({metadata: metadata_attributes})
       end
@@ -183,7 +185,7 @@ class Dataset
   def update(token)
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
 
-    (metadata.is_a?(Array) ? metadata : [metadata]).each do |metadata_info|
+    metadata.each do |language, metadata_info|
       if metadata_info[:id].present?
         update_metadata(token, metadata_info)
       else
@@ -241,6 +243,15 @@ class Dataset
   def self.get_metadata_for_frontend(user_token, dataset_id)
     metadata_list = Dataset.get_metadata_list_for_frontend(user_token, dataset_id)
     metadata_list[dataset_id]
+  end
+
+  def get_languages
+    sites_ids = ContextDataset.
+      where(dataset_id: @id).
+      joins("INNER JOIN context_sites ON context_sites.context_id = context_datasets.context_id").
+      select("context_sites.site_id").
+      map(&:site_id).uniq
+    sites_ids.map { |site_id| SiteSetting.languages(site_id) }.reduce({}, :merge)
   end
 
   private

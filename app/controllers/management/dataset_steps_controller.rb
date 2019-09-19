@@ -188,9 +188,16 @@ class Management::DatasetStepsController < ManagementController
     ds_params = params[:dataset] ? dataset_params : {}
     @dataset = ds_params[:dataset] ? Dataset.find(ds_params[:dataset]) : Dataset.new
     @dataset_id = if @dataset && @dataset.persisted?
-      @dataset.id
+      params[:dataset_id] || @dataset.id
     else
       :new
+    end
+
+    if !params[:dataset] && params[:dataset_id]
+      @dataset.id = @dataset_id
+      @dataset = Dataset.find_with_metadata(params[:dataset_id])
+      ds_params = @dataset.attributes
+      set_current_dataset_state
     end
 
     # Update the dataset with the attributes saved on the session
@@ -198,7 +205,7 @@ class Management::DatasetStepsController < ManagementController
 
     @dataset.application = (ENV['API_APPLICATIONS'] || 'forest-atlas') unless @dataset.application
 
-    process_metadata(ds_params) if ds_params[:metadata]
+    process_metadata(ds_params)
 
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
@@ -236,7 +243,7 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def get_languages
-    @languages = SiteSetting.languages(@site.id)
+    @languages = @dataset.get_languages
     @default_language = SiteSetting.default_site_language(@site.id).value
   end
 
@@ -253,9 +260,11 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def process_metadata(ds_params)
-    ds_params[:metadata] = ds_params[:metadata].map do |language, info|
-      info['language'] = language
-      info
+    (ds_params[:metadata] || {}).each do |language, info|
+      ds_params[:metadata][language]['language'] = language
+      if ds_params[:metadata][language]['id'].blank?
+        ds_params[:metadata][language].delete('id')
+      end
     end
   end
 end
