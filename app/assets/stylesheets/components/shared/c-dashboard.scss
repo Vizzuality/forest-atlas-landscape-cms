@@ -17,20 +17,20 @@
   }
 
   .c-dashboard-map-view {
-    max-width: $body-max-width;
+    max-width: $content-width;
     height: 600px;
     margin: 0 auto;
   }
 
   .c-dashboard-table-view {
-    max-width: $body-max-width;
+    max-width: $content-width;
     margin: 0 auto;
   }
 
   .c-dashboard-bookmarks {
     max-width: none;
     margin-bottom: 50px;
-    background: rgba($color-1, .1);
+    background: rgba($accent-color, .1);
 
     .info {
       position: absolute;
@@ -92,7 +92,7 @@
       position: relative;
       justify-content: center;
       width: auto;
-      max-width: $body-max-width;
+      max-width: $content-width;
       overflow: visible;
     }
 
@@ -115,7 +115,7 @@
     align-items: center;
     margin: 15px auto 0;
     width: 100%;
-    max-width: $body-max-width;
+    max-width: $content-width;
 
     .right {
       display: flex;
@@ -130,9 +130,9 @@
       height: 35px;
       margin-left: 10px;
       padding: 0 10px;
-      border: 1px solid $color-1;
+      border: 1px solid $accent-color;
       border-radius: 30px;
-      background: rgba($color-1, .1);
+      background: rgba($accent-color, .1);
       color: $color-4;
       line-height: 35px;
       cursor: pointer;
@@ -152,11 +152,13 @@
   .details-modal {
     h1 {
       margin: 0;
+      font-family: $heading-font;
       font-size: $font-size-medium;
     }
 
     h2 {
       margin: 15px 0 0;
+      font-family: $heading-font;
       font-size: $font-size-normal;
 
       & + p {

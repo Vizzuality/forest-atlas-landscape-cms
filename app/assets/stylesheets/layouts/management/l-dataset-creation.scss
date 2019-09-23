@@ -114,7 +114,7 @@
           border: 1px solid $color-13;
           border-radius: 4px;
           color: $color-4;
-          font-family: $font-family-1;
+          font-family: $content-font;
           font-size: $font-size-normal;
         }
       }
@@ -135,12 +135,12 @@
           }
 
           .select2-selection__choice {
-            border-color: $color-1;
+            border-color: $accent-color;
             background-color: $color-3;
 
             > span {
               margin-right: 5px;
-              color: $color-1;
+              color: $accent-color;
               font-size: $font-size-medium;
             }
           }

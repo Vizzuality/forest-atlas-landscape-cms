@@ -11,6 +11,7 @@
 
   h1 {
     color: $color-3;
+    font-family: $heading-font;
     font-size: $font-size-huge;
     font-weight: $font-weight-light;
   }
@@ -48,6 +49,7 @@
     max-width: 425px;
 
     > h1 {
+      font-family: $heading-font;
       margin: 0 0 10px;
     }
 

@@ -2,6 +2,7 @@
   padding: 20px 30px;
 
   h3 {
+    font-family: $heading-font;
     font-size: 34px;
     font-weight: 300;
     line-height: 1;
@@ -22,6 +23,7 @@
     h4 {
       display: inline-block;
       max-width: calc(100% - 80px);
+      font-family: $heading-font;
     }
 
     button {

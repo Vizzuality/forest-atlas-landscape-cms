@@ -43,6 +43,7 @@
   h3 {
     display: inline-block;
     margin: 0;
+    font-family: $heading-font;
     font-size: inherit;
     font-weight: $font-weight-normal;
 
@@ -63,7 +64,7 @@
       padding: 0;
       border: 0;
       background: transparent;
-      color: $color-1;
+      color: $accent-color;
       font-family: inherit;
       font-size: inherit;
       cursor: pointer;
@@ -164,7 +165,7 @@
           height: 100%;
           border: 0;
           border-radius: 100px;
-          background-color: $color-1;
+          background-color: $accent-color;
           color: $color-3;
           font-family: inherit;
           font-size: inherit;
@@ -217,7 +218,7 @@
         height: 100%;
 
         path {
-          fill: $color-1;
+          fill: $accent-color;
         }
       }
     }

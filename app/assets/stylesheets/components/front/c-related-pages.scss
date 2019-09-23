@@ -19,7 +19,7 @@
     flex-basis: 100%;
     min-height: 150px;
     padding: 20px;
-    background-color: rgba($color-1, 0.2);
+    background-color: rgba($accent-color, 0.2);
     margin-bottom: 20px;
 
     @media #{$mq-mobile} {
@@ -51,16 +51,14 @@
   h3 {
     flex-basis: 100%;
     margin-bottom: 20px;
+    font-family: $heading-font;
     font-size: $font-size-medium;
     text-align: center;
-
-    @if $theme == 1 {
-      font-family: $font-family-2;
-    }
   }
 
   .title {
     margin-bottom: 10px;
+    font-family: $heading-font;
     font-size: $font-size-x-normal;
   }
 

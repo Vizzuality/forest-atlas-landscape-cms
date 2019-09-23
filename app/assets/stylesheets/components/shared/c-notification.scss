@@ -6,7 +6,7 @@
   padding: 15px 25px;
   transform: translateY(-100%);
   transition: transform .3s ease-in-out;
-  background-color: rgba($color-1, .9);
+  background-color: rgba($accent-color, .9);
   z-index: 10;
 
   @media #{$mq-tablet} {

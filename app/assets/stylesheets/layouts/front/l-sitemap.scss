@@ -6,6 +6,7 @@
   h1 {
     max-width: 600px;
     margin: 25px 0;
+    font-family: $heading-font;
     font-size: $font-size-big;
     font-weight: $font-weight-light;
     line-height: 1.2;
@@ -53,7 +54,7 @@
       a {
         text-transform: capitalize;
         background-color: transparent;
-        color: $color-1;
+        color: $accent-color;
       }
 
       ul {

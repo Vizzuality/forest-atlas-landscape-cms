@@ -30,7 +30,7 @@
     &:focus {
       + label {
         &::before {
-          border-color: $color-1;
+          border-color: $accent-color;
         }
       }
     }
@@ -38,8 +38,8 @@
     &:checked {
       + label {
         &::before {
-          border-color: $color-1;
-          background-color: $color-1;
+          border-color: $accent-color;
+          background-color: $accent-color;
         }
       }
     }

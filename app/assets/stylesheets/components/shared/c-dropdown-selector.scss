@@ -71,13 +71,13 @@
         }
 
         @if $theme == 1 or $theme == 3 {
-          background-color: rgba($color-1, .1);
+          background-color: rgba($accent-color, .1);
         }
       }
 
       &.-active {
         position: relative;
-        color: $color-1;
+        color: $accent-color;
 
         &::before {
           display: block;
@@ -87,8 +87,8 @@
           width: 8px;
           height: 8px;
           transform: translateY(-50%) rotate(45deg);
-          border-top: 2px solid $color-1;
-          border-right: 2px solid $color-1;
+          border-top: 2px solid $accent-color;
+          border-right: 2px solid $accent-color;
           border-bottom: 0;
           border-left: 0;
           content: '';
@@ -140,8 +140,8 @@
         content: '';
 
         @if $theme == 1 or $theme == 3 {
-          border-top: 2px solid $color-1;
-          border-right: 2px solid $color-1;
+          border-top: 2px solid $accent-color;
+          border-right: 2px solid $accent-color;
         }
 
         @if $theme == 2 {
@@ -165,8 +165,8 @@
         content: '';
 
         @if $theme == 1 or $theme == 3 {
-          border-top: 2px solid $color-1;
-          border-right: 2px solid $color-1;
+          border-top: 2px solid $accent-color;
+          border-right: 2px solid $accent-color;
         }
 
         @if $theme == 2 {
