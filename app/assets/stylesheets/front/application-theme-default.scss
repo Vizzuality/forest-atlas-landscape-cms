@@ -1,0 +1,36 @@
+// NOTE: This file is used in development only. _template-XXX.css.scss.erb is used instead for
+// staging and production.
+// The variables below are only used in development.
+
+$template: 'default'; // String: «default», «india»
+
+$accent-color: #FF8111; // Hex code
+
+$content-width: 1280px; // Pixels or percentage
+$content-font: 'Fira Sans'; // Font family name
+$heading-font: 'Merriweather'; // Font family name
+$cover-size: 170px; // Pixels
+$cover-text-alignment: center; // text-align value
+
+$header-menu-items-separator: true; // Boolean
+$header-background-colour: 'white'; // String: «dark», «grey», «white»
+$header-background-transparency: 'semi'; // String: «solid», «semi», «transparent»
+
+$footer-background-colour: 'dark'; // String: «dark», «grey», «accent-color»
+$footer-text-colour: 'accent-color'; // String: «white», «accent-color»
+$footer-links-colour: 'white'; // String: «white», «accent-color»
+
+@import
+'../../../node_modules/widget-editor/dist/styles.min',
+'../../../node_modules/rc-slider/assets/index',
+'../../../node_modules/react-select/dist/react-select',
+'../../../node_modules/vizz-wysiwyg/build/rw',
+'../../../node_modules/slick-carousel/slick/slick.scss',
+'../../../node_modules/slick-carousel/slick/slick-theme.scss',
+'leaflet',
+'../helpers',
+'settings-theme-default',
+'base-theme-default',
+'../layouts/front/*',
+'../components/shared/**/*',
+'../components/front/**/*';
