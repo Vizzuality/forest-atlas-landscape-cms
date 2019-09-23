@@ -44,6 +44,7 @@
   .-intro {
     max-width: 1080px;
     margin: 0 auto;
+    font-family: $heading-font;
   }
 
   h1 {
@@ -71,8 +72,7 @@
     }
 
     @if $theme == 1 {
-      color: $color-1;
-      font-family: $font-family-2;
+      color: $accent-color;
       font-weight: $font-weight-bold;
       line-height: 1.25;
     }
@@ -94,7 +94,7 @@
     }
 
     @if $theme == 1 {
-      color: $color-1;
+      color: $accent-color;
       letter-spacing: -0.3px;
     }
   }
@@ -119,7 +119,7 @@
   }
 
   a {
-    color: $color-1;
+    color: $accent-color;
     text-decoration: none;
     background-color: transparent;
   }
@@ -135,7 +135,7 @@
       line-height: 2;
 
       &::before {
-        font-family: $font-family-1;
+        font-family: $content-font;
       }
     }
   }
@@ -177,7 +177,7 @@
     }
 
     @if $theme == 1 {
-      color: $color-1;
+      color: $accent-color;
       font-family: $font-family-2;
       line-height: 1.5;
 
@@ -207,7 +207,7 @@
 
     &.-cover {
       @media #{$mq-laptop} {
-        width: $body-max-width;
+        width: $content-width;
         margin-left: #{-1 * $wrapper-padding};
       }
     }

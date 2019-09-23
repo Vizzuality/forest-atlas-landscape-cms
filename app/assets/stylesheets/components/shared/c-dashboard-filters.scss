@@ -101,8 +101,8 @@
       .rc-slider {
         margin: 0 15px;
 
-        .rc-slider-track { background-color: $color-1; }
-        .rc-slider-handle { border-color: $color-1; }
+        .rc-slider-track { background-color: $accent-color; }
+        .rc-slider-handle { border-color: $accent-color; }
       }
     }
 
@@ -118,7 +118,7 @@
 
       &.is-focused:not(.is-open) > .Select-control {
         box-shadow: none;
-        border-color: $color-1;
+        border-color: $accent-color;
       }
 
       .Select-control {
@@ -129,15 +129,15 @@
 
         .Select-value {
           color: $color-4;
-          border-color: $color-1;
-          background-color: rgba($color-1, .1);
+          border-color: $accent-color;
+          background-color: rgba($accent-color, .1);
 
           .Select-value-icon {
-            border-right-color: $color-1;
+            border-right-color: $accent-color;
 
             &:hover {
               color: $color-4;
-              background: rgba($color-1, .2);
+              background: rgba($accent-color, .2);
             }
           }
         }
@@ -149,7 +149,7 @@
         .Select-option {
           &.is-selected,
           &.is-focused {
-            background: rgba($color-1, .1);
+            background: rgba($accent-color, .1);
           }
         }
       }
@@ -175,7 +175,7 @@
 
         &:focus,
         &:active {
-          border-color: $color-1;
+          border-color: $accent-color;
           outline: none;
         }
       }
@@ -188,7 +188,7 @@
 
     .delete-button {
       position: relative;
-      font-family: $font-family-1;
+      font-family: $content-font;
       font-size: $font-size-small;
       color: $color-4;
       border: 0;
@@ -222,7 +222,7 @@
 
 .flatpickr-calendar {
   .flatpickr-day.selected {
-    background: $color-1;
-    border-color: $color-1;
+    background: $accent-color;
+    border-color: $accent-color;
   }
 }

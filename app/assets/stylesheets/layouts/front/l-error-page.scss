@@ -9,6 +9,7 @@
   h1 {
     max-width: 600px;
     margin: 25px 0;
+    font-family: $heading-font;
     font-size: $font-size-big;
     font-weight: $font-weight-light;
     line-height: 1.2;
@@ -45,7 +46,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      color: $color-1;
+      color: $accent-color;
 
       font-size: $font-size-s-normal;
       line-height: 2.4;
@@ -60,7 +61,7 @@
 
       a {
         background-color: transparent;
-        color: $color-1;
+        color: $accent-color;
       }
 
       > ul {
