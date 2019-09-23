@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Slider from 'react-slick';
 
@@ -144,6 +144,18 @@ class CoverPage extends React.Component {
             <h2 className="cover-subtitle">
               {subtitle}
             </h2>
+          )}
+          {images.length && images[0].attribution && size === 'small' && (
+            <div className="cover-attribution">
+              {images[0].attribution.url && (
+                <a target="_blank" href={images[0].attribution.url} rel="noopener noreferrer">
+                  {images[0].attribution.label}
+                </a>
+              )}
+              {!images[0].attribution.url && images[0].attribution.label && (
+                <p>{images[0].attribution.label}</p>
+              )}
+            </div>
           )}
         </div>
 
