@@ -113,6 +113,7 @@ $color-14: #ff706c;
 $color-15: #404040;
 $color-16: tint($accent-color, 85%);
 $color-17: #0B0908;
+$color-18: #d8d8d8;
 
 // GENERAL LAYOUT
 $content-max-width:       750px;
@@ -140,3 +141,5 @@ $mq-body-width: 'screen and (min-width: #{$content-width})';
 $admin: false;
 
 
+// TODO: remove this, temporary code to make the SCSS compile
+$theme: 0;
