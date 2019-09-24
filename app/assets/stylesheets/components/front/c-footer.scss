@@ -1,12 +1,16 @@
 .c-pre-footer {
   padding: 15px 0;
 
-  @if $theme == 2 or $theme == 3 {
-    background-color: rgba($color-6, 0.2);
+  @if $footer-background-colour == 'dark' or $template == 'india' {
+    background-color: rgba($color-7, .2);
   }
 
-  @if $theme == 1 {
-    background-color: rgba($accent-color, 0.2);
+  @if $footer-background-colour == 'grey' {
+    background-color: rgba($color-18, .2);
+  }
+
+  @if $footer-background-colour == 'accent-color' {
+    background-color: rgba($accent-color, .2);
   }
 
   @media print {
@@ -17,17 +21,28 @@
 .c-footer {
   padding: 15px 0;
 
-  @if $theme == 3 {
-    background-color: rgba($color-17, 0.75);
+  @if $footer-text-colour == 'white' or $template == 'india' {
+    color: $color-3;
   }
 
-  @if $theme == 2 {
-    background-color: $color-6;
+  @if $footer-text-colour == 'accent-color' {
+    color: $accent-color;
   }
 
-  @if $theme == 1 {
-    font-size: $font-size-normal;
+  @if $footer-background-colour == 'dark' {
+    background-color: $color-7;
+  }
+
+  @if $footer-background-colour == 'grey' {
+    background-color: $color-18;
+  }
+
+  @if $footer-background-colour == 'accent-color' {
     background-color: $accent-color;
+  }
+
+  @if $template == 'india' {
+    background-color: $color-17;
   }
 
   @media #{$mq-tablet} {
@@ -40,20 +55,19 @@
   }
 
   a {
-    @if $theme == 2 {
-      display: inline;
-      padding: 0;
-      background-color: transparent;
+    @if $footer-links-colour == 'white' or $template == 'india' {
+      color: $color-3;
+    }
+
+    @if $footer-links-colour == 'accent-color' {
+      color: $accent-color;
     }
   }
 
   > .wrapper {
+    max-width: $content-width;
     height: 100%;
-
-    @if $theme == 3 {
-      max-width: $content-width;
-      margin: 0 auto;
-    }
+    margin: 0 auto;
 
     @media #{$mq-tablet} {
       display: flex;
@@ -63,12 +77,16 @@
   }
 
   .separator {
-    @if $theme == 2 or $theme == 3 {
-      color: $color-4;
+    @if $footer-text-colour == 'white' {
+      color: rgba($color-3, 0.3);
     }
 
-    @if $theme == 1 {
-      color: rgba($color-3, 0.1);
+    @if $footer-text-colour == 'accent-color' {
+      color: rgba($accent-color, .3);
+    }
+
+    @if $template == 'india' {
+      color: $color-4;
     }
   }
 
@@ -77,15 +95,8 @@
       &:after {
         display: inline-block;
         margin: 0 3px;
+        opacity: .3;
         content: "|";
-
-        @if $theme == 1 or $theme == 3 {
-          color: rgba($color-3, 0.3);
-        }
-
-        @if $theme == 2 {
-          color: rgba($accent-color, 0.3);
-        }
       }
 
       &:last-of-type {
@@ -95,15 +106,6 @@
       }
 
       > .site-link {
-        @if $theme == 1 or $theme == 3 {
-          color: $color-3;
-          text-decoration: none;
-        }
-
-        @if $theme == 2 {
-          color: $accent-color;
-        }
-
         font-weight: $font-weight-light;
         letter-spacing: 0.1px;
         line-height: 1.7;
@@ -122,7 +124,6 @@
     }
 
     > .share-text {
-      color: $color-3;
       font-weight: $font-weight-light;
       letter-spacing: 0.1px;
       line-height: 1.7;
@@ -154,14 +155,7 @@
         > .icon {
           width: 25px;
           height: 100%;
-
-          @if $theme == 2 {
-            fill: $accent-color;
-          }
-
-          @if $theme == 1 or $theme == 3 {
-            fill: $color-3;
-          }
+          fill: currentColor;
         }
       }
     }
