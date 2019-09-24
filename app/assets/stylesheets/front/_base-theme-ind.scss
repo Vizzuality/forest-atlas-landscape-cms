@@ -17,6 +17,7 @@ body {
 }
 
 body {
+  position: relative; // Make sure the header has the correct width
   color: rgba(11, 9, 8, 1) !important;
   font-family: $font-family-1 !important;
   font-size: $font-size-s-normal !important;

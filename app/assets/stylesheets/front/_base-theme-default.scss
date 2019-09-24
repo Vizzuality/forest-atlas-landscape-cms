@@ -16,6 +16,7 @@ body {
 }
 
 body {
+  position: relative; // Make sure the header has the correct width
   max-width: $content-width;
   color: $color-4;
   font-family: $content-font;
