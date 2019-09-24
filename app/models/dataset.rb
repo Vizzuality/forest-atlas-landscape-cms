@@ -123,7 +123,7 @@ class Dataset
   end
 
   def connector_url=(value)
-    if !@connector.eql? 'arcgis' or value.include? 'f=pjson'
+    if !@connector.eql?('arcgis') || value.include?('f=pjson')
       @connector_url = value and return
     end
 
@@ -151,7 +151,7 @@ class Dataset
       if data_attributes[:metadata] && data_attributes[:metadata].any?
         # select metadata by current locale, and app
         metadata = data_attributes[:metadata].select do |md|
-          md['attributes']['application'] == 'forest-atlas'
+          md['attributes']['application'] == ENV['API_APPLICATIONS'] || 'forest-atlas'
         end
         metadata_attributes = {}
         metadata.each do |md|

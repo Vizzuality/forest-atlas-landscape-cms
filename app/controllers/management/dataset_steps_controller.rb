@@ -185,19 +185,14 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def build_current_dataset_state
-    ds_params = params[:dataset] ? dataset_params : {}
-    @dataset = ds_params[:dataset] ? Dataset.find(ds_params[:dataset]) : Dataset.new
-    @dataset_id = if @dataset && @dataset.persisted?
-      params[:dataset_id] || @dataset.id
-    else
-      :new
-    end
+    ds_params = build_new_dataset_state
 
-    if !params[:dataset] && params[:dataset_id]
-      @dataset.id = @dataset_id
-      @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    if params[:dataset_id]
+      build_existing_dataset_state
+
+      @dataset.metadata = params[:dataset][:metadata] if params[:dataset]
+
       ds_params = @dataset.attributes
-      set_current_dataset_state
     end
 
     # Update the dataset with the attributes saved on the session
@@ -210,6 +205,26 @@ class Management::DatasetStepsController < ManagementController
     @dataset.assign_attributes ds_params.except(:context_ids)
     @dataset.legend = {} unless @dataset.legend
     @dataset.metadata = {} unless @dataset.metadata
+  end
+
+  def build_new_dataset_state
+    ds_params = params[:dataset] ? dataset_params : {}
+    @dataset = ds_params[:dataset] ? Dataset.find(ds_params[:dataset]) : Dataset.new
+    @dataset_id = if @dataset && @dataset.persisted?
+      params[:dataset_id] || @dataset.id
+    else
+      :new
+    end
+
+    ds_params
+  end
+
+  def build_existing_dataset_state
+    @dataset_id = params[:dataset_id]
+    @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    @dataset.id = @dataset_id
+
+    set_current_dataset_state
   end
 
   def set_current_dataset_state

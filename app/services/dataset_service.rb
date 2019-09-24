@@ -177,7 +177,9 @@ class DatasetService < ApiService
       application: application,
       name: name,
       language: metadata[:language],
-      applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).merge(tags: tags_array.join(','))
+      applicationProperties: metadata.
+        slice(*Dataset::APPLICATION_PROPERTIES).
+        merge(tags: tags_array.join(','))
     }.merge(
       metadata.slice(*Dataset::API_PROPERTIES)
     )
