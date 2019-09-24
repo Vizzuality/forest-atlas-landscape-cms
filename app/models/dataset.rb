@@ -246,11 +246,21 @@ class Dataset
   end
 
   def get_languages
-    sites_ids = ContextDataset.
+    context_datasets = ContextDataset.
       where(dataset_id: @id).
       joins("INNER JOIN context_sites ON context_sites.context_id = context_datasets.context_id").
-      select("context_sites.site_id").
-      map(&:site_id).uniq
+      select("context_sites.site_id")
+
+    if context_datasets.none?
+      return {
+        'es' => 'Spanish',
+        'en' => 'English',
+        'fr' => 'French',
+        'ka' => 'georgian'
+      }
+    end
+
+    sites_ids = context_datasets.map(&:site_id).uniq
     sites_ids.map { |site_id| SiteSetting.languages(site_id) }.reduce({}, :merge)
   end
 
