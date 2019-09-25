@@ -258,7 +258,8 @@ Dashboard.propTypes = {
   topContent: PropTypes.string,
   bottomContent: PropTypes.string,
   downloadUrls: PropTypes.object.isRequired,
-  hiddenFields: PropTypes.arrayOf(PropTypes.string)
+  hiddenFields: PropTypes.arrayOf(PropTypes.string),
+  defaultLanguage: PropTypes.string
 };
 
 Dashboard.defaultProps = {
