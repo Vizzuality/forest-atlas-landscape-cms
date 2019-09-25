@@ -72,6 +72,38 @@ $footer-links-colour: $footer-links-colour; // String: «white», «accent-color
   src: font-url('fonts/Merriweather/MerriweatherSans-Light.ttf');
 }
 
+@font-face {
+  font-family: 'Acumin Pro Condensed';
+  font-weight: 300;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-light.otf');
+}
+
+@font-face {
+  font-family: 'Acumin Pro Condensed';
+  font-weight: 700;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-bold.otf');
+}
+
+@font-face {
+  font-family: 'Acumin Pro Condensed';
+  font-style: italic;
+  font-weight: 300;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-lightitalic.otf');
+}
+
+@font-face {
+  font-family: 'Acumin Pro Condensed';
+  font-style: italic;
+  font-weight: 700;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-bolditalic.otf');
+}
+
+@font-face {
+  font-family: 'Georgia';
+  font-weight: 400;
+  src: font-url('fonts/Georgia.ttf');
+}
+
 // The widgets might reference directly the Lato font, which is not present in this project, so we
 // hook it up to Fira Sans instead
 @font-face {
