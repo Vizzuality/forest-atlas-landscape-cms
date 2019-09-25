@@ -66,8 +66,6 @@ class Management::PageStepsController < ManagementController
         @widgets = @site.get_vega_widgets([@dashboard_setting.dataset_id])
       when 'columns_selection'
         build_current_dashboard_setting
-      when 'preview_analytics_dashboard'
-        build_current_dashboard_setting
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
       when 'filters'
@@ -108,8 +106,6 @@ class Management::PageStepsController < ManagementController
         build_current_dashboard_setting
         gon.page_name = @page.name
       # OPEN CONTENT PATH
-      when 'open_content'
-        gon.widgets = get_widgets_list
       when 'open_content_v2'
         gon.widgets = get_widgets_list
 
@@ -141,8 +137,6 @@ class Management::PageStepsController < ManagementController
             delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
         end
         @widgets
-      when 'open_content_preview'
-        gon.widgets = get_widgets_list
       when 'map'
         unless @page.persisted?
           @page.content = if MapVersion.order(:position).first.default_settings.blank?
@@ -193,9 +187,6 @@ class Management::PageStepsController < ManagementController
             move_forward wizard_steps[3]
         end
       when 'type', 'confirmation'
-        if @page.content_type == 7
-          @page.page_version = 2
-        end
 
         set_current_page_state
         move_forward
@@ -209,36 +200,6 @@ class Management::PageStepsController < ManagementController
         else
           render_wizard
         end
-      when 'preview_analytics_dashboard'
-        build_current_dashboard_setting
-        set_current_dashboard_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
-
-      # ANALYSIS DASHBOARD PATH
-      when 'dataset'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          @datasets_contexts = @site.get_datasets_contexts
-          render_wizard
-        end
-
-      when 'filters'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        move_forward
-
-      when 'columns'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        move_forward
-
       when 'preview'
         build_current_dashboard_setting
         set_current_dashboard_setting_state
@@ -246,15 +207,9 @@ class Management::PageStepsController < ManagementController
         move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
-      when 'open_content'
-        set_current_page_state
-        move_forward next_step, next_step, next_step
       when 'open_content_v2'
         set_current_page_state
         move_forward next_step, next_step, next_step
-      when 'open_content_preview'
-        set_current_page_state
-        move_forward
       when 'open_content_v2_preview'
         set_current_page_state
         move_forward next_step, next_step, next_step
@@ -408,7 +363,7 @@ class Management::PageStepsController < ManagementController
     db_params = page_params.to_h[:dashboard_setting] if params[:site_page] && page_params&.to_h[:dashboard_setting]
 
     @dashboard_setting = nil
-    return unless [ContentType::DASHBOARD_V2, ContentType::ANALYSIS_DASHBOARD].include?(@page.content_type)
+    return unless [ContentType::DASHBOARD_V2].include?(@page.content_type)
     if db_params[:id]
       @dashboard_setting = DashboardSetting.find(db_params[:id])
     elsif @page.dashboard_setting

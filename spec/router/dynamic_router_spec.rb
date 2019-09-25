@@ -24,7 +24,7 @@ RSpec.describe DynamicRouter do
     save_without_route_update @site
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@site.id.to_s, 'p:'+@sample_page.id.to_s]
-    expected_route = DynamicRouter::RouteDefinition.new('/sample-path/sample-page', 'site_page#open_content', {:id => @sample_page.id}, {:host => 'localhost'}, tags)
+    expected_route = DynamicRouter::RouteDefinition.new('/sample-path/sample-page', 'site_page#open_content_v2', {:id => @sample_page.id}, {:host => 'localhost'}, tags)
 
     @router.update_routes_for_site(@site)
     expect(@route_cache).to have_received(:write).at_least(1).with(expected_route, tags)
@@ -35,7 +35,7 @@ RSpec.describe DynamicRouter do
     save_without_route_update @route
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@sample_site.id.to_s, 'p:'+@sample_page.id.to_s]
-    expected_route = DynamicRouter::RouteDefinition.new('/sample-path/sample-page', 'site_page#open_content', {:id => @sample_page.id}, {:host => 'localhost'}, tags)
+    expected_route = DynamicRouter::RouteDefinition.new('/sample-path/sample-page', 'site_page#open_content_v2', {:id => @sample_page.id}, {:host => 'localhost'}, tags)
 
     @router.update_routes_for_route(@route)
     expect(@route_cache).to have_received(:write).at_least(1).with(expected_route, tags)
@@ -46,7 +46,7 @@ RSpec.describe DynamicRouter do
     save_without_route_update @page
 
     tags = ['r:'+@sample_route.id.to_s, 's:'+@sample_site.id.to_s, 'p:'+@page.id.to_s]
-    expected_route = DynamicRouter::RouteDefinition.new('/sample-path/demo-page', 'site_page#open_content', {:id => @page.id}, {:host => 'localhost'}, tags)
+    expected_route = DynamicRouter::RouteDefinition.new('/sample-path/demo-page', 'site_page#open_content_v2', {:id => @page.id}, {:host => 'localhost'}, tags)
 
     @router.update_routes_for_site_page(@page)
     expect(@route_cache).to have_received(:write).at_least(1).with(expected_route, tags)

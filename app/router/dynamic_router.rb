@@ -132,8 +132,6 @@ class DynamicRouter
                               constraints, tags, main_route_host)
 
         target = ContentType::HOMEPAGE ? 'site_page#homepage' : 'site_page#homepagev2'
-      when ContentType::OPEN_CONTENT
-        target = 'site_page#open_content'
       when ContentType::OPEN_CONTENT_V2
         target = 'site_page#open_content_v2'
       when ContentType::MAP
@@ -147,8 +145,6 @@ class DynamicRouter
           RouteDefinition.new(path + '/report.html', 'site_page#map_report',
                               { id: site_page.id },
                               constraints, tags, main_route_host)
-      when ContentType::ANALYSIS_DASHBOARD
-        target = 'site_page#analysis_dashboard'
       when ContentType::DASHBOARD_V2
         target = 'site_page#dashboard_v2'
       when ContentType::STATIC_CONTENT
@@ -159,8 +155,8 @@ class DynamicRouter
         return
       when ContentType::TAG_SEARCHING
         target = 'site_page#tag_searching'
-      else
-        target = 'site_page#open_content'
+      else # Temporary solution to be able to remove old types
+        target = 'site_page#open_content_v2'
     end
 
     routes_to_write <<

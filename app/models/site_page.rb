@@ -98,15 +98,9 @@ class SitePage < Page
              names: %w[Position Title Type]}
 
     case self.content_type
-    when ContentType::OPEN_CONTENT
-      steps = { pages: %w[position title type open_content open_content_preview],
-                names: %w[Position Details Type Content Preview] }
     when ContentType::OPEN_CONTENT_V2
       steps = { pages: %w[position title type open_content_v2 open_content_v2_preview],
                 names: %w[Position Details Type Content Preview] }
-    when ContentType::ANALYSIS_DASHBOARD
-      steps = { pages: %w[position title type dataset filters columns preview_analytics_dashboard],
-                names: %w[Position Title Type Dataset Filters Columns Preview] }
     when ContentType::DASHBOARD_V2
       steps = { pages: %w[position title type dashboard_dataset dashboard_widget columns_selection preview],
                 names: %w[Position Details Type Dataset Widget Columns Preview] }
@@ -230,23 +224,6 @@ class SitePage < Page
 
 
     # TODO : This part
-    # Validate steps for Analysis Dashboard
-    if self.content_type == ContentType::ANALYSIS_DASHBOARD
-      # Validate Dataset
-
-      # Validate Filters
-
-      # Validate Columns
-
-      # Validate Preview
-    end
-
-
-    # Validate steps for Open Content
-    if self.content_type == ContentType::OPEN_CONTENT
-
-    end
-
 
     # Validate steps for Link
     if self.content_type == ContentType::LINK
@@ -308,7 +285,7 @@ class SitePage < Page
 
   def update_temporary_content_images
     return if content_type.blank? || content.blank?
-    return unless [ContentType::OPEN_CONTENT, ContentType::OPEN_CONTENT_V2].include?(content_type)
+    return unless [ContentType::OPEN_CONTENT_V2].include?(content_type)
     new_content = content
     new_content.scan(/image":"([^"]*)"/).each do |tmp|
       tmp = tmp.first

@@ -39,6 +39,8 @@
     "@rails/webpacker": "^4.0.7",
     "babel-core": "7.0.0-bridge.0",
     "babel-plugin-module-resolver": "^3.2.0",
+    "bcrypt": "^3.0.6",
+    "canvas": "^2.5.0",
     "classnames": "^2.2.5",
     "copy-webpack-plugin": "^4.5.1",
     "date-fns": "^1.30.1",
