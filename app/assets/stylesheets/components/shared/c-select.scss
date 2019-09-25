@@ -42,12 +42,11 @@
     -moz-appearance: none;
     -webkit-appearance: none;
 
-    @if $theme == 2 {
+    @if $template == 'default' {
       border: 1px solid $accent-color;
-      text-transform: uppercase;
     }
 
-    @if $theme == 1 or $theme == 3 {
+    @if $template == 'india' {
       border: 0;
     }
 
