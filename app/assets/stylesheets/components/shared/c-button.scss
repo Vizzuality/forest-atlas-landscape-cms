@@ -11,10 +11,6 @@
   text-decoration: none !important;
   cursor: pointer;
 
-  @if $theme == 2 {
-    text-transform: uppercase;
-  }
-
   &:hover,
   &:focus {
     color: $color-3;

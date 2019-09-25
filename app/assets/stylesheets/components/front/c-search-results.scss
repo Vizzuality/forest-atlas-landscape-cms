@@ -8,7 +8,7 @@
   &.-standalone {
     // The header is absolutely positioned for
     // some templates so we add its height
-    @if $theme == 3 {
+    @if $template == 'india' {
       margin-top: 60px;
 
       @media #{$mq-tablet} {
