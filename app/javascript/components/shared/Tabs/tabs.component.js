@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Tabs = props => (
-  <div className="c-tabs -secondary" role="tablist">
-    { props.tabs.map(tab => (
+const Tabs = ({ tabs, selected, modifier, onChange }) => (
+  <div className={`c-tabs -${modifier}`} role="tablist">
+    { tabs.map(tab => (
       <button
         type="button"
         key={tab.name}
         className="tab"
         role="tab"
-        aria-selected={props.selected === tab.name}
-        onClick={() => props.onChange(tab)}
+        aria-selected={selected === tab.name}
+        onClick={() => onChange(tab)}
       >
         {tab.name}
       </button>
@@ -23,7 +23,12 @@ Tabs.propTypes = {
   tabs: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string
   })).isRequired,
-  onChange: PropTypes.func.isRequired // eslint-disable-line
+  onChange: PropTypes.func.isRequired,
+  modifier: PropTypes.string,
+};
+
+Tabs.defaultProps = {
+  modifier: 'secondary'
 };
 
 export default Tabs;

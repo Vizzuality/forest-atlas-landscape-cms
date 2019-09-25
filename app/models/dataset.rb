@@ -23,8 +23,8 @@ class Dataset
   def form_steps
     if id.nil?
       {
-        pages: %w[title connector labels metadata context],
-        names: %w[Title Connector Labels Metadata Context]
+        pages: %w[title connector labels context],
+        names: %w[Title Connector Labels Context]
       }
     elsif provider.eql?('csv')
       {
@@ -123,11 +123,13 @@ class Dataset
   end
 
   def connector_url=(value)
-    if (not @connector.eql? 'arcgis' or value.include? 'f=pjson')
+    if !@connector.eql?('arcgis') || value.include?('f=pjson')
       @connector_url = value and return
     end
 
-    if (value.include? '?')
+    return unless value
+
+    if value.include? '?'
       @connector_url = value+'&f=pjson'
     else
       @connector_url = value+'?f=pjson'
@@ -148,19 +150,22 @@ class Dataset
       attributes = attributes.merge(data_attributes.except(:metadata))
       if data_attributes[:metadata] && data_attributes[:metadata].any?
         # select metadata by current locale, and app
-        metadata = data_attributes[:metadata].find do |md|
-          md['attributes']['language'] == I18n.locale.to_s && md['attributes']['application'] == 'forest-atlas'
+        metadata = data_attributes[:metadata].select do |md|
+          md['attributes']['application'] == ENV['API_APPLICATIONS'] || 'forest-atlas'
         end
-        if metadata.present? and metadata['attributes']
-          metadata_attributes = metadata['attributes'].symbolize_keys
-          metadata_attributes[:id] = metadata['id']
-          if metadata_attributes[:applicationProperties]
-            metadata_attributes = metadata_attributes.merge(
-              metadata_attributes[:applicationProperties].symbolize_keys
+        metadata_attributes = {}
+        metadata.each do |md|
+          next unless md['attributes']
+          md_attributes = md['attributes'].symbolize_keys
+          md_attributes[:id] = md['id']
+          if md_attributes[:applicationProperties]
+            md_attributes = md_attributes.merge(
+              md_attributes[:applicationProperties].symbolize_keys
             )
           end
-          attributes = attributes.merge({metadata: metadata_attributes})
+          metadata_attributes[md_attributes[:language]] = md_attributes
         end
+        attributes = attributes.merge({metadata: metadata_attributes})
       end
     end
     dataset.set_attributes(attributes)
@@ -179,24 +184,27 @@ class Dataset
 
   def update(token)
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
-    if metadata[:id].present?
-      update_metadata(token)
-    else
-      create_metadata(token)
+
+    metadata.each do |language, metadata_info|
+      if metadata_info[:id].present?
+        update_metadata(token, metadata_info)
+      else
+        create_metadata(token, metadata_info)
+      end
     end
   end
 
-  def update_metadata(token)
+  def update_metadata(token, metadata = metadata)
     tags_array = tags && tags.split(',') || []
     DatasetService.update_metadata(
-      token, id, 'forest-atlas', name, tags_array, metadata
+      token, id, ENV['API_APPLICATIONS'] || 'forest-atlas', name, tags_array, metadata
     )
   end
 
-  def create_metadata(token)
+  def create_metadata(token, metadata = metadata)
     tags_array = tags && tags.split(',') || []
     DatasetService.create_metadata(
-      token, id, 'forest-atlas', name, tags_array, metadata
+      token, id, ENV['API_APPLICATIONS'] || 'forest-atlas', name, tags_array, metadata
     )
   end
 
@@ -235,6 +243,25 @@ class Dataset
   def self.get_metadata_for_frontend(user_token, dataset_id)
     metadata_list = Dataset.get_metadata_list_for_frontend(user_token, dataset_id)
     metadata_list[dataset_id]
+  end
+
+  def get_languages
+    context_datasets = ContextDataset.
+      where(dataset_id: @id).
+      joins("INNER JOIN context_sites ON context_sites.context_id = context_datasets.context_id").
+      select("context_sites.site_id")
+
+    if context_datasets.none?
+      return {
+        'es' => 'Spanish',
+        'en' => 'English',
+        'fr' => 'French',
+        'ka' => 'georgian'
+      }
+    end
+
+    sites_ids = context_datasets.map(&:site_id).uniq
+    sites_ids.map { |site_id| SiteSetting.languages(site_id) }.reduce({}, :merge)
   end
 
   private

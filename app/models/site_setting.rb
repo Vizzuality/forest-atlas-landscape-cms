@@ -33,6 +33,12 @@ class SiteSetting < ApplicationRecord
     hosting_organization transifex_api_key
   ]
   MAX_COLORS = 5
+  LANGUAGES = {
+    spanish: 'es',
+    english: 'en',
+    french: 'fr',
+    georgian: 'ka'
+  }
 
   # Makes sure the same site doesn't have a repeated setting
   validates_uniqueness_of :name, scope: :site_id, unless: Proc.new { |setting| setting.name.eql? 'main_image' }
@@ -79,6 +85,16 @@ class SiteSetting < ApplicationRecord
 
   def self.flag_colors(site_id)
     SiteSetting.find_by(name: 'flag', site_id: site_id)
+  end
+
+  def self.languages(site_id)
+    languages = {}
+    LANGUAGES.each do |language, key|
+      if SiteSetting.find_by(name: "translate_#{language}", site_id: site_id, value: '1')
+        languages[key] = language.to_s.camelcase
+      end
+    end
+    languages
   end
 
   def self.default_site_language(site_id)
