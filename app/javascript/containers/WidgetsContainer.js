@@ -14,6 +14,7 @@ function WidgetsContainer(props) {
           widget={props.widget}
           queryUrl={props.queryUrl}
           redirectUrl={props.redirectUrl}
+          defaultLanguage={props.defaultLanguage}
         />
       </ManagementContainer>
     );
@@ -33,6 +34,7 @@ function WidgetsContainer(props) {
         datasets={props.datasets}
         queryUrl={props.queryUrl}
         redirectUrl={props.redirectUrl}
+        defaultLanguage={props.defaultLanguage}
       />
     </ManagementContainer>
   );
@@ -43,7 +45,12 @@ WidgetsContainer.propTypes = {
   widgets: PropTypes.array, // eslint-disable-line react/require-default-props
   datasets: PropTypes.array, // eslint-disable-line react/require-default-props
   queryUrl: PropTypes.string, // eslint-disable-line react/require-default-props
-  redirectUrl: PropTypes.string // eslint-disable-line react/require-default-props
+  redirectUrl: PropTypes.string, // eslint-disable-line react/require-default-props
+  defaultLanguage: PropTypes.string,
+};
+
+WidgetsContainer.defaultProps = {
+  defaultLanguage: 'en', // We should never pass null as a locale
 };
 
 export default WidgetsContainer;
