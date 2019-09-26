@@ -15,13 +15,41 @@ import Notification from 'components/Notification';
 
 class Dashboard extends React.PureComponent {
   componentWillMount() {
-    this.props.setPageSlug(this.props.pageSlug);
-    this.props.setDatasetId(this.props.dataset);
-    this.props.setWidgetId(this.props.widget);
-    this.props.fetchFields(this.props.hiddenFields)
-      .then(() => this.props.fetchData());
-    Promise.all([this.props.fetchWidget(), this.props.fetchDataset()])
-      .then(() => this.props.fetchChartData());
+    const {
+      setPageSlug,
+      setDefaultLanguage,
+      setDatasetId,
+      setWidgetId,
+      fetchFields,
+      fetchData,
+      fetchWidget,
+      fetchDataset,
+      fetchChartData,
+      pageSlug,
+      defaultLanguage,
+      dataset,
+      widget,
+      hiddenFields,
+    } = this.props;
+
+    setPageSlug(pageSlug);
+    setDefaultLanguage(defaultLanguage);
+    setDatasetId(dataset);
+    setWidgetId(widget);
+    fetchFields(hiddenFields).then(() => fetchData());
+    Promise.all([fetchWidget(), fetchDataset()]).then(() => fetchChartData());
+  }
+
+  componentDidMount() {
+    const { setSelectedLanguage } = this.props;
+
+    if (window.Transifex) {
+      // We set the selected language anyway because the user might not change the current
+      // language of the page
+      setSelectedLanguage(Transifex.live.getSelectedLanguageCode());
+
+      Transifex.live.onTranslatePage(selectedLanguage => setSelectedLanguage(selectedLanguage));
+    }
   }
 
   render() {
@@ -252,6 +280,8 @@ Dashboard.propTypes = {
   setWidgetId: PropTypes.func.isRequired,
   fetchWidget: PropTypes.func.isRequired,
   setDetailsVisibility: PropTypes.func.isRequired,
+  setDefaultLanguage: PropTypes.func.isRequired,
+  setSelectedLanguage: PropTypes.func.isRequired,
   preview: PropTypes.bool,
   dataset: PropTypes.string,
   widget: PropTypes.string,
@@ -259,7 +289,7 @@ Dashboard.propTypes = {
   bottomContent: PropTypes.string,
   downloadUrls: PropTypes.object.isRequired,
   hiddenFields: PropTypes.arrayOf(PropTypes.string),
-  defaultLanguage: PropTypes.string
+  defaultLanguage: PropTypes.string,
 };
 
 Dashboard.defaultProps = {
@@ -268,7 +298,8 @@ Dashboard.defaultProps = {
   widget: null,
   topContent: null,
   bottomContent: null,
-  hiddenFields: []
+  hiddenFields: [],
+  defaultLanguage: null,
 };
 
 export default Dashboard;

@@ -13,7 +13,9 @@ import {
   SET_DATASET_ID,
   SET_WIDGET_ID,
   SET_PAGE_SLUG,
-  SET_DETAILS_VISIBILITY
+  SET_DETAILS_VISIBILITY,
+  SET_DEFAULT_LANGUAGE,
+  SET_SELECTED_LANGUAGE,
 } from 'components/shared/Dashboard/dashboard.reducer';
 
 import {
@@ -150,4 +152,20 @@ export const setWidgetId = widgetId => ({
 export const setDetailsVisibility = visible => ({
   type: SET_DETAILS_VISIBILITY,
   payload: visible
+});
+
+/**
+ * Set the default language of the dashboard
+ */
+export const setDefaultLanguage = defaultLanguage => ({
+  type: SET_DEFAULT_LANGUAGE,
+  payload: defaultLanguage
+});
+
+/**
+ * Set the selected language of the dashboard
+ */
+export const setSelectedLanguage = selectedLanguage => ({
+  type: SET_SELECTED_LANGUAGE,
+  payload: selectedLanguage
 });
