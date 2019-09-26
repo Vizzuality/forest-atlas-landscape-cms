@@ -4,6 +4,7 @@
                     { datasets: @datasets,
                       widget: @widget,
                       queryUrl: @widget.nil? ? management_site_widget_steps_path(@site.slug) : management_site_widget_step_path(@site.slug, @widget.id),
-                      redirectUrl: management_site_widgets_path(@site.slug)}) %>
+                      redirectUrl: management_site_widgets_path(@site.slug),
+                      defaultLanguage: @default_language}) %>
 
 <%= render partial: 'shared/errors', locals: { resource: @widget } %>
