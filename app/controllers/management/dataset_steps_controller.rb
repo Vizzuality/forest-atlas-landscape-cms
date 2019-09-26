@@ -68,6 +68,12 @@ class Management::DatasetStepsController < ManagementController
       else
         render_wizard
       end
+    when 'options'
+      if @dataset.valid?
+        save_or_update_step
+      else
+        render_wizard
+      end
     when 'connector'
       if params[:csv_uploader]
         upload_csv
@@ -277,18 +283,19 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def get_metadata_columns
-    default_language = SiteSetting.default_site_language(@site.id).value
+    @default_language = SiteSetting.default_site_language(@site.id).value
     dataset = DatasetService.get_metadata(@dataset.id)['data']
     metadata = dataset['attributes']['metadata'].select do |md|
-      md['attributes']['language'] == default_language
+      md['attributes']['language'] == @default_language
     end.first
+    @metadata_id = metadata['id']
 
     fields = DatasetService.get_fields @dataset.id, dataset['tableName']
 
     @metadata_columns = fields.map do |field|
       metadata_columns = metadata['attributes']['columns']
-      field_alias = metadata_columns&.dig(:name, 'alias')
-      field_description = metadata_columns&.dig(:name, 'description')
+      field_alias = metadata_columns&.dig(field[:name], 'alias')
+      field_description = metadata_columns&.dig(field[:name], 'description')
       {name: field[:name], alias: field_alias, description: field_description}
     end
   end

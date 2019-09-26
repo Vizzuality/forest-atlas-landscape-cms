@@ -14,6 +14,8 @@
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
   <%= react_component('ManagementDatasetAliases', {
+    metadataId: @metadata_id,
+    defaultLanguage: @default_language,
     columns: @metadata_columns
   }) %>
 
