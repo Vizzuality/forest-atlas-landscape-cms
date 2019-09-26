@@ -28,8 +28,8 @@ class Dataset
       }
     elsif provider.eql?('csv')
       {
-        pages: %w[connector metadata],
-        names: %w[Connector Metadata]
+        pages: %w[connector metadata options],
+        names: %w[Connector Metadata Aliases]
       }
     else
       {

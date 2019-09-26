@@ -45,6 +45,8 @@ class Management::DatasetStepsController < ManagementController
       when 'metadata'
         get_languages
         get_metadata
+      when 'options'
+        get_metadata_columns
     end
     render_wizard
   end
@@ -272,6 +274,23 @@ class Management::DatasetStepsController < ManagementController
         metadata['id']
     end
     @metadata = formatted_metadata
+  end
+
+  def get_metadata_columns
+    default_language = SiteSetting.default_site_language(@site.id).value
+    dataset = DatasetService.get_metadata(@dataset.id)['data']
+    metadata = dataset['attributes']['metadata'].select do |md|
+      md['attributes']['language'] == default_language
+    end.first
+
+    fields = DatasetService.get_fields @dataset.id, dataset['tableName']
+
+    @metadata_columns = fields.map do |field|
+      metadata_columns = metadata['attributes']['columns']
+      field_alias = metadata_columns&.dig(:name, 'alias')
+      field_description = metadata_columns&.dig(:name, 'description')
+      {name: field[:name], alias: field_alias, description: field_description}
+    end
   end
 
   def process_metadata(ds_params)
