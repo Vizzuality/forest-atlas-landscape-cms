@@ -232,10 +232,24 @@ class Management::DatasetStepsController < ManagementController
     @dataset = Dataset.find_with_metadata(params[:dataset_id])
     @dataset.id = @dataset_id
 
+    if params[:dataset]
+      @dataset.metadata = @dataset.metadata.deep_merge(
+        params.to_unsafe_h[:dataset][:metadata].transform_keys(&:to_sym)
+      )
+    end
+
     set_current_dataset_state
   end
 
   def set_current_dataset_state
+    if session[:dataset_creation] &&
+       session[:dataset_creation][@dataset_id] &&
+       session[:dataset_creation][@dataset_id]['metadata']
+      @dataset.metadata =
+        session[:dataset_creation][@dataset_id]['metadata'].transform_keys(&:to_sym).deep_merge(
+          @dataset.metadata
+        )
+    end
     session[:dataset_creation][@dataset_id] = @dataset.attributes
   end
 
@@ -288,12 +302,12 @@ class Management::DatasetStepsController < ManagementController
     metadata = dataset['attributes']['metadata'].select do |md|
       md['attributes']['language'] == @default_language
     end.first
-    @metadata_id = metadata['id']
+    @metadata_id = metadata&.dig('id')
 
     fields = DatasetService.get_fields @dataset.id, dataset['tableName']
 
     @metadata_columns = fields.map do |field|
-      metadata_columns = metadata['attributes']['columns']
+      metadata_columns = metadata&.dig('attributes', 'columns')
       field_alias = metadata_columns&.dig(field[:name], 'alias')
       field_description = metadata_columns&.dig(field[:name], 'description')
       {name: field[:name], alias: field_alias, description: field_description}
