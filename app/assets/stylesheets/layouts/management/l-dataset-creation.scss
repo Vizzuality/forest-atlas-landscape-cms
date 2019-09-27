@@ -27,6 +27,14 @@
     }
 
     .c-inputs-container > .container {
+      > textarea {
+        min-height: 120px;
+      }
+    }
+  }
+
+  &.-aliases {
+    .c-inputs-container > .container {
       input:disabled {
         // Since this input has a background, a padding make it appear nicer
         padding: 2px 3px;
