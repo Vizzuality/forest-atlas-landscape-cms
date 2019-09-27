@@ -11,6 +11,8 @@ import ToggleSwitcher from 'components/shared/ToggleSwitcher';
 
 import { setStep, setWidgetCreationDataset, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
 
+import { getMostAppropriateMetadataLanguage } from './helpers';
+
 const STEPS = [
   {
     name: 'Dataset',
@@ -30,18 +32,9 @@ class NewWidgetPage extends React.Component {
   constructor(props) {
     super(props);
 
-    // We set the config of the widget editor
-    const { env } = props;
-    setConfig({
-      url: env.apiUrl,
-      env: env.apiEnv,
-      applications: env.apiApplications,
-      authUrl: env.controlTowerUrl,
-      assetsPath: '/packs/images/',
-      userToken: env.user.token || undefined
-    });
-
     this.state = {
+      // Whether we're initialising data for the widget-editor
+      initializingEditor: true,
       // Whether we're currently creating the widget in the API
       creating: false,
       // Error while retrieving the widgetConfig from the widget-editor
@@ -66,8 +59,11 @@ class NewWidgetPage extends React.Component {
     this.onCustomizeTheme = this.onCustomizeTheme.bind(this);
   }
 
-  componentDidUpdate(_, prevState) {
-    if (!prevState.advancedEditor && this.state.advancedEditor && this.advancedEditor) {
+  componentDidUpdate(prevProps, prevState) {
+    const { env, defaultLanguage, dataset, currentStep } = this.props;
+    const { advancedEditor } = this.state;
+
+    if (!prevState.advancedEditor && advancedEditor && this.advancedEditor) {
       this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
         mode: 'javascript',
         autoCloseTags: true,
@@ -85,6 +81,35 @@ class NewWidgetPage extends React.Component {
           this.setState({ widgetConfig: {} });
         }
       });
+    }
+
+    if (prevProps.currentStep !== currentStep && currentStep === 1) {
+      let locale = null;
+
+      new Promise((resolve) => {
+        this.setState({ initializingEditor: true }, resolve);
+      })
+        .then(() => getMostAppropriateMetadataLanguage(dataset, defaultLanguage))
+        .then((language) => {
+          locale = language;
+        })
+        .catch(() => null)
+        .then(() => {
+          // We configure the widget-editor
+          // The important bit here is giving it the locale which has alias info
+          setConfig({
+            url: env.apiUrl,
+            env: env.apiEnv,
+            applications: env.apiApplications,
+            authUrl: env.controlTowerUrl,
+            assetsPath: '/packs/images/',
+            userToken: env.user.token || undefined,
+            locale,
+          });
+
+          // We render the widget-editor
+          this.setState({ initializingEditor: false });
+        });
     }
   }
 
@@ -259,7 +284,7 @@ class NewWidgetPage extends React.Component {
     // eslint-disable-next-line no-shadow
     const { currentStep, setStep, datasets, dataset, setDataset,
       setTitle, setDescription, setCaption, title, description, caption, redirectUrl } = this.props;
-    const { widgetConfigError, advancedEditor, advancedEditorLoading,
+    const { initializingEditor, widgetConfigError, advancedEditor, advancedEditorLoading,
       advancedEditorWarningAccepted, widgetConfig, previewLoading, saveError, creating } = this.state;
 
     let content;
@@ -295,6 +320,14 @@ class NewWidgetPage extends React.Component {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      );
+    } else if (initializingEditor) {
+      content = (
+        <div className="l-widget-creation -visualization">
+          <div className="wrapper">
+            <div className="c-loading-spinner -bg" />
           </div>
         </div>
       );
@@ -467,7 +500,12 @@ NewWidgetPage.propTypes = {
   setDescription: PropTypes.func.isRequired,
   setCaption: PropTypes.func.isRequired,
   queryUrl: PropTypes.string.isRequired,
-  redirectUrl: PropTypes.string.isRequired
+  redirectUrl: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string,
+};
+
+NewWidgetPage.defaultProps = {
+  defaultLanguage: null,
 };
 
 function mapStateToProps(state) {

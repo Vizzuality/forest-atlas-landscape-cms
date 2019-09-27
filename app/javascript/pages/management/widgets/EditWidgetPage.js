@@ -13,6 +13,8 @@ import ToggleSwitcher from 'components/shared/ToggleSwitcher';
 
 import { setStep, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
 
+import { getMostAppropriateMetadataLanguage } from './helpers';
+
 const STEPS = [
   {
     name: 'Name',
@@ -28,19 +30,8 @@ class EditWidgetPage extends React.Component {
   constructor(props) {
     super(props);
 
-    // We set the config of the widget editor
-    const { env } = props;
-    setConfig({
-      url: env.apiUrl,
-      env: env.apiEnv,
-      applications: env.apiApplications,
-      authUrl: env.controlTowerUrl,
-      assetsPath: '/packs/images/',
-      userToken: env.user.token || undefined
-    });
-
     // The next few lines are only for the advanced editor
-    let theme = undefined;
+    let theme;
     if (!props.widget.widget_config) {
       theme = { name: 'default' };
     } else if (!props.widget.widget_config.paramsConfig) {
@@ -48,6 +39,8 @@ class EditWidgetPage extends React.Component {
     }
 
     this.state = {
+      // Whether we're initialising data for the widget-editor
+      initializingEditor: true,
       // Whether we're currently editing the widget in the API
       editing: false,
       // Error while retrieving the widgetConfig from the widget-editor
@@ -85,6 +78,33 @@ class EditWidgetPage extends React.Component {
         this.props.setCaption(caption);
       }
     }
+  }
+
+  componentDidMount() {
+    const { env, widget, defaultLanguage } = this.props;
+
+    let locale = null;
+    getMostAppropriateMetadataLanguage(widget.dataset, defaultLanguage)
+      .then((language) => {
+        locale = language;
+      })
+      .catch(() => null)
+      .then(() => {
+        // We configure the widget-editor
+        // The important bit here is giving it the locale which has alias info
+        setConfig({
+          url: env.apiUrl,
+          env: env.apiEnv,
+          applications: env.apiApplications,
+          authUrl: env.controlTowerUrl,
+          assetsPath: '/packs/images/',
+          userToken: env.user.token || undefined,
+          locale,
+        });
+
+        // We render the widget-editor
+        this.setState({ initializingEditor: false });
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -266,7 +286,7 @@ class EditWidgetPage extends React.Component {
     const { currentStep, setStep, setTitle, setDescription, setCaption,
       title, description, caption, widget } = this.props;
 
-    const { widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
+    const { initializingEditor, widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
       advancedEditorLoading, widgetConfig, previewLoading,
       saveError, theme, editing } = this.state;
 
@@ -288,6 +308,14 @@ class EditWidgetPage extends React.Component {
                 <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
               </div>
             </div>
+          </div>
+        </div>
+      );
+    } else if (initializingEditor) {
+      content = (
+        <div className="l-widget-creation -visualization">
+          <div className="wrapper">
+            <div className="c-loading-spinner -bg" />
           </div>
         </div>
       );
@@ -462,11 +490,13 @@ EditWidgetPage.propTypes = {
   setDescription: PropTypes.func.isRequired,
   setCaption: PropTypes.func.isRequired,
   queryUrl: PropTypes.string.isRequired,
-  redirectUrl: PropTypes.string.isRequired
+  redirectUrl: PropTypes.string.isRequired,
+  defaultLanguage: PropTypes.string,
 };
 
 EditWidgetPage.defaultProps = {
-  widget: null
+  widget: null,
+  defaultLanguage: null,
 };
 
 function mapStateToProps(state) {
