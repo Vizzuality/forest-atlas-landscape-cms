@@ -164,8 +164,18 @@
       }
     }
 
-    p {
+    p, ul {
       margin: 15px 0;
+    }
+
+    ul {
+      display: block;
+
+      li {
+        display: list-item;
+        margin-left: 15px;
+        list-style-type: disc;
+      }
     }
   }
 }

@@ -15,25 +15,46 @@ import Notification from 'components/Notification';
 
 class Dashboard extends React.PureComponent {
   componentWillMount() {
-    this.props.setPageSlug(this.props.pageSlug);
-    this.props.setDatasetId(this.props.dataset);
-    this.props.setWidgetId(this.props.widget);
-    this.props.fetchFields(this.props.hiddenFields)
-      .then(() => this.props.fetchData());
-    Promise.all([this.props.fetchWidget(), this.props.fetchDataset()])
-      .then(() => this.props.fetchChartData());
+    const {
+      setPageSlug,
+      setDefaultLanguage,
+      setDatasetId,
+      setWidgetId,
+      fetchFields,
+      fetchData,
+      fetchWidget,
+      fetchDataset,
+      fetchChartData,
+      pageSlug,
+      defaultLanguage,
+      dataset,
+      widget,
+      hiddenFields,
+    } = this.props;
+
+    setPageSlug(pageSlug);
+    setDefaultLanguage(defaultLanguage);
+    setDatasetId(dataset);
+    setWidgetId(widget);
+    fetchFields(hiddenFields).then(() => fetchData());
+    Promise.all([fetchWidget(), fetchDataset()]).then(() => fetchChartData());
+  }
+
+  componentDidMount() {
+    const { setSelectedLanguage } = this.props;
+
+    if (window.Transifex) {
+      // We set the selected language anyway because the user might not change the current
+      // language of the page
+      setSelectedLanguage(Transifex.live.getSelectedLanguageCode());
+
+      Transifex.live.onTranslatePage(selectedLanguage => setSelectedLanguage(selectedLanguage));
+    }
   }
 
   render() {
-    const { downloadUrls } = this.props;
-    const metadata = this.props.datasetMetadata && this.props.datasetMetadata.attributes;
-
-    let downloadLink = null;
-    if (metadata && metadata.info) {
-      downloadLink = metadata.info.data_download_link
-        || metadata.info.data_download_original_link
-        || null;
-    }
+    const { downloadUrls, datasetMetadata } = this.props;
+    const metadata = datasetMetadata ? datasetMetadata.attributes : {};
 
     return (
       <div className="c-dashboard vizz-wysiwyg">
@@ -58,7 +79,7 @@ class Dashboard extends React.PureComponent {
         </div>
         <div className="actions-container">
           <div />
-          {this.props.datasetData && (
+          {!!metadata && (
             <div className="right">
               <button
                 type="button"
@@ -78,12 +99,13 @@ class Dashboard extends React.PureComponent {
                   CSV <Icon name="icon-download" />
                 </a>
               )}
-              {downloadLink && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.download_data && (
                 <a
                   className="download"
                   aria-label="Download original dataset"
-                  href={downloadLink}
-                  {...(metadata.info.data_download_original_link ? { target: '_blank', rel: 'noopener noreferrer' } : { download: true })}
+                  href={metadata.applicationProperties.download_data}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Original dataset <Icon name="icon-download" />
                 </a>
@@ -91,131 +113,120 @@ class Dashboard extends React.PureComponent {
             </div>
           )}
         </div>
-        {this.props.datasetData && (
+        {!!metadata && (
           <Modal
             show={this.props.detailsVisible}
             onClose={() => this.props.setDetailsVisibility(false)}
           >
             <div className="details-modal">
-              <h1>{this.props.datasetData.attributes.name}</h1>
-              <p>{(this.props.datasetMetadata && metadata.description) || 'No description'}</p>
+              <h1>{metadata.name}</h1>
+              <p>{metadata.description || 'No description'}</p>
 
-              {metadata && metadata.info && metadata.info.technical_title && (
+              {!!metadata.citation && (
                 <div>
-                  <h2>Formal name</h2>
-                  <p>{metadata.info.technical_title}</p>
+                  <h2>Citation</h2>
+                  <p>{metadata.citation}</p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.cautions && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.cautions && (
                 <div>
                   <h2>Cautions</h2>
-                  <p>{metadata.info.cautions}</p>
+                  <p>{metadata.applicationProperties.cautions}</p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.citation && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.function && (
                 <div>
-                  <h2>Suggested citation</h2>
-                  <p>{metadata.info.citation}</p>
+                  <h2>Function</h2>
+                  <p>{metadata.applicationProperties.function}</p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.citation && (
+              {!!metadata.source && (
                 <div>
-                  <h2>Suggested citation</h2>
-                  <p>{metadata.info.citation}</p>
+                  <h2>Source</h2>
+                  <ul>
+                    {metadata.source.split(',').map(source => (
+                      <li key={source}>
+                        {source.trim()}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
-              {this.props.datasetData.attributes.type && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.resolution && (
                 <div>
-                  <h2>Data type</h2>
-                  <p>{this.props.datasetData.attributes.type}</p>
+                  <h2>Resolution</h2>
+                  <p>{metadata.applicationProperties.resolution}</p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.sources && (
-                <div>
-                  <h2>Sources</h2>
-                  {metadata.info.sources.map(source => (
-                    <p key={source['source-name']}>
-                      {source['source-name']}<br />
-                      {source['source-description']}
-                    </p>
-                  ))}
-                </div>
-              )}
 
-              {metadata && metadata.info && metadata.info.geographic_coverage && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.geographic_coverage && (
                 <div>
                   <h2>Geographic coverage</h2>
-                  <p>{metadata.info.geographic_coverage}</p>
+                  <p>{metadata.applicationProperties.geographic_coverage}</p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.spatial_resolution && (
-                <div>
-                  <h2>Spatial resolution</h2>
-                  <p>{metadata.info.spatial_resolution}</p>
-                </div>
-              )}
 
-              {metadata && metadata.info && metadata.info.date_of_content && (
-                <div>
-                  <h2>Date of content</h2>
-                  <p>{metadata.info.date_of_content}</p>
-                </div>
-              )}
-
-              {metadata && metadata.info && metadata.info.frequency_of_updates && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.frequency_of_updates && (
                 <div>
                   <h2>Frequency of updates</h2>
-                  <p>{metadata.info.frequency_of_updates}</p>
+                  <p>{metadata.applicationProperties.frequency_of_updates}</p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.license && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.date_of_content && (
                 <div>
-                  <h2>License</h2>
+                  <h2>Date of content</h2>
+                  <p>{metadata.applicationProperties.date_of_content}</p>
+                </div>
+              )}
+
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.download_data && (
+                <div>
+                  <h2>Download link</h2>
                   <p>
-                    {metadata.info.license_link
-                      ? <a href={metadata.info.license_link} target="_blank" rel="noopener noreferrer">{metadata.info.license}</a>
-                      : metadata.info.license
-                    }
-                  </p>
-                </div>
-              )}
-
-              {metadata && metadata.info && metadata.info.summary_of_license && (
-                <div>
-                  <h2>Summary of license</h2>
-                  <p>{metadata.info.summary_of_license}</p>
-                </div>
-              )}
-
-              {metadata && metadata.info && metadata.info.link_to_license && (
-                <div>
-                  <h2>Link to full license</h2>
-                  <p>
-                    <a href={metadata.info.link_to_license} target="_blank" rel="noopener noreferrer">
-                      {metadata.info.link_to_license}
+                    <a href={metadata.applicationProperties.download_data} target="_blank" rel="noopener noreferrer">
+                      {metadata.applicationProperties.download_data}
                     </a>
                   </p>
                 </div>
               )}
 
-              {metadata && metadata.language && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.amazon_link && (
                 <div>
-                  <h2>Published language</h2>
-                  <p>{metadata.language}</p>
+                  <h2>Amazon link</h2>
+                  <p>
+                    <a href={metadata.applicationProperties.amazon_link} target="_blank" rel="noopener noreferrer">
+                      {metadata.applicationProperties.amazon_link}
+                    </a>
+                  </p>
                 </div>
               )}
 
-              {metadata && metadata.info && metadata.info.language && metadata.info.language.toLowerCase() !== 'en' && (
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.map_service && (
                 <div>
-                  <h2>Translated title</h2>
-                  <p>{metadata.info.translated_title}</p>
+                  <h2>ArcGIS Map Service or Feature Service Link</h2>
+                  <p>
+                    <a href={metadata.applicationProperties.map_service} target="_blank" rel="noopener noreferrer">
+                      {metadata.applicationProperties.map_service}
+                    </a>
+                  </p>
+                </div>
+              )}
+
+              {!!metadata.applicationProperties && !!metadata.applicationProperties.agol_link && (
+                <div>
+                  <h2>ArcGIS Online ItemID Link</h2>
+                  <p>
+                    <a href={metadata.applicationProperties.agol_link} target="_blank" rel="noopener noreferrer">
+                      {metadata.applicationProperties.agol_link}
+                    </a>
+                  </p>
                 </div>
               )}
             </div>
@@ -252,13 +263,16 @@ Dashboard.propTypes = {
   setWidgetId: PropTypes.func.isRequired,
   fetchWidget: PropTypes.func.isRequired,
   setDetailsVisibility: PropTypes.func.isRequired,
+  setDefaultLanguage: PropTypes.func.isRequired,
+  setSelectedLanguage: PropTypes.func.isRequired,
   preview: PropTypes.bool,
   dataset: PropTypes.string,
   widget: PropTypes.string,
   topContent: PropTypes.string,
   bottomContent: PropTypes.string,
   downloadUrls: PropTypes.object.isRequired,
-  hiddenFields: PropTypes.arrayOf(PropTypes.string)
+  hiddenFields: PropTypes.arrayOf(PropTypes.string),
+  defaultLanguage: PropTypes.string,
 };
 
 Dashboard.defaultProps = {
@@ -267,7 +281,8 @@ Dashboard.defaultProps = {
   widget: null,
   topContent: null,
   bottomContent: null,
-  hiddenFields: []
+  hiddenFields: [],
+  defaultLanguage: null,
 };
 
 export default Dashboard;

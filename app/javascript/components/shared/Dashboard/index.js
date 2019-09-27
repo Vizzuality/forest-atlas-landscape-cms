@@ -2,7 +2,18 @@ import { connect } from 'react-redux';
 
 import DashboardComponent from 'components/shared/Dashboard/dashboard.component';
 
-import { setSelectedTab, fetchFields, fetchDataset, fetchWidget, setPageSlug, setDatasetId, setWidgetId, setDetailsVisibility } from 'components/shared/Dashboard/dashboard.actions';
+import {
+  setSelectedTab,
+  fetchFields,
+  fetchDataset,
+  fetchWidget,
+  setPageSlug,
+  setDatasetId,
+  setWidgetId,
+  setDetailsVisibility,
+  setDefaultLanguage,
+  setSelectedLanguage,
+} from 'components/shared/Dashboard/dashboard.actions';
 import { fetchData } from 'components/shared/DashboardTableView/dashboard-table-view.actions';
 import { fetchVegaWidgetData } from 'components/shared/DashboardChartView/dashboard-chart-view.actions';
 import { getDatasetMetadata } from 'components/shared/Dashboard/dashboard.selectors';
@@ -27,7 +38,9 @@ const mapDispatchToProps = dispatch => ({
   setPageSlug: pageSlug => dispatch(setPageSlug(pageSlug)),
   setDatasetId: datasetId => dispatch(setDatasetId(datasetId)),
   setWidgetId: widgetId => dispatch(setWidgetId(widgetId)),
-  setDetailsVisibility: visible => dispatch(setDetailsVisibility(visible))
+  setDetailsVisibility: visible => dispatch(setDetailsVisibility(visible)),
+  setDefaultLanguage: defaultLanguage => dispatch(setDefaultLanguage(defaultLanguage)),
+  setSelectedLanguage: selectedLanguage => dispatch(setSelectedLanguage(selectedLanguage)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardComponent);

@@ -13,6 +13,8 @@ export const SET_WIDGET_ERROR = 'DASHBOARD/SET_WIDGET_ERROR';
 export const SET_WIDGET_DATA = 'DASHBOARD/SET_WIDGET_DATA';
 export const SET_PAGE_SLUG = 'DASHBOARD/SET_PAGE_SLUG';
 export const SET_DETAILS_VISIBILITY = 'DASHBOARD/SET_DETAILS_VISIBILITY';
+export const SET_DEFAULT_LANGUAGE = 'DASHBOARD/SET_DEFAULT_LANGUAGE';
+export const SET_SELECTED_LANGUAGE = 'DASHBOARD/SET_SELECTED_LANGUAGE';
 
 const initialState = {
   tabs: [
@@ -38,7 +40,9 @@ const initialState = {
     loading: false,
     error: false,
     data: null
-  }
+  },
+  defaultLanguage: null,
+  selectedLanguage: null,
 };
 
 export default (state = initialState, action) => {
@@ -105,6 +109,12 @@ export default (state = initialState, action) => {
 
     case SET_DETAILS_VISIBILITY:
       return Object.assign({}, state, { detailsVisible: action.payload });
+
+    case SET_DEFAULT_LANGUAGE:
+      return Object.assign({}, state, { defaultLanguage: action.payload });
+
+    case SET_SELECTED_LANGUAGE:
+      return Object.assign({}, state, { selectedLanguage: action.payload });
 
     default:
       return state;

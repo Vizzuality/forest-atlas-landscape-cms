@@ -5,6 +5,8 @@ export const getDataset = state => state.dashboard.dataset.data;
 const getFieldsSelector = state => state.dashboard.fields.data;
 const getWidget = state => state.dashboard.widget.data;
 const getPageSlugSelector = state => state.dashboard.pageSlug;
+const getDefaultLanguage = state => state.dashboard.defaultLanguage;
+const getSelectedLanguage = state => state.dashboard.selectedLanguage;
 
 /**
  * Return the data without the columns that are not
@@ -44,14 +46,16 @@ export const getPageSlug = createSelector(
  * Return the metadata of the dataset
  */
 export const getDatasetMetadata = createSelector(
-  [getDataset],
-  (dataset) => {
+  [getDataset, getDefaultLanguage, getSelectedLanguage],
+  (dataset, defaultLanguage, selectedLanguage) => {
     if (dataset && dataset.attributes.metadata && dataset.attributes.metadata.length) {
-      const FAMetadata = dataset.attributes.metadata.find(m => m.attributes.application === 'forest-atlas');
-      const enMetadata = dataset.attributes.metadata.find(m => m.attributes.language === 'en');
+      const FAMetadata = dataset.attributes.metadata.filter(m => m.attributes.application === ENV.API_APPLICATIONS);
 
-      // We return, in priority, the metadata for forest-atlas or the one in English
-      return FAMetadata || enMetadata || dataset.attributes.metadata[0];
+      const selectedLangMetadata = FAMetadata.find(m => m.attributes.language === selectedLanguage);
+      const defaultLangMetadata = FAMetadata.find(m => m.attributes.language === defaultLanguage);
+      const randomMetadata = FAMetadata[0];
+
+      return selectedLangMetadata || defaultLangMetadata || randomMetadata;
     }
 
     return null;

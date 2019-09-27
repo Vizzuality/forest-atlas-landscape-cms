@@ -15,6 +15,8 @@ class SitePageController < ApplicationController
 
   def load_site_page
     @site_page = SitePage.find(params[:id])
+    @default_language =
+      SiteSetting.default_site_language(@site_page.site_id)&.value
 
     redirect_to not_found_path unless @site_page && @site_page.visible?
   end
