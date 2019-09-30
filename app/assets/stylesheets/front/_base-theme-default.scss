@@ -24,9 +24,6 @@ body {
   font-weight: $font-weight-normal;
   line-height: 1.7;
 
-  // TODO: default font-size and font-weight depend on font family
-  // CARPE and LSA templates use $font-size-s-normal and $font-weight-light
-
   @media #{$mq-body-width} {
     margin: 0 auto;
   }
