@@ -232,24 +232,12 @@ class Management::DatasetStepsController < ManagementController
     @dataset = Dataset.find_with_metadata(params[:dataset_id])
     @dataset.id = @dataset_id
 
-    if params[:dataset]
-      @dataset.metadata = @dataset.metadata.deep_merge(
-        params.to_unsafe_h[:dataset][:metadata].transform_keys(&:to_sym)
-      )
+    unless session[:dataset_creation][@dataset_id].blank?
+      set_current_dataset_state
     end
-
-    set_current_dataset_state
   end
 
   def set_current_dataset_state
-    if session[:dataset_creation] &&
-       session[:dataset_creation][@dataset_id] &&
-       session[:dataset_creation][@dataset_id]['metadata']
-      @dataset.metadata =
-        session[:dataset_creation][@dataset_id]['metadata'].transform_keys(&:to_sym).deep_merge(
-          @dataset.metadata
-        )
-    end
     session[:dataset_creation][@dataset_id] = @dataset.attributes
   end
 
