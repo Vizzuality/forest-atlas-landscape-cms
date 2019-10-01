@@ -4,7 +4,8 @@
   padding-bottom: 75px;
 
   &.-title,
-  &.-metadata {
+  &.-metadata,
+  &.-aliases {
     display: flex;
     align-items: center;
     min-height: calc(100vh - 300px);
@@ -28,6 +29,48 @@
     .c-inputs-container > .container {
       > textarea {
         min-height: 120px;
+      }
+    }
+  }
+
+  &.-aliases {
+    .c-inputs-container > .container {
+      input:disabled {
+        // Since this input has a background, a padding make it appear nicer
+        padding: 2px 3px;
+      }
+
+      textarea {
+        min-height: 80px;
+      }
+
+      .row {
+        border-bottom: 1px solid $color-13;
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  &.-aliases {
+    .c-inputs-container > .container {
+      input:disabled {
+        // Since this input has a background, a padding make it appear nicer
+        padding: 2px 3px;
+      }
+
+      textarea {
+        min-height: 80px;
+      }
+
+      .row {
+        border-bottom: 1px solid $color-13;
+
+        &:last-of-type {
+          border-bottom: none;
+        }
       }
     }
   }

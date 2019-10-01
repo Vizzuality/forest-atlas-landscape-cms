@@ -28,13 +28,13 @@ class Dataset
       }
     elsif provider.eql?('csv')
       {
-        pages: %w[connector metadata],
-        names: %w[Connector Metadata]
+        pages: %w[connector metadata options],
+        names: %w[Connector Metadata Aliases]
       }
     else
       {
-        pages: %w[metadata],
-        names: %w[Metadata]
+        pages: %w[metadata options],
+        names: %w[Metadata Aliases]
       }
     end
   end
@@ -186,6 +186,7 @@ class Dataset
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
 
     metadata.each do |language, metadata_info|
+      metadata_info.symbolize_keys!
       if metadata_info[:id].present?
         update_metadata(token, metadata_info)
       else

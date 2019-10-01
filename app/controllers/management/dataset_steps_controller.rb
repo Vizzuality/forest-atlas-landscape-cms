@@ -45,6 +45,8 @@ class Management::DatasetStepsController < ManagementController
       when 'metadata'
         get_languages
         get_metadata
+      when 'options'
+        get_metadata_columns
     end
     render_wizard
   end
@@ -61,6 +63,12 @@ class Management::DatasetStepsController < ManagementController
         render_wizard
       end
     when 'metadata'
+      if @dataset.valid?
+        save_or_update_step
+      else
+        render_wizard
+      end
+    when 'options'
       if @dataset.valid?
         save_or_update_step
       else
@@ -190,8 +198,6 @@ class Management::DatasetStepsController < ManagementController
     if params[:dataset_id]
       build_existing_dataset_state
 
-      @dataset.metadata = params[:dataset][:metadata] if params[:dataset]
-
       ds_params = @dataset.attributes
     end
 
@@ -220,15 +226,27 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def build_existing_dataset_state
-    @dataset_id = params[:dataset_id]
-    @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    @dataset_id = params[:dataset_id] || @dataset.id
+    if params[:dataset]
+      @dataset.set_attributes params.to_unsafe_h['dataset'].to_h.deep_symbolize_keys
+    else
+      @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    end
     @dataset.id = @dataset_id
 
     set_current_dataset_state
   end
 
   def set_current_dataset_state
-    session[:dataset_creation][@dataset_id] = @dataset.attributes
+    return if action_name == 'show'
+    if action_name != 'show' && session[:dataset_creation][@dataset_id]
+      session[:dataset_creation][@dataset_id] =
+        session[:dataset_creation][@dataset_id].deep_merge(@dataset.attributes)
+    else
+      session[:dataset_creation][@dataset_id] = @dataset.attributes
+    end
+
+    @dataset.set_attributes session[:dataset_creation][@dataset_id]
   end
 
   # Creates an array of context_datasets
@@ -272,6 +290,24 @@ class Management::DatasetStepsController < ManagementController
         metadata['id']
     end
     @metadata = formatted_metadata
+  end
+
+  def get_metadata_columns
+    @default_language = SiteSetting.default_site_language(@site.id).value
+    dataset = DatasetService.get_metadata(@dataset.id)['data']
+    metadata = dataset['attributes']['metadata'].select do |md|
+      md['attributes']['language'] == @default_language
+    end.first
+    @metadata_id = metadata&.dig('id')
+
+    fields = DatasetService.get_fields @dataset.id, dataset['tableName']
+
+    @metadata_columns = fields.map do |field|
+      metadata_columns = metadata&.dig('attributes', 'columns')
+      field_alias = metadata_columns&.dig(field[:name], 'alias')
+      field_description = metadata_columns&.dig(field[:name], 'description')
+      {name: field[:name], alias: field_alias, description: field_description}
+    end
   end
 
   def process_metadata(ds_params)

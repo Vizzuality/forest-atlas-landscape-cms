@@ -175,16 +175,19 @@ class DatasetService < ApiService
   def self.save_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
     metadata_body = {
       application: application,
-      name: name,
       language: metadata[:language],
-      applicationProperties: metadata.
-        slice(*Dataset::APPLICATION_PROPERTIES).
-        merge(tags: tags_array.join(','))
-    }.merge(
-      metadata.slice(*Dataset::API_PROPERTIES)
-    )
+    }
+
+    application_properties = metadata.slice(*Dataset::APPLICATION_PROPERTIES)
+    application_properties.merge!(tags: tags_array.join(',')) if tags_array.any?
+    unless application_properties.blank?
+      metadata_body.merge!(applicationProperties: application_properties)
+    end
+
+    metadata_body.merge!(metadata.slice(*Dataset::API_PROPERTIES))
 
     metadata_body = metadata_body.to_json
+
     begin
       Rails.logger.info 'Saving dataset Metadata in the API.'
       Rails.logger.info "Body: #{metadata_body}"
