@@ -32,8 +32,9 @@ body {
     max-width: none;
 
     .c-header {
-      // TODO: static or nothing depending on transparency of menu
-      // CARPE used static
+      @if $template == 'india' {
+        position: static;
+      }
     }
   }
 

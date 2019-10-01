@@ -1,6 +1,21 @@
-<% variables.each do |property, value| %>
-  $<%= property %>: <%= value %>;
-<% end %>
+$template: 'india'; // String: «default», «india»
+
+$accent-color: #97BE32; // Hex code
+
+$content-width: 1280px; // Pixels or percentage
+$content-font: 'Acumin Pro Condensed'; // Font family name
+$heading-font: 'Acumin Pro Condensed'; // Font family name
+$cover-size: 130px; // Pixels
+$cover-text-alignment: left; // text-align value
+
+$header-menu-items-separator: false; // Boolean
+$header-background-colour: 'dark'; // String: «dark», «grey», «white»
+$header-background-transparency: 'semi'; // String: «solid», «semi», «transparent»
+
+$footer-background-colour: 'dark'; // String: «dark», «grey», «accent-color»
+$footer-text-colour: 'white'; // String: «white», «accent-color»
+$footer-links-colour: 'white'; // String: «white», «accent-color»
+
 
 @import
 '../../../node_modules/widget-editor/dist/styles.min',

@@ -700,12 +700,15 @@ $submenu-separator-color: red;
       .content {
         display: flex;
         position: relative;
-        top: 5px;
         align-items: center;
         justify-content: space-between;
         height: 100%;
         z-index: 1;
         line-height: 25px;
+
+        @if $template == 'default' {
+          top: 5px;
+        }
 
         > .breadcrumbs {
           height: 100%;
@@ -796,6 +799,10 @@ $submenu-separator-color: red;
     z-index: -1;
     background-color: $flag-background-color;
 
+    @if $template == 'india' {
+      display: none;
+    }
+
     @media print {
       display: none;
     }
@@ -803,9 +810,6 @@ $submenu-separator-color: red;
     > div {
       flex-grow: 1;
 
-      @if $template == 'india' {
-        display: none;
-      }
     }
   }
 }
