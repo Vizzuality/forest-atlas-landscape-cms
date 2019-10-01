@@ -13,14 +13,14 @@ $cover-size: 250px; // Pixels
 $cover-text-alignment: left; // text-align value
 
 $header-menu-items-separator: false; // Boolean
-$header-background-colour: 'dark'; // String: «dark», «grey», «white»
+$header-background-color: 'dark'; // String: «dark», «grey», «white»
 $header-background-transparency: 'semi'; // String: «solid», «semi», «transparent»
 // Not used in the stylesheet:
 // $header-country-colours: $header-country-colours;
 
-$footer-background-colour: 'dark'; // String: «dark», «grey», «accent-color»
-$footer-text-colour: 'white'; // String: «white», «accent-color»
-$footer-links-colour: 'accent-color'; // String: «white», «accent-color»
+$footer-background-color: 'dark'; // String: «dark», «grey», «accent-color»
+$footer-text-color: 'white'; // String: «white», «accent-color»
+$footer-links-color: 'accent-color'; // String: «white», «accent-color»
 
 // FONTS
 @font-face {

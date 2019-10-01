@@ -1,15 +1,15 @@
 .c-pre-footer {
   padding: 15px 0;
 
-  @if $footer-background-colour == 'dark' or $template == 'india' {
+  @if $footer-background-color == 'dark' or $template == 'india' {
     background-color: rgba($color-7, .2);
   }
 
-  @if $footer-background-colour == 'grey' {
+  @if $footer-background-color == 'grey' {
     background-color: rgba($color-18, .2);
   }
 
-  @if $footer-background-colour == 'accent-color' {
+  @if $footer-background-color == 'accent-color' {
     background-color: rgba($accent-color, .2);
   }
 
@@ -21,23 +21,23 @@
 .c-footer {
   padding: 15px 0;
 
-  @if $footer-text-colour == 'white' or $template == 'india' {
+  @if $footer-text-color == 'white' or $template == 'india' {
     color: $color-3;
   }
 
-  @if $footer-text-colour == 'accent-color' {
+  @if $footer-text-color == 'accent-color' {
     color: $accent-color;
   }
 
-  @if $footer-background-colour == 'dark' {
+  @if $footer-background-color == 'dark' {
     background-color: $color-7;
   }
 
-  @if $footer-background-colour == 'grey' {
+  @if $footer-background-color == 'grey' {
     background-color: $color-18;
   }
 
-  @if $footer-background-colour == 'accent-color' {
+  @if $footer-background-color == 'accent-color' {
     background-color: $accent-color;
   }
 
@@ -55,11 +55,11 @@
   }
 
   a {
-    @if $footer-links-colour == 'white' or $template == 'india' {
+    @if $footer-links-color == 'white' or $template == 'india' {
       color: $color-3;
     }
 
-    @if $footer-links-colour == 'accent-color' {
+    @if $footer-links-color == 'accent-color' {
       color: $accent-color;
     }
   }
@@ -77,11 +77,11 @@
   }
 
   .separator {
-    @if $footer-text-colour == 'white' {
+    @if $footer-text-color == 'white' {
       color: rgba($color-3, 0.3);
     }
 
-    @if $footer-text-colour == 'accent-color' {
+    @if $footer-text-color == 'accent-color' {
       color: rgba($accent-color, .3);
     }
 

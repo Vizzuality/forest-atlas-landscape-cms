@@ -13,12 +13,12 @@ $cover-size: 170px; // Pixels
 $cover-text-alignment: center; // text-align value
 
 $header-menu-items-separator: true; // Boolean
-$header-background-colour: 'white'; // String: «dark», «grey», «white»
+$header-background-color: 'white'; // String: «dark», «grey», «white»
 $header-background-transparency: 'semi'; // String: «solid», «semi», «transparent»
 
-$footer-background-colour: 'dark'; // String: «dark», «grey», «accent-color»
-$footer-text-colour: 'accent-color'; // String: «white», «accent-color»
-$footer-links-colour: 'white'; // String: «white», «accent-color»
+$footer-background-color: 'dark'; // String: «dark», «grey», «accent-color»
+$footer-text-color: 'white'; // String: «white», «accent-color»
+$footer-links-color: 'accent-color'; // String: «white», «accent-color»
 
 @import
 '../../../node_modules/widget-editor/dist/styles.min',

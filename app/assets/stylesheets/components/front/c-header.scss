@@ -1,6 +1,6 @@
 // Background color of the menu
 $background-color: red;
-@if $header-background-colour == 'dark' {
+@if $header-background-color == 'dark' {
   @if $header-background-transparency == 'transparent' {
     $background-color: rgba($color-7, .75);
   } @else {
@@ -8,7 +8,7 @@ $background-color: red;
   }
 }
 
-@if $header-background-colour == 'grey' {
+@if $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' {
     $background-color: rgba($color-18, .75);
   } @else {
@@ -16,7 +16,7 @@ $background-color: red;
   }
 }
 
-@if $header-background-colour == 'white' {
+@if $header-background-color == 'white' {
   @if $header-background-transparency == 'transparent' {
     $background-color: rgba($color-3, .75);
   } @else {
@@ -30,7 +30,7 @@ $background-color: red;
 
 // Background color of the active menu item or on hover
 $active-background-color: red;
-@if $header-background-colour == 'dark' or $template == 'india' {
+@if $header-background-color == 'dark' or $template == 'india' {
   @if $header-background-transparency == 'transparent' {
     $active-background-color: rgba($color-3, .3);
   } @else {
@@ -38,7 +38,7 @@ $active-background-color: red;
   }
 }
 
-@if $header-background-colour == 'grey' {
+@if $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' {
     $active-background-color: rgba($color-4, .3);
   } @else {
@@ -46,7 +46,7 @@ $active-background-color: red;
   }
 }
 
-@if $header-background-colour == 'white' {
+@if $header-background-color == 'white' {
   @if $header-background-transparency == 'transparent' {
     $active-background-color: rgba($accent-color, .3);
   } @else {
@@ -56,17 +56,17 @@ $active-background-color: red;
 
 // Color of the text of the menu items
 $color: red;
-@if $header-background-colour == 'white' or $header-background-colour == 'grey' {
+@if $header-background-color == 'white' or $header-background-color == 'grey' {
   $color: $color-6;
 }
 
-@if $header-background-colour == 'dark' or $template == 'india' {
+@if $header-background-color == 'dark' or $template == 'india' {
   $color: $color-3;
 }
 
 // Background color of the flag
 $flag-background-color: red;
-@if $header-background-colour == 'dark' {
+@if $header-background-color == 'dark' {
   @if $header-background-transparency == 'transparent' {
     $flag-background-color: rgba($color-7, .75);
   } @else {
@@ -74,7 +74,7 @@ $flag-background-color: red;
   }
 }
 
-@if $header-background-colour == 'grey' {
+@if $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' {
     $flag-background-color: rgba($color-18, .75);
   } @else {
@@ -82,7 +82,7 @@ $flag-background-color: red;
   }
 }
 
-@if $header-background-colour == 'white' {
+@if $header-background-color == 'white' {
   @if $header-background-transparency == 'transparent' {
     $flag-background-color: rgba($accent-color, .75);
   } @else {
@@ -96,7 +96,7 @@ $flag-background-color: red;
 
 // Color of the menu items separators
 $separator-color: red;
-@if $header-background-colour == 'white' or $header-background-colour == 'grey' {
+@if $header-background-color == 'white' or $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' {
     $separator-color: rgba($color-6, .3);
   } @else {
@@ -104,7 +104,7 @@ $separator-color: red;
   }
 }
 
-@if $header-background-colour == 'dark' or $template == 'india' {
+@if $header-background-color == 'dark' or $template == 'india' {
   @if $header-background-transparency == 'transparent' {
     $separator-color: rgba($color-3, .3);
   } @else {
@@ -114,7 +114,7 @@ $separator-color: red;
 
 // Background color of the sub menu
 $submenu-background-color: red;
-@if $header-background-colour == 'dark' {
+@if $header-background-color == 'dark' {
   @if $header-background-transparency == 'transparent' or $header-background-transparency == 'semi' {
     $submenu-background-color: rgba($color-7, .75);
   } @else {
@@ -122,7 +122,7 @@ $submenu-background-color: red;
   }
 }
 
-@if $header-background-colour == 'grey' {
+@if $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' or $header-background-transparency == 'semi' {
     $submenu-background-color: rgba($color-18, .75);
   } @else {
@@ -130,7 +130,7 @@ $submenu-background-color: red;
   }
 }
 
-@if $header-background-colour == 'white' {
+@if $header-background-color == 'white' {
   @if $header-background-transparency == 'transparent' or $header-background-transparency == 'semi' {
     $submenu-background-color: rgba($accent-color, .75);
   } @else {
@@ -144,7 +144,7 @@ $submenu-background-color: red;
 
 // Background color of the active sub menu item or on hover
 $active-submenu-background-color: red;
-@if $header-background-colour == 'dark' or $header-background-colour == 'white' or $template == 'india' {
+@if $header-background-color == 'dark' or $header-background-color == 'white' or $template == 'india' {
   @if $header-background-transparency == 'transparent' {
     $active-submenu-backgroud-color: rgba($color-3, .3);
   } @else {
@@ -152,7 +152,7 @@ $active-submenu-background-color: red;
   }
 }
 
-@if $header-background-colour == 'grey' {
+@if $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' {
     $active-submenu-backgroud-color: rgba($color-4, .3);
   } @else {
@@ -162,7 +162,7 @@ $active-submenu-background-color: red;
 
 // Color of the sub menu items separators
 $submenu-separator-color: red;
-@if $header-background-colour == 'grey' {
+@if $header-background-color == 'grey' {
   @if $header-background-transparency == 'transparent' {
     $submenu-separator-color: rgba($color-6, .3);
   } @else {
@@ -170,8 +170,8 @@ $submenu-separator-color: red;
   }
 }
 
-@if $header-background-colour == 'dark' or $template == 'india' {
-  @if $header-background-colour == 'white' or $header-background-transparency == 'transparent' {
+@if $header-background-color == 'dark' or $template == 'india' {
+  @if $header-background-color == 'white' or $header-background-transparency == 'transparent' {
     $submenu-separator-color: rgba($color-3, .3);
   } @else {
     $submenu-separator-color: rgba($color-3, .1);
@@ -649,11 +649,11 @@ $submenu-separator-color: red;
           text-indent: -10000px;
           cursor: pointer;
 
-          @if $header-background-colour == 'white' or $header-background-colour == 'grey' {
+          @if $header-background-color == 'white' or $header-background-color == 'grey' {
             background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0 dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5v ZGQiPjxwYXRoIGQ9Ik02LjUgMTNhNi41IDYuNSAwIDEgMCAwLTEzIDYuNSA2LjUgMCAwIDAgMCAx M3ptMC0yYTQuNSA0LjUgMCAxIDAgMC05IDQuNSA0LjUgMCAwIDAgMCA5eiIgZmlsbD0iIzMzMyIv PjxwYXRoIGQ9Ik0xMC41IDEwLjVMMTQgMTQiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIy Ii8+PC9nPjwvc3ZnPg==') no-repeat;
           }
 
-          @if $header-background-colour == 'dark' or $template == 'india' {
+          @if $header-background-color == 'dark' or $template == 'india' {
             background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0 dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5v ZGQiPjxwYXRoIGQ9Ik02LjUgMTNhNi41IDYuNSAwIDEgMCAwLTEzIDYuNSA2LjUgMCAwIDAgMCAx M3ptMC0yYTQuNSA0LjUgMCAxIDAgMC05IDQuNSA0LjUgMCAwIDAgMCA5eiIgZmlsbD0iI0ZGRiIv PjxwYXRoIGQ9Ik0xMC41IDEwLjVMMTQgMTQiIHN0cm9rZT0iI0ZGRiIgc3Ryb2tlLXdpZHRoPSIy Ii8+PC9nPjwvc3ZnPg==') no-repeat;
           }
         }
@@ -667,7 +667,7 @@ $submenu-separator-color: red;
       font-size: $font-size-small;
       z-index: 1; // To be on top of the map's tiles
 
-      @if $header-background-colour == 'grey' {
+      @if $header-background-color == 'grey' {
         color: $color-4;
       } @else {
         color: $color-3;
