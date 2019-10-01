@@ -198,8 +198,6 @@ class Management::DatasetStepsController < ManagementController
     if params[:dataset_id]
       build_existing_dataset_state
 
-      @dataset.metadata = params[:dataset][:metadata] if params[:dataset]
-
       ds_params = @dataset.attributes
     end
 
@@ -228,17 +226,27 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def build_existing_dataset_state
-    @dataset_id = params[:dataset_id]
-    @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    @dataset_id = params[:dataset_id] || @dataset.id
+    if params[:dataset]
+      @dataset.set_attributes params.to_unsafe_h['dataset'].to_h.deep_symbolize_keys
+    else
+      @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    end
     @dataset.id = @dataset_id
 
-    unless session[:dataset_creation][@dataset_id].blank?
-      set_current_dataset_state
-    end
+    set_current_dataset_state
   end
 
   def set_current_dataset_state
-    session[:dataset_creation][@dataset_id] = @dataset.attributes
+    return if action_name == 'show'
+    if action_name != 'show' && session[:dataset_creation][@dataset_id]
+      session[:dataset_creation][@dataset_id] =
+        session[:dataset_creation][@dataset_id].deep_merge(@dataset.attributes)
+    else
+      session[:dataset_creation][@dataset_id] = @dataset.attributes
+    end
+
+    @dataset.set_attributes session[:dataset_creation][@dataset_id]
   end
 
   # Creates an array of context_datasets

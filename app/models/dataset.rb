@@ -186,6 +186,7 @@ class Dataset
     DatasetService.update token, id, connector_url if provider.eql? 'csv'
 
     metadata.each do |language, metadata_info|
+      metadata_info.symbolize_keys!
       if metadata_info[:id].present?
         update_metadata(token, metadata_info)
       else

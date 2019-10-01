@@ -175,7 +175,6 @@ class DatasetService < ApiService
   def self.save_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
     metadata_body = {
       application: application,
-      name: name,
       language: metadata[:language],
     }
 
