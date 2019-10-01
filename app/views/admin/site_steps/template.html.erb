@@ -28,14 +28,10 @@
             <div class="content">
               <p><%= template.name %></p>
               <% template_name = nil %>
-              <% if template.name == 'Forest Atlas' 
+              <% if template.name == 'Default'
                   template_name = 'fa-preview.jpg'
-                elsif template.name == 'CARPE Landscape'
-                  template_name = 'carpe-preview.png'
-                elsif template.name == 'INDIA'
-                  template_name = 'ind-preview.png'
                 else
-                  template_name = 'lsa-preview.jpg'
+                  template_name = 'ind-preview.png'
                 end
               %>
               <%= image_tag (template_name), alt: template.name %>

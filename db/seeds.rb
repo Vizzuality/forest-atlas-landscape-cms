@@ -9,11 +9,9 @@ def clear
 end
 
 def create_templates
-  @fa_template = SiteTemplate.create({ name: 'Forest Atlas'} )
-  @la_template = SiteTemplate.create({ name: 'Landscape Application'} )
-  @ca_template = SiteTemplate.create({ name: 'CARPE Landscape'} )
+  @default_template = SiteTemplate.create({ name: 'Default'} )
 
-  @templates = [@fa_template, @la_template, @ca_template]
+  @templates = [@default_template]
   puts 'Site templates created successfully'
 end
 
