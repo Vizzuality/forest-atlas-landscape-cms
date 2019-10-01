@@ -58,7 +58,7 @@ class Admin::SiteStepsController < AdminController
       if step == 'template'
         SiteSetting.create_color_settings @site
       end
-      if step == 'style'
+      if step == 'content'
         SiteSetting.create_additional_settings @site
         gon.global.color_controller_id = COLOR_CONTROLLER_ID
         gon.global.color_controller_name = COLOR_CONTROLLER_NAME
@@ -178,7 +178,7 @@ class Admin::SiteStepsController < AdminController
 
 
       # In this step, the site is always saved
-      when 'style'
+      when 'content'
         settings = site_params.to_h
         @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
 
@@ -214,7 +214,7 @@ class Admin::SiteStepsController < AdminController
             # If the user is creating a new site
           else
             settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
-            @site.form_step = 'style'
+            @site.form_step = 'content'
           end
         rescue => e
           Rails.logger.error e.class
@@ -230,7 +230,7 @@ class Admin::SiteStepsController < AdminController
             render_wizard
           end
         else
-          @site.form_step = 'style'
+          @site.form_step = 'content'
 
           if @site.save
             redirect_to next_wizard_path
