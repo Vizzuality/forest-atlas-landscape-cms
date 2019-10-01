@@ -83,6 +83,50 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'color', site_id: site_id)
   end
 
+  def self.content_width(site_id)
+    SiteSetting.find_by(name: 'content_width', site_id: site_id)
+  end
+
+  def self.content_font(site_id)
+    SiteSetting.find_by(name: 'content_font', site_id: site_id)
+  end
+
+  def self.heading_font(site_id)
+    SiteSetting.find_by(name: 'heading_font', site_id: site_id)
+  end
+
+  def self.cover_size(site_id)
+    SiteSetting.find_by(name: 'cover_size', site_id: site_id)
+  end
+
+  def self.cover_text_alignment(site_id)
+    SiteSetting.find_by(name: 'cover_text_alignment', site_id: site_id)
+  end
+
+  def self.header_separators(site_id)
+    SiteSetting.find_by(name: 'header_separators', site_id: site_id)
+  end
+
+  def self.header_background(site_id)
+    SiteSetting.find_by(name: 'header_background', site_id: site_id)
+  end
+
+  def self.header_transparency(site_id)
+    SiteSetting.find_by(name: 'header_transparency', site_id: site_id)
+  end
+
+  def self.footer_background(site_id)
+    SiteSetting.find_by(name: 'footer_background', site_id: site_id)
+  end
+
+  def self.footer_text_color(site_id)
+    SiteSetting.find_by(name: 'footer_text_color', site_id: site_id)
+  end
+
+  def self.footer_links_color(site_id)
+    SiteSetting.find_by(name: 'footer_links_color', site_id: site_id)
+  end
+
   def self.flag_colors(site_id)
     SiteSetting.find_by(name: 'flag', site_id: site_id)
   end
@@ -152,7 +196,7 @@ class SiteSetting < ApplicationRecord
   # Creates the color setting for a site
   def self.create_color_settings site
     if site.site_settings.length < 1
-      site.site_settings.new(name: 'color', value: '#000000', position: 1)
+      site.site_settings.new(name: 'color', value: '#97bd3d', position: 1)
     end
   end
 
@@ -163,7 +207,7 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'main_image', value: '', position: 30)
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
       site.site_settings.new(name: 'favico', value: '', position: 3)
-      site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'
+      site.site_settings.new(name: 'flag', value: '#000000', position: 4)
     end
   end
 

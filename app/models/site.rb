@@ -266,10 +266,48 @@ class Site < ApplicationRecord
 
   def variables
     color = self.site_settings.find_by(name: 'color')
+    content_width = self.site_settings.find_by(name: 'content_width')
+    content_font = self.settings.find_by(name: 'content_font')
+    heading_font = self.site_settings.find_by(name: 'heading_font')
+    cover_size = self.site_settings.find_by(name: 'cover_size')
+    cover_text_alignment = self.site_settings.find_by(name: 'cover_text_alignment')
+    header_separators = self.site_settings.find_by(name: 'header_separators')
+    header_background = self.site_settings.find_by(name: 'header_background')
+    header_transparency = self.site_settings.find_by(name: 'header_transparency')
+    footer_background = self.site_settings.find_by(name: 'footer_background')
+    footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
+    footer_links_color = self.site_settings.find_by(name: 'footer_links_color')
+
     if color
-      {'color-1': color.value}
+      {
+        'accent-color': color.value,
+        'content-width': content_width.value,
+        'content-font': '\'#{content_font.value}\'',
+        'heading-font': '\'#{heading_font.value}\'',
+        'cover-size': cover_size.value,
+        'cover-text-alignment': cover_text_alignment.value,
+        'header-menu-items-separator': header_separators.value,
+        'header-background-color': '\'#{header_background.value}\'',
+        'header-background-transparency': '\'#{header_transparency.value}\'',
+        'footer-background-color': '\'#{footer_background.value}\'',
+        'footer-text-color': '\'#{footer_text_color.value}\'',
+        'footer-links-color': '\'#{footer_links_color.value}\''
+      }
     else # Fallback color
-      {'color-1': '#97bd3d'}
+      {
+        'accent-color': '#97bd3d',
+        'content-width': '1280px',
+        'content-font': '\'Fira Sans\'',
+        'heading-font': '\'Fira Sans\'',
+        'cover-size': '250px',
+        'cover-text-alignment': 'left',
+        'header-menu-items-separator': 'false',
+        'header-background-color': '\'dark\'',
+        'header-background-transparency': '\'semi\'',
+        'footer-background-color': '\'dark\'',
+        'footer-text-color': '\'white\'',
+        'footer-links-color': '\'accent-color\''
+      }
     end
   end
 
@@ -277,12 +315,8 @@ class Site < ApplicationRecord
     Rails.logger.debug "Compiling ERB for site #{self.id}"
 
     case self.site_template.name
-      when 'Forest Atlas'
-        template = 'front/template-fa.css'
-      when 'Landscape Application'
-        template = 'front/template-lsa.css'
-      when 'CARPE Landscape'
-        template = 'front/template-carpe.css'
+      when 'Default'
+        template = 'front/template-default.css'
       when 'INDIA'
         template = 'front/template-ind.css'
       else

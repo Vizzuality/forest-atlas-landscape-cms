@@ -52,7 +52,7 @@ Rails.application.configure do
   # Mutes assets pipeline log messages
   config.assets.quiet = true
 
-  config.assets.precompile += %w( front/application-theme-default.css front/application-theme-fa.css front/application-theme-lsa.css front/application-theme-carpe.css front/application-theme-ind.css )
+  config.assets.precompile += %w( front/application-theme-default.css front/application-theme-ind.css )
 
 
   # Raises error for missing translations

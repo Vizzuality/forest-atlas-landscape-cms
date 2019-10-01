@@ -99,7 +99,7 @@ class Admin::SiteStepsController < AdminController
           if @site.save
             @site.routes.first.update(main: :true)
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -120,7 +120,7 @@ class Admin::SiteStepsController < AdminController
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             @site.build_user_site_associations_for_users(non_admin_users)
             render_wizard
@@ -141,7 +141,7 @@ class Admin::SiteStepsController < AdminController
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             @contexts = Context.all
             render_wizard
@@ -162,7 +162,7 @@ class Admin::SiteStepsController < AdminController
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -225,7 +225,7 @@ class Admin::SiteStepsController < AdminController
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -261,7 +261,7 @@ class Admin::SiteStepsController < AdminController
 
         if @site.save
           delete_session_key(:site, @site_id)
-          redirect_to next_wizard_path(site_slug: @site.slug), notice: 'The site\'s main color might take a few minutes to be visible'
+          redirect_to next_wizard_path(site_slug: @site.slug), notice: 'Changes to the template and styles might take a few minutes to be visible'
         else
           render_wizard
         end
