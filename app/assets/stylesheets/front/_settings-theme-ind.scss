@@ -1,13 +1,51 @@
+// USER SETTINGS
+// These variables are not set here because they are dynamically added to the stylesheet after the
+// user changes the settings of the site in the admin section. See _template-default.scss to see
+// how the variables are created.
+$template: $template; // String: «default», «india»
+
+$accent-color: $accent-color; // Hex code
+
+$content-width: $content-width; // Pixels or percentage
+$content-font: $content-font; // Font family name
+$heading-font: $heading-font; // Font family name
+$cover-size: $cover-size; // Pixels
+$cover-text-alignment: $cover-text-alignment; // text-align value
+
+$header-menu-items-separator: $header-menu-items-separator; // Boolean
+$header-background-colour: $header-background-colour; // String: «dark», «grey», «white»
+$header-background-transparency: $header-background-transparency; // String: «solid», «semi», «transparent»
+// Not used in the stylesheet:
+// $header-country-colours: $header-country-colours;
+
+$footer-background-colour: $footer-background-colour; // String: «dark», «grey», «accent-color»
+$footer-text-colour: $footer-text-colour; // String: «white», «accent-color»
+$footer-links-colour: $footer-links-colour; // String: «white», «accent-color»
+
 @font-face {
-  font-family: 'Acumin Pro';
+  font-family: 'Acumin Pro Condensed';
   font-weight: 300;
   src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-light.otf');
 }
 
 @font-face {
-  font-family: 'Acumin Pro';
+  font-family: 'Acumin Pro Condensed';
   font-weight: 700;
   src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-bold.otf');
+}
+
+@font-face {
+  font-family: 'Acumin Pro Condensed';
+  font-style: italic;
+  font-weight: 300;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-lightitalic.otf');
+}
+
+@font-face {
+  font-family: 'Acumin Pro Condensed';
+  font-style: italic;
+  font-weight: 700;
+  src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-bolditalic.otf');
 }
 
 // Trick: the Lato font doesn't exist in this project
@@ -20,10 +58,6 @@
   font-weight: 400;
   src: font-url('fonts/Acumin_Pro_Condensed/acuminprocond-light.otf');
 }
-
-// Font families
-$font-family-1: 'Acumin Pro', sans-serif;
-$font-family-2: 'Acumin Pro', sans-serif;
 
 // Font sizes
 $font-size-small:    12px;
@@ -46,6 +80,7 @@ $font-weight-normal: 400;
 $font-weight-bold:   700;
 
 // Colors
+// $color-1 doesn't exist because it is replaced by $accent-color
 $color-2:  #f7f7f7;
 $color-3:  #fff;
 $color-4:  #555;
@@ -54,18 +89,17 @@ $color-6:  #333;
 $color-7:  #3b3b3b;
 $color-8:  #f5f4f4;
 $color-9:  #eceaea;
-$color-10: darken(saturate($color-1, 10%), 5%);
+$color-10: darken(saturate($accent-color, 10%), 5%);
 $color-11: #fff00e;
 $color-12: #dd3e21;
 $color-13: #dededd;
 $color-14: #ff706c;
 $color-15: #404040;
-$color-16: tint($color-1, 85%);
+$color-16: tint($accent-color, 85%);
 $color-17: #0B0908;
 $color-18: #d8d8d8;
 
 // General layout
-$body-max-width:         1280px;
 $content-max-width:       750px;
 $media-max-width:        1060px;
 $image-ratio:            0.6666; // width * ratio = height
@@ -94,8 +128,4 @@ $mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
 $mq-smartphone: 'screen and (max-width: 811px) and (orientation: landscape)';
 $mq-smartphone-big: 'screen and (min-width: 812px) and (max-width: 823px) and (orientation: landscape)';
 
-$mq-body-width: 'screen and (min-width: #{$body-max-width})';
-
-// Theme
-$theme: 3;
-$admin: false;
+$mq-body-width: 'screen and (min-width: #{$content-width})';

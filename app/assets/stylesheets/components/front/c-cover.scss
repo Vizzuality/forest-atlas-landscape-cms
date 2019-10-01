@@ -87,7 +87,14 @@
       @media #{$mq-tablet} {
         position: absolute;
         top: 50%;
-        transform: translateY(-50%);
+
+        @if $template == 'default' {
+          transform: translateY(-50%);
+        }
+
+        @if $template == 'india' {
+          transform: translateY(calc(-50% + 50px));
+        }
       }
     }
 
