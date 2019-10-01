@@ -13,7 +13,7 @@ class Admin::SitesController < AdminController
     @formattedSites = @sites.map do |site|
       {
         'title' => {'value' => site.name, 'link' => { 'url' => site.routes.first.host_with_scheme, 'external' => true}, 'searchable' => true, 'sortable' => true},
-        'template' => {'value' => site.site_template.name, 'searchable' => true, 'sortable' => true},
+        'template' => {'value' => site.site_template&.name, 'searchable' => true, 'sortable' => true},
         'preview' => {'value' => site.routes.first.host_with_scheme, 'link' => { 'url' => site.routes.first.host_with_scheme, 'external' => true}, 'searchable' => true, 'sortable' => true},
         'edit' => {'value' => edit_admin_site_site_step_path(site_slug: site.slug, id: :name), 'method' => 'get'},
         'delete' => {'value' => admin_site_path(slug: site.slug), 'method' => 'delete'}
