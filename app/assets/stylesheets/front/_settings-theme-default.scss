@@ -13,14 +13,14 @@ $cover-size: $cover-size; // Pixels
 $cover-text-alignment: $cover-text-alignment; // text-align value
 
 $header-menu-items-separator: $header-menu-items-separator; // Boolean
-$header-background-colour: $header-background-colour; // String: «dark», «grey», «white»
+$header-background-color: $header-background-color; // String: «dark», «grey», «white»
 $header-background-transparency: $header-background-transparency; // String: «solid», «semi», «transparent»
 // Not used in the stylesheet:
 // $header-country-colours: $header-country-colours;
 
-$footer-background-colour: $footer-background-colour; // String: «dark», «grey», «accent-color»
-$footer-text-colour: $footer-text-colour; // String: «white», «accent-color»
-$footer-links-colour: $footer-links-colour; // String: «white», «accent-color»
+$footer-background-color: $footer-background-color; // String: «dark», «grey», «accent-color»
+$footer-text-color: $footer-text-color; // String: «white», «accent-color»
+$footer-links-color: $footer-links-color; // String: «white», «accent-color»
 
 // FONTS
 @font-face {
