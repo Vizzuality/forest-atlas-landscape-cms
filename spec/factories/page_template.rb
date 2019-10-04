@@ -30,7 +30,7 @@
 
 FactoryBot.define do
   factory :page_template do
-    association :site_template, factory: :site_template_fa
+    #association :site_template, factory: :site_template_fa
 
     show_on_menu { true }
 

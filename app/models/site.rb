@@ -297,17 +297,11 @@ class Site < ApplicationRecord
   private
 
   def generate_slug
-    write_attribute(:slug, self.name.parameterize == '' ? self.id : self.name.parameterize)
+    write_attribute(:slug, self.name&.parameterize == '' ? self.id : self.name&.parameterize)
   end
 
   def apply_settings
-    #compile_css
-
     system "rake site:apply_settings[#{self.id}] &"
-
-    #Thread.new {
-    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
-    #}.join
   end
 
   ###################################################
@@ -409,5 +403,4 @@ class Site < ApplicationRecord
       self.errors['context_sites'] << 'You must select at least one context when editing a site'
     end
   end
-
 end

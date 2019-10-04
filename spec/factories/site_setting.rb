@@ -34,7 +34,7 @@ FactoryBot.define do
     end
 
     factory :site_setting_keywords do
-      name { 'translate_keyword' }
+      name { 'keywords' }
       value { 'test' }
       position { 12 }
     end
@@ -46,7 +46,7 @@ FactoryBot.define do
     end
 
     factory :site_setting_pre_footer do
-      name { '' }
+      name { 'pre_footer' }
       value { '' }
       position { 10 }
     end
