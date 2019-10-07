@@ -30,15 +30,18 @@ class SiteSetting < ApplicationRecord
     default_site_language
     translate_english translate_spanish translate_french translate_georgian
     pre_footer analytics_key keywords contact_email_address
-    hosting_organization transifex_api_key
-  ]
+    hosting_organization transifex_api_key content_width content_font
+    heading_font cover_size cover_text_alignment header_separators
+    header_background header_transparency footer_background footer_text_color
+    footer-links-color
+  ].freeze
   MAX_COLORS = 5
   LANGUAGES = {
     spanish: 'es',
     english: 'en',
     french: 'fr',
     georgian: 'ka'
-  }
+  }.freeze
 
   # Makes sure the same site doesn't have a repeated setting
   validates_uniqueness_of :name, scope: :site_id, unless: Proc.new { |setting| setting.name.eql? 'main_image' }
