@@ -30,12 +30,12 @@
 
 FactoryBot.define do
   factory :site_page do
-    association :site
+    association :site, factory: [:site_with_routes]
 
     sequence(:name) { |n| "Page#{n}" }
-    sequence(:slug) { |n| "page#{n}" }
     sequence(:description) { |n| "desc#{n}"}
     sequence(:uri) { |n| "page-#{n}"}
+    sequence(:url) { |n| "page-#{n}"}
     content_type { ContentType::OPEN_CONTENT_V2 }
     type { "SitePage" }
     enabled { true }
