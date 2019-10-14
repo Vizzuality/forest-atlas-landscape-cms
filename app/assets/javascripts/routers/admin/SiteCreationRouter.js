@@ -99,23 +99,7 @@
     },
 
     initTemplateStep: function () {
-      var themeColorContainer = document.querySelector('.js-theme-color');
-      var input = themeColorContainer.querySelector('input');
-      var colorLabel = themeColorContainer.querySelector('.js-label');
-      var preview = themeColorContainer.querySelector('.js-preview');
-
-      // We initialize the preview with the saved color
-      preview.style.backgroundColor = input.value;
-
-      input.addEventListener('change', function () {
-        preview.style.backgroundColor = input.value;
-      });
-
-      colorLabel.addEventListener('keydown', function (e) {
-        if (e.keyCode === 13 || e.keyCode === 32) {
-          this.click();
-        }
-      });
+      App.Helper.ColorSelector.initialize('.js-theme-color');
 
       var templateLabels = document.querySelectorAll('.js-template-label');
       for (var i = 0, j = templateLabels.length; i < j; i++) {
@@ -125,6 +109,11 @@
           }
         });
       }
+    },
+
+    initStyleStep: function() {
+      App.Helper.ColorSelector.initialize('.js-accent-color');
+      App.Helper.ColorSelector.initialize('.js-header-country-color');
     },
 
     initStyleStep: function () {

@@ -35,10 +35,6 @@
                   <div class="preview js-preview">
                     <%= image_tag @logo_image.image.url, alt: 'Logo image' %>
                   </div>
-                <% elsif @site.site_template.name == 'Landscape Application' %>
-                  <div class="preview js-preview">
-                    <%= image_tag asset_path('logo.png'), alt: 'Logo image' %>
-                  </div>
                 <% else %>
                   <div class="placeholder js-placeholder">
                     <span>Select file</span>
@@ -75,9 +71,6 @@
                   </div>
                 </div>
               </div>
-              <% unless @site.site_template.name == 'Forest Atlas' %>
-                <hr/>
-              <% end %>
 
             <% when 'flag' %>
               <div class="flag-colors">

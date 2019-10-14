@@ -13,6 +13,160 @@
 <%= Gon::Base.render_data %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-    <%= render partial: 'footer', locals: {f: f} %>
+  <div class="l-site-creation -site-settings">
+    <div class="wrapper">
+      <div class="settings c-inputs-container">
+        <div class="container">
+          <%= f.fields_for :site_settings, (f.object.site_settings.select { |ss| ss.name == 'color' }) do |settings_form| %>
+            <%= settings_form.hidden_field :position, value: '1' %>
+            <%= settings_form.hidden_field :name, value: 'color' %>
+            <div class="theme-color js-accent-color">
+              <p>Accent color</p>
+              <%= settings_form.color_field :value, id: 'color' %>
+              <label for="color" tabindex="0" class="js-label">Change accent color</label>
+              <div class="preview js-preview"></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="inputs-container">
+          <%= f.fields_for :site_settings, \
+            (f.object.site_settings.collect.select { |ss| %w[content_width content_font heading_font cover_size cover_text_alignment].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
+            <% setting = settings_form.object %>
+            <% case setting.name when 'content_width' %>
+              <div>
+                <%= settings_form.hidden_field :position, value: '20' %>
+                <%= settings_form.hidden_field :name, value: 'content_width' %>
+
+                <%= settings_form.label 'Content width', for: 'content_width' %>
+                <div class="c-select -admin">
+                  <%= settings_form.select :value, {'Narrow (960px)' => '960px', 'Standard(1280px)' => '1280px', 'Fullscreen (100%)' => '100%'}, id: 'content_width' %>
+                </div>
+              </div>
+
+            <% when 'content_font' %>
+              <%= settings_form.hidden_field :position, value: '21' %>
+              <%= settings_form.hidden_field :name, value: 'content_font' %>
+
+              <%= settings_form.label 'Content font', for: 'content_font' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Fira Sans' => '\'Fira Sans\'', 'Merriweather' => '\'Merriweather\'', 'Merriweather Sans' => '\'Merriweather Sans\'', 'Roboto Condensed' => '\'Roboto Condensed\''}, id: 'content_font' %>
+              </div>
+
+            <% when 'heading_font' %>
+              <%= settings_form.hidden_field :position, value: '22' %>
+              <%= settings_form.hidden_field :name, value: 'heading_font' %>
+
+              <%= settings_form.label 'Heading font', for: 'heading_font' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Fira Sans' => '\'Fira Sans\'', 'Merriweather' => '\'Merriweather\'', 'Merriweather Sans' => '\'Merriweather Sans\'', 'Roboto Condensed' => '\'Roboto Condensed\''}, id: 'heading_font' %>
+              </div>
+
+            <% when 'cover_size' %>
+              <%= settings_form.hidden_field :position, value: '23' %>
+              <%= settings_form.hidden_field :name, value: 'cover_size' %>
+
+              <%= settings_form.label 'Cover size', for: 'cover_size' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Big (250px)' => '250px', 'Small (170px)' => '170px'}, id: 'cover_size' %>
+              </div>
+
+            <% when 'cover_text_alignment' %>
+              <%= settings_form.hidden_field :position, value: '24' %>
+              <%= settings_form.hidden_field :name, value: 'cover_text_alignment' %>
+
+              <%= settings_form.label 'Cover size', for: 'cover_text_alignment' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Left' => 'left', 'Center' => 'center'}, id: 'cover_text_alignment' %>
+              </div>
+
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="container">
+          <%= f.fields_for :site_settings, \
+            (f.object.site_settings.collect.select { |ss| %w[header_separators header_background header_transparency header-country-colours].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
+            <% setting = settings_form.object %>
+            <% case setting.name when 'header_separators' %>
+              <%= settings_form.hidden_field :position, value: '25' %>
+              <%= settings_form.hidden_field :name, value: 'header_separators' %>
+
+              <%= settings_form.label 'Content width', for: 'header_separators' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Display separators' => true, 'No separator' => false}, id: 'header_separators' %>
+              </div>
+
+            <% when 'header_background' %>
+              <%= settings_form.hidden_field :position, value: '26' %>
+              <%= settings_form.hidden_field :name, value: 'header_background' %>
+
+              <%= settings_form.label 'Content font', for: 'header_background' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Dark' => '\'dark\'', 'White' => '\'white\''}, id: 'header_background' %>
+              </div>
+
+            <% when 'header_transparency' %>
+              <%= settings_form.hidden_field :position, value: '27' %>
+              <%= settings_form.hidden_field :name, value: 'header_transparency' %>
+
+              <%= settings_form.label 'Content font', for: 'header_transparency' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Semi transparent' => '\'semi\'', 'Solid color' => '\'solid\''}, id: 'header_transparency' %>
+              </div>
+
+            <% when 'header-country-colours' %>
+              <%= settings_form.hidden_field :position, value: '28' %>
+              <%= settings_form.hidden_field :name, value: 'header-country-colours' %>
+
+              <div class="theme-color js-header-country-color">
+                <p>Header country color</p>
+                <%= settings_form.color_field :value, id: 'color' %>
+                <label for="color" tabindex="0" class="js-label">Change header country color</label>
+                <div class="preview js-preview"></div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="container">
+          <%= f.fields_for :site_settings, \
+            (f.object.site_settings.collect.select { |ss| %w[footer_background footer_text_color footer-links-color].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
+            <% setting = settings_form.object %>
+            <% case setting.name when 'footer_background' %>
+              <%= settings_form.hidden_field :position, value: '29' %>
+              <%= settings_form.hidden_field :name, value: 'footer_background' %>
+
+              <%= settings_form.label 'Content width', for: 'footer_background' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Accent colour' => '\'accent-color\'', 'White' => '\'white\''}, id: 'footer_background' %>
+              </div>
+
+            <% when 'header_background' %>
+              <%= settings_form.hidden_field :position, value: '30' %>
+              <%= settings_form.hidden_field :name, value: 'header_background' %>
+
+              <%= settings_form.label 'Content font', for: 'header_background' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Accent colour' => '\'accent-color\'', 'White' => '\'white\'', 'Black' => '\'black\''}, id: 'header_background' %>
+              </div>
+
+            <% when 'footer-links-color' %>
+              <%= settings_form.hidden_field :position, value: '31' %>
+              <%= settings_form.hidden_field :name, value: 'footer-links-color' %>
+
+              <%= settings_form.label 'Content font', for: 'footer-links-color' %>
+              <div class="c-select -admin">
+                <%= settings_form.select :value, {'Accent colour' => '\'accent-color\'', 'White' => '\'white\''}, id: 'footer-links-color' %>
+              </div>
+
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= render partial: 'footer', locals: {f: f} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: {resource: @site} %>

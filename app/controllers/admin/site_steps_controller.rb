@@ -82,6 +82,9 @@ class Admin::SiteStepsController < AdminController
         @translate_georgian = @site.site_settings.where(name: 'translate_georgian').first
         @transifex_api_key = @site.site_settings.where(name: 'transifex_api_key').first
       end
+      if step == 'style'
+        SiteSetting.create_style_settings @site
+      end
     end
     render_wizard
   end
