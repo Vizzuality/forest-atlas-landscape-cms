@@ -64,6 +64,41 @@
       });
     },
 
+    initSettingsStep() {
+      var checkboxes = document.querySelectorAll('.js-checkboxes input[type="checkbox"]');
+      var select = document.querySelector('.js-default-lang');
+      var form = document.querySelector('.js-form');
+
+      var getDefaultLang = function () {
+        return select.selectedOptions[0].textContent.trim().toLowerCase();
+      };
+
+      var getCheckboxForLang = function (lang) {
+        return  Array.prototype.slice.call(checkboxes).find(function (checkbox) {
+          return checkbox.id === 'translate_' + lang;
+        });
+      };
+
+      // When the user picks a default language for the site, we also ticks the checkbox
+      // corresponding to this language to make it available as one of the target languages
+      select.addEventListener('change', function (e) {
+        var checkbox = getCheckboxForLang(getDefaultLang());
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      });
+
+      // When the user submits the form, we make sure the site's default language has been enabled
+      // If not, we display an error message
+      form.addEventListener('submit', function (e) {
+        var checkbox = getCheckboxForLang(getDefaultLang());
+        if (!checkbox.checked) {
+          e.preventDefault();
+          App.notifications.broadcast(App.Helper.Notifications.site.defaultLanguage);
+        }
+      });
+    },
+
     initTemplateStep: function () {
       var themeColorContainer = document.querySelector('.js-theme-color');
       var input = themeColorContainer.querySelector('input');

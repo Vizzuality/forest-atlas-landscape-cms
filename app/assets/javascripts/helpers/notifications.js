@@ -12,6 +12,11 @@
         type: 'warning',
         content: 'You can\'t unselect a context set as default!',
         additionalContent: 'Set another one as default before trying to unselect it.'
+      },
+      defaultLanguage: {
+        type: 'error',
+        content: 'The site is configured with a default language that is not available.',
+        additionalContent: 'Please enable this language by ticking its checkbox.'
       }
     },
 
