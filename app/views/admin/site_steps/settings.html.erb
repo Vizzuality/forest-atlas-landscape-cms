@@ -12,11 +12,11 @@
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
-<%= form_for @site, url: wizard_path, method: :put do |f| %>
+<%= form_for @site, url: wizard_path, html: { class: 'js-form' }, method: :put do |f| %>
     <div class="l-site-creation -site-settings">
       <div class="wrapper">
         <div class="settings c-inputs-container">
-          <div class="container">
+          <div class="container js-checkboxes">
             <div>Site's languages (select <strong>at least</strong> one option):</div>
             <br />
             <%= f.fields_for :site_settings, \
@@ -68,7 +68,7 @@
                     <%= settings_form.hidden_field :name, value: 'default_site_language' %>
 
                     <%= settings_form.label 'Default site language', for: 'default_site_language' %>
-                    <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es, 'Georgian' => :ka}, {}, id: 'default_site_language' %>
+                    <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es, 'Georgian' => :ka}, {}, id: 'default_site_language', class: 'js-default-lang' %>
                 <% end %>
                 <br /><br />
                 <div>This language must also be checked above.</div>
