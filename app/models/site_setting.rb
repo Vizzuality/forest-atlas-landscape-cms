@@ -231,6 +231,23 @@ class SiteSetting < ApplicationRecord
     end
   end
 
+  def self.create_style_settings site
+    unless site.site_settings.exists?(name: 'content_width')
+      site.site_settings.new(name: 'content_width', value: '1280px', position: 20)
+      site.site_settings.new(name: 'content_font', value: '\'Merriweather Sans\'', position: 21)
+      site.site_settings.new(name: 'heading_font', value: '\'Merriweather\'', position: 22)
+      site.site_settings.new(name: 'cover_size', value: '250px', position: 23)
+      site.site_settings.new(name: 'cover_text_alignment', value: 'left', position: 24)
+      site.site_settings.new(name: 'header_separators', value: 'false', position: 25)
+      site.site_settings.new(name: 'header_background', value: '\'white\'', position: 26)
+      site.site_settings.new(name: 'header_transparency', value: '\'semi\'', position: 27)
+      site.site_settings.new(name: 'header-country-colours', value: '#000000', position: 28)
+      site.site_settings.new(name: 'footer_background', value: '\'accent-color\'', position: 29)
+      site.site_settings.new(name: 'footer_text_color', value: '\'white\'', position: 30)
+      site.site_settings.new(name: 'footer-links-color', value: '\'white\'', position: 31)
+    end
+  end
+
   private
 
   def validate_image
