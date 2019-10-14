@@ -66,9 +66,7 @@
                     <%= settings_form.hidden_field :name, value: 'default_site_language' %>
 
                     <%= settings_form.label 'Default site language', for: 'default_site_language' %>
-                    <div class="c-select -admin">
-                      <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es, 'Georgian' => :ka}, id: 'default_site_language' %>
-                    </div>
+                    <%= settings_form.select :value, {'English' => :en, 'French' => :fr, 'Spanish' => :es, 'Georgian' => :ka}, id: 'default_site_language' %>
                 <% end %>
             <% end %>
           </div>
