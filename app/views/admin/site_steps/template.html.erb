@@ -39,55 +39,8 @@
           </div>
         <% end %>
       </div>
-
-      <hr />
-
-      <%= f.fields_for :site_settings, f.object.site_settings.select{|v| v.name == 'color'} do |color_form| %>
-          <%= color_form.hidden_field :id %>
-          <%= color_form.hidden_field :name, value: 'color' %>
-          <%= color_form.hidden_field :position, value: '1' %>
-          <div class="theme-color js-theme-color">
-            <p>Theme color</p>
-            <%= color_form.color_field :value, id: 'color' %>
-            <label for="color" tabindex="0" class="js-label">Change theme color</label>
-            <div class="preview js-preview"></div>
-          </div>
-      <% end %>
-
     </div>
   </div>
-
-  <script type="text/javascript">
-    $(function () {
-      var themeColorContainer = document.querySelector('.js-theme-color');
-      var input = themeColorContainer.querySelector('input');
-      var colorLabel = themeColorContainer.querySelector('.js-label');
-      var preview = themeColorContainer.querySelector('.js-preview');
-
-      // We initialize the preview with the saved color
-      preview.style.backgroundColor = input.value;
-
-      input.addEventListener('change', function () {
-        preview.style.backgroundColor = input.value;
-      });
-
-      colorLabel.addEventListener('keydown', function (e) {
-        if (e.keyCode === 13 || e.keyCode === 32) {
-          this.click();
-        }
-      });
-
-      var templateLabels = document.querySelectorAll('.js-template-label');
-      for (var i = 0, j = templateLabels.length; i < j; i++) {
-        templateLabels[i].addEventListener('keydown', function (e) {
-          if (e.keyCode === 13 || e.keyCode === 32) {
-            this.click();
-          }
-        });
-      }
-
-    })
-  </script>
 
   <%= render partial: 'footer', locals: { f: f } %>
 <% end %>

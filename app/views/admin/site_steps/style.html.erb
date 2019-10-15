@@ -13,20 +13,17 @@
 <%= Gon::Base.render_data %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-  <div class="l-site-creation -site-settings">
+  <div class="l-site-creation -site-styles">
     <div class="wrapper">
       <div class="settings c-inputs-container">
         <div class="container">
           <%= f.fields_for :site_settings, (f.object.site_settings.select { |ss| ss.name == 'color' }) do |settings_form| %>
-            <%= settings_form.hidden_field :position, value: '1' %>
-            <%= settings_form.hidden_field :name, value: 'color' %>
-            <div class="theme-color js-accent-color">
-              <p>Accent color</p>
-              <%= settings_form.color_field :value, id: 'color' %>
-              <label for="color" tabindex="0" class="js-label">Change accent color</label>
-              <div class="preview js-preview"></div>
-            </div>
+            <div class="js-accent-color"></div>
           <% end %>
+        </div>
+
+        <div class="strike">
+          <span>MAIN SETTINGS</span>
         </div>
 
         <div class="inputs-container">
@@ -84,6 +81,10 @@
           <% end %>
         </div>
 
+        <div class="strike">
+          <span>HEADER</span>
+        </div>
+
         <div class="container">
           <%= f.fields_for :site_settings, \
             (f.object.site_settings.collect.select { |ss| %w[header_separators header_background header_transparency header-country-colours].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
@@ -119,14 +120,13 @@
               <%= settings_form.hidden_field :position, value: '28' %>
               <%= settings_form.hidden_field :name, value: 'header-country-colours' %>
 
-              <div class="theme-color js-header-country-color">
-                <p>Header country color</p>
-                <%= settings_form.color_field :value, id: 'color' %>
-                <label for="color" tabindex="0" class="js-label">Change header country color</label>
-                <div class="preview js-preview"></div>
-              </div>
+              <div class="js-header-country-color"></div>
             <% end %>
           <% end %>
+        </div>
+
+        <div class="strike">
+          <span>FOOTER</span>
         </div>
 
         <div class="container">

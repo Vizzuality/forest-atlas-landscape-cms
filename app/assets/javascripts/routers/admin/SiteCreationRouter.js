@@ -99,8 +99,6 @@
     },
 
     initTemplateStep: function () {
-      App.Helper.ColorSelector.initialize('.js-theme-color');
-
       var templateLabels = document.querySelectorAll('.js-template-label');
       for (var i = 0, j = templateLabels.length; i < j; i++) {
         templateLabels[i].addEventListener('keydown', function (e) {
@@ -112,11 +110,14 @@
     },
 
     initStyleStep: function() {
-      App.Helper.ColorSelector.initialize('.js-accent-color');
-      App.Helper.ColorSelector.initialize('.js-header-country-color');
-    },
+      new App.View.ColorSelectorView({
+        el: '.js-accent-color',
+        title: 'Accent colour',
+        colorName: 'color',
+        inputId: 'accent-color',
+        inputName: 'site[site_settings_attributes][0]'
+      });
 
-    initStyleStep: function () {
       var fileInputs = document.querySelectorAll('input[type="file"]');
       // eslint-disable-next-line block-scoped-var
       for (var i = 0, j = fileInputs.length; i < j; i++) {
@@ -134,7 +135,7 @@
         });
       }
 
-      new App.View.FlagColorsView({ el: '.js-flag-colors' });
+      new App.View.FlagColorsView({ el: '.js-header-country-color' });
     },
 
     /**
