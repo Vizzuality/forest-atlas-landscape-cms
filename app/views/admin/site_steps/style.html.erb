@@ -18,7 +18,7 @@
       <div class="settings c-inputs-container">
         <div class="container">
           <%= f.fields_for :site_settings, (f.object.site_settings.select { |ss| ss.name == 'color' }) do |settings_form| %>
-            <div class="js-accent-color"></div>
+            <div class="js-accent-color" color="<%= settings_form.object.value %>"></div>
           <% end %>
         </div>
 
@@ -72,7 +72,7 @@
               <%= settings_form.hidden_field :position, value: '24' %>
               <%= settings_form.hidden_field :name, value: 'cover_text_alignment' %>
 
-              <%= settings_form.label 'Cover size', for: 'cover_text_alignment' %>
+              <%= settings_form.label 'Cover text alignment', for: 'cover_text_alignment' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Left' => 'left', 'Center' => 'center'}, id: 'cover_text_alignment' %>
               </div>
@@ -93,7 +93,7 @@
               <%= settings_form.hidden_field :position, value: '25' %>
               <%= settings_form.hidden_field :name, value: 'header_separators' %>
 
-              <%= settings_form.label 'Content width', for: 'header_separators' %>
+              <%= settings_form.label 'Menu items separator', for: 'header_separators' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Display separators' => true, 'No separator' => false}, id: 'header_separators' %>
               </div>
@@ -102,7 +102,7 @@
               <%= settings_form.hidden_field :position, value: '26' %>
               <%= settings_form.hidden_field :name, value: 'header_background' %>
 
-              <%= settings_form.label 'Content font', for: 'header_background' %>
+              <%= settings_form.label 'Background color', for: 'header_background' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Dark' => '\'dark\'', 'White' => '\'white\''}, id: 'header_background' %>
               </div>
@@ -111,16 +111,18 @@
               <%= settings_form.hidden_field :position, value: '27' %>
               <%= settings_form.hidden_field :name, value: 'header_transparency' %>
 
-              <%= settings_form.label 'Content font', for: 'header_transparency' %>
+              <%= settings_form.label 'Background transparency', for: 'header_transparency' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Semi transparent' => '\'semi\'', 'Solid color' => '\'solid\''}, id: 'header_transparency' %>
               </div>
 
             <% when 'header-country-colours' %>
-              <%= settings_form.hidden_field :position, value: '28' %>
-              <%= settings_form.hidden_field :name, value: 'header-country-colours' %>
-
-              <div class="js-header-country-color"></div>
+              <div class="js-header-country-colours"
+                   id="28"
+                   colors="<%= settings_form.object.value %>"
+                   input-id="<%= settings_form.object_name %>"
+                   input-name="<%= settings_form.object_name %>">
+              </div>
             <% end %>
           <% end %>
         </div>
@@ -137,7 +139,7 @@
               <%= settings_form.hidden_field :position, value: '29' %>
               <%= settings_form.hidden_field :name, value: 'footer_background' %>
 
-              <%= settings_form.label 'Content width', for: 'footer_background' %>
+              <%= settings_form.label 'Background color', for: 'footer_background' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Accent colour' => '\'accent-color\'', 'White' => '\'white\''}, id: 'footer_background' %>
               </div>
@@ -146,7 +148,7 @@
               <%= settings_form.hidden_field :position, value: '30' %>
               <%= settings_form.hidden_field :name, value: 'header_background' %>
 
-              <%= settings_form.label 'Content font', for: 'header_background' %>
+              <%= settings_form.label 'Text colour', for: 'header_background' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Accent colour' => '\'accent-color\'', 'White' => '\'white\'', 'Black' => '\'black\''}, id: 'header_background' %>
               </div>
@@ -155,7 +157,7 @@
               <%= settings_form.hidden_field :position, value: '31' %>
               <%= settings_form.hidden_field :name, value: 'footer-links-color' %>
 
-              <%= settings_form.label 'Content font', for: 'footer-links-color' %>
+              <%= settings_form.label 'Links colour', for: 'footer-links-color' %>
               <div class="c-select -admin">
                 <%= settings_form.select :value, {'Accent colour' => '\'accent-color\'', 'White' => '\'white\''}, id: 'footer-links-color' %>
               </div>

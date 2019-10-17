@@ -8,7 +8,12 @@
         <% end %>
         <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
       <% else %>
-        <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button' %>
+        <% unless local_assigns[:last_step] %>
+          <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button' %>
+        <% end %>
+        <% if local_assigns[:last_step] %>
+          <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
+        <% end %>
     <% end %>
     </div>
   </div>

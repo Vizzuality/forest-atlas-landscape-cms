@@ -7,8 +7,8 @@ class Admin::SiteStepsController < AdminController
 
   URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
-  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
-  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
+  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_11'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][11]'.freeze
 
   SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
@@ -60,8 +60,6 @@ class Admin::SiteStepsController < AdminController
       end
       if step == 'content'
         SiteSetting.create_additional_settings @site
-        gon.global.color_controller_id = COLOR_CONTROLLER_ID
-        gon.global.color_controller_name = COLOR_CONTROLLER_NAME
 
         color_array = @site.site_settings.where(name: 'flag').first
         gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
@@ -84,8 +82,14 @@ class Admin::SiteStepsController < AdminController
       end
       if step == 'style'
         SiteSetting.create_style_settings @site
+        gon.global.color_controller_id = COLOR_CONTROLLER_ID
+        gon.global.color_controller_name = COLOR_CONTROLLER_NAME
+
+        color_array = @site.site_settings.where(name: 'header-country-colours').first
+        gon.global.color_array = (color_array.value || '').split(' ').map { |x| {color: x} } if color_array
       end
     end
+    
     render_wizard
   end
 
@@ -160,6 +164,41 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
+      when 'settings'
+        settings = site_params.to_h
+        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
+
+        begin
+          # If the user is editing
+          if @site.id
+            @site.site_settings.each do |site_setting|
+              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
+              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            end
+            # If the user is creating a new site
+          else
+            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            @site.form_step = 'settings'
+          end
+        end
+
+        if save_button?
+          if @site.save
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'settings'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
+
       when 'template'
         @site = current_site
         if save_button?
@@ -179,6 +218,42 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
+      when 'style'
+        settings = site_params.to_h
+        @site = current_site
+
+        begin
+          if @site.id
+            # If the user is editing
+            @site.site_settings.each do |site_setting|
+              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
+              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            end
+          else
+            # If the user is creating a new site
+            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            @site.form_step = 'settings'
+          end
+        end
+
+        if save_button?
+          if @site.save
+            gon.global.color_array = []
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'style'
+
+          if @site.valid?
+            gon.global.color_array = []
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
 
       # In this step, the site is always saved
       when 'content'
@@ -186,8 +261,8 @@ class Admin::SiteStepsController < AdminController
         @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
 
         begin
-          # If the user is editing
           if @site.id
+            # If the user is editing
             settings[:site_settings_attributes].values.each do |attrs|
               site_setting = @site.site_settings.find_by position: attrs['position'] if attrs['position'].present?
               if site_setting
@@ -214,8 +289,8 @@ class Admin::SiteStepsController < AdminController
                 @site.site_settings.build(attrs)
               end
             end
-            # If the user is creating a new site
           else
+            # If the user is creating a new site
             settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
             @site.form_step = 'content'
           end
@@ -244,30 +319,7 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-      when 'settings'
-        settings = site_params.to_h
-        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
 
-        begin
-          # If the user is editing
-          if @site.id
-            @site.site_settings.each do |site_setting|
-              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
-              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
-            end
-            # If the user is creating a new site
-          else
-            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
-            @site.form_step = 'settings'
-          end
-        end
-
-        if @site.save
-          delete_session_key(:site, @site_id)
-          redirect_to next_wizard_path(site_slug: @site.slug), notice: 'Changes to the template and styles might take a few minutes to be visible'
-        else
-          render_wizard
-        end
     end
   end
 
@@ -298,7 +350,7 @@ class Admin::SiteStepsController < AdminController
   def current_site
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
     session[:site][@site_id] ||= {}
-    session[:site][@site_id].delete(:site_template_id) if site.id
+    #session[:site][@site_id].delete(:site_template_id) if site.id
 
     # Contexts listing
     if !params[:site].blank? && site_params.to_h && step == 'contexts'

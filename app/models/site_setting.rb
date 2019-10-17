@@ -32,8 +32,8 @@ class SiteSetting < ApplicationRecord
     pre_footer analytics_key keywords contact_email_address
     hosting_organization transifex_api_key content_width content_font
     heading_font cover_size cover_text_alignment header_separators
-    header_background header_transparency footer_background footer_text_color
-    footer-links-color
+    header_background header_transparency header-country-colours
+    footer_background footer_text_color footer-links-color
   ].freeze
   MAX_COLORS = 5
   LANGUAGES = {
@@ -198,9 +198,6 @@ class SiteSetting < ApplicationRecord
 
   # Creates the color setting for a site
   def self.create_color_settings site
-    if site.site_settings.length < 1
-      site.site_settings.new(name: 'color', value: '#97bd3d', position: 1)
-    end
   end
 
   # Creates all the additional settings for a site
@@ -233,6 +230,7 @@ class SiteSetting < ApplicationRecord
 
   def self.create_style_settings site
     unless site.site_settings.exists?(name: 'content_width')
+      site.site_settings.new(name: 'color', value: '#97bd3d', position: 1)
       site.site_settings.new(name: 'content_width', value: '1280px', position: 20)
       site.site_settings.new(name: 'content_font', value: '\'Merriweather Sans\'', position: 21)
       site.site_settings.new(name: 'heading_font', value: '\'Merriweather\'', position: 22)

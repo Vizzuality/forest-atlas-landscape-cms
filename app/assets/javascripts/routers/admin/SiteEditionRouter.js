@@ -111,10 +111,12 @@
     },
 
     initStyleStep: function () {
+      var colorContainer = document.getElementsByClassName('js-accent-color')[0];
       new App.View.ColorSelectorView({
         el: '.js-accent-color',
         title: 'Accent colour',
         colorName: 'color',
+        color: colorContainer.getAttribute('color'),
         inputId: 'accent-color',
         inputName: 'site[site_settings_attributes][0]'
       });
@@ -136,7 +138,14 @@
         });
       }
 
-      new App.View.FlagColorsView({ el: '.js-header-country-color' });
+      var headerCountryColourContainer =
+        document.getElementsByClassName('js-header-country-colours')[0];
+      new App.View.FlagColorsView({
+        el: '.js-header-country-colours',
+        position: '28',
+        name: 'header-country-colours',
+        inputName: headerCountryColourContainer.getAttribute('input-name')
+      });
     },
 
     /**

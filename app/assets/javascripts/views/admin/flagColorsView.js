@@ -11,7 +11,10 @@
 
     defaults: {
       color: '#000000',
-      maxColors: 5
+      name: 'flag',
+      maxColors: 5,
+      inputId: window.gon && gon.global && gon.global.color_controller_id,
+      inputName: window.gon && gon.global && gon.global.color_controller_name
     },
 
     events: {
@@ -97,9 +100,11 @@
             return color;
           }, this),
         addButtonVisible: this._canAddColor(),
-        inputId: window.gon && gon.global && gon.global.color_controller_id,
-        inputName: window.gon && gon.global && gon.global.color_controller_name,
-        colorsValue: this._serializeColors()
+        inputId: this.options.inputId,
+        inputName: this.options.inputName,
+        colorsName: this.options.name,
+        colorsValue: this._serializeColors(),
+        colorsPosition: this.options.position
       }));
       this.setElement(this.el);
 
