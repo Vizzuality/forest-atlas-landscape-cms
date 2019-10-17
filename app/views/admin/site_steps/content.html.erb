@@ -72,17 +72,6 @@
                 </div>
               </div>
 
-            <% when 'flag' %>
-              <div class="flag-colors">
-                <h3>Flag colors</h3>
-                <div class="js-flag-colors"></div>
-              </div>
-              <hr/>
-
-              <%= react_component('AdminCarousel', {
-                form: settings_form.object,
-              } ) %>
-
             <% when 'alternative_image' %>
               <%= settings_form.hidden_field :position, value: '6'%>
               <%= settings_form.hidden_field :name, value: 'alternative_image'%>

@@ -61,9 +61,6 @@ class Admin::SiteStepsController < AdminController
       if step == 'content'
         SiteSetting.create_additional_settings @site
 
-        color_array = @site.site_settings.where(name: 'flag').first
-        gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
-
         @logo_image = @site.site_settings.where(name: 'logo_image').first
         @main_images = @site.site_settings.where(name: 'main_image')
                          .order(position: :asc)
@@ -313,8 +310,6 @@ class Admin::SiteStepsController < AdminController
           if @site.save
             redirect_to next_wizard_path
           else
-            color_array = @site.site_settings.select{ |s| s.name == 'flag'}.first
-            gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
             render_wizard
           end
         end

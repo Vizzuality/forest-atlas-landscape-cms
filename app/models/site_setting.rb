@@ -26,7 +26,7 @@ class SiteSetting < ApplicationRecord
   }
 
   NAMES = %w[
-    logo_image main_image alternative_image favico color flag
+    logo_image main_image alternative_image favico color
     default_site_language
     translate_english translate_spanish translate_french translate_georgian
     pre_footer analytics_key keywords contact_email_address
@@ -130,10 +130,6 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'footer_links_color', site_id: site_id)
   end
 
-  def self.flag_colors(site_id)
-    SiteSetting.find_by(name: 'flag', site_id: site_id)
-  end
-
   def self.languages(site_id)
     languages = {}
     LANGUAGES.each do |language, key|
@@ -188,14 +184,6 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'transifex_api_key', site_id: site_id)
   end
 
-  def flag_colors
-    value.split(' ')
-  end
-
-  def flag_colors=(colors)
-    write_attribute(:value, colors.join(' '))
-  end
-
   # Creates the color setting for a site
   def self.create_color_settings site
   end
@@ -207,7 +195,6 @@ class SiteSetting < ApplicationRecord
       site.site_settings.new(name: 'main_image', value: '', position: 30)
       site.site_settings.new(name: 'alternative_image', value: '', position: 6)
       site.site_settings.new(name: 'favico', value: '', position: 3)
-      site.site_settings.new(name: 'flag', value: '#000000', position: 4)
     end
   end
 
