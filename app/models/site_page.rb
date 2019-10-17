@@ -70,7 +70,6 @@ class SitePage < Page
 
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
-  validates_presence_of :site_id
   before_create :cheat_with_position_on_create
   before_update :cheat_with_position_on_update
   after_create :update_routes

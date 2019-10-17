@@ -1,19 +1,3 @@
-# == Schema Information
-#
-# Table name: widgets
-#
-#  id                   :integer          not null, primary key
-#  dataset_id           :string
-#  api_table_name       :string
-#  filters              :json
-#  visualization        :string
-#  fields_last_modified :datetime
-#  legend               :json
-#  columns              :json
-#  name                 :string
-#  description          :string
-#
-
 class Widget
 
   # The Model is a mixin for Naming, Translation, Validations and Conversions

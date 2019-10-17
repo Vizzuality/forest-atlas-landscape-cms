@@ -12,8 +12,8 @@ RSpec.describe SitePage, type: :model do
     end
 
     describe 'empty site id' do
-      subject { FactoryBot.build(:site_page, site_id: nil) }
-      it { is_expected.to have(1).errors_on(:site_id) }
+      subject { FactoryBot.build(:site_page, site: nil) }
+      it { is_expected.to have(1).errors_on(:site) }
     end
 
     describe 'cheat with position on create' do
