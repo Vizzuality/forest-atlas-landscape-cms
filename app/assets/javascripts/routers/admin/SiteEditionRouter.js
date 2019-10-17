@@ -114,7 +114,7 @@
       var colorContainer = document.getElementsByClassName('js-accent-color')[0];
       new App.View.ColorSelectorView({
         el: '.js-accent-color',
-        title: 'Accent colour',
+        title: 'Accent color',
         colorName: 'color',
         color: colorContainer.getAttribute('color'),
         inputId: 'accent-color',

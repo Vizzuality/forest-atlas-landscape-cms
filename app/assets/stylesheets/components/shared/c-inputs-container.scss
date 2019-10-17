@@ -19,7 +19,15 @@
   }
 
   // This occurs when .c-inputs-container is a fieldset element
+  // Have a look at the bottom of the file
   > legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: $font-size-medium;
+    line-height: inherit;
+    color: $color-6;
     border: 0;
   }
 
@@ -209,4 +217,12 @@
       color: $color-4;
     }
   }
+}
+
+fieldset.c-inputs-container {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 40px;
+  border: 0;
 }

@@ -9,38 +9,6 @@
     border-bottom: 1px solid $color-13;
   }
 
-  .strike {
-    display: block;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap; 
-
-    > span {
-        position: relative;
-        display: inline-block;
-    }
-
-    > span:before,
-    > span:after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      width: 9999px;
-      height: 1px;
-      background: $color-13;
-    }
-
-    > span:before {
-        right: 100%;
-        margin-right: 15px;
-    }
-
-    > span:after {
-        left: 100%;
-        margin-left: 15px;
-    }
-  }
-
   &.-name {
     display: flex;
     align-items: center;
@@ -58,7 +26,7 @@
     padding-top: 50px;
   }
 
-  &.-style {
+  &.-template {
     display: flex;
     align-items: center;
     max-width: 780px;
@@ -185,7 +153,20 @@
     }
   }
 
-  &.-settings {
+  &.-style {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 300px);
+    padding-top: 50px;
+
+    > .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &.-content {
     display: flex;
     align-items: center;
     min-height: calc(100vh - 300px);
@@ -431,7 +412,7 @@
     }
   }
 
-  &.-site-settings {
+  &.-settings {
     display: flex;
     align-items: center;
     min-height: calc(100vh - 300px);
@@ -444,53 +425,6 @@
     }
     .c-checkbox {
       min-height: 30px;
-    }
-  }
-
-  &.-site-styles {
-    display: flex;
-    align-items: center;
-    min-height: calc(100vh - 300px);
-    padding-top: 50px;
-
-    input[type="text"] {
-      border-radius: 4px;
-      border-color: #dededd;
-      text-transform: capitalize;
-      border-style: solid;
-      border-width: 1px;
-    }
-
-    > .wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .c-checkbox {
-      min-height: 30px;
-    } 
-
-    .js-accent-color .theme-color {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      > p {
-        width: 180px;
-        margin-left: 40px;
-        padding-right: 10px;
-      }
-
-      > .input-text {
-        min-height: 40px;
-      }
-
-      > .input-color {
-        width: 100px;
-        min-height: 40px;
-        margin-right: 40px;
-      }
     }
   }
 }
