@@ -86,7 +86,7 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_controller_name = COLOR_CONTROLLER_NAME
 
         color_array = @site.site_settings.where(name: 'header-country-colours').first
-        gon.global.color_array = (color_array.value || '').split(' ').map { |x| {color: x} } if color_array
+        gon.global.color_array = color_array&.value&.split(' ')&.map { |x| {color: x} }
       end
     end
     
