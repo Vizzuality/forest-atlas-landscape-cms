@@ -79,13 +79,13 @@
                 <div class="content-cover">
                   <h3>Content cover image</h3>
                   <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
+                  <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
                   <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
                     <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
                     </div>
                   <% else %>
                     <div class="placeholder -high js-placeholder">
                       <span>Select file</span>
-                      <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
                     </div>
                   <% end %>
                   <div class="file-input-footer">

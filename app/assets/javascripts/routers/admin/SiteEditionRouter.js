@@ -121,6 +121,17 @@
         inputName: 'site[site_settings_attributes][0]'
       });
 
+      var headerCountryColourContainer =
+        document.getElementsByClassName('js-header-country-colours')[0];
+      new App.View.FlagColorsView({
+        el: '.js-header-country-colours',
+        position: '28',
+        name: 'header-country-colours',
+        inputName: headerCountryColourContainer.getAttribute('input-name')
+      });
+    },
+
+    initContentStep: function() {
       var fileInputs = document.querySelectorAll('input[type="file"]');
       // eslint-disable-next-line block-scoped-var
       for (var i = 0, j = fileInputs.length; i < j; i++) {
@@ -137,15 +148,6 @@
           }
         });
       }
-
-      var headerCountryColourContainer =
-        document.getElementsByClassName('js-header-country-colours')[0];
-      new App.View.FlagColorsView({
-        el: '.js-header-country-colours',
-        position: '28',
-        name: 'header-country-colours',
-        inputName: headerCountryColourContainer.getAttribute('input-name')
-      });
     },
 
     /**
