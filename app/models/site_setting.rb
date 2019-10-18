@@ -191,45 +191,48 @@ class SiteSetting < ApplicationRecord
   # Creates all the additional settings for a site
   def self.create_additional_settings site
     unless site.site_settings.exists?(name: 'logo_image')
-      site.site_settings.new(name: 'logo_image', value: '', position: 2)
-      site.site_settings.new(name: 'main_image', value: '', position: 30)
-      site.site_settings.new(name: 'alternative_image', value: '', position: 6)
-      site.site_settings.new(name: 'favico', value: '', position: 3)
+      site.site_settings.find_or_initialize_by(name: 'logo_image', value: '', position: 2)
+      site.site_settings.find_or_initialize_by(name: 'main_image', value: '', position: 30)
+      site.site_settings.find_or_initialize_by(name: 'alternative_image', value: '', position: 6)
+      site.site_settings.find_or_initialize_by(name: 'favico', value: '', position: 3)
     end
   end
 
   # Creates the color setting for a site
   def self.create_site_settings site
     unless site.site_settings.exists?(name: 'translate_english')
-      site.site_settings.new(name: 'translate_english', value: '1', position: 7)
-      site.site_settings.new(name: 'translate_spanish', value: '1', position: 8)
-      site.site_settings.new(name: 'translate_french', value: '1', position: 9)
-      site.site_settings.new(name: 'pre_footer', value: '', position: 10)
-      site.site_settings.new(name: 'analytics_key', value: '', position: 11)
-      site.site_settings.new(name: 'keywords', value: '', position: 12)
-      site.site_settings.new(name: 'contact_email_address', value: '', position: 13)
-      site.site_settings.new(name: 'hosting_organization', value: '', position: 14)
-      site.site_settings.new(name: 'default_site_language', value: 'fr', position: 15)
-      site.site_settings.new(name: 'translate_georgian', value: '1', position: 16)
-      site.site_settings.new(name: 'transifex_api_key', value: '', position: 17)
+      site.site_settings.find_or_initialize_by(name: 'translate_english', value: '1', position: 7)
+      site.site_settings.find_or_initialize_by(name: 'translate_spanish', value: '1', position: 8)
+      site.site_settings.find_or_initialize_by(name: 'translate_french', value: '1', position: 9)
+      site.site_settings.find_or_initialize_by(name: 'pre_footer', value: '', position: 10)
+      site.site_settings.find_or_initialize_by(name: 'analytics_key', value: '', position: 11)
+      site.site_settings.find_or_initialize_by(name: 'keywords', value: '', position: 12)
+      site.site_settings.find_or_initialize_by(name: 'contact_email_address', value: '', position: 13)
+      site.site_settings.find_or_initialize_by(name: 'hosting_organization', value: '', position: 14)
+      site.site_settings.find_or_initialize_by(name: 'default_site_language', value: 'fr', position: 15)
+      site.site_settings.find_or_initialize_by(name: 'translate_georgian', value: '1', position: 16)
+      site.site_settings.find_or_initialize_by(name: 'transifex_api_key', value: '', position: 17)
     end
   end
 
   def self.create_style_settings site
     unless site.site_settings.exists?(name: 'content_width')
-      site.site_settings.new(name: 'color', value: '#97bd3d', position: 1)
-      site.site_settings.new(name: 'content_width', value: '1280px', position: 20)
-      site.site_settings.new(name: 'content_font', value: '\'Merriweather Sans\'', position: 21)
-      site.site_settings.new(name: 'heading_font', value: '\'Merriweather\'', position: 22)
-      site.site_settings.new(name: 'cover_size', value: '250px', position: 23)
-      site.site_settings.new(name: 'cover_text_alignment', value: 'left', position: 24)
-      site.site_settings.new(name: 'header_separators', value: 'false', position: 25)
-      site.site_settings.new(name: 'header_background', value: '\'white\'', position: 26)
-      site.site_settings.new(name: 'header_transparency', value: '\'semi\'', position: 27)
-      site.site_settings.new(name: 'header-country-colours', value: '#000000', position: 28)
-      site.site_settings.new(name: 'footer_background', value: '\'accent-color\'', position: 29)
-      site.site_settings.new(name: 'footer_text_color', value: '\'white\'', position: 30)
-      site.site_settings.new(name: 'footer-links-color', value: '\'white\'', position: 31)
+      site.site_settings.find_or_initialize_by(name: 'color') do |c|
+        c.value = '#97bd3d'
+        c.position = 1
+      end
+      site.site_settings.find_or_initialize_by(name: 'content_width', value: '1280px', position: 20)
+      site.site_settings.find_or_initialize_by(name: 'content_font', value: '\'Merriweather Sans\'', position: 21)
+      site.site_settings.find_or_initialize_by(name: 'heading_font', value: '\'Merriweather\'', position: 22)
+      site.site_settings.find_or_initialize_by(name: 'cover_size', value: '250px', position: 23)
+      site.site_settings.find_or_initialize_by(name: 'cover_text_alignment', value: 'left', position: 24)
+      site.site_settings.find_or_initialize_by(name: 'header_separators', value: 'false', position: 25)
+      site.site_settings.find_or_initialize_by(name: 'header_background', value: '\'white\'', position: 26)
+      site.site_settings.find_or_initialize_by(name: 'header_transparency', value: '\'semi\'', position: 27)
+      site.site_settings.find_or_initialize_by(name: 'header-country-colours', value: '#000000', position: 28)
+      site.site_settings.find_or_initialize_by(name: 'footer_background', value: '\'accent-color\'', position: 29)
+      site.site_settings.find_or_initialize_by(name: 'footer_text_color', value: '\'white\'', position: 30)
+      site.site_settings.find_or_initialize_by(name: 'footer-links-color', value: '\'white\'', position: 31)
     end
   end
 
