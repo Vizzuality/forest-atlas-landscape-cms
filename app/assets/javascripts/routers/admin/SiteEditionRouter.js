@@ -111,14 +111,8 @@
     },
 
     initStyleStep: function () {
-      var colorContainer = document.getElementsByClassName('js-accent-color')[0];
       new App.View.ColorSelectorView({
-        el: '.js-accent-color',
-        title: 'Accent color',
-        colorName: 'color',
-        color: colorContainer.getAttribute('color'),
-        inputId: 'accent-color',
-        inputName: 'site[site_settings_attributes][0]'
+        el: '.js-color-selector'
       });
 
       var headerCountryColourContainer =
