@@ -111,11 +111,7 @@
 
     initStyleStep: function() {
       new App.View.ColorSelectorView({
-        el: '.js-accent-color',
-        title: 'Accent color',
-        colorName: 'color',
-        inputId: 'accent-color',
-        inputName: 'site[site_settings_attributes][0]'
+        el: '.js-color-selector'
       });
 
       var headerCountryColourContainer =

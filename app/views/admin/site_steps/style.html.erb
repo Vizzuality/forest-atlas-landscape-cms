@@ -15,17 +15,23 @@
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
   <div class="l-site-creation -style">
     <div class="wrapper">
-      <fieldset class="c-inputs-container">
-        <legend>Main color</legend>
+      <div class="c-inputs-container">
         <div class="container">
           <%= f.fields_for :site_settings, (f.object.site_settings.select { |ss| ss.name == 'color' }) do |settings_form| %>
-            <div class="js-accent-color" color="<%= settings_form.object.value %>"></div>
+            <input type="hidden" id="accent-color_name" name="site[site_settings_attributes][0][name]" value="color">
+            <input type="hidden" id="accent-color_position" name="site[site_settings_attributes][0][position]" value="1">
+
+            <label for="accent-color_id">Accent color</label>
+            <div class="color-selector js-color-selector">
+              <input type="text" id="accent-color_id" name="site[site_settings_attributes][0][value]" value="<%= settings_form.object.value %>" required pattern="#[0-9a-fA-F]{6}">
+              <input type="color" value="<%= settings_form.object.value %>">
+            </div>
           <% end %>
         </div>
-      </fieldset>
+      </div>
 
       <fieldset class="c-inputs-container">
-        <legend>Main settings</legend>
+        <legend><span>Main settings</span></legend>
         <%= f.fields_for :site_settings, \
           (f.object.site_settings.collect.select { |ss| %w[content_width content_font heading_font cover_size cover_text_alignment].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
           <% setting = settings_form.object %>
@@ -79,7 +85,7 @@
       </fieldset>
 
       <fieldset class="c-inputs-container">
-        <legend>Header</legend>
+        <legend><span>Header</span></legend>
         <%= f.fields_for :site_settings, \
           (f.object.site_settings.collect.select { |ss| %w[header_separators header_background header_transparency header-country-colours].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
           <% setting = settings_form.object %>
@@ -125,7 +131,7 @@
       </fieldset>
 
       <fieldset class="c-inputs-container">
-        <legend>Footer</legend>
+        <legend><span>Footer</span></legend>
         <%= f.fields_for :site_settings, \
           (f.object.site_settings.collect.select { |ss| %w[footer_background footer_text_color footer-links-color].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
           <% setting = settings_form.object %>
