@@ -72,6 +72,11 @@
                 </div>
               </div>
 
+            <% when 'main_image' %>
+              <%= react_component('AdminCarousel', {
+                form: settings_form.object,
+              } ) %>
+
             <% when 'alternative_image' %>
               <%= settings_form.hidden_field :position, value: '6'%>
               <%= settings_form.hidden_field :name, value: 'alternative_image'%>

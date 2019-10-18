@@ -192,7 +192,7 @@ class SiteSetting < ApplicationRecord
   def self.create_additional_settings site
     unless site.site_settings.exists?(name: 'logo_image')
       site.site_settings.find_or_initialize_by(name: 'logo_image', value: '', position: 2)
-      site.site_settings.find_or_initialize_by(name: 'main_image', value: '', position: 30)
+      site.site_settings.find_or_initialize_by(name: 'main_image', value: '', position: 32)
       site.site_settings.find_or_initialize_by(name: 'alternative_image', value: '', position: 6)
       site.site_settings.find_or_initialize_by(name: 'favico', value: '', position: 3)
     end
