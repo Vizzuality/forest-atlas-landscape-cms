@@ -184,6 +184,10 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'transifex_api_key', site_id: site_id)
   end
 
+  def self.header_country_colours(site_id)
+    SiteSetting.find_by(name: 'header-country-colours', site_id: site_id)
+  end
+
   # Creates the color setting for a site
   def self.create_color_settings site
   end
