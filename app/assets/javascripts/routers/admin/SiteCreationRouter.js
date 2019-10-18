@@ -114,13 +114,16 @@
         el: '.js-color-selector'
       });
 
-      var headerCountryColourContainer =
-        document.getElementsByClassName('js-header-country-colours')[0];
+      var headerCountryColourContainer = document.querySelector('.js-header-country-colours');
       new App.View.FlagColorsView({
         el: '.js-header-country-colours',
-        position: '28',
         name: 'header-country-colours',
-        inputName: headerCountryColourContainer.getAttribute('input-name')
+        position: '28',
+        inputName: headerCountryColourContainer.dataset.inputName,
+        inputId: headerCountryColourContainer.dataset.inputId,
+        colors: headerCountryColourContainer.dataset.colors.split(' ').filter(function (str) {
+          return !!str.length;
+        })
       });
     },
 

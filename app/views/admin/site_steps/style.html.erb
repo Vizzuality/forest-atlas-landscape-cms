@@ -117,13 +117,12 @@
             </div>
 
           <% when 'header-country-colours' %>
-            <div class="container">
+            <div class="container country-colors-container">
               <label>Country colors</label>
               <div class="js-header-country-colours"
-                  id="28"
-                  colors="<%= settings_form.object.value %>"
-                  input-id="<%= settings_form.object_name %>"
-                  input-name="<%= settings_form.object_name %>">
+                  data-colors="<%= settings_form.object.value %>"
+                  data-input-id="<%= settings_form.object_name %>"
+                  data-input-name="<%= settings_form.object_name %>">
               </div>
             </div>
           <% end %>

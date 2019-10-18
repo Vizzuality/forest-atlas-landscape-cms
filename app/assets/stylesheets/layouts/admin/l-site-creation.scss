@@ -249,6 +249,18 @@
         overflow: hidden;
       }
     }
+
+    .country-colors-container {
+      align-items: flex-start;
+
+      label {
+        line-height: 40px;
+      }
+
+      > div {
+        flex-grow: 1;
+      }
+    }
   }
 
   &.-content {

@@ -1,17 +1,12 @@
 (function (App) {
   'use strict';
-
-  var Collection = Backbone.Collection.extend({
-    url: 'flag_colors.json'
-  });
-
   App.View.FlagColorsView = Backbone.View.extend({
     className: 'c-flag-colors',
     template: HandlebarsTemplates['admin/flag-colors'],
 
     defaults: {
-      color: '#000000',
-      name: 'flag',
+      defaultColor: '#000000',
+      colors: [],
       maxColors: 5,
       inputId: window.gon && gon.global && gon.global.color_controller_id,
       inputName: window.gon && gon.global && gon.global.color_controller_name
@@ -25,7 +20,6 @@
 
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
-      this.collection = new Collection((window.gon && gon.global.color_array) || []);
       this.render();
     },
 
@@ -34,7 +28,7 @@
      */
     _addColor: function () {
       if (this._canAddColor()) {
-        this.collection.push({ color: this.options.color });
+        this.options.colors.push(this.options.defaultColor);
         this.render();
       }
     },
@@ -44,9 +38,8 @@
      * @param {object} e - DOM node designating the color to remove
      */
     _removeColor: function (e) {
-      var index = $(e.target).data('id');
-      var model = this.collection.at(+index);
-      this.collection.remove(model);
+      var index = +$(e.target).data('id');
+      this.options.colors.splice(index, 1);
       this.render();
     },
 
@@ -58,18 +51,9 @@
       var input = e.currentTarget;
       var color = input.value;
       var position = input.dataset.id;
-      var model = this.collection.at(position);
-
-      model.set({ color: color });
-
-      // We can't just render here because otherwise, when the user is choosing a
-      // color in the color picker, Chrome will send the event while the user is
-      // still picking one. On FF, the event is sent only when the user closes the
-      // picker.
-      input.nextElementSibling.style.backgroundColor = color;
-
-      // We then manually update the hidden field
-      this.hiddenColorsInput.value = this._serializeColors();
+      
+      this.options.colors.splice(position, 1, color);
+      this.render();
     },
 
     /**
@@ -77,9 +61,7 @@
      * @returns {string}
      */
     _serializeColors: function () {
-      return this.collection.toJSON().reduce(function (eachRes, color) {
-        return eachRes + ' ' + color.color;
-      }, '');
+      return this.options.colors.join(' ');
     },
 
     /**
@@ -87,18 +69,14 @@
      * @returns {boolean} true if can add a color
      */
     _canAddColor: function () {
-      return (this.collection.length < this.options.maxColors);
+      return (this.options.colors.length < this.options.maxColors);
     },
 
     render: function () {
       if (!this.el) return;
 
       this.$el.html(this.template({
-        colors: this.collection.toJSON()
-          .map(function (color, i) {
-            color.index = i + 1; // Index used by the label
-            return color;
-          }, this),
+        colors: this.options.colors,
         addButtonVisible: this._canAddColor(),
         inputId: this.options.inputId,
         inputName: this.options.inputName,

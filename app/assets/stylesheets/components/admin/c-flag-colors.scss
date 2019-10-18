@@ -1,41 +1,51 @@
 .c-flag-colors {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  height: 100px;
-
-  > div {
+  .color {
     position: relative;
-    flex-basis: 100%;
-    margin-right: 20px;
+    display: flex;
+    align-items: stretch;
+    flex-grow: 1;
+    height: 40px;
+    border: 1px solid $color-13;
+    border-radius: 4px;
+    margin-bottom: 10px;
 
-    // We don't want the input to be shown but if we use "display: none;"
-    // Chrome won't fire the events, so we just remove it from the viewport
-    input[type="color"] {
-      position: absolute;
-      top: 0;
-      left: -10000px;
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 0 35px 0 15px;
+      color: $color-4;
+      font-family: $content-font;
+      font-size: $font-size-normal;
+      line-height: 40px;
+      background: transparent;
     }
 
-    label {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      text-indent: -10000px;
-      cursor: pointer;
-      z-index: 1;
+    input[type="color"] {
+      position: relative;
+      top: -1px;
+      right: -1px;
+      height: calc(100% + 2px);
+      flex-basis: 60px;
+      flex-shrink: 0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
 
-      &:focus + .preview {
+    .remove-color {
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 14px;
+      height: 14px;
+      border: 0;
+      background: asset-url('icons/close-icon.svg') no-repeat center center;
+      text-indent: -10000px; // For accessibility, we should keep the text
+      cursor: pointer;
+      transform: translate(100%, -50%);
+      z-index: 2;
+
+      &:focus {
         border: 2px solid $accent-color;
       }
-    }
-
-    .preview {
-      width: 100%;
-      height: 100%;
     }
   }
 
@@ -45,21 +55,16 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
-    border: 1px dashed $accent-color;
+    height: 40px;
+    border: 1px dashed $color-13;
+    border-radius: 4px;
     background-color: transparent;
     cursor: pointer;
-
-    span {
-      flex-basis: 70px;
-      color: $accent-color;
-      font-family: $content-font;
-      font-size: $font-size-normal;
-      font-weight: $font-weight-bold;
-      letter-spacing: .1px;
-      text-align: center;
-      text-transform: uppercase;
-    }
+    font-family: $content-font;
+    font-size: $font-size-normal;
+    text-align: center;
+    color: $color-4;
+    line-height: 40px;
 
     &:focus {
       background: $accent-color;
@@ -67,23 +72,6 @@
       span {
         color: $color-3;
       }
-    }
-  }
-
-  .remove-color {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 14px;
-    height: 14px;
-    border: 0;
-    background: asset-url('icons/close-icon.svg') no-repeat center center;
-    text-indent: -10000px; // For accessibility, we should keep the text
-    cursor: pointer;
-    z-index: 2;
-
-    &:focus {
-      border: 2px solid $accent-color;
     }
   }
 }
