@@ -2,7 +2,7 @@ namespace :db do
   namespace :sites do
     desc 'Updates the template of the sites'
     task template: :environment do
-      begin
+      #begin
         ActiveRecord::Base.transaction do
           default_template = create_default_template
 
@@ -22,11 +22,11 @@ namespace :db do
 
           remove_old_templates
         end
-      rescue StandardError => e
-        Rails.logger.error "Error updating sites: #{e.inspect}"
-        puts "Error updating sites: #{e.inspect}"
-        raise ActiveRecord::Rollback
-      end
+      # rescue StandardError => e
+      #   Rails.logger.error "Error updating sites: #{e.inspect}"
+      #   puts "Error updating sites: #{e.inspect}"
+      #   raise ActiveRecord::Rollback
+      # end
     end
   end
 end
@@ -36,6 +36,8 @@ def create_default_template
 end
 
 def create_site_settings_from_forest_atlas(site, max_position)
+  puts 'CREATE SITE SETTINGS FROM FOREST ATLAS'
+  pp site
   {
     content_width: '1280px',
     content_font: '\'Fira Sans\'',
@@ -49,9 +51,14 @@ def create_site_settings_from_forest_atlas(site, max_position)
     footer_text_color: '\'white\'',
     'footer-links-color': '\'accent-color\''
   }.each_with_index do |(name, value), index|
-    SiteSetting.create!(
+    puts 'DAFQA'
+    pp name
+    pp value
+    pp index
+    SiteSetting.find_or_initialize_by(
       site: site,
-      name: name,
+      name: name
+    ).update_attributes!(
       value: value,
       position: max_position + index + 1 # Color has the first position
     )
@@ -72,9 +79,10 @@ def create_site_settings_from_landscape_application(site, max_position)
     footer_text_color: '\'white\'',
     'footer-links-color': '\'white\''
   }.each_with_index do |(name, value), index|
-    SiteSetting.create!(
+    SiteSetting.find_or_initialize_by(
       site: site,
-      name: name,
+      name: name
+    ).update_attributes!(
       value: value,
       position: max_position + index + 1 # Color has the first position
     )
@@ -95,9 +103,10 @@ def create_site_settings_from_carpe_landscape(site, max_position)
     footer_text_color: '\'white\'',
     'footer-links-color': '\'white\''
   }.each_with_index do |(name, value), index|
-    SiteSetting.create!(
+    SiteSetting.find_or_initialize_by(
       site: site,
-      name: name,
+      name: name
+    ).update_attributes!(
       value: value,
       position: max_position + index + 1 # Color has the first position
     )
