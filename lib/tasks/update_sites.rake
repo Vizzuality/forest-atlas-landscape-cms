@@ -7,6 +7,8 @@ namespace :db do
           default_template = create_default_template
 
           Site.all.each do |site|
+            convert_existing_site_settings(site)
+
             next if !site&.site_template&.name ||
               site.site_template.name == 'INDIA'
 
@@ -30,7 +32,7 @@ namespace :db do
 end
 
 def create_default_template
-  SiteTemplate.create!(name: 'DEFAULT')
+  SiteTemplate.create!(name: 'Default')
 end
 
 def create_site_settings_from_forest_atlas(site, max_position)
@@ -102,6 +104,20 @@ def create_site_settings_from_carpe_landscape(site, max_position)
   end
 end
 
+def convert_existing_site_settings(site)
+  flag_site_setting = site.site_settings.find_by(name: 'flag')
+  return unless flag_site_setting
+
+  if site.site_template&.name == 'INDIA'
+    flag_site_setting.destroy!
+  else
+    flag_site_setting.update_attributes(
+      name: 'header-country-colours',
+      value: '#000000'
+    )
+  end
+end
+
 def remove_old_templates
-  SiteTemplate.where.not(name: %w[INDIA DEFAULT]).destroy_all
+  SiteTemplate.where.not(name: %w[INDIA Default]).destroy_all
 end
