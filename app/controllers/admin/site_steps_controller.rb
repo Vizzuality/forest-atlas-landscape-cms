@@ -209,7 +209,11 @@ class Admin::SiteStepsController < AdminController
           @site.form_step = 'template'
 
           if @site.valid?
-            redirect_to next_wizard_path
+            if @site.site_template.name == 'Default'
+              redirect_to next_wizard_path
+            else
+              redirect_to wizard_path(:content)
+            end
           else
             render_wizard
           end
@@ -255,21 +259,24 @@ class Admin::SiteStepsController < AdminController
       # In this step, the site is always saved
       when 'content'
         settings = site_params.to_h
-        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
+        @site = current_site
 
         begin
           if @site.id
             # If the user is editing
             settings[:site_settings_attributes].values.each do |attrs|
-              site_setting = @site.site_settings.find_by position: attrs['position'] if attrs['position'].present?
+              site_setting = @site.site_settings.find do |ss|
+                ss.position == attrs['position'].to_i
+              end if attrs['position'].present?
+
               if site_setting
                 next if attrs[:_destroy] == '1' && attrs[:image].blank?
                 if attrs[:_destroy] == '1'
-                  @site.site_settings.each { |ss| ss.mark_for_destruction if ss.id == site_setting.id }
+                  site_setting.mark_for_destruction
                 else
                   attrs.delete(:_destroy)
                   attrs.delete(:image) if attrs[:image].is_a?(String) && !attrs[:image].include?('?temp_id=')
-                  @site.site_settings.each { |ss| ss.assign_attributes(attrs) if ss.id == site_setting.id }
+                  site_setting.assign_attributes(attrs)
                 end
               else
                 next if attrs[:_destroy] == '1'
@@ -288,7 +295,19 @@ class Admin::SiteStepsController < AdminController
             end
           else
             # If the user is creating a new site
-            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            settings[:site_settings_attributes].map do |attrs|
+              site_setting = @site.site_settings.find do |ss|
+                ss.position == attrs['position'].to_i
+              end if attrs['position'].present?
+
+              if site_setting
+                attrs.delete(:_destroy)
+                attrs.delete(:image) if attrs[:image].is_a?(String) && !attrs[:image].include?('?temp_id=')
+                site_setting.assign_attributes(attrs)
+              else
+                @site.site_settings.build(s[1].except('_destroy'))
+              end
+            end
             @site.form_step = 'content'
           end
         rescue => e
@@ -313,8 +332,6 @@ class Admin::SiteStepsController < AdminController
             render_wizard
           end
         end
-
-
     end
   end
 
@@ -374,9 +391,31 @@ class Admin::SiteStepsController < AdminController
       end
     end
 
-    session[:site][@site_id].merge!(
-      site_params.to_h.except(:default_context, 'context_sites_attributes', 'user_site_associations_attributes')
-    ) if params[:site] && site_params.to_h
+    # Add site_template_id to the session in case we continue without saving
+    if !params[:site].blank? && site_params.to_h && step == 'template'
+      session[:site][@site_id]['site_template_id'] = site_params[:site_template_id]
+    end
+
+    if params[:site] && site_params.to_h
+      session[:site][@site_id].merge!(
+        site_params.to_h.except(
+          :default_context,
+          'context_sites_attributes',
+          'user_site_associations_attributes',
+          'site_settings_attributes'
+        )
+      )
+
+      # Merge site settings with the existing ones
+      session[:site][@site_id]['site_settings_attributes'] ||= {}
+      if site_params.to_h['site_settings_attributes']
+        max_key = site_params.to_h['site_settings_attributes'].keys.map(&:to_i).max
+        site_params.to_h['site_settings_attributes'].values.each_with_index do |site_setting, index|
+          session[:site][@site_id]['site_settings_attributes'][max_key + index + 1] =
+            site_setting
+        end
+      end
+    end
 
     # Default context
     if params[:site] && site_params.to_h && site_params[:default_context]
@@ -387,9 +426,8 @@ class Admin::SiteStepsController < AdminController
       default_context['is_site_default_context'] = 'true' if default_context
     end
 
-
-
     site.assign_attributes session[:site][@site_id] if session[:site][@site_id]
+
     site
   end
 
@@ -404,7 +442,7 @@ class Admin::SiteStepsController < AdminController
   def set_site_id
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
     if site && site.persisted?
-      @site_id = site.id
+      @site_id = site.id.to_s
     else
       @site_id = :new
     end

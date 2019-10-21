@@ -11,7 +11,7 @@
   </div>
 <% end %>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, site: @site, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>

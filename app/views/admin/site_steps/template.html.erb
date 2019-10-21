@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, site: @site, current_step: step, step_names: @steps_names} %>
 <%= include_gon %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
@@ -17,7 +17,7 @@
     <div class="wrapper">
 
       <div class="templates">
-        <% SiteTemplate.all.each do |template| %>
+        <% SiteTemplate.all.order(:name).each do |template| %>
           <div class="template">
             <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
             <% if f.object.id %>

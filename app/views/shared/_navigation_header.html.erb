@@ -2,12 +2,13 @@
   <div class="wrapper">
     <ul class="steps">
       <% form_steps.each_with_index do |step, i| %>
+      <% next if step == 'style' && site&.site_template&.name == 'INDIA' %>
       <li>
-        <% tab_index = disable_button?(form_steps, step, current_step, id, local_assigns[:invalid_steps], local_assigns[:invalid_state]) ? '-1' : '0' %>
+        <% tab_index = disable_button?(form_steps, step, current_step, site.id, local_assigns[:invalid_steps], local_assigns[:invalid_state]) ? '-1' : '0' %>
         <% html_class =
-              if disable_button?(form_steps, step, current_step, id, local_assigns[:invalid_steps], local_assigns[:invalid_state])
+              if disable_button?(form_steps, step, current_step, site.id, local_assigns[:invalid_steps], local_assigns[:invalid_state])
                 '-disabled'
-              elsif active_button?(form_steps, step, current_step, id)
+              elsif active_button?(form_steps, step, current_step, site.id)
                 '-active'
               else
                 ''
