@@ -6,7 +6,7 @@
     </div>
   </div>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @dataset, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
 <%= form_for @dataset, url: wizard_path, method: :put, html: { multipart: true } do |f| %>

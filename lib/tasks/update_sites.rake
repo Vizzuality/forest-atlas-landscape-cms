@@ -36,8 +36,6 @@ def create_default_template
 end
 
 def create_site_settings_from_forest_atlas(site, max_position)
-  puts 'CREATE SITE SETTINGS FROM FOREST ATLAS'
-  pp site
   {
     content_width: '1280px',
     content_font: '\'Fira Sans\'',
@@ -51,10 +49,6 @@ def create_site_settings_from_forest_atlas(site, max_position)
     footer_text_color: '\'white\'',
     'footer-links-color': '\'accent-color\''
   }.each_with_index do |(name, value), index|
-    puts 'DAFQA'
-    pp name
-    pp value
-    pp index
     SiteSetting.find_or_initialize_by(
       site: site,
       name: name
