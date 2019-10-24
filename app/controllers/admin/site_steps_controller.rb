@@ -262,58 +262,32 @@ class Admin::SiteStepsController < AdminController
         @site = current_site
 
         begin
-          if @site.id
-            # If the user is editing
-            settings[:site_settings_attributes].values.each do |attrs|
+          session[:site][@site_id]['site_settings_attributes'].values.map do |attrs|
+            site_setting = nil
+            if attrs['position'].present?
               site_setting = @site.site_settings.find do |ss|
-                ss.position == attrs['position'].to_i
-              end if attrs['position'].present?
-
-              if site_setting
-                next if attrs[:_destroy] == '1' && attrs[:image].blank?
-                if attrs[:_destroy] == '1'
-                  site_setting.mark_for_destruction
-                else
-                  attrs.delete(:_destroy)
-                  attrs.delete(:image) if attrs[:image].is_a?(String) && !attrs[:image].include?('?temp_id=')
-                  site_setting.assign_attributes(attrs)
-                end
-              else
-                next if attrs[:_destroy] == '1'
-                attrs.delete(:_destroy)
-                url = attrs[:image]
-                if url.is_a? String
-                  begin
-                    id = url.gsub(/.*temp_id=/, '')
-                    image = TemporaryContentImage.find id
-                    attrs[:image] = image.image
-                  rescue
+                if ss.name == 'main_image'
+                  if attrs['id'].present?
+                    ss.id == attrs['id'].to_i
+                  else
+                    ss.position == attrs['position'].to_i
                   end
+                else
+                  ss.name == attrs['name']
                 end
-                @site.site_settings.build(attrs)
               end
             end
-          else
-            # If the user is creating a new site
-            settings[:site_settings_attributes].map do |attrs|
-              site_setting = @site.site_settings.find do |ss|
-                ss.position == attrs['position'].to_i
-              end if attrs['position'].present?
 
-              if site_setting
-                attrs.delete(:_destroy)
-                attrs.delete(:image) if attrs[:image].is_a?(String) && !attrs[:image].include?('?temp_id=')
-                site_setting.assign_attributes(attrs)
+            if site_setting
+              if attrs[:_destroy] == '1'
+                site_setting.mark_for_destruction
               else
-                @site.site_settings.build(s[1].except('_destroy'))
+                site_setting.assign_attributes(attrs.except('_destroy'))
               end
+            elsif attrs['_destroy'] != '1'
+              @site.site_settings.build(attrs.except('_destroy'))
             end
-            @site.form_step = 'content'
           end
-        rescue => e
-          Rails.logger.error e.class
-          Rails.logger.error e.message
-          e.backtrace.each { |l| Rails.logger.error l }
         end
 
         if save_button?
@@ -411,9 +385,27 @@ class Admin::SiteStepsController < AdminController
       if site_params.to_h['site_settings_attributes']
         max_key = site_params.to_h['site_settings_attributes'].keys.map(&:to_i).max
         site_params.to_h['site_settings_attributes'].values.each_with_index do |site_setting, index|
-          session[:site][@site_id]['site_settings_attributes'][max_key + index + 1] =
-            site_setting
+          existing_site_setting = session[:site][@site_id]['site_settings_attributes'].values.find do |ss|
+            if ss['name'] == 'main_image'
+              if ss['id'].present?
+                ss['id'] == site_setting['id']
+              else
+                ss['position'] == site_setting['position']
+              end
+            else
+              ss['name'] == site_setting['name']
+            end
+          end
+
+          if existing_site_setting
+            existing_site_setting.merge!(site_setting)
+          else
+            session[:site][@site_id]['site_settings_attributes'][max_key + index + 1] =
+              site_setting
+          end
         end
+
+        process_site_settings
       end
     end
 
@@ -429,6 +421,26 @@ class Admin::SiteStepsController < AdminController
     site.assign_attributes session[:site][@site_id] if session[:site][@site_id]
 
     site
+  end
+
+  def process_site_settings
+    session[:site][@site_id]['site_settings_attributes'].values.each do |attrs|
+      next unless attrs.key?('image')
+
+      attrs['image'] = nil if attrs['_destroy'] == '1'
+
+      url = attrs['image']
+      next unless url.is_a?(String)
+
+      unless url.include? 'temp_id='
+        attrs.delete('image')
+        next
+      end
+
+      id = url.gsub(/.*temp_id=/, '')
+      image = TemporaryContentImage.find id
+      attrs['image'] = image.image
+    end
   end
 
   def save_button?
