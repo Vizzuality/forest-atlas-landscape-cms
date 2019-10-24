@@ -267,7 +267,7 @@ class Site < ApplicationRecord
   def variables
     color = self.site_settings.find_by(name: 'color')
     content_width = self.site_settings.find_by(name: 'content_width')
-    content_font = self.settings.find_by(name: 'content_font')
+    content_font = self.site_settings.find_by(name: 'content_font')
     heading_font = self.site_settings.find_by(name: 'heading_font')
     cover_size = self.site_settings.find_by(name: 'cover_size')
     cover_text_alignment = self.site_settings.find_by(name: 'cover_text_alignment')
@@ -282,16 +282,16 @@ class Site < ApplicationRecord
       {
         'accent-color': color.value,
         'content-width': content_width.value,
-        'content-font': '\'#{content_font.value}\'',
-        'heading-font': '\'#{heading_font.value}\'',
+        'content-font': content_font.value,
+        'heading-font': heading_font.value,
         'cover-size': cover_size.value,
         'cover-text-alignment': cover_text_alignment.value,
         'header-menu-items-separator': header_separators.value,
-        'header-background-color': '\'#{header_background.value}\'',
-        'header-background-transparency': '\'#{header_transparency.value}\'',
-        'footer-background-color': '\'#{footer_background.value}\'',
-        'footer-text-color': '\'#{footer_text_color.value}\'',
-        'footer-links-color': '\'#{footer_links_color.value}\''
+        'header-background-color': header_background.value,
+        'header-background-transparency': header_transparency.value,
+        'footer-background-color': footer_background.value,
+        'footer-text-color': footer_text_color.value,
+        'footer-links-color': footer_links_color.value
       }
     else # Fallback color
       {
