@@ -276,7 +276,7 @@ class Site < ApplicationRecord
     header_transparency = self.site_settings.find_by(name: 'header_transparency')
     footer_background = self.site_settings.find_by(name: 'footer_background')
     footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
-    footer_links_color = self.site_settings.find_by(name: 'footer_links_color')
+    footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
 
     if color
       {
