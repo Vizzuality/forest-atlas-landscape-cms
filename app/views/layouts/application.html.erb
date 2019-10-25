@@ -14,10 +14,7 @@
 
   <link rel="icon" type="image/png" href="<%= @favico %>" />
   <link rel="apple-touch-icon" href="<%= @favico %>">
-
-  <% if @site_page.site_template.name.eql?('CARPE Landscape') %>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
-  <% end %>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
 
   <%= stylesheet_link_tag 'front/application-theme-default', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('Default')) %>
   <%= stylesheet_link_tag 'front/application-theme-ind', media: 'all', 'data-turbolinks-track': 'reload' if (Rails.env.development? && @site_page.site_template.name.eql?('INDIA')) %>
