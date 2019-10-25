@@ -791,13 +791,16 @@ $submenu-separator-color: red;
 
   > .flag-border {
     display: flex;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
     width: 100%;
     height: 5px;
     z-index: -1;
     background-color: $flag-background-color;
+
+    @if $header-background-transparency != 'semi' {
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+    }
 
     @if $template == 'india' {
       display: none;

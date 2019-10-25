@@ -27,11 +27,11 @@
       }
 
       @if $header-background-transparency == 'semi' {
-        height: #{$cover-size + 25px}; // 25px is the height of the sub-menu
+        height: #{$cover-size + 30px}; // 30px is the height of the sub-menu
       }
 
       @if $header-background-transparency == 'transparent' {
-        height: #{$cover-size + 80px}; // 80px is the height of the entire header
+        height: #{$cover-size + 85px}; // 85px is the height of the entire header
       }
     }
 
@@ -89,7 +89,17 @@
         top: 50%;
 
         @if $template == 'default' {
-          transform: translateY(-50%);
+          @if $header-background-transparency == 'transparent' {
+            transform: translateY(calc(-50% + #{85px / 2})); // 85px is the height of the header
+          }
+
+          @if $header-background-transparency == 'semi' {
+            transform: translateY(calc(-50% + #{30px / 2})); // 30px is the height of the sub-menu
+          }
+
+          @if $header-background-transparency == 'solid' {
+            transform: translateY(-50%);
+          }
         }
 
         @if $template == 'india' {
