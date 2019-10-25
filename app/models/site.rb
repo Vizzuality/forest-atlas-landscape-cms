@@ -280,18 +280,18 @@ class Site < ApplicationRecord
 
     if color
       {
-        'accent-color': color.value,
-        'content-width': content_width.value,
-        'content-font': content_font.value,
-        'heading-font': heading_font.value,
-        'cover-size': cover_size.value,
-        'cover-text-alignment': cover_text_alignment.value,
-        'header-menu-items-separator': header_separators.value,
-        'header-background-color': header_background.value,
-        'header-background-transparency': header_transparency.value,
-        'footer-background-color': footer_background.value,
-        'footer-text-color': footer_text_color.value,
-        'footer-links-color': footer_links_color.value
+        'accent-color': color.value.html_safe,
+        'content-width': content_width.value.html_safe,
+        'content-font': content_font.value.html_safe,
+        'heading-font': heading_font.value.html_safe,
+        'cover-size': cover_size.value.html_safe,
+        'cover-text-alignment': cover_text_alignment.value.html_safe,
+        'header-menu-items-separator': header_separators.value.html_safe,
+        'header-background-color': header_background.value.html_safe,
+        'header-background-transparency': header_transparency.value.html_safe,
+        'footer-background-color': footer_background.value.html_safe,
+        'footer-text-color': footer_text_color.value.html_safe,
+        'footer-links-color': footer_links_color.value.html_safe
       }
     else # Fallback color
       {
