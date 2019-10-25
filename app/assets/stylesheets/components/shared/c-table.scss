@@ -70,7 +70,7 @@
       }
 
       a {
-        color: $color-1;
+        color: $accent-color;
         &:hover {
           text-decoration: underline;
         }
@@ -190,8 +190,8 @@
     padding: 0;
     border: 0;
     background-color: transparent;
-    color: $color-1;
-    font-family: $font-family-1;
+    color: $accent-color;
+    font-family: $content-font;
     font-size: $font-size-normal;
     text-align: left;
     cursor: pointer;

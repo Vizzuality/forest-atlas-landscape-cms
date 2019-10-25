@@ -16,11 +16,12 @@ body {
 }
 
 body {
-  max-width: $body-max-width;
+  position: relative; // Make sure the header has the correct width
+  max-width: $content-width;
   color: $color-4;
-  font-family: $font-family-1;
-  font-size: $font-size-s-normal;
-  font-weight: $font-weight-light;
+  font-family: $content-font;
+  font-size: $font-size-normal;
+  font-weight: $font-weight-normal;
   line-height: 1.7;
 
   @media #{$mq-body-width} {
@@ -29,6 +30,12 @@ body {
 
   &.-wide {
     max-width: none;
+
+    .c-header {
+      @if $template == 'india' {
+        position: static;
+      }
+    }
   }
 
   &.-map-report {
@@ -51,7 +58,8 @@ ul {
 
 a,
 .ql-bubble .ql-editor a {
-  color: $color-1;
+  // Do not set inline-block here otherwise the links will be forced to be on online line
+  color: $accent-color;
   text-decoration: none;
 }
 
@@ -82,18 +90,17 @@ a,
 }
 
 .turbolinks-progress-bar {
-  background-color: $color-1;
+  background-color: $accent-color;
 }
 
 ::selection {
-  background: rgba($color-1, .2);
+  background: rgba($accent-color, .2);
 }
 
 ::-moz-selection {
-  background: rgba($color-1, .2);
+  background: rgba($accent-color, .2);
 }
 
-// We hide the map header
 .app-header {
   top: 30px !important; // We need to override map builder styles
 }
@@ -113,3 +120,4 @@ a,
 .txlive-langselector {
   display: none;
 }
+

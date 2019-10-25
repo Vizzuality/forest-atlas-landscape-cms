@@ -6,7 +6,7 @@ def create_pages_templates
       uri: '',
       content_type: ContentType::HOMEPAGE,
       page_version: 2,
-      site_templates: [@fa_template, @la_template],
+      site_templates: [@default_template],
       content: '[{"id":1532344156248,"type":"text","content":"<h1>The interactive forest atlas of Camaroon</h1><p>The Interactive forest atlas of Cameroon is a living, dynamic forest monitoring system that provides unbiased and up-to-date information on the Cameroon\'s forest sector. Built on a geographic information system (GIS) platform, the Atlas aims to strengthen forest management and land use planning by bringing information on all major land use categories onto the same standardized platform.</p><p>The underlying forest atlas database is supported and kept up-to-date by the Ministry of Water, Forests, Hunting and Fishing and the World Resources Institute (WRI), releasing new information as it becomes available via this&nbsp;<a href=\"http://52.45.163.131/#\" target=\"_blank\" style=\"color: rgb(186, 48, 33);\">mapping application</a>. Other publications are released periodically and can be found in the&nbsp;<a href=\"http://52.45.163.131/#\" target=\"_blank\" style=\"color: rgb(186, 48, 33);\">download section</a>.</p><p><br></p><p><br></p><blockquote><em>A key data challenge by integrating forest management classes with forest cover extent and change data from GFW’s near-real-time monitoring system</em></blockquote><p><br></p><p>Unless otherwise noted, Atlas data are licensed under a&nbsp;<a href=\"http://52.45.163.131/#\" target=\"_blank\" style=\"color: rgb(186, 48, 33);\">Creative Commons Attribution 4.0</a>&nbsp;International License. You are free to copy and redistribute the material in any medium or format, and to transform and build upon the material for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made. When displaying and citing the data, use the appropriate credit as listed for the corresponding dataset in the download section.</p>"}]'
     }
   )
@@ -19,7 +19,7 @@ def create_pages_templates
       uri: 'map',
       parent: home,
       content_type: ContentType::MAP,
-      site_templates: [@fa_template, @la_template]
+      site_templates: [@default_template]
     }
   )
 
@@ -31,7 +31,7 @@ def create_pages_templates
       parent: home,
       show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
-      site_templates: [@fa_template, @la_template],
+      site_templates: [@default_template],
       content: nil # content rendered from .erb template upon site creation
     }
   )
@@ -41,21 +41,21 @@ end
 def create_sites
 
   general_site_settings = [
-    {name: 'color', value: '#000000', position: 1},
+    {name: 'color', value: '#97bd3d', position: 1},
     {name: 'logo_image', value: '', position: 2},
     {name: 'logo_background', value: '#000000', position: 3},
     {name: 'flag', value: '#000000', position: 4}
   ]
 
-  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template, slug: 'heroku-staging-for-fa-lsa-cms', site_settings_attributes: general_site_settings})
+  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @default_template, slug: 'heroku-staging-for-fa-lsa-cms', site_settings_attributes: general_site_settings})
   @staging_demo_site.save!(validate: false)
-  @site_two = Site.new({name: 'Site Two', site_template: @fa_template, slug: 'site-two', site_settings_attributes: general_site_settings})
+  @site_two = Site.new({name: 'Site Two', site_template: @default_template, slug: 'site-two', site_settings_attributes: general_site_settings})
   @site_two.save!(validate: false)
-  @site_three = Site.new({name: 'Site Three', site_template: @la_template, slug: 'site-three', site_settings_attributes: general_site_settings})
+  @site_three = Site.new({name: 'Site Three', site_template: @default_template, slug: 'site-three', site_settings_attributes: general_site_settings})
   @site_three.save!(validate: false)
-  @site_four = Site.new({name: 'Site Four', site_template: @la_template, slug: 'site-four', site_settings_attributes: general_site_settings})
+  @site_four = Site.new({name: 'Site Four', site_template: @default_template, slug: 'site-four', site_settings_attributes: general_site_settings})
   @site_four.save!(validate: false)
-  @base_site = Site.new({name: 'Base site', site_template: @fa_template, slug: 'base-site', site_settings_attributes: general_site_settings})
+  @base_site = Site.new({name: 'Base site', site_template: @default_template, slug: 'base-site', site_settings_attributes: general_site_settings})
   @base_site.save!(validate: false)
   puts 'Base site created successfully'
 end
@@ -283,8 +283,7 @@ namespace :db do
   desc 'Create sample development data'
   task :sample => :environment do
 
-    @fa_template = SiteTemplate.find_by name: 'Forest Atlas'
-    @la_template = SiteTemplate.find_by name: 'Landscape Application'
+    @default_template = SiteTemplate.find_by name: 'Default'
 
     create_sites
     create_routes
@@ -292,13 +291,6 @@ namespace :db do
     create_users
     create_user_sites
     create_contexts
-  end
-
-
-  desc 'Create new CARPE template pages'
-  task carpe_templates: :environment do
-    @carpe_template = SiteTemplate.find_by name: 'CARPE Landscape'
-    PageTemplate.find_each { |pt| pt.site_templates << @carpe_template; pt.save }
   end
 
   desc 'Create new privacy policy template and pages'

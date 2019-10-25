@@ -26,19 +26,22 @@ class SiteSetting < ApplicationRecord
   }
 
   NAMES = %w[
-    logo_image main_image alternative_image favico color flag
+    logo_image main_image alternative_image favico color
     default_site_language
     translate_english translate_spanish translate_french translate_georgian
     pre_footer analytics_key keywords contact_email_address
-    hosting_organization transifex_api_key
-  ]
+    hosting_organization transifex_api_key content_width content_font
+    heading_font cover_size cover_text_alignment header_separators
+    header_background header_transparency header-country-colours
+    footer_background footer_text_color footer-links-color
+  ].freeze
   MAX_COLORS = 5
   LANGUAGES = {
     spanish: 'es',
     english: 'en',
     french: 'fr',
     georgian: 'ka'
-  }
+  }.freeze
 
   # Makes sure the same site doesn't have a repeated setting
   validates_uniqueness_of :name, scope: :site_id, unless: Proc.new { |setting| setting.name.eql? 'main_image' }
@@ -83,8 +86,48 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'color', site_id: site_id)
   end
 
-  def self.flag_colors(site_id)
-    SiteSetting.find_by(name: 'flag', site_id: site_id)
+  def self.content_width(site_id)
+    SiteSetting.find_by(name: 'content_width', site_id: site_id)
+  end
+
+  def self.content_font(site_id)
+    SiteSetting.find_by(name: 'content_font', site_id: site_id)
+  end
+
+  def self.heading_font(site_id)
+    SiteSetting.find_by(name: 'heading_font', site_id: site_id)
+  end
+
+  def self.cover_size(site_id)
+    SiteSetting.find_by(name: 'cover_size', site_id: site_id)
+  end
+
+  def self.cover_text_alignment(site_id)
+    SiteSetting.find_by(name: 'cover_text_alignment', site_id: site_id)
+  end
+
+  def self.header_separators(site_id)
+    SiteSetting.find_by(name: 'header_separators', site_id: site_id)
+  end
+
+  def self.header_background(site_id)
+    SiteSetting.find_by(name: 'header_background', site_id: site_id)
+  end
+
+  def self.header_transparency(site_id)
+    SiteSetting.find_by(name: 'header_transparency', site_id: site_id)
+  end
+
+  def self.footer_background(site_id)
+    SiteSetting.find_by(name: 'footer_background', site_id: site_id)
+  end
+
+  def self.footer_text_color(site_id)
+    SiteSetting.find_by(name: 'footer_text_color', site_id: site_id)
+  end
+
+  def self.footer_links_color(site_id)
+    SiteSetting.find_by(name: 'footer_links_color', site_id: site_id)
   end
 
   def self.languages(site_id)
@@ -141,46 +184,59 @@ class SiteSetting < ApplicationRecord
     SiteSetting.find_by(name: 'transifex_api_key', site_id: site_id)
   end
 
-  def flag_colors
-    value.split(' ')
-  end
-
-  def flag_colors=(colors)
-    write_attribute(:value, colors.join(' '))
+  def self.header_country_colours(site_id)
+    SiteSetting.find_by(name: 'header-country-colours', site_id: site_id)
   end
 
   # Creates the color setting for a site
   def self.create_color_settings site
-    if site.site_settings.length < 1
-      site.site_settings.new(name: 'color', value: '#000000', position: 1)
-    end
   end
 
   # Creates all the additional settings for a site
   def self.create_additional_settings site
     unless site.site_settings.exists?(name: 'logo_image')
-      site.site_settings.new(name: 'logo_image', value: '', position: 2)
-      site.site_settings.new(name: 'main_image', value: '', position: 30)
-      site.site_settings.new(name: 'alternative_image', value: '', position: 6)
-      site.site_settings.new(name: 'favico', value: '', position: 3)
-      site.site_settings.new(name: 'flag', value: '#000000', position: 4) if site.site_template.name == 'Forest Atlas'
+      site.site_settings.find_or_initialize_by(name: 'logo_image', value: '', position: 2)
+      site.site_settings.find_or_initialize_by(name: 'main_image', value: '', position: 32)
+      site.site_settings.find_or_initialize_by(name: 'alternative_image', value: '', position: 6)
+      site.site_settings.find_or_initialize_by(name: 'favico', value: '', position: 3)
     end
   end
 
   # Creates the color setting for a site
   def self.create_site_settings site
     unless site.site_settings.exists?(name: 'translate_english')
-      site.site_settings.new(name: 'translate_english', value: '1', position: 7)
-      site.site_settings.new(name: 'translate_spanish', value: '1', position: 8)
-      site.site_settings.new(name: 'translate_french', value: '1', position: 9)
-      site.site_settings.new(name: 'pre_footer', value: '', position: 10)
-      site.site_settings.new(name: 'analytics_key', value: '', position: 11)
-      site.site_settings.new(name: 'keywords', value: '', position: 12)
-      site.site_settings.new(name: 'contact_email_address', value: '', position: 13)
-      site.site_settings.new(name: 'hosting_organization', value: '', position: 14)
-      site.site_settings.new(name: 'default_site_language', value: 'fr', position: 15)
-      site.site_settings.new(name: 'translate_georgian', value: '1', position: 16)
-      site.site_settings.new(name: 'transifex_api_key', value: '', position: 17)
+      site.site_settings.find_or_initialize_by(name: 'translate_english', value: '1', position: 7)
+      site.site_settings.find_or_initialize_by(name: 'translate_spanish', value: '1', position: 8)
+      site.site_settings.find_or_initialize_by(name: 'translate_french', value: '1', position: 9)
+      site.site_settings.find_or_initialize_by(name: 'pre_footer', value: '', position: 10)
+      site.site_settings.find_or_initialize_by(name: 'analytics_key', value: '', position: 11)
+      site.site_settings.find_or_initialize_by(name: 'keywords', value: '', position: 12)
+      site.site_settings.find_or_initialize_by(name: 'contact_email_address', value: '', position: 13)
+      site.site_settings.find_or_initialize_by(name: 'hosting_organization', value: '', position: 14)
+      site.site_settings.find_or_initialize_by(name: 'default_site_language', value: 'fr', position: 15)
+      site.site_settings.find_or_initialize_by(name: 'translate_georgian', value: '1', position: 16)
+      site.site_settings.find_or_initialize_by(name: 'transifex_api_key', value: '', position: 17)
+    end
+  end
+
+  def self.create_style_settings site
+    unless site.site_settings.exists?(name: 'content_width')
+      site.site_settings.find_or_initialize_by(name: 'color') do |c|
+        c.value = '#97bd3d'
+        c.position = 1
+      end
+      site.site_settings.find_or_initialize_by(name: 'content_width', value: '1280px', position: 20)
+      site.site_settings.find_or_initialize_by(name: 'content_font', value: '\'Merriweather Sans\'', position: 21)
+      site.site_settings.find_or_initialize_by(name: 'heading_font', value: '\'Merriweather\'', position: 22)
+      site.site_settings.find_or_initialize_by(name: 'cover_size', value: '250px', position: 23)
+      site.site_settings.find_or_initialize_by(name: 'cover_text_alignment', value: 'left', position: 24)
+      site.site_settings.find_or_initialize_by(name: 'header_separators', value: 'false', position: 25)
+      site.site_settings.find_or_initialize_by(name: 'header_background', value: '\'white\'', position: 26)
+      site.site_settings.find_or_initialize_by(name: 'header_transparency', value: '\'semi\'', position: 27)
+      site.site_settings.find_or_initialize_by(name: 'header-country-colours', value: '#000000', position: 28)
+      site.site_settings.find_or_initialize_by(name: 'footer_background', value: '\'accent-color\'', position: 29)
+      site.site_settings.find_or_initialize_by(name: 'footer_text_color', value: '\'white\'', position: 30)
+      site.site_settings.find_or_initialize_by(name: 'footer-links-color', value: '\'white\'', position: 31)
     end
   end
 

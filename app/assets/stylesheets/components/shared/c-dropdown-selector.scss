@@ -65,19 +65,12 @@
       &:hover,
       &:focus {
         outline: none;
-
-        @if $theme == 2 {
-          background-color: $color-8;
-        }
-
-        @if $theme == 1 or $theme == 3 {
-          background-color: rgba($color-1, .1);
-        }
+        background-color: rgba($accent-color, .1);
       }
 
       &.-active {
         position: relative;
-        color: $color-1;
+        color: $accent-color;
 
         &::before {
           display: block;
@@ -87,8 +80,8 @@
           width: 8px;
           height: 8px;
           transform: translateY(-50%) rotate(45deg);
-          border-top: 2px solid $color-1;
-          border-right: 2px solid $color-1;
+          border-top: 2px solid $accent-color;
+          border-right: 2px solid $accent-color;
           border-bottom: 0;
           border-left: 0;
           content: '';
@@ -135,19 +128,11 @@
         height: 8px;
         margin-left: 12px;
         transform: translateY(-3px) rotate(135deg);
+        border-top: 2px solid $color-4;
+        border-right: 2px solid $color-4;
         border-bottom: 0;
         border-left: 0;
         content: '';
-
-        @if $theme == 1 or $theme == 3 {
-          border-top: 2px solid $color-1;
-          border-right: 2px solid $color-1;
-        }
-
-        @if $theme == 2 {
-          border-top: 2px solid $color-3;
-          border-right: 2px solid $color-3;
-        }
       }
     }
   }
@@ -161,18 +146,10 @@
         margin-right: 12px;
         transform: translateY(-3px) rotate(135deg);
         border-bottom: 0;
+        border-top: 2px solid $color-4;
+        border-right: 2px solid $color-4;
         border-left: 0;
         content: '';
-
-        @if $theme == 1 or $theme == 3 {
-          border-top: 2px solid $color-1;
-          border-right: 2px solid $color-1;
-        }
-
-        @if $theme == 2 {
-          border-top: 2px solid $color-3;
-          border-right: 2px solid $color-3;
-        }
       }
     }
   }

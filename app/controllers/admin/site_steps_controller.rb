@@ -7,8 +7,8 @@ class Admin::SiteStepsController < AdminController
 
   URL_CONTROLLER_ID = 'site_routes_attributes'.freeze
   URL_CONTROLLER_NAME = 'site[routes_attributes]'.freeze
-  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_3'.freeze
-  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][3]'.freeze
+  COLOR_CONTROLLER_ID = 'site_site_settings_attributes_11'.freeze
+  COLOR_CONTROLLER_NAME = 'site[site_settings_attributes][11]'.freeze
 
   SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
@@ -58,13 +58,8 @@ class Admin::SiteStepsController < AdminController
       if step == 'template'
         SiteSetting.create_color_settings @site
       end
-      if step == 'style'
+      if step == 'content'
         SiteSetting.create_additional_settings @site
-        gon.global.color_controller_id = COLOR_CONTROLLER_ID
-        gon.global.color_controller_name = COLOR_CONTROLLER_NAME
-
-        color_array = @site.site_settings.where(name: 'flag').first
-        gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
 
         @logo_image = @site.site_settings.where(name: 'logo_image').first
         @main_images = @site.site_settings.where(name: 'main_image')
@@ -82,7 +77,16 @@ class Admin::SiteStepsController < AdminController
         @translate_georgian = @site.site_settings.where(name: 'translate_georgian').first
         @transifex_api_key = @site.site_settings.where(name: 'transifex_api_key').first
       end
+      if step == 'style'
+        SiteSetting.create_style_settings @site
+        gon.global.color_controller_id = COLOR_CONTROLLER_ID
+        gon.global.color_controller_name = COLOR_CONTROLLER_NAME
+
+        color_array = @site.site_settings.where(name: 'header-country-colours').first
+        gon.global.color_array = color_array&.value&.split(' ')&.map { |x| {color: x} }
+      end
     end
+
     render_wizard
   end
 
@@ -99,7 +103,7 @@ class Admin::SiteStepsController < AdminController
           if @site.save
             @site.routes.first.update(main: :true)
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             render_wizard
           end
@@ -120,7 +124,7 @@ class Admin::SiteStepsController < AdminController
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             @site.build_user_site_associations_for_users(non_admin_users)
             render_wizard
@@ -141,7 +145,7 @@ class Admin::SiteStepsController < AdminController
         if save_button?
           if @site.save
             delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
           else
             @contexts = Context.all
             render_wizard
@@ -153,90 +157,6 @@ class Admin::SiteStepsController < AdminController
             redirect_to next_wizard_path
           else
             @contexts = Context.all
-            render_wizard
-          end
-        end
-
-      when 'template'
-        @site = current_site
-        if save_button?
-          if @site.save
-            delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
-          else
-            render_wizard
-          end
-        else
-          @site.form_step = 'template'
-
-          if @site.valid?
-            redirect_to next_wizard_path
-          else
-            render_wizard
-          end
-        end
-
-
-      # In this step, the site is always saved
-      when 'style'
-        settings = site_params.to_h
-        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
-
-        begin
-          # If the user is editing
-          if @site.id
-            settings[:site_settings_attributes].values.each do |attrs|
-              site_setting = @site.site_settings.find_by position: attrs['position'] if attrs['position'].present?
-              if site_setting
-                next if attrs[:_destroy] == '1' && attrs[:image].blank?
-                if attrs[:_destroy] == '1'
-                  @site.site_settings.each { |ss| ss.mark_for_destruction if ss.id == site_setting.id }
-                else
-                  attrs.delete(:_destroy)
-                  attrs.delete(:image) if attrs[:image].is_a?(String) && !attrs[:image].include?('?temp_id=')
-                  @site.site_settings.each { |ss| ss.assign_attributes(attrs) if ss.id == site_setting.id }
-                end
-              else
-                next if attrs[:_destroy] == '1'
-                attrs.delete(:_destroy)
-                url = attrs[:image]
-                if url.is_a? String
-                  begin
-                    id = url.gsub(/.*temp_id=/, '')
-                    image = TemporaryContentImage.find id
-                    attrs[:image] = image.image
-                  rescue
-                  end
-                end
-                @site.site_settings.build(attrs)
-              end
-            end
-            # If the user is creating a new site
-          else
-            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
-            @site.form_step = 'style'
-          end
-        rescue => e
-          Rails.logger.error e.class
-          Rails.logger.error e.message
-          e.backtrace.each { |l| Rails.logger.error l }
-        end
-
-        if save_button?
-          if @site.save
-            delete_session_key(:site, @site_id)
-            redirect_to admin_sites_path, notice: 'The site\'s main color might take a few minutes to be visible'
-          else
-            render_wizard
-          end
-        else
-          @site.form_step = 'style'
-
-          if @site.save
-            redirect_to next_wizard_path
-          else
-            color_array = @site.site_settings.select{ |s| s.name == 'flag'}.first
-            gon.global.color_array = color_array[:value].split(' ').map { |x| {color: x} } if color_array
             render_wizard
           end
         end
@@ -259,11 +179,132 @@ class Admin::SiteStepsController < AdminController
           end
         end
 
-        if @site.save
-          delete_session_key(:site, @site_id)
-          redirect_to next_wizard_path(site_slug: @site.slug), notice: 'The site\'s main color might take a few minutes to be visible'
+        if save_button?
+          if @site.save
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
+          else
+            render_wizard
+          end
         else
-          render_wizard
+          @site.form_step = 'settings'
+
+          if @site.valid?
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
+
+      when 'template'
+        @site = current_site
+        if save_button?
+          if @site.save
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'template'
+
+          if @site.valid?
+            if @site.site_template.name == 'Default'
+              redirect_to next_wizard_path
+            else
+              redirect_to wizard_path(:content)
+            end
+          else
+            render_wizard
+          end
+        end
+
+      when 'style'
+        settings = site_params.to_h
+        @site = current_site
+
+        begin
+          if @site.id
+            # If the user is editing
+            @site.site_settings.each do |site_setting|
+              setting = settings[:site_settings_attributes].values.select { |s| s['id'] == site_setting.id.to_s }
+              site_setting.assign_attributes setting.first.except('id', 'position', 'name') if setting.any?
+            end
+          else
+            # If the user is creating a new site
+            settings[:site_settings_attributes].map { |s| @site.site_settings.build(s[1]) }
+            @site.form_step = 'settings'
+          end
+        end
+
+        if save_button?
+          if @site.save
+            gon.global.color_array = []
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'style'
+
+          if @site.valid?
+            gon.global.color_array = []
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
+        end
+
+      # In this step, the site is always saved
+      when 'content'
+        settings = site_params.to_h
+        @site = current_site
+
+        begin
+          session[:site][@site_id]['site_settings_attributes'].values.map do |attrs|
+            site_setting = nil
+            if attrs['position'].present?
+              site_setting = @site.site_settings.find do |ss|
+                if ss.name == 'main_image'
+                  if attrs['id'].present?
+                    ss.id == attrs['id'].to_i
+                  else
+                    ss.position == attrs['position'].to_i
+                  end
+                else
+                  ss.name == attrs['name']
+                end
+              end
+            end
+
+            if site_setting
+              if attrs[:_destroy] == '1'
+                site_setting.mark_for_destruction
+              else
+                site_setting.assign_attributes(attrs.except('_destroy'))
+              end
+            elsif attrs['_destroy'] != '1'
+              @site.site_settings.build(attrs.except('_destroy'))
+            end
+          end
+        end
+
+        if save_button?
+          if @site.save
+            delete_session_key(:site, @site_id)
+            redirect_to admin_sites_path, notice: 'Changes to the template and styles might take a few minutes to be visible'
+          else
+            render_wizard
+          end
+        else
+          @site.form_step = 'content'
+
+          if @site.save
+            redirect_to next_wizard_path
+          else
+            render_wizard
+          end
         end
     end
   end
@@ -295,7 +336,7 @@ class Admin::SiteStepsController < AdminController
   def current_site
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
     session[:site][@site_id] ||= {}
-    session[:site][@site_id].delete(:site_template_id) if site.id
+    #session[:site][@site_id].delete(:site_template_id) if site.id
 
     # Contexts listing
     if !params[:site].blank? && site_params.to_h && step == 'contexts'
@@ -324,9 +365,49 @@ class Admin::SiteStepsController < AdminController
       end
     end
 
-    session[:site][@site_id].merge!(
-      site_params.to_h.except(:default_context, 'context_sites_attributes', 'user_site_associations_attributes')
-    ) if params[:site] && site_params.to_h
+    # Add site_template_id to the session in case we continue without saving
+    if !params[:site].blank? && site_params.to_h && step == 'template'
+      session[:site][@site_id]['site_template_id'] = site_params[:site_template_id]
+    end
+
+    if params[:site] && site_params.to_h
+      session[:site][@site_id].merge!(
+        site_params.to_h.except(
+          :default_context,
+          'context_sites_attributes',
+          'user_site_associations_attributes',
+          'site_settings_attributes'
+        )
+      )
+
+      # Merge site settings with the existing ones
+      session[:site][@site_id]['site_settings_attributes'] ||= {}
+      if site_params.to_h['site_settings_attributes']
+        max_key = site_params.to_h['site_settings_attributes'].keys.map(&:to_i).max
+        site_params.to_h['site_settings_attributes'].values.each_with_index do |site_setting, index|
+          existing_site_setting = session[:site][@site_id]['site_settings_attributes'].values.find do |ss|
+            if ss['name'] == 'main_image'
+              if ss['id'].present?
+                ss['id'] == site_setting['id']
+              else
+                ss['position'] == site_setting['position']
+              end
+            else
+              ss['name'] == site_setting['name']
+            end
+          end
+
+          if existing_site_setting
+            existing_site_setting.merge!(site_setting)
+          else
+            session[:site][@site_id]['site_settings_attributes'][max_key + index + 1] =
+              site_setting
+          end
+        end
+
+        process_site_settings
+      end
+    end
 
     # Default context
     if params[:site] && site_params.to_h && site_params[:default_context]
@@ -337,10 +418,29 @@ class Admin::SiteStepsController < AdminController
       default_context['is_site_default_context'] = 'true' if default_context
     end
 
-
-
     site.assign_attributes session[:site][@site_id] if session[:site][@site_id]
+
     site
+  end
+
+  def process_site_settings
+    session[:site][@site_id]['site_settings_attributes'].values.each do |attrs|
+      next unless attrs.key?('image')
+
+      attrs['image'] = nil if attrs['_destroy'] == '1'
+
+      url = attrs['image']
+      next unless url.is_a?(String)
+
+      unless url.include? 'temp_id='
+        attrs.delete('image')
+        next
+      end
+
+      id = url.gsub(/.*temp_id=/, '')
+      image = TemporaryContentImage.find id
+      attrs['image'] = image.image
+    end
   end
 
   def save_button?
@@ -354,7 +454,7 @@ class Admin::SiteStepsController < AdminController
   def set_site_id
     site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new
     if site && site.persisted?
-      @site_id = site.id
+      @site_id = site.id.to_s
     else
       @site_id = :new
     end
@@ -369,7 +469,8 @@ class Admin::SiteStepsController < AdminController
   end
 
   def ensure_user_owns_site
-    return if user_site_admin?(@site_id)
+    site_id = Integer(@site_id) rescue nil
+    return if user_site_admin?(site_id)
     flash[:alert] = 'You do not have permissions to view this page'
     redirect_to :no_permissions
   end

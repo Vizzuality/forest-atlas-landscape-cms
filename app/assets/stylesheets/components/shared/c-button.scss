@@ -2,18 +2,14 @@
   padding: 10px 25px;
   border: 1px solid;
   border-radius: 20px;
-  border-color: $color-1;
-  background: $color-1;
+  border-color: $accent-color;
+  background: $accent-color;
   color: $color-3;
-  font-family: $font-family-1; // Mandatory for button.c-button
+  font-family: $content-font; // Mandatory for button.c-button
   font-size: $font-size-normal; // Mandatory for button.c-button
   font-weight: $font-weight-bold;
   text-decoration: none !important;
   cursor: pointer;
-
-  @if $theme == 2 {
-    text-transform: uppercase;
-  }
 
   &:hover,
   &:focus {

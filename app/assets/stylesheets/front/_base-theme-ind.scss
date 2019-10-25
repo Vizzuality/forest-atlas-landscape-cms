@@ -17,8 +17,9 @@ body {
 }
 
 body {
+  position: relative; // Make sure the header has the correct width
   color: rgba(11, 9, 8, 1) !important;
-  font-family: $font-family-1 !important;
+  font-family: $content-font;
   font-size: $font-size-s-normal !important;
   font-weight: $font-weight-light !important;
   line-height: 1.7 !important;
@@ -373,7 +374,7 @@ body {
     }
   }
   .wrapper{
-    max-width: $body-max-width !important;
+    max-width: $content-width !important;
   }
 }
 
@@ -454,7 +455,7 @@ body {
   cursor:pointer;
 
 
-  font-family: $font-family-1;
+  font-family: $content-font;
   font-size: 20px !important;
   font-weight: 700;
   line-height: 1.5;
@@ -606,15 +607,15 @@ a {
 }
 
 .turbolinks-progress-bar {
-  background-color: $color-1;
+  background-color: $accent-color;
 }
 
 ::selection {
-  background: rgba($color-1, .2);
+  background: rgba($accent-color, .2);
 }
 
 ::-moz-selection {
-  background: rgba($color-1, .2);
+  background: rgba($accent-color, .2);
 }
 
 .app-header {

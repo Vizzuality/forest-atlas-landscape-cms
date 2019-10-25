@@ -11,7 +11,7 @@
     text-decoration: none;
 
     &.-highlight {
-      color: $color-1;
+      color: $accent-color;
     }
   }
 
@@ -33,10 +33,10 @@
 
     .c-dropdown-selector {
       height: 100%;
-      color: $color-1;
+      color: $accent-color;
 
       .active-option::before {
-        border-color: $color-1;
+        border-color: $accent-color;
       }
     }
   }
@@ -56,7 +56,7 @@
   }
 
   &.-bright {
-    background-color: $color-1;
+    background-color: $accent-color;
     color: $color-3;
 
     a {

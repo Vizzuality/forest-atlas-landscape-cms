@@ -35,7 +35,7 @@
     &:focus {
       + label {
         &::before {
-          border-color: $color-1;
+          border-color: $accent-color;
         }
       }
     }

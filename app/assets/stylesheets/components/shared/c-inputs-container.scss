@@ -19,7 +19,15 @@
   }
 
   // This occurs when .c-inputs-container is a fieldset element
+  // Have a look at the bottom of the file
   > legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: $font-size-medium;
+    line-height: inherit;
+    color: $color-6;
     border: 0;
   }
 
@@ -108,7 +116,7 @@
       border: 0;
       color: $color-4;
       min-height: 250px;
-      font-family: $font-family-1;
+      font-family: $content-font;
       font-size: $font-size-s-normal;
       line-height: 1.5;
     }
@@ -116,12 +124,12 @@
     select {
       width: 100%;
       margin: 0;
-      padding: 9px 35px 0 15px;
-      min-height: 40px;
+      padding: 0 35px 0 15px;
+      height: 40px;
       border: 1px solid $color-13;
       border-radius: 4px;
       color: $color-4;
-      font-family: $font-family-1;
+      font-family: $content-font;
       font-size: $font-size-normal;
       line-height: 40px;
       background: asset-url('icons/arrow-icon.svg') no-repeat;
@@ -135,7 +143,7 @@
 
       &.is-focused:not(.is-open) > .Select-control {
         box-shadow: none;
-        border-color: $color-1;
+        border-color: $accent-color;
       }
 
       .Select-input input {
@@ -149,8 +157,8 @@
 
         .Select-value {
           color: $color-4;
-          border-color: $color-1;
-          background-color: rgba($color-1, .1);
+          border-color: $accent-color;
+          background-color: rgba($accent-color, .1);
           margin: 5px 0 0 5px;
 
           .Select-value-label {
@@ -158,11 +166,11 @@
           }
 
           .Select-value-icon {
-            border-right-color: $color-1;
+            border-right-color: $accent-color;
 
             &:hover {
               color: $color-4;
-              background: rgba($color-1, .2);
+              background: rgba($accent-color, .2);
             }
           }
         }
@@ -174,7 +182,7 @@
         .Select-option {
           &.is-selected,
           &.is-focused {
-            background: rgba($color-1, .1);
+            background: rgba($accent-color, .1);
           }
         }
       }
@@ -209,4 +217,12 @@
       color: $color-4;
     }
   }
+}
+
+fieldset.c-inputs-container {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 40px;
+  border: 0;
 }

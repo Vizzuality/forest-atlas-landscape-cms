@@ -18,7 +18,7 @@ body {
 
 body {
   color: $color-4;
-  font-family: $font-family-1;
+  font-family: $content-font;
   font-size: $font-size-normal;
   font-weight: $font-weight-normal;
 
@@ -63,12 +63,12 @@ a,
 }
 
 input {
-  font-family: $font-family-1;
+  font-family: $content-font;
 }
 
 .wrapper {
   width: 100%;
-  max-width: $body-max-width;
+  max-width: $content-width;
   margin: 0 auto;
   padding: 0 $wrapper-mobile-padding;
 
@@ -86,7 +86,7 @@ input {
 }
 
 .turbolinks-progress-bar {
-  background-color: $color-1;
+  background-color: $accent-color;
 
   @if $admin {
     background-color: $color-3;
@@ -94,9 +94,9 @@ input {
 }
 
 ::selection {
-  background: rgba($color-1, .2);
+  background: rgba($accent-color, .2);
 }
 
 ::-moz-selection {
-  background: rgba($color-1, .2);
+  background: rgba($accent-color, .2);
 }

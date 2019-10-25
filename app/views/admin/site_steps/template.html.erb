@@ -3,21 +3,21 @@
     <div class="wrapper">
       <div class="description">
         <h1>Template</h1>
-        <p>Choose one of the two templates below and its main color</p>
+        <p>Choose the general template of your site. If you pick the default template, you will be able to customize it in the next step.</p>
       </div>
     </div>
   </div>
 <% end %>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @site, current_step: step, step_names: @steps_names} %>
 <%= include_gon %>
 
 <%= form_for @site, url: wizard_path, method: :put do |f| %>
-  <div class="l-site-creation -style">
+  <div class="l-site-creation -template">
     <div class="wrapper">
 
       <div class="templates">
-        <% SiteTemplate.all.each do |template| %>
+        <% SiteTemplate.all.order(:name).each do |template| %>
           <div class="template">
             <%= f.label template.name, for: ('template-' + template.id.to_s), class: 'js-template-label', tabindex: '0' %>
             <% if f.object.id %>
@@ -28,14 +28,10 @@
             <div class="content">
               <p><%= template.name %></p>
               <% template_name = nil %>
-              <% if template.name == 'Forest Atlas' 
+              <% if template.name == 'Default'
                   template_name = 'fa-preview.jpg'
-                elsif template.name == 'CARPE Landscape'
-                  template_name = 'carpe-preview.png'
-                elsif template.name == 'INDIA'
-                  template_name = 'ind-preview.png'
                 else
-                  template_name = 'lsa-preview.jpg'
+                  template_name = 'ind-preview.png'
                 end
               %>
               <%= image_tag (template_name), alt: template.name %>
@@ -43,55 +39,8 @@
           </div>
         <% end %>
       </div>
-
-      <hr />
-
-      <%= f.fields_for :site_settings, f.object.site_settings.select{|v| v.name == 'color'} do |color_form| %>
-          <%= color_form.hidden_field :id %>
-          <%= color_form.hidden_field :name, value: 'color' %>
-          <%= color_form.hidden_field :position, value: '1' %>
-          <div class="theme-color js-theme-color">
-            <p>Theme color</p>
-            <%= color_form.color_field :value, id: 'color' %>
-            <label for="color" tabindex="0" class="js-label">Change theme color</label>
-            <div class="preview js-preview"></div>
-          </div>
-      <% end %>
-
     </div>
   </div>
-
-  <script type="text/javascript">
-    $(function () {
-      var themeColorContainer = document.querySelector('.js-theme-color');
-      var input = themeColorContainer.querySelector('input');
-      var colorLabel = themeColorContainer.querySelector('.js-label');
-      var preview = themeColorContainer.querySelector('.js-preview');
-
-      // We initialize the preview with the saved color
-      preview.style.backgroundColor = input.value;
-
-      input.addEventListener('change', function () {
-        preview.style.backgroundColor = input.value;
-      });
-
-      colorLabel.addEventListener('keydown', function (e) {
-        if (e.keyCode === 13 || e.keyCode === 32) {
-          this.click();
-        }
-      });
-
-      var templateLabels = document.querySelectorAll('.js-template-label');
-      for (var i = 0, j = templateLabels.length; i < j; i++) {
-        templateLabels[i].addEventListener('keydown', function (e) {
-          if (e.keyCode === 13 || e.keyCode === 32) {
-            this.click();
-          }
-        });
-      }
-
-    })
-  </script>
 
   <%= render partial: 'footer', locals: { f: f } %>
 <% end %>

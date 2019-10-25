@@ -6,7 +6,7 @@
   }
 
   .ql-container {
-    font-family: $font-family-1;
+    font-family: $content-font;
     font-size: $font-size-normal;
   }
 
@@ -28,7 +28,7 @@
         line-height: 2;
 
         &::before {
-          font-family: $font-family-1;
+          font-family: $content-font;
         }
       }
     }
@@ -62,6 +62,10 @@
 
     &.-html,
     &.-text {
+      h1, h2, h3, h4, h5 {
+        font-family: $heading-font;
+      }
+
       h1 {
         margin: 40px auto 10px;
         color: $color-4;
@@ -110,7 +114,13 @@
     font-size: $font-size-big !important;
     font-weight: $font-weight-light;
     font-style: italic;
+    color: $color-4;
+    line-height: 1.5;
     border-left: none !important;
+
+    @media #{$mq-mobile} {
+      line-height: 1.25;
+    }
 
     &::before {
       content: "“";
@@ -123,31 +133,6 @@
     @media #{$mq-mobile} {
       margin: 60px auto;
       font-size: $font-size-medium;
-    }
-
-    @if $theme == 3 {
-      color: $color-4;
-      line-height: 1.5;
-
-      @media #{$mq-mobile} {
-        line-height: 1.25;
-      }
-    }
-
-    @if $theme == 2 {
-      color: $color-4;
-      letter-spacing: 0.2px;
-      line-height: 1.1;
-    }
-
-    @if $theme == 1 {
-      color: $color-1;
-      font-family: $font-family-2;
-      line-height: 1.5;
-
-      @media #{$mq-mobile} {
-        line-height: 1.25;
-      }
     }
   }
 
@@ -171,7 +156,7 @@
       @extend .c-button.-mini;
       border: 1px solid;
       border-radius: 20px;
-      border-color: $color-1;
+      border-color: $accent-color;
       font-size: 0;
 
       span {
@@ -220,7 +205,7 @@
 
             &:checked + label {
               &:before {
-                border-color: $color-1;
+                border-color: $accent-color;
               }
 
               &:after {
@@ -252,7 +237,7 @@
               left: 0;
               width: 16px;
               height: 16px;
-              border: 1px solid $color-1;
+              border: 1px solid $accent-color;
               border-radius: 50%;
               transform: translate(0, -50%);
             }
@@ -266,7 +251,7 @@
               width: 8px;
               height: 8px;
               border-radius: 50%;
-              background: $color-1;
+              background: $accent-color;
               transform: translate(-50%, -50%) scale(0);
               transition: all 0.3s ease-in-out;
             }
@@ -333,7 +318,7 @@
             margin-top: -6px;
             border: 0;
             border-radius: 100%;
-            background: $color-1;
+            background: $accent-color;
             cursor: pointer;
           }
 
@@ -343,7 +328,7 @@
             width: 15px;
             border: 0;
             border-radius: 100%;
-            background: $color-1;
+            background: $accent-color;
             cursor: pointer;
           }
 
@@ -353,7 +338,7 @@
             width: 15px;
             border: 0;
             border-radius: 100%;
-            background: $color-1;
+            background: $accent-color;
             cursor: pointer;
           }
 
@@ -361,7 +346,7 @@
             width: 100%;
             height: 3px;
             cursor: pointer;
-            background: $color-1;
+            background: $accent-color;
             border: 0;
           }
 
@@ -369,7 +354,7 @@
             width: 100%;
             height: 3px;
             cursor: pointer;
-            background: $color-1;
+            background: $accent-color;
             border: 0;
           }
 
@@ -377,7 +362,7 @@
             width: 100%;
             height: 3px;
             cursor: pointer;
-            background: $color-1;
+            background: $accent-color;
             border: 0;
           }
         }
@@ -391,7 +376,7 @@
           background-repeat: no-repeat;
           background-position: calc(100% - 10px) 50%;
           color: $color-4;
-          font-family: $font-family-1;
+          font-family: $content-font;
           font-size: $font-size-normal;
           font-weight: $font-weight-normal;
           letter-spacing: .1px;
@@ -400,12 +385,11 @@
           -moz-appearance: none;
           -webkit-appearance: none;
 
-          @if $theme == 2 {
-            border: 1px solid $color-1;
-            text-transform: uppercase;
+          @if $template == 'default' {
+            border: 1px solid $accent-color;
           }
 
-          @if $theme == 1 or $theme == 3 {
+          @if $template == 'india' {
             border: 0;
           }
 
@@ -447,9 +431,9 @@
       height: 35px;
       margin-left: 10px;
       padding: 0 10px;
-      border: 1px solid $color-1;
+      border: 1px solid $accent-color;
       border-radius: 30px;
-      background: rgba($color-1, .1);
+      background: rgba($accent-color, .1);
       color: $color-4;
       line-height: 35px;
       cursor: pointer;

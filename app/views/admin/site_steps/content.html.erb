@@ -1,0 +1,114 @@
+<%= javascript_pack_tag 'application' %>
+
+<% content_for :extended_header do %>
+  <div class="c-extended-header">
+    <div class="wrapper">
+      <div class="description">
+        <h1>Site Style</h1>
+        <p>Select a logo, an icon and two cover images – one for the homepage and the other for the Open Content pages.</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @site, current_step: step, step_names: @steps_names} %>
+<%= Gon::Base.render_data %>
+
+<%= form_for @site, url: wizard_path, method: :put do |f| %>
+  <div class="l-site-creation -content">
+    <div class="wrapper">
+
+      <div class="settings">
+        <%= f.fields_for :site_settings, (f.object.site_settings.collect.sort_by{ |s| s.position}) do |settings_form| %>
+          <% setting = settings_form.object %>
+          <% case setting.name
+
+            when 'logo_image' %>
+              <%= settings_form.hidden_field :position, value: '2'%>
+              <%= settings_form.hidden_field :name, value: 'logo_image'%>
+
+              <div class="logo">
+                <h3>Logo image</h3>
+                <%= settings_form.file_field :image, id: 'logo', accept: 'image/*', 'data-type': 'image' %>
+                <%= settings_form.label :image, value: 'Change logo image', for: 'logo', tabindex: '0' %>
+                <% if !@logo_image.nil? && @logo_image.image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @logo_image.image.url, alt: 'Logo image' %>
+                  </div>
+                <% else %>
+                  <div class="placeholder js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Max. size: 1MB
+                  </div>
+                </div>
+              </div>
+
+            <% when 'favico' %>
+              <%= settings_form.hidden_field :position, value: '3'%>
+              <%= settings_form.hidden_field :name, value: 'favico'%>
+
+              <div class="icon">
+                <h3>Icon image</h3>
+                <%= settings_form.file_field :image, id: 'favico', accept: 'image/*', 'data-type': 'image' %>
+                <%= settings_form.label :image, value: 'Change icon image', for: 'favico', tabindex: '0' %>
+                <% if !@favico.nil? && @favico.image_file_name %>
+                  <div class="preview js-preview">
+                    <%= image_tag @favico.image.url, alt: 'Icon image' %>
+                  </div>
+                <% else %>
+                  <div class="placeholder js-placeholder">
+                    <span>Select file</span>
+                  </div>
+                <% end %>
+                <div class="file-input-footer">
+                  <div class="restrictions js-restrictions">
+                    Recommended dimensions: 292x292<br />
+                    Max. size: 1MB
+                  </div>
+                </div>
+              </div>
+
+            <% when 'alternative_image' %>
+              <%= settings_form.hidden_field :position, value: '6'%>
+              <%= settings_form.hidden_field :name, value: 'alternative_image'%>
+              <div class="content-cover-container">
+                <div class="content-cover">
+                  <h3>Content cover image</h3>
+                  <%= settings_form.file_field :image, id: 'alternative', accept: 'image/*', 'data-type': 'background' %>
+                  <%= settings_form.label :image, value: 'Change content cover image', for: 'alternative', tabindex: '0' %>
+                  <% if !@alternative_image.nil? && @alternative_image.image_file_name %>
+                    <div class="preview -high js-preview" style="background-image: url('<%= @alternative_image.image.url %>');">
+                    </div>
+                  <% else %>
+                    <div class="placeholder -high js-placeholder">
+                      <span>Select file</span>
+                    </div>
+                  <% end %>
+                  <div class="file-input-footer">
+                    <div class="restrictions js-restrictions">
+                      Recommended dimensions: 1280x250<br />
+                      Max. size: 1MB
+                    </div>
+                    <div class="cover-attribution">
+                      <%= settings_form.text_field :attribution_label, placeholder: 'Add an attribution label to the image' %>
+                      <%= settings_form.text_field :attribution_link, placeholder: 'Add an attribution link to the image' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        <% end %>
+
+        <%= react_component('AdminCarousel', {}) %>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'footer', locals: { f: f, no_continue: true, last_step: true } %>
+<% end %>
+
+
+<%= render partial: 'shared/errors', locals: { resource: @site } %>

@@ -8,7 +8,7 @@
   &.-standalone {
     // The header is absolutely positioned for
     // some templates so we add its height
-    @if $theme == 3 {
+    @if $template == 'india' {
       margin-top: 60px;
 
       @media #{$mq-tablet} {
@@ -32,7 +32,7 @@
       margin-bottom: 10px;
       border: 0;
       font-size: $font-size-big;
-      font-family: $font-family-1;
+      font-family: $content-font;
       font-weight: $font-weight-light;
       color: $color-4;
 
@@ -110,7 +110,8 @@
 
       h2 {
         margin: 5px 0 0;
-        color: $color-1;
+        color: $accent-color;
+        font-family: $heading-font;
         font-size: $font-size-x-normal;
       }
 
@@ -121,7 +122,7 @@
 
       .tags {
         font-weight: $font-weight-bold;
-        color: $color-1;
+        color: $accent-color;
       }
 
       .thumbnail {

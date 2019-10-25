@@ -16,7 +16,7 @@
     cursor: pointer;
 
     &:focus {
-      outline: solid 2px $color-1;
+      outline: solid 2px $accent-color;
     }
   }
 
@@ -27,14 +27,14 @@
     border-radius: 7px;
     background: transparent;
     color: $color-4;
-    font-family: $font-family-1;
+    font-family: $content-font;
     font-size: $font-size-normal;
     letter-spacing: .1px;
     text-transform: uppercase;
     cursor: pointer;
 
     &:focus {
-      border-color: $color-1;
+      border-color: $accent-color;
     }
   }
 }

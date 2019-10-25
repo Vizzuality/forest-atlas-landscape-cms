@@ -9,11 +9,11 @@
     </div>
 <% end %>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @site.id, current_step: step, step_names: @steps_names} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @site, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
 <%= form_for @site, url: wizard_path, html: { class: 'js-form' }, method: :put do |f| %>
-    <div class="l-site-creation -site-settings">
+    <div class="l-site-creation -settings">
       <div class="wrapper">
         <div class="settings c-inputs-container">
           <div class="container js-checkboxes">

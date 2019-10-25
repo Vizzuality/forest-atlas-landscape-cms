@@ -182,11 +182,11 @@
       <% end %>
     </div>
   </div>
-  <% if @flag.size > 0 %>
     <div class="flag-border">
-      <% @flag.each do |flag| %>
-        <div style="background-color: <%= flag %>;"></div>
+      <% if @header_country_colours.size > 0 %>
+        <% @header_country_colours.each do |colour| %>
+          <div style="background-color: <%= colour %>;"></div>
+        <% end %>
       <% end %>
     </div>
-  <% end %>
 </header>

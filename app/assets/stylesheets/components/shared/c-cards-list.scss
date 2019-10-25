@@ -20,8 +20,8 @@
       left: -10000px;
 
       &:checked + .content {
-        border-color: $color-1;
-        background: $color-1;
+        border-color: $accent-color;
+        background: $accent-color;
         color: $color-3;
       }
 
@@ -30,7 +30,7 @@
       }
 
       &:focus:not(:checked) +.content {
-        border-color: $color-1;
+        border-color: $accent-color;
       }
 
       &:focus:checked +.content {
@@ -59,6 +59,7 @@
 
       h3 {
         margin: 0 0 7px;
+        font-family: $heading-font;
         font-size: $font-size-normal;
         text-transform: uppercase;
       }
@@ -86,6 +87,7 @@
         h3 {
           width: 65%;
           margin: 0;
+          font-family: $heading-font;
           text-overflow: ellipsis;
           overflow: hidden;
           word-break: break-all;

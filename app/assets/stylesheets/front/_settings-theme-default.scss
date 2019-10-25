@@ -2,25 +2,25 @@
 // These variables are not set here because they are dynamically added to the stylesheet after the
 // user changes the settings of the site in the admin section. See _template-default.scss to see
 // how the variables are created.
-$template: 'default'; // String: «default», «india»
+$template: $template; // String: «default», «india»
 
-$accent-color: #97bd3d; // Hex code
+$accent-color: $accent-color; // Hex code
 
-$content-width: 1280px; // Pixels or percentage
-$content-font: 'Fira Sans', sans-serif; // Font family name
-$heading-font: 'Fira Sans', sans-serif; // Font family name
-$cover-size: 250px; // Pixels
-$cover-text-alignment: left; // text-align value
+$content-width: $content-width; // Pixels or percentage
+$content-font: $content-font; // Font family name
+$heading-font: $heading-font; // Font family name
+$cover-size: $cover-size; // Pixels
+$cover-text-alignment: $cover-text-alignment; // text-align value
 
-$header-menu-items-separator: false; // Boolean
-$header-background-color: 'dark'; // String: «dark», «grey», «white»
-$header-background-transparency: 'semi'; // String: «solid», «semi», «transparent»
+$header-menu-items-separator: $header-menu-items-separator; // Boolean
+$header-background-color: $header-background-color; // String: «dark», «grey», «white»
+$header-background-transparency: $header-background-transparency; // String: «solid», «semi», «transparent»
 // Not used in the stylesheet:
 // $header-country-colours: $header-country-colours;
 
-$footer-background-color: 'dark'; // String: «dark», «grey», «accent-color»
-$footer-text-color: 'white'; // String: «white», «accent-color»
-$footer-links-color: 'accent-color'; // String: «white», «accent-color»
+$footer-background-color: $footer-background-color; // String: «dark», «grey», «accent-color»
+$footer-text-color: $footer-text-color; // String: «white», «accent-color»
+$footer-links-color: $footer-links-color; // String: «white», «accent-color»
 
 // FONTS
 @font-face {
@@ -113,14 +113,22 @@ $footer-links-color: 'accent-color'; // String: «white», «accent-color»
 }
 
 // FONT SIZES
-$font-size-small:    12px;
-$font-size-normal:   14px;
-$font-size-s-normal: 15px;
-$font-size-x-normal: 19px;
-$font-size-medium:   21px;
-$font-size-big:      35px;
-$font-size-x-big:    40px;
-$font-size-huge:     47px;
+$font-factor: 1;
+@if $content-font == 'Roboto Condensed' {
+  $font-factor: 1.07;
+}
+@if $content-font == 'Acumin Pro Condensed' {
+  $font-factor: 1.14;
+}
+
+$font-size-small:    #{ceil(12px * $font-factor)};
+$font-size-normal:   #{ceil(14px * $font-factor)};
+$font-size-s-normal: #{ceil(15px * $font-factor)};
+$font-size-x-normal: #{ceil(19px * $font-factor)};
+$font-size-medium:   #{ceil(21px * $font-factor)};
+$font-size-big:      #{ceil(35px * $font-factor)};
+$font-size-x-big:    #{ceil(40px * $font-factor)};
+$font-size-huge:     #{ceil(47px * $font-factor)};
 
 // FONT WEIGHTS
 $font-weight-light:  300;
@@ -170,4 +178,4 @@ $mq-navbar: 'screen and (min-width: #{$breakpoint-navbar})';
 $mq-body-width: 'screen and (min-width: #{$content-width})';
 
 // MISC
-$admin: true;
+$admin: false;

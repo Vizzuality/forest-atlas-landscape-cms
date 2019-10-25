@@ -15,12 +15,7 @@
   // Undoing some styles of the wysiwyg editor
   .ql-disabled {
     font-family: inherit;
-
-    @if $theme == 3 {
-      font-size: $font-size-normal;
-    } @else {
-      font-size: inherit;
-    }
+    font-size: inherit;
 
     .ql-editor {
       padding: 0;
@@ -44,12 +39,16 @@
   .-intro {
     max-width: 1080px;
     margin: 0 auto;
+    font-family: $heading-font;
   }
 
   h1 {
     margin: 20px auto 5px;
     font-size: $font-size-medium;
     letter-spacing: 0.2px;
+    color: $color-4;
+    font-weight: $font-weight-bold;
+    line-height: 1.25;
 
     @media #{$mq-mobile} {
       font-size: $font-size-big;
@@ -58,24 +57,6 @@
     @media #{$mq-tablet} {
       font-size: $font-size-x-big;
     }
-
-    @if $theme == 3 {
-      color: $color-4;
-      font-weight: $font-weight-bold;
-      line-height: 1.25;
-    }
-
-    @if $theme == 2 {
-      color: $color-4;
-      font-weight: $font-weight-light;
-    }
-
-    @if $theme == 1 {
-      color: $color-1;
-      font-family: $font-family-2;
-      font-weight: $font-weight-bold;
-      line-height: 1.25;
-    }
   }
 
   h2 {
@@ -83,20 +64,7 @@
     font-size: $font-size-x-normal;
     font-weight: $font-weight-normal;
     line-height: 1.7;
-
-    @if $theme == 3 {
-      color: $color-4;
-    }
-
-    @if $theme == 2 {
-      color: $color-4;
-      letter-spacing: 0.2px;
-    }
-
-    @if $theme == 1 {
-      color: $color-1;
-      letter-spacing: -0.3px;
-    }
+    color: $color-4;
   }
 
   p,
@@ -112,14 +80,10 @@
 
   .-intro {
     font-size: $font-size-x-normal;
-
-    @if $theme == 2 {
-      font-weight: $font-weight-light;
-    }
   }
 
   a {
-    color: $color-1;
+    color: $accent-color;
     text-decoration: none;
     background-color: transparent;
   }
@@ -135,7 +99,7 @@
       line-height: 2;
 
       &::before {
-        font-family: $font-family-1;
+        font-family: $content-font;
       }
     }
   }
@@ -147,6 +111,12 @@
     font-weight: $font-weight-light;
     font-style: italic;
     border-left: none !important;
+    color: $color-4;
+    line-height: 1.5;
+
+    @media #{$mq-mobile} {
+      line-height: 1.25;
+    }
 
     &::before {
       content: "“";
@@ -159,31 +129,6 @@
     @media #{$mq-mobile} {
       margin: 60px auto;
       font-size: $font-size-medium;
-    }
-
-    @if $theme == 3 {
-      color: $color-4;
-      line-height: 1.5;
-
-      @media #{$mq-mobile} {
-        line-height: 1.25;
-      }
-    }
-
-    @if $theme == 2 {
-      color: $color-4;
-      letter-spacing: 0.2px;
-      line-height: 1.1;
-    }
-
-    @if $theme == 1 {
-      color: $color-1;
-      font-family: $font-family-2;
-      line-height: 1.5;
-
-      @media #{$mq-mobile} {
-        line-height: 1.25;
-      }
     }
   }
 
@@ -207,7 +152,7 @@
 
     &.-cover {
       @media #{$mq-laptop} {
-        width: $body-max-width;
+        width: $content-width;
         margin-left: #{-1 * $wrapper-padding};
       }
     }

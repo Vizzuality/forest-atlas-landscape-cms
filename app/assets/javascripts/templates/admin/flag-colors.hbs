@@ -1,19 +1,19 @@
 <input type="hidden" id="{{inputId}}_value" name="{{inputName}}[value]" value="{{colorsValue}}" class="js-colors-input">
-<input type="hidden" id="{{inputId}}_name" name="{{inputName}}[name]" value="flag">
-<input type="hidden" id="{{inputId}}_position" name="{{inputName}}[position]" value="4">
+<input type="hidden" id="{{inputId}}_name" name="{{inputName}}[name]" value="{{colorsName}}">
+<input type="hidden" id="{{inputId}}_position" name="{{inputName}}[position]" value="{{colorsPosition}}">
+
 <div class="c-flag-colors">
   {{#each colors}}
-    <div>
-      {{!-- Make sure you update the event associated with the input if you update this structure --}}
-      <label for="color-{{index}}" tabindex="0">Change flag color {{index}}</label>
-      <input type="color" value="{{color}}" id="color-{{index}}" data-id="{{@index}}">
-      <div class="preview" style="background-color: {{color}};"></div>
-      <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove color {{index}}</button>
-    </div>
+  <div class="color">
+    <input type="text" value="{{this}}" data-id="{{@index}}" aria-label="Change country color {{@index}}" required
+      pattern="#[0-9a-fA-F]{6}">
+    <input type="color" value="{{this}}" data-id="{{@index}}" aria-label="Change country color {{@index}}">
+    <button type="button" class="remove-color js-remove-color" data-id="{{@index}}">Remove color {{index}}</button>
+  </div>
   {{/each}}
   {{#if addButtonVisible}}
-    <button type="button" class="add-color js-add-color">
-      <span>Add color</span>
-    </button>
+  <button type="button" class="add-color js-add-color">
+    Add color
+  </button>
   {{/if}}
 </div>

@@ -18,7 +18,7 @@
 
   &.-secondary {
     position: relative;
-    background-color: rgba($color-1, .1);
+    background-color: rgba($accent-color, .1);
 
     &:after {
       display: block;
@@ -27,7 +27,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      background: $color-1;
+      background: $accent-color;
       content: '';
     }
 
@@ -41,7 +41,7 @@
       z-index: 1;
 
       &[aria-selected="true"] {
-        border-color: $color-1;
+        border-color: $accent-color;
       }
     }
   }
@@ -67,7 +67,7 @@
           left: 0;
           height: 4px;
           width: 100%;
-          background-color: $color-1;
+          background-color: $accent-color;
           content: '';
         }
       }

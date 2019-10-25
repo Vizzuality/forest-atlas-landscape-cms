@@ -1,35 +1,205 @@
+// Background color of the menu
+$background-color: red;
+@if $header-background-color == 'dark' {
+  @if $header-background-transparency == 'transparent' {
+    $background-color: rgba($color-7, .75);
+  } @else {
+    $background-color: $color-7;
+  }
+}
+
+@if $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' {
+    $background-color: rgba($color-18, .75);
+  } @else {
+    $background-color: $color-18;
+  }
+}
+
+@if $header-background-color == 'white' {
+  @if $header-background-transparency == 'transparent' {
+    $background-color: rgba($color-3, .75);
+  } @else {
+    $background-color: $color-3;
+  }
+}
+
+@if $template == 'india' {
+  $background-color: rgba($color-17, 0.75);
+}
+
+// Background color of the active menu item or on hover
+$active-background-color: red;
+@if $header-background-color == 'dark' or $template == 'india' {
+  @if $header-background-transparency == 'transparent' {
+    $active-background-color: rgba($color-3, .3);
+  } @else {
+    $active-background-color: rgba($color-3, .1);
+  }
+}
+
+@if $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' {
+    $active-background-color: rgba($color-4, .3);
+  } @else {
+    $active-background-color: rgba($color-4, .1);
+  }
+}
+
+@if $header-background-color == 'white' {
+  @if $header-background-transparency == 'transparent' {
+    $active-background-color: rgba($accent-color, .3);
+  } @else {
+    $active-background-color: rgba($accent-color, 0.1);
+  }
+}
+
+// Color of the text of the menu items
+$color: red;
+@if $header-background-color == 'white' or $header-background-color == 'grey' {
+  $color: $color-6;
+}
+
+@if $header-background-color == 'dark' or $template == 'india' {
+  $color: $color-3;
+}
+
+// Background color of the flag
+$flag-background-color: red;
+@if $header-background-color == 'dark' {
+  @if $header-background-transparency == 'transparent' {
+    $flag-background-color: rgba($color-7, .75);
+  } @else {
+    $flag-background-color: $color-7;
+  }
+}
+
+@if $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' {
+    $flag-background-color: rgba($color-18, .75);
+  } @else {
+    $flag-background-color: $color-18;
+  }
+}
+
+@if $header-background-color == 'white' {
+  @if $header-background-transparency == 'transparent' {
+    $flag-background-color: rgba($accent-color, .75);
+  } @else {
+    $flag-background-color: $accent-color;
+  }
+}
+
+@if $template == 'india' {
+  $flag-background-color: rgba($color-17, 0.75);
+}
+
+// Color of the menu items separators
+$separator-color: red;
+@if $header-background-color == 'white' or $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' {
+    $separator-color: rgba($color-6, .3);
+  } @else {
+    $separator-color: rgba($color-6, .1);
+  }
+}
+
+@if $header-background-color == 'dark' or $template == 'india' {
+  @if $header-background-transparency == 'transparent' {
+    $separator-color: rgba($color-3, .3);
+  } @else {
+    $separator-color: rgba($color-3, .1);
+  }
+}
+
+// Background color of the sub menu
+$submenu-background-color: red;
+@if $header-background-color == 'dark' {
+  @if $header-background-transparency == 'transparent' or $header-background-transparency == 'semi' {
+    $submenu-background-color: rgba($color-7, .75);
+  } @else {
+    $submenu-background-color: $color-7;
+  }
+}
+
+@if $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' or $header-background-transparency == 'semi' {
+    $submenu-background-color: rgba($color-18, .75);
+  } @else {
+    $submenu-background-color: $color-18;
+  }
+}
+
+@if $header-background-color == 'white' {
+  @if $header-background-transparency == 'transparent' or $header-background-transparency == 'semi' {
+    $submenu-background-color: rgba($accent-color, .75);
+  } @else {
+    $submenu-background-color: $accent-color;
+  }
+}
+
+@if $template == 'india' {
+  $submenu-background-color: rgba($color-17, 0.9);
+}
+
+// Background color of the active sub menu item or on hover
+$active-submenu-background-color: red;
+@if $header-background-color == 'dark' or $header-background-color == 'white' or $template == 'india' {
+  @if $header-background-transparency == 'transparent' {
+    $active-submenu-backgroud-color: rgba($color-3, .3);
+  } @else {
+    $active-submenu-backgroud-color: rgba($color-3, .1);
+  }
+}
+
+@if $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' {
+    $active-submenu-backgroud-color: rgba($color-4, .3);
+  } @else {
+    $active-submenu-backgroud-color: rgba($color-4, .1);
+  }
+}
+
+// Color of the sub menu items separators
+$submenu-separator-color: red;
+@if $header-background-color == 'grey' {
+  @if $header-background-transparency == 'transparent' {
+    $submenu-separator-color: rgba($color-6, .3);
+  } @else {
+    $submenu-separator-color: rgba($color-6, .1);
+  }
+}
+
+@if $header-background-color == 'dark' or $template == 'india' {
+  @if $header-background-color == 'white' or $header-background-transparency == 'transparent' {
+    $submenu-separator-color: rgba($color-3, .3);
+  } @else {
+    $submenu-separator-color: rgba($color-3, .1);
+  }
+}
+
 .c-header {
   position: relative;
-  font-family: $font-family-1; // Needed as the map CSS overrides it
+  font-family: $content-font; // Needed as the map CSS overrides it
   z-index: 12;
+  width: 100%;
 
-  @if $theme == 3 {
+  @if $content-width == 100% {
+    background-color: $background-color;
+  }
+
+  @if $header-background-transparency == 'transparent' {
+    @media #{$mq-navbar} {
+      position: absolute;
+      top: 0;
+    }
+  }
+
+  @if $template == 'india' {
     @media #{$mq-navbar} {
       position: absolute;
       top: 0;
       width: 100vw;
-      background: rgba($color-17, 0.75);
-      color: $color-3;
-    }
-  }
-
-  @if $theme == 2 {
-    color: $color-3;
-  }
-
-  @if $theme == 1 or $theme == 3 {
-    color: $color-1;
-    font-size: $font-size-normal;
-  }
-
-  a {
-    @if $theme == 2 {
-      background-color: transparent;
-      color: $color-2;
-    }
-
-    @if $theme == 1 or $theme == 3 {
-      text-decoration: none;
     }
   }
 
@@ -43,6 +213,7 @@
     // interferes
     padding: 0 $wrapper-mobile-padding;
     overflow: visible;
+    background-color: rgba($background-color, 1);
 
     @media #{$mq-mobile} {
       padding: 0 $wrapper-tablet-padding;
@@ -50,18 +221,6 @@
 
     @media #{$mq-tablet} {
       padding: 0 $wrapper-padding;
-    }
-
-    @if $theme == 3 {
-      background-color: $color-17;
-    }
-
-    @if $theme == 2 {
-      background-color: $color-7;
-    }
-
-    @if $theme == 1 {
-      background-color: $color-1;
     }
 
     @media #{$mq-navbar} {
@@ -111,7 +270,7 @@
         width: 100%;
         height: 3px;
         transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-        background-color: $color-3;
+        background-color: $color;
 
         &:first-of-type {
           top: 0;
@@ -137,24 +296,13 @@
     height: 100vh;
     padding-top: 30px;
     transition: transform 0.3s ease-out;
-    color: $color-3;
+    color: $color;
     box-shadow: 1px 0 1px 0 rgba($color-4, 0.2);
     z-index: 10;
     will-change: transform;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-
-    @if $theme == 3 {
-      background-color: $color-17;
-    }
-
-    @if $theme == 2 {
-      background-color: $color-7;
-    }
-
-    @if $theme == 1 {
-      background-color: $color-1;
-    }
+    background-color: rgba($background-color, 1);
 
     @media #{$mq-tablet} {
       left: auto;
@@ -203,7 +351,15 @@
       + .mobile-menu .hamburger-menu {
         position: fixed;
         top: 25px;
-        right: 30px;
+        right: $wrapper-mobile-padding;
+
+        @media #{$mq-mobile} {
+          right: $wrapper-tablet-padding;
+        }
+
+        @media #{$mq-tablet} {
+          right: $wrapper-padding;
+        }
 
         > div {
           &:first-of-type {
@@ -224,45 +380,32 @@
     }
 
     .c-dropdown-selector {
+      > .active-option:after {
+        border-top-color: $color;
+        border-right-color: $color;
+      }
+
       > .options {
         padding: 0;
         right: auto;
         box-shadow: none;
-
-        @if $theme == 2 {
-          background-color: $color-7;
-        }
-
-        @if $theme == 1 or $theme == 3 {
-          background-color: $color-1;
-        }
+        background-color: rgba($background-color, 1);
+        border: 1px solid $color;
 
         &::before {
           display: none;
         }
 
         > .option {
-          color: $color-2;
+          color: $color;
 
           &:hover {
-            @if $theme == 2 {
-              background-color: $color-7;
-            }
-
-            @if $theme == 1 or $theme == 3 {
-              background-color: $color-1;
-            }
+            background-color: rgba($active-background-color, 1);
           }
 
           &.-active {
-            @if $theme == 2 {
-              background-color: $color-7;
-            }
+            background-color: rgba($active-background-color, 1);
 
-            @if $theme == 1 or $theme == 3 {
-              background-color: $color-1;
-            }
-            opacity: 0.5;
             &::before {
               display: none;
             }
@@ -276,10 +419,10 @@
       height: 40px;
       margin-top: 5px;
       border-radius: 100%;
-      background-color: $color-1;
+      background-color: rgba($submenu-background-color, 1);
       background-position: center center;
       background-size: cover;
-      color: $color-4;
+      color: $color;
       line-height: 40px;
       text-align: center;
       text-transform: uppercase;
@@ -290,19 +433,16 @@
   > .desktop-menu {
     display: none;
     height: 50px;
+    background-color: $background-color;
 
-    @if $theme == 3 {
-      max-width: $body-max-width;
+    @if $content-width == 100% or $template == 'india' {
+      max-width: 1280px;
       margin: 0 auto;
-      background: transparent;
+      background-color: transparent; // The background needs to be set at the top level .c-header
     }
 
-    @if $theme == 2 {
-      background-color: $color-7;
-    }
-
-    @if $theme == 1 {
-      background-color: $color-3;
+    @if $header-background-transparency == 'solid' {
+      margin-bottom: 35px;
     }
 
     @media #{$mq-navbar} {
@@ -353,6 +493,7 @@
       justify-content: flex-end;
 
       > ul {
+        display: flex;
         height: 100%;
         min-width: 45px;
         margin: 0;
@@ -360,49 +501,21 @@
         list-style: none;
 
         > li {
-          display: inline-block;
           position: relative;
           height: 100%;
           padding: 0 15px;
           line-height: 50px;
           text-transform: uppercase;
           white-space: nowrap;
+          color: $color;
 
           > a {
             padding: 0;
-
-            @if $theme == 3 {
-              color: $color-3;
-            }
-
-            // Client asked for this color:
-            // https://www.pivotaltracker.com/story/show/159304131
-            @if $theme == 1 {
-              color: $color-6;
-            }
+            color: currentColor;
           }
 
           &.-active {
-            @if $theme == 2 or $theme == 3 {
-              background-color: rgba($color-3, 0.1);
-            }
-
-            @if $theme == 1 {
-              background-color: rgba($color-1, 0.1);
-            }
-          }
-
-          // If the menu has just one element (such as the lang selector), we don't want the border
-          &:last-of-type {
-            &:not(:first-of-type) {
-              @if $theme == 2 {
-                border-right: 1px solid rgba($color-3, 0.1);
-              }
-
-              @if $theme == 1 or $theme == 3 {
-                border-right: 1px solid rgba($color-1, 0.1);
-              }
-            }
+            background-color: $active-background-color;
           }
 
           &.dropdown-item {
@@ -418,11 +531,9 @@
             ul {
               position: absolute;
               right: 0;
-              top: 90%;
-              margin: 5px 0 0;
+              top: 100%;
               width: calc(100% + 30px);
               transition: opacity 0.2s ease-out, visibility 0s 0.2s;
-              background-color: $color-3;
               list-style: none;
               box-shadow: 0 2px 3px 0 rgba($color-7, 0.3);
               cursor: auto;
@@ -430,39 +541,18 @@
               visibility: hidden;
               display: none; // Also hide paint calculations
               will-change: transform, opacity;
-
-              @if $theme == 3 {
-                background-color: rgba($color-17, 0.75);
-              }
+              background-color: $background-color;
 
               li {
                 display: block;
                 text-align: center;
                 line-height: 1.3;
                 text-transform: none;
-
-                @if $theme == 3 {
-                  border-bottom: 1px solid rgba($color-9, 0.2);
-                } @else {
-                  border-bottom: 1px solid $color-9;
-                }
-
-                @if $theme == 2 {
-                  color: $color-6;
-                }
+                color: $color;
+                border-bottom: 1px solid $separator-color;
 
                 &:hover {
-                  @if $theme == 3 {
-                    background-color: rgba($color-17, 0.3);
-                  }
-
-                  @if $theme == 2 {
-                    background-color: $color-8;
-                  }
-
-                  @if $theme == 1 {
-                    background-color: rgba($color-1, 0.1);
-                  }
+                  background-color: $active-background-color;
                 }
 
                 a {
@@ -471,14 +561,7 @@
                   height: 100%;
                   padding: 15px 5px;
                   white-space: initial;
-
-                  @if $theme == 3 {
-                    color: $color-3;
-                  }
-
-                  @if $theme == 2 or $theme == 1 {
-                    color: $color-6;
-                  }
+                  color: currentColor;
                 }
 
                 &:last-of-type {
@@ -495,15 +578,16 @@
                 display: block;
               }
             }
+          }
+        }
 
-            @if $theme == 2 {
-              &.-active {
-                > ul {
-                  li:first-of-type {
-                    background-color: rgba($color-3, 0.1);
-                  }
-                }
-              }
+        // Menu item separator
+        @if $header-menu-items-separator == true {
+          &:first-of-type > li {
+            border-right: 1px solid $separator-color;
+
+            &:first-of-type {
+              border-left: 1px solid $separator-color;
             }
           }
         }
@@ -524,7 +608,7 @@
         height: 40px;
         margin-top: 5px;
         border-radius: 100%;
-        background-color: $color-1;
+        background-color: $accent-color;
         background-position: center center;
         background-size: cover;
         color: $color-4;
@@ -565,12 +649,12 @@
           text-indent: -10000px;
           cursor: pointer;
 
-          @if $theme == 3 or $theme == 2 {
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0 dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5v ZGQiPjxwYXRoIGQ9Ik02LjUgMTNhNi41IDYuNSAwIDEgMCAwLTEzIDYuNSA2LjUgMCAwIDAgMCAx M3ptMC0yYTQuNSA0LjUgMCAxIDAgMC05IDQuNSA0LjUgMCAwIDAgMCA5eiIgZmlsbD0iI0ZGRiIv PjxwYXRoIGQ9Ik0xMC41IDEwLjVMMTQgMTQiIHN0cm9rZT0iI0ZGRiIgc3Ryb2tlLXdpZHRoPSIy Ii8+PC9nPjwvc3ZnPg==') no-repeat;
+          @if $header-background-color == 'white' or $header-background-color == 'grey' {
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0 dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5v ZGQiPjxwYXRoIGQ9Ik02LjUgMTNhNi41IDYuNSAwIDEgMCAwLTEzIDYuNSA2LjUgMCAwIDAgMCAx M3ptMC0yYTQuNSA0LjUgMCAxIDAgMC05IDQuNSA0LjUgMCAwIDAgMCA5eiIgZmlsbD0iIzMzMyIv PjxwYXRoIGQ9Ik0xMC41IDEwLjVMMTQgMTQiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIy Ii8+PC9nPjwvc3ZnPg==') no-repeat;
           }
 
-          @if $theme == 1 {
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0 dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5v ZGQiPjxwYXRoIGQ9Ik02LjUgMTNhNi41IDYuNSAwIDEgMCAwLTEzIDYuNSA2LjUgMCAwIDAgMCAx M3ptMC0yYTQuNSA0LjUgMCAxIDAgMC05IDQuNSA0LjUgMCAwIDAgMCA5eiIgZmlsbD0iIzMzMyIv PjxwYXRoIGQ9Ik0xMC41IDEwLjVMMTQgMTQiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIy Ii8+PC9nPjwvc3ZnPg==') no-repeat;
+          @if $header-background-color == 'dark' or $template == 'india' {
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgeG1sbnM9Imh0 dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5v ZGQiPjxwYXRoIGQ9Ik02LjUgMTNhNi41IDYuNSAwIDEgMCAwLTEzIDYuNSA2LjUgMCAwIDAgMCAx M3ptMC0yYTQuNSA0LjUgMCAxIDAgMC05IDQuNSA0LjUgMCAwIDAgMCA5eiIgZmlsbD0iI0ZGRiIv PjxwYXRoIGQ9Ik0xMC41IDEwLjVMMTQgMTQiIHN0cm9rZT0iI0ZGRiIgc3Ryb2tlLXdpZHRoPSIy Ii8+PC9nPjwvc3ZnPg==') no-repeat;
           }
         }
       }
@@ -580,9 +664,14 @@
       display: none;
       flex-basis: 100%;
       height: 0; // Trick so the content will be on top of what's following
-      color: $color-3;
       font-size: $font-size-small;
       z-index: 1; // To be on top of the map's tiles
+
+      @if $header-background-color == 'grey' {
+        color: $color-4;
+      } @else {
+        color: $color-3;
+      }
 
       // Background of the sub-menu (breadcrumbs) menu
       &::after {
@@ -591,23 +680,12 @@
         top: 55px;
         left: 0;
         width: 100%;
+        height: 30px;
         content: "";
+        background-color: $submenu-background-color;
 
-        @if $theme == 3 {
+        @if $template == 'india' {
           top: 50px;
-          height: 30px;
-          background-color: rgba($color-17, 0.9);
-        }
-
-        @if $theme == 2 {
-          height: 25px;
-          background-color: rgba($color-7, 0.7);
-        }
-
-        @if $theme == 1 {
-          top: 50px;
-          height: 30px;
-          background-color: rgba($color-1, 0.7);
         }
       }
 
@@ -616,24 +694,20 @@
       }
 
       a {
-        color: $color-3;
+        color: currentColor;
       }
 
       .content {
         display: flex;
         position: relative;
-        top: 5px;
         align-items: center;
         justify-content: space-between;
         height: 100%;
         z-index: 1;
+        line-height: 25px;
 
-        @if $theme == 2 {
-          line-height: 25px;
-        }
-
-        @if $theme == 1 or $theme == 3 {
-          line-height: 17px;
+        @if $template == 'default' {
+          top: 5px;
         }
 
         > .breadcrumbs {
@@ -643,14 +717,11 @@
             height: 100%;
             text-transform: uppercase;
 
-            @if $theme == 3 {
-              font-weight: $font-weight-normal;
-            } @else {
-              font-weight: $font-weight-bold;
-            }
-
-            @if $theme == 1 {
+            @if $template == 'default' {
               padding-top: 2px;
+              font-weight: $font-weight-bold;
+            } @else {
+              font-weight: $font-weight-normal;
             }
 
             &:not(:last-of-type):after {
@@ -670,25 +741,47 @@
           li {
             height: 100%;
             padding: 0 14px;
-            border-left: 1px solid rgba($color-3, 0.2);
+            padding-top: 5px;
+            border-left: 1px solid $submenu-separator-color;
             letter-spacing: 0.1px;
-
-            @if $theme == 1 or $theme == 3 {
-              padding-top: 5px;
-            }
 
             &:last-of-type {
               padding-right: 0;
             }
 
             &.-active {
-              @if $theme == 2 or $theme == 3 {
-                background-color: rgba($color-3, 0.1);
-              }
+              background-color: $active-submenu-background-color;
+            }
+          }
+        }
+      }
+    }
 
-              @if $theme == 1 {
-                background-color: rgba($color-1, 0.1);
-              }
+    .c-dropdown-selector {
+      color: $color;
+
+      .active-option:after {
+        border-top-color: $color;
+        border-right-color: $color;
+      }
+
+      .options {
+        background-color: $background-color;
+
+        &:before {
+          content: none;
+        }
+
+        .option {
+          color: $color;
+
+          &.-active {
+            background-color: $active-background-color;
+            color: $color;
+
+            &:before {
+              border-top-color: $color;
+              border-right-color: $color;
             }
           }
         }
@@ -698,19 +791,19 @@
 
   > .flag-border {
     display: flex;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
     width: 100%;
     height: 5px;
     z-index: -1;
+    background-color: $flag-background-color;
 
-    @if $theme == 2 {
-      background-color: $color-7;
+    @if $header-background-transparency != 'semi' {
+      position: absolute;
+      bottom: -5px;
+      left: 0;
     }
 
-    @if $theme == 1 or $theme == 3 {
-      background-color: $color-1;
+    @if $template == 'india' {
+      display: none;
     }
 
     @media print {
@@ -720,9 +813,6 @@
     > div {
       flex-grow: 1;
 
-      @if $theme == 1 or $theme == 3 {
-        display: none;
-      }
     }
   }
 }
