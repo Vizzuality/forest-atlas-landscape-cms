@@ -86,7 +86,7 @@ class Admin::SiteStepsController < AdminController
         gon.global.color_array = color_array&.value&.split(' ')&.map { |x| {color: x} }
       end
     end
-    
+
     render_wizard
   end
 
@@ -469,7 +469,8 @@ class Admin::SiteStepsController < AdminController
   end
 
   def ensure_user_owns_site
-    return if user_site_admin?(@site_id)
+    site_id = Integer(@site_id) rescue nil
+    return if user_site_admin?(site_id)
     flash[:alert] = 'You do not have permissions to view this page'
     redirect_to :no_permissions
   end
