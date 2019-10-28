@@ -53,7 +53,7 @@
       quickLinksParams.activeLink = 'management';
     } else {
       const match = location.pathname.match(/management\/sites\/(([A-z]|-)+)/);
-      if (match.length > 1) {
+      if (match && match.length > 1) {
         quickLinksParams.activeLink = match[1];
       } else {
         quickLinksParams.activeLink = 'management';
