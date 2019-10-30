@@ -8,6 +8,6 @@
 #
 
 class PageWidget < ActiveRecord::Base
-  belongs_to :page
+  belongs_to :page, dependent: :destroy
   belongs_to :widget
 end
