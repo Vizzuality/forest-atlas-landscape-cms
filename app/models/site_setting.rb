@@ -238,6 +238,10 @@ class SiteSetting < ApplicationRecord
       site.site_settings.find_or_initialize_by(name: 'footer_text_color', value: '\'white\'', position: 30)
       site.site_settings.find_or_initialize_by(name: 'footer-links-color', value: '\'white\'', position: 31)
     end
+
+    unless site.site_settings.exists?(name: 'header-country-colours')
+      site.site_settings.find_or_initialize_by(name: 'header-country-colours', value: '#000000', position: 28)
+    end
   end
 
   private

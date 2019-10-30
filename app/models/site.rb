@@ -43,8 +43,8 @@ class Site < ApplicationRecord
   after_create :create_context
   after_create :handle_non_compliant_slugs
   after_save :update_routes
-  after_save :apply_settings
   after_create :create_template_content
+  after_commit :apply_settings
 
   cattr_accessor :form_steps do
     { pages: %w[name users contexts settings template style content],
@@ -274,24 +274,26 @@ class Site < ApplicationRecord
     header_separators = self.site_settings.find_by(name: 'header_separators')
     header_background = self.site_settings.find_by(name: 'header_background')
     header_transparency = self.site_settings.find_by(name: 'header_transparency')
+    header_country_colours = self.site_settings.find_by(name: 'header-country-colours')
     footer_background = self.site_settings.find_by(name: 'footer_background')
     footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
     footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
 
     if color
       {
-        'accent-color': color.value.html_safe,
-        'content-width': content_width.value.html_safe,
-        'content-font': content_font.value.html_safe,
-        'heading-font': heading_font.value.html_safe,
-        'cover-size': cover_size.value.html_safe,
-        'cover-text-alignment': cover_text_alignment.value.html_safe,
-        'header-menu-items-separator': header_separators.value.html_safe,
-        'header-background-color': header_background.value.html_safe,
-        'header-background-transparency': header_transparency.value.html_safe,
-        'footer-background-color': footer_background.value.html_safe,
-        'footer-text-color': footer_text_color.value.html_safe,
-        'footer-links-color': footer_links_color.value.html_safe
+        'accent-color': color&.value&.html_safe,
+        'content-width': content_width&.value&.html_safe,
+        'content-font': content_font&.value&.html_safe,
+        'heading-font': heading_font&.value&.html_safe,
+        'cover-size': cover_size&.value&.html_safe,
+        'cover-text-alignment': cover_text_alignment&.value&.html_safe,
+        'header-menu-items-separator': header_separators&.value&.html_safe,
+        'header-background-color': header_background&.value&.html_safe,
+        'header-background-transparency': header_transparency&.value&.html_safe,
+        'header-country-colours': header_country_colours&.value&.html_safe,
+        'footer-background-color': footer_background&.value&.html_safe,
+        'footer-text-color': footer_text_color&.value&.html_safe,
+        'footer-links-color': footer_links_color&.value&.html_safe
       }
     else # Fallback color
       {
@@ -304,6 +306,7 @@ class Site < ApplicationRecord
         'header-menu-items-separator': 'false',
         'header-background-color': '\'dark\'',
         'header-background-transparency': '\'semi\'',
+        'header-country-colours': '#000000',
         'footer-background-color': '\'dark\'',
         'footer-text-color': '\'white\'',
         'footer-links-color': '\'accent-color\''
