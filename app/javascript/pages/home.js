@@ -12,7 +12,7 @@ const Home = ({ site }) => (
       <div className="vizz-wysiwyg c-content">
         <Wysiwyg
           readOnly
-          items={JSON.parse(site.page.content) || []}
+          items={site.page.content ? JSON.parse(site.page.content) : []}
         />
       </div>
     )}
