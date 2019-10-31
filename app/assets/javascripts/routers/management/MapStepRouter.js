@@ -2,7 +2,6 @@
   'use strict';
 
   App.Router.ManagementMapStep = Backbone.Router.extend({
-
     routes: {
       '(/)': 'index'
     },
@@ -15,6 +14,8 @@
     index: function () {
       // We instantiate summernote for some textareas
       this.initTextAreas();
+
+      this.initColorPicker();
 
       // The following code is just for the page creation
       if (this.pageId !== null && this.pageId !== undefined) {
@@ -45,6 +46,12 @@
           ['font', ['strikethrough', 'superscript', 'subscript']],
           ['para', ['ul', 'ol', 'paragraph']],
         ]
+      });
+    },
+
+    initColorPicker: function () {
+      new App.View.ColorSelectorView({
+        el: '.js-color-selector'
       });
     },
 
@@ -86,9 +93,6 @@
           }
         }
       });
-
-      // this.initTextAreas();
     }
-
   });
 })(this.App));
