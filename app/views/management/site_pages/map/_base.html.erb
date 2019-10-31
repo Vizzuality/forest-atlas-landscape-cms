@@ -38,6 +38,10 @@
         type: :check_box,
         description: "Check this if you would like to allow users to subscribe to receive alerts (i.e: fire or forest loss alerts) on a specific area of interest."
       },
+      'useWebmapBasemap': {
+        type: :check_box,
+        description: "Set to true if your ArcGIS Online webmap includes a custom basemap."
+      },
       'sharinghost': {
         type: :text_field,
         description: "Url for the sharing host where your webmap is hosted, this will typically be ArcGIS Online (<a href=\"https://www.arcgis.com\" target=\"_blank\” rel=\"noopener noreferrer\">https://www.arcgis.com</a>). If you are using ArcGIS Portal to host your webmap enter the url for your ArcGIS Portal."
@@ -49,6 +53,10 @@
       'iso': {
         type: :text_field,
         description: "Three letter iso country code for your country of focus, a mask will be applied over all countries except for your country of focus. If you do not wish to apply a mask you may choose to leave this blank."
+      },
+      'customColorTheme': {
+        type: :color,
+        description: "Select a custom color theme for your map."
       },
   } %>
   <% fields.each do |key, value| %>
@@ -62,6 +70,17 @@
               <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
             <% end %>
           </label>
+        </div>
+      <% elsif value[:type].to_s == 'color' %>
+        <label for="map-<%= key %>">
+          <%= key.capitalize %>
+          <% if !value[:description].blank? %>
+            <button type="button" class="info-button" data-tippy="<%= value[:description] %>" data-tippy-interactive="true">Field information</button>
+          <% end %>
+        </label>
+        <div class="c-color-selector js-color-selector">
+          <%= eval("settings.text_field :#{key}, id: 'map-#{key}', pattern: '#[0-9a-fA-F]{6}'") %>
+          <%= eval("settings.color_field :#{key}, name: '#{key}-color-picker'") %>
         </div>
       <% else %>
         <label for="map-<%= key %>">
