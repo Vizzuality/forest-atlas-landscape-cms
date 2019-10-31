@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :tag do
-    association :page
+    association :site_page
 
     sequence(:value) { |n| "tag-#{n}"}
   end
