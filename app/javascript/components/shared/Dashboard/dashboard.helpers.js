@@ -18,7 +18,7 @@ const isEmptyMetadata = (metadata) => {
   ];
 
   return keys.every((key) => {
-    const value = get(metadata, key);
+    const value = get(metadata.attributes, key);
     return value === '' || value === undefined || value === null;
   });
 };
