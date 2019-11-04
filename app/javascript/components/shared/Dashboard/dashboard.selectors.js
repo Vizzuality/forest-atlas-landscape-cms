@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+import { isEmptyMetadata } from './dashboard.helpers';
+
 const getData = state => state.dashboard.data.data;
 export const getDataset = state => state.dashboard.dataset.data;
 const getFieldsSelector = state => state.dashboard.fields.data;
@@ -55,7 +57,8 @@ export const getDatasetMetadata = createSelector(
       const defaultLangMetadata = FAMetadata.find(m => m.attributes.language === defaultLanguage);
       const randomMetadata = FAMetadata[0];
 
-      return selectedLangMetadata || defaultLangMetadata || randomMetadata;
+      return [selectedLangMetadata, defaultLangMetadata]
+        .find(metadata => !isEmptyMetadata(metadata)) || randomMetadata;
     }
 
     return null;
