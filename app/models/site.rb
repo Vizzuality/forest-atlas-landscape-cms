@@ -290,7 +290,7 @@ class Site < ApplicationRecord
         'header-menu-items-separator': header_separators&.value&.html_safe,
         'header-background-color': header_background&.value&.html_safe,
         'header-background-transparency': header_transparency&.value&.html_safe,
-        'header-country-colours': header_country_colours&.value&.html_safe,
+        'header-country-colours': (header_country_colours&.value.presence || '\'\'')&.html_safe,
         'footer-background-color': footer_background&.value&.html_safe,
         'footer-text-color': footer_text_color&.value&.html_safe,
         'footer-links-color': footer_links_color&.value&.html_safe
