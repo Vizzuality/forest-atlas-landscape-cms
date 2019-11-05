@@ -108,13 +108,13 @@ class SitePage < Page
       steps = { pages: %w[position title type link],
                 names: %w[Position Details Type Link] }
     when ContentType::STATIC_CONTENT
-      steps = { pages: %w[title type open_content open_content_preview],
+      steps = { pages: %w[title type open_content_v2 open_content_v2_preview],
                 names: %w[Details Type Content Preview] }
     when ContentType::MAP
       steps = { pages: %w[position title type map],
                 names: %w[Position Details Type Map] }
     when ContentType::HOMEPAGE
-      steps = { pages: %w[title open_content open_content_preview],
+      steps = { pages: %w[title open_content_v2 open_content_v2_preview],
                 names: ['Title', 'Open Content', 'Open Content Preview'] }
     when ContentType::TAG_SEARCHING
       steps = { pages: %w[position title type tag_searching],
