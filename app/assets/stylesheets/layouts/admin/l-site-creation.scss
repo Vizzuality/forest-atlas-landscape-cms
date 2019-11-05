@@ -276,6 +276,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
+      max-width: 570px;
+      margin: 0 auto;
 
       div {
         position: relative;
@@ -292,7 +294,7 @@
           position: absolute;
           left: 0;
           width: 100%;
-          height: 170px;
+          height: 200px;
           top: 0;
           text-indent: -10000px;
           cursor: pointer;
@@ -320,7 +322,7 @@
           align-items: center;
           justify-content: center;
           width: 100%;
-          height: 100px;
+          height: 130px;
           border: 1px dashed $accent-color;
 
           &.-high {
@@ -342,7 +344,7 @@
           align-items: center;
           justify-content: center;
           width: 100%;
-          height: 100px;
+          height: 130px;
           border: 1px solid $color-13;
           background-color: $color-2;
           background-position: center center;
@@ -379,7 +381,6 @@
         }
 
         .restrictions {
-          flex-basis: 50%;
           margin-top: 10px;
           font-size: $font-size-small;
 
@@ -403,17 +404,12 @@
       }
 
       > .logo {
-        flex-basis: calc(25% - 15px);
-        margin-right: 20px;
+        flex-basis: calc(50% - 15px);
+        margin-right: 30px;
       }
 
       > .icon {
-        flex-basis: calc(25% - 15px);
-        margin-right: 20px;
-      }
-
-      > .flag-colors {
-        flex-basis: calc(50% - 10px);
+        flex-basis: calc(50% - 15px);
       }
 
       > hr {
@@ -422,8 +418,8 @@
       }
 
       .homepage-cover-container {
+        margin-top: 50px;
         flex-basis: 100%;
-        margin-bottom: 10px;
 
         > .homepage-cover {
           display: flex;
@@ -442,18 +438,14 @@
           }
 
           > div {
-            flex-basis: calc(50% - 10px);
-            margin-right: 20px;
+            flex-basis: 100%;
             margin-bottom: 20px;
-
-            &:nth-of-type(2n) {
-              margin-right: 0;
-            }
           }
         }
       }
 
       .content-cover-container {
+        margin-top: 50px;
         flex-basis: 100%;
         display: flex;
         justify-content: flex-start;
@@ -461,7 +453,7 @@
         flex-wrap: wrap;
 
         > .content-cover {
-          flex-basis: calc(50% - 10px);
+          flex-basis: 100%;
         }
       }
 
