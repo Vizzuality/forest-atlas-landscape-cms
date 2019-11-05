@@ -87,7 +87,7 @@
       <fieldset class="c-inputs-container">
         <legend><span>Header</span></legend>
         <%= f.fields_for :site_settings, \
-          (f.object.site_settings.collect.select { |ss| %w[header_separators header_background header_transparency header-country-colours].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
+          (f.object.site_settings.collect.select { |ss| %w[header_separators header_background header_transparency header-country-colours header_login_enabled].include?(ss.name) }.sort_by { |ss| ss.position }) do |settings_form| %>
           <% setting = settings_form.object %>
           <% case setting.name when 'header_separators' %>
             <div class="container">
@@ -114,6 +114,15 @@
 
               <%= settings_form.label 'Background transparency', for: 'header_transparency' %>
               <%= settings_form.select :value, {'Solid color' => '\'solid\'', 'Transparent sub menu' => '\'semi\'', 'Fully transparent' => '\'transparent\''}, {}, id: 'header_transparency' %>
+            </div>
+
+          <% when 'header_login_enabled' %>
+            <div class="container">
+              <%= settings_form.hidden_field :position, value: setting.position %>
+              <%= settings_form.hidden_field :name, value: 'header_login_enabled' %>
+
+              <%= settings_form.label 'Login enabled', for: 'header_login_enabled' %>
+              <%= settings_form.check_box :value, { id: 'header_login_enabled' }, 'true', 'false' %>
             </div>
 
           <% when 'header-country-colours' %>
