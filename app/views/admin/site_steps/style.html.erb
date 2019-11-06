@@ -121,8 +121,8 @@
               <%= settings_form.hidden_field :position, value: setting.position %>
               <%= settings_form.hidden_field :name, value: 'header_login_enabled' %>
 
-              <%= settings_form.label 'Login enabled', for: 'header_login_enabled' %>
-              <%= settings_form.check_box :value, { id: 'header_login_enabled' }, 'true', 'false' %>
+              <%= settings_form.label 'Login', for: 'header_login_enabled' %>
+              <%= settings_form.select :value, {'Display login' => true, 'Hide login' => false}, {}, id: 'header_login_enabled' %>
             </div>
 
           <% when 'header-country-colours' %>
