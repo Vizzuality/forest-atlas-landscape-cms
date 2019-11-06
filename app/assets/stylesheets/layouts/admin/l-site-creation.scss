@@ -381,6 +381,7 @@
         }
 
         .restrictions {
+          flex-grow: 1;
           margin-top: 10px;
           font-size: $font-size-small;
 
@@ -461,7 +462,7 @@
       .cover-attribution {
         display: flex;
         flex-direction: column;
-        margin: 10px;
+        margin-top: 10px;
         flex-basis: 50%;
 
         input {
