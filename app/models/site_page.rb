@@ -176,6 +176,11 @@ class SitePage < Page
     attrs
   end
 
+  def header_login_enabled?
+    flag = site.site_settings.try(:header_login_enabled, site_id).try(:value)
+    !flag || flag == 'true'
+  end
+
   private
   def construct_url
     if self.content['url']

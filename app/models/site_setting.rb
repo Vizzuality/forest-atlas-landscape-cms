@@ -244,7 +244,7 @@ class SiteSetting < ApplicationRecord
     end
 
     unless site.site_settings.exists?(name: 'header_login_enabled')
-      site.site_settings.find_or_initialize_by(name: 'header_login_enabled', value: 'false', position: 32)
+      site.site_settings.find_or_initialize_by(name: 'header_login_enabled', value: 'true', position: 32)
     end
 
     unless site.site_settings.exists?(name: 'header-country-colours')
