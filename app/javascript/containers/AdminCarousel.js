@@ -186,7 +186,7 @@ class AdminCarousel extends React.Component {
       <div className="homepage-cover-container">
         <div className="homepage-cover">
           <h3>Homepage cover image</h3>
-          <p>You can select multiple images to make an carusel</p>
+          <p>If you'd like, you can select multiple images to create a carousel.</p>
           {main_images.map((image, i) => this.renderInputs(image, i))}
         </div>
       </div>
