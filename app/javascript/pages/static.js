@@ -12,7 +12,7 @@ const StaticPage = ({ site, relatedPages }) => (
     <div className="vizz-wysiwyg">
       <Wysiwyg
         readOnly
-        items={JSON.parse(site.page.content) || []}
+        items={site.page.content ? JSON.parse(site.page.content) : []}
       />
     </div>
 

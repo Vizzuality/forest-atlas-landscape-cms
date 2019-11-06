@@ -8,10 +8,11 @@ import Wysiwyg from 'components/shared/Wysiwyg';
 class OpenContent extends React.Component {
   render() {
     const { admin } = this.props;
+
     return (
       <div className="vizz-wysiwyg">
         <Wysiwyg
-          items={JSON.parse(admin.page.content) || []}
+          items={admin.page.content ? JSON.parse(admin.page.content) : []}
           widgets={admin.widgets}
           onChange={(d) => {
             const el = document.getElementById('site_page_content');
