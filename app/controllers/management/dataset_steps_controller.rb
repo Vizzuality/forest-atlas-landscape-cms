@@ -202,13 +202,13 @@ class Management::DatasetStepsController < ManagementController
     end
 
     # Update the dataset with the attributes saved on the session
-    @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
+    @dataset.set_attributes session[:dataset_creation][@dataset_id].symbolize_keys if session[:dataset_creation][@dataset_id]
 
     @dataset.application = (ENV['API_APPLICATIONS'] || 'forest-atlas') unless @dataset.application
 
     process_metadata(ds_params)
 
-    @dataset.assign_attributes ds_params.except(:context_ids)
+    @dataset.assign_attributes ds_params.except(:context_ids, :metadata)
     @dataset.legend = {} unless @dataset.legend
     @dataset.metadata = {} unless @dataset.metadata
   end
@@ -289,7 +289,7 @@ class Management::DatasetStepsController < ManagementController
       formatted_metadata[metadata['attributes']['language']]['id'] =
         metadata['id']
     end
-    @metadata = formatted_metadata
+    @metadata = formatted_metadata.merge(session[:dataset_creation][@dataset_id]["metadata"])
   end
 
   def get_metadata_columns
