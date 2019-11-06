@@ -31,6 +31,7 @@ class Admin::SiteStepsController < AdminController
 
   # This action cleans the session
   def edit
+
     reset_session_key(:site, @site_id, {})
     redirect_to admin_site_site_step_path(site_slug: params[:site_slug], id: :name)
   end

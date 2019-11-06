@@ -32,7 +32,7 @@ class SiteSetting < ApplicationRecord
     pre_footer analytics_key keywords contact_email_address
     hosting_organization transifex_api_key content_width content_font
     heading_font cover_size cover_text_alignment header_separators
-    header_background header_transparency header-country-colours
+    header_background header_transparency header_login_enabled header-country-colours
     footer_background footer_text_color footer-links-color
   ].freeze
   MAX_COLORS = 5
@@ -116,6 +116,10 @@ class SiteSetting < ApplicationRecord
 
   def self.header_transparency(site_id)
     SiteSetting.find_by(name: 'header_transparency', site_id: site_id)
+  end
+
+  def self.header_login_enabled(site_id)
+    SiteSetting.find_by(name: 'header_login_enabled', site_id: site_id)
   end
 
   def self.footer_background(site_id)
@@ -237,6 +241,10 @@ class SiteSetting < ApplicationRecord
       site.site_settings.find_or_initialize_by(name: 'footer_background', value: '\'accent-color\'', position: 29)
       site.site_settings.find_or_initialize_by(name: 'footer_text_color', value: '\'white\'', position: 30)
       site.site_settings.find_or_initialize_by(name: 'footer-links-color', value: '\'white\'', position: 31)
+    end
+
+    unless site.site_settings.exists?(name: 'header_login_enabled')
+      site.site_settings.find_or_initialize_by(name: 'header_login_enabled', value: 'true', position: 32)
     end
 
     unless site.site_settings.exists?(name: 'header-country-colours')

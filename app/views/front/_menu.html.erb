@@ -153,7 +153,7 @@
         <ul>
           <li class="notranslate js-language-selector"></li>
         </ul>
-        <% if @site_page.site_template.name != 'INDIA' %>
+        <% if @site_page.site_template.name != 'INDIA' && @site_page.header_login_enabled? %>
           <%= render 'front/user'%>
         <% end %>
       </div>
