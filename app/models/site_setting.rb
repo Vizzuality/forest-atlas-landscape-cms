@@ -228,6 +228,7 @@ class SiteSetting < ApplicationRecord
       site.site_settings.find_or_initialize_by(name: 'color') do |c|
         c.value = '#97bd3d'
         c.position = 1
+        c.description = 'Patata'
       end
       site.site_settings.find_or_initialize_by(name: 'content_width', value: '1280px', position: 20)
       site.site_settings.find_or_initialize_by(name: 'content_font', value: '\'Merriweather Sans\'', position: 21)
@@ -250,6 +251,12 @@ class SiteSetting < ApplicationRecord
     unless site.site_settings.exists?(name: 'header-country-colours')
       site.site_settings.find_or_initialize_by(name: 'header-country-colours', value: '#000000', position: 28)
     end
+  end
+
+  def self.field_descriptions
+    {
+      'color': 'Select the color to use for links and other visual elements in your site. Make sure you pick a color which contrasts with the white site background.'
+    }
   end
 
   private
