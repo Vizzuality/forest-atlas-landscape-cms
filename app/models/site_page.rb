@@ -177,7 +177,7 @@ class SitePage < Page
   end
 
   def header_login_enabled?
-    flag = site.site_settings.try(:header_login_enabled, site_id).try(:value)
+    flag = SiteSetting.header_login_enabled(site_id)&.value
     !flag || flag == 'true'
   end
 
