@@ -20,4 +20,20 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  admin:
+    site_steps:
+      style:
+        'color': 'Select the color to use for links and other visual elements in your site. Make sure you pick a color which contrasts with the white site background.'
+        'content_width': 'Select the maximum width for your site («Narrow (960px)», «Standard (1280px)», or «Fullscreen (100%)»).'
+        'content_font': 'Select the font to use for your site text.'
+        'heading_font': 'Select the font to use for all titles and site headings.'
+        'cover_size': 'Select the height for your cover photo in open content pages («Small (130px)», «Standard (170px)» or «Big (250px)».'
+        'cover_text_alignment': 'Select the positioning and alignment of the text inside your site cover photo. Available options are «Left» or «Center».'
+        'header_login_enabled': 'Enable login to allow users to subscribe to areas and receive deforestation and fire alerts from Global Forest Watch.'
+        'header-country-colours': 'Add a border at the bottom of your header with the flag colors for your site. You may select up to 5 colors.'
+        'header_separators': 'Select if you would like to display a vertical separator between the items in your header.'
+        'header_background': 'Select the background color for your site header and sub menu («Dark», «Light grey», or «White»).'
+        'header_transparency': 'Specify if your site header should be transparent. Select «solid color» for a non-transparent header, «transparent sub-menu» for a transparent sub-menu and «fully transparent» for a transparent sub-menu and header.'
+        'footer_background': 'Select the background color for your site’s footer («Dark», «Light grey», or «White»).'
+        'footer_text_color': 'Select the text color for the text in your site’s footer («White» or «Accent color»).'
+        'footer-links-color': 'Select the color for the link buttons in your site’s footer («White» or «Accent color»).'

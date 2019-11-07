@@ -23,9 +23,9 @@
 
             <label for="accent-color_id">
               Accent color
-              <% #if !value[:description].blank? %>
-                <button type="button" class="info-button" data-tippy="<%= @site.site_settings.field_descriptions[:color] %>" data-tippy-interactive="true">Field information</button>
-              <% #end %>
+              <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+              <% end %>
             </label>
             <div class="color-selector js-color-selector">
               <input type="text" id="accent-color_id" name="site[site_settings_attributes][0][value]" value="<%= settings_form.object.value %>" required pattern="#[0-9a-fA-F]{6}">
@@ -45,7 +45,12 @@
               <%= settings_form.hidden_field :position, value: '20' %>
               <%= settings_form.hidden_field :name, value: 'content_width' %>
 
-              <%= settings_form.label 'Content width', for: 'content_width' %>
+              <%= settings_form.label for: 'content_width' do %>
+                Content width
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Narrow (960px)' => '960px', 'Standard (1280px)' => '1280px', 'Fullscreen (100%)' => '100%'}, {}, id: 'content_width' %>
             </div>
 
@@ -54,7 +59,12 @@
               <%= settings_form.hidden_field :position, value: '21' %>
               <%= settings_form.hidden_field :name, value: 'content_font' %>
 
-              <%= settings_form.label 'Content font', for: 'content_font' %>
+              <%= settings_form.label for: 'content_font' do %>
+                Content font
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Acumin Pro Condensed' => '\'Acumin Pro Condensed\'', 'Fira Sans' => '\'Fira Sans\'', 'Georgia' => '\'Georgia\'', 'Merriweather' => '\'Merriweather\'', 'Merriweather Sans' => '\'Merriweather Sans\'', 'Roboto Condensed' => '\'Roboto Condensed\''}, {}, id: 'content_font' %>
             </div>
 
@@ -63,7 +73,12 @@
               <%= settings_form.hidden_field :position, value: '22' %>
               <%= settings_form.hidden_field :name, value: 'heading_font' %>
 
-              <%= settings_form.label 'Heading font', for: 'heading_font' %>
+              <%= settings_form.label for: 'heading_font' do %>
+                Heading font
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Acumin Pro Condensed' => '\'Acumin Pro Condensed\'', 'Fira Sans' => '\'Fira Sans\'', 'Georgia' => '\'Georgia\'', 'Merriweather' => '\'Merriweather\'', 'Merriweather Sans' => '\'Merriweather Sans\'', 'Roboto Condensed' => '\'Roboto Condensed\''}, {}, id: 'heading_font' %>
             </div>
 
@@ -72,7 +87,12 @@
               <%= settings_form.hidden_field :position, value: '23' %>
               <%= settings_form.hidden_field :name, value: 'cover_size' %>
 
-              <%= settings_form.label 'Cover size', for: 'cover_size' %>
+              <%= settings_form.label for: 'cover_size' do %>
+                Cover size
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Small (130px)' => '130px', 'Standard (170px)' => '170px', 'Big (250px)' => '250px', }, {}, id: 'cover_size' %>
             </div>
 
@@ -81,7 +101,12 @@
               <%= settings_form.hidden_field :position, value: '24' %>
               <%= settings_form.hidden_field :name, value: 'cover_text_alignment' %>
 
-              <%= settings_form.label 'Cover text alignment', for: 'cover_text_alignment' %>
+              <%= settings_form.label for: 'cover_text_alignment' do %>
+                Cover text alignment
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Left' => 'left', 'Center' => 'center'}, {}, id: 'cover_text_alignment' %>
             </div>
 
@@ -99,7 +124,13 @@
               <%= settings_form.hidden_field :position, value: '25' %>
               <%= settings_form.hidden_field :name, value: 'header_separators' %>
 
-              <%= settings_form.label 'Menu items separator', for: 'header_separators' %>
+              <%= settings_form.label for: 'header_separators' do %>
+                Menu items separator
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
+
               <%= settings_form.select :value, {'Display separators' => true, 'No separator' => false}, {}, id: 'header_separators' %>
             </div>
 
@@ -108,7 +139,12 @@
               <%= settings_form.hidden_field :position, value: '26' %>
               <%= settings_form.hidden_field :name, value: 'header_background' %>
 
-              <%= settings_form.label 'Background color', for: 'header_background' %>
+              <%= settings_form.label for: 'header_background' do %>
+                Background color
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Dark' => '\'dark\'', 'Light grey' => '\'grey\'', 'White' => '\'white\''}, {}, id: 'header_background' %>
             </div>
 
@@ -117,7 +153,12 @@
               <%= settings_form.hidden_field :position, value: '27' %>
               <%= settings_form.hidden_field :name, value: 'header_transparency' %>
 
-              <%= settings_form.label 'Background transparency', for: 'header_transparency' %>
+              <%= settings_form.label for: 'header_transparency' do %>
+                Background transparency
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Solid color' => '\'solid\'', 'Transparent sub menu' => '\'semi\'', 'Fully transparent' => '\'transparent\''}, {}, id: 'header_transparency' %>
             </div>
 
@@ -126,13 +167,23 @@
               <%= settings_form.hidden_field :position, value: setting.position %>
               <%= settings_form.hidden_field :name, value: 'header_login_enabled' %>
 
-              <%= settings_form.label 'Login', for: 'header_login_enabled' %>
+              <%= settings_form.label for: 'header_login_enabled' do %>
+                Login
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Display login' => true, 'Hide login' => false}, {}, id: 'header_login_enabled' %>
             </div>
 
           <% when 'header-country-colours' %>
             <div class="container country-colors-container">
-              <label>Country colors</label>
+              <label>
+                Country colors
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              </label>
               <div class="js-header-country-colours"
                   data-colors="<%= settings_form.object.value %>"
                   data-input-id="<%= settings_form.object_name %>"
@@ -153,7 +204,12 @@
               <%= settings_form.hidden_field :position, value: '29' %>
               <%= settings_form.hidden_field :name, value: 'footer_background' %>
 
-              <%= settings_form.label 'Background color', for: 'footer_background' %>
+              <%= settings_form.label for: 'footer_background' do %>
+                Background color
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'Dark' => '\'dark\'', 'Light grey' => '\'grey\'', 'Accent color' => '\'accent-color\''}, {}, id: 'footer_background' %>
             </div>
 
@@ -162,7 +218,12 @@
               <%= settings_form.hidden_field :position, value: '30' %>
               <%= settings_form.hidden_field :name, value: 'footer_text_color' %>
 
-              <%= settings_form.label 'Text color', for: 'footer_text_color' %>
+              <%= settings_form.label for: 'footer_text_color' do %>
+                Text color
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'White' => '\'white\'', 'Accent color' => '\'accent-color\''}, {}, id: 'footer_text_color' %>
             </div>
 
@@ -171,7 +232,12 @@
               <%= settings_form.hidden_field :position, value: '31' %>
               <%= settings_form.hidden_field :name, value: 'footer-links-color' %>
 
-              <%= settings_form.label 'Links color', for: 'footer-links-color' %>
+              <%= settings_form.label for: 'footer-links-color' do %>
+                Links color
+                <% if t("admin.site_steps.style.#{settings_form.object.name}", :default => false) %>
+                  <button type="button" class="info-button" data-tippy="<%= t("admin.site_steps.style.#{settings_form.object.name}") %>" data-tippy-interactive="true">Field information</button>
+                <% end %>
+              <% end %>
               <%= settings_form.select :value, {'White' => '\'white\'', 'Accent color' => '\'accent-color\''}, {}, id: 'footer-links-color' %>
             </div>
 
