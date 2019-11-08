@@ -1,0 +1,13 @@
+<% content_for :extended_header do %>
+<% end %>
+
+<%= include_gon %>
+
+<%= javascript_pack_tag 'application' %>
+<%= react_component('AdminTableView', {
+  meta: {
+    columns: ['title', 'template', 'preview'],
+    actions: ['edit', 'delete']
+  },
+  data: @formattedSites
+} ) %>
