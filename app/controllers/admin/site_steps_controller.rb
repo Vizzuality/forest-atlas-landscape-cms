@@ -12,6 +12,7 @@ class Admin::SiteStepsController < AdminController
 
   SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
+  PREVIEW = 'Preview'.freeze
 
   steps *Site.form_steps[:pages]
   attr_accessor :steps_names
