@@ -1,13 +1,53 @@
 <% content_for :extended_header do %>
+  <h1>This is a test page, so the content is fake!</h1>
 <% end %>
 
 <%= include_gon %>
 
 <%= javascript_pack_tag 'application' %>
-<%= react_component('AdminTableView', {
-  meta: {
-    columns: ['title', 'template', 'preview'],
-    actions: ['edit', 'delete']
+
+<%= react_component('HomePage', {
+  page: {
+    "id": 1294,
+    "site_id": 101,
+    "name": "Homepage",
+    "description": "Homepage description",
+    "uri": "",
+    "url": "/",
+    "created_at": "2019-11-05T15:21:44.980Z",
+    "updated_at": "2019-11-05T15:21:44.980Z",
+    "content_type": 3,
+    "enabled": true,
+    "parent_id": nil,
+    "position": 661,
+    "content": "[{\"id\":1532344156248,\"type\":\"text\",\"content\":\"<h1>The interactive forest atlas of Camaroon</h1><p>The Interactive forest atlas of Cameroon is a living, dynamic forest monitoring system that provides unbiased and up-to-date information on the Cameroon's forest sector. Built on a geographic information system (GIS) platform, the Atlas aims to strengthen forest management and land use planning by bringing information on all major land use categories onto the same standardized platform.</p><p>The underlying forest atlas database is supported and kept up-to-date by the Ministry of Water, Forests, Hunting and Fishing and the World Resources Institute (WRI), releasing new information as it becomes available via this&nbsp;<a href=\\\"http://52.45.163.131/#\\\" target=\\\"_blank\\\" style=\\\"color: rgb(186, 48, 33);\\\">mapping application</a>. Other publications are released periodically and can be found in the&nbsp;<a href=\\\"http://52.45.163.131/#\\\" target=\\\"_blank\\\" style=\\\"color: rgb(186, 48, 33);\\\">download section</a>.</p><p><br></p><p><br></p><blockquote><em>A key data challenge by integrating forest management classes with forest cover extent and change data from GFW’s near-real-time monitoring system</em></blockquote><p><br></p><p>Unless otherwise noted, Atlas data are licensed under a&nbsp;<a href=\\\"http://52.45.163.131/#\\\" target=\\\"_blank\\\" style=\\\"color: rgb(186, 48, 33);\\\">Creative Commons Attribution 4.0</a>&nbsp;International License. You are free to copy and redistribute the material in any medium or format, and to transform and build upon the material for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made. When displaying and citing the data, use the appropriate credit as listed for the corresponding dataset in the download section.</p>\"}]",
+    "show_on_menu": true,
+    "page_version": 2,
+    "thumbnail_file_name": nil,
+    "thumbnail_content_type": nil,
+    "thumbnail_file_size": nil,
+    "thumbnail_updated_at": nil,
+    "cover_image_file_name": nil,
+    "cover_image_content_type": nil,
+    "cover_image_file_size": nil,
+    "cover_image_updated_at": nil,
+    "thumbnail_url": "/thumbnails/original/missing.png",
+    "tags": [],
+    "temp_cover_image": nil,
+    "temp_thumbnail": nil,
+    "delete_cover_image": nil,
+    "delete_thumbnail": nil
   },
-  data: @formattedSites
+  site: {
+    "id": 101,
+    "site_template_id": 1,
+    "name": "Aaa Test",
+    "created_at": "2019-11-05T15:21:44.732Z",
+    "updated_at": "2019-11-05T15:21:44.732Z",
+    "slug": "aaa-test"
+  },
+  siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+  siteTitleOnly: nil,
+  siteTemplateName: nil,
+  pageSize: defined?(size) ? size : nil
 } ) %>
