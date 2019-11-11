@@ -1,0 +1,27 @@
+<% if form %>
+  <%= form.label label_for do %>
+    <%= message %>
+    <% if info_message -%>
+      <button
+        type="button"
+        class="info-button"
+        data-tippy="<%= info_message %>"
+        data-tippy-interactive="true">
+        Field information
+      </button>
+    <% end %>
+  <% end %>
+<% else %>
+  <label>
+    <%= message %>
+    <% if info_message %>
+      <button
+        type="button"
+        class="info-button"
+        data-tippy="<% info_message %>"
+        data-tippy-interactive="true">
+        Field information
+      </button>
+    <% end %>
+  </label>
+<% end %>
