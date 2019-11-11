@@ -164,7 +164,7 @@ class Admin::SiteStepsController < AdminController
 
       when 'settings'
         settings = site_params.to_h
-        @site = params[:site_slug] ? Site.find_by(slug: params[:site_slug]) : Site.new(session[:site][@site_id])
+        @site = current_site
 
         begin
           # If the user is editing
@@ -384,7 +384,7 @@ class Admin::SiteStepsController < AdminController
       # Merge site settings with the existing ones
       session[:site][@site_id]['site_settings_attributes'] ||= {}
       if site_params.to_h['site_settings_attributes']
-        max_key = site_params.to_h['site_settings_attributes'].keys.map(&:to_i).max
+        max_key = session[:site][@site_id]['site_settings_attributes'].keys.size
         site_params.to_h['site_settings_attributes'].values.each_with_index do |site_setting, index|
           existing_site_setting = session[:site][@site_id]['site_settings_attributes'].values.find do |ss|
             if ss['name'] == 'main_image'
