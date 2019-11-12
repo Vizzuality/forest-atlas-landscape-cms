@@ -239,7 +239,8 @@ class Management::DatasetStepsController < ManagementController
 
   def set_current_dataset_state
     return if action_name == 'show'
-    if action_name != 'show' && session[:dataset_creation][@dataset_id]
+
+    if session[:dataset_creation][@dataset_id]
       session[:dataset_creation][@dataset_id] =
         session[:dataset_creation][@dataset_id].deep_merge(@dataset.attributes)
     else
@@ -295,9 +296,9 @@ class Management::DatasetStepsController < ManagementController
   def get_metadata_columns
     @default_language = SiteSetting.default_site_language(@site.id).value
     dataset = DatasetService.get_metadata(@dataset.id)['data']
-    metadata = dataset['attributes']['metadata'].select do |md|
+    metadata = dataset['attributes']['metadata'].find do |md|
       md['attributes']['language'] == @default_language
-    end.first
+    end
     @metadata_id = metadata&.dig('id')
 
     fields = DatasetService.get_fields @dataset.id, dataset['tableName']
