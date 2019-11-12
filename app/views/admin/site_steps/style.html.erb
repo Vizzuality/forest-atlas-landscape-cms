@@ -21,7 +21,12 @@
             <input type="hidden" id="accent-color_name" name="site[site_settings_attributes][0][name]" value="color">
             <input type="hidden" id="accent-color_position" name="site[site_settings_attributes][0][position]" value="1">
 
-            <label for="accent-color_id">Accent color</label>
+            <%= render partial: 'shared/info_template', locals: {
+              form: settings_form,
+              message: 'Accent color',
+              label_for: 'accent-color_id',
+              info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+            } %>
             <div class="color-selector js-color-selector">
               <input type="text" id="accent-color_id" name="site[site_settings_attributes][0][value]" value="<%= settings_form.object.value %>" required pattern="#[0-9a-fA-F]{6}">
               <input type="color" value="<%= settings_form.object.value %>">
@@ -40,7 +45,12 @@
               <%= settings_form.hidden_field :position, value: '20' %>
               <%= settings_form.hidden_field :name, value: 'content_width' %>
 
-              <%= settings_form.label 'Content width', for: 'content_width' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Content width',
+                label_for: 'content_width',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Narrow (960px)' => '960px', 'Standard (1280px)' => '1280px', 'Fullscreen (100%)' => '100%'}, {}, id: 'content_width' %>
             </div>
 
@@ -49,7 +59,12 @@
               <%= settings_form.hidden_field :position, value: '21' %>
               <%= settings_form.hidden_field :name, value: 'content_font' %>
 
-              <%= settings_form.label 'Content font', for: 'content_font' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Content font',
+                label_for: 'content_font',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Acumin Pro Condensed' => '\'Acumin Pro Condensed\'', 'Fira Sans' => '\'Fira Sans\'', 'Georgia' => '\'Georgia\'', 'Merriweather' => '\'Merriweather\'', 'Merriweather Sans' => '\'Merriweather Sans\'', 'Roboto Condensed' => '\'Roboto Condensed\''}, {}, id: 'content_font' %>
             </div>
 
@@ -58,7 +73,12 @@
               <%= settings_form.hidden_field :position, value: '22' %>
               <%= settings_form.hidden_field :name, value: 'heading_font' %>
 
-              <%= settings_form.label 'Heading font', for: 'heading_font' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Heading font',
+                label_for: 'heading_font',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Acumin Pro Condensed' => '\'Acumin Pro Condensed\'', 'Fira Sans' => '\'Fira Sans\'', 'Georgia' => '\'Georgia\'', 'Merriweather' => '\'Merriweather\'', 'Merriweather Sans' => '\'Merriweather Sans\'', 'Roboto Condensed' => '\'Roboto Condensed\''}, {}, id: 'heading_font' %>
             </div>
 
@@ -67,7 +87,12 @@
               <%= settings_form.hidden_field :position, value: '23' %>
               <%= settings_form.hidden_field :name, value: 'cover_size' %>
 
-              <%= settings_form.label 'Cover size', for: 'cover_size' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Cover size',
+                label_for: 'cover_size',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Small (130px)' => '130px', 'Standard (170px)' => '170px', 'Big (250px)' => '250px', }, {}, id: 'cover_size' %>
             </div>
 
@@ -76,7 +101,12 @@
               <%= settings_form.hidden_field :position, value: '24' %>
               <%= settings_form.hidden_field :name, value: 'cover_text_alignment' %>
 
-              <%= settings_form.label 'Cover text alignment', for: 'cover_text_alignment' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Cover text alignment',
+                label_for: 'cover_text_alignment',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Left' => 'left', 'Center' => 'center'}, {}, id: 'cover_text_alignment' %>
             </div>
 
@@ -94,7 +124,12 @@
               <%= settings_form.hidden_field :position, value: '25' %>
               <%= settings_form.hidden_field :name, value: 'header_separators' %>
 
-              <%= settings_form.label 'Menu items separator', for: 'header_separators' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Menu items separator',
+                label_for: 'header_separators',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Display separators' => true, 'No separator' => false}, {}, id: 'header_separators' %>
             </div>
 
@@ -103,7 +138,12 @@
               <%= settings_form.hidden_field :position, value: '26' %>
               <%= settings_form.hidden_field :name, value: 'header_background' %>
 
-              <%= settings_form.label 'Background color', for: 'header_background' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Background color',
+                label_for: 'header_background',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Dark' => '\'dark\'', 'Light grey' => '\'grey\'', 'White' => '\'white\''}, {}, id: 'header_background' %>
             </div>
 
@@ -112,7 +152,12 @@
               <%= settings_form.hidden_field :position, value: '27' %>
               <%= settings_form.hidden_field :name, value: 'header_transparency' %>
 
-              <%= settings_form.label 'Background transparency', for: 'header_transparency' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Background transparency',
+                label_for: 'header_transparency',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Solid color' => '\'solid\'', 'Transparent sub menu' => '\'semi\'', 'Fully transparent' => '\'transparent\''}, {}, id: 'header_transparency' %>
             </div>
 
@@ -121,14 +166,24 @@
               <%= settings_form.hidden_field :position, value: setting.position %>
               <%= settings_form.hidden_field :name, value: 'header_login_enabled' %>
 
-              <%= settings_form.label 'Login', for: 'header_login_enabled' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Login',
+                label_for: 'header_login_enabled',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Display login' => true, 'Hide login' => false}, {}, id: 'header_login_enabled' %>
             </div>
 
           <% when 'header-country-colours' %>
             <div class="container country-colors-container">
-              <label>Country colors</label>
-              <div class="js-header-country-colours"
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Country colors',
+                label_for: 'country_colors',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
+             <div class="js-header-country-colours"
                   data-colors="<%= settings_form.object.value %>"
                   data-input-id="<%= settings_form.object_name %>"
                   data-input-name="<%= settings_form.object_name %>">
@@ -148,7 +203,12 @@
               <%= settings_form.hidden_field :position, value: '29' %>
               <%= settings_form.hidden_field :name, value: 'footer_background' %>
 
-              <%= settings_form.label 'Background color', for: 'footer_background' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Background color',
+                label_for: 'footer_background',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'Dark' => '\'dark\'', 'Light grey' => '\'grey\'', 'Accent color' => '\'accent-color\''}, {}, id: 'footer_background' %>
             </div>
 
@@ -157,7 +217,12 @@
               <%= settings_form.hidden_field :position, value: '30' %>
               <%= settings_form.hidden_field :name, value: 'footer_text_color' %>
 
-              <%= settings_form.label 'Text color', for: 'footer_text_color' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Text color',
+                label_for: 'footer_text_color',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'White' => '\'white\'', 'Accent color' => '\'accent-color\''}, {}, id: 'footer_text_color' %>
             </div>
 
@@ -166,7 +231,12 @@
               <%= settings_form.hidden_field :position, value: '31' %>
               <%= settings_form.hidden_field :name, value: 'footer-links-color' %>
 
-              <%= settings_form.label 'Links color', for: 'footer-links-color' %>
+              <%= render partial: 'shared/info_template', locals: {
+                form: settings_form,
+                message: 'Links color',
+                label_for: 'footer-links-color',
+                info_message: t("admin.site_steps.style.#{settings_form.object.name}", :default => false)
+              } %>
               <%= settings_form.select :value, {'White' => '\'white\'', 'Accent color' => '\'accent-color\''}, {}, id: 'footer-links-color' %>
             </div>
 
