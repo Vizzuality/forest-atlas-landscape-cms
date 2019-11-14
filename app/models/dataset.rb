@@ -214,13 +214,20 @@ class Dataset
   # It connects to the feature service and extracts the description,
   # name, and fields
   def build_arcgis_metadata
-    arcgis_metadata = ArcgisService.build_metadata(self.connector_url)
-    metadata[:description] = arcgis_metadata['description']
-    metadata[:source] = arcgis_metadata['name']
+    @metadata = []
+    get_languages.each do |language, _value|
+      lang_metadata = {}
+      arcgis_metadata = ArcgisService.build_metadata(self.connector_url)
+      lang_metadata[:description] = arcgis_metadata['description']
+      lang_metadata[:source] = arcgis_metadata['name']
 
-    columns = {}
-    arcgis_metadata['fields'].each {|f| columns[f['name']] = { 'alias': f['alias'] } }
-    metadata[:columns] = columns
+      columns = {}
+      arcgis_metadata['fields'].each {|f| columns[f['name']] = { 'alias': f['alias'] } }
+      lang_metadata[:columns] = columns
+      lang_metadata[:language] = language
+
+      @metadata.push lang_metadata
+    end
   end
 
   # TODO: have a feeling this does not return the metadata object
