@@ -202,13 +202,13 @@ class Management::DatasetStepsController < ManagementController
     end
 
     # Update the dataset with the attributes saved on the session
-    @dataset.set_attributes session[:dataset_creation][@dataset_id] if session[:dataset_creation][@dataset_id]
+    @dataset.set_attributes session[:dataset_creation][@dataset_id].symbolize_keys if session[:dataset_creation][@dataset_id]
 
     @dataset.application = (ENV['API_APPLICATIONS'] || 'forest-atlas') unless @dataset.application
 
     process_metadata(ds_params)
 
-    @dataset.assign_attributes ds_params.except(:context_ids)
+    @dataset.assign_attributes ds_params.except(:context_ids, :metadata)
     @dataset.legend = {} unless @dataset.legend
     @dataset.metadata = {} unless @dataset.metadata
   end
@@ -239,7 +239,8 @@ class Management::DatasetStepsController < ManagementController
 
   def set_current_dataset_state
     return if action_name == 'show'
-    if action_name != 'show' && session[:dataset_creation][@dataset_id]
+
+    if session[:dataset_creation][@dataset_id]
       session[:dataset_creation][@dataset_id] =
         session[:dataset_creation][@dataset_id].deep_merge(@dataset.attributes)
     else
@@ -289,15 +290,15 @@ class Management::DatasetStepsController < ManagementController
       formatted_metadata[metadata['attributes']['language']]['id'] =
         metadata['id']
     end
-    @metadata = formatted_metadata
+    @metadata = formatted_metadata.merge(session[:dataset_creation][@dataset_id]["metadata"])
   end
 
   def get_metadata_columns
     @default_language = SiteSetting.default_site_language(@site.id).value
     dataset = DatasetService.get_metadata(@dataset.id)['data']
-    metadata = dataset['attributes']['metadata'].select do |md|
+    metadata = dataset['attributes']['metadata'].find do |md|
       md['attributes']['language'] == @default_language
-    end.first
+    end
     @metadata_id = metadata&.dig('id')
 
     fields = DatasetService.get_fields @dataset.id, dataset['tableName']
