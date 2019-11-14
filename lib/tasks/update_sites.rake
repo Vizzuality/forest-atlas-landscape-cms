@@ -53,8 +53,6 @@ def convert_existing_site_settings(site)
       value: nil,
       position: max_position + 1
     )
-  elsif country_site_setting.value.blank?
-    country_site_setting.update_attributes!(value: '#000000')
   end
 end
 
