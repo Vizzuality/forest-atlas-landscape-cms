@@ -27,6 +27,7 @@ gem 'sendgrid-ruby'
 gem 'webpacker', '~> 3.3.1'
 gem 'wicked' # Multi-steps form
 gem 'will_paginate', '~> 3.1.0'
+gem 'sidekiq', '~> 4.1.2'
 
 
 # Session management
@@ -83,7 +84,7 @@ group :development do
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
-
+  gem 'capistrano-sidekiq'
 end
 
 gem 'appsignal'
