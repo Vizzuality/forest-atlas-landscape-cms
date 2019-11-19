@@ -7,7 +7,7 @@
           <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
         <% end %>
         <% if step == 'style' %>
-          <%= f.button Admin::SiteStepsController::PREVIEW, value: Admin::SiteStepsController::PREVIEW, type: 'button', class: 'c-button -outline -dark-text js-open-preview' %>
+          <div class="preview-button-selector"></div>
         <% end %>
         <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
       <% else %>

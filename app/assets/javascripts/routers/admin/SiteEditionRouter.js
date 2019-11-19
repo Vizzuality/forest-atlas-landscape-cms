@@ -127,6 +127,13 @@
           return !!str.length;
         })
       });
+
+      // Preview button
+      const previewView = new App.View.PreviewButtonView({
+        el: '.preview-button-selector',
+        siteSlug: this.siteSlug
+      });
+      previewView.on('finished', 'finished');
     },
 
     initContentStep: function() {
