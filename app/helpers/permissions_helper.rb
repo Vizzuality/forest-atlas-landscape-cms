@@ -83,7 +83,7 @@ module PermissionsHelper
     gon.global.admin = current_user.admin
 
     # maybe find a more logical place for this
-    gon.global.api_url = ENV['API_URL']
+    gon.global.api_url = Rails.env.development? ? 'http://localhost:3000' : ENV['API_URL']
     gon.global.api_env = ENV['API_ENV']
     gon.global.api_applications = ENV['API_APPLICATIONS']
     gon.global.control_tower_url = ENV['CONTROL_TOWER_URL']

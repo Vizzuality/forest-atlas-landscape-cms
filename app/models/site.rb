@@ -201,7 +201,7 @@ class Site < ApplicationRecord
 
 
   # Compiles the site's css and creates a file with it
-  def compile_css
+  def compile_css(preview = false)
     begin
       Rails.logger.debug "Compiling assets for site #{self.id}"
       compiled = compile_scss
@@ -209,7 +209,7 @@ class Site < ApplicationRecord
 
       folder = Rails.root + 'public/stylesheets/front/sites'
       FileUtils.mkdir_p(folder) unless File.directory?(folder)
-      File.open(folder + "#{id}.css", 'w+') do |f|
+      File.open(folder + "#{id}#{preview ? '-preview' : ''}.css", 'w+') do |f|
         f.write(compiled)
       end
       Rails.logger.debug "Finished saving the assets for site #{self.id}"

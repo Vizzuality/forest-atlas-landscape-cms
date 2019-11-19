@@ -3,7 +3,11 @@ Rails.application.routes.draw do
     resources :temporary_content_images, only: [:create]
     resources :sites, param: :slug do
       resources :site_steps, only: [:show, :update, :edit]
-      resources :preview, only: [:index]
+      resources :preview, only: [:index] do
+        collection do
+          get :compile
+        end
+      end
     end
 
     resources :site_steps, only: [:show, :update, :new]
