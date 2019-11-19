@@ -201,10 +201,10 @@ class Site < ApplicationRecord
 
 
   # Compiles the site's css and creates a file with it
-  def compile_css(preview = false)
+  def compile_css(preview = false, custom_variables = {})
     begin
       Rails.logger.debug "Compiling assets for site #{self.id}"
-      compiled = compile_scss
+      compiled = compile_scss(custom_variables)
       Rails.logger.debug "Finished compiling assets for site #{self.id}"
 
       folder = Rails.root + 'public/stylesheets/front/sites'
@@ -264,7 +264,7 @@ class Site < ApplicationRecord
   # Methods to compile the css                      #
   ###################################################
 
-  def variables
+  def variables(custom_variables)
     color = self.site_settings.find_by(name: 'color')
     content_width = self.site_settings.find_by(name: 'content_width')
     content_font = self.site_settings.find_by(name: 'content_font')
@@ -279,7 +279,23 @@ class Site < ApplicationRecord
     footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
     footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
 
-    if color
+    if custom_variables
+      {
+        'accent-color': custom_variables['color']&.html_safe,
+        'content-width': custom_variables['content_width']&.html_safe,
+        'content-font': custom_variables['content_font']&.html_safe,
+        'heading-font': custom_variables['heading_font']&.html_safe,
+        'cover-size': custom_variables['cover_size']&.html_safe,
+        'cover-text-alignment': custom_variables['cover_text_alignment']&.html_safe,
+        'header-menu-items-separator': custom_variables['header_separators']&.html_safe,
+        'header-background-color': custom_variables['header_background']&.html_safe,
+        'header-background-transparency': custom_variables['header_transparency']&.html_safe,
+        'header-country-colours': (custom_variables['header-country-colours'] || '\'\'')&.html_safe,
+        'footer-background-color': custom_variables['footer_background']&.html_safe,
+        'footer-text-color': custom_variables['footer_text_color']&.html_safe,
+        'footer-links-color': custom_variables['footer_links_color']&.html_safe
+      }
+    elsif color
       {
         'accent-color': color&.value&.html_safe,
         'content-width': content_width&.value&.html_safe,
@@ -314,7 +330,7 @@ class Site < ApplicationRecord
     end
   end
 
-  def compile_erb
+  def compile_erb(custom_variables = {})
     Rails.logger.debug "Compiling ERB for site #{self.id}"
 
     case self.site_template.name
@@ -338,11 +354,11 @@ class Site < ApplicationRecord
 #          end
 
 
-    body = ActionView::Base.new(
-      env.paths).render({
-                          partial: template,
-                          locals: { variables: variables },
-                          formats: :scss})
+    body = ActionView::Base.new(env.paths).render(
+      partial: template,
+      locals: {variables: variables(custom_variables)},
+      formats: :scss
+    )
 
     tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
     FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
@@ -351,8 +367,8 @@ class Site < ApplicationRecord
     env.find_asset(id)
   end
 
-  def compile_scss
-    scss_file = compile_erb
+  def compile_scss(custom_variables = [])
+    scss_file = compile_erb(custom_variables)
     Rails.logger.debug "Finished compiling ERB for site #{self.id}"
 
     sass_engine = Sass::Engine.new(scss_file.source, {
