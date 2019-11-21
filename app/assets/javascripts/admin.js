@@ -37,7 +37,6 @@
     View: {},
     Model: {},
     Router: {},
-    Helper: {},
-    Cable: ActionCable.createConsumer()
+    Helper: {}
   };
 }).call(this);
