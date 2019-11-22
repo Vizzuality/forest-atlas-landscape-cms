@@ -5,6 +5,9 @@
 <%= include_gon %>
 
 <%= javascript_pack_tag 'application' %>
+<%= stylesheet_link_tag "front/sites/#{@site.id}-preview.css", media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<%= react_component('AdminPreviewStaticHeader', {}) %>
 
 <%= react_component('HomePage', {
   page: {

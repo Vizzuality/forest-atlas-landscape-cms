@@ -9,18 +9,18 @@ function getSiteSettings() {
   // We could use just the selector if naming followed a regular rule.
   const fields = [
     { name: 'color', selector: '#accent-color_id' },
-    { name: 'contentWidth', selector: '#content_width' },
-    { name: 'contentFont', selector: '#content_font' },
-    { name: 'headingFont', selector: '#heading_font' },
-    { name: 'coverSize', selector: '#cover_size' },
-    { name: 'coverTextAlignment', selector: '#cover_text_alignment' },
-    { name: 'headerSeparators', selector: '#header_separators' },
-    { name: 'headerBackground', selector: '#header_background' },
-    { name: 'headerTransparency', selector: '#header_transparency' },
-    { name: 'headerLoginEnabled', selector: '#header_login_enabled' },
-    { name: 'footerBackground', selector: '#footer_background' },
-    { name: 'footerTextColor', selector: '#footer_text_color' },
-    { name: 'footerLinksColor', selector: '#footer-links-color' }
+    { name: 'content_width', selector: '#content_width' },
+    { name: 'content_font', selector: '#content_font' },
+    { name: 'heading_font', selector: '#heading_font' },
+    { name: 'cover_size', selector: '#cover_size' },
+    { name: 'cover_text_alignment', selector: '#cover_text_alignment' },
+    { name: 'header_separators', selector: '#header_separators' },
+    { name: 'header_background', selector: '#header_background' },
+    { name: 'header_transparency', selector: '#header_transparency' },
+    { name: 'header_login_enabled', selector: '#header_login_enabled' },
+    { name: 'footer_background', selector: '#footer_background' },
+    { name: 'footer_text_color', selector: '#footer_text_color' },
+    { name: 'footer_links_color', selector: '#footer-links-color' }
   ];
 
   const values = fields.reduce((acc, field) => ({
@@ -31,7 +31,7 @@ function getSiteSettings() {
   const headerCountryColors = Array.from(document.querySelectorAll('.country-colors-container input[type="color"]'))
     .map(countryColor => countryColor.value).join(' ');
 
-  return { ...values, headerCountryColors };
+  return { ...values, 'header-country-colours': headerCountryColors };
 }
 
 export default function AdminPreviewButton({ className, text, host, slug }) {
@@ -39,7 +39,7 @@ export default function AdminPreviewButton({ className, text, host, slug }) {
     consumer.subscriptions.create('PreviewChannel', {
       connected: () => {},
       disconnected: () => {},
-      received: (data) => {
+      received: () => {
         setPreviewButtonState({ ...previewButtonState, isLoading: false });
 
         // Open preview page
