@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Footer } from 'components';
 import Wysiwyg from 'components/shared/Wysiwyg';
 
-const Home = ({ site }) => console.log(site) || (
+const Home = ({ site }) => (
   <div className="fa-page -homepage">
     {site.meta.siteTemplateName !== 'INDIA' && (
       <div className="vizz-wysiwyg c-content">

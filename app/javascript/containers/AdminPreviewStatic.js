@@ -1,47 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import Cover from './Cover';
+import HomePage from './HomePage';
+import StaticPage from './StaticPage';
 
-export default function AdminPreviewStaticHeader() {
-  // const MobileDrawer = () => (
-  //   <div className="mobile-drawer js-mobile-drawer">
-  //     <div className="wrapper">
-  //       <ul>
-  //         Pages
-  //       </ul>
-  //       <ul>
-  //         <li className="notranslate js-language-selector-mobile" />
-  //       </ul>
-  //       <ul>
-  //         User
-  //       </ul>
-  //     </div>
-  //   </div>
-  // );
-  // const MobileMenuWrapper = () => (
-  //   <div className="mobile-menu wrapper">
-  //   </div>
-  // );
-  // const DesktopMenuWrapper = () => (
-  //   <div className="desktop-menu wrapper">
-  //   </div>
-  // );
-  // const FlagBorder = ({countryColors = []}) => (
-  //   <div className="flag-border">
-  //     {countryColors.map(color => (
-  //       <div style={{ backgroundColor: color }} />
-  //     ))}
-  //   </div>
-  // );
-
-  // const InteractiveHeader = (
-  //   <header className="c-header js-header">
-  //     <MobileDrawer />
-  //     <MobileMenuWrapper />
-  //     <DesktopMenuWrapper />
-  //     <FlagBorder />
-  //   </header>
-  // );
-
-  return (
+export default function AdminPreviewStatic({ cover, homepage, opencontent }) {
+  const [ state, setState ] = useState({ isHomepage: true });
+  const clickHandler = () => {
+    setState({
+      ...state,
+      isHomepage: !state.isHomepage
+    });
+  };
+  const StaticHeader = () => (
     <header className="c-header js-header initialized">
       <div className="mobile-drawer js-mobile-drawer">
         <div className="wrapper">
@@ -121,7 +92,7 @@ export default function AdminPreviewStaticHeader() {
                 </ul>
               </li>
               <li className="">
-                <a href="/map" data-turbolinks="false">Open Content</a>
+                <a href="#" data-turbolinks="false" onClick={clickHandler}>Open Content</a>
               </li>
               <li className="dropdown-item search js-search">
                 <button type="button" className="search-button js-search-button" href="#">Search</button>
@@ -163,4 +134,18 @@ export default function AdminPreviewStaticHeader() {
       </div>
     </header>
   );
+
+  return (
+    <>
+      <StaticHeader />
+      <Cover {...cover} />
+      {state.isHomepage ? <HomePage {...homepage} /> : <StaticPage {...opencontent} />}
+    </>
+  );
 }
+
+AdminPreviewStatic.propTypes = {
+  cover: PropTypes.shape({}).isRequired,
+  homepage: PropTypes.shape({}).isRequired,
+  opencontent: PropTypes.shape({}).isRequired,
+};
