@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -35,12 +35,14 @@ function getSiteSettings() {
 }
 
 export default function AdminPreviewButton({ className, text, slug }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     consumer.subscriptions.create('PreviewChannel', {
       connected: () => {},
       disconnected: () => {},
       received: () => {
-        setPreviewButtonState({ ...previewButtonState, isLoading: false });
+        setIsLoading(false);
 
         // Open preview page
         window.open(`${window.location.origin}/admin/sites/${slug}/preview`, '_blank');
@@ -49,34 +51,31 @@ export default function AdminPreviewButton({ className, text, slug }) {
 
     return () => {};
   }, []);
-  const [previewButtonState, setPreviewButtonState] = useState({ isLoading: false });
 
-  function compileStyleSheet() {
+  const compileStyleSheet = () => {
     $.get(
       `${window.location.origin}/admin/sites/${slug}/preview/compile`,
       { site_settings: getSiteSettings() },
-      () => {
-        setPreviewButtonState({ ...previewButtonState, isLoading: true });
-      }
+      () => setIsLoading(true),
     );
-  }
+  };
 
-  const clickHandler = (isLoading) => {
+  const onClickButton = useCallback(() => {
     if (!isLoading) {
       compileStyleSheet();
     }
-  };
-  const button = (
-    <button className={classnames(className)} type="button" onClick={() => clickHandler(null)}>
-      {text}
+  }, [isLoading]);
+
+  return (
+    <button
+      type="button"
+      className={classnames(className)}
+      onClick={onClickButton}
+      disabled={isLoading}
+    >
+      {isLoading ? <div className="c-loading-spinner -inline -small" /> : text}
     </button>
   );
-  const loadingButton = (
-    <button className={classnames(className)} type="button" disabled="disabled">
-      <div className="c-loading-spinner -inline" />
-    </button>);
-
-  return previewButtonState.isLoading ? loadingButton : button;
 }
 
 AdminPreviewButton.propTypes = {
