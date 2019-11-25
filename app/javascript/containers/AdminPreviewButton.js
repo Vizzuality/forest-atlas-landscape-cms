@@ -34,7 +34,7 @@ function getSiteSettings() {
   return { ...values, 'header-country-colours': headerCountryColors };
 }
 
-export default function AdminPreviewButton({ className, text, host, slug }) {
+export default function AdminPreviewButton({ className, text, slug }) {
   useEffect(() => {
     consumer.subscriptions.create('PreviewChannel', {
       connected: () => {},
@@ -43,16 +43,17 @@ export default function AdminPreviewButton({ className, text, host, slug }) {
         setPreviewButtonState({ ...previewButtonState, isLoading: false });
 
         // Open preview page
-        window.open(`${host}/admin/sites/${slug}/preview`, '_blank');
+        window.open(`${window.location.origin}/admin/sites/${slug}/preview`, '_blank');
       }
-    })
+    });
+
     return () => {};
   }, []);
   const [previewButtonState, setPreviewButtonState] = useState({ isLoading: false });
 
-  function compileStyleSheet(_host, _slug) {
+  function compileStyleSheet() {
     $.get(
-      `${_host}/admin/sites/${_slug}/preview/compile`,
+      `${window.location.origin}/admin/sites/${slug}/preview/compile`,
       { site_settings: getSiteSettings() },
       () => {
         setPreviewButtonState({ ...previewButtonState, isLoading: true });
@@ -62,7 +63,7 @@ export default function AdminPreviewButton({ className, text, host, slug }) {
 
   const clickHandler = (isLoading) => {
     if (!isLoading) {
-      compileStyleSheet(host, slug);
+      compileStyleSheet();
     }
   };
   const button = (
@@ -81,13 +82,11 @@ export default function AdminPreviewButton({ className, text, host, slug }) {
 AdminPreviewButton.propTypes = {
   text: PropTypes.string,
   className: PropTypes.string,
-  host: PropTypes.string,
   slug: PropTypes.string
 };
 
 AdminPreviewButton.defaultProps = {
   text: '',
   className: '',
-  host: 'http://localhost',
   slug: null
 };

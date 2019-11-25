@@ -12,7 +12,6 @@
           <%= react_component('AdminPreviewButton', {
             text: Admin::SiteStepsController::PREVIEW,
             className: 'c-button -outline -dark-text',
-            host: Rails.env.development? ? 'http://localhost:3000' : ENV['API_URL'],
             slug: @site.slug
           }, { tag: 'span' }) %>
         <% end %>
