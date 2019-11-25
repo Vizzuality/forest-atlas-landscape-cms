@@ -13,7 +13,9 @@
             text: Admin::SiteStepsController::PREVIEW,
             className: 'c-button -outline -dark-text',
             slug: @site.slug
-          }, { tag: 'span' }) %>
+          }, {
+            class: 'button-wrapper'
+          }) %>
         <% end %>
         <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
       <% else %>
