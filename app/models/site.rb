@@ -214,7 +214,7 @@ class Site < ApplicationRecord
       end
       Rails.logger.debug "Finished saving the assets for site #{self.id}"
     rescue Exception => e
-        Rails.logger.error("Error compiling the css for site #{self.id}: #{e.inspect} -- #{e.backtrace}")
+      Rails.logger.error("Error compiling the css for site #{self.id}: #{e.inspect} -- #{e.backtrace}")
     end
   end
 
@@ -264,7 +264,7 @@ class Site < ApplicationRecord
   # Methods to compile the css                      #
   ###################################################
 
-  def variables(custom_variables)
+  def variables(custom_variables = {})
     color = self.site_settings.find_by(name: 'color')
     content_width = self.site_settings.find_by(name: 'content_width')
     content_font = self.site_settings.find_by(name: 'content_font')
@@ -279,7 +279,7 @@ class Site < ApplicationRecord
     footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
     footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
 
-    if custom_variables
+    if !custom_variables.empty?
       {
         'accent-color': custom_variables['color']&.html_safe,
         'content-width': custom_variables['content_width']&.html_safe,
@@ -290,7 +290,7 @@ class Site < ApplicationRecord
         'header-menu-items-separator': custom_variables['header_separators']&.html_safe,
         'header-background-color': custom_variables['header_background']&.html_safe,
         'header-background-transparency': custom_variables['header_transparency']&.html_safe,
-        'header-country-colours': (custom_variables['header-country-colours'] || '\'\'')&.html_safe,
+        'header-country-colours': (custom_variables['header-country-colours'].presence || '\'\'')&.html_safe,
         'footer-background-color': custom_variables['footer_background']&.html_safe,
         'footer-text-color': custom_variables['footer_text_color']&.html_safe,
         'footer-links-color': custom_variables['footer_links_color']&.html_safe
@@ -357,7 +357,8 @@ class Site < ApplicationRecord
     body = ActionView::Base.new(env.paths).render(
       partial: template,
       locals: {variables: variables(custom_variables)},
-      formats: :scss
+      formats: :scss,
+      cache: false
     )
 
     tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
