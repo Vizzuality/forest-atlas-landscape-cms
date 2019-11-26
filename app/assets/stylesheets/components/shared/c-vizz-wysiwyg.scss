@@ -1,4 +1,9 @@
 .vizz-wysiwyg {
+  // The margin is needed for the floating menu displayed when selecting some text
+  // Without it, if the user selects the last line of text, the font style dropdown might not be
+  // entirely visible
+  margin-bottom: 80px;
+
   .cw-quill .ql-bubble .ql-tooltip {
     // Must be below .c-action-bar and the modal
     // for the link edition but over .cw-wysiwyg-toolbar
