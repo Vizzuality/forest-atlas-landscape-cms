@@ -19,7 +19,11 @@ export default function AdminPreviewStatic({ siteSettings, homepage, opencontent
 
   const StaticHeader = () => {
     const countryColorsSetting = siteSettings.find(setting => setting.name === 'header-country-colours');
+    const showLoginSetting = siteSettings.find(setting => setting.name === 'header_login_enabled');
+
     const countryColors = countryColorsSetting ? countryColorsSetting.value.split(' ') : [];
+    const showLogin = showLoginSetting ? showLoginSetting.value === 'true' : true;
+
     return (
       <header className="c-header js-header initialized">
         <div className="mobile-drawer js-mobile-drawer">
@@ -83,7 +87,9 @@ export default function AdminPreviewStatic({ siteSettings, homepage, opencontent
                   <button type="button" className="search-button js-search-button">Search</button>
                 </li>
               </ul>
-              <ul />
+              <ul>
+                {showLogin ? <li><a>Login</a></li> : null}
+              </ul>
             </div>
             <div className="sub-menu">
               <div className="content">
