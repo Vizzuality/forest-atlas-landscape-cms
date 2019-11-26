@@ -1,6 +1,10 @@
 import get from 'lodash/get';
 
 const isEmptyMetadata = (metadata) => {
+  if (!metadata) {
+    return true;
+  }
+
   const keys = [
     'description',
     'citation',
