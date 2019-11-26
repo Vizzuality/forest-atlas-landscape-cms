@@ -115,6 +115,18 @@
       width: 32px;
       padding: 0;
     }
+
+    &.-monochrome {
+      color: $color-3;
+      background: $color-4;
+
+      &:hover, &:focus { color: $color-3; }
+
+      &.-outline, &.-outline:hover, &.-outline:focus {
+        color: $color-4;
+        background: none;
+      }
+    }
   }
 
   &.toggle-visibility-button {

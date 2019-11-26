@@ -1,25 +1,25 @@
-<% content_for :extended_header do %>
-  <h1>This is a test page, so the content is fake!</h1>
-<% end %>
-
 <%= include_gon %>
 
-<%= javascript_pack_tag 'application' %>
-<%= stylesheet_link_tag "front/sites/#{@site.id}-preview.css", media: 'all', 'data-turbolinks-track': 'reload' %>
+<% content_for :head do %>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+  <%= javascript_pack_tag 'application' %>
+  <%= stylesheet_link_tag "front/sites/#{@site.id}-preview.css", media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style type="text/css">
+    .c-header-admin {
+      display: none;
+    }
+  </style>
+<% end %>
 
-<%# Here we have access to site, if we need to pass real data, like template name %>
+<%# Here we have access to site, if we need to pass real data %>
 <% config={
-  cover: {
-    title: "Homepage",
-    images: [],
-    template: "Default"
-  },
+  siteSettings: defined?(@site.site_settings) ? @site.site_settings : nil,
   homepage: {
     page: {
       "id": 1294,
       "site_id": 101,
       "name": "Homepage",
-      "description": "Homepage description",
+      "description": "Homepage",
       "uri": "",
       "url": "/",
       "created_at": "2019-11-05T15:21:44.980Z",
@@ -28,7 +28,7 @@
       "enabled": true,
       "parent_id": nil,
       "position": 661,
-      "content": "[{\"id\":1532344156248,\"type\":\"text\",\"content\":\"<h1>The interactive forest atlas of Camaroon</h1><p>The Interactive forest atlas of Cameroon is a living, dynamic forest monitoring system that provides unbiased and up-to-date information on the Cameroon's forest sector. Built on a geographic information system (GIS) platform, the Atlas aims to strengthen forest management and land use planning by bringing information on all major land use categories onto the same standardized platform.</p><p>The underlying forest atlas database is supported and kept up-to-date by the Ministry of Water, Forests, Hunting and Fishing and the World Resources Institute (WRI), releasing new information as it becomes available via this&nbsp;<a href=\\\"http://52.45.163.131/#\\\" target=\\\"_blank\\\" style=\\\"color: rgb(186, 48, 33);\\\">mapping application</a>. Other publications are released periodically and can be found in the&nbsp;<a href=\\\"http://52.45.163.131/#\\\" target=\\\"_blank\\\" style=\\\"color: rgb(186, 48, 33);\\\">download section</a>.</p><p><br></p><p><br></p><blockquote><em>A key data challenge by integrating forest management classes with forest cover extent and change data from GFW’s near-real-time monitoring system</em></blockquote><p><br></p><p>Unless otherwise noted, Atlas data are licensed under a&nbsp;<a href=\\\"http://52.45.163.131/#\\\" target=\\\"_blank\\\" style=\\\"color: rgb(186, 48, 33);\\\">Creative Commons Attribution 4.0</a>&nbsp;International License. You are free to copy and redistribute the material in any medium or format, and to transform and build upon the material for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made. When displaying and citing the data, use the appropriate credit as listed for the corresponding dataset in the download section.</p>\"}]",
+      "content": "[{\"id\":1532344156248,\"type\":\"text\",\"content\":\"<h1>The interactive forest atlas of Camaroon</h1><p>The Interactive forest atlas of Cameroon is a living, dynamic forest monitoring system that provides unbiased and up-to-date information on the Cameroon's forest sector. Built on a geographic information system (GIS) platform, the Atlas aims to strengthen forest management and land use planning by bringing information on all major land use categories onto the same standardized platform.</p><p>The underlying forest atlas database is supported and kept up-to-date by the Ministry of Water, Forests, Hunting and Fishing and the World Resources Institute (WRI), releasing new information as it becomes available via this&nbsp;<a href=\\\"#\\\">mapping application</a>. Other publications are released periodically and can be found in the&nbsp;<a href=\\\"#\\\">download section</a>.</p><blockquote><em>A key data challenge by integrating forest management classes with forest cover extent and change data from GFW’s near-real-time monitoring system</em></blockquote><p>Unless otherwise noted, Atlas data are licensed under a&nbsp;<a href=\\\"#\\\">Creative Commons Attribution 4.0</a>&nbsp;International License. You are free to copy and redistribute the material in any medium or format, and to transform and build upon the material for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made. When displaying and citing the data, use the appropriate credit as listed for the corresponding dataset in the download section.</p>\"}]",
       "show_on_menu": true,
       "page_version": 2,
       "thumbnail_file_name": nil,
@@ -49,12 +49,21 @@
     site: {
       "id": 101,
       "site_template_id": 1,
-      "name": "Aaa Test",
+      "name": "Preview",
       "created_at": "2019-11-05T15:21:44.732Z",
       "updated_at": "2019-11-05T15:21:44.732Z",
-      "slug": "aaa-test"
+      "slug": "preview"
     },
-    siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+    cover: {
+      title: "Homepage",
+      images: [
+        {
+          url: '/template-preview-cover.jpg',
+          attribution: nil
+        }
+      ],
+      template: "Default"
+    },
     siteTitleOnly: nil,
     siteTemplateName: nil,
     pageSize: defined?(size) ? size : nil
@@ -64,8 +73,8 @@
     page: {
       "id": 1294,
       "site_id": 101,
-      "name": "Homepage",
-      "description": "Homepage description",
+      "name": "Open Content",
+      "description": "Open Content",
       "uri": "",
       "url": "/",
       "created_at": "2019-11-05T15:21:44.980Z",
@@ -74,7 +83,7 @@
       "enabled": true,
       "parent_id": nil,
       "position": 661,
-      "content": "[{\"id\":1532344156248,\"type\":\"text\",\"content\":\"<h1>Abracadabra!</h1><p>Hocus Pocus!</p>\"}]",
+      "content": "[{\"id\":1574768731481,\"type\":\"text\",\"content\":\"\\\"<p><a href=\\\\\\\"https://lipsum.com/\\\\\\\" target=\\\\\\\"_blank\\\\\\\">Lorem ipsum</a> dolor sit amet, consectetur adipiscing elit. Mauris sit amet molestie nulla. Etiam at purus in velit tristique commodo id eu lectus. Sed enim mi, egestas in ornare eget, aliquet ut leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque eget urna ex. Etiam auctor, libero condimentum lacinia pharetra, <strong>mauris nulla semper nunc</strong>, in faucibus neque felis ut erat. Donec interdum posuere enim, ultrices finibus lacus mattis non. Aliquam ullamcorper, dui quis bibendum rutrum, arcu risus feugiat eros, ac malesuada urna lacus nec lorem. Sed elementum imperdiet nibh, et molestie tellus vulputate sed. Etiam ut diam in ligula vestibulum rhoncus convallis non lorem. Nulla aliquet ligula eu lacus tempor, euismod feugiat ligula molestie. Maecenas ac est lectus. <strong>Donec velit neque</strong>, dignissim rhoncus porttitor tincidunt, rutrum vitae nisi.</p>\\\"\"},{\"id\":1574769095127,\"type\":\"text\",\"content\":\"\\\"<blockquote>Pellentesque est nisl, porta a erat non, dignissim ullamcorper odio.</blockquote>\\\"\"},{\"id\":1574768864966,\"type\":\"grid\",\"content\":[[{\"id\":1574769019908,\"type\":\"image\",\"content\":{\"caption\":\"Other than the bright yellow color, the tree knot is another feature of the aspen trees.\",\"image\":\"/system/temporary_content_images/images/000/000/004/original/peng-chen-qd-dvtbS45Q-unsplash.jpg?1574768969&temp_id=4\",\"alternativeText\":\"Landscape photo of gray tree\"}}],[{\"id\":1574768867615,\"type\":\"text\",\"content\":\"\\\"<p>Curabitur ultricies ac orci a vestibulum. Phasellus eu lorem eu augue ultrices tincidunt ac non velit. <u>Donec scelerisque</u>, purus id iaculis rutrum, lectus nunc eleifend velit, id ornare ex dui id nibh. Cras dignissim magna vel est accumsan, nec rutrum diam fermentum. Quisque sagittis felis eros, vel ornare neque efficitur imperdiet.</p>\\\"\"},{\"id\":1574769341458,\"type\":\"text\",\"content\":\"\\\"<p>Suspendisse semper finibus magna, tristique vulputate massa auctor vitae. Nam vel lorem et eros varius euismod. Proin venenatis sagittis ligula, quis tempor nunc semper quis. Sed tempus aliquet leo. Aenean vestibulum accumsan est et malesuada. Nunc id efficitur nibh. Nunc commodo, ante vel blandit porttitor, nisl elit ultricies ex, vel mollis mauris tortor sed magna. Praesent rutrum eros ac nibh tempus hendrerit. Phasellus id tempor enim. Donec est enim, bibendum quis mi ac, placerat bibendum justo. Maecenas eget lacinia dui.</p>\\\"\"}]]},{\"id\":1574769036794,\"type\":\"text\",\"content\":\"\\\"<p>Cras augue ante, cursus in metus vel, volutpat laoreet leo. Cras orci eros, viverra ut turpis id, tristique ultrices massa. Pellentesque massa neque, luctus ac sodales quis, hendrerit vitae lorem. Praesent ac mauris eu massa semper tincidunt in quis sapien. Mauris dapibus lacus in ligula aliquet, vel tempus diam.</p>\\\"\"},{\"id\":1574769058316,\"type\":\"widget\",\"content\":{\"widgetId\":\"303b8956-52b8-4ec6-93c1-48ea80c17a64\",\"datasetId\":\"1c3e550e-0a6a-4259-b8d3-8d1e64338a27\",\"categories\":[]}}]",
       "show_on_menu": true,
       "page_version": 2,
       "thumbnail_file_name": nil,
@@ -95,16 +104,49 @@
     site: {
       "id": 101,
       "site_template_id": 1,
-      "name": "Aaa Test",
+      "name": "Preview",
       "created_at": "2019-11-05T15:21:44.732Z",
       "updated_at": "2019-11-05T15:21:44.732Z",
-      "slug": "aaa-test"
+      "slug": "preview"
     },
-    siteSettings: defined?(@site_page.site.site_settings) ? @site_page.site.site_settings : nil,
+    cover: {
+      title: "Open Content",
+      subtitle: "Preview",
+      images: [
+        {
+          url: '/template-preview-cover.jpg',
+          attribution: nil
+        }
+      ],
+      template: "Default",
+      size: "small"
+    },
     siteTitleOnly: nil,
     siteTemplateName: nil,
     pageSize: defined?(size) ? size : nil,
-    relatedPages: []
+    relatedPages: [
+      {
+        "id": 17,
+        "name": "Map",
+        "description": "Explore the map",
+        "uri": "#",
+        "url": "#",
+      },
+      {
+        "id": 1,
+        "name": "Dashboard",
+        "description": "Dashboard of the Congo rainforest",
+        "uri": "#",
+        "url": "#",
+      },
+      {
+        "id": 8,
+        "name": "Conservation",
+        "description": "Conservation work done by our team",
+        "uri": "#",
+        "url": "#",
+      },
+    ]
   }
 } %>
 
