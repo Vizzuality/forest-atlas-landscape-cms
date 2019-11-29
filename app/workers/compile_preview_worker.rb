@@ -12,6 +12,7 @@ class CompilePreviewWorker
     # Notify the user when the preview has finished
     ActionCable.server.broadcast "preview_#{user_id}_channel",
                                  site_id: site_id,
-                                 finish: true
+                                 finish: true,
+                                 site_settings: site_settings
   end
 end

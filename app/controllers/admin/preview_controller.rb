@@ -3,6 +3,8 @@ class Admin::PreviewController < AdminController
   before_action :ensure_only_admin_user
 
   def index
+    gon.header_login_enabled = params[:header_login_enabled]
+    gon.header_country_colours = params[:'header-country-colours']
     respond_to do |format|
       format.html { render :index }
     end

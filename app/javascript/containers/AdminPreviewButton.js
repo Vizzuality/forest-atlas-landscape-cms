@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import queryString from 'query-string';
 
 const consumer = window.ActionCable.createConsumer();
 
@@ -41,11 +42,19 @@ export default function AdminPreviewButton({ className, text, slug }) {
     consumer.subscriptions.create('PreviewChannel', {
       connected: () => {},
       disconnected: () => {},
-      received: () => {
+      received: (data) => {
+        const siteSettings = JSON.parse(data.site_settings);
+        const host = `${window.location.origin}/admin/sites/${slug}/preview`;
+        const queryParams = {
+          'header-country-colours': siteSettings['header-country-colours'].split(' '),
+          header_login_enabled: siteSettings.header_login_enabled
+        };
+        const url = `${host}?${queryString.stringify(queryParams, {arrayFormat: 'bracket'})}`;
+
         setIsLoading(false);
 
         // Open preview page
-        window.open(`${window.location.origin}/admin/sites/${slug}/preview`, '_blank');
+        window.open(url, '_blank');
       }
     });
 
