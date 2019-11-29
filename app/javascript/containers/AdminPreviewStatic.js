@@ -18,11 +18,8 @@ export default function AdminPreviewStatic({ siteSettings, homepage, opencontent
   }, [isHomepage, setIsHomepage]);
 
   const StaticHeader = () => {
-    const countryColorsSetting = siteSettings.find(setting => setting.name === 'header-country-colours');
-    const showLoginSetting = siteSettings.find(setting => setting.name === 'header_login_enabled');
-
-    const countryColors = countryColorsSetting ? countryColorsSetting.value.split(' ') : [];
-    const showLogin = showLoginSetting ? showLoginSetting.value === 'true' : true;
+    const countryColors = window.gon.header_country_colours || [];
+    const showLogin = !(window.gon.header_login_enabled === 'false');
 
     return (
       <header className="c-header js-header initialized">
