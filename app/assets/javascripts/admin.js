@@ -18,6 +18,7 @@
 //= require fuse.js/fuse
 //= require object-assign-polyfill
 //= require dom-matches-polyfill
+//= require action_cable
 //= require_self
 
 // = require_tree ./helpers

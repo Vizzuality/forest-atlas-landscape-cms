@@ -16,6 +16,8 @@ class AdminController < ActionController::Base
 
   def ensure_admin_user
     ensure_user_can 'access_admin'
+
+    cookies.encrypted[:current_user_id] = current_user&.id
   end
 
   def set_admin_base_breadcrumbs

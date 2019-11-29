@@ -199,23 +199,71 @@ class Site < ApplicationRecord
     datasets_contexts
   end
 
-
   # Compiles the site's css and creates a file with it
-  def compile_css
-    begin
-      Rails.logger.debug "Compiling assets for site #{self.id}"
-      compiled = compile_scss
-      Rails.logger.debug "Finished compiling assets for site #{self.id}"
+  def compile_css(preview = false, custom_variables = {})
+    # Generate the body with the specified site_settings
+    env = Rails.application.assets
+    template = site_template_name
+    body = template_body(env, template, custom_variables)
 
-      folder = Rails.root + 'public/stylesheets/front/sites'
-      FileUtils.mkdir_p(folder) unless File.directory?(folder)
-      File.open(folder + "#{id}.css", 'w+') do |f|
-        f.write(compiled)
-      end
-      Rails.logger.debug "Finished saving the assets for site #{self.id}"
-    rescue Exception => e
-        Rails.logger.error("Error compiling the css for site #{self.id}: #{e.inspect} -- #{e.backtrace}")
+    # Save the body in a temporal file to be accessible from sprockets
+    filename = "#{id}_#{Time.now.to_i}.scss"
+    scss_file_path = File.join(Rails.root, 'tmp', 'compiled_css', filename)
+    scss_file = File.open(scss_file_path, 'w') { |f| f.write(body); f.flush }
+
+    # Recover the asset with sprockets (including dependencies on the own file)
+    asset = asset_resource(env, filename, scss_file)
+    source = asset_resource_compiled(asset)
+    File.write(scss_file, source)
+
+    # Move the temporal file to the final destination including the dependencies
+    # with the values from site settings
+    folder = Rails.root + 'public/stylesheets/front/sites'
+    FileUtils.mkdir_p(folder) unless File.directory?(folder)
+    File.rename(
+      scss_file.path,
+      "#{folder}/#{id}#{preview ? '-preview' : ''}.css")
+  ensure
+    scss_file.close
+    File.delete(scss_file) if File.exist?(scss_file.path)
+  end
+
+  def site_template_name
+    case site_template.name
+    when 'Default'
+      'front/template-default.css'
+    when 'INDIA'
+      'front/template-ind.css'
     end
+  end
+
+  def template_body(env, template, custom_variables)
+    ActionView::Base.new(env.paths).render(
+      partial: template,
+      locals: {variables: variables(custom_variables)},
+      formats: :scss,
+      cache: false
+    )
+  end
+
+  def asset_resource(env, filename, scss_file)
+    if env.find_asset(filename)
+      env.find_asset(filename).source
+    else
+      uri = Sprockets::URIUtils.build_asset_uri(scss_file.path, type: 'text/css')
+      asset = Sprockets::UnloadedAsset.new(uri, env)
+      env.load(asset.uri).source
+    end
+  end
+
+  def asset_resource_compiled(asset)
+    Sass::Engine.new(
+      asset,
+      syntax: :scss,
+      cache: false,
+      read_cache: false,
+      style: :compressed
+    ).render
   end
 
   def build_user_site_associations_for_users(users)
@@ -264,7 +312,7 @@ class Site < ApplicationRecord
   # Methods to compile the css                      #
   ###################################################
 
-  def variables
+  def variables(custom_variables = {})
     color = self.site_settings.find_by(name: 'color')
     content_width = self.site_settings.find_by(name: 'content_width')
     content_font = self.site_settings.find_by(name: 'content_font')
@@ -279,7 +327,23 @@ class Site < ApplicationRecord
     footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
     footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
 
-    if color
+    if !custom_variables.empty?
+      {
+        'accent-color': custom_variables['color']&.html_safe,
+        'content-width': custom_variables['content_width']&.html_safe,
+        'content-font': custom_variables['content_font']&.html_safe,
+        'heading-font': custom_variables['heading_font']&.html_safe,
+        'cover-size': custom_variables['cover_size']&.html_safe,
+        'cover-text-alignment': custom_variables['cover_text_alignment']&.html_safe,
+        'header-menu-items-separator': custom_variables['header_separators']&.html_safe,
+        'header-background-color': custom_variables['header_background']&.html_safe,
+        'header-background-transparency': custom_variables['header_transparency']&.html_safe,
+        'header-country-colours': (custom_variables['header-country-colours'].presence || '\'\'')&.html_safe,
+        'footer-background-color': custom_variables['footer_background']&.html_safe,
+        'footer-text-color': custom_variables['footer_text_color']&.html_safe,
+        'footer-links-color': custom_variables['footer_links_color']&.html_safe
+      }
+    elsif color
       {
         'accent-color': color&.value&.html_safe,
         'content-width': content_width&.value&.html_safe,
@@ -312,56 +376,6 @@ class Site < ApplicationRecord
         'footer-links-color': '\'accent-color\''
       }
     end
-  end
-
-  def compile_erb
-    Rails.logger.debug "Compiling ERB for site #{self.id}"
-
-    case self.site_template.name
-      when 'Default'
-        template = 'front/template-default.css'
-      when 'INDIA'
-        template = 'front/template-ind.css'
-      else
-        Rails.logger.error "Couldn't find template name for #{self.id}"
-        return
-    end
-
-
-    env = Rails.application.assets
-
-
-#    env = if Rails.application.config.assets.is_a?(Sprockets::Index)
-#            Rails.application.config.assets.instance_variable_get('@environment')
-#          else
-#            Rails.application.config.assets
-#          end
-
-
-    body = ActionView::Base.new(
-      env.paths).render({
-                          partial: template,
-                          locals: { variables: variables },
-                          formats: :scss})
-
-    tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
-    FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
-    File.open(File.join(tmp_themes_path, "#{id}.scss"), 'w') { |f| f.write(body) }
-
-    env.find_asset(id)
-  end
-
-  def compile_scss
-    scss_file = compile_erb
-    Rails.logger.debug "Finished compiling ERB for site #{self.id}"
-
-    sass_engine = Sass::Engine.new(scss_file.source, {
-      syntax: :scss,
-      style: Rails.env.development? ? :nested : :compressed,
-      cache: false,
-      read_cache: false
-    })
-    sass_engine.render
   end
 
   # Validates if the template was changed

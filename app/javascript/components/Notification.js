@@ -100,10 +100,9 @@ Notification.propTypes = {
    */
   content: PropTypes.string.isRequired,
   /**
-   * If not empty, the main content will be highlighted and this will be put below;
-   * again, no HTML
+   * If not empty, the main content will be highlighted and this will be put below
    */
-  additionalContent: PropTypes.string,
+  additionalContent: PropTypes.node,
   /**
    * Whether the notification can be closed by the user
    */
