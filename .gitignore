@@ -60,3 +60,11 @@ package-lock.json
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+
+#IDE
+.generators
+.idea/
+.rakeTasks
+
+# Tests
+coverage/
