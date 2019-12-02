@@ -77,6 +77,8 @@ class SitePage < Page
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
   after_save :update_temporary_content_images
   after_save :destroy_temporary_cover_and_thumb
+  after_save :update_children_uri, if: 'uri_changed?'
+  after_save :update_children_url, if: 'url_changed?'
 
   validate :step_validation
 
@@ -319,6 +321,20 @@ class SitePage < Page
       end
     rescue Exception => e
       Rails.logger.error e.message
+    end
+  end
+
+  def update_children_uri
+    children.each do |site_page|
+      current_url = '/' + (url || '')
+      site_page.update_attributes(url: current_url + '/' + site_page.uri)
+    end
+  end
+
+  def update_children_url
+    children.each do |site_page|
+      current_url = '/' + (url || '')
+      site_page.update_attributes(url: current_url + '/' + site_page.uri)
     end
   end
 end
