@@ -60,4 +60,13 @@ namespace :templates do
       select { |s| s.site_pages.size.zero? }.
       each(&:create_template_content)
   end
+
+  desc 'Updates the page templates of type MAP to the content in map_config.json'
+  task update_map_pages: :environment do
+    pages = PageTemplate.where(content_type: ContentType::MAP)
+    pages.each do |p|
+      p.content = { settings: File.read(Dir.pwd + '/lib/tasks/map_config.json') }
+      p.save
+    end
+  end
 end
