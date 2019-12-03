@@ -3,8 +3,11 @@ namespace :site do
   desc 'Creates the css for all sites'
   task :create_assets => :environment do
     log = ActiveSupport::Logger.new('log/site_apply_settings.log')
-    start_time = Time.now
 
+    folder = File.join(Rails.root, 'tmp', 'compiled_css')
+    FileUtils.mkdir_p(folder) unless File.directory?(folder)
+
+    start_time = Time.now
     log.info 'Going to create the css for all sites'
 
     begin
