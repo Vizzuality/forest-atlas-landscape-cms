@@ -208,7 +208,9 @@ class Site < ApplicationRecord
 
     # Save the body in a temporal file to be accessible from sprockets
     filename = "#{id}_#{Time.now.to_i}.scss"
-    scss_file_path = File.join(Rails.root, 'tmp', 'compiled_css', filename)
+    folder = File.join(Rails.root, 'tmp', 'compiled_css')
+    FileUtils.mkdir_p(folder) unless File.directory?(folder)
+    scss_file_path = File.join(folder, filename)
     scss_file = File.open(scss_file_path, 'w') { |f| f.write(body); f.flush }
 
     # Recover the asset with sprockets (including dependencies on the own file)
