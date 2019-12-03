@@ -8,10 +8,8 @@ class Management::PageStepsController < ManagementController
   # The order of prepend is the opposite of its declaration
   prepend_before_action :load_wizard
   prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
   prepend_before_action :reset_session, only: [:new, :edit]
-  prepend_before_action :set_page, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
-  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
+  prepend_before_action :set_resources, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
 
@@ -304,9 +302,18 @@ class Management::PageStepsController < ManagementController
     filtered_params
   end
 
+  # Set all resources on the controller (needed because it is not possible to
+  # check the current order of prepend_before_action callbacks)
+  def set_resources
+    set_site
+    set_page
+
+    build_current_page_state if action_name != 'new'
+  end
+
   # Sets the current site from the url
   def set_site
-    @site = Site.find_by({slug: params[:site_slug]})
+    @site = Site.find_by(slug: params[:site_slug])
   end
 
   # Sets the page id
@@ -314,8 +321,8 @@ class Management::PageStepsController < ManagementController
     # Verify if the manager is editing a page or creating a new one
     @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
-    @page_id = if @page && @page.persisted?
-                 @page.id
+    @page_id = if @page&.persisted?
+                 params[:dataset_id] || @page.id.to_s
                else
                  :new
                end
@@ -520,7 +527,6 @@ class Management::PageStepsController < ManagementController
   def move_forward(next_step_name = next_step,
                    save_step_name = Wicked::FINISH_STEP,
                    publish_step_name = Wicked::FINISH_STEP)
-
     if save_button?
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
@@ -533,7 +539,6 @@ class Management::PageStepsController < ManagementController
       end
 
     elsif publish_button?
-
       @page.enabled = !@page.enabled
       notice_text = @page.enabled ? 'published' : 'unpublished'
       if @page.save
@@ -551,7 +556,6 @@ class Management::PageStepsController < ManagementController
       end
 
     else # Continue button
-
       if @page.valid?
         session[:invalid_steps][@page_id].delete(next_step_name) if session[:invalid_steps][@page_id]
         redirect_to wizard_path(next_step_name)
