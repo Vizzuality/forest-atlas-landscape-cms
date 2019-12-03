@@ -321,11 +321,7 @@ class Management::PageStepsController < ManagementController
     # Verify if the manager is editing a page or creating a new one
     @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
-    @page_id = if @page&.persisted?
-                 params[:dataset_id] || @page.id.to_s
-               else
-                 :new
-               end
+    @page_id = @page&.persisted? ? @page.id.to_s : :new
   end
 
   # Builds the current page state based on the database, session and params
