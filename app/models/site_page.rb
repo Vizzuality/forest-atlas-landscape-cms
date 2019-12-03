@@ -223,8 +223,9 @@ class SitePage < Page
     end
 
     # Validate type
-    if steps_list[:pages].index('type') <= step_index
-      self.errors['content_type'] << 'Please select a valid type' unless self.content_type > 0 && self.content_type <= ContentType.length
+    if steps_list[:pages].index('type') <= step_index &&
+       !ContentType.list.include?(content_type)
+      self.errors['content_type'] << 'Please select a valid type'
     end
 
 
