@@ -238,7 +238,7 @@ GEM
       method_source (~> 0.9.0)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    puma (3.12.0)
+    puma (3.12.2)
     rack (2.0.7)
     rack-cors (1.0.3)
     rack-protection (2.0.4)
@@ -399,7 +399,7 @@ DEPENDENCIES
   pg (~> 0.18)
   pg_search
   pry-rails
-  puma (~> 3.0)
+  puma (~> 3.12)
   rack-cors
   rails (>= 5.0.0, < 5.1)
   rails-assets-backbone!
