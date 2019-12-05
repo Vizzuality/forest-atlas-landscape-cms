@@ -31,8 +31,8 @@ namespace :new_template do
 
 	PageTemplate.create!(
 	    {
-	      name: 'Terms and privacy',
-	      description: 'Terms and privacy',
+	      name: 'Terms of service',
+	      description: 'Terms of service',
 	      uri: PageTemplate::TERMS_OF_SERVICE_SLUG,
 	      parent: home,
 	      show_on_menu: false,
