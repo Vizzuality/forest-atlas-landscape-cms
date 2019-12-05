@@ -51,7 +51,7 @@ namespace :new_template do
 	      show_on_menu: false,
 	      content_type: ContentType::STATIC_CONTENT,
 	      site_templates: @templates,
-	      content: { json: File.read('lib/assets/privacy_policy_page.json') }
+	      content: File.read('lib/assets/privacy_policy_page.json')
 	    }
 	)
 	puts 'Template pages created successfully'

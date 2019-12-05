@@ -47,7 +47,7 @@ namespace :templates do
       content_type: ContentType::STATIC_CONTENT,
       site_templates: templates,
       position: 3,
-      content: {json: File.read('lib/assets/privacy_policy_page.json')}
+      content: File.read('lib/assets/privacy_policy_page.json')
     )
     puts 'Template pages created successfully'
   end
