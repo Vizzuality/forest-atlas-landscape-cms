@@ -1,0 +1,16 @@
+.c-admin-preview-button {
+  display: inline-block;
+
+  & + .c-button {
+    margin-left: 15px;
+  }
+
+  > .c-button {
+    display: inline-block;
+
+    &.-loading {
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+  }
+}

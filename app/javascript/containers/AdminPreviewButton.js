@@ -153,7 +153,7 @@ export default function AdminPreviewButton({ className, slug }) {
   return (
     <button
       type="button"
-      className={classnames(className)}
+      className={classnames(className, { '-loading': state === 'loading' })}
       onClick={onClickButton}
       disabled={state === 'loading'}
     >

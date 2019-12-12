@@ -12,14 +12,8 @@
     transform: translateX(-50%);
   }
 
-  .c-button + .c-button,
-  .c-button + .button-wrapper,
-  .button-wrapper + .c-button {
+  .c-button + .c-button {
     margin-left: 15px;
-  }
-
-  .button-wrapper {
-    display: inline-block;
   }
 
   &.-wide {
@@ -37,6 +31,10 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
+
+    > .flex {
+      display: flex;
+    }
   }
 
   &.-embed {
