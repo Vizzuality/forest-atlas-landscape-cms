@@ -15,8 +15,11 @@
   .c-button + .c-button,
   .c-button + .button-wrapper,
   .button-wrapper + .c-button {
-    display: inline-block; // Needed for .button-wrapper
     margin-left: 15px;
+  }
+
+  .button-wrapper {
+    display: inline-block;
   }
 
   &.-wide {

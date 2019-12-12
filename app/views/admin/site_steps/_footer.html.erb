@@ -5,17 +5,16 @@
     <%= link_to 'Cancel', admin_sites_path, class: 'c-button -outline -dark-text' %>
     <div>
       <% if @site.id %>
-        <% unless local_assigns[:no_continue] %>
-          <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
-        <% end %>
         <% if step == 'style' %>
           <%= react_component('AdminPreviewButton', {
-            text: Admin::SiteStepsController::PREVIEW,
             className: 'c-button -outline -dark-text',
             slug: @site.slug
           }, {
             class: 'button-wrapper'
           }) %>
+        <% end %>
+        <% unless local_assigns[:no_continue] %>
+          <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
         <% end %>
         <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
       <% else %>
