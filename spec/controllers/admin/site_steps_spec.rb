@@ -3,13 +3,10 @@ require 'support/spec_test_helper'
 
 RSpec.describe Admin::SiteStepsController do
   include SpecTestHelper
+  include_context :gon
 
-  let!(:admin) { FactoryBot.create(:user) }
-  let!(:user_1) { FactoryBot.create(:user, admin: false) }
-  let!(:site1) { FactoryBot.create(:site_with_routes) }
-  let!(:site2) { FactoryBot.create(:site_with_routes) }
-  let!(:site3) { FactoryBot.create(:site_with_routes) }
-  let!(:context_1) { }
+  let_it_be(:admin) { FactoryBot.create(:user) }
+  let_it_be(:site_template) { FactoryBot.create(:site_template_default) }
 
   context 'Signed in' do
     before :all do
@@ -17,100 +14,464 @@ RSpec.describe Admin::SiteStepsController do
     end
 
     before do
-      controller.stub session: @test_session
+      allow(controller).to receive(:session).and_return(@test_session)
+
       sign_in admin, @test_session
     end
 
-    describe 'Create new site' do
-      subject { get :new }
-      it { expect(subject).to redirect_to admin_site_step_path(id: 'name') }
+    describe 'GET #new' do
+      it 'redirect to the first step of site creation' do
+        subject = get :new
 
-      let(:update_name) do
-        put :update, params: {
-          id: :name, site: { name: 'testing', routes_attributes: { '0': { host: 'https://testing.com'}}},
-          button: 'Continue' }
+        expect(subject).to redirect_to admin_site_step_path(id: 'name')
       end
-      it { expect(update_name).to redirect_to admin_site_step_path(id: 'users') }
+    end
 
-      let(:update_users) do
-        put :update, params: {
-          site: { user_site_associations_attributes: { '0': { id: '', user_id: user_1.id, selected: '1', role: '3'}}},
-          button: 'Continue', id: 'users' }
+    describe 'GET #edit' do
+      it 'redirect to the first step of site creation' do
+        site = FactoryBot.create :site_with_name
+        subject = get :edit, id: :name, site_slug: site.slug
+
+        expect(subject).to redirect_to admin_site_site_step_path(id: 'name')
       end
-      it { expect(update_users).to redirect_to admin_site_step_path(id: 'contexts') }
+    end
 
-      let(:update_contexts) do
-        put :update, params: {
-          site: { context_sites_attributes: { '0': { context_id: '1'}}},
-          button: 'Continue', id: 'contexts' }
+    describe 'GET #show' do
+      let_it_be(:site) { FactoryBot.create(:site_with_style) }
+
+      context 'global' do
+        before do
+          get :show, params: {id: 'name', site_slug: site.slug}
+        end
+
+        it 'set breadcrumbs' do
+          expect(@controller.view_assigns['breadcrumbs']).to eql(
+            [name: site.id ? "Editing \"#{site.name}\"" : 'New Site']
+          )
+        end
+
+        it 'set gon site throught gon' do
+          expect(gon['site']).to eq site
+        end
+
+        it 'set users throught gon' do
+          expect(gon['users']).to eq User.where(admin: false).order(:name)
+        end
       end
-      it { expect(update_contexts).to redirect_to admin_site_step_path(id: 'settings') }
 
-      let(:update_settings) do
-        put :update, params: {
-          site: { site_settings_attributes: {
-            '0': { position: 7, name: 'translate_english', value: 1 },
-            '1': { position: 9, name: 'translate_spanish', value: 1 },
-            '2': { position: 8, name: 'translate_french', value: 1 },
-            '3': { position: 16, name: 'translate_georgian', value: 1 },
-            '4': { position: 15, name: 'default_site_language', value: 'fr' },
-            '5': { position: 16, name: 'transifex_api_key', value: "#{SecureRandom.uuid}" },
-            '6': { position: 10, name: 'pre_footer', value: '' },
-            '7': { position: 11, name: 'analytics_key', value: "#{SecureRandom.uuid}" },
-            '8': { position: 12, name: 'keywords', value: 'test1, test2' },
-            '9': { position: 12, name: 'contact_email_address', value: "#{user_1.email}" },
-            '10': { position: 12, name: 'hosting_organization', value: '' }
-          }}, button: 'Continue', id: 'settings' }
+      context 'when access to name step' do
+        before do
+          get :show, params: {id: 'name', site_slug: site.slug}
+        end
+
+        it 'set url_controller_id throught gon' do
+          expect(Gon::Global.url_controller_id).to eql(
+            Admin::SiteStepsController::URL_CONTROLLER_ID
+          )
+        end
+
+        it 'set url_controller_name throught gon' do
+          expect(Gon::Global.url_controller_name).to eql(
+            Admin::SiteStepsController::URL_CONTROLLER_NAME
+          )
+        end
+
+        it 'set url_array throught gon' do
+          expect(Gon::Global.url_array).to eql(
+            site.routes.order(main: :desc, id: :asc).to_a
+          )
+        end
       end
-      it { expect(update_settings).to redirect_to admin_site_step_path(id: 'template') }
 
-      # let(:update_template) do
-      #   put :update, params: {
-      #     site: { site_template_id: site1.site_template.id },
-      #     button: 'Continue', id: 'template'
-      #   }
-      # end
-      # it { expect(update_template).to redirect_to admin_site_step_path(id: 'style' )}
-      #
-      # let(:update_style) do
-      #   put :update, params: {
-      #     site: { site_settings_attributes: {
-      #       '0':  { name: 'color', position: '1', value: '97bd3d' },
-      #       '1':  { name: 'content_width', position: '20', value: '1280px' },
-      #       '2':  { name: 'content_font', position: '21', value: "'Merriweather Sans'" },
-      #       '3':  { name: 'heading_font', position: '22', value: "'Merriweather'" },
-      #       '4':  { name: 'cover_size', position: '23', value: '250px' },
-      #       '5':  { name: 'cover_text_alignment', position: '24', value: 'left' },
-      #       '6':  { name: 'header_separators', position: '25', value: 'false' },
-      #       '7':  { name: 'header_background', position: '26', value: 'white' },
-      #       '8':  { name: 'header_transparency', position: '27', value: "'semi'" },
-      #       '9':  { name: 'header-country-colours', position: '28', value: '#000000' },
-      #       '10': { name: 'footer_background', position: '29', value: "'accent-color'" },
-      #       '11': { name: 'footer_text_color', position: '30', value:  "'white'" },
-      #       '12': { name: 'footer-links-color', position: '31', value: "'white'" }
-      #     }}, "button"=>"Continue", "id"=>"style" }
-      # end
-      # it { expect(update_style).to redirect_to admin_site_step_path(id: 'content' )}
-      #
-      # let(:uploaded_image) { fixture_file_upload('spec/support/fixtures/images/image1.jpg')}
-      #
-      # let(:update_content) do
-      #   put :update, params: {
-      #     site: { site_settings_attributes: {
-      #       '1':  { position: '2',  name: 'logo_image', image: uploaded_image },
-      #       '2':  { position: '3',  name: 'favico', image: uploaded_image },
-      #       '3':  { position: '6',  name: 'alternative_image', image: uploaded_image, attribution_label: '', attribution_link: ''},
-      #       '30': { position: '30', name:'main_image', image: uploaded_image, id: '',  _destroy: '0', attribution_label: '', attribution_link:''},
-      #       #'30': { position: '30', name:'main_image', image: '/system/temporary_content_images/images/000/000/006/original/74674916_10156310811442447_7045285948006858752_n.jpg?1572956945&temp_id=6', id: '',  _destroy: '0', attribution_label: '', attribution_link:''},
-      #       }}, button: 'Save', id: 'content' }
-      # end
-      # it { expect(update_content).to redirect_to admin_sites_path}
+      context 'when access to users step' do
+        let!(:user) { FactoryBot.create(:user, admin: false) }
+        let!(:another_user) { FactoryBot.create(:user, admin: false) }
+
+        before do
+          FactoryBot.create(:user_site_association, user: user, site: site, selected: '1')
+          site.reload
+          get :show, params: {id: 'users', site_slug: site.slug}
+        end
+
+        it 'build an user site association for non admin users' do
+          user_site_associations = site.user_site_associations
+          expect(user_site_associations.size).to eql 2
+          expect(user_site_associations.last.user_id).to eql(
+            user.id
+          )
+        end
+      end
+
+      context 'when access to contexts step' do
+        before do
+          get :show, params: {id: 'contexts', site_slug: site.slug}
+        end
+
+        it 'set contexts' do
+          expect(@controller.view_assigns['contexts'].to_a).to eql(
+            Context.all.to_a
+          )
+        end
+      end
+
+      context 'when access to template step' do
+        before do
+          get :show, params: {id: 'template', site_slug: site.slug}
+        end
+
+        it 'set color settings' do
+          # Do nothing, call an empty method
+        end
+      end
+
+      context 'when access to content step' do
+        before do
+          get :show, params: {id: 'content', site_slug: site.slug}
+        end
+
+        it 'set site settings' do
+          expect(@controller.view_assigns['logo_image']).not_to be_nil
+          expect(@controller.view_assigns['main_images']).not_to be_nil
+          expect(@controller.view_assigns['alternative_image']).not_to be_nil
+          expect(@controller.view_assigns['favico']).not_to be_nil
+        end
+
+        it 'set main_images thought gon' do
+          expect(Gon::Global.main_images).not_to be_nil
+        end
+      end
+
+      context 'when access to settings step' do
+        before do
+          get :show, params: {id: 'settings', site_slug: site.slug}
+        end
+
+        it 'set site settings' do
+          expect(@controller.view_assigns['default_site_language']).not_to be_nil
+          expect(@controller.view_assigns['translate_english']).not_to be_nil
+          expect(@controller.view_assigns['translate_spanish']).not_to be_nil
+          expect(@controller.view_assigns['translate_french']).not_to be_nil
+          expect(@controller.view_assigns['translate_georgian']).not_to be_nil
+          expect(@controller.view_assigns['transifex_api_key']).not_to be_nil
+        end
+      end
+
+      context 'when access to style step' do
+        before do
+          get :show, params: {id: 'style', site_slug: site.slug}
+        end
+
+        it 'set color_controller_id thought gon' do
+          expect(Gon::Global.color_controller_id).to eql(
+            Admin::SiteStepsController::COLOR_CONTROLLER_ID
+          )
+        end
+
+        it 'set color_controller_name thought gon' do
+          expect(Gon::Global.color_controller_name).to eql(
+            Admin::SiteStepsController::COLOR_CONTROLLER_NAME
+          )
+        end
+
+        it 'set color_controller_id thought gon' do
+          color_array =
+            site.site_settings.find { |ss| ss.name == 'header-country-colours' }
+          expect(Gon::Global.color_array).to eql(
+            color_array&.value&.split(' ')&.map { |x| {color: x} }
+          )
+        end
+      end
+    end
+
+    describe 'PUT #update' do
+      context 'when update name step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] = FactoryBot.attributes_for(:site)
+        end
+
+        context 'when information is valid' do
+          let(:valid_site_info) do
+            {
+              name: 'testing',
+              routes_attributes: {'0': {host: 'https://testing.com'}}
+            }
+          end
+
+          it 'redirect the user to the users step' do
+            put :update, params: {
+              id: :name,
+              site: valid_site_info,
+              button: 'Continue'
+            }
+            expect(response).to redirect_to admin_site_step_path(id: 'users')
+          end
+        end
+
+        context 'when information is not valid' do
+          let(:invalid_site_info) { {name: ''} }
+
+          it 'redirect the user to the users step' do
+            put :update, params: {
+              id: :name,
+              site: invalid_site_info,
+              button: 'Continue'
+            }
+            expect(response).not_to redirect_to admin_site_step_path(id: 'users')
+          end
+        end
+      end
+
+      context 'when update users step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] =
+            FactoryBot.create(:site_with_name).attributes
+        end
+
+        context 'when information is valid' do
+          let(:user) { FactoryBot.create(:user, admin: false) }
+          let(:valid_site_info) do
+            {
+              user_site_associations_attributes: {
+                '0': {id: '', user_id: user.id, selected: '1', role: '3'}
+              }
+            }
+          end
+
+          it 'redirect the user to the contexts step' do
+            put :update, params: {
+              site: valid_site_info,
+              button: 'Continue',
+              id: 'users'
+            }
+            expect(response).to redirect_to admin_site_step_path(id: 'contexts')
+          end
+        end
+      end
+
+      context 'when update contexts step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] =
+            FactoryBot.attributes_for(:site_with_users)
+        end
+
+        context 'when information is valid' do
+          let(:context) { FactoryBot.create(:context) }
+          let(:valid_site_info) do
+            {context_sites_attributes: {'0': {context_id: context.id}}}
+          end
+
+          it 'redirect the user to the settings step' do
+            put :update, params: {
+              site: valid_site_info,
+              button: 'Continue',
+              id: 'contexts'
+            }
+            expect(response).to redirect_to admin_site_step_path(id: 'settings')
+          end
+        end
+
+        context 'when information is invalid' do
+          let(:invalid_site_info) do
+            {context_sites_attributes: {'0': {context_id: '1'}}}
+          end
+
+          it 'not redirect the user to the settings step' do
+            put :update, params: {
+              site: invalid_site_info,
+              button: 'Continue',
+              id: 'contexts'
+            }
+            expect(response).not_to redirect_to admin_site_step_path(id: 'settings')
+          end
+        end
+      end
+
+      context 'when update settings step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] =
+            FactoryBot.attributes_for(:site_with_contexts)
+        end
+
+        context 'when information is valid' do
+          let(:valid_site_info) do
+            {
+              site_settings_attributes: {
+                '0': {position: 7, name: 'translate_english', value: 1}
+              }
+            }
+          end
+
+          it 'redirect the user to the template step' do
+            put :update, params: {
+              site: valid_site_info,
+              button: 'Continue',
+              id: 'settings'
+            }
+            expect(response).to redirect_to admin_site_step_path(id: 'template')
+          end
+        end
+
+        context 'when information is invalid' do
+          let(:invalid_site_info) do
+            {
+              site_settings_attributes: {
+                '0': {position: nil, name: nil, value: 1}
+              }
+            }
+          end
+
+          it 'not redirect the user to the template step' do
+            put :update, params: {
+              site: invalid_site_info,
+              button: 'Continue',
+              id: 'settings'
+            }
+            expect(response).not_to redirect_to admin_site_step_path(id: 'template')
+          end
+        end
+      end
+
+      context 'when update template step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] =
+            FactoryBot.attributes_for(:site_with_settings)
+        end
+
+        context 'when information is valid' do
+          let(:site_template) { FactoryBot.create :site_template_default }
+          let(:valid_site_info) do
+            {site_template_id: site_template.id}
+          end
+
+          it 'redirect the user to the style step' do
+            put :update, params: {
+              site: valid_site_info,
+              button: 'Continue',
+              id: 'template'
+            }
+            expect(response).to redirect_to admin_site_step_path(id: 'style')
+          end
+        end
+
+        context 'when information is invalid' do
+          let(:site_template) { FactoryBot.create :site_template_default }
+          let(:invalid_site_info) do
+            {site_template_id: nil}
+          end
+
+          it 'not redirect the user to the style step' do
+            put :update, params: {
+              site: invalid_site_info,
+              button: 'Continue',
+              id: 'template'
+            }
+            expect(response).not_to redirect_to admin_site_step_path(id: 'style')
+          end
+        end
+      end
+
+      context 'when update style step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] =
+            FactoryBot.attributes_for(:site_with_template)
+        end
+
+        context 'when information is valid' do
+          let(:valid_site_info) do
+            {
+              site_settings_attributes: {
+                '0': {name: 'color', position: 1, value: '#00ff00'}
+              }
+            }
+          end
+
+          it 'redirect the user to the content step' do
+            put :update, params: {
+              site: valid_site_info,
+              button: 'Continue',
+              id: 'style'
+            }
+            expect(response).to redirect_to admin_site_step_path(id: 'content')
+          end
+        end
+
+        context 'when information is invalid' do
+          let(:invalid_site_info) do
+            {
+              site_settings_attributes: {
+                '0': {name: 'invalid', position: 1, value: nil}
+              }
+            }
+          end
+
+          it 'not redirect the user to the content step' do
+            put :update, params: {
+              site: invalid_site_info,
+              button: 'Continue',
+              id: 'style'
+            }
+            expect(response).not_to redirect_to admin_site_step_path(id: 'content')
+          end
+        end
+      end
+
+      context 'when update content step' do
+        before do
+          @test_session[:site] = {}
+          @test_session[:site][:new] =
+            FactoryBot.attributes_for(:site_with_style)
+        end
+
+        context 'when information is valid' do
+          let(:valid_site_info) do
+            {
+              site_settings_attributes: {
+                '0': {name: 'logo_image', position: 2, value: '#00ff00'}
+              }
+            }
+          end
+
+          it 'redirect the user to the sites list' do
+            put :update, params: {
+              site: valid_site_info,
+              button: 'Continue',
+              id: 'content'
+            }
+            expect(response).to redirect_to admin_sites_path
+          end
+        end
+
+        context 'when information is invalid' do
+          let(:invalid_site_info) do
+            {
+              site_settings_attributes: {
+                '0': {name: 'invalid', position: 1, value: nil}
+              }
+            }
+          end
+
+          it 'not redirect the user to sites list' do
+            put :update, params: {
+              site: invalid_site_info,
+              button: 'Continue',
+              id: 'content'
+            }
+            expect(response).not_to redirect_to admin_sites_path
+          end
+        end
+      end
     end
   end
 
   context 'Not signed in' do
     describe 'New site' do
-      subject { get :show, params: { id: :name } }
+      subject { get :show, params: {id: :name} }
 
       it { expect(subject).to redirect_to "#{ENV['CONTROL_TOWER_URL']}/auth?callbackUrl=#{auth_login_url}&token=true" }
     end

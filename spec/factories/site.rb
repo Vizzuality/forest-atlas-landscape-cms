@@ -1,31 +1,66 @@
 FactoryBot.define do
   factory :site do
-    association :site_template, factory: :site_template_fa
+    site_template { create :site_template_default }
 
     sequence(:name) { |n| "Site#{n}" }
-    sequence(:slug) { |n| "site#{n}"}
+    sequence(:slug) { |n| "site#{n}" }
 
-    factory :site_with_routes do
+    trait :with_name_info do
       routes { build_list :route, 1 }
     end
 
-    trait :with_settings do
-      after(:build) do |s|
-        s.site_settings = [
-          build(:site_setting_hosting_organization),
-          build(:site_setting_contact_email_address),
-          build(:site_setting_keywords),
-          build(:site_setting_analytics_key),
-          build(:site_setting_pre_footer),
-          build(:transifex_api_key),
-          build(:site_setting_default_site_language),
-          build(:site_setting_georgian),
-          build(:site_setting_english),
-          build(:site_setting_french),
-          build(:site_setting_spanish),
-          build(:site_setting_color)
-        ]
+    trait :with_users_info do
+      user_site_associations do
+        build_list :user_site_association, 1, selected: '1', role: '3'
       end
+    end
+
+    trait :with_contexts_info do
+      context_sites { build_list :context_site, 1 }
+    end
+
+    trait :with_settings_info do
+      site_settings { build_list :site_setting_hosting_organization, 1 }
+    end
+
+    trait :with_template_info do
+    end
+
+    trait :with_style_info do
+      site_settings { build_list :site_setting_color, 1 }
+    end
+
+    factory :site_with_name, traits: [:with_name_info]
+    factory :site_with_users, traits: [:with_name_info, :with_users_info]
+    factory :site_with_contexts, traits: [
+      :with_name_info,
+      :with_users_info,
+      :with_contexts_info
+    ]
+    factory :site_with_settings, traits: [
+      :with_name_info,
+      :with_users_info,
+      :with_contexts_info,
+      :with_settings_info
+    ]
+    factory :site_with_template, traits: [
+      :with_name_info,
+      :with_users_info,
+      :with_contexts_info,
+      :with_settings_info,
+      :with_template_info
+    ]
+    factory :site_with_style, traits: [
+      :with_name_info,
+      :with_users_info,
+      :with_contexts_info,
+      :with_settings_info,
+      :with_template_info,
+      :with_style_info
+    ]
+
+    factory :site_with_routes do
+      routes { build_list :route, 1 }
     end
   end
 end
