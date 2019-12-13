@@ -28,7 +28,7 @@ gem 'webpacker', '~> 3.3.1'
 gem 'wicked' # Multi-steps form
 gem 'will_paginate', '~> 3.1.0'
 gem 'sidekiq', '~> 4.1.2'
-
+gem 'interactor', '~> 3.0'
 
 # Session management
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
@@ -71,6 +71,7 @@ group :development, :test do
   gem 'rspec-collection_matchers'
   gem 'rspec-rails', '~> 3.8'
   gem 'factory_bot_rails'
+  gem 'test-prof'
 end
 
 group :development do
