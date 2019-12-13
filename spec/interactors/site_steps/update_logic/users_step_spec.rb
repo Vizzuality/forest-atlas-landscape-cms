@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'support/spec_test_helper'
 
-RSpec.describe SiteSteps::UsersStepUpdateLogic do
+RSpec.describe SiteSteps::UpdateLogic::UsersStep do
   include SpecTestHelper
 
   describe '#save_button_logic' do
@@ -19,7 +19,7 @@ RSpec.describe SiteSteps::UsersStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::UsersStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::UsersStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -49,7 +49,7 @@ RSpec.describe SiteSteps::UsersStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::UsersStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::UsersStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -91,7 +91,7 @@ RSpec.describe SiteSteps::UsersStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::UsersStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::UsersStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
@@ -126,7 +126,7 @@ RSpec.describe SiteSteps::UsersStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::UsersStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::UsersStep.call(
           save_button: false,
           site: site,
           site_id: site.id,

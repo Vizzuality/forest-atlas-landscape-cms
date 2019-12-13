@@ -30,7 +30,7 @@ RSpec.describe Admin::SiteStepsController do
     describe 'GET #edit' do
       it 'redirect to the first step of site creation' do
         site = FactoryBot.create :site_with_name
-        subject = get :edit, id: :name, site_slug: site.slug
+        subject = get :edit, params: {id: :name, site_slug: site.slug}
 
         expect(subject).to redirect_to admin_site_site_step_path(id: 'name')
       end

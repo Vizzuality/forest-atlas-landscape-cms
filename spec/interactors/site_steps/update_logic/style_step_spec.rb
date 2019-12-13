@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'support/spec_test_helper'
 
-RSpec.describe SiteSteps::StyleStepUpdateLogic do
+RSpec.describe SiteSteps::UpdateLogic::StyleStep do
   include SpecTestHelper
 
   describe '#process_site_settings' do
@@ -23,7 +23,7 @@ RSpec.describe SiteSteps::StyleStepUpdateLogic do
       end
 
       subject(:context) do
-        SiteSteps::StyleStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::StyleStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -49,7 +49,7 @@ RSpec.describe SiteSteps::StyleStepUpdateLogic do
       end
 
       subject(:context) do
-        SiteSteps::StyleStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::StyleStep.call(
           save_button: true,
           site: site,
           site_id: :new,
@@ -82,7 +82,7 @@ RSpec.describe SiteSteps::StyleStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::StyleStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::StyleStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -109,7 +109,7 @@ RSpec.describe SiteSteps::StyleStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::StyleStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::StyleStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -140,7 +140,7 @@ RSpec.describe SiteSteps::StyleStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::StyleStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::StyleStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
@@ -172,7 +172,7 @@ RSpec.describe SiteSteps::StyleStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::StyleStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::StyleStep.call(
           save_button: false,
           site: site,
           site_id: site.id,

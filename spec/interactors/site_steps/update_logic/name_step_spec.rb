@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'support/spec_test_helper'
 
-RSpec.describe SiteSteps::NameStepUpdateLogic do
+RSpec.describe SiteSteps::UpdateLogic::NameStep do
   include SpecTestHelper
 
   describe '#save_button_logic' do
@@ -26,7 +26,7 @@ RSpec.describe SiteSteps::NameStepUpdateLogic do
         site.reload
         site.assign_attributes site_attributes
 
-        SiteSteps::NameStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::NameStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -66,7 +66,7 @@ RSpec.describe SiteSteps::NameStepUpdateLogic do
         site.reload
         site.assign_attributes site_attributes
 
-        SiteSteps::NameStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::NameStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -101,7 +101,7 @@ RSpec.describe SiteSteps::NameStepUpdateLogic do
         site.reload
         site.assign_attributes site_attributes
 
-        SiteSteps::NameStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::NameStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
@@ -139,7 +139,7 @@ RSpec.describe SiteSteps::NameStepUpdateLogic do
         site.reload
         site.assign_attributes site_attributes
 
-        SiteSteps::NameStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::NameStep.call(
           save_button: false,
           site: site,
           site_id: site.id,

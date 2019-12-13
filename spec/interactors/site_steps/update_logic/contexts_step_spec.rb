@@ -1,20 +1,22 @@
 require 'rails_helper'
 require 'support/spec_test_helper'
 
-RSpec.describe SiteSteps::TemplateStepUpdateLogic do
+RSpec.describe SiteSteps::UpdateLogic::ContextsStep do
   include SpecTestHelper
 
   describe '#save_button_logic' do
     let_it_be(:site) { FactoryBot.create(:site_with_name) }
 
     context 'when site information is valid' do
-      let(:site_template) { FactoryBot.create :site_template_default }
-      let(:site_attributes) { {site_template_id: site_template.id} }
+      let(:cont) { FactoryBot.create(:context) }
+      let(:site_attributes) do
+        {context_sites_attributes: {'0': {context_id: cont.id}}}
+      end
 
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::TemplateStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContextsStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -30,12 +32,14 @@ RSpec.describe SiteSteps::TemplateStepUpdateLogic do
     end
 
     context 'when site information is invalid' do
-      let(:site_attributes) { {site_template_id: nil} }
+      let(:site_attributes) do
+        {context_sites_attributes: {'0': {context_id: '1'}}}
+      end
 
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::TemplateStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContextsStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -47,6 +51,10 @@ RSpec.describe SiteSteps::TemplateStepUpdateLogic do
 
       it 'fails' do
         expect(context).to be_a_failure
+      end
+
+      it 'returns contexts' do
+        expect(context.contexts.to_a).to eql Context.all.to_a
       end
     end
   end
@@ -55,13 +63,15 @@ RSpec.describe SiteSteps::TemplateStepUpdateLogic do
     let_it_be(:site) { FactoryBot.create(:site_with_name) }
 
     context 'when site information is valid' do
-      let(:site_template) { FactoryBot.create :site_template_default }
-      let(:site_attributes) { {site_template_id: site_template.id} }
+      let(:cont) { FactoryBot.create(:context) }
+      let(:site_attributes) do
+        {context_sites_attributes: {'0': {context_id: cont.id}}}
+      end
 
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::TemplateStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContextsStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
@@ -75,19 +85,21 @@ RSpec.describe SiteSteps::TemplateStepUpdateLogic do
         expect(context).to be_a_success
       end
 
-      it 'mark form_step as template' do
+      it 'mark form_step as contexts' do
         site = context.site
-        expect(site.form_step).to eql 'template'
+        expect(site.form_step).to eql 'contexts'
       end
     end
 
     context 'when site information is invalid' do
-      let(:site_attributes) { {site_template_id: nil} }
+      let(:site_attributes) do
+        {context_sites_attributes: {'0': {context_id: '1'}}}
+      end
 
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::TemplateStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContextsStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
@@ -99,6 +111,10 @@ RSpec.describe SiteSteps::TemplateStepUpdateLogic do
 
       it 'fails' do
         expect(context).to be_a_failure
+      end
+
+      it 'returns contexts' do
+        expect(context.contexts.to_a).to eql Context.all.to_a
       end
     end
   end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'support/spec_test_helper'
 
-RSpec.describe SiteSteps::ContentStepUpdateLogic do
+RSpec.describe SiteSteps::UpdateLogic::ContentStep do
   include SpecTestHelper
 
   describe '#call' do
@@ -19,7 +19,7 @@ RSpec.describe SiteSteps::ContentStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::ContentStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContentStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -46,7 +46,7 @@ RSpec.describe SiteSteps::ContentStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::ContentStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContentStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -82,7 +82,7 @@ RSpec.describe SiteSteps::ContentStepUpdateLogic do
       end
 
       subject(:context) do
-        SiteSteps::ContentStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContentStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -110,7 +110,7 @@ RSpec.describe SiteSteps::ContentStepUpdateLogic do
       end
 
       subject(:context) do
-        SiteSteps::ContentStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::ContentStep.call(
           save_button: true,
           site: site,
           site_id: :new,

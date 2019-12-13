@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'support/spec_test_helper'
 
-RSpec.describe SiteSteps::SettingsStepUpdateLogic do
+RSpec.describe SiteSteps::UpdateLogic::SettingsStep do
   include SpecTestHelper
 
   describe '#process_site_settings' do
@@ -23,7 +23,7 @@ RSpec.describe SiteSteps::SettingsStepUpdateLogic do
       end
 
       subject(:context) do
-        SiteSteps::SettingsStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::SettingsStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -51,7 +51,7 @@ RSpec.describe SiteSteps::SettingsStepUpdateLogic do
       end
 
       subject(:context) do
-        SiteSteps::SettingsStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::SettingsStep.call(
           save_button: true,
           site: site,
           site_id: :new,
@@ -84,7 +84,7 @@ RSpec.describe SiteSteps::SettingsStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::SettingsStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::SettingsStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -111,7 +111,7 @@ RSpec.describe SiteSteps::SettingsStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::SettingsStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::SettingsStep.call(
           save_button: true,
           site: site,
           site_id: site.id,
@@ -142,7 +142,7 @@ RSpec.describe SiteSteps::SettingsStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::SettingsStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::SettingsStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
@@ -174,7 +174,7 @@ RSpec.describe SiteSteps::SettingsStepUpdateLogic do
       subject(:context) do
         site.assign_attributes site_attributes
 
-        SiteSteps::SettingsStepUpdateLogic.call(
+        SiteSteps::UpdateLogic::SettingsStep.call(
           save_button: false,
           site: site,
           site_id: site.id,
