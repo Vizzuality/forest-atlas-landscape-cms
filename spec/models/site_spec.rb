@@ -13,12 +13,6 @@ RSpec.describe Site, type: :model do
     it { is_expected.to be_valid }
   end
 
-  describe 'has settings' do
-    subject { FactoryBot.build(:site_with_routes, :with_settings, site_template: template) }
-    it { expect(subject).to have(12).site_settings }
-    it { is_expected.to be_valid }
-  end
-
   describe 'has routes' do
     subject { FactoryBot.build(:site_with_routes, site_template: template) }
     it { expect(subject).to have(1).routes }

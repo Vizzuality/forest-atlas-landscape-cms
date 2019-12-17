@@ -17,37 +17,46 @@ class Management::DatasetStepsController < ManagementController
   def new
     reset_session_key(:dataset_creation, @dataset_id, {})
     reset_session_key(:context_datasets, @dataset_id, {})
-    redirect_to management_site_dataset_step_path(site_slug: params[:site_slug], id: 'title')
+
+    redirect_to management_site_dataset_step_path(
+      site_slug: params[:site_slug],
+      id: 'title'
+    )
   end
 
   # This action clears the session
   def edit
     reset_session_key(:dataset_creation, @dataset_id, {})
     reset_session_key(:context_datasets, @dataset_id, {})
+
     @dataset = Dataset.find_with_metadata(params[:dataset_id])
     set_current_dataset_state
-    redirect_to management_site_dataset_dataset_step_path(site_slug: params[:site_slug],\
-      dataset_id: params[:dataset_id], id: :metadata)
+
+    redirect_to management_site_dataset_dataset_step_path(
+      site_slug: params[:site_slug],
+      dataset_id: params[:dataset_id],
+      id: :metadata
+    )
   end
 
   # Wicked Wizard's Show
   def show
     @breadcrumbs << {name: 'New Dataset'}
-
     @dataset.form_step = step
-    case step
-      when 'title'
-      when 'connector'
-        gon.collector_selected = nil
-      when 'labels'
-      when 'context'
-        select_contexts
-      when 'metadata'
-        get_languages
-        get_metadata
-      when 'options'
-        get_metadata_columns
+
+    if %w[context metadata options].include? step
+      result = DatasetSteps::ShowLogic.const_get("#{step.camelize}Step").call(
+        site: @site,
+        dataset: @dataset,
+        dataset_id: @dataset_id,
+        session: session
+      )
+
+      result.set_variables.each do |key, value|
+        instance_variable_set("@#{key}", value)
+      end
     end
+
     render_wizard
   end
 
@@ -62,13 +71,7 @@ class Management::DatasetStepsController < ManagementController
       else
         render_wizard
       end
-    when 'metadata'
-      if @dataset.valid?
-        save_or_update_step
-      else
-        render_wizard
-      end
-    when 'options'
+    when 'metadata', 'options'
       if @dataset.valid?
         save_or_update_step
       else
@@ -87,7 +90,7 @@ class Management::DatasetStepsController < ManagementController
     when 'context'
       if @dataset.valid?
         build_context_datasets
-        if @context_ids.count == 0
+        if @context_ids.count.zero?
           @dataset.errors['id'] << 'You must choose at least one context'
           select_contexts
           render_wizard
@@ -95,7 +98,7 @@ class Management::DatasetStepsController < ManagementController
         end
 
         ds_id = @dataset.upload session[:user_token]
-        if ds_id != nil
+        if !ds_id.nil?
           save_context_datasets ds_id
           delete_session_key(:dataset_creation, @dataset_id)
           redirect_to_finish_wizard
@@ -111,8 +114,8 @@ class Management::DatasetStepsController < ManagementController
     end
   end
 
-
   private
+
   def dataset_params
     metadata_params = Dataset::API_PROPERTIES + Dataset::APPLICATION_PROPERTIES
     params.require(:dataset).permit(
@@ -151,26 +154,24 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def upload_csv
-    begin
-      csv = params[:csv_uploader]
+    csv = params[:csv_uploader]
 
-      dir = Rails.root.join('public', 'uploads')
-      Dir.mkdir(dir) unless Dir.exist?(dir)
+    dir = Rails.root.join('public', 'uploads')
+    Dir.mkdir(dir) unless Dir.exist?(dir)
 
-      filename = Time.now.to_i.to_s + csv.original_filename
+    filename = Time.now.to_i.to_s + csv.original_filename
 
-      File.open(dir.join(filename), 'wb') do |file|
-        file.write(csv.read)
-      end
-      @dataset.connector_url = ENV['FA_PUBLIC_FOLDER'] + '/uploads/' + filename
-    rescue
-      @dataset.errors.add(:connector_url, 'Error creating the file')
+    File.open(dir.join(filename), 'wb') do |file|
+      file.write(csv.read)
     end
+    @dataset.connector_url = ENV['FA_PUBLIC_FOLDER'] + '/uploads/' + filename
+  rescue
+    @dataset.errors.add(:connector_url, 'Error creating the file')
   end
 
   # Sets the current site from the url
   def set_site
-    @site = Site.find_by({slug: params[:site_slug]})
+    @site = Site.find_by(slug: params[:site_slug])
   end
 
   def steps_names
@@ -179,7 +180,6 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def select_contexts
-
     user = current_user
     @user_contexts = []
     @site.contexts.each do |c|
@@ -193,76 +193,28 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def build_current_dataset_state
-    ds_params = build_new_dataset_state
+    result = DatasetSteps::RecoverDataset.call(
+      action_name: action_name,
+      params: params,
+      dataset_params: params[:dataset].blank? ? {} : dataset_params,
+      session: session
+    )
 
-    if params[:dataset_id]
-      build_existing_dataset_state
-
-      ds_params = @dataset.attributes
-    end
-
-    # Update the dataset with the attributes saved on the session
-    @dataset.set_attributes session[:dataset_creation][@dataset_id].symbolize_keys if session[:dataset_creation][@dataset_id]
-
-    @dataset.application = (ENV['API_APPLICATIONS'] || 'forest-atlas') unless @dataset.application
-
-    process_metadata(ds_params)
-
-    @dataset.assign_attributes ds_params.except(:context_ids, :metadata)
-    @dataset.legend = {} unless @dataset.legend
-    @dataset.metadata = {} unless @dataset.metadata
-  end
-
-  def build_new_dataset_state
-    ds_params = params[:dataset] ? dataset_params : {}
-    @dataset = ds_params[:dataset] ? Dataset.find(ds_params[:dataset]) : Dataset.new
-    @dataset_id = if @dataset && @dataset.persisted?
-      params[:dataset_id] || @dataset.id
-    else
-      :new
-    end
-
-    ds_params
-  end
-
-  def build_existing_dataset_state
-    @dataset_id = params[:dataset_id] || @dataset.id
-    if params[:dataset]
-      @dataset.set_attributes params.to_unsafe_h['dataset'].to_h.deep_symbolize_keys
-    else
-      @dataset = Dataset.find_with_metadata(params[:dataset_id])
-    end
-    @dataset.id = @dataset_id
-
-    set_current_dataset_state
-  end
-
-  def set_current_dataset_state
-    return if action_name == 'show'
-
-    if session[:dataset_creation][@dataset_id]
-      session[:dataset_creation][@dataset_id] =
-        session[:dataset_creation][@dataset_id].deep_merge(@dataset.attributes)
-    else
-      session[:dataset_creation][@dataset_id] = @dataset.attributes
-    end
-
-    @dataset.set_attributes session[:dataset_creation][@dataset_id]
+    @dataset = result.dataset
+    @dataset_id = result.dataset_id
   end
 
   # Creates an array of context_datasets
   def build_context_datasets
     ds_params = params[:dataset] ? dataset_params : {}
-    @context_ids = ds_params[:context_ids] ?  ds_params[:context_ids] : []
+    @context_ids = ds_params[:context_ids] || []
   end
 
   # Saves the current context_datasets
-  def save_context_datasets dataset_id
+  def save_context_datasets(dataset_id)
     @context_ids.each do |context|
-      begin
-        cd = ContextDataset.new dataset_id: dataset_id, context_id: context
-        cd.save!
-      end
+      cd = ContextDataset.new dataset_id: dataset_id, context_id: context
+      cd.save!
     end
   end
 
@@ -276,47 +228,16 @@ class Management::DatasetStepsController < ManagementController
     session[:context_datasets] ||= {} # TODO: is this used?
   end
 
-  def get_languages
-    @languages = @dataset.get_languages
-    @default_language = SiteSetting.default_site_language(@site.id).value
-  end
+  def set_current_dataset_state
+    return if action_name == 'show'
 
-  def get_metadata
-    formatted_metadata = {}
-    metadata = DatasetService.metadata_find_by_ids(session[:user_token], [@dataset.id])
-    metadata.each do |metadata|
-      formatted_metadata[metadata['attributes']['language']] =
-        metadata['attributes']
-      formatted_metadata[metadata['attributes']['language']]['id'] =
-        metadata['id']
+    if session[:dataset_creation][@dataset_id]
+      session[:dataset_creation][@dataset_id] =
+        session[:dataset_creation][@dataset_id].deep_merge(@dataset.attributes)
+    else
+      session[:dataset_creation][@dataset_id] = @dataset.attributes
     end
-    @metadata = formatted_metadata.merge(session[:dataset_creation][@dataset_id]["metadata"])
-  end
 
-  def get_metadata_columns
-    @default_language = SiteSetting.default_site_language(@site.id).value
-    dataset = DatasetService.get_metadata(@dataset.id)['data']
-    metadata = dataset['attributes']['metadata'].find do |md|
-      md['attributes']['language'] == @default_language
-    end
-    @metadata_id = metadata&.dig('id')
-
-    fields = DatasetService.get_fields @dataset.id, dataset['tableName']
-
-    @metadata_columns = fields.map do |field|
-      metadata_columns = metadata&.dig('attributes', 'columns')
-      field_alias = metadata_columns&.dig(field[:name], 'alias')
-      field_description = metadata_columns&.dig(field[:name], 'description')
-      {name: field[:name], alias: field_alias, description: field_description}
-    end
-  end
-
-  def process_metadata(ds_params)
-    (ds_params[:metadata] || {}).each do |language, info|
-      ds_params[:metadata][language]['language'] = language
-      if ds_params[:metadata][language]['id'].blank?
-        ds_params[:metadata][language].delete('id')
-      end
-    end
+    @dataset.set_attributes session[:dataset_creation][@dataset_id]
   end
 end
