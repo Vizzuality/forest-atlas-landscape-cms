@@ -16,14 +16,21 @@ const SETTINGS_DICT = {
   header_background: { selector: '#header_background', multiple: false },
   header_transparency: { selector: '#header_transparency', multiple: false },
   header_login_enabled: { selector: '#header_login_enabled', multiple: false },
+  // NOTE: the country colors inputs are re-rendered every time there's a change (whether it's a
+  // change of value, inputs are added or inputs are removed) by a Backbone view.
+  // That means that the "change" event listeners we'll attach to the inputs won't ever be fired.
+  // Nevertheless, we still need this object to be defined so the values can be serialised and sent
+  // to the back-end.
   'header-country-colours': {
-    selector: '.country-colors-container input[type="color"]',
+    selector: '.js-header-country-colours input[type="text"]',
     multiple: true
   },
   footer_background: { selector: '#footer_background', multiple: false },
   footer_text_color: { selector: '#footer_text_color', multiple: false },
   footer_links_color: { selector: '#footer-links-color', multiple: false }
 };
+
+const COUNTRY_COLORS_CONTAINER_SELECTOR = '.js-header-country-colours';
 
 const getSettingsValue = () => {
   return Object.keys(SETTINGS_DICT).reduce((res, setting) => {
@@ -128,6 +135,25 @@ export default function AdminPreviewButton({ className, slug }) {
 
     return () => {
       removeSettingsListener(setDirtyState);
+    };
+  }, [setDirtyState]);
+
+  // NOTE: the country colors inputs are re-rendered every time there's a change (whether it's a
+  // change of value, inputs are added or inputs are removed) by a Backbone view.
+  // Since React can't re-attach the event listeners to the inputs, we listen to DOM tree changes
+  // instead.
+  useEffect(() => {
+    const observer = new MutationObserver(setDirtyState);
+    observer.observe(
+      document.querySelector(COUNTRY_COLORS_CONTAINER_SELECTOR),
+      {
+        childList: true,
+        subtree: true
+      }
+    );
+
+    return () => {
+      observer.disconnect();
     };
   }, [setDirtyState]);
 
