@@ -12,10 +12,7 @@
     transform: translateX(-50%);
   }
 
-  .c-button + .c-button,
-  .c-button + .button-wrapper,
-  .button-wrapper + .c-button {
-    display: inline-block; // Needed for .button-wrapper
+  .c-button + .c-button {
     margin-left: 15px;
   }
 
@@ -34,6 +31,10 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
+
+    > .flex {
+      display: flex;
+    }
   }
 
   &.-embed {
