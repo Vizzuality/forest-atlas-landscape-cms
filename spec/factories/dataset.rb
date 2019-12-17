@@ -5,9 +5,12 @@ FactoryBot.define do
   factory :dataset do
     id { SecureRandom.uuid}
     application { 'forest-atlas' }
-    sequence(:name) {|n| "name-#{n}"}
+    sequence(:name) { |n| "name-#{n}" }
     provider { 'cartodb' }
     status { 'saved' }
 
+    metadata do
+      {'es' => {}, 'en' => {}, 'fr' => {}, 'gr' => {}, 'ka' => {}}
+    end
   end
 end

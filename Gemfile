@@ -70,6 +70,7 @@ group :development, :test do
   # end
   gem 'rspec-collection_matchers'
   gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-mocks', '~> 3.8'
   gem 'factory_bot_rails'
   gem 'test-prof'
 end
