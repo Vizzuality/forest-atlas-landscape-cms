@@ -31,9 +31,13 @@ namespace :pages do
       )
     end
 
+    template = File.read('lib/assets/privacy_policy_page.json')
     Page.where(uri: 'privacy-policy').where.not(site_id: nil).each do |page|
-      template = File.read('lib/assets/privacy_policy_page.json')
       page.update(content: template)
+    end
+
+    PageTemplate.joins(:pages_site_templates).where(uri: 'privacy-policy').each do |page_template|
+      page_template.update(content: template)
     end
   end
 end
