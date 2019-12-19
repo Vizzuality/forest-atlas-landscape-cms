@@ -30,19 +30,22 @@
 
 class PageTemplate < Page
   has_many :page_site_templates, foreign_key: 'page_id',  dependent: :destroy
-  TERMS_OF_SERVICE_SLUG = 'terms-and-privacy'
+  TERMS_OF_SERVICE_SLUG = 'terms-of-service'
   PRIVACY_POLICY_SLUG = 'privacy-policy'.freeze
   FEEDBACK_SLUG = 'feedback'.freeze
 
   def render_terms_of_service_template(site)
     template = File.read('lib/assets/terms_template.json.erb')
-    hosting_organization = SiteSetting.hosting_organization(site.id).try(:value) ||
-      '[HOSTING ORGANIZATION]'
+    hosting_organization = SiteSetting.hosting_organization(site.id).try(:value)
+    contact_email = SiteSetting.contact_email_address(site.id).try(:value) 
     result = TemplateRenderer.render(
       template,
-      {hosting_organization: hosting_organization}
+      {
+        hosting_organization: hosting_organization,
+        contact_email: contact_email
+      }
     )
-    {json: result}
+    result
   end
 
   private

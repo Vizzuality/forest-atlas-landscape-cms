@@ -42,8 +42,8 @@ def create_pages_templates
 
   PageTemplate.create!(
     {
-      name: 'Terms and privacy',
-      description: 'Terms and privacy',
+      name: 'Terms of service',
+      description: 'Terms of service',
       uri: PageTemplate::TERMS_OF_SERVICE_SLUG,
       parent: home,
       show_on_menu: false,
@@ -62,7 +62,7 @@ def create_pages_templates
       show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
       site_templates: @templates,
-      content: { json: File.read('lib/assets/privacy_policy_page.json') }
+      content: File.read('lib/assets/privacy_policy_page.json')
     }
   )
   puts 'Template pages created successfully'

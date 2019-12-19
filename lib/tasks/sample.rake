@@ -25,8 +25,8 @@ def create_pages_templates
 
   PageTemplate.create!(
     {
-      name: 'Terms and privacy',
-      description: 'Terms and privacy',
+      name: 'Terms of service',
+      description: 'Terms of service',
       uri: PageTemplate::TERMS_OF_SERVICE_SLUG,
       parent: home,
       show_on_menu: false,
@@ -307,7 +307,7 @@ namespace :db do
           show_on_menu: false,
           content_type: ContentType::STATIC_CONTENT,
           site_templates: site_templates,
-          content: {json: File.read('lib/assets/privacy_policy_page.json')}
+          content: File.read('lib/assets/privacy_policy_page.json')
         }
       pp_page.save!
 
@@ -335,7 +335,7 @@ namespace :db do
     task privacy_policy: :environment do
       ActiveRecord::Base.transaction do
         pp_page = PageTemplate.find_by name: 'Privacy Policy'
-        pp_page.content = {json: File.read('lib/assets/privacy_policy_page.json')}
+        pp_page.content = File.read('lib/assets/privacy_policy_page.json')
         pp_page.save!
 
         Site.find_each do |site|
