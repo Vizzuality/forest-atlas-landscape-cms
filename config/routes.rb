@@ -3,11 +3,6 @@ Rails.application.routes.draw do
     resources :temporary_content_images, only: [:create]
     resources :sites, param: :slug do
       resources :site_steps, only: [:show, :update, :edit]
-      resources :preview, only: [:index] do
-        collection do
-          get :compile
-        end
-      end
     end
 
     resources :site_steps, only: [:show, :update, :new]
@@ -100,6 +95,14 @@ Rails.application.routes.draw do
     resources :context_steps, only: [:edit, :show, :update]
   end
   resources :context_steps, only: [:new, :show, :update]
+
+  resources :sites, param: :slug, only: :none do
+    resources :preview, only: [:index] do
+      collection do
+        get :compile
+      end
+    end
+  end
 
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
