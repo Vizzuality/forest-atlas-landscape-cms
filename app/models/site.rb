@@ -60,12 +60,15 @@ class Site < ApplicationRecord
 
     # All fields from previous steps are required if the
     # step parameter appears before or we are on the current step
-    return true if self.form_steps[:pages].index(step.to_s) <= self.form_steps[:pages].index(form_step)
+    return true if form_steps[:pages].index(step.to_s) <= form_steps[:pages].index(form_step)
   end
 
   def mark_routes_for_destruction(routes_attributes)
-    keep_routes_ids = routes_attributes &&
-      routes_attributes.values.reject{ |r| r[:id].blank? }.map{ |r| r[:id].to_i }
+    keep_routes_ids = routes_attributes&.
+      values&.
+      reject { |r| r[:id].blank? }&.
+      map { |r| r[:id].to_i }
+
     routes.each do |r|
       r.mark_for_destruction if r.persisted? && !keep_routes_ids&.include?(r.id)
     end
@@ -276,7 +279,11 @@ class Site < ApplicationRecord
     current_users = user_site_associations.map(&:user_id)
     missing_users = all_users - current_users
     missing_users.each do |user_id|
-      user_site_associations.build(user_id: user_id, role: UserType::PUBLISHER, selected: false)
+      user_site_associations.build(
+        user_id: user_id,
+        role: UserType::PUBLISHER,
+        selected: false
+      )
     end
   end
 
@@ -297,17 +304,11 @@ class Site < ApplicationRecord
   private
 
   def generate_slug
-    write_attribute(:slug, self.name.parameterize == '' ? self.id : self.name.parameterize)
+    write_attribute(:slug, self.name&.parameterize == '' ? self.id : self.name&.parameterize)
   end
 
   def apply_settings
-    #compile_css
-
     system "rake site:apply_settings[#{self.id}] &"
-
-    #Thread.new {
-    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
-    #}.join
   end
 
   ###################################################
@@ -409,5 +410,4 @@ class Site < ApplicationRecord
       self.errors['context_sites'] << 'You must select at least one context when editing a site'
     end
   end
-
 end
