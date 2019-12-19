@@ -1,6 +1,8 @@
-class Admin::PreviewController < AdminController
+class PreviewController < ApplicationController
+  include PermissionsHelper
+
   before_action :load_site
-  before_action :ensure_only_admin_user
+  before_action :set_user_gon
 
   def index
     gon.header_login_enabled = params[:header_login_enabled]

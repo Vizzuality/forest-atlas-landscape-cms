@@ -7,7 +7,7 @@ import Cover from './Cover';
 import HomePage from './HomePage';
 import StaticPage from './StaticPage';
 
-export default function AdminPreviewStatic({ siteSettings, homepage, opencontent }) {
+export default function PreviewStatic({ siteSettings, homepage, opencontent }) {
   const [isHomepage, setIsHomepage] = useState(true);
 
   const onClickHomepage = useCallback(() => setIsHomepage(true), [setIsHomepage]);
@@ -162,7 +162,7 @@ export default function AdminPreviewStatic({ siteSettings, homepage, opencontent
   );
 }
 
-AdminPreviewStatic.propTypes = {
+PreviewStatic.propTypes = {
   siteSettings: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   homepage: PropTypes.shape({}).isRequired,
   opencontent: PropTypes.shape({}).isRequired,

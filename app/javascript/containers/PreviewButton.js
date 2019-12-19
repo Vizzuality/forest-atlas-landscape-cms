@@ -85,7 +85,7 @@ const removeSettingsListener = listener => {
   });
 };
 
-export default function AdminPreviewButton({ className, slug }) {
+export default function PreviewButton({ className, slug }) {
   // State machine without constrained transitions
   // - dirty: the stylesheet needs to be re-generated
   // - loading: the stylesheet is being generated
@@ -107,7 +107,7 @@ export default function AdminPreviewButton({ className, slug }) {
 
   const onReceiveData = data => {
     const siteSettings = JSON.parse(data.site_settings);
-    const host = `${window.location.origin}/admin/sites/${slug}/preview`;
+    const host = `${window.location.origin}/sites/${slug}/preview`;
     const queryParams = {
       'header-country-colours': siteSettings['header-country-colours'].split(
         ' '
@@ -123,7 +123,7 @@ export default function AdminPreviewButton({ className, slug }) {
 
   const onClickButton = useCallback(() => {
     $.get(
-      `${window.location.origin}/admin/sites/${slug}/preview/compile`,
+      `${window.location.origin}/sites/${slug}/preview/compile`,
       { site_settings: getSettingsValue() },
       () => setLoadingState()
     );
@@ -191,12 +191,12 @@ export default function AdminPreviewButton({ className, slug }) {
   );
 }
 
-AdminPreviewButton.propTypes = {
+PreviewButton.propTypes = {
   className: PropTypes.string,
   slug: PropTypes.string
 };
 
-AdminPreviewButton.defaultProps = {
+PreviewButton.defaultProps = {
   className: '',
   slug: null
 };

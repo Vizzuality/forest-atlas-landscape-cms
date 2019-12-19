@@ -6,7 +6,7 @@
     <div class="flex">
       <% if @site.id %>
         <% if step == 'style' %>
-          <%= react_component('AdminPreviewButton', {
+          <%= react_component('PreviewButton', {
             className: 'c-button -outline -dark-text',
             slug: @site.slug
           }, {
