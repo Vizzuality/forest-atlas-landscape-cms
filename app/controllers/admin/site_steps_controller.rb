@@ -63,7 +63,7 @@ class Admin::SiteStepsController < AdminController
       site_id: @site_id,
       session: session,
       params: params,
-      site_params: site_params
+      site_params: params[:site] ? site_params : {}
     )
 
     @site = result.site if result.success?

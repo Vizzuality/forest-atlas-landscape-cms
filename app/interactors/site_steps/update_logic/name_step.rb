@@ -8,7 +8,12 @@ module SiteSteps
           # If the user pressed the save button
           save_button_logic(context.site_id, context.site, context.session)
         else
-          continue_button_logic(context.site, context.params)
+          continue_button_logic(
+            context.site_id,
+            context.site,
+            context.params,
+            context.session
+          )
         end
       end
 
@@ -25,10 +30,11 @@ module SiteSteps
         end
       end
 
-      def continue_button_logic(site, params)
+      def continue_button_logic(site_id, site, params, session)
         site.form_step = 'name'
         if params.dig('site', 'routes_attributes', '0')
           params['site']['routes_attributes']['0']['main'] = true
+          session[:site][site_id] = params['site']
         end
 
         return if site.valid?
