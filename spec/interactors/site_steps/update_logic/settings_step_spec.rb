@@ -14,9 +14,9 @@ RSpec.describe SiteSteps::UpdateLogic::SettingsStep do
             '0': {position: 7, name: 'translate_english', value: 1},
             '1': {
               'id' => site_setting.id.to_s,
-              position: site_setting.position,
-              name: site_setting.name,
-              value: '#123321'
+              'position' => site_setting.position,
+              'name' => site_setting.name,
+              'value' => '#123321'
             }
           }
         }
@@ -64,7 +64,7 @@ RSpec.describe SiteSteps::UpdateLogic::SettingsStep do
       it 'build each site settings on the site' do
         site_settings = context.site.site_settings
         expect(site_settings.size).to eql(1)
-        expect(site_settings.find_by(name: 'translate_english').value).to eql '1'
+        expect(site_settings.first.value).to eql '1'
       end
     end
   end

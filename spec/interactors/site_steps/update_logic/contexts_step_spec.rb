@@ -33,7 +33,7 @@ RSpec.describe SiteSteps::UpdateLogic::ContextsStep do
 
     context 'when site information is invalid' do
       let(:site_attributes) do
-        {context_sites_attributes: {'0': {context_id: '1'}}}
+        {context_sites_attributes: {'0': {context_id: '100000'}}}
       end
 
       subject(:context) do
@@ -93,7 +93,7 @@ RSpec.describe SiteSteps::UpdateLogic::ContextsStep do
 
     context 'when site information is invalid' do
       let(:site_attributes) do
-        {context_sites_attributes: {'0': {context_id: '1'}}}
+        {context_sites_attributes: {'0': {context_id: '10000'}}}
       end
 
       subject(:context) do

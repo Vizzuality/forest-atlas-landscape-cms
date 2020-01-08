@@ -6,28 +6,42 @@ FactoryBot.define do
     sequence(:slug) { |n| "site#{n}" }
 
     trait :with_name_info do
-      routes { build_list :route, 1 }
+      before(:create) do |site|
+        site.routes = build_list :route, 1, site: site
+      end
     end
 
     trait :with_users_info do
-      user_site_associations do
-        build_list :user_site_association, 1, selected: '1', role: '3'
+      before(:create) do |site|
+        site.user_site_associations =
+          build_list :user_site_association, 1,
+            selected: '1',
+            role: '3',
+            site: site
       end
     end
 
     trait :with_contexts_info do
-      context_sites { build_list :context_site, 1 }
+      before(:create) do |site|
+        site.context_sites = build_list :context_site, 1, site: site
+      end
     end
 
     trait :with_settings_info do
-      site_settings { build_list :site_setting_hosting_organization, 1 }
+      before(:create) do |site|
+        site.site_settings = build_list :site_setting_hosting_organization,
+          1,
+          site: site
+      end
     end
 
     trait :with_template_info do
     end
 
     trait :with_style_info do
-      site_settings { build_list :site_setting_color, 1 }
+      before(:create) do |site|
+        site.site_settings = build_list :site_setting_color, 1, site: site
+      end
     end
 
     factory :site_with_name, traits: [:with_name_info]

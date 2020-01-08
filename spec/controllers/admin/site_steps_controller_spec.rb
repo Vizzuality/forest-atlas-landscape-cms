@@ -7,6 +7,9 @@ RSpec.describe Admin::SiteStepsController do
 
   let_it_be(:admin) { FactoryBot.create(:user) }
   let_it_be(:site_template) { FactoryBot.create(:site_template_default) }
+  let_it_be(:site) do
+    FactoryBot.create(:site_with_style, site_template: site_template)
+  end
 
   context 'Signed in' do
     before :all do
@@ -29,7 +32,6 @@ RSpec.describe Admin::SiteStepsController do
 
     describe 'GET #edit' do
       it 'redirect to the first step of site creation' do
-        site = FactoryBot.create :site_with_name
         subject = get :edit, params: {id: :name, site_slug: site.slug}
 
         expect(subject).to redirect_to admin_site_site_step_path(id: 'name')
@@ -37,8 +39,6 @@ RSpec.describe Admin::SiteStepsController do
     end
 
     describe 'GET #show' do
-      let_it_be(:site) { FactoryBot.create(:site_with_style) }
-
       context 'global' do
         before do
           get :show, params: {id: 'name', site_slug: site.slug}
@@ -184,12 +184,12 @@ RSpec.describe Admin::SiteStepsController do
     end
 
     describe 'PUT #update' do
-      context 'when update name step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] = FactoryBot.attributes_for(:site)
-        end
+      before do
+        @test_session[:site] = {}
+        @test_session[:site][site.id] = site.attributes
+      end
 
+      context 'when update name step' do
         context 'when information is valid' do
           let(:valid_site_info) do
             {
@@ -201,10 +201,11 @@ RSpec.describe Admin::SiteStepsController do
           it 'redirect the user to the users step' do
             put :update, params: {
               id: :name,
+              site_slug: site.slug,
               site: valid_site_info,
               button: 'Continue'
             }
-            expect(response).to redirect_to admin_site_step_path(id: 'users')
+            expect(response).to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'users')
           end
         end
 
@@ -214,21 +215,16 @@ RSpec.describe Admin::SiteStepsController do
           it 'redirect the user to the users step' do
             put :update, params: {
               id: :name,
+              site_slug: site.slug,
               site: invalid_site_info,
               button: 'Continue'
             }
-            expect(response).not_to redirect_to admin_site_step_path(id: 'users')
+            expect(response).not_to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'users')
           end
         end
       end
 
       context 'when update users step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] =
-            FactoryBot.create(:site_with_name).attributes
-        end
-
         context 'when information is valid' do
           let(:user) { FactoryBot.create(:user, admin: false) }
           let(:valid_site_info) do
@@ -243,20 +239,15 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: valid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'users'
             }
-            expect(response).to redirect_to admin_site_step_path(id: 'contexts')
+            expect(response).to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'contexts')
           end
         end
       end
 
       context 'when update contexts step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] =
-            FactoryBot.attributes_for(:site_with_users)
-        end
-
         context 'when information is valid' do
           let(:context) { FactoryBot.create(:context) }
           let(:valid_site_info) do
@@ -267,9 +258,10 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: valid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'contexts'
             }
-            expect(response).to redirect_to admin_site_step_path(id: 'settings')
+            expect(response).to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'settings')
           end
         end
 
@@ -282,20 +274,15 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: invalid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'contexts'
             }
-            expect(response).not_to redirect_to admin_site_step_path(id: 'settings')
+            expect(response).not_to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'settings')
           end
         end
       end
 
       context 'when update settings step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] =
-            FactoryBot.attributes_for(:site_with_contexts)
-        end
-
         context 'when information is valid' do
           let(:valid_site_info) do
             {
@@ -309,9 +296,10 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: valid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'settings'
             }
-            expect(response).to redirect_to admin_site_step_path(id: 'template')
+            expect(response).to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'template')
           end
         end
 
@@ -328,20 +316,15 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: invalid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'settings'
             }
-            expect(response).not_to redirect_to admin_site_step_path(id: 'template')
+            expect(response).not_to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'template')
           end
         end
       end
 
       context 'when update template step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] =
-            FactoryBot.attributes_for(:site_with_settings)
-        end
-
         context 'when information is valid' do
           let(:site_template) { FactoryBot.create :site_template_default }
           let(:valid_site_info) do
@@ -352,9 +335,10 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: valid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'template'
             }
-            expect(response).to redirect_to admin_site_step_path(id: 'style')
+            expect(response).to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'style')
           end
         end
 
@@ -368,25 +352,20 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: invalid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'template'
             }
-            expect(response).not_to redirect_to admin_site_step_path(id: 'style')
+            expect(response).not_to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'style')
           end
         end
       end
 
       context 'when update style step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] =
-            FactoryBot.attributes_for(:site_with_template)
-        end
-
         context 'when information is valid' do
           let(:valid_site_info) do
             {
               site_settings_attributes: {
-                '0': {name: 'color', position: 1, value: '#00ff00'}
+                '0': {name: 'header_separators', position: 10, value: '#'}
               }
             }
           end
@@ -395,9 +374,10 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: valid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'style'
             }
-            expect(response).to redirect_to admin_site_step_path(id: 'content')
+            expect(response).to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'content')
           end
         end
 
@@ -414,20 +394,15 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: invalid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'style'
             }
-            expect(response).not_to redirect_to admin_site_step_path(id: 'content')
+            expect(response).not_to redirect_to admin_site_site_step_path(site_slug: site.slug, id: 'content')
           end
         end
       end
 
       context 'when update content step' do
-        before do
-          @test_session[:site] = {}
-          @test_session[:site][:new] =
-            FactoryBot.attributes_for(:site_with_style)
-        end
-
         context 'when information is valid' do
           let(:valid_site_info) do
             {
@@ -441,6 +416,7 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: valid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'content'
             }
             expect(response).to redirect_to admin_sites_path
@@ -460,6 +436,7 @@ RSpec.describe Admin::SiteStepsController do
             put :update, params: {
               site: invalid_site_info,
               button: 'Continue',
+              site_slug: site.slug,
               id: 'content'
             }
             expect(response).not_to redirect_to admin_sites_path
