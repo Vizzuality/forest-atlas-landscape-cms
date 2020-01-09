@@ -7,6 +7,7 @@ set :deploy_user, 'ubuntu'
 set :rvm_ruby_version, '2.3.1'
 set :keep_releases, 5
 set :use_sudo, true
+set :rvm1_map_bins, fetch(:rvm1_map_bins).to_a.concat(%w(sidekiq sidekiqctl))
 
 set :linked_files, %w{.env}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
