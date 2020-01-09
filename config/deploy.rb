@@ -19,6 +19,9 @@ set :default_env, {
   NODE_OPTIONS: '--max_old_space_size=2048'
 }
 
+SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
+SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
+
 before 'deploy:publishing', 'site:create_assets'
 before 'deploy:assets:precompile', 'node_modules:generate'
 
