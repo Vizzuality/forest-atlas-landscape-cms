@@ -43,7 +43,9 @@ namespace :deploy do
         within release_path do
           with rails_env: fetch(:rails_env) do
             with node_env: 'production' do
-              execute("cd #{release_path} && yarn --ignore-engines")
+              execute("cd #{release_path}")
+              execute("node -v")
+              execute("yarn --ignore-engines")
               # execute(:rake, 'webpacker:compile')
             end
           end
