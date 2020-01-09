@@ -7,8 +7,6 @@ set :deploy_user, 'ubuntu'
 set :rvm_ruby_version, '2.3.1'
 set :keep_releases, 5
 set :use_sudo, true
-set :rvm1_map_bins, fetch(:rvm1_map_bins).to_a.concat(%w(sidekiq sidekiqctl))
-set :bundle_bins, fetch(:bundle_bins, []).push %w(sidekiq sidekiqctl)
 
 set :linked_files, %w{.env}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
@@ -19,9 +17,6 @@ set :default_env, {
   NODE_ENV: 'production',
   NODE_OPTIONS: '--max_old_space_size=2048'
 }
-
-SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
-SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
 
 set :bundle_flags, ''
 
