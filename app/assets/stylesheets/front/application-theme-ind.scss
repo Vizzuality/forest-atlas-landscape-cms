@@ -1,5 +1,25 @@
-// This file is used in development only
-$color-1:#97BE32;
+// NOTE: This file is used in development only. _template-XXX.css.scss.erb is used instead for
+// staging and production.
+// The variables below are only used in development.
+
+$template: 'india'; // String: «default», «india»
+
+$accent-color: #97BE32; // Hex code
+
+$content-width: 1280px; // Pixels or percentage
+$content-font: 'Acumin Pro Condensed'; // Font family name
+$heading-font: 'Acumin Pro Condensed'; // Font family name
+$cover-size: 130px; // Pixels
+$cover-text-alignment: left; // text-align value
+
+$header-menu-items-separator: false; // Boolean
+$header-background-color: 'dark'; // String: «dark», «grey», «white»
+$header-background-transparency: 'semi'; // String: «solid», «semi», «transparent»
+
+$footer-background-color: 'dark'; // String: «dark», «grey», «accent-color»
+$footer-text-color: 'white'; // String: «white», «accent-color»
+$footer-links-color: 'white'; // String: «white», «accent-color»
+
 
 @import
 '../../../node_modules/widget-editor/dist/styles.min',
@@ -9,7 +29,6 @@ $color-1:#97BE32;
 'leaflet',
 '../helpers',
 'settings-theme-ind',
-'../layouts/shared/*',
 '../layouts/front/*',
 '../components/shared/**/*',
 '../components/front/**/*',

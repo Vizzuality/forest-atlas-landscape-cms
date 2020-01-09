@@ -175,49 +175,77 @@ class DatasetService < ApiService
   def self.save_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
     metadata_body = {
       application: application,
-      name: name,
-      applicationProperties: metadata.slice(*Dataset::APPLICATION_PROPERTIES).
-      merge(tags: tags_array)
-    }.merge(
-      metadata.slice(*Dataset::API_PROPERTIES)
-      ).to_json
+      language: metadata[:language],
+    }
 
-      begin
-        Rails.logger.info 'Saving dataset Metadata in the API.'
-        Rails.logger.info "Body: #{metadata_body}"
-
-        metadata_res = yield(metadata_body)
-
-        Rails.logger.info "Response from dataset metadata endpoint: #{metadata_res.body}"
-      rescue => e
-        Rails.logger.error "Error updating dataset metadata in the API: #{e}"
-        return nil
-      end
-      true
+    application_properties = metadata.slice(*Dataset::APPLICATION_PROPERTIES)
+    application_properties.merge!(tags: tags_array.join(',')) if tags_array.any?
+    unless application_properties.blank?
+      metadata_body.merge!(applicationProperties: application_properties)
     end
 
+    metadata_body.merge!(metadata.slice(*Dataset::API_PROPERTIES))
+
+    metadata_body = metadata_body.to_json
+
+    begin
+      Rails.logger.info 'Saving dataset Metadata in the API.'
+      Rails.logger.info "Body: #{metadata_body}"
+
+      metadata_res = yield(metadata_body)
+
+      Rails.logger.info "Response from dataset metadata endpoint: #{metadata_res.body}"
+    rescue => e
+      Rails.logger.error "Error updating dataset metadata in the API: #{e}"
+      return nil
+    end
+    true
+  end
+
   def self.create_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
-    save_metadata(token, dataset_id, application, name, tags_array, metadata) do |body|
-      @conn.post do |req|
-        req.url "/dataset/#{dataset_id}/metadata"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
+    (metadata.is_a?(Array) ? metadata : [metadata]).each do |metadata_info|
+      save_metadata(token, dataset_id, application, name, tags_array, metadata_info) do |body|
+        @conn.post do |req|
+          req.url "/dataset/#{dataset_id}/metadata"
+          req.headers['Authorization'] = "Bearer #{token}"
+          req.headers['Content-Type'] = 'application/json'
+          req.body = body
+        end
       end
     end
   end
 
   def self.update_metadata(token, dataset_id, application, name, tags_array = [], metadata = {})
-    save_metadata(token, dataset_id, application, name, tags_array, metadata) do |body|
-
-
-      @conn.patch do |req|
-        req.url "/dataset/#{dataset_id}/metadata"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
+    (metadata.is_a?(Array) ? metadata : [metadata]).each do |metadata_info|
+      save_metadata(token, dataset_id, application, name, tags_array, metadata_info) do |body|
+        @conn.patch do |req|
+          req.url "/dataset/#{dataset_id}/metadata"
+          req.headers['Authorization'] = "Bearer #{token}"
+          req.headers['Content-Type'] = 'application/json'
+          req.body = body
+        end
       end
     end
+  end
+
+  def self.delete_metadata(token, dataset_id, application, language)
+    begin
+      Rails.logger.info 'Deleting dataset metadata in the API'
+      Rails.logger.info "Dataset: #{dataset_id}"
+      Rails.logger.info "Application: #{application}"
+      Rails.logger.info "Language: #{language}"
+
+      metadata_res = @conn.delete do |req|
+        req.url "/dataset/#{dataset_id}/metadata?application=#{application}&language=#{language}"
+        req.headers['Authorization'] = "Bearer #{token}"
+      end
+
+      Rails.logger.info "Response from dataset metadata endpoint: #{metadata_res.body}"
+    rescue => e
+      Rails.logger.error "Error deleting dataset metadata in the API: #{e}"
+      return nil
+    end
+    true
   end
 
   # Updates the dataset in the API
@@ -292,7 +320,9 @@ class DatasetService < ApiService
           tags: tags_array
         }
       }
-    }).to_json
+    })
+
+    body = body.to_json
 
     begin
       Rails.logger.info 'Creating Dataset in the API.'

@@ -43,12 +43,12 @@ class Site < ApplicationRecord
   after_create :create_context
   after_create :handle_non_compliant_slugs
   after_save :update_routes
-  after_save :apply_settings
   after_create :create_template_content
+  after_commit :apply_settings
 
   cattr_accessor :form_steps do
-    { pages: %w[name users contexts template settings style finish],
-      names: %w(Name Users Contexts Template Settings Style Finish)}
+    { pages: %w[name users contexts settings template style content],
+      names: %w(Name Users Contexts Settings Template Style Content)}
   end
 
 
@@ -60,12 +60,15 @@ class Site < ApplicationRecord
 
     # All fields from previous steps are required if the
     # step parameter appears before or we are on the current step
-    return true if self.form_steps[:pages].index(step.to_s) <= self.form_steps[:pages].index(form_step)
+    return true if form_steps[:pages].index(step.to_s) <= form_steps[:pages].index(form_step)
   end
 
   def mark_routes_for_destruction(routes_attributes)
-    keep_routes_ids = routes_attributes &&
-      routes_attributes.values.reject{ |r| r[:id].blank? }.map{ |r| r[:id].to_i }
+    keep_routes_ids = routes_attributes&.
+      values&.
+      reject { |r| r[:id].blank? }&.
+      map { |r| r[:id].to_i }
+
     routes.each do |r|
       r.mark_for_destruction if r.persisted? && !keep_routes_ids&.include?(r.id)
     end
@@ -199,23 +202,73 @@ class Site < ApplicationRecord
     datasets_contexts
   end
 
-
   # Compiles the site's css and creates a file with it
-  def compile_css
-    begin
-      Rails.logger.debug "Compiling assets for site #{self.id}"
-      compiled = compile_scss
-      Rails.logger.debug "Finished compiling assets for site #{self.id}"
+  def compile_css(preview = false, custom_variables = {})
+    # Generate the body with the specified site_settings
+    env = Rails.application.assets
+    template = site_template_name
+    body = template_body(env, template, custom_variables)
 
-      folder = Rails.root + 'public/stylesheets/front/sites'
-      FileUtils.mkdir_p(folder) unless File.directory?(folder)
-      File.open(folder + "#{id}.css", 'w+') do |f|
-        f.write(compiled)
-      end
-      Rails.logger.debug "Finished saving the assets for site #{self.id}"
-    rescue Exception => e
-        Rails.logger.error("Error compiling the css for site #{self.id}: #{e.inspect} -- #{e.backtrace}")
+    # Save the body in a temporal file to be accessible from sprockets
+    filename = "#{id}_#{Time.now.to_i}.scss"
+    folder = File.join(Rails.root, 'tmp', 'compiled_css')
+    FileUtils.mkdir_p(folder) unless File.directory?(folder)
+    scss_file_path = File.join(folder, filename)
+    scss_file = File.open(scss_file_path, 'w') { |f| f.write(body); f.flush }
+
+    # Recover the asset with sprockets (including dependencies on the own file)
+    asset = asset_resource(env, filename, scss_file)
+    source = asset_resource_compiled(asset)
+    File.write(scss_file, source)
+
+    # Move the temporal file to the final destination including the dependencies
+    # with the values from site settings
+    folder = Rails.root + 'public/stylesheets/front/sites'
+    FileUtils.mkdir_p(folder) unless File.directory?(folder)
+    File.rename(
+      scss_file.path,
+      "#{folder}/#{id}#{preview ? '-preview' : ''}.css")
+  ensure
+    scss_file.close
+    File.delete(scss_file) if File.exist?(scss_file.path)
+  end
+
+  def site_template_name
+    case site_template.name
+    when 'Default'
+      'front/template-default.css'
+    when 'INDIA'
+      'front/template-ind.css'
     end
+  end
+
+  def template_body(env, template, custom_variables)
+    ActionView::Base.new(env.paths).render(
+      partial: template,
+      locals: {variables: variables(custom_variables)},
+      formats: :scss,
+      cache: false
+    )
+  end
+
+  def asset_resource(env, filename, scss_file)
+    if env.find_asset(filename)
+      env.find_asset(filename).source
+    else
+      uri = Sprockets::URIUtils.build_asset_uri(scss_file.path, type: 'text/css')
+      asset = Sprockets::UnloadedAsset.new(uri, env)
+      env.load(asset.uri).source
+    end
+  end
+
+  def asset_resource_compiled(asset)
+    Sass::Engine.new(
+      asset,
+      syntax: :scss,
+      cache: false,
+      read_cache: false,
+      style: :compressed
+    ).render
   end
 
   def build_user_site_associations_for_users(users)
@@ -226,7 +279,11 @@ class Site < ApplicationRecord
     current_users = user_site_associations.map(&:user_id)
     missing_users = all_users - current_users
     missing_users.each do |user_id|
-      user_site_associations.build(user_id: user_id, role: UserType::PUBLISHER, selected: false)
+      user_site_associations.build(
+        user_id: user_id,
+        role: UserType::PUBLISHER,
+        selected: false
+      )
     end
   end
 
@@ -247,84 +304,81 @@ class Site < ApplicationRecord
   private
 
   def generate_slug
-    write_attribute(:slug, self.name.parameterize == '' ? self.id : self.name.parameterize)
+    write_attribute(:slug, self.name&.parameterize == '' ? self.id : self.name&.parameterize)
   end
 
   def apply_settings
-    #compile_css
-
     system "rake site:apply_settings[#{self.id}] &"
-
-    #Thread.new {
-    #  Rake.application.invoke_task("site:apply_settings[#{@site.id}]")
-    #}.join
   end
 
   ###################################################
   # Methods to compile the css                      #
   ###################################################
 
-  def variables
+  def variables(custom_variables = {})
     color = self.site_settings.find_by(name: 'color')
-    if color
-      {'color-1': color.value}
+    content_width = self.site_settings.find_by(name: 'content_width')
+    content_font = self.site_settings.find_by(name: 'content_font')
+    heading_font = self.site_settings.find_by(name: 'heading_font')
+    cover_size = self.site_settings.find_by(name: 'cover_size')
+    cover_text_alignment = self.site_settings.find_by(name: 'cover_text_alignment')
+    header_separators = self.site_settings.find_by(name: 'header_separators')
+    header_background = self.site_settings.find_by(name: 'header_background')
+    header_transparency = self.site_settings.find_by(name: 'header_transparency')
+    header_country_colours = self.site_settings.find_by(name: 'header-country-colours')
+    footer_background = self.site_settings.find_by(name: 'footer_background')
+    footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
+    footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
+
+    if !custom_variables.empty?
+      {
+        'accent-color': custom_variables['color']&.html_safe,
+        'content-width': custom_variables['content_width']&.html_safe,
+        'content-font': custom_variables['content_font']&.html_safe,
+        'heading-font': custom_variables['heading_font']&.html_safe,
+        'cover-size': custom_variables['cover_size']&.html_safe,
+        'cover-text-alignment': custom_variables['cover_text_alignment']&.html_safe,
+        'header-menu-items-separator': custom_variables['header_separators']&.html_safe,
+        'header-background-color': custom_variables['header_background']&.html_safe,
+        'header-background-transparency': custom_variables['header_transparency']&.html_safe,
+        'header-country-colours': (custom_variables['header-country-colours'].presence || '\'\'')&.html_safe,
+        'footer-background-color': custom_variables['footer_background']&.html_safe,
+        'footer-text-color': custom_variables['footer_text_color']&.html_safe,
+        'footer-links-color': custom_variables['footer_links_color']&.html_safe
+      }
+    elsif color
+      {
+        'accent-color': color&.value&.html_safe,
+        'content-width': content_width&.value&.html_safe,
+        'content-font': content_font&.value&.html_safe,
+        'heading-font': heading_font&.value&.html_safe,
+        'cover-size': cover_size&.value&.html_safe,
+        'cover-text-alignment': cover_text_alignment&.value&.html_safe,
+        'header-menu-items-separator': header_separators&.value&.html_safe,
+        'header-background-color': header_background&.value&.html_safe,
+        'header-background-transparency': header_transparency&.value&.html_safe,
+        'header-country-colours': (header_country_colours&.value.presence || '\'\'')&.html_safe,
+        'footer-background-color': footer_background&.value&.html_safe,
+        'footer-text-color': footer_text_color&.value&.html_safe,
+        'footer-links-color': footer_links_color&.value&.html_safe
+      }
     else # Fallback color
-      {'color-1': '#97bd3d'}
+      {
+        'accent-color': '#97bd3d',
+        'content-width': '1280px',
+        'content-font': '\'Fira Sans\'',
+        'heading-font': '\'Fira Sans\'',
+        'cover-size': '250px',
+        'cover-text-alignment': 'left',
+        'header-menu-items-separator': 'false',
+        'header-background-color': '\'dark\'',
+        'header-background-transparency': '\'semi\'',
+        'header-country-colours': '#000000',
+        'footer-background-color': '\'dark\'',
+        'footer-text-color': '\'white\'',
+        'footer-links-color': '\'accent-color\''
+      }
     end
-  end
-
-  def compile_erb
-    Rails.logger.debug "Compiling ERB for site #{self.id}"
-
-    case self.site_template.name
-      when 'Forest Atlas'
-        template = 'front/template-fa.css'
-      when 'Landscape Application'
-        template = 'front/template-lsa.css'
-      when 'CARPE Landscape'
-        template = 'front/template-carpe.css'
-      when 'INDIA'
-        template = 'front/template-ind.css'
-      else
-        Rails.logger.error "Couldn't find template name for #{self.id}"
-        return
-    end
-
-
-    env = Rails.application.assets
-
-
-#    env = if Rails.application.config.assets.is_a?(Sprockets::Index)
-#            Rails.application.config.assets.instance_variable_get('@environment')
-#          else
-#            Rails.application.config.assets
-#          end
-
-
-    body = ActionView::Base.new(
-      env.paths).render({
-                          partial: template,
-                          locals: { variables: variables },
-                          formats: :scss})
-
-    tmp_themes_path = File.join(Rails.root, 'tmp', 'compiled_css')
-    FileUtils.mkdir_p(tmp_themes_path) unless File.directory?(tmp_themes_path)
-    File.open(File.join(tmp_themes_path, "#{id}.scss"), 'w') { |f| f.write(body) }
-
-    env.find_asset(id)
-  end
-
-  def compile_scss
-    scss_file = compile_erb
-    Rails.logger.debug "Finished compiling ERB for site #{self.id}"
-
-    sass_engine = Sass::Engine.new(scss_file.source, {
-      syntax: :scss,
-      style: Rails.env.development? ? :nested : :compressed,
-      cache: false,
-      read_cache: false
-    })
-    sass_engine.render
   end
 
   # Validates if the template was changed
@@ -356,5 +410,4 @@ class Site < ApplicationRecord
       self.errors['context_sites'] << 'You must select at least one context when editing a site'
     end
   end
-
 end

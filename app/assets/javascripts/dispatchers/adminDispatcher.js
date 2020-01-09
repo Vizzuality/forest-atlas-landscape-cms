@@ -1,22 +1,17 @@
 (function (App) {
-  'use strict';
-
-  var Dispatcher = Backbone.Router.extend({
+  const Dispatcher = Backbone.Router.extend({
     routes: {
-      'users(/)': 'Users',
-      '(sites)(/)': 'Sites',
-      '(map_versions)(/)': 'MapVersions',
       'site_steps/(:step)': 'SiteCreation',
       'sites/:slug/site_steps/:step(/)': 'SiteEdition'
     }
   });
 
-  var init = function () {
-    var dispatcher = new Dispatcher();
+  const init = function () {
+    const dispatcher = new Dispatcher();
 
-    dispatcher.on('route', function (routeName, params) {
+    dispatcher.on('route', (routeName, params) => {
       Backbone.history.stop();
-      var Router = App.Router['Admin' + routeName];
+      const Router = App.Router[`Admin${routeName}`];
 
       if (Router) {
         new Router(params.slice(0, params.length - 1));
@@ -43,5 +38,4 @@
 
   // We need for the DOM to be ready
   window.addEventListener('DOMContentLoaded', init);
-
 }).call(this, this.App);

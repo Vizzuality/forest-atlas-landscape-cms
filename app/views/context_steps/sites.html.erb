@@ -8,7 +8,7 @@
 </div>
 
 <%= render partial: 'shared/navigation_header', \
-  locals: {form_steps: wizard_steps, id: @context.id, current_step: step, step_names: @steps_names} %>
+  locals: {form_steps: wizard_steps, resource: @context, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
 <%= form_for @context, url: wizard_path, method: :put do |f| %>

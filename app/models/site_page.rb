@@ -70,13 +70,14 @@ class SitePage < Page
 
   validates :url, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
   validates :uri, uniqueness: {scope: :site}, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::LINK)'
-  validates_presence_of :site_id
   before_create :cheat_with_position_on_create
   before_update :cheat_with_position_on_update
   after_create :update_routes
   after_update :update_routes, unless: 'content_type.eql?(nil) || content_type.eql?(ContentType::HOMEPAGE)'
   after_save :update_temporary_content_images
   after_save :destroy_temporary_cover_and_thumb
+  after_save :update_children_uri, if: 'uri_changed?'
+  after_save :update_children_url, if: 'url_changed?'
 
   validate :step_validation
 
@@ -98,15 +99,9 @@ class SitePage < Page
              names: %w[Position Title Type]}
 
     case self.content_type
-    when ContentType::OPEN_CONTENT
-      steps = { pages: %w[position title type open_content open_content_preview],
-                names: %w[Position Details Type Content Preview] }
     when ContentType::OPEN_CONTENT_V2
       steps = { pages: %w[position title type open_content_v2 open_content_v2_preview],
                 names: %w[Position Details Type Content Preview] }
-    when ContentType::ANALYSIS_DASHBOARD
-      steps = { pages: %w[position title type dataset filters columns preview_analytics_dashboard],
-                names: %w[Position Title Type Dataset Filters Columns Preview] }
     when ContentType::DASHBOARD_V2
       steps = { pages: %w[position title type dashboard_dataset dashboard_widget columns_selection preview],
                 names: %w[Position Details Type Dataset Widget Columns Preview] }
@@ -114,13 +109,13 @@ class SitePage < Page
       steps = { pages: %w[position title type link],
                 names: %w[Position Details Type Link] }
     when ContentType::STATIC_CONTENT
-      steps = { pages: %w[title type open_content open_content_preview],
+      steps = { pages: %w[title type open_content_v2 open_content_v2_preview],
                 names: %w[Details Type Content Preview] }
     when ContentType::MAP
       steps = { pages: %w[position title type map],
                 names: %w[Position Details Type Map] }
     when ContentType::HOMEPAGE
-      steps = { pages: %w[title open_content open_content_preview],
+      steps = { pages: %w[title open_content_v2 open_content_v2_preview],
                 names: ['Title', 'Open Content', 'Open Content Preview'] }
     when ContentType::TAG_SEARCHING
       steps = { pages: %w[position title type tag_searching],
@@ -182,6 +177,11 @@ class SitePage < Page
     attrs
   end
 
+  def header_login_enabled?
+    flag = SiteSetting.header_login_enabled(site_id)&.value
+    !flag || flag == 'true'
+  end
+
   private
   def construct_url
     if self.content['url']
@@ -224,29 +224,13 @@ class SitePage < Page
     end
 
     # Validate type
-    if steps_list[:pages].index('type') <= step_index
-      self.errors['content_type'] << 'Please select a valid type' unless self.content_type > 0 && self.content_type <= ContentType.length
+    if steps_list[:pages].index('type') <= step_index &&
+       !ContentType.list.include?(content_type)
+      self.errors['content_type'] << 'Please select a valid type'
     end
 
 
     # TODO : This part
-    # Validate steps for Analysis Dashboard
-    if self.content_type == ContentType::ANALYSIS_DASHBOARD
-      # Validate Dataset
-
-      # Validate Filters
-
-      # Validate Columns
-
-      # Validate Preview
-    end
-
-
-    # Validate steps for Open Content
-    if self.content_type == ContentType::OPEN_CONTENT
-
-    end
-
 
     # Validate steps for Link
     if self.content_type == ContentType::LINK
@@ -308,7 +292,7 @@ class SitePage < Page
 
   def update_temporary_content_images
     return if content_type.blank? || content.blank?
-    return unless [ContentType::OPEN_CONTENT, ContentType::OPEN_CONTENT_V2].include?(content_type)
+    return unless [ContentType::OPEN_CONTENT_V2].include?(content_type)
     new_content = content
     new_content.scan(/image":"([^"]*)"/).each do |tmp|
       tmp = tmp.first
@@ -337,6 +321,20 @@ class SitePage < Page
       end
     rescue Exception => e
       Rails.logger.error e.message
+    end
+  end
+
+  def update_children_uri
+    children.each do |site_page|
+      current_url = '/' + (url || '')
+      site_page.update_attributes(url: current_url + '/' + site_page.uri)
+    end
+  end
+
+  def update_children_url
+    children.each do |site_page|
+      current_url = '/' + (url || '')
+      site_page.update_attributes(url: current_url + '/' + site_page.uri)
     end
   end
 end

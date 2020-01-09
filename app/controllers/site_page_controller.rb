@@ -7,7 +7,7 @@ class SitePageController < ApplicationController
   before_action :load_breadcrumbs
   before_action :get_active_menu_item
   before_action :load_images
-  before_action :load_flag
+  before_action :load_header_country_colours
   before_action :create_menu_tree, only: [:not_found, :internal_server_error, :unacceptable, :sitemap]
   protect_from_forgery except: :map_resources
 
@@ -15,6 +15,8 @@ class SitePageController < ApplicationController
 
   def load_site_page
     @site_page = SitePage.find(params[:id])
+    @default_language =
+      SiteSetting.default_site_language(@site_page.site_id)&.value
 
     redirect_to not_found_path unless @site_page && @site_page.visible?
   end
@@ -90,20 +92,17 @@ class SitePageController < ApplicationController
     @favico = favico_image_setting.image if !favico_image_setting.blank? && !favico_image_setting.image_file_name.blank?
   end
 
-  def load_flag
+  def load_header_country_colours
     begin
-      @flag = SiteSetting.flag_colors(@site_page.site.id)
-      @flag = @flag.value.split(' ')
+      @header_country_colours = SiteSetting.header_country_colours(@site_page.site.id)
+      @header_country_colours = @header_country_colours.value.split(' ')
     rescue Exception => e
-      @flag = []
-      logger.error("Error when accessing the flag colors for site: #{@site_page.site.name}: #{e}")
+      @header_country_colours = []
+      logger.error("Error when accessing the header country colours for site: #{@site_page.site.name}: #{e}")
     end
   end
 
   def homepage
-  end
-
-  def open_content
   end
 
   def open_content_v2
@@ -159,29 +158,6 @@ class SitePageController < ApplicationController
     session.delete(:user_token)
     session.delete(:current_user)
     redirect_to request.referrer
-  end
-
-  def analysis_dashboard
-    gon.page_name = @site_page.name
-
-    @setting = @site_page.dataset_setting
-    if @setting
-      # Query the API in the dataset_setting
-
-      # Fill the gon for:
-      # ... user filters
-      gon.analysis_user_filters = JSON.parse @setting.columns_changeable
-      # ... widgets
-      gon.analysis_widgets = @setting.widgets.blank? ? nil : (JSON.parse @setting.widgets)
-      # ... data
-      gon.analysis_data = @setting.get_filtered_dataset
-      # ... metadata
-      gon.metadata = Dataset.get_metadata_for_frontend(session[:user_token], @setting.dataset_id)
-      # ... last modification of the fields
-      gon.analysis_timestamp = @setting.fields_last_modified
-      # ... legend fields
-      gon.legend = @setting.legend
-    end
   end
 
   def get_active_menu_item

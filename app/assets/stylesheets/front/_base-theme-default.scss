@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+
+  &::before,
+  &::after {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative; // Make sure the header has the correct width
+  max-width: $content-width;
+  color: $color-4;
+  font-family: $content-font;
+  font-size: $font-size-normal;
+  font-weight: $font-weight-normal;
+  line-height: 1.7;
+
+  @media #{$mq-body-width} {
+    margin: 0 auto;
+  }
+
+  &.-wide {
+    max-width: none;
+
+    .c-header {
+      @if $template == 'india' {
+        position: static;
+      }
+    }
+  }
+
+  &.-map-report {
+    .c-header {
+      margin-bottom: 50px;
+    }
+  }
+}
+
+ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: inline-block;
+    list-style: none;
+  }
+}
+
+a,
+.ql-bubble .ql-editor a {
+  // Do not set inline-block here otherwise the links will be forced to be on online line
+  color: $accent-color;
+  text-decoration: none;
+}
+
+.wrapper {
+  width: 100%;
+  padding: 0 $wrapper-mobile-padding;
+
+  @media #{$mq-mobile} {
+    padding: 0 $wrapper-tablet-padding;
+  }
+
+  @media #{$mq-tablet} {
+    padding: 0 $wrapper-padding;
+  }
+}
+
+.is-hidden {
+  display: none;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.turbolinks-progress-bar {
+  background-color: $accent-color;
+}
+
+::selection {
+  background: rgba($accent-color, .2);
+}
+
+::-moz-selection {
+  background: rgba($accent-color, .2);
+}
+
+.app-header {
+  top: 30px !important; // We need to override map builder styles
+}
+
+@media (max-width:950px) {
+  .map-container{
+    top: 55px !important;
+    position: fixed !important;
+  }
+}
+
+.tab-buttons__tab.mobile-show[data-value="MORE"] {
+  display: none !important;
+}
+
+// Native language picker of Transifex
+.txlive-langselector {
+  display: none;
+}
+

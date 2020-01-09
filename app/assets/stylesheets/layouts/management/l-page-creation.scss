@@ -50,10 +50,6 @@
     .c-fieldset {
       margin-bottom: 20px;
     }
-
-    .c-wysiwyg {
-      margin-top: 60px;
-    }
   }
 
   &.-link {
@@ -88,6 +84,7 @@
     margin-top: 50px;
 
     h2 {
+      font-family: $heading-font;
       font-size: $font-size-big;
       text-align: center;
     }
@@ -116,7 +113,7 @@
   &.-dashboard-preview {
     .c-dashboard {
       margin: 70px auto;
-      max-width: $body-max-width;
+      max-width: $content-width;
     }
   }
 
@@ -132,7 +129,7 @@
     }
 
     a {
-      color: $color-1;
+      color: $accent-color;
       text-decoration: none;
     }
   }
@@ -144,7 +141,7 @@
   }
 
   50% {
-    background-color: rgba($color-1, .3);
+    background-color: rgba($accent-color, .3);
   }
 
   100% {

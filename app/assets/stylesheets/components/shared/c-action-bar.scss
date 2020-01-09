@@ -21,7 +21,7 @@
       left: 0;
       width: 100vw;
       max-width: none;
-      padding: 0 calc((100vw - #{$body-max-width}) / 2);
+      padding: 0 calc((100vw - #{$content-width}) / 2);
       transform: none;
     }
   }
@@ -31,6 +31,10 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
+
+    > .flex {
+      display: flex;
+    }
   }
 
   &.-embed {

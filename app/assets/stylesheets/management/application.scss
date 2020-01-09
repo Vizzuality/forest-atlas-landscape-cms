@@ -1,7 +1,6 @@
 @import
   'leaflet',
   'jquery-ui',
-  'sir-trevor',
   'select2',
   'bootstrap',
   '../../../../node_modules/widget-editor/dist/styles.min',
@@ -9,7 +8,6 @@
   '../helpers',
   'settings',
   '../base',
-  '../layouts/shared/*',
   '../layouts/management/*',
   '../components/shared/**/*',
   '../components/management/**/*';

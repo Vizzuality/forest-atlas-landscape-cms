@@ -96,6 +96,14 @@ Rails.application.routes.draw do
   end
   resources :context_steps, only: [:new, :show, :update]
 
+  resources :sites, param: :slug, only: :none do
+    resources :preview, only: [:index] do
+      collection do
+        get :compile
+      end
+    end
+  end
+
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
   get '/subscriptions', to: 'static_page#subscriptions'

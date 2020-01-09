@@ -8,8 +8,8 @@
 <div class="modal-wrapper hidden" id="share-modal"></div>
 
 <% content_for :external_js do %>
-  <script id="library-load" src="//wri-sites.s3.amazonaws.com/gfw-mapbuilder.org/library.gfw-mapbuilder.org/<%= @site_page.content['version'] || '1.3.3' %>.js"></script>
-  <script type="text/javascript">  
+  <script id="library-load" src="<%= ENV['MAP_BUILDER_BASE_URL'] %>/<%= @site_page.content['version'] || '1.3.3' %>.js"></script>
+  <script type="text/javascript">
     var triggerCustom;
     var mapDatabaseConfig = JSON.parse('<%= @map_content %>');
     var mapConfig = Object.assign(mapDatabaseConfig, {
@@ -19,7 +19,7 @@
     fetch('<%= ENV['FA_PUBLIC_FOLDER']%>/subscriptions', {
       method: 'GET',
       headers: {
-        Authorization: 'Bearer <%= session[:user_token] %>'            
+        Authorization: 'Bearer <%= session[:user_token] %>'
       }
     }).then(function(response) {
       return response.json();

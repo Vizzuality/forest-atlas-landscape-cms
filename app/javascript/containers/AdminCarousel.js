@@ -52,15 +52,13 @@ class AdminCarousel extends React.Component {
         DEFAULT_EMPTY_IMAGE
       ];
       this.setState({ main_images: patch });
-      resolve(response);
     })
     .catch((e) => {
       console.error('Error: We couldn\'t upload the image. Try again');
-      reject(e);
     });
   }
 
-  fileInput(attributeId, inputId, index, filePath = '') {
+  fileInput(attributeId, inputId, index, filePath = '', id = '') {
     return (
       <Fragment>
         <input
@@ -76,6 +74,12 @@ class AdminCarousel extends React.Component {
           name={`${attributeId}[image]`}
           id={inputId}
           value={filePath}
+        />
+        <input
+          type="hidden"
+          name={`${attributeId}[id]`}
+          id={`${inputId}-file`}
+          value={id}
         />
       </Fragment>
     )
@@ -116,7 +120,7 @@ class AdminCarousel extends React.Component {
 
   renderInputs(image, i) {
     const { main_images } = this.state;
-    const { image_url, image_file_name, attribution_label, _destroy, attribution_link, position } = image;
+    const { id, image_url, image_file_name, attribution_label, _destroy, attribution_link, position } = image;
     const imagePosition = position || this.previousPosition + i;
 
     const INPUT_ID = `main-image-${i}`;
@@ -143,7 +147,7 @@ class AdminCarousel extends React.Component {
             {INPUT_ID in this.state.imagePreview && <img src={this.state.imagePreview[INPUT_ID]} /> }
           </div>
           <div className="file-input-footer">
-            {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i, image_url)}
+            {this.fileInput(ATTRIBUTE_ID, INPUT_ID, i, image_url, id)}
             <div className="restrictions">
               <button type="button" className={deleteBtnClasses} onClick={() => this.toggleDeletion(i)}>
                 {!!parseInt(_destroy) ? 'Restore' : 'Remove'}
@@ -182,7 +186,7 @@ class AdminCarousel extends React.Component {
       <div className="homepage-cover-container">
         <div className="homepage-cover">
           <h3>Homepage cover image</h3>
-          <p>You can select multiple images to make an carusel</p>
+          <p>If you'd like, you can select multiple images to create a carousel.</p>
           {main_images.map((image, i) => this.renderInputs(image, i))}
         </div>
       </div>

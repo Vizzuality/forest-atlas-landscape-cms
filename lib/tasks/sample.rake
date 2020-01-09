@@ -6,7 +6,7 @@ def create_pages_templates
       uri: '',
       content_type: ContentType::HOMEPAGE,
       page_version: 2,
-      site_templates: [@fa_template, @la_template],
+      site_templates: [@default_template],
       content: '[{"id":1532344156248,"type":"text","content":"<h1>The interactive forest atlas of Camaroon</h1><p>The Interactive forest atlas of Cameroon is a living, dynamic forest monitoring system that provides unbiased and up-to-date information on the Cameroon\'s forest sector. Built on a geographic information system (GIS) platform, the Atlas aims to strengthen forest management and land use planning by bringing information on all major land use categories onto the same standardized platform.</p><p>The underlying forest atlas database is supported and kept up-to-date by the Ministry of Water, Forests, Hunting and Fishing and the World Resources Institute (WRI), releasing new information as it becomes available via this&nbsp;<a href=\"http://52.45.163.131/#\" target=\"_blank\" style=\"color: rgb(186, 48, 33);\">mapping application</a>. Other publications are released periodically and can be found in the&nbsp;<a href=\"http://52.45.163.131/#\" target=\"_blank\" style=\"color: rgb(186, 48, 33);\">download section</a>.</p><p><br></p><p><br></p><blockquote><em>A key data challenge by integrating forest management classes with forest cover extent and change data from GFW’s near-real-time monitoring system</em></blockquote><p><br></p><p>Unless otherwise noted, Atlas data are licensed under a&nbsp;<a href=\"http://52.45.163.131/#\" target=\"_blank\" style=\"color: rgb(186, 48, 33);\">Creative Commons Attribution 4.0</a>&nbsp;International License. You are free to copy and redistribute the material in any medium or format, and to transform and build upon the material for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made. When displaying and citing the data, use the appropriate credit as listed for the corresponding dataset in the download section.</p>"}]'
     }
   )
@@ -19,19 +19,19 @@ def create_pages_templates
       uri: 'map',
       parent: home,
       content_type: ContentType::MAP,
-      site_templates: [@fa_template, @la_template]
+      site_templates: [@default_template]
     }
   )
 
   PageTemplate.create!(
     {
-      name: 'Terms and privacy',
-      description: 'Terms and privacy',
+      name: 'Terms of service',
+      description: 'Terms of service',
       uri: PageTemplate::TERMS_OF_SERVICE_SLUG,
       parent: home,
       show_on_menu: false,
       content_type: ContentType::STATIC_CONTENT,
-      site_templates: [@fa_template, @la_template],
+      site_templates: [@default_template],
       content: nil # content rendered from .erb template upon site creation
     }
   )
@@ -41,43 +41,23 @@ end
 def create_sites
 
   general_site_settings = [
-    {name: 'color', value: '#000000', position: 1},
+    {name: 'color', value: '#97bd3d', position: 1},
     {name: 'logo_image', value: '', position: 2},
     {name: 'logo_background', value: '#000000', position: 3},
     {name: 'flag', value: '#000000', position: 4}
   ]
 
-  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @fa_template, slug: 'heroku-staging-for-fa-lsa-cms', site_settings_attributes: general_site_settings})
+  @staging_demo_site = Site.new({name: 'Heroku staging for FA LSA CMS', site_template: @default_template, slug: 'heroku-staging-for-fa-lsa-cms', site_settings_attributes: general_site_settings})
   @staging_demo_site.save!(validate: false)
-  @site_two = Site.new({name: 'Site Two', site_template: @fa_template, slug: 'site-two', site_settings_attributes: general_site_settings})
+  @site_two = Site.new({name: 'Site Two', site_template: @default_template, slug: 'site-two', site_settings_attributes: general_site_settings})
   @site_two.save!(validate: false)
-  @site_three = Site.new({name: 'Site Three', site_template: @la_template, slug: 'site-three', site_settings_attributes: general_site_settings})
+  @site_three = Site.new({name: 'Site Three', site_template: @default_template, slug: 'site-three', site_settings_attributes: general_site_settings})
   @site_three.save!(validate: false)
-  @site_four = Site.new({name: 'Site Four', site_template: @la_template, slug: 'site-four', site_settings_attributes: general_site_settings})
+  @site_four = Site.new({name: 'Site Four', site_template: @default_template, slug: 'site-four', site_settings_attributes: general_site_settings})
   @site_four.save!(validate: false)
-  @base_site = Site.new({name: 'Base site', site_template: @fa_template, slug: 'base-site', site_settings_attributes: general_site_settings})
+  @base_site = Site.new({name: 'Base site', site_template: @default_template, slug: 'base-site', site_settings_attributes: general_site_settings})
   @base_site.save!(validate: false)
   puts 'Base site created successfully'
-end
-
-def add_analysis_dashboard
-
-  general_dataset_setting = {
-    context_id: Context.last.id,
-    dataset_id: '299ff5ce-af92-4616-9c09-5f3ca981eb65',
-    api_table_name: 'index_299ff5ceaf9246169c095f3ca981eb65',
-    columns_changeable: %w[track scan bright_ti4 confidence].to_json,
-    columns_visible: %w[confidence bright_ti4 bright_ti5 latitude longitude track scan].to_json,
-    filters: [name: 'bright_ti5', from: '0', to: '330'].to_json,
-    widgets: [{type: 'map', lat: '10.59243', lng: '-33.2855068', zoom: '3'}, {type: 'chart', chart: 'scatter', x: 'track', y: 'scan'}, {type: 'chart', chart: 'pie', x: 'confidence'}].to_json
-  }
-
-#  @staging_demo_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @base_site.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @site_two.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @site_three.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  @site_four.site_pages.find_by(content_type: ContentType::ANALYSIS_DASHBOARD).create_dataset_setting! general_dataset_setting
-#  puts 'Added data to analysis dashboard successfully'
 end
 
 def create_routes
@@ -303,8 +283,7 @@ namespace :db do
   desc 'Create sample development data'
   task :sample => :environment do
 
-    @fa_template = SiteTemplate.find_by name: 'Forest Atlas'
-    @la_template = SiteTemplate.find_by name: 'Landscape Application'
+    @default_template = SiteTemplate.find_by name: 'Default'
 
     create_sites
     create_routes
@@ -312,13 +291,6 @@ namespace :db do
     create_users
     create_user_sites
     create_contexts
-  end
-
-
-  desc 'Create new CARPE template pages'
-  task carpe_templates: :environment do
-    @carpe_template = SiteTemplate.find_by name: 'CARPE Landscape'
-    PageTemplate.find_each { |pt| pt.site_templates << @carpe_template; pt.save }
   end
 
   desc 'Create new privacy policy template and pages'
@@ -335,7 +307,7 @@ namespace :db do
           show_on_menu: false,
           content_type: ContentType::STATIC_CONTENT,
           site_templates: site_templates,
-          content: {json: File.read('lib/assets/privacy_policy_page.json')}
+          content: File.read('lib/assets/privacy_policy_page.json')
         }
       pp_page.save!
 
@@ -363,7 +335,7 @@ namespace :db do
     task privacy_policy: :environment do
       ActiveRecord::Base.transaction do
         pp_page = PageTemplate.find_by name: 'Privacy Policy'
-        pp_page.content = {json: File.read('lib/assets/privacy_policy_page.json')}
+        pp_page.content = File.read('lib/assets/privacy_policy_page.json')
         pp_page.save!
 
         Site.find_each do |site|

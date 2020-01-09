@@ -76,7 +76,7 @@ class Footer extends React.PureComponent {
           <ul className="site-links-list">
 
           <li className="site-link-item">
-            <a href="/terms-and-privacy" className="site-link">{this.getTermsLabel()}</a>
+            <a href="/terms-of-service" className="site-link">{this.getTermsLabel()}</a>
           </li>
 
           <li className="site-link-item">

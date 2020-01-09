@@ -22,9 +22,17 @@
 
   &.-short {
     @media #{$mq-tablet} {
-      // If you update the height, don't forget to update the recommended size
-      // on the site settings
-      height: 250px;
+      @if $header-background-transparency == 'solid' {
+        height: $cover-size;
+      }
+
+      @if $header-background-transparency == 'semi' {
+        height: #{$cover-size + 30px}; // 30px is the height of the sub-menu
+      }
+
+      @if $header-background-transparency == 'transparent' {
+        height: #{$cover-size + 85px}; // 85px is the height of the entire header
+      }
     }
 
     &::after {
@@ -36,28 +44,6 @@
     height: auto;
     background-image: none !important;
   }
-
-  // This interferes with the image attributions and
-  // the possibility to click on the link
-  // If this is not brought back, let's just remove it
-  // &::after {
-  //   display: block;
-  //   position: absolute;
-  //   bottom: 0;
-  //   left: 0;
-  //   width: 100%;
-  //   height: 33%;
-  //   content: "";
-  //   background-image: linear-gradient(
-  //     to bottom,
-  //     rgba(0, 0, 0, 0),
-  //     rgba(0, 0, 0, 0.3)
-  //   );
-
-  //   @media print {
-  //     background-image: none;
-  //   }
-  // }
 
   .slick-slider {
     position: absolute;
@@ -90,14 +76,35 @@
 
   > .wrapper {
     z-index: 1;
-    margin-bottom: 50px;
 
-    @if $theme == 3 {
+    @if $cover-size >= 170px {
+      margin-bottom: 50px;
+    } @else {
+      margin-bottom: 30px;
+    }
+
+    @if $cover-text-alignment == center or $template == 'india' {
       @media #{$mq-tablet} {
         position: absolute;
         top: 50%;
-        // Position container at the center , 50px = header height
-        transform: translateY(calc(-50% + 50px));
+
+        @if $template == 'default' {
+          @if $header-background-transparency == 'transparent' {
+            transform: translateY(calc(-50% + #{85px / 2})); // 85px is the height of the header
+          }
+
+          @if $header-background-transparency == 'semi' {
+            transform: translateY(calc(-50% + #{30px / 2})); // 30px is the height of the sub-menu
+          }
+
+          @if $header-background-transparency == 'solid' {
+            transform: translateY(-50%);
+          }
+        }
+
+        @if $template == 'india' {
+          transform: translateY(calc(-50% + 50px));
+        }
       }
     }
 
@@ -110,29 +117,26 @@
     max-width: $content-max-width;
     margin: 0 auto;
     color: $color-3;
+    font-family: $heading-font;
+    font-size: $font-size-x-big;
     font-weight: $font-weight-bold;
     line-height: 1;
     text-align: left;
 
-    @if $theme == 3 {
+    @if $cover-text-alignment == center {
       text-align: center;
+    }
+
+    @if $template == 'default' {
+      letter-spacing: 0.7px;
+    }
+
+    @if $template == 'india' {
       line-height: 1.2;
     }
 
-    @if $theme == 2 {
-      font-size: $font-size-x-big;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-    }
-
-    @if $theme == 1 or $theme == 3 {
-      font-family: $font-family-2;
-      font-size: $font-size-x-big;
-      letter-spacing: 1.25px;
-
-      @media #{$mq-tablet} {
-        font-size: $font-size-huge;
-      }
+    @media #{$mq-tablet} {
+      font-size: $font-size-huge;
     }
 
     @media print {
@@ -142,32 +146,28 @@
 
   .cover-subtitle {
     max-width: $content-max-width;
-    margin: 0 auto;
+    margin: 10px auto 0;
     color: $color-3;
+    font-family: $heading-font;
     font-weight: $font-weight-bold;
     line-height: 1;
+    letter-spacing: 0.7px;
     font-size: $font-size-small;
     text-transform: uppercase;
-    padding-bottom: 15px;
 
-    @if $theme == 2 {
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
+    @if $cover-text-alignment == center {
+      text-align: center;
     }
 
-    @if $theme == 1 or $theme == 3 {
-      font-family: $font-family-2;
+    @if $template == 'india' {
       letter-spacing: 1.25px;
-    }
-
-    @if $theme == 3 {
       text-align: center;
     }
   }
 
   .cover-attribution {
     position: absolute;
-    right: 0;
+    right: 5px;
     bottom: 0;
     padding: 0 3px 3px 0;
     color: white;

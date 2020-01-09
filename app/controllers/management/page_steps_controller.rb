@@ -8,10 +8,8 @@ class Management::PageStepsController < ManagementController
   # The order of prepend is the opposite of its declaration
   prepend_before_action :load_wizard
   prepend_before_action :set_steps
-  prepend_before_action :build_current_page_state, only: [:show, :update, :edit, :filtered_results, :widget_data]
   prepend_before_action :reset_session, only: [:new, :edit]
-  prepend_before_action :set_page, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
-  prepend_before_action :set_site, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
+  prepend_before_action :set_resources, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update, :filtered_results, :widget_data]
 
 
@@ -66,8 +64,6 @@ class Management::PageStepsController < ManagementController
         @widgets = @site.get_vega_widgets([@dashboard_setting.dataset_id])
       when 'columns_selection'
         build_current_dashboard_setting
-      when 'preview_analytics_dashboard'
-        build_current_dashboard_setting
       when 'dataset'
         @datasets_contexts = @site.get_datasets_contexts
       when 'filters'
@@ -108,8 +104,6 @@ class Management::PageStepsController < ManagementController
         build_current_dashboard_setting
         gon.page_name = @page.name
       # OPEN CONTENT PATH
-      when 'open_content'
-        gon.widgets = get_widgets_list
       when 'open_content_v2'
         gon.widgets = get_widgets_list
 
@@ -141,8 +135,6 @@ class Management::PageStepsController < ManagementController
             delete_url: management_site_widget_step_path(params[:site_slug], x.id) }
         end
         @widgets
-      when 'open_content_preview'
-        gon.widgets = get_widgets_list
       when 'map'
         unless @page.persisted?
           @page.content = if MapVersion.order(:position).first.default_settings.blank?
@@ -193,9 +185,6 @@ class Management::PageStepsController < ManagementController
             move_forward wizard_steps[3]
         end
       when 'type', 'confirmation'
-        if @page.content_type == 7
-          @page.page_version = 2
-        end
 
         set_current_page_state
         move_forward
@@ -209,36 +198,6 @@ class Management::PageStepsController < ManagementController
         else
           render_wizard
         end
-      when 'preview_analytics_dashboard'
-        build_current_dashboard_setting
-        set_current_dashboard_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          render_wizard
-        end
-
-      # ANALYSIS DASHBOARD PATH
-      when 'dataset'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        if @page.valid?
-          redirect_to next_wizard_path
-        else
-          @datasets_contexts = @site.get_datasets_contexts
-          render_wizard
-        end
-
-      when 'filters'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        move_forward
-
-      when 'columns'
-        build_current_dataset_setting
-        set_current_dataset_setting_state
-        move_forward
-
       when 'preview'
         build_current_dashboard_setting
         set_current_dashboard_setting_state
@@ -246,15 +205,9 @@ class Management::PageStepsController < ManagementController
         move_forward Wicked::FINISH_STEP
 
       # OPEN CONTENT PATH
-      when 'open_content'
-        set_current_page_state
-        move_forward next_step, next_step, next_step
       when 'open_content_v2'
         set_current_page_state
         move_forward next_step, next_step, next_step
-      when 'open_content_preview'
-        set_current_page_state
-        move_forward
       when 'open_content_v2_preview'
         set_current_page_state
         move_forward next_step, next_step, next_step
@@ -349,9 +302,18 @@ class Management::PageStepsController < ManagementController
     filtered_params
   end
 
+  # Set all resources on the controller (needed because it is not possible to
+  # check the current order of prepend_before_action callbacks)
+  def set_resources
+    set_site
+    set_page
+
+    build_current_page_state if action_name != 'new'
+  end
+
   # Sets the current site from the url
   def set_site
-    @site = Site.find_by({slug: params[:site_slug]})
+    @site = Site.find_by(slug: params[:site_slug])
   end
 
   # Sets the page id
@@ -359,11 +321,7 @@ class Management::PageStepsController < ManagementController
     # Verify if the manager is editing a page or creating a new one
     @page = params[:site_page_id] ? SitePage.find(params[:site_page_id]) : (SitePage.new site_id: @site.id)
 
-    @page_id = if @page && @page.persisted?
-                 @page.id
-               else
-                 :new
-               end
+    @page_id = @page&.persisted? ? @page.id.to_s : :new
   end
 
   # Builds the current page state based on the database, session and params
@@ -408,7 +366,7 @@ class Management::PageStepsController < ManagementController
     db_params = page_params.to_h[:dashboard_setting] if params[:site_page] && page_params&.to_h[:dashboard_setting]
 
     @dashboard_setting = nil
-    return unless [ContentType::DASHBOARD_V2, ContentType::ANALYSIS_DASHBOARD].include?(@page.content_type)
+    return unless [ContentType::DASHBOARD_V2].include?(@page.content_type)
     if db_params[:id]
       @dashboard_setting = DashboardSetting.find(db_params[:id])
     elsif @page.dashboard_setting
@@ -565,7 +523,6 @@ class Management::PageStepsController < ManagementController
   def move_forward(next_step_name = next_step,
                    save_step_name = Wicked::FINISH_STEP,
                    publish_step_name = Wicked::FINISH_STEP)
-
     if save_button?
       notice_text = @page.id ? 'saved' : 'created'
       if @page.save
@@ -578,7 +535,6 @@ class Management::PageStepsController < ManagementController
       end
 
     elsif publish_button?
-
       @page.enabled = !@page.enabled
       notice_text = @page.enabled ? 'published' : 'unpublished'
       if @page.save
@@ -596,7 +552,6 @@ class Management::PageStepsController < ManagementController
       end
 
     else # Continue button
-
       if @page.valid?
         session[:invalid_steps][@page_id].delete(next_step_name) if session[:invalid_steps][@page_id]
         redirect_to wizard_path(next_step_name)

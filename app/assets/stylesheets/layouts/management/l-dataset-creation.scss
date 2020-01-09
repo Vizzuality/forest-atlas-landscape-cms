@@ -3,7 +3,9 @@
   // screen has a small height
   padding-bottom: 75px;
 
-  &.-title {
+  &.-title,
+  &.-metadata,
+  &.-aliases {
     display: flex;
     align-items: center;
     min-height: calc(100vh - 300px);
@@ -13,6 +15,63 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+  }
+
+  &.-metadata {
+    padding-top: 0;
+
+    .intro {
+      max-width: 570px;
+      margin: 40px auto;
+    }
+
+    .c-inputs-container > .container {
+      > textarea {
+        min-height: 120px;
+      }
+    }
+  }
+
+  &.-aliases {
+    .c-inputs-container > .container {
+      input:disabled {
+        // Since this input has a background, a padding make it appear nicer
+        padding: 2px 3px;
+      }
+
+      textarea {
+        min-height: 80px;
+      }
+
+      .row {
+        border-bottom: 1px solid $color-13;
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  &.-aliases {
+    .c-inputs-container > .container {
+      input:disabled {
+        // Since this input has a background, a padding make it appear nicer
+        padding: 2px 3px;
+      }
+
+      textarea {
+        min-height: 80px;
+      }
+
+      .row {
+        border-bottom: 1px solid $color-13;
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+      }
     }
   }
 
@@ -55,7 +114,7 @@
           border: 1px solid $color-13;
           border-radius: 4px;
           color: $color-4;
-          font-family: $font-family-1;
+          font-family: $content-font;
           font-size: $font-size-normal;
         }
       }
@@ -76,12 +135,12 @@
           }
 
           .select2-selection__choice {
-            border-color: $color-1;
+            border-color: $accent-color;
             background-color: $color-3;
 
             > span {
               margin-right: 5px;
-              color: $color-1;
+              color: $accent-color;
               font-size: $font-size-medium;
             }
           }

@@ -1,12 +1,29 @@
+<%= javascript_pack_tag 'application' %>
+
 <div class="c-action-bar">
   <div class="wrapper">
     <%= link_to 'Cancel', admin_sites_path, class: 'c-button -outline -dark-text' %>
-    <div>
+    <div class="flex">
       <% if @site.id %>
-        <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
+        <% if step == 'style' %>
+          <%= react_component('PreviewButton', {
+            className: 'c-button -outline -dark-text',
+            slug: @site.slug
+          }, {
+            class: 'c-admin-preview-button'
+          }) %>
+        <% end %>
+        <% unless local_assigns[:no_continue] %>
+          <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
+        <% end %>
         <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
       <% else %>
-        <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button' %>
+        <% unless local_assigns[:last_step] %>
+          <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button' %>
+        <% end %>
+        <% if local_assigns[:last_step] %>
+          <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>
+        <% end %>
     <% end %>
     </div>
   </div>

@@ -16,8 +16,13 @@
     widget: @site_page.dashboard_setting.widget_id,
     topContent: @site_page.dashboard_setting.content_top,
     bottomContent: @site_page.dashboard_setting.content_bottom,
-    hiddenFields: @site_page.dashboard_setting.columns.blank? ? [] : @site_page.dashboard_setting.columns.split(',')
+    hiddenFields: @site_page.dashboard_setting.columns.blank? ? [] : @site_page.dashboard_setting.columns.split(','),
+    defaultLanguage: @default_language
   }) %>
 </div>
 
 <%= render 'front/footer' %>
+
+<script type="text/javascript">
+  window.route = 'Dashboard';
+</script>

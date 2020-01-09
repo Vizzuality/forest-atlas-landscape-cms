@@ -1,6 +1,7 @@
 class Management::WidgetStepsController < ManagementController
 
   before_action :set_site
+  before_action :set_default_language
   before_action :authenticate_user_for_site!
   before_action :ensure_management_user, only: :destroy
 
@@ -104,5 +105,9 @@ class Management::WidgetStepsController < ManagementController
 
   def set_site
     @site = Site.find_by(slug: params[:site_slug])
+  end
+
+  def set_default_language
+    @default_language = SiteSetting.default_site_language(@site.id).value
   end
 end

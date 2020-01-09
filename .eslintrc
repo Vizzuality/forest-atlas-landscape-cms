@@ -6,8 +6,6 @@
     "es6": true
   },
   "globals": {
-    "vg": true,
-    "d3": true,
     "$": true,
     "L": true,
     "Backbone": true,
@@ -15,15 +13,10 @@
     "HandlebarsTemplates": true,
     "_": true,
     "Turbolinks": true,
-    "Quill": true,
     "gon": true,
     "Fuse": true,
-    "Jiminy": true,
-    "PruneClusterForLeaflet": true,
-    "PruneCluster": true,
     "CodeMirror": true,
     "Transifex": true,
-    "pica": true,
     "ENV": true
   },
   "extends": "vizzuality",
@@ -42,7 +35,11 @@
     "jsx-a11y/anchor-is-valid": 0,
     "radix": 0,
     "object-curly-newline": 0,
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "jsx-a11y/label-has-for": 0,
+    "jsx-a11y/label-has-associated-control": [2, {
+      "assert": "either"
+    }]
   },
   "parser": "babel-eslint",
   "parserOptions": {

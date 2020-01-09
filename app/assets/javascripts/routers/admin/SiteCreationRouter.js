@@ -63,25 +63,42 @@
       });
     },
 
-    initTemplateStep: function () {
-      var themeColorContainer = document.querySelector('.js-theme-color');
-      var input = themeColorContainer.querySelector('input');
-      var colorLabel = themeColorContainer.querySelector('.js-label');
-      var preview = themeColorContainer.querySelector('.js-preview');
+    initSettingsStep() {
+      var checkboxes = document.querySelectorAll('.js-checkboxes input[type="checkbox"]');
+      var select = document.querySelector('.js-default-lang');
+      var form = document.querySelector('.js-form');
 
-      // We initialize the preview with the saved color
-      preview.style.backgroundColor = input.value;
+      var getDefaultLang = function () {
+        return select.selectedOptions[0].textContent.trim().toLowerCase();
+      };
 
-      input.addEventListener('change', function () {
-        preview.style.backgroundColor = input.value;
-      });
+      var getCheckboxForLang = function (lang) {
+        return  Array.prototype.slice.call(checkboxes).find(function (checkbox) {
+          return checkbox.id === 'translate_' + lang;
+        });
+      };
 
-      colorLabel.addEventListener('keydown', function (e) {
-        if (e.keyCode === 13 || e.keyCode === 32) {
-          this.click();
+      // When the user picks a default language for the site, we also ticks the checkbox
+      // corresponding to this language to make it available as one of the target languages
+      select.addEventListener('change', function (e) {
+        var checkbox = getCheckboxForLang(getDefaultLang());
+        if (checkbox) {
+          checkbox.checked = true;
         }
       });
 
+      // When the user submits the form, we make sure the site's default language has been enabled
+      // If not, we display an error message
+      form.addEventListener('submit', function (e) {
+        var checkbox = getCheckboxForLang(getDefaultLang());
+        if (!checkbox.checked) {
+          e.preventDefault();
+          App.notifications.broadcast(App.Helper.Notifications.site.defaultLanguage);
+        }
+      });
+    },
+
+    initTemplateStep: function () {
       var templateLabels = document.querySelectorAll('.js-template-label');
       for (var i = 0, j = templateLabels.length; i < j; i++) {
         templateLabels[i].addEventListener('keydown', function (e) {
@@ -92,7 +109,25 @@
       }
     },
 
-    initStyleStep: function () {
+    initStyleStep: function() {
+      new App.View.ColorSelectorView({
+        el: '.js-color-selector'
+      });
+
+      var headerCountryColourContainer = document.querySelector('.js-header-country-colours');
+      new App.View.FlagColorsView({
+        el: '.js-header-country-colours',
+        name: 'header-country-colours',
+        position: '28',
+        inputName: headerCountryColourContainer.dataset.inputName,
+        inputId: headerCountryColourContainer.dataset.inputId,
+        colors: headerCountryColourContainer.dataset.colors.split(' ').filter(function (str) {
+          return !!str.length;
+        })
+      });
+    },
+
+    initContentStep: function() {
       var fileInputs = document.querySelectorAll('input[type="file"]');
       // eslint-disable-next-line block-scoped-var
       for (var i = 0, j = fileInputs.length; i < j; i++) {
@@ -109,8 +144,6 @@
           }
         });
       }
-
-      new App.View.FlagColorsView({ el: '.js-flag-colors' });
     },
 
     /**

@@ -11,7 +11,7 @@
 <% end %>
 
 <%= render partial: 'shared/navigation_header', locals: \
-  {form_steps: form_steps, id: @page.id, current_step: step, step_names: @steps_names, \
+  {form_steps: form_steps, resource: @page, current_step: step, step_names: @steps_names, \
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
@@ -20,7 +20,7 @@
     <div class="wrapper">
       <div class="c-card-list">
         <div class="card -footer-at-bottom">
-          <h3 class="title">(V2) Open Content page</h3>
+          <h3 class="title">Open Content page</h3>
           <p class="description">Create a new page with any type of content you want in.</p>
           <div class="footer">
             <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::OPEN_CONTENT_V2}, class: 'c-button'  %>
@@ -28,8 +28,8 @@
         </div>
 
         <div class="card -footer-at-bottom">
-          <h3 class="title">Dashboard V2</h3>
-          <p class="description">New FA dashboard</p>
+          <h3 class="title">Dashboard</h3>
+          <p class="description">FA dashboard</p>
           <div class="footer">
             <%= button_to 'Create', management_site_page_step_path(@site.slug), method: :put, params: {id: :type, 'site_page[content_type]': ContentType::DASHBOARD_V2}, class: 'c-button'  %>
           </div>

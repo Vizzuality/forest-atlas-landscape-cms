@@ -1,3 +1,4 @@
+<%# WARN: if you make any change to this template, please update app/javascript/containsers/PreviewStatic.js %>
 <header class="c-header js-header">
   <div class="mobile-drawer js-mobile-drawer">
     <div class="wrapper">
@@ -28,14 +29,16 @@
               </li>
             <% end -%>
         <% end -%>
-        <li>
-          <form method="get" action="<%= search_results_path(id: @site_page.site_id) %>">
-            <div class="c-input-search">
-              <input type="input" placeholder="Search" name="search" />
-              <button type="submit">Search</button>
-            </div>
-          </form>
-        </li>
+        <% if @site_page.site_template.name != 'INDIA' %>
+          <li>
+            <form method="get" action="<%= search_results_path(id: @site_page.site_id) %>">
+              <div class="c-input-search">
+                <input type="input" placeholder="Search" name="search" />
+                <button type="submit">Search</button>
+              </div>
+            </form>
+          </li>
+        <% end %>
       </ul>
       <ul>
         <li class="notranslate js-language-selector-mobile"></li>
@@ -136,24 +139,26 @@
                 <% end -%>
               </li>
           <% end -%>
-          <li class="dropdown-item search js-search">
-            <button type="button" class="search-button js-search-button" href="<%= search_results_path(id: @site_page.site_id) %>">Search</button>
-            <ul>
-              <li>
-                <form method="get" action="<%= search_results_path(id: @site_page.site_id) %>">
-                  <div class="c-input-search">
-                    <input type="input" placeholder="Search" name="search" />
-                    <button type="submit">Search</button>
-                  </div>
-                </form>
-              </li>
-            </ul>
-          </li>
+          <% if @site_page.site_template.name != 'INDIA' %>
+            <li class="dropdown-item search js-search">
+              <button type="button" class="search-button js-search-button" href="<%= search_results_path(id: @site_page.site_id) %>">Search</button>
+              <ul>
+                <li>
+                  <form method="get" action="<%= search_results_path(id: @site_page.site_id) %>">
+                    <div class="c-input-search">
+                      <input type="input" placeholder="Search" name="search" />
+                      <button type="submit">Search</button>
+                    </div>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          <% end %>
         </ul>
         <ul>
           <li class="notranslate js-language-selector"></li>
         </ul>
-        <% if @site_page.site_template.name != 'INDIA' %>
+        <% if @site_page.site_template.name != 'INDIA' && @site_page.header_login_enabled? %>
           <%= render 'front/user'%>
         <% end %>
       </div>
@@ -182,11 +187,11 @@
       <% end %>
     </div>
   </div>
-  <% if @flag.size > 0 %>
     <div class="flag-border">
-      <% @flag.each do |flag| %>
-        <div style="background-color: <%= flag %>;"></div>
+      <% if @header_country_colours.size > 0 %>
+        <% @header_country_colours.each do |colour| %>
+          <div style="background-color: <%= colour %>;"></div>
+        <% end %>
       <% end %>
     </div>
-  <% end %>
 </header>

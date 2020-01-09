@@ -272,7 +272,7 @@ export const getDatasetDownloadUrls = (datasetId, datasetProvider, sqlQuery) => 
   const canDownloadCSV = ['rasdaman', 'nexgddp', 'loca', 'gee'].indexOf(datasetProvider) === -1;
   const canDownloadJSON = ['rasdaman', 'nexgddp', 'loca'].indexOf(datasetProvider) === -1;
 
-  const query = `${ENV.API_URL}/download/${datasetId}?sql=${sqlQuery}`;
+  const query = `${ENV.API_URL}/download/${datasetId}?sql=${encodeURIComponent(sqlQuery)}`;
   return {
     ...(canDownloadCSV ? { csv: `${query}&format=csv` } : {}),
     ...(canDownloadJSON ? { json: `${query}&format=json` } : {})

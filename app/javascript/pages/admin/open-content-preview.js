@@ -8,11 +8,12 @@ import Wysiwyg from 'components/shared/Wysiwyg';
 class OpenContentPreview extends React.Component {
   render() {
     const { admin } = this.props;
+
     return (
       <div className="vizz-wysiwyg">
         <Wysiwyg
           readOnly
-          items={JSON.parse(admin.page.content) || []}
+          items={admin.page.content ? JSON.parse(admin.page.content) : []}
         />
       </div>
     );

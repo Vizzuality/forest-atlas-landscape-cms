@@ -1,17 +1,24 @@
+<%= javascript_pack_tag 'application' %>
+
 <div class="c-extended-header">
   <div class="wrapper">
     <div class="description">
       <h1>Metadata</h1>
-      <p></p>
+      <p />
     </div>
   </div>
 </div>
 
-<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, id: @dataset.id, current_step: step, step_names: @steps_names} %>
+<%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @dataset, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
 <%= form_for @dataset, url: wizard_path, method: :put do |f| %>
-  <%= render partial: 'management/datasets/metadata_form', locals: {f: f} %>
+  <%= react_component('ManagementDatasetMetadata', {
+    languages: @languages,
+    defaultLanguage: @default_language,
+    metadata: @metadata
+  }) %>
+
   <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @dataset } %>

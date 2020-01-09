@@ -25,6 +25,11 @@ const BLOCKS = {
         ],
         handlers: {}
       },
+      // Prevent quill from adding new lines
+      // See https://github.com/zenoamaro/react-quill/issues/235
+      clipboard: {
+        matchVisual: false
+      },
     }
   },
   image: {
@@ -61,15 +66,14 @@ class Wysiwyg extends React.Component {
    * Return the blocks of the wysiwyg
    */
   getBlocks() {
-    const { blocks: blockNames, widgets } = this.props
+    const { blocks: blockNames, widgets } = this.props;
 
     const blocks = pick(
       Object.assign({},
         BLOCKS,
         {
           widget: Object.assign({}, BLOCKS.widget, { widgets })
-        }
-      ),
+        }),
       blockNames
     );
 
@@ -77,7 +81,7 @@ class Wysiwyg extends React.Component {
     if (blocks.text && blocks.text.modules && blocks.text.modules.toolbar) {
       const self = this;
       blocks.text.modules.toolbar.handlers = {
-        link: function() {
+        link() {
           self.quill = this.quill;
           self.setState({ linkHanderOpened: true });
         }
@@ -101,7 +105,10 @@ class Wysiwyg extends React.Component {
           blocks={blocks}
         />
         { linkHanderOpened && (
-          <LinkHandler quill={this.quill} onClose={() => this.setState({ linkHanderOpened: false }) } />
+          <LinkHandler
+            quill={this.quill}
+            onClose={() => this.setState({ linkHanderOpened: false })}
+          />
         )}
       </Fragment>
     );
@@ -119,6 +126,6 @@ Wysiwyg.propTypes = {
 Wysiwyg.defaultProps = {
   blocks: ['text', 'image', 'html', 'widget'],
   widgets: []
-}
+};
 
 export default Wysiwyg;
