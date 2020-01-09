@@ -22,6 +22,8 @@ set :default_env, {
 SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
 SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
 
+set :bundle_flags, '--deployment'
+
 before 'deploy:publishing', 'site:create_assets'
 before 'deploy:assets:precompile', 'node_modules:generate'
 
