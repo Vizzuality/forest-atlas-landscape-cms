@@ -45,7 +45,7 @@ namespace :deploy do
             with node_env: 'production' do
               execute("cd #{release_path}")
               execute("node -v")
-              execute("nvm use v8.11.4")
+              execute("bash nvm use v8.11.4")
               execute("node -v")
               execute("yarn")
               # execute(:rake, 'webpacker:compile')
