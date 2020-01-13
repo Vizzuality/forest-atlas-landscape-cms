@@ -111,8 +111,16 @@
         }
       }
     }
+
+    &.-widget {
+      .fa-wysiwyg-configuration {
+        margin-top: 10px;
+      }
+    }
     
     .fa-wysiwyg-configuration {
+      width: 100%;
+      min-height: 130px; // Needed for the header
       display: flex;
       align-items: stretch;
       border: 1px solid $color-6;
@@ -143,6 +151,30 @@
 
         > .no-margin-bottom {
           margin-bottom: 0;
+        }
+
+        label {
+          display: block;
+        }
+
+        input {
+          display: block;
+          padding: 10px;
+          margin-top: 5px;
+          font-size: $font-size-small;
+          border: 1px solid $color-9;
+          color: $color-4;
+        }
+
+        textarea {
+          display: block;
+          width: 100%;
+          min-height: 30px;
+          padding: 10px;
+          margin-top: 5px;
+          font-size: $font-size-small;
+          border: 1px solid $color-9;
+          color: $color-4;
         }
       }
     }
@@ -441,11 +473,29 @@
       }
     }
   }
-
-  .c-we-chart,
-  .c-we-chart .chart {
-    min-height: 250px;
+  
+  // Here we use flex boxes instead of just setting the height to 100% because the top container
+  // (.c-we-chart-container) has a min-height defined in JS
+  // Because of that, the children can't use height: 100%;
+  .c-we-chart-container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    min-height: 250px;
+
+    .c-we-chart {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      flex-basis: 100%;
+      flex-grow: 1;
+
+      .chart {
+        width: 100%;
+        flex-basis: 100%;
+        flex-grow: 1;
+      }
+    }
   }
 
   .c-we-chart-title {
@@ -520,31 +570,6 @@
 
       border: 1px solid transparent;
       cursor: pointer;
-    }
-  }
-
-  &__preview {
-    &--caption {
-      display: block;
-      font-size: $font-size-small;
-      padding: 5px;
-      color: $color-4;
-    }
-
-    &--captionInput {
-      display: block;
-
-      width: 100%;
-      min-height: 30px;
-
-      padding: 10px;
-      margin: 20px 0 0 0;
-
-      font-size: $font-size-small;
-      border: 1px solid $color-9;
-      color: $color-4;
-
-      resize: none;
     }
   }
 }

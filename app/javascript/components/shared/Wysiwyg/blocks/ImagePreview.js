@@ -24,7 +24,6 @@ class ImagePreview extends PureComponent {
               <label>
                 Caption
                 <textarea
-                  className="fa-wysiwyg-file__preview--captionInput"
                   placeholder="Add caption"
                   defaultValue={caption}
                   onChange={e =>
@@ -41,7 +40,6 @@ class ImagePreview extends PureComponent {
               <label className="no-margin-bottom">
                 Alternative text
                 <textarea
-                  className="fa-wysiwyg-file__preview--captionInput"
                   placeholder="Add alternative text"
                   defaultValue={alternativeText}
                   onChange={e =>
