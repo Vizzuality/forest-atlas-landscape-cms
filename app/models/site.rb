@@ -308,7 +308,8 @@ class Site < ApplicationRecord
   end
 
   def apply_settings
-    system "rake site:apply_settings[#{self.id}] &"
+    #system "rake site:apply_settings[#{self.id}] &"
+    compile_css
   end
 
   ###################################################
