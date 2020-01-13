@@ -44,7 +44,7 @@ namespace :deploy do
           with rails_env: fetch(:rails_env) do
             with node_env: 'production' do
               execute("cd #{release_path}")
-              execute("bash node -v")
+              execute("node -v")
               execute("yarn")
               # execute(:rake, 'webpacker:compile')
             end
