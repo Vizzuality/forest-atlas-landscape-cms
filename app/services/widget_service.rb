@@ -55,10 +55,10 @@ class WidgetService < ApiService
 
       raise JSON.parse(res.body)['errors'].first['detail'] unless res.status == 200
 
-      Rails.logger.info "Response from widget creation endpoint: #{res.body}"
+      Rails.logger.info "Response from widget update endpoint: #{res.body}"
       widget_id = JSON.parse(res.body)['data']['id']
     rescue => e
-      Rails.logger.error "Error creating new widget in the API: #{e}"
+      Rails.logger.error "Error updating widget in the API: #{e}"
       return e.message
     end
     widget_id
