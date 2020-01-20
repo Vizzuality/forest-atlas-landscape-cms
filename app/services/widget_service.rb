@@ -7,7 +7,6 @@ class WidgetService < ApiService
                                 'page[number]': '1', 'page[size]': '10000',
                                 'status': status,
                                 'application': ENV.fetch('API_APPLICATIONS'),
-                                'env': ENV.fetch('API_ENV'),
                                 '_': Time.now.to_s
 
     widgets_json = JSON.parse widgets_request.body
@@ -142,7 +141,6 @@ end
                                 'page[number]': '1', 'page[size]': '10000',
                                 'status': status,
                                 'application': ENV.fetch('API_APPLICATIONS'),
-                                'env': ENV.fetch('API_ENV'),
                                 '_': Time.now.to_s
 
     widgets_json = JSON.parse widgets_request.body
