@@ -120,8 +120,20 @@ class WidgetBlock extends React.Component {
     const { height } = item.content;
     const { loading, widget, downloadUrls } = this.state;
 
-    if (loading || !widget.visualization) {
-      return null;
+    if (loading) {
+      return (
+        <div className="c-widget-card">
+          <div className="c-loading-spinner" />
+        </div>
+      );
+    }
+
+    if (!loading && (!widget || !widget.visualization)) {
+      return (
+        <div className="c-widget-card">
+          Unable to load the widget.
+        </div>
+      );
     }
 
     return (
