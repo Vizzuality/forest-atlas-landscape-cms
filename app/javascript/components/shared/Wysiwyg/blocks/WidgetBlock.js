@@ -28,12 +28,17 @@ class WidgetBlock extends React.Component {
    * @param {object} widget
    */
   static async getDownloadUrls(widget) {
+    const allowDownload = !!(widget.metadata
+      && widget.metadata.length
+      && widget.metadata[0].attributes.info
+      && widget.metadata[0].attributes.info.allowDownload);
+
     const dataUrl = (widget.visualization && widget.visualization.data
       && widget.visualization.data.length
       && widget.visualization.data[0].url)
       || '';
 
-    if (!dataUrl.length) {
+    if (!dataUrl.length || !allowDownload) {
       return {};
     }
 
