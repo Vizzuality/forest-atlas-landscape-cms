@@ -45,8 +45,12 @@ class WidgetsPage extends React.Component {
     // eslint-disable-next-line camelcase
     const rows = this.props.widgets.map(({ widget, delete_url, edit_url }) => ({
       id: { value: widget.id },
-      name: { value: widget.name, sortable: true },
+      name: { value: widget.metadata[0].attributes.info.privateName, sortable: true },
       description: { value: widget.description },
+      owner: { value: widget.user, sortable: true },
+      created: { value: (new Date(widget.created_at)).toLocaleString(), sortable: true },
+      edited: { value: (new Date(widget.updated_at)).toLocaleString(), sortable: true },
+      dataset: { value: widget.dataset_name, sortable: true },
       ...(edit_url ? { edit: { value: edit_url } } : {}),
       ...(delete_url ? { delete: { value: delete_url } } : {})
     }));
@@ -93,7 +97,7 @@ class WidgetsPage extends React.Component {
           <Table
             name="List of widgets"
             searchable
-            columns={['name', 'description']}
+            columns={['name', 'description', 'owner', 'created', 'edited', 'dataset']}
             data={rows}
             actions={actions}
             onClickAction={(...params) => this.onClickAction(...params)}
