@@ -1,6 +1,6 @@
 .c-widget-card {
-  width: 100%;
-  padding: 30px;
+  width: 100% !important; // Some built-in styles of the wysiwyg overwrite this in edition mode
+  padding: 30px !important; // Some built-in styles of the wysiwyg overwrite this in edition mode
   border-radius: 4px;
   border: 1px solid transparent;
 
