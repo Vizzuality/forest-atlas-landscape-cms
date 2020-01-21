@@ -199,7 +199,7 @@ class NewWidgetPage extends React.Component {
         });
 
         const metadata = Object.assign({}, metadataObj, {
-          language: getConfig().locale,
+          language: 'en', // Widgets metadata doesn't change depending of language
           application: getConfig().applications
         });
 
