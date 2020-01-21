@@ -29,8 +29,15 @@ class WidgetService < ApiService
 
   def self.widget(id)
     begin
-      widgets_request = @conn.get "/v1/widget/#{id}?includes=metadata&_=#{Time.now.to_s}"
+      widgets_request = @conn.get "/v1/widget/#{id}?includes=metadata,user&_=#{Time.now.to_s}"
       widget_json = JSON.parse widgets_request.body
+
+      user_email = widget_json.dig('data', 'attributes', 'user', 'email')
+      if user_email
+        user = User.find_by(email: user_email)
+        widget_json['data']['attributes']['user'] = user.name
+      end
+
       widget = Widget.new widget_json['data']
     rescue Exception
       return nil

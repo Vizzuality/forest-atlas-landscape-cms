@@ -309,7 +309,7 @@ class Site < ApplicationRecord
 
   def apply_settings
     #system "rake site:apply_settings[#{self.id}] &"
-    compile_css
+    compile_css unless Rails.env.test?
   end
 
   ###################################################

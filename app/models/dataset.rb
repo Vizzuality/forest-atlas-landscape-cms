@@ -59,7 +59,7 @@ class Dataset
     @id = data[:id]
     @name = data[:attributes][:name]
     @application = data[:attributes][:application]
-    @metadata = (data[:attributes][:metadata] || {}).symbolize_keys
+    @metadata = (data[:attributes][:metadata] || []).each(&:symbolize_keys)
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
     @provider = data[:attributes][:provider]
