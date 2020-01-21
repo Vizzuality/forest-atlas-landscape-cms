@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import WidgetEditor, { Modal, Tooltip, Icons, setConfig, VegaChart, getVegaTheme, getConfig } from 'widget-editor';
+import WidgetEditor, {
+  Modal,
+  Tooltip,
+  Icons,
+  setConfig,
+  VegaChart,
+  getVegaTheme,
+  getConfig
+} from 'widget-editor';
 import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
 
@@ -11,18 +19,27 @@ import Notification from 'components/Notification';
 import ThemeSelector from 'components/ThemeSelector';
 import ToggleSwitcher from 'components/shared/ToggleSwitcher';
 
-import { setStep, setWidgetCreationTitle, setWidgetCreationDescription, setWidgetCreationCaption } from 'redactions/management';
+import {
+  setStep,
+  setWidgetCreationTitle,
+  setWidgetCreationDescription,
+  setWidgetCreationCaption,
+  setWidgetCreationPrivateName,
+  setWidgetCreationCitation,
+  setWidgetCreationAllowDownload
+} from 'redactions/management';
 
 import { getMostAppropriateMetadataLanguage } from './helpers';
 
 const STEPS = [
   {
-    name: 'Name',
-    description: 'Give your widget a name and a description.'
+    name: 'Details',
+    description: 'Set up the basic information about your widget.'
   },
   {
     name: 'Visualization',
-    description: 'Please use the selector to change the type of visualization and choose the columns you want to use.'
+    description:
+      'Please use the selector to change the type of visualization and choose the columns you want to use.'
   }
 ];
 
@@ -46,12 +63,12 @@ class EditWidgetPage extends React.Component {
       // Error while retrieving the widgetConfig from the widget-editor
       widgetConfigError: false,
       // Whether we're using the advanced editor
-      advancedEditor: !props.widget.widget_config
-        || !props.widget.widget_config.paramsConfig,
+      advancedEditor:
+        !props.widget.widget_config || !props.widget.widget_config.paramsConfig,
       // Whether the user has dismissed the warning when switching to
       // the advanced editor
-      advancedEditorWarningAccepted: !props.widget.widget_config
-        || !props.widget.widget_config.paramsConfig,
+      advancedEditorWarningAccepted:
+        !props.widget.widget_config || !props.widget.widget_config.paramsConfig,
       // Whether we're loading the advanced editor
       advancedEditorLoading: false,
       // State of the advanced editor without the "config" object
@@ -71,12 +88,22 @@ class EditWidgetPage extends React.Component {
     this.props.setTitle(this.props.widget.name);
     this.props.setDescription(this.props.widget.description);
 
-    if (this.state.advancedEditor && this.props.widget.metadata.length) {
+    if (this.props.widget.metadata.length) {
       const metadata = this.props.widget.metadata[0].attributes;
-      const caption = metadata.info && metadata.info.caption;
-      if (caption) {
-        this.props.setCaption(caption);
+
+      const privateName = metadata.info && metadata.info.privateName;
+      if (privateName) this.props.setPrivateName(privateName);
+
+      const citation = metadata.info && metadata.info.citation;
+      if (citation) this.props.setCitation(citation);
+
+      const allowDownload = metadata.info && metadata.info.allowDownload;
+      if (allowDownload !== undefined && allowDownload !== null) {
+        this.props.setAllowDownload(allowDownload);
       }
+
+      const caption = metadata.info && metadata.info.caption;
+      if (caption) this.props.setCaption(caption);
     }
   }
 
@@ -85,7 +112,7 @@ class EditWidgetPage extends React.Component {
 
     let locale = null;
     getMostAppropriateMetadataLanguage(widget.dataset, defaultLanguage)
-      .then((language) => {
+      .then(language => {
         locale = language;
       })
       .catch(() => null)
@@ -99,7 +126,7 @@ class EditWidgetPage extends React.Component {
           authUrl: env.controlTowerUrl,
           assetsPath: '/packs/images/',
           userToken: env.user.token || undefined,
-          locale,
+          locale
         });
 
         // We render the widget-editor
@@ -108,8 +135,12 @@ class EditWidgetPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if ((prevProps.currentStep !== 1 && this.props.currentStep === 1 && this.advancedEditor)
-      || (!prevState.advancedEditor && this.state.advancedEditor)) {
+    if (
+      (prevProps.currentStep !== 1 &&
+        this.props.currentStep === 1 &&
+        this.advancedEditor) ||
+      (!prevState.advancedEditor && this.state.advancedEditor)
+    ) {
       this.codeMirror = CodeMirror.fromTextArea(this.advancedEditor, {
         mode: 'javascript',
         autoCloseTags: true,
@@ -146,21 +177,36 @@ class EditWidgetPage extends React.Component {
       return toggleAdvancedEditor();
     }
 
-    return new Promise(resolve => this.setState({ advancedEditorLoading: true }, resolve))
+    return new Promise(resolve =>
+      this.setState({ advancedEditorLoading: true }, resolve)
+    )
       .then(() => this.getWidgetConfig())
-      .then((res) => {
+      .then(res => {
         const widgetConfig = Object.assign({}, res);
         delete widgetConfig.paramsConfig;
         delete widgetConfig.config;
-        return new Promise(resolve => this.setState({
-          widgetConfig,
-          advancedEditorLoading: false
-        }, resolve));
+        return new Promise(resolve =>
+          this.setState(
+            {
+              widgetConfig,
+              advancedEditorLoading: false
+            },
+            resolve
+          )
+        );
       })
-      .catch(() => new Promise(resolve => this.setState({
-        widgetConfig: {},
-        advancedEditorLoading: false
-      }, resolve)))
+      .catch(
+        () =>
+          new Promise(resolve =>
+            this.setState(
+              {
+                widgetConfig: {},
+                advancedEditorLoading: false
+              },
+              resolve
+            )
+          )
+      )
       .then(() => toggleAdvancedEditor());
   }
 
@@ -171,72 +217,75 @@ class EditWidgetPage extends React.Component {
   onClickUpdate() {
     this.setState({ editing: true });
 
-    new Promise((resolve, reject) => { // eslint-disable-line no-new
+    new Promise((resolve, reject) => {
+      // eslint-disable-line no-new
       if (this.state.advancedEditor) {
-        resolve(Object.assign({}, this.state.widgetConfig, { config: this.state.theme }));
+        resolve(
+          Object.assign({}, this.state.widgetConfig, {
+            config: this.state.theme
+          })
+        );
       } else {
         this.getWidgetConfig()
           .then(resolve)
           .catch(reject);
       }
-    }).then((widgetConfig) => {
-      const widgetObj = Object.assign(
-        {},
-        {
-          name: this.props.title || null,
-          description: this.props.description
-        },
-        { widgetConfig }
-      );
+    })
+      .then(widgetConfig => {
+        const widgetObj = Object.assign(
+          {},
+          {
+            name: this.props.title || null,
+            description: this.props.description
+          },
+          { widgetConfig }
+        );
 
-      let metadataObj = null;
-      if (this.props.caption) {
-        metadataObj = {
+        const metadataObj = {
           info: {
+            privateName: this.props.privateName,
+            citation: this.props.citation,
+            allowDownload: this.props.allowDownload,
             caption: this.props.caption
           }
         };
-      }
 
-      const widget = Object.assign({}, widgetObj, {
-        application: [getConfig().applications],
-        published: false,
-        default: false,
-        dataset: this.props.widget.dataset
-      });
+        const widget = Object.assign({}, widgetObj, {
+          application: [getConfig().applications],
+          published: false,
+          default: false,
+          dataset: this.props.widget.dataset
+        });
 
-      const metadata = !metadataObj
-        ? null
-        : Object.assign({}, metadataObj, {
+        const metadata = Object.assign({}, metadataObj, {
           id: this.props.widget.id,
           language: getConfig().locale,
           application: getConfig().applications
         });
 
-      fetch(this.props.queryUrl, {
-        method: 'PUT',
-        body: JSON.stringify(Object.assign(
-          {},
-          { widget },
-          { ...(!metadata ? {} : { metadata }) }
-        )),
-        credentials: 'include',
-        headers: new Headers({
-          'content-type': 'application/json'
+        fetch(this.props.queryUrl, {
+          method: 'PUT',
+          body: JSON.stringify(Object.assign({}, { widget }, { metadata })),
+          credentials: 'include',
+          headers: new Headers({
+            'content-type': 'application/json'
+          })
         })
-      }).then((res) => {
-        if (res.ok) {
-          window.location = this.props.redirectUrl;
-        } else {
-          throw new Error(res.statusText);
-        }
-      }).catch(() => {
-        this.setState({ saveError: true, editing: false });
+          .then(res => {
+            if (res.ok) {
+              window.location = this.props.redirectUrl;
+            } else {
+              throw new Error(res.statusText);
+            }
+          })
+          .catch(() => {
+            this.setState({ saveError: true, editing: false });
+          });
+      })
+      .catch(() => {
+        // We display a warning in the UI
+        this.setState({ widgetConfigError: true, editing: false });
       });
-    }).catch(() => {
-      // We display a warning in the UI
-      this.setState({ widgetConfigError: true, editing: false });
-    });
   }
 
   /**
@@ -283,15 +332,40 @@ class EditWidgetPage extends React.Component {
 
   render() {
     // eslint-disable-next-line no-shadow
-    const { currentStep, setStep, setTitle, setDescription, setCaption,
-      title, description, caption, widget } = this.props;
+    const {
+      currentStep,
+      setStep,
+      setTitle,
+      setPrivateName,
+      setDescription,
+      setCitation,
+      setAllowDownload,
+      setCaption,
+      title,
+      privateName,
+      description,
+      citation,
+      allowDownload,
+      caption,
+      widget
+    } = this.props;
 
-    const { initializingEditor, widgetConfigError, advancedEditor, advancedEditorWarningAccepted,
-      advancedEditorLoading, widgetConfig, previewLoading,
-      saveError, theme, editing } = this.state;
+    const {
+      initializingEditor,
+      widgetConfigError,
+      advancedEditor,
+      advancedEditorWarningAccepted,
+      advancedEditorLoading,
+      widgetConfig,
+      previewLoading,
+      saveError,
+      theme,
+      editing
+    } = this.state;
 
-    const createdWithAdvancedMode = !this.props.widget.widget_config
-      || !this.props.widget.widget_config.paramsConfig;
+    const createdWithAdvancedMode =
+      !this.props.widget.widget_config ||
+      !this.props.widget.widget_config.paramsConfig;
 
     let content;
     if (currentStep === 0) {
@@ -300,12 +374,71 @@ class EditWidgetPage extends React.Component {
           <div className="wrapper">
             <div className="c-inputs-container">
               <div className="container -big">
-                <label htmlFor="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="My widget" value={title} onChange={e => setTitle(e.target.value)} />
+                <label htmlFor="title">Title</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="My widget"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="container">
+                <label htmlFor="private-name">
+                  Private name{' '}
+                  <button
+                    type="button"
+                    className="info-button"
+                    data-tippy="The private name is only displayed within the management section of the site."
+                    data-tippy-interactive="true"
+                  >
+                    Field information
+                  </button>
+                </label>
+                <input
+                  type="text"
+                  id="private-name"
+                  name="private-name"
+                  placeholder="Private name"
+                  value={privateName}
+                  onChange={e => setPrivateName(e.target.value)}
+                />
               </div>
               <div className="container">
                 <label htmlFor="description">Description</label>
-                <textarea id="description" name="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                />
+              </div>
+              <div className="container">
+                <label htmlFor="citation">Citation</label>
+                <textarea
+                  id="citation"
+                  name="citation"
+                  placeholder="Citation"
+                  value={citation}
+                  onChange={e => setCitation(e.target.value)}
+                />
+              </div>
+              <div className="container">
+                <div className="c-checkbox">
+                  <input
+                    type="checkbox"
+                    id="allow-download"
+                    name="allow-download"
+                    checked={allowDownload}
+                    onChange={e => setAllowDownload(e.target.checked)}
+                  />
+                  <label htmlFor="allow-download">
+                    Allow the user to download the data of the widget in the
+                    Open Content pages
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -337,13 +470,19 @@ class EditWidgetPage extends React.Component {
                 </div>
               </div>
               <div className="widget-container">
-                {advancedEditorLoading && <div className="c-loading-spinner -bg" />}
+                {advancedEditorLoading && (
+                  <div className="c-loading-spinner -bg" />
+                )}
                 {!createdWithAdvancedMode && (
                   <ToggleSwitcher
                     elements={['Widget editor', 'Advanced editor']}
-                    selected={advancedEditor ? 'Advanced editor' : 'Widget editor'}
-                    onChange={(newSelected) => {
-                      const selected = advancedEditor ? 'Advanced editor' : 'Widget editor';
+                    selected={
+                      advancedEditor ? 'Advanced editor' : 'Widget editor'
+                    }
+                    onChange={newSelected => {
+                      const selected = advancedEditor
+                        ? 'Advanced editor'
+                        : 'Widget editor';
                       if (selected !== newSelected) {
                         this.onToggleAdvancedEditor();
                       }
@@ -362,7 +501,9 @@ class EditWidgetPage extends React.Component {
                     embedButtonMode="never"
                     onChangeWidgetTitle={t => setTitle(t)}
                     onChangeWidgetCaption={c => setCaption(c)}
-                    provideWidgetConfig={(func) => { this.getWidgetConfig = func; }}
+                    provideWidgetConfig={func => {
+                      this.getWidgetConfig = func;
+                    }}
                   />
                 )}
                 {advancedEditor && (
@@ -371,27 +512,47 @@ class EditWidgetPage extends React.Component {
                       <div className="caption-container">
                         <div className="c-inputs-container">
                           <div className="container">
-                            <label htmlFor="widget-caption">Widget caption</label>
-                            <input type="text" id="widget-caption" name="widget-caption" value={caption} onChange={({ target }) => setCaption(target.value)} />
+                            <label htmlFor="widget-caption">
+                              Widget caption
+                            </label>
+                            <input
+                              type="text"
+                              id="widget-caption"
+                              name="widget-caption"
+                              value={caption}
+                              onChange={({ target }) =>
+                                setCaption(target.value)
+                              }
+                            />
                           </div>
                         </div>
                       </div>
-                      <p>{`Make sure you're using a syntax compatible with Vega ${ENV.VEGA_VERSION.split('.')[0]}. Please remove the "$schema" attribute from the specification.`}</p>
+                      <p>{`Make sure you're using a syntax compatible with Vega ${
+                        ENV.VEGA_VERSION.split('.')[0]
+                      }. Please remove the "$schema" attribute from the specification.`}</p>
                       <textarea
-                        ref={(el) => { this.advancedEditor = el; }}
+                        ref={el => {
+                          this.advancedEditor = el;
+                        }}
                         defaultValue={JSON.stringify(widgetConfig, null, 2)}
                       />
                     </div>
                     <div className="preview">
-                      {previewLoading && <div className="c-loading-spinner -bg" />}
+                      {previewLoading && (
+                        <div className="c-loading-spinner -bg" />
+                      )}
                       {widgetConfig && widgetConfig.data && (
                         <VegaChart
                           data={widgetConfig}
                           theme={this.state.theme}
                           showLegend
                           reloadOnResize
-                          toggleLoading={loading => this.setState({ previewLoading: loading })}
-                          getForceUpdate={(func) => { this.forceChartUpdate = func; }}
+                          toggleLoading={loading =>
+                            this.setState({ previewLoading: loading })
+                          }
+                          getForceUpdate={func => {
+                            this.forceChartUpdate = func;
+                          }}
                         />
                       )}
                     </div>
@@ -406,7 +567,10 @@ class EditWidgetPage extends React.Component {
 
     return (
       <div>
-        <ExtendedHeader title={STEPS[currentStep].name} subTitle={STEPS[currentStep].description} />
+        <ExtendedHeader
+          title={STEPS[currentStep].name}
+          subTitle={STEPS[currentStep].description}
+        />
         <StepsBar
           steps={STEPS.map(s => s.name)}
           currentStep={currentStep}
@@ -426,7 +590,11 @@ class EditWidgetPage extends React.Component {
           <Notification
             type="error"
             content="Unable to update the widget"
-            additionalContent={advancedEditor ? 'Make sure you followed the requirements above the editor. If so, please try again later.' : 'Please try again later.'}
+            additionalContent={
+              advancedEditor
+                ? 'Make sure you followed the requirements above the editor. If so, please try again later.'
+                : 'Please try again later.'
+            }
             onClose={() => this.setState({ saveError: false })}
           />
         )}
@@ -438,7 +606,9 @@ class EditWidgetPage extends React.Component {
             dialogButtons
             closeable={false}
             onCancel={() => this.setState({ advancedEditor: false })}
-            onContinue={() => this.setState({ advancedEditorWarningAccepted: true })}
+            onContinue={() =>
+              this.setState({ advancedEditorWarningAccepted: true })
+            }
             onClose={() => this.setState({ advancedEditor: false })}
           />
         )}
@@ -447,23 +617,43 @@ class EditWidgetPage extends React.Component {
 
         <div className="c-action-bar">
           <div className="wrapper">
-            <button type="button" className="c-button -outline -dark-text" onClick={() => window.history.back()}>
+            <button
+              type="button"
+              className="c-button -outline -dark-text"
+              onClick={() => window.history.back()}
+            >
               Cancel
             </button>
             <div>
               {currentStep >= 1 && (
-                <button type="button" className="c-button -outline -dark-text" onClick={() => setStep(currentStep - 1)}>
+                <button
+                  type="button"
+                  className="c-button -outline -dark-text"
+                  onClick={() => setStep(currentStep - 1)}
+                >
                   Back
                 </button>
               )}
               {currentStep === 0 && (
-                <button type="submit" className="c-button" disabled={!title} onClick={() => setStep(currentStep + 1)}>
+                <button
+                  type="submit"
+                  className="c-button"
+                  disabled={!title}
+                  onClick={() => setStep(currentStep + 1)}
+                >
                   Continue
                 </button>
               )}
               {currentStep === 1 && (
-                <button type="submit" className="c-button" onClick={() => this.onClickUpdate()} disabled={editing}>
-                  {editing && <div className="c-loading-spinner -inline -btn" />}
+                <button
+                  type="submit"
+                  className="c-button"
+                  onClick={() => this.onClickUpdate()}
+                  disabled={editing}
+                >
+                  {editing && (
+                    <div className="c-loading-spinner -inline -btn" />
+                  )}
                   {!editing && 'Update'}
                 </button>
               )}
@@ -483,20 +673,26 @@ EditWidgetPage.propTypes = {
   env: PropTypes.object.isRequired,
   currentStep: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  privateName: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  citation: PropTypes.string.isRequired,
+  allowDownload: PropTypes.bool.isRequired,
   caption: PropTypes.string.isRequired,
   setStep: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  setPrivateName: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
+  setCitation: PropTypes.func.isRequired,
+  setAllowDownload: PropTypes.func.isRequired,
   setCaption: PropTypes.func.isRequired,
   queryUrl: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string.isRequired,
-  defaultLanguage: PropTypes.string,
+  defaultLanguage: PropTypes.string
 };
 
 EditWidgetPage.defaultProps = {
   widget: null,
-  defaultLanguage: null,
+  defaultLanguage: null
 };
 
 function mapStateToProps(state) {
@@ -504,7 +700,10 @@ function mapStateToProps(state) {
     env: state.env,
     currentStep: state.management.step,
     title: state.management.widgetCreation.title,
+    privateName: state.management.widgetCreation.privateName,
     description: state.management.widgetCreation.description,
+    citation: state.management.widgetCreation.citation,
+    allowDownload: state.management.widgetCreation.allowDownload,
     caption: state.management.widgetCreation.caption
   };
 }
@@ -513,7 +712,13 @@ function mapDispatchToProps(dispatch) {
   return {
     setStep: (...params) => dispatch(setStep(...params)),
     setTitle: (...params) => dispatch(setWidgetCreationTitle(...params)),
-    setDescription: (...params) => dispatch(setWidgetCreationDescription(...params)),
+    setPrivateName: (...params) =>
+      dispatch(setWidgetCreationPrivateName(...params)),
+    setDescription: (...params) =>
+      dispatch(setWidgetCreationDescription(...params)),
+    setCitation: (...params) => dispatch(setWidgetCreationCitation(...params)),
+    setAllowDownload: (...params) =>
+      dispatch(setWidgetCreationAllowDownload(...params)),
     setCaption: (...params) => dispatch(setWidgetCreationCaption(...params))
   };
 }

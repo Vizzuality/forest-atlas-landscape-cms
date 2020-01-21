@@ -89,7 +89,7 @@
       margin-bottom: 10px;
       font-size: $font-size-small;
       font-weight: $font-weight-bold;
-      letter-spacing: .1px;
+      letter-spacing: 0.1px;
       text-transform: uppercase;
     }
 
@@ -115,7 +115,7 @@
       padding: 0;
       border: 0;
       color: $color-4;
-      min-height: 250px;
+      min-height: 125px;
       font-family: $content-font;
       font-size: $font-size-s-normal;
       line-height: 1.5;
@@ -153,12 +153,14 @@
       .Select-control {
         height: 35px;
 
-        .Select-multi-value-wrapper { margin: 0; }
+        .Select-multi-value-wrapper {
+          margin: 0;
+        }
 
         .Select-value {
           color: $color-4;
           border-color: $accent-color;
-          background-color: rgba($accent-color, .1);
+          background-color: rgba($accent-color, 0.1);
           margin: 5px 0 0 5px;
 
           .Select-value-label {
@@ -170,7 +172,7 @@
 
             &:hover {
               color: $color-4;
-              background: rgba($accent-color, .2);
+              background: rgba($accent-color, 0.2);
             }
           }
         }
@@ -182,7 +184,7 @@
         .Select-option {
           &.is-selected,
           &.is-focused {
-            background: rgba($accent-color, .1);
+            background: rgba($accent-color, 0.1);
           }
         }
       }
@@ -192,7 +194,8 @@
       display: inline-block;
       width: 16px;
       height: 16px;
-      background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNTU1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IC41MTJjMi4wNjMgMCAzLjgyNi43MzIgNS4yOSAyLjE5NyAxLjQ2NyAxLjQ2NCAyLjIgMy4yMjcgMi4yIDUuMjkxcy0uNzMyIDMuODI2LTIuMTk3IDUuMjljLTEuNDY2IDEuNDY3LTMuMjI5IDIuMi01LjI5MyAyLjJzLTMuODI2LS43MzItNS4yOS0yLjE5N0MxLjI0MyAxMS44MjcuNTEgMTAuMDY0LjUxIDhzLjczMi0zLjgyNiAyLjE5Ny01LjI5QzQuMTczIDEuMjQzIDUuOTM2LjUxIDggLjUxek03IDdoMnY1SDdWN3ptMC0zaDJ2Mkg3VjR6Ii8+PC9zdmc+Cg==") no-repeat center center;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNTU1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IC41MTJjMi4wNjMgMCAzLjgyNi43MzIgNS4yOSAyLjE5NyAxLjQ2NyAxLjQ2NCAyLjIgMy4yMjcgMi4yIDUuMjkxcy0uNzMyIDMuODI2LTIuMTk3IDUuMjljLTEuNDY2IDEuNDY3LTMuMjI5IDIuMi01LjI5MyAyLjJzLTMuODI2LS43MzItNS4yOS0yLjE5N0MxLjI0MyAxMS44MjcuNTEgMTAuMDY0LjUxIDhzLjczMi0zLjgyNiAyLjE5Ny01LjI5QzQuMTczIDEuMjQzIDUuOTM2LjUxIDggLjUxek03IDdoMnY1SDdWN3ptMC0zaDJ2Mkg3VjR6Ii8+PC9zdmc+Cg==')
+        no-repeat center center;
       border: none;
       border-radius: 100%;
       text-indent: -10000px;
