@@ -125,10 +125,11 @@ class WidgetBlock extends React.Component {
     }
 
     return (
-      <Fragment>
-        <div className="c-we-chart-title">{widget.name}</div>
+      <div className="c-widget-card">
+        <div className="title">{widget.name}</div>
+        <div className="description">{widget.description}</div>
         <div
-          className="c-we-chart-container"
+          className="chart-container"
           // We choose min-height instead of height because custom widget might define a higher
           // height
           // Anyway, we don't want widget shorter than 250px
@@ -141,24 +142,22 @@ class WidgetBlock extends React.Component {
             reloadOnResize
           />
         </div>
-        {widget.metadata &&
-          !!widget.metadata.length &&
-          widget.metadata[0].attributes.info && (
-            <div className="c-we-chart-caption">
-              {widget.metadata[0].attributes.info.caption}
-            </div>
-          )}
-        <div className="c-we-chart-download">
-          {downloadUrls.csv && (
-            <a
-              className="download"
-              aria-label="Download widget data in CSV format"
-              href={downloadUrls.csv}
-              download
-            >
-              CSV <Icon name="icon-download" />
-            </a>
-          )}
+        <div className="widget-footer">
+          <div className="citation">
+            {widget.metadata && !!widget.metadata.length && widget.metadata[0].attributes.info
+              && widget.metadata[0].attributes.info.citation}
+          </div>
+          <div className="download">
+            {downloadUrls.csv && (
+              <a
+                aria-label="Download widget data in CSV format"
+                href={downloadUrls.csv}
+                download
+              >
+                CSV <Icon name="icon-download" />
+              </a>
+            )}
+          </div>
         </div>
         {!readOnly && (
           <div className="fa-wysiwyg-configuration">
@@ -193,7 +192,7 @@ class WidgetBlock extends React.Component {
             </main>
           </div>
         )}
-      </Fragment>
+      </div>
     );
   }
 }
