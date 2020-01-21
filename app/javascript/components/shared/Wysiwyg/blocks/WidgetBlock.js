@@ -133,7 +133,7 @@ class WidgetBlock extends React.Component {
           // We choose min-height instead of height because custom widget might define a higher
           // height
           // Anyway, we don't want widget shorter than 250px
-          style={{ 'min-height': `${Math.max(height, 250) || 250}px` }}
+          style={{ minHeight: `${Math.max(height, 250) || 250}px` }}
         >
           <VegaChart
             // The key here is used to make sure the widget is rerendered when its height is changed
