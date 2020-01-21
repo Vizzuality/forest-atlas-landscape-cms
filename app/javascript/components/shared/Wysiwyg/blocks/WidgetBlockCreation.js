@@ -14,7 +14,8 @@ export default function WidgetBlockCreation({ block, onSubmit }) {
               <button onClick={() => onSubmit({
                 widgetId: w.widget.id,
                 datasetId: w.widget.dataset,
-                categories: []
+                categories: [],
+                border: true
               })}
               >Add widget
               </button>

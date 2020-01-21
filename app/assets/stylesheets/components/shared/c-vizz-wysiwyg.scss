@@ -157,6 +157,13 @@
           display: block;
         }
 
+        label,
+        small {
+          & + label {
+            margin-top: 15px;
+          }
+        }
+
         input {
           display: block;
           padding: 10px;
@@ -164,6 +171,11 @@
           font-size: $font-size-small;
           border: 1px solid $color-9;
           color: $color-4;
+
+          &[type="checkbox"] {
+            display: inline-block;
+            margin-right: 10px;
+          }
         }
 
         textarea {

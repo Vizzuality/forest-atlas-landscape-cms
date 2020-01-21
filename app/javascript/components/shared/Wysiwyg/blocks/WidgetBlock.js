@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { VegaChart } from 'widget-editor';
 import { Promise } from 'es6-promise';
+import classnames from 'classnames';
 
 import {
   isVegaWidget,
@@ -78,7 +79,8 @@ class WidgetBlock extends React.Component {
     return (
       this.state !== nextState ||
       this.props.item.content.widgetId !== nextProps.item.content.widgetId ||
-      this.props.item.content.height !== nextProps.item.content.height
+      this.props.item.content.height !== nextProps.item.content.height ||
+      this.props.item.content.border !== nextProps.item.content.border
     );
   }
 
@@ -117,7 +119,7 @@ class WidgetBlock extends React.Component {
 
   render() {
     const { readOnly, item, onChange } = this.props;
-    const { height } = item.content;
+    const { height, border } = item.content;
     const { loading, widget, downloadUrls } = this.state;
 
     if (loading) {
@@ -137,7 +139,14 @@ class WidgetBlock extends React.Component {
     }
 
     return (
-      <div className="c-widget-card">
+      <div
+        className={classnames({
+          'c-widget-card': true,
+          // Widgets previously inserted in Open Content pages shouldn't display a border
+          // This explains the condition
+          '-border': border === true
+        })}
+      >
         <div className="title">{widget.name}</div>
         <div className="description">{widget.description}</div>
         <div
@@ -201,6 +210,23 @@ class WidgetBlock extends React.Component {
                 Please note that if a custom widget has its height defined in
                 the Vega specification, it won't be overwritten.
               </small>
+              <label>
+                <input
+                  type="checkbox"
+                  // Widgets previously inserted in Open Content pages shouldn't display a border
+                  // This explains the condition
+                  defaultChecked={border === true}
+                  onChange={e =>
+                    onChange({
+                      content: {
+                        ...item.content,
+                        border: e.target.checked
+                      }
+                    })
+                  }
+                />
+                Display a border around the widget
+              </label>
             </main>
           </div>
         )}
