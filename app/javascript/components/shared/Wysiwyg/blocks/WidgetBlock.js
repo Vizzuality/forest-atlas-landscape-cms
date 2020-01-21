@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { VegaChart } from 'widget-editor';
 import { Promise } from 'es6-promise';
 
-import {
-  isVegaWidget,
-  getVegaWidgetQueryParams,
-  getDatasetDownloadUrls,
-  getSqlFilters
-} from 'helpers/api';
+import { getDatasetDownloadUrls } from 'helpers/api';
 import Icon from 'components/icon';
 
 // /widget_data.json?widget_id=
@@ -33,25 +28,34 @@ class WidgetBlock extends React.Component {
    * @param {object} widget
    */
   static async getDownloadUrls(widget) {
-    const isValidWidget = isVegaWidget({ widgetConfig: widget.visualization });
-    if (!isValidWidget) {
+    const dataUrl = (widget.visualization && widget.visualization.data
+      && widget.visualization.data.length
+      && widget.visualization.data[0].url)
+      || '';
+
+    if (!dataUrl.length) {
       return {};
     }
 
-    const datasetProvider = await WidgetBlock.getDatasetProvider(
-      widget.dataset
-    );
-    const { filters, limit } = getVegaWidgetQueryParams({
-      widgetConfig: widget.visualization
-    });
+    const sqlQuery = new URL(decodeURI(dataUrl)).searchParams.get('sql').trim();
 
-    const serializedFilters = getSqlFilters(filters, datasetProvider);
+    if (!sqlQuery) {
+      return {};
+    }
 
-    const sqlQuery = `SELECT * FROM data ${
-      serializedFilters.length ? `WHERE ${serializedFilters}` : ''
-    }`;
+    const simplifiedSqlQuery = sqlQuery
+      // We pick all the columns
+      .replace(/^SELECT (.*) FROM/i, 'SELECT * FROM')
+      // We remove any aggregation
+      .replace(/GROUP BY .+?(?=(ORDER BY|LIMIT|$))/i, '')
+      // We remove any ordering
+      .replace(/ORDER BY .+? ((ASC)|DESC)/i, '')
+      // We remove any limit
+      .replace(/LIMIT \d+/i, '');
 
-    return getDatasetDownloadUrls(widget.dataset, datasetProvider, sqlQuery);
+    const datasetProvider = await WidgetBlock.getDatasetProvider(widget.dataset);
+
+    return getDatasetDownloadUrls(widget.dataset, datasetProvider, simplifiedSqlQuery);
   }
 
   constructor(props) {
