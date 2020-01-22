@@ -259,7 +259,7 @@ class EditWidgetPage extends React.Component {
 
         const metadata = Object.assign({}, metadataObj, {
           id: this.props.widget.id,
-          language: getConfig().locale,
+          language: 'en', // Widgets metadata doesn't change depending of language
           application: getConfig().applications
         });
 
