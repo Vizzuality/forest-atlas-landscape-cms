@@ -1,0 +1,89 @@
+.c-widget-card {
+  width: 100% !important; // Some built-in styles of the wysiwyg overwrite this in edition mode
+  padding: 30px !important; // Some built-in styles of the wysiwyg overwrite this in edition mode
+  border-radius: 4px;
+  border: 1px solid transparent;
+
+  &.-border {
+    border-color: rgba($color-7, 0.1);
+    box-shadow: 0 1px 2px 0 rgba($color-5, 0.1);
+  }
+
+  > .title {
+    margin-bottom: 10px;
+    font-family: $heading-font;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-light;
+  }
+
+  // Even if .description is empty, we want some space between the title and the chart
+  > .description {
+    margin-bottom: 30px;
+    font-size: $font-size-s-normal;
+    line-height: 2;
+  }
+
+  // Here we use flex boxes instead of just setting the height to 100% because the element has a
+  // min-height defined in JS
+  // Because of that, the children can't use height: 100%;
+  > .chart-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 250px;
+    margin-bottom: 10px;
+
+    .c-we-chart {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      flex-basis: 100%;
+      flex-grow: 1;
+
+      .chart {
+        width: 100%;
+        flex-basis: 100%;
+        flex-grow: 1;
+      }
+    }
+  }
+
+  > .widget-footer {
+    display: flex;
+    justify-content: space-between;
+
+    .citation {
+      flex-grow: 1;
+      margin-right: 20px;
+      font-size: $font-size-small;
+    }
+
+    .download {
+      flex-shrink: 0;
+
+      a {
+        display: inline-block;
+        min-width: 35px;
+        height: 35px;
+        padding: 0 10px;
+        border: 1px solid $accent-color;
+        border-radius: 30px;
+        background: rgba($accent-color, 0.1);
+        color: $color-4;
+        line-height: 35px;
+        cursor: pointer;
+
+        svg {
+          width: 16px;
+          height: 16px;
+          vertical-align: text-bottom;
+
+          use {
+            fill: $color-4;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { VegaChart } from 'widget-editor';
 import { Promise } from 'es6-promise';
+import classnames from 'classnames';
 
 import { getDatasetDownloadUrls } from 'helpers/api';
 import Icon from 'components/icon';
@@ -87,7 +88,8 @@ class WidgetBlock extends React.Component {
     return (
       this.state !== nextState ||
       this.props.item.content.widgetId !== nextProps.item.content.widgetId ||
-      this.props.item.content.height !== nextProps.item.content.height
+      this.props.item.content.height !== nextProps.item.content.height ||
+      this.props.item.content.border !== nextProps.item.content.border
     );
   }
 
@@ -126,22 +128,42 @@ class WidgetBlock extends React.Component {
 
   render() {
     const { readOnly, item, onChange } = this.props;
-    const { height } = item.content;
+    const { height, border } = item.content;
     const { loading, widget, downloadUrls } = this.state;
 
-    if (loading || !widget.visualization) {
-      return null;
+    if (loading) {
+      return (
+        <div className="c-widget-card">
+          <div className="c-loading-spinner" />
+        </div>
+      );
+    }
+
+    if (!loading && (!widget || !widget.visualization)) {
+      return (
+        <div className="c-widget-card">
+          Unable to load the widget.
+        </div>
+      );
     }
 
     return (
-      <Fragment>
-        <div className="c-we-chart-title">{widget.name}</div>
+      <div
+        className={classnames({
+          'c-widget-card': true,
+          // Widgets previously inserted in Open Content pages shouldn't display a border
+          // This explains the condition
+          '-border': border === true
+        })}
+      >
+        <div className="title">{widget.name}</div>
+        <div className="description">{widget.description}</div>
         <div
-          className="c-we-chart-container"
+          className="chart-container"
           // We choose min-height instead of height because custom widget might define a higher
           // height
           // Anyway, we don't want widget shorter than 250px
-          style={{ 'min-height': `${Math.max(height, 250) || 250}px` }}
+          style={{ minHeight: `${Math.max(height, 250) || 250}px` }}
         >
           <VegaChart
             // The key here is used to make sure the widget is rerendered when its height is changed
@@ -150,24 +172,22 @@ class WidgetBlock extends React.Component {
             reloadOnResize
           />
         </div>
-        {widget.metadata &&
-          !!widget.metadata.length &&
-          widget.metadata[0].attributes.info && (
-            <div className="c-we-chart-caption">
-              {widget.metadata[0].attributes.info.caption}
-            </div>
-          )}
-        <div className="c-we-chart-download">
-          {downloadUrls.csv && (
-            <a
-              className="download"
-              aria-label="Download widget data in CSV format"
-              href={downloadUrls.csv}
-              download
-            >
-              CSV <Icon name="icon-download" />
-            </a>
-          )}
+        <div className="widget-footer">
+          <div className="citation">
+            {widget.metadata && !!widget.metadata.length && widget.metadata[0].attributes.info
+              && widget.metadata[0].attributes.info.citation}
+          </div>
+          <div className="download">
+            {downloadUrls.csv && (
+              <a
+                aria-label="Download widget data in CSV format"
+                href={downloadUrls.csv}
+                download
+              >
+                CSV <Icon name="icon-download" />
+              </a>
+            )}
+          </div>
         </div>
         {!readOnly && (
           <div className="fa-wysiwyg-configuration">
@@ -199,10 +219,27 @@ class WidgetBlock extends React.Component {
                 Please note that if a custom widget has its height defined in
                 the Vega specification, it won't be overwritten.
               </small>
+              <label>
+                <input
+                  type="checkbox"
+                  // Widgets previously inserted in Open Content pages shouldn't display a border
+                  // This explains the condition
+                  defaultChecked={border === true}
+                  onChange={e =>
+                    onChange({
+                      content: {
+                        ...item.content,
+                        border: e.target.checked
+                      }
+                    })
+                  }
+                />
+                Display a border around the widget
+              </label>
             </main>
           </div>
         )}
-      </Fragment>
+      </div>
     );
   }
 }

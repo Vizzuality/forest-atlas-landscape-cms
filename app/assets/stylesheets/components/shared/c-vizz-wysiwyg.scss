@@ -157,6 +157,13 @@
           display: block;
         }
 
+        label,
+        small {
+          & + label {
+            margin-top: 15px;
+          }
+        }
+
         input {
           display: block;
           padding: 10px;
@@ -164,6 +171,11 @@
           font-size: $font-size-small;
           border: 1px solid $color-9;
           color: $color-4;
+
+          &[type="checkbox"] {
+            display: inline-block;
+            margin-right: 10px;
+          }
         }
 
         textarea {
@@ -469,72 +481,6 @@
             opacity: .8;
             filter: grayscale(90%);
           }
-        }
-      }
-    }
-  }
-  
-  // Here we use flex boxes instead of just setting the height to 100% because the top container
-  // (.c-we-chart-container) has a min-height defined in JS
-  // Because of that, the children can't use height: 100%;
-  .c-we-chart-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 250px;
-
-    .c-we-chart {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      flex-basis: 100%;
-      flex-grow: 1;
-
-      .chart {
-        width: 100%;
-        flex-basis: 100%;
-        flex-grow: 1;
-      }
-    }
-  }
-
-  .c-we-chart-title {
-    flex-basis: 100%;
-    text-align: center;
-    font-weight: $font-weight-bold;
-  }
-
-  .c-we-chart-caption {
-    flex-basis: 100%;
-    text-align: center;
-    font-size: $font-size-small;
-  }
-
-  .c-we-chart-download {
-    display: flex;
-    justify-content: flex-end;
-    flex-basis: 100%;
-
-    .download {
-      display: inline-block;
-      min-width: 35px;
-      height: 35px;
-      margin-left: 10px;
-      padding: 0 10px;
-      border: 1px solid $accent-color;
-      border-radius: 30px;
-      background: rgba($accent-color, .1);
-      color: $color-4;
-      line-height: 35px;
-      cursor: pointer;
-
-      svg {
-        width: 16px;
-        height: 16px;
-        vertical-align: text-bottom;
-
-        use {
-          fill: $color-4;
         }
       }
     }
