@@ -64,7 +64,7 @@
     "vega": "^3.1.0",
     "vega-lib": "4.4.0",
     "vizz-wysiwyg": "^2.1.2",
-    "widget-editor": "^1.4.4",
+    "widget-editor": "^1.4.6",
     "wri-json-api-serializer": "^1.0.1"
   }
 }
