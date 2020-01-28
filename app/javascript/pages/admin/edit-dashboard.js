@@ -16,7 +16,7 @@ class EditDashboard extends React.Component {
 
   render() {
     return (
-      <div className="c-edit-dashboard">
+      <div className="c-edit-dashboard vizz-wysiwyg">
         <input type="hidden" name="site_page[dashboard_setting][content_top]" value={this.state.topContent || ''} />
         <input type="hidden" name="site_page[dashboard_setting][content_bottom]" value={this.state.bottomContent || ''} />
         <Wysiwyg
