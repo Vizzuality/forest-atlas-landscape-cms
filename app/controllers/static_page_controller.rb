@@ -25,6 +25,14 @@ class StaticPageController < ApplicationController
     }
   end
 
+  # Gets the html empty page of a widget
+  # GET widget_page
+  def widget_page
+    @widget = WidgetService.widget(params[:widget_id])
+
+    render :widget_page, layout: false
+  end
+
   def subscriptions
     begin
       token = request.headers['Authorization']
