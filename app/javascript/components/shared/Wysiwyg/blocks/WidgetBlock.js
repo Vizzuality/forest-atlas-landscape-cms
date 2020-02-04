@@ -29,6 +29,11 @@ class WidgetBlock extends React.Component {
    * @param {object} widget
    */
   static async getDownloadUrls(widget) {
+    const widgetUrl = `${new URL(`/widget_page/${widget.id}`, window.origin)}&format=png&filename=${widget.name.replace(/\s/g, '-')}`;
+    const res = {
+      png: `${ENV.API_URL}/webshot/pdf?url=${widgetUrl}`,
+    };
+
     const allowDownload = !!(widget.metadata
       && widget.metadata.length
       && widget.metadata[0].attributes.info
@@ -40,13 +45,13 @@ class WidgetBlock extends React.Component {
       || '';
 
     if (!dataUrl.length || !allowDownload) {
-      return {};
+      return res;
     }
 
     const sqlQuery = new URL(decodeURI(dataUrl)).searchParams.get('sql').trim();
 
     if (!sqlQuery) {
-      return {};
+      return res;
     }
 
     const simplifiedSqlQuery = sqlQuery
@@ -61,7 +66,11 @@ class WidgetBlock extends React.Component {
 
     const datasetProvider = await WidgetBlock.getDatasetProvider(widget.dataset);
 
-    return getDatasetDownloadUrls(widget.dataset, datasetProvider, simplifiedSqlQuery);
+    return Object.assign(
+      {},
+      res,
+      getDatasetDownloadUrls(widget.dataset, datasetProvider, simplifiedSqlQuery)
+    );
   }
 
   constructor(props) {
@@ -185,6 +194,15 @@ class WidgetBlock extends React.Component {
                 download
               >
                 CSV <Icon name="icon-download" />
+              </a>
+            )}
+            {downloadUrls.png && (
+              <a
+                aria-label="Download widget as a PNG image"
+                href={downloadUrls.png}
+                download
+              >
+                PNG <Icon name="icon-download" />
               </a>
             )}
           </div>

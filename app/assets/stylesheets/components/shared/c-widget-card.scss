@@ -83,6 +83,10 @@
             fill: $color-4;
           }
         }
+
+        & + a {
+          margin-left: 10px;
+        }
       }
     }
   }
