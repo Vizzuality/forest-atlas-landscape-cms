@@ -29,8 +29,10 @@ class StaticPageController < ApplicationController
   # GET widget_page
   def widget_page
     @widget = WidgetService.widget(params[:widget_id])
+    @title = @widget.name
+    @description = @widget.description
 
-    render :widget_page, layout: false
+    render :widget_page, layout: 'standalone'
   end
 
   def subscriptions
