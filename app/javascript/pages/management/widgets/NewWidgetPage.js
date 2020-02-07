@@ -22,7 +22,6 @@ import {
   setWidgetCreationDataset,
   setWidgetCreationTitle,
   setWidgetCreationDescription,
-  setWidgetCreationCaption,
   setWidgetCreationPrivateName,
   setWidgetCreationCitation,
   setWidgetCreationAllowDownload
@@ -187,7 +186,6 @@ class NewWidgetPage extends React.Component {
             privateName: this.props.privateName,
             citation: this.props.citation,
             allowDownload: this.props.allowDownload,
-            caption: this.props.caption
           }
         };
 
@@ -341,13 +339,11 @@ class NewWidgetPage extends React.Component {
       setDescription,
       setCitation,
       setAllowDownload,
-      setCaption,
       title,
       privateName,
       description,
       citation,
       allowDownload,
-      caption,
       redirectUrl
     } = this.props;
 
@@ -514,14 +510,12 @@ class NewWidgetPage extends React.Component {
                   <WidgetEditor
                     datasetId={dataset}
                     widgetTitle={title}
-                    widgetCaption={caption}
                     theme={this.state.theme}
                     onChangeTheme={this.onCustomizeTheme}
                     saveButtonMode="never"
                     embedButtonMode="never"
                     useLayerEditor
                     onChangeWidgetTitle={t => setTitle(t)}
-                    onChangeWidgetCaption={c => setCaption(c)}
                     provideWidgetConfig={func => {
                       this.getWidgetConfig = func;
                     }}
@@ -533,24 +527,6 @@ class NewWidgetPage extends React.Component {
                 {advancedEditor && (
                   <div className="advanced-editor">
                     <div className="textarea-container">
-                      <div className="caption-container">
-                        <div className="c-inputs-container">
-                          <div className="container">
-                            <label htmlFor="widget-caption">
-                              Widget caption
-                            </label>
-                            <input
-                              type="text"
-                              id="widget-caption"
-                              name="widget-caption"
-                              value={caption}
-                              onChange={({ target }) =>
-                                setCaption(target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div>
                       <p>{`Make sure you're using a syntax compatible with Vega ${
                         ENV.VEGA_VERSION.split('.')[0]
                       }. Please remove the "$schema" attribute from the specification.`}</p>
@@ -698,7 +674,6 @@ NewWidgetPage.propTypes = {
   description: PropTypes.string.isRequired,
   citation: PropTypes.string.isRequired,
   allowDownload: PropTypes.bool.isRequired,
-  caption: PropTypes.string.isRequired,
   setStep: PropTypes.func.isRequired,
   setDataset: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
@@ -706,7 +681,6 @@ NewWidgetPage.propTypes = {
   setDescription: PropTypes.func.isRequired,
   setCitation: PropTypes.func.isRequired,
   setAllowDownload: PropTypes.func.isRequired,
-  setCaption: PropTypes.func.isRequired,
   queryUrl: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string.isRequired,
   defaultLanguage: PropTypes.string
@@ -726,7 +700,6 @@ function mapStateToProps(state) {
     description: state.management.widgetCreation.description,
     citation: state.management.widgetCreation.citation,
     allowDownload: state.management.widgetCreation.allowDownload,
-    caption: state.management.widgetCreation.caption
   };
 }
 
@@ -742,7 +715,6 @@ function mapDispatchToProps(dispatch) {
     setCitation: (...params) => dispatch(setWidgetCreationCitation(...params)),
     setAllowDownload: (...params) =>
       dispatch(setWidgetCreationAllowDownload(...params)),
-    setCaption: (...params) => dispatch(setWidgetCreationCaption(...params))
   };
 }
 

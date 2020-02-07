@@ -143,7 +143,7 @@ const ManagementDatasetMetadata = ({ languages, defaultLanguage, metadata }) => 
                 Metadata is used to provide users with additional information about your dataset and links which let users access the original source data. Dataset metadata will be visible on dataset dashboard pages and should be entered in the primary language for your site. Metadata can also be translated into multiple languages if your site supports translations into multiple languages.
               </p>
               <p>
-                Please use the widget metadata tools to add metadata (title, caption, and description) for widgets embedded in open content pages.
+                Please use the widget metadata tools to add metadata (title, description and citation) for widgets embedded in open content pages.
               </p>
             </div>
             {languageOptions.map(({ value }) => (
