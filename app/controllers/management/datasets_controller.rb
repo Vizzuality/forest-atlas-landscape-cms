@@ -54,7 +54,7 @@ class Management::DatasetsController < ManagementController
 
   def process_datasets(datasets)
     datasets.map do |dataset|
-      dataset_info = DatasetService.get_metadata(dataset.id)['data']
+      dataset_info = DatasetService.get_metadata(dataset.id, session[:user_token])['data'].first
 
       dataset_info['attributes']['widget'] =
         (dataset_info['attributes']['widget'] || []).map { |widget| widget['attributes']['name'] }
