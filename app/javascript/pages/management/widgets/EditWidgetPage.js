@@ -23,7 +23,6 @@ import {
   setStep,
   setWidgetCreationTitle,
   setWidgetCreationDescription,
-  setWidgetCreationCaption,
   setWidgetCreationPrivateName,
   setWidgetCreationCitation,
   setWidgetCreationAllowDownload
@@ -101,9 +100,6 @@ class EditWidgetPage extends React.Component {
       if (allowDownload !== undefined && allowDownload !== null) {
         this.props.setAllowDownload(allowDownload);
       }
-
-      const caption = metadata.info && metadata.info.caption;
-      if (caption) this.props.setCaption(caption);
     }
   }
 
@@ -246,7 +242,6 @@ class EditWidgetPage extends React.Component {
             privateName: this.props.privateName,
             citation: this.props.citation,
             allowDownload: this.props.allowDownload,
-            caption: this.props.caption
           }
         };
 
@@ -340,13 +335,11 @@ class EditWidgetPage extends React.Component {
       setDescription,
       setCitation,
       setAllowDownload,
-      setCaption,
       title,
       privateName,
       description,
       citation,
       allowDownload,
-      caption,
       widget
     } = this.props;
 
@@ -494,13 +487,11 @@ class EditWidgetPage extends React.Component {
                     datasetId={widget.dataset}
                     {...(widget ? { widgetId: widget.id } : {})}
                     widgetTitle={title}
-                    widgetCaption={caption}
                     theme={this.state.theme}
                     onChangeTheme={this.onCustomizeTheme}
                     saveButtonMode="never"
                     embedButtonMode="never"
                     onChangeWidgetTitle={t => setTitle(t)}
-                    onChangeWidgetCaption={c => setCaption(c)}
                     provideWidgetConfig={func => {
                       this.getWidgetConfig = func;
                     }}
@@ -509,24 +500,6 @@ class EditWidgetPage extends React.Component {
                 {advancedEditor && (
                   <div className="advanced-editor">
                     <div className="textarea-container">
-                      <div className="caption-container">
-                        <div className="c-inputs-container">
-                          <div className="container">
-                            <label htmlFor="widget-caption">
-                              Widget caption
-                            </label>
-                            <input
-                              type="text"
-                              id="widget-caption"
-                              name="widget-caption"
-                              value={caption}
-                              onChange={({ target }) =>
-                                setCaption(target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div>
                       <p>{`Make sure you're using a syntax compatible with Vega ${
                         ENV.VEGA_VERSION.split('.')[0]
                       }. Please remove the "$schema" attribute from the specification.`}</p>
@@ -677,14 +650,12 @@ EditWidgetPage.propTypes = {
   description: PropTypes.string.isRequired,
   citation: PropTypes.string.isRequired,
   allowDownload: PropTypes.bool.isRequired,
-  caption: PropTypes.string.isRequired,
   setStep: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
   setPrivateName: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
   setCitation: PropTypes.func.isRequired,
   setAllowDownload: PropTypes.func.isRequired,
-  setCaption: PropTypes.func.isRequired,
   queryUrl: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string.isRequired,
   defaultLanguage: PropTypes.string
@@ -704,7 +675,6 @@ function mapStateToProps(state) {
     description: state.management.widgetCreation.description,
     citation: state.management.widgetCreation.citation,
     allowDownload: state.management.widgetCreation.allowDownload,
-    caption: state.management.widgetCreation.caption
   };
 }
 
@@ -719,7 +689,6 @@ function mapDispatchToProps(dispatch) {
     setCitation: (...params) => dispatch(setWidgetCreationCitation(...params)),
     setAllowDownload: (...params) =>
       dispatch(setWidgetCreationAllowDownload(...params)),
-    setCaption: (...params) => dispatch(setWidgetCreationCaption(...params))
   };
 }
 

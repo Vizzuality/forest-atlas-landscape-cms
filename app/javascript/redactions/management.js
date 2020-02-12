@@ -7,7 +7,6 @@ const initialState = {
     description: '',
     citation: '',
     allowDownload: true,
-    caption: ''
   }
 };
 
@@ -18,7 +17,6 @@ export const SET_WIDGET_CREATION_PRIVATE_NAME = '@management/SET_WIDGET_CREATION
 export const SET_WIDGET_CREATION_DESCRIPTION = '@management/SET_WIDGET_CREATION_DESCRIPTION';
 export const SET_WIDGET_CREATION_CITATION = '@management/SET_WIDGET_CREATION_CITATION';
 export const SET_WIDGET_CREATION_ALLOW_DOWNLOAD = '@management/SET_WIDGET_CREATION_ALLOW_DOWNLOAD';
-export const SET_WIDGET_CREATION_CAPTION = '@management/SET_WIDGET_CREATION_CAPTION';
 
 export function setStep(step) {
   return {
@@ -69,13 +67,6 @@ export function setWidgetCreationAllowDownload(allowDownload) {
   };
 }
 
-export function setWidgetCreationCaption(caption) {
-  return {
-    type: SET_WIDGET_CREATION_CAPTION,
-    payload: caption
-  };
-}
-
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_STEP:
@@ -92,8 +83,6 @@ export default (state = initialState, action) => {
       return { ...state, widgetCreation: { ...state.widgetCreation, citation: action.payload } };
     case SET_WIDGET_CREATION_ALLOW_DOWNLOAD:
       return { ...state, widgetCreation: { ...state.widgetCreation, allowDownload: action.payload } };
-    case SET_WIDGET_CREATION_CAPTION:
-      return { ...state, widgetCreation: { ...state.widgetCreation, caption: action.payload } };
     default:
       return state;
   }
