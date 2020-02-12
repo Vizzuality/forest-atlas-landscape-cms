@@ -11,7 +11,7 @@ const Datasets = ({ datasets }) => (
         columns={['title', 'contexts', 'connector', 'status', 'owner', 'created', 'edited']}
         data={datasets}
         modal={DatasetModal}
-        actions={['edit']}
+        actions={['edit', 'delete']}
       />
     </div>
   </div>

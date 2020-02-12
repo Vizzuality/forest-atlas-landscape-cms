@@ -1,7 +1,6 @@
 class Management::DatasetsController < ManagementController
-
+  before_action :set_site, only: [:index, :new, :create, :destroy]
   before_action :ensure_management_user, only: [:destroy]
-  before_action :set_site, only: [:index, :new, :create]
   before_action :set_datasets, only: :index
   before_action :set_dataset, only: [:edit, :destroy]
 
@@ -21,10 +20,12 @@ class Management::DatasetsController < ManagementController
     end
   end
 
-  # TODO: What should happen when we destroy a dataset??
   def destroy
-    #@dataset.destroy
-    redirect_to controller: 'management/datasets', action: 'index', site_slug: @site.slug, notice: 'Dataset was successfully destroyed.'
+    response = DatasetService.delete(session[:user_token], params[:id])
+
+    flash[response[:valid] ? :notice : :error] = response[:message]
+
+    render :index
   end
 
   private
@@ -55,6 +56,9 @@ class Management::DatasetsController < ManagementController
     datasets.map do |dataset|
       dataset_info = DatasetService.get_metadata(dataset.id)['data']
 
+      dataset_info['attributes']['widget'] =
+        (dataset_info['attributes']['widget'] || []).map { |widget| widget['attributes']['name'] }
+
       user_email = dataset_info.dig('attributes', 'user', 'email')
       if user_email
         user = User.find_by(email: user_email)
@@ -68,7 +72,7 @@ class Management::DatasetsController < ManagementController
   end
 
   def renderable_dataset(dataset)
-    {
+    processed_dataset = {
       'title' => {'value' => dataset.name, 'searchable' => true, 'sortable' => true},
       'contexts' => {'value' => ContextDataset.where(dataset_id: dataset.id).map{|ds| ds.context.name}.join(', '), 'searchable' => true, 'sortable' => false},
       'connector' => {'value' => dataset.provider, 'searchable' => true, 'sortable' => true},
@@ -77,7 +81,25 @@ class Management::DatasetsController < ManagementController
       'owner' => {'value' => dataset.user, 'searchable' => true, 'sortable' => true},
       'created' => {'value' => DateTime.parse(dataset.created_at).strftime('%d/%m/%Y %T'), 'searchable' => true, 'sortable' => true},
       'edited' => {'value' => DateTime.parse(dataset.updated_at).strftime('%d/%m/%Y %T'), 'searchable' => true, 'sortable' => true},
+      'widgets' => {'value' => (dataset.widgets || []).join(', ')},
       'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, id: :metadata), 'method' => 'get'}
     }
+    if delete_url(dataset.id)
+      processed_dataset['delete'] =
+        {'value' => delete_url(dataset.id), 'method' => 'delete'}
+    end
+    processed_dataset
+  end
+
+  # Only shows the delete url in case the user is a site admin for this site
+  def delete_url(dataset_id)
+    return unless current_user_is_admin ||
+      current_user.owned_sites.include?(@site)
+
+    management_site_dataset_path(
+      params[:site_slug],
+      dataset_id,
+      action: :delete
+    )
   end
 end
