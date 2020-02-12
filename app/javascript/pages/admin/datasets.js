@@ -8,7 +8,7 @@ const Datasets = ({ datasets }) => (
     <div className="wrapper">
       <Table
         searchable
-        columns={['title', 'contexts', 'connector', 'function', 'tags', 'status']}
+        columns={['title', 'contexts', 'connector', 'status', 'owner', 'created', 'edited']}
         data={datasets}
         modal={DatasetModal}
         actions={['edit']}

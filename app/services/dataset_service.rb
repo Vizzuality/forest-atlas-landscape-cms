@@ -83,7 +83,7 @@ class DatasetService < ApiService
   # Params:
   # +dataset_id+:: The dataset for which to get the metadata
   def self.get_metadata(dataset_id)
-    request = @conn.get "/dataset/#{dataset_id}?includes=metadata"
+    request = @conn.get "/dataset/#{dataset_id}?includes=metadata,user"
     if request.body.blank?
       return {}
     else
