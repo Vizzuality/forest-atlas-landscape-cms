@@ -79,8 +79,8 @@ class Management::DatasetsController < ManagementController
       'status' => {'value' => dataset.status, 'searchable' => true, 'sortable' => true},
       'metadata' => {'value' => @dataset_metadata[dataset.id], 'searchable' => false, 'sortable' => false, 'visible' => false},
       'owner' => {'value' => dataset.user, 'searchable' => true, 'sortable' => true},
-      'created' => {'value' => DateTime.parse(dataset.created_at).strftime('%d/%m/%Y %T'), 'searchable' => true, 'sortable' => true},
-      'edited' => {'value' => DateTime.parse(dataset.updated_at).strftime('%d/%m/%Y %T'), 'searchable' => true, 'sortable' => true},
+      'created' => {'value' => dataset.created_at, 'searchable' => true, 'sortable' => true},
+      'edited' => {'value' => dataset.updated_at, 'searchable' => true, 'sortable' => true},
       'widgets' => {'value' => (dataset.widgets || []).join(', ')},
       'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, id: :metadata), 'method' => 'get'}
     }

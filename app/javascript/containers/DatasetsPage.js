@@ -52,6 +52,12 @@ class DatasetsPage extends React.Component {
     const { datasets } = this.props;
     const { deleteWarning, deleteSuccess, deleteError, selectedRow } = this.state;
 
+    const rows = datasets.map(dataset => {
+      dataset.created = { value: (new Date(dataset.created.value)).toLocaleString(), sortable: true };
+      dataset.edited = { value: (new Date(dataset.edited.value)).toLocaleString(), sortable: true };
+      return dataset;
+    });
+
     return (
       <div className="l-page-list">
         {deleteWarning && (
@@ -101,7 +107,7 @@ class DatasetsPage extends React.Component {
               <Table
                 searchable
                 columns={['title', 'contexts', 'connector', 'status', 'owner', 'created', 'edited']}
-                data={datasets}
+                data={rows}
                 modal={DatasetModal}
                 actions={['edit', 'delete']}
                 onClickAction={(...params) => this.onClickAction(...params)}
