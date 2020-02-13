@@ -29,7 +29,7 @@ class WidgetBlock extends React.Component {
    * @param {object} widget
    */
   static async getDownloadUrls(widget) {
-    const widgetUrl = `${new URL(`/widget_page/${widget.id}`, window.origin)}&format=png&filename=${widget.name.replace(/\s/g, '-')}`;
+    const widgetUrl = `${new URL(`/widget_page/${widget.id}`, window.origin)}&format=png&width=800&height=600&backgrounds=true&filename=${widget.name.replace(/\s/g, '-')}`;
     const res = {
       png: `${ENV.WEBSHOT_API_URL}/webshot/pdf?url=${widgetUrl}`,
     };
