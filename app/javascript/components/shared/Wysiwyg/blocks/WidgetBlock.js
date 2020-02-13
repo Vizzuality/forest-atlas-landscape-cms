@@ -31,7 +31,7 @@ class WidgetBlock extends React.Component {
   static async getDownloadUrls(widget) {
     const widgetUrl = `${new URL(`/widget_page/${widget.id}`, window.origin)}&format=png&filename=${widget.name.replace(/\s/g, '-')}`;
     const res = {
-      png: `${ENV.API_URL}/webshot/pdf?url=${widgetUrl}`,
+      png: `${ENV.WEBSHOT_API_URL}/webshot/pdf?url=${widgetUrl}`,
     };
 
     const allowDownload = !!(widget.metadata
