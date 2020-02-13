@@ -1,8 +1,7 @@
 .c-delete-dataset-modal {
   footer {
-    button + button {
-      margin-top: 10px;
-      margin-left: 20px;
-    }
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
   }
 }
