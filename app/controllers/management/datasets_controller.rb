@@ -81,7 +81,7 @@ class Management::DatasetsController < ManagementController
       'owner' => {'value' => dataset.user, 'searchable' => true, 'sortable' => true},
       'created' => {'value' => dataset.created_at, 'searchable' => true, 'sortable' => true},
       'edited' => {'value' => dataset.updated_at, 'searchable' => true, 'sortable' => true},
-      'widgets' => {'value' => (dataset.widgets || []).join(', ')},
+      'widgets' => {'value' => (dataset.widgets || [])},
       'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, id: :metadata), 'method' => 'get'}
     }
     if delete_url(dataset.id)

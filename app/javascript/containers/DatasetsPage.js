@@ -52,14 +52,14 @@ class DatasetsPage extends React.Component {
     const { datasets } = this.props;
     const { deleteWarning, deleteSuccess, deleteError, selectedRow } = this.state;
 
-    const rows = datasets.map(dataset => {
-      dataset.created = { value: (new Date(dataset.created.value)).toLocaleString(), sortable: true };
-      dataset.edited = { value: (new Date(dataset.edited.value)).toLocaleString(), sortable: true };
-      return dataset;
-    });
+    const rows = datasets.map(dataset => ({
+      ...dataset,
+      created: { value: (new Date(dataset.created.value)).toLocaleString(), sortable: true },
+      edited: { value: (new Date(dataset.edited.value)).toLocaleString(), sortable: true }
+    }));
 
     return (
-      <div className="l-page-list">
+      <div className="c-delete-dataset-modal">
         {deleteWarning && (
           <Modal
             show={deleteWarning}
@@ -71,6 +71,9 @@ class DatasetsPage extends React.Component {
                 <div>
                   <p>The deletion can't be reversed and it will affect to the following widgets: </p>
                   <p>{selectedRow.widgets.value}</p>
+                  <ul>
+                    {selectedRow.widgets.value.map(widget => <li key={widget}>{widget}</li>)}
+                  </ul>
                 </div>
               )}
             </div>
