@@ -70,7 +70,6 @@ class DatasetsPage extends React.Component {
               {selectedRow.widgets.value && (
                 <div>
                   <p>The deletion can't be reversed and it will affect to the following widgets: </p>
-                  <p>{selectedRow.widgets.value}</p>
                   <ul>
                     {selectedRow.widgets.value.map(widget => <li key={widget}>{widget}</li>)}
                   </ul>
