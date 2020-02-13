@@ -1,0 +1,22 @@
+.c-delete-dataset-modal {
+  h1 {
+    margin-bottom: 30px;
+  }
+
+  ul {
+    display: block;
+    margin-top: 10px;
+
+    li {
+      display: list-item;
+      margin-left: 15px;
+      list-style-type: disc;
+    }
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+}

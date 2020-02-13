@@ -82,8 +82,13 @@ class DatasetService < ApiService
   # Gets the metadata of a dataset
   # Params:
   # +dataset_id+:: The dataset for which to get the metadata
-  def self.get_metadata(dataset_id)
-    request = @conn.get "/dataset/#{dataset_id}?includes=metadata"
+  def self.get_metadata(dataset_id, token=nil)
+    # TODO: Check if both requests are equal
+    # request = @conn.get "/dataset/#{dataset_id}?includes=metadata,user,widget"
+    request = @conn.get do |req|
+      req.url "/dataset?ids=#{dataset_id}&includes=metadata,user,widget"
+      req.headers['Authorization'] = "Bearer #{token}" if token
+    end
     if request.body.blank?
       return {}
     else
@@ -346,5 +351,19 @@ class DatasetService < ApiService
       create_metadata(token, dataset_id, application, name, tags_array, metadata)
     end
     dataset_id
+  end
+
+  def self.delete(token, dataset_id)
+    response = @conn.delete do |req|
+      req.url "dataset/#{dataset_id}"
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+    end
+
+    if response.status == 200
+      { valid: true, message: 'Dataset deleted successfully' }
+    else
+      { valid: false, message: 'Dataset failed to delete' }
+    end
   end
 end
