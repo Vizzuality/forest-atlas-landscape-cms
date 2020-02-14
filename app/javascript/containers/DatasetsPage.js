@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Table, DatasetModal, Modal, Notification } from 'components';
+import { Table, DatasetModal, Modal } from 'components';
+import Notification from 'components/Notification';
 
 import AdminContainer from 'containers/shared/AdminContainer';
 
