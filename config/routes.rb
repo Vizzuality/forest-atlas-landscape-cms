@@ -106,6 +106,7 @@ Rails.application.routes.draw do
 
   get '/no-permissions', to: 'static_page#no_permissions'
   get '/widget_data', to: 'static_page#widget_data'
+  get '/widget_page/:widget_id', to: 'static_page#widget_page'
   get '/subscriptions', to: 'static_page#subscriptions'
 
 

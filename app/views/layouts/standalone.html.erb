@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= @title %></title>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="<%= @description %>">
+  <meta name="keywords" content="<%= @description %>">
+  <meta name="author" content="World Resources Institute">
+
+  <meta property="og:title" content="<%= @title %>" />
+
+  <link rel="icon" type="image/png" href="<%= @favico %>" />
+  <link rel="apple-touch-icon" href="<%= @favico %>">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+
+  <%= stylesheet_link_tag 'front/application-theme-default', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+  <%= favicon_link_tag unless @favico %>
+  <%= yield :head %>
+
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= yield :external_js %>
+</head>
+
+<body <%= yield :body_class %>>
+  <%= Gon::Base.render_data %>
+
+  <%= yield %>
+  <div class="flash_container">
+    <% flash.each do |key, value| %>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <div class="alert alert-<%= key %>"><%= value %></div>
+    <% end %>
+  </div>
+
+</body>
+</html>
