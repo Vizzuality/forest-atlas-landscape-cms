@@ -13,8 +13,12 @@
         <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button js-submit' %>
       <% end %>
       <% if local_assigns[:publish] %>
-        <%= f.button Management::PageStepsController::PUBLISH, value: Management::PageStepsController::PUBLISH, type: 'submit', class: 'c-button' %>
-    <% end %>
+        <% if @page.enabled %>
+          <%= f.button Management::PageStepsController::UNPUBLISH, value: Management::PageStepsController::UNPUBLISH, type: 'submit', class: 'c-button -outline -dark-text' %>
+        <% else %>
+          <%= f.button Management::PageStepsController::PUBLISH, value: Management::PageStepsController::PUBLISH, type: 'submit', class: 'c-button -outline -dark-text' %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
