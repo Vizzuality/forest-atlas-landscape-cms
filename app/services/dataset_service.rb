@@ -86,7 +86,7 @@ class DatasetService < ApiService
     # TODO: Check if both requests are equal
     # request = @conn.get "/dataset/#{dataset_id}?includes=metadata,user,widget"
     request = @conn.get do |req|
-      req.url "/dataset?ids=#{dataset_id}&includes=metadata,user,widget"
+      req.url "/dataset?ids=#{dataset_id}&includes=metadata,user,widget,vocabulary"
       req.headers['Authorization'] = "Bearer #{token}" if token
     end
     if request.body.blank?
@@ -253,10 +253,51 @@ class DatasetService < ApiService
     true
   end
 
+  def self.update(token, data)
+    formatted_caption = data[:legend] || {}
+    formatted_caption['country'] = formatted_caption['country']#&.split(' ')
+    formatted_caption['region'] = formatted_caption['region']#&.split(' ')
+    formatted_caption['date'] = formatted_caption['date']#&.split(' ')
+
+    body = data[:connector] == 'json' ? {dataPath: data[:data_path]} : {}
+    body.merge!(
+      connectorType: data[:type],
+      provider: data[:provider],
+      connectorUrl: data[:connector_url],
+      legend: formatted_caption,
+      application: data[:application],
+      name: data[:name],
+      vocabularies: {
+        legacy: {
+          tags: data[:tags]&.split(',') || []
+        }
+      }
+    )
+
+    body = body.to_json
+
+    begin
+      Rails.logger.info 'Updating Dataset in the API.'
+      Rails.logger.info "Body: #{body}"
+
+      res = @conn.patch do |req|
+        req.url "/dataset/#{data[:id]}"
+        req.headers['Authorization'] = "Bearer #{token}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = body
+      end
+
+      Rails.logger.info "Response from dataset updating endpoint: #{res.body}"
+      JSON.parse(res.body)
+    rescue => e
+      Rails.logger.error "Error updating dataset in the API: #{e}"
+    end
+  end
+
   # Updates the dataset in the API
   # To do so, the attribute "overwrite" must be set to true
   # And the must be a post request to /data-overwrite
-  def self.update(token, id, connector_url)
+  def self.update_connector(token, id, connector_url)
     begin
       body = {
         overwrite: true

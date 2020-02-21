@@ -28,13 +28,13 @@ class Dataset
       }
     elsif provider.eql?('csv')
       {
-        pages: %w[connector metadata options],
-        names: %w[Connector Metadata Aliases]
+        pages: %w[title connector metadata options],
+        names: %w[Title Connector Metadata Aliases]
       }
     else
       {
-        pages: %w[metadata options],
-        names: %w[Metadata Aliases]
+        pages: %w[title connector metadata options],
+        names: %w[Title Connector Metadata Aliases]
       }
     end
   end
@@ -56,17 +56,22 @@ class Dataset
   def attributes=(data)
     return unless data && (data[:attributes] || data['attributes'])
     data.symbolize_keys!
-    data[:attributes].symbolize_keys!
+    data[:attributes] = data[:attributes].symbolize_keys
     @id = data[:id]
     @name = data[:attributes][:name]
     @application = data[:attributes][:application]
-    @metadata = (data[:attributes][:metadata] || []).each(&:symbolize_keys)
+    metadata = if data[:attributes][:metadata].is_a?(Array)
+                 Dataset.process_metadata(data[:attributes][:metadata])
+               else
+                 (data[:attributes][:metadata] || {}).symbolize_keys
+               end
+    @metadata = metadata
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
     @provider = data[:attributes][:provider]
     @format = data[:attributes][:format]
     @layers = data[:attributes][:layers]
-    @connector_url = data[:attributes][:connector_url]
+    @connector_url = data[:attributes][:connectorUrl]
     @table_name = data[:attributes][:table_name]
     vocabulary = data[:attributes][:vocabulary]
     legacy = vocabulary && vocabulary.find do |v|
@@ -74,8 +79,8 @@ class Dataset
     end
     @tags = legacy && legacy['attributes']['tags'] || []
     @data_overwrite = data[:attributes][:data_overwrite]
-    @connector = data[:attributes][:connector]
-    @type = data[:attributes][:type]
+    @connector = data[:attributes][:connectorType]
+    @type = data[:attributes][:connectorType]
     @legend = data[:attributes][:legend]
     @status = data[:attributes][:status]
     @created_at = data[:attributes][:createdAt]
@@ -90,7 +95,12 @@ class Dataset
     @id = data[:id]
     @name = data[:name]
     @application = data[:application]
-    @metadata = (data[:metadata] || {}).symbolize_keys
+    metadata = if data[:metadata].is_a?(Array)
+                 Dataset.process_metadata(data[:metadata])
+               else
+                 (data[:metadata] || {}).symbolize_keys
+               end
+    @metadata = metadata
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
@@ -145,47 +155,47 @@ class Dataset
 
     return unless value
 
-    if value.include? '?'
-      @connector_url = value+'&f=pjson'
-    else
-      @connector_url = value+'?f=pjson'
-    end
+    @connector_url = "#{value}#{value.include?('?') ? '&f=pjson' : '?f=pjson'}"
   end
 
   def get_metadata
-    DatasetService.get_metadata self.id
+    DatasetService.get_metadata id
   end
 
   def self.find_with_metadata(id)
     properties = DatasetService.get_metadata(id)
     return nil if properties.empty? || (data = properties['data'].first).empty?
     dataset = Dataset.new
-    attributes = {id: id}
     data_attributes = data['attributes'] && data['attributes'].symbolize_keys
     if data_attributes
-      attributes = attributes.merge(data_attributes.except(:metadata))
-      if data_attributes[:metadata] && data_attributes[:metadata].any?
-        # select metadata by current locale, and app
-        metadata = data_attributes[:metadata].select do |md|
-          md['attributes']['application'] == ENV['API_APPLICATIONS'] || 'forest-atlas'
-        end
-        metadata_attributes = {}
-        metadata.each do |md|
-          next unless md['attributes']
-          md_attributes = md['attributes'].symbolize_keys
-          md_attributes[:id] = md['id']
-          if md_attributes[:applicationProperties]
-            md_attributes = md_attributes.merge(
-              md_attributes[:applicationProperties].symbolize_keys
-            )
-          end
-          metadata_attributes[md_attributes[:language]] = md_attributes
-        end
-        attributes = attributes.merge({metadata: metadata_attributes})
+      dataset.attributes = {'attributes': data_attributes.except(:metadata)}
+      if data_attributes[:metadata]&.any?
+        dataset.metadata = Dataset.process_metadata(data_attributes[:metadata])
       end
     end
-    dataset.set_attributes(attributes)
     dataset
+  end
+
+  def self.process_metadata(metadata)
+    return metadata if metadata.is_a? Hash
+
+    metadata = metadata.select do |md|
+      md['attributes']['application'] == ENV['API_APPLICATIONS'] || 'forest-atlas'
+    end
+
+    metadata_attributes = {}
+    metadata.each do |md|
+      next unless md['attributes']
+      md_attributes = md['attributes'].symbolize_keys
+      md_attributes[:id] = md['id']
+      if md_attributes[:applicationProperties]
+        md_attributes = md_attributes.merge(
+          md_attributes[:applicationProperties].symbolize_keys
+        )
+      end
+      metadata_attributes[md_attributes[:language]] = md_attributes
+    end
+    metadata_attributes
   end
 
   # Uploads the dataset to the API
@@ -199,7 +209,9 @@ class Dataset
   end
 
   def update(token)
-    DatasetService.update token, id, connector_url if provider.eql? 'csv'
+    DatasetService.update token, attributes
+
+    DatasetService.update_connector token, id, connector_url if provider.eql? 'csv'
 
     metadata.each do |language, metadata_info|
       metadata_info['language'] = language

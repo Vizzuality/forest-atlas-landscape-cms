@@ -35,7 +35,7 @@ class Management::DatasetStepsController < ManagementController
     redirect_to management_site_dataset_dataset_step_path(
       site_slug: params[:site_slug],
       dataset_id: params[:dataset_id],
-      id: :metadata
+      id: 'title'
     )
   end
 
@@ -44,8 +44,9 @@ class Management::DatasetStepsController < ManagementController
     @breadcrumbs << {name: 'New Dataset'}
     @dataset.form_step = step
 
-    if %w[context metadata options].include? step
+    if %w[context connector metadata options].include? step
       result = DatasetSteps::ShowLogic.const_get("#{step.camelize}Step").call(
+        gon: gon,
         site: @site,
         dataset: @dataset,
         dataset_id: @dataset_id,
@@ -67,7 +68,7 @@ class Management::DatasetStepsController < ManagementController
     case step
     when 'title', 'labels'
       if @dataset.valid?
-        redirect_to next_wizard_path
+        save_or_update_step
       else
         render_wizard
       end
