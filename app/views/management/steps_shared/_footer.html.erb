@@ -7,16 +7,30 @@
   <% end %>
     <div>
       <% unless local_assigns[:no_continue] %>
-        <%= f.button Management::PageStepsController::CONTINUE, value: Management::PageStepsController::CONTINUE, type: 'submit', class: 'c-button js-submit' + ((f.object.id || local_assigns[:always_save]) ? ' -outline -dark-text' : '') %>
+        <%= f.button Management::PageStepsController::CONTINUE,
+          type: continue_button_type(f.object.id, local_assigns[:always_save], local_assigns[:never_save], local_assigns[:publish]),
+          value: Management::PageStepsController::CONTINUE,
+          class: "c-button #{(f.object.id || local_assigns[:always_save]) ? ' -outline -dark-text' : 'js-submit'}" %>
       <% end %>
-      <% if (f.object.id || local_assigns[:always_save]) && (local_assigns[:never_save] != true) %>
-        <%= f.button Management::PageStepsController::SAVE, value: Management::PageStepsController::SAVE, type: 'submit', class: 'c-button js-submit' %>
+
+      <% if save_button?(f.object.id, local_assigns[:always_save], local_assigns[:never_save]) %>
+        <%= f.button Management::PageStepsController::SAVE,
+          value: Management::PageStepsController::SAVE,
+          type: local_assigns[:publish] ? 'button' : 'submit',
+          class: "c-button #{local_assigns[:publish] ? '-outline -dark-text' : 'js-submit'}" %>
       <% end %>
+
       <% if local_assigns[:publish] %>
         <% if @page.enabled %>
-          <%= f.button Management::PageStepsController::UNPUBLISH, value: Management::PageStepsController::UNPUBLISH, type: 'submit', class: 'c-button -outline -dark-text' %>
+          <%= f.button Management::PageStepsController::UNPUBLISH,
+            value: Management::PageStepsController::UNPUBLISH,
+            type: 'submit',
+            class: 'c-button js-submit' %>
         <% else %>
-          <%= f.button Management::PageStepsController::PUBLISH, value: Management::PageStepsController::PUBLISH, type: 'submit', class: 'c-button -outline -dark-text' %>
+          <%= f.button Management::PageStepsController::PUBLISH,
+            value: Management::PageStepsController::PUBLISH,
+            type: 'submit',
+            class: 'c-button js-submit' %>
         <% end %>
       <% end %>
     </div>
