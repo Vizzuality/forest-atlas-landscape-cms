@@ -5,9 +5,14 @@ RSpec.describe Management::DatasetStepsController do
   include SpecTestHelper
   include_context :gon
 
+  before :all do
+    Site.destroy_all
+  end
+
   let_it_be(:manager) { FactoryBot.create(:user) }
-  let_it_be(:context) { FactoryBot.create(:context) }
+  let_it_be(:admin) { FactoryBot.create(:user, admin: true) }
   let_it_be(:site) { FactoryBot.create(:site_with_contexts) }
+  let_it_be(:context) { Context.first }
   let_it_be(:context_user) do
     FactoryBot.create(:context_user, context: context, user: manager)
   end

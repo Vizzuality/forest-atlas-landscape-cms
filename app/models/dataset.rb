@@ -44,10 +44,11 @@ class Dataset
 
   validate :step_validation
 
-  attr_accessor :id, :application, :name, :metadata, :data_path, :attributes_path,
-                :provider, :format, :layers, :connector_url, :table_name, :tags,
-                :data_overwrite, :connector, :provider, :type, :legend, :status,
-                :user_id, :user, :created_at, :updated_at, :widgets
+  attr_accessor :id, :application, :name, :metadata, :data_path,
+                :attributes_path, :provider, :format, :layers, :connector_url,
+                :table_name, :tags, :data_overwrite, :connector, :provider,
+                :type, :legend, :status, :user_id, :user, :created_at,
+                :updated_at, :widgets
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -162,11 +163,11 @@ class Dataset
     DatasetService.get_metadata id
   end
 
-  def self.find_with_metadata(id)
-    properties = DatasetService.get_metadata(id)
+  def self.find_with_metadata(id, token = nil)
+    properties = DatasetService.get_metadata(id, token)
     return nil if properties.empty? || (data = properties['data'].first).empty?
     dataset = Dataset.new
-    data_attributes = data['attributes'] && data['attributes'].symbolize_keys
+    data_attributes = data['attributes']&.symbolize_keys
     if data_attributes
       dataset.attributes = {'attributes': data_attributes.except(:metadata)}
       if data_attributes[:metadata]&.any?

@@ -6,7 +6,12 @@ RSpec.describe SitePage, type: :model do
 
     describe 'duplicated url' do
       FactoryBot.create(:site_page, site: s, uri: 'test', url: '/test')
-      subject { FactoryBot.build(:site_page, site: s, uri: 'test', url: '/test')}
+      subject do
+        site_page =
+          FactoryBot.build(:site_page, site: s, uri: 'test', url: '/test')
+        site_page.valid?
+        site_page
+      end
       it { is_expected.to have(1).errors_on(:uri)}
       it { is_expected.to have(1).errors_on(:url)}
     end

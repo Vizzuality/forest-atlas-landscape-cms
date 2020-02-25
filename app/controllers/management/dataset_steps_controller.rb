@@ -29,7 +29,9 @@ class Management::DatasetStepsController < ManagementController
     reset_session_key(:dataset_creation, @dataset_id, {})
     reset_session_key(:context_datasets, @dataset_id, {})
 
-    @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    @dataset = Dataset.find_with_metadata(
+      params[:dataset_id], user_token(@site)
+    )
     set_current_dataset_state
 
     redirect_to management_site_dataset_dataset_step_path(

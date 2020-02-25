@@ -113,7 +113,9 @@ class Site < ApplicationRecord
       contexts = self.contexts
     end
 
-    contexts.each{ |c| c.context_datasets.each{|d| datasets << d.dataset_id} }
+    contexts.each do |c|
+      c.context_datasets.each { |d| datasets << d.dataset_id }
+    end
     datasets.uniq!
     datasets
   end

@@ -9,24 +9,26 @@ class DatasetService < ApiService
   # Params
   # ++status++ the status of the dataset
   def self.get_datasets(status: 'saved', dataset_ids: nil)
-    datasetRequest = @conn.get '/v1/dataset',
-                               {'page[number]': '1', 'page[size]': '10000',
-                                'status': status, 'application': ENV.fetch('API_APPLICATIONS'),
+    dataset_request = @conn.get '/v1/dataset',
+                                'page[number]': '1',
+                                'page[size]': '10000',
+                                'status': status,
+                                'application': ENV.fetch('API_APPLICATIONS'),
                                 ids: dataset_ids,
-                                '_': Time.now.to_s}
+                                '_': Time.now.to_s
 
     # TODO: If the number of datasets exceeds X, we should perform several requests
     # otherwise the URL might be too long
     begin
-      datasetsJSON = JSON.parse datasetRequest.body
+      datasets_json = JSON.parse dataset_request.body
 
       datasets = []
-      datasetsJSON['data'].each do |data|
+      datasets_json['data'].each do |data|
         dataset = Dataset.new data
         datasets.push dataset
       end
-    rescue Exception => e
-      # TODO All this methods should throw an exception caught in the controller...
+    rescue StandardError => e
+      # TODO: All this methods should throw an exception caught in the controller...
       # ... to render a different page
       Rails.logger.error "::DatasetService.get_datasets: #{e}"
       return []
@@ -40,14 +42,14 @@ class DatasetService < ApiService
   # +dataset_id+:: The id of the dataset
   # +api_table_name+:: The name of the database's table
   def self.get_fields(dataset_id, api_table_name)
-    fieldsRequest = @conn.get "/fields/#{dataset_id}"
-    fieldsJSON = JSON.parse fieldsRequest.body
+    fields_request = @conn.get "/fields/#{dataset_id}"
+    fields_json = JSON.parse fields_request.body
 
-    return {} if fieldsJSON.empty? || !fieldsRequest.success?
+    return {} if fields_json.empty? || !fields_request.success?
 
     fields = []
 
-    fieldsJSON['fields'].each do |data|
+    fields_json['fields'].each do |data|
       if DatasetFieldsHelper.is_valid? data.last['type']
         fields << {name: data.first, type: data.last['type']}
       end
@@ -64,36 +66,33 @@ class DatasetService < ApiService
 
     Rails.logger.info "Going to make a Filtered Request: #{full_query}"
 
-    filteredRequest = @conn.get full_query
-    if filteredRequest.body.blank? || filteredRequest.status != 200
-      Rails.logger.warn "There was a problem with the response from the API: #{filteredRequest}"
-      return {}
+    filtered_request = @conn.get full_query
+    if filtered_request.body.blank? || filtered_request.status != 200
+      Rails.logger.warn "There was a problem with the response from the API: #{filtered_request}"
+      {}
     else
-      result = JSON.parse filteredRequest.body
+      result = JSON.parse filtered_request.body
       result['data'] = result['data'].collect do |elem|
         elem.delete('_id') if elem.is_a?(Hash)
         elem
       end
 
-      return result
+      result
     end
   end
 
   # Gets the metadata of a dataset
   # Params:
   # +dataset_id+:: The dataset for which to get the metadata
-  def self.get_metadata(dataset_id, token=nil)
+  def self.get_metadata(dataset_id, token = nil)
     # TODO: Check if both requests are equal
     # request = @conn.get "/dataset/#{dataset_id}?includes=metadata,user,widget"
     request = @conn.get do |req|
       req.url "/dataset?ids=#{dataset_id}&includes=metadata,user,widget,vocabulary"
       req.headers['Authorization'] = "Bearer #{token}" if token
     end
-    if request.body.blank?
-      return {}
-    else
-      return JSON.parse request.body
-    end
+
+    request.body.blank? ? {} : JSON.parse(request.body)
   end
 
   # Gets the metadata of a list of datasets
@@ -101,15 +100,14 @@ class DatasetService < ApiService
   # +dataset_id+:: A list of datasets' ids
   def self.get_metadata_list(dataset_ids)
     return [] if dataset_ids.blank?
-    request = @conn.get "/v1/dataset?ids=#{dataset_ids.join(',')}", {
-      'includes': 'vocabulary',
-      'page[number]': '1', 'page[size]': '10000', '_': Time.now.to_f
-    }
-    if request.body.blank?
-      return {}
-    else
-      return JSON.parse request.body
-    end
+
+    request = @conn.get "/v1/dataset?ids=#{dataset_ids.join(',')}",
+                        'includes': 'vocabulary',
+                        'page[number]': '1',
+                        'page[size]': '10000',
+                        '_': Time.now.to_f
+
+    request.body.blank? ? {} : JSON.parse(request.body)
   end
 
   def self.metadata_find_by_ids(token, dataset_ids)
@@ -147,7 +145,7 @@ class DatasetService < ApiService
 
       result = get_filtered_dataset dataset_id, query
 
-      if result['data'] && result['data'].any?
+      if result['data']&.any?
         number_dataset = number_dataset.merge(result['data'][0])
       end
     end
@@ -161,16 +159,12 @@ class DatasetService < ApiService
 
     fields.each do |field|
       case field[:type]
-        when -> (type) { DatasetFieldsHelper.is_enumerable?(type) }
-          field[:min] = number_dataset["min_#{field[:name]}"]
-          field[:max] = number_dataset["max_#{field[:name]}"]
-        when -> (type) { DatasetFieldsHelper.is_string?(type) }
-          data = string_datasets[field[:name]]['data']
-          if data.blank?
-            field[:values] = []
-          else
-            field[:values] = data.map{|x| x[field[:name]]}
-          end
+      when ->(type) { DatasetFieldsHelper.is_enumerable?(type) }
+        field[:min] = number_dataset["min_#{field[:name]}"]
+        field[:max] = number_dataset["max_#{field[:name]}"]
+      when ->(type) { DatasetFieldsHelper.is_string?(type) }
+        data = string_datasets[field[:name]]['data']
+        field[:values] = data.blank? ? [] : data.map { |x| x[field[:name]] }
       end
       field[:type] = DatasetFieldsHelper.parse(field[:type])
     end
@@ -184,9 +178,9 @@ class DatasetService < ApiService
     }
 
     application_properties = metadata.slice(*Dataset::APPLICATION_PROPERTIES)
-    application_properties.merge!(tags: tags_array.join(',')) if tags_array.any?
+    application_properties[:tags] = tags_array.join(',') if tags_array.any?
     unless application_properties.blank?
-      metadata_body.merge!(applicationProperties: application_properties)
+      metadata_body[:applicationProperties] = application_properties
     end
 
     metadata_body.merge!(metadata.slice(*Dataset::API_PROPERTIES))
@@ -255,9 +249,9 @@ class DatasetService < ApiService
 
   def self.update(token, data)
     formatted_caption = data[:legend] || {}
-    formatted_caption['country'] = formatted_caption['country']#&.split(' ')
-    formatted_caption['region'] = formatted_caption['region']#&.split(' ')
-    formatted_caption['date'] = formatted_caption['date']#&.split(' ')
+    formatted_caption['country'] = formatted_caption['country']
+    formatted_caption['region'] = formatted_caption['region']
+    formatted_caption['date'] = formatted_caption['date']
 
     body = data[:connector] == 'json' ? {dataPath: data[:data_path]} : {}
     body.merge!(
@@ -298,66 +292,56 @@ class DatasetService < ApiService
   # To do so, the attribute "overwrite" must be set to true
   # And the must be a post request to /data-overwrite
   def self.update_connector(token, id, connector_url)
-    begin
-      body = {
-        overwrite: true
-      }.to_json
+    body = {
+      overwrite: true
+    }.to_json
 
-      Rails.logger.info "Updating Dataset #{id} overwrite property."
-      Rails.logger.info "Body: #{body}"
+    Rails.logger.info "Updating Dataset #{id} overwrite property."
+    Rails.logger.info "Body: #{body}"
 
-      res = @conn.patch do |req|
-        req.url "/dataset/#{id}"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
-      end
-
-      Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
-      body = {
-        provider: 'csv',
-        url: connector_url
-      }.to_json
-
-      Rails.logger.info "Updating Dataset #{id} connectorUrl."
-      Rails.logger.info "Body: #{body}"
-
-      res = @conn.post do |req|
-        req.url "/dataset/#{id}/data-overwrite"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-        req.body = body
-      end
-
-      Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
-      return JSON.parse(res.body)['data']['id']
-    rescue => e
-      Rails.logger.error "Error creating new dataset in the API: #{e}"
-      return nil
+    res = @conn.patch do |req|
+      req.url "/dataset/#{id}"
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = body
     end
+
+    Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
+    body = {
+      provider: 'csv',
+      url: connector_url
+    }.to_json
+
+    Rails.logger.info "Updating Dataset #{id} connectorUrl."
+    Rails.logger.info "Body: #{body}"
+
+    res = @conn.post do |req|
+      req.url "/dataset/#{id}/data-overwrite"
+      req.headers['Authorization'] = "Bearer #{token}"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = body
+    end
+
+    Rails.logger.info "Response from dataset creation endpoint: #{res.body}"
+    JSON.parse(res.body)['data']['id']
+  rescue => e
+    Rails.logger.error "Error creating new dataset in the API: #{e}"
   end
 
   # Sends the dataset to the API
-  def self.upload(token, connectorType, connectorProvider, connectorUrl, dataPath,
-    application, name, tags_array = [], caption = {}, metadata = {})
-
-    formatted_caption = caption.dup
+  def self.upload(token, connector_type, connector_provider, connector_url, data_path,
+                  application, name, tags_array = [], caption = {}, metadata = {})
     # Converting the caption[country] JSON
-    begin
-      formatted_caption['country'] = formatted_caption['country'].split(' ')
-      formatted_caption['region'] = formatted_caption['region'].split(' ')
-      formatted_caption['date'] = formatted_caption['date'].split(' ')
-    rescue
-    end
+    formatted_caption = caption.dup
+    formatted_caption['country'] = formatted_caption['country']&.split(' ')
+    formatted_caption['region'] = formatted_caption['region']&.split(' ')
+    formatted_caption['date'] = formatted_caption['date']&.split(' ')
 
-    body = if connectorType == 'json'
-      {dataPath: dataPath}
-    else
-      {}
-    end.merge({
-      connectorType: connectorType,
-      provider: connectorProvider,
-      connectorUrl: connectorUrl,
+    body = connector_type == 'json' ? {dataPath: data_path} : {}
+    body.merge!(
+      connectorType: connector_type,
+      provider: connector_provider,
+      connectorUrl: connector_url,
       legend: formatted_caption,
       application: [application],
       name: name,
@@ -366,8 +350,7 @@ class DatasetService < ApiService
           tags: tags_array
         }
       }
-    })
-
+    )
     body = body.to_json
 
     begin
@@ -402,9 +385,9 @@ class DatasetService < ApiService
     end
 
     if response.status == 200
-      { valid: true, message: 'Dataset deleted successfully' }
+      {valid: true, message: 'Dataset deleted successfully'}
     else
-      { valid: false, message: 'Dataset failed to delete' }
+      {valid: false, message: 'Dataset failed to delete'}
     end
   end
 end

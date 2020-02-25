@@ -66,7 +66,9 @@ module DatasetSteps
           params.to_unsafe_h['dataset'].to_h.deep_symbolize_keys
         )
       else
-        dataset = Dataset.find_with_metadata(params[:dataset_id])
+        dataset = Dataset.find_with_metadata(
+          params[:dataset_id], session[:user_token]
+        )
       end
       dataset.id = dataset_id
 
