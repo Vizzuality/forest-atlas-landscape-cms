@@ -2,8 +2,22 @@
   <div class="wrapper">
     <%= link_to 'Cancel', management_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
     <div>
-      <%= f.button (@page.enabled ? 'Unpublish' : 'Publish'), value: Management::PageStepsController::PUBLISH, type: 'submit', class: 'c-button js-submit' %>
-      <%= link_to 'Go to live page', @page.site.routes.first.host_with_scheme + @page.url, target: '_blank', class: 'c-button' if @page.enabled  %>
+      <%= f.button Management::PageStepsController::SAVE,
+        type: 'button',
+        value: Management::PageStepsController::SAVE,
+        class: 'c-button -outline -dark-text' %>
+
+      <% if @page.enabled %>
+        <%= f.button Management::PageStepsController::UNPUBLISH,
+          value: Management::PageStepsController::UNPUBLISH,
+          type: 'submit',
+          class: 'c-button js-submit' %>
+      <% else %>
+        <%= f.button Management::PageStepsController::PUBLISH,
+        value: Management::PageStepsController::PUBLISH,
+        type: 'submit',
+        class: 'c-button js-submit' %>
+      <% end %>
     </div>
   </div>
 </div>

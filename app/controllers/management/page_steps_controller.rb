@@ -22,6 +22,7 @@ class Management::PageStepsController < ManagementController
   CONTINUE = 'CONTINUE'.freeze
   SAVE = 'SAVE'.freeze
   PUBLISH = 'PUBLISH'.freeze
+  UNPUBLISH = 'UNPUBLISH'.freeze
 
 
   # TODO : create a session for incorrect state and last step visited (?)
@@ -512,7 +513,8 @@ class Management::PageStepsController < ManagementController
   # Returns true if the button pressed was publish
   def publish_button?
     return false unless params[:button]
-    return params[:button].upcase == PUBLISH.upcase
+
+    [PUBLISH, UNPUBLISH].include? params[:button].upcase
   end
 
   # Saves the current state and goes to the next step
