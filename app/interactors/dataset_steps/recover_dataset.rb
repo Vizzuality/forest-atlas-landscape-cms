@@ -7,17 +7,18 @@ module DatasetSteps
         context.action_name,
         context.session,
         context.params,
-        context.dataset_params
+        context.dataset_params,
+        context.token
       )
     end
 
-    def build_current_dataset_state(action_name, session, params, dataset_params)
+    def build_current_dataset_state(action_name, session, params, dataset_params, token)
       ds_params, dataset, dataset_id =
         build_new_dataset_state(params, dataset_params)
 
       if params[:dataset_id]
         dataset_id, dataset =
-          build_existing_dataset_state(action_name, dataset, session, params)
+          build_existing_dataset_state(action_name, dataset, session, params, token)
 
         ds_params = dataset.attributes
       end
@@ -59,16 +60,14 @@ module DatasetSteps
       return ds_params, dataset, dataset_id
     end
 
-    def build_existing_dataset_state(action_name, dataset, session, params)
+    def build_existing_dataset_state(action_name, dataset, session, params, token)
       dataset_id = params[:dataset_id] || dataset.id
       if params[:dataset]
         dataset.set_attributes(
           params.to_unsafe_h['dataset'].to_h.deep_symbolize_keys
         )
       else
-        dataset = Dataset.find_with_metadata(
-          params[:dataset_id], session[:user_token]
-        )
+        dataset = Dataset.find_with_metadata(params[:dataset_id], token)
       end
       dataset.id = dataset_id
 

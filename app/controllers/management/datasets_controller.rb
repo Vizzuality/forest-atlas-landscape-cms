@@ -83,9 +83,12 @@ class Management::DatasetsController < ManagementController
       'owner' => {'value' => user_name(dataset.user.dig('email')), 'searchable' => true, 'sortable' => true},
       'created' => {'value' => dataset.created_at, 'searchable' => true, 'sortable' => true},
       'edited' => {'value' => dataset.updated_at, 'searchable' => true, 'sortable' => true},
-      'widgets' => {'value' => (dataset.widgets || [])},
-      'edit' => {'value' => edit_management_site_dataset_dataset_step_path(@site.slug, dataset.id, id: :metadata), 'method' => 'get'}
+      'widgets' => {'value' => (dataset.widgets || [])}
     }
+    if edit_url(dataset)
+      processed_dataset['edit'] =
+        {'value' => edit_url(dataset), 'method' => 'get'}
+    end
     if delete_url(dataset)
       processed_dataset['delete'] =
         {'value' => delete_url(dataset), 'method' => 'delete'}
@@ -100,11 +103,22 @@ class Management::DatasetsController < ManagementController
     user ? user.name : nil
   end
 
-  # Only shows the delete url in case the user is a site admin for this site
-  def delete_url(dataset)
+  def edit_url(dataset)
     return if !current_user_is_admin &&
       !current_user.owned_sites.include?(@site) &&
       current_user.email != dataset.user.dig('email')
+
+    edit_management_site_dataset_dataset_step_path(
+      params[:site_slug],
+      dataset.id,
+      id: :title
+    )
+  end
+
+  # Only shows the delete url in case the user is a site admin for this site
+  def delete_url(dataset)
+    return if !current_user_is_admin &&
+      !current_user.owned_sites.include?(@site)
 
     management_site_dataset_path(
       params[:site_slug],

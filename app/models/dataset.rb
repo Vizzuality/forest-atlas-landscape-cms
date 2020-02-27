@@ -20,21 +20,21 @@ class Dataset
     :function, :geographic_coverage, :learn_more, :other, :resolution, :subtitle
   ]
 
-  def form_steps
+  def form_steps(user_site_admin = false, own_user_dataset = false, validating = false)
     if id.nil?
       {
         pages: %w[title connector labels context],
         names: %w[Title Connector Labels Context]
       }
-    elsif provider.eql?('csv')
+    elsif user_site_admin || own_user_dataset || validating
       {
         pages: %w[title connector metadata options],
         names: %w[Title Connector Metadata Aliases]
       }
     else
       {
-        pages: %w[title connector metadata options],
-        names: %w[Title Connector Metadata Aliases]
+        pages: %w[title connector],
+        names: %w[Title Connector]
       }
     end
   end
@@ -213,7 +213,9 @@ class Dataset
     DatasetService.update token, attributes
 
     DatasetService.update_connector token, id, connector_url if provider.eql? 'csv'
+  end
 
+  def save_metadata(token)
     metadata.each do |language, metadata_info|
       metadata_info['language'] = language
       metadata_info.symbolize_keys!
@@ -305,6 +307,7 @@ class Dataset
   private
   # Validates the dataset according to the current step
   def step_validation
+    form_steps = form_steps(false, false, true)
     step_index = form_steps[:pages].index(form_step)
 
     title_step = form_steps[:pages].index('title')
