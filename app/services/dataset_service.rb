@@ -98,14 +98,18 @@ class DatasetService < ApiService
   # Gets the metadata of a list of datasets
   # Params:
   # +dataset_id+:: A list of datasets' ids
-  def self.get_metadata_list(dataset_ids)
+  def self.get_metadata_list(dataset_ids, token = nil)
     return [] if dataset_ids.blank?
 
-    request = @conn.get "/v1/dataset?ids=#{dataset_ids.join(',')}",
-                        'includes': 'vocabulary',
-                        'page[number]': '1',
-                        'page[size]': '10000',
-                        '_': Time.now.to_f
+    request = @conn.get do |req|
+      req.url '/v1/dataset?' \
+        "ids=#{dataset_ids.join(',')}&" \
+        'includes=vocabulary,user&' \
+        'page[number]=1&' \
+        'page[size]=10000&' \
+        "_=#{Time.now.to_f}"
+      req.headers['Authorization'] = "Bearer #{token}" if token
+    end
 
     request.body.blank? ? {} : JSON.parse(request.body)
   end
