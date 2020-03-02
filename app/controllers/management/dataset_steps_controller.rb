@@ -3,8 +3,8 @@ class Management::DatasetStepsController < ManagementController
   include NavigationHelper
 
   before_action :set_site, only: [:new, :edit, :show, :update]
-  before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
   before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
+  before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
   before_action :ensure_management_user, only: :destroy
   before_action :steps_names
   before_action :setup_wizard

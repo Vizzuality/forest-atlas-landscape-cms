@@ -154,8 +154,8 @@ end
         'includes=widget,user&' \
         'page[number]=1&' \
         'page[size]=10000&' \
-        "status=#{status}"
-        "application=#{ENV.fetch('API_APPLICATIONS')}"
+        "status=#{status}&" \
+        "application=#{ENV.fetch('API_APPLICATIONS')}&" \
         "_=#{Time.now.to_f}"
       req.headers['Authorization'] = "Bearer #{token}" if token
     end

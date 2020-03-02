@@ -29,16 +29,19 @@ class Management::WidgetsController < ManagementController
   end
 
   def set_widgets
-    datasets = @site.
-      get_datasets(current_user, user_token(@site, true)).map do |d|
-        {id: d.id, name: d.name, user: d.user}
-      end
+    widgets_user_token = user_token(@site, true)
+    datasets = @site.get_datasets(current_user, widgets_user_token).map do |d|
+      {id: d.id, name: d.name, user: d.user}
+    end
 
     widgets = if datasets.blank?
                 []
               else
+                datasets_ids = datasets.map { |d| d[:id] }
                 # Get widgets associated to the datasets of the current user
-                WidgetService.from_datasets(datasets.map { |d| d[:id] }, 'saved', user_token(@site, true))
+                WidgetService.from_datasets(
+                  datasets_ids, 'saved', widgets_user_token
+                )
               end
 
     @widgets = process_widgets(datasets, widgets)
@@ -55,9 +58,9 @@ class Management::WidgetsController < ManagementController
       widget.dataset_name = dataset[:name]
 
       processed_widget = {widget: widget}
-      processed_widget['edit_url'] = edit_url(widget) if edit_url(widget)
+      processed_widget[:edit_url] = edit_url(widget) if edit_url(widget)
       if delete_url(dataset[:id], widget.id)
-        processed_widget['delete_url'] = delete_url(dataset[:id], widget.id)
+        processed_widget[:delete_url] = delete_url(dataset[:id], widget.id)
       end
       processed_widget
     end.compact
