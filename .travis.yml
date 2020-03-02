@@ -1,4 +1,7 @@
 language: ruby
+env:
+  global:
+    - FA_PUBLIC_FOLDER=http://localhost:3000
 rvm:
   - 2.3.1
 services:
