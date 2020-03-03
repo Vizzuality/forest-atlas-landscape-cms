@@ -7,42 +7,40 @@ class Management::DatasetsController < ManagementController
   before_action :authenticate_user_for_site!
 
   def index
-    @dataset_metadata = Dataset.get_metadata_list_for_frontend(
+    datasets_metadata = Dataset.get_metadata_list_for_frontend(
       user_token(@site),
       @datasets.map(&:id)
     )
 
-    @filteredDatasets = []
-
+    processed_datasets = []
     @datasets.each do |dataset|
-      @filteredDatasets.push renderable_dataset(dataset)
+      processed_datasets.push renderable_dataset(dataset, datasets_metadata)
 
       # Untill we remove backbone, we need to keep this
-      gon.datasets = @filteredDatasets
+      gon.datasets = processed_datasets
     end
+    @filtered_datasets = processed_datasets
   end
 
   def destroy
     response = DatasetService.delete(
-      user_token(@site, current_user.email == @dataset.user.dig('email')),
+      user_token(@site, current_user.email == @dataset.user&.dig('email')),
       params[:id]
     )
 
     flash[response[:valid] ? :notice : :error] = response[:message]
 
-    render :index
+    redirect_to management_site_datasets_path(site_slug: @site.slug)
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_site
-    @site = Site.find_by({slug: params[:site_slug]})
+    @site = Site.find_by(slug: params[:site_slug])
 
-    if (@site.routes.any?)
-      # We just want a valid URL for the site
-      @url = @site.routes.first.host_with_scheme
-    end
+    # We just want a valid URL for the site
+    @url = @site.routes.first.host_with_scheme if @site.routes.any?
   end
 
   # Gets a dataset from the API and sets it to the member variable
@@ -73,14 +71,14 @@ class Management::DatasetsController < ManagementController
     end
   end
 
-  def renderable_dataset(dataset)
+  def renderable_dataset(dataset, datasets_metadata)
     processed_dataset = {
       'title' => {'value' => dataset.name, 'searchable' => true, 'sortable' => true},
       'contexts' => {'value' => ContextDataset.where(dataset_id: dataset.id).map{|ds| ds.context.name}.join(', '), 'searchable' => true, 'sortable' => false},
       'connector' => {'value' => dataset.provider, 'searchable' => true, 'sortable' => true},
       'status' => {'value' => dataset.status, 'searchable' => true, 'sortable' => true},
-      'metadata' => {'value' => @dataset_metadata[dataset.id], 'searchable' => false, 'sortable' => false, 'visible' => false},
-      'owner' => {'value' => user_name(dataset.user.dig('email')), 'searchable' => true, 'sortable' => true},
+      'metadata' => {'value' => datasets_metadata[dataset.id], 'searchable' => false, 'sortable' => false, 'visible' => false},
+      'owner' => {'value' => user_name(dataset.user&.dig('email')), 'searchable' => true, 'sortable' => true},
       'created' => {'value' => dataset.created_at, 'searchable' => true, 'sortable' => true},
       'edited' => {'value' => dataset.updated_at, 'searchable' => true, 'sortable' => true},
       'widgets' => {'value' => (dataset.widgets || [])}
