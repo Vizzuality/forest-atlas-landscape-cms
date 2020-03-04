@@ -9,24 +9,23 @@ class Admin::UserStepsController < AdminController
 
   before_action :ensure_only_admin_user
   before_action :set_current_user, only: [:show, :update]
-  before_action :get_user_pages
+  before_action :set_user_pages
   before_action :set_breadcrumbs, only: [:show, :update]
   prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   SAVE = 'Save'.freeze
   CONTINUE = 'Continue'.freeze
 
-
   # This action cleans the session
   def new
     reset_session_key(:user, :new, {})
-    redirect_to admin_user_step_path(id: Wicked::FIRST_STEP)
+    redirect_to admin_user_step_path(id: 'identity')
   end
 
   # This action clean the session
   def edit
     reset_session_key(:user, @user_id, {})
-    redirect_to wizard_path(Wicked::FIRST_STEP)
+    redirect_to wizard_path('identity')
   end
 
   def show
@@ -38,6 +37,7 @@ class Admin::UserStepsController < AdminController
         @user.build_user_site_associations_for_sites(Site.all)
       end
     end
+
     render_wizard
   end
 
@@ -77,6 +77,52 @@ class Admin::UserStepsController < AdminController
   end
 
   private
+
+  def set_current_user
+    recover_user
+
+    set_default_user_session
+
+    @user.assign_attributes session[:user][@user_id] if session[:user][@user_id]
+  end
+
+  def recover_user
+    @user = params[:user_id] ? User.find(params[:user_id]) : User.new
+    @user_id = @user&.persisted? ? @user.id.to_s : :new
+  end
+
+  def set_default_user_session
+    session[:user][@user_id] ||= {}
+
+    if params[:user] && user_params.to_h && step == 'sites'
+      set_session_user_site_associations
+    end
+
+    return unless params[:user] && user_params.to_h
+
+    update_session_with_params
+  end
+
+  def set_session_user_site_associations
+    if user_params[:user_site_associations_attributes]
+      user_site_associations_attributes = {}
+      user_params[:user_site_associations_attributes].to_h.each do |i, usa|
+        usa['_destroy'] = true if usa['selected'] != '1'
+        user_site_associations_attributes[i] = usa
+      end
+      session[:user][@user_id]['user_site_associations_attributes'] =
+        user_site_associations_attributes
+    else
+      session[:user][@user_id]['user_site_associations_attributes'] = {}
+    end
+  end
+
+  def update_session_with_params
+    session[:user][@user_id].merge!(
+      user_params.to_h.except(:user_site_associations_attributes)
+    )
+  end
+
   def user_params
     params.require(:user).permit(
       :name,
@@ -87,49 +133,16 @@ class Admin::UserStepsController < AdminController
     )
   end
 
-  def set_current_user
-    @user = params[:user_id] ? User.find(params[:user_id]) : User.new
-    @user_id = if @user && @user.persisted?
-      @user.id
-    else
-      :new
-    end
-    session[:user][@user_id] ||= {}
-
-    if params[:user].present? && user_params.to_h && step == 'sites'
-      if user_params[:user_site_associations_attributes]
-        user_site_associations_attributes = {}
-        user_params[:user_site_associations_attributes].to_h.each do |i, usa|
-          usa['_destroy'] = true if usa['selected'] != '1'
-          user_site_associations_attributes[i] = usa
-        end
-        session[:user][@user_id]['user_site_associations_attributes'] =  user_site_associations_attributes
-      else
-        session[:user][@user_id]['user_site_associations_attributes'] = {}
-      end
-    end
-
-    session[:user][@user_id].merge!(
-      user_params.to_h.except(:user_site_associations_attributes)
-    ) if params[:user] && user_params.to_h
-    @user.assign_attributes session[:user][@user_id] if session[:user][@user_id]
-  end
-
-  def get_user_pages
+  def set_user_pages
     self.steps_names = *User.form_steps[:names]
   end
 
-  # Defines the path the wizard will go when finished
-  def finish_wizard_path
-    admin_users_path
-  end
-
   def set_breadcrumbs
-    if @user.id
-      @breadcrumbs << {name: "Editing user \"#{@user.name}\""}
-    else
-      @breadcrumbs << {name: 'New User'}
-    end
+    @breadcrumbs << if @user.id
+                      {name: "Editing user \"#{@user.name}\""}
+                    else
+                      {name: 'New User'}
+                    end
   end
 
   def ensure_session_keys_exist
@@ -137,6 +150,11 @@ class Admin::UserStepsController < AdminController
   end
 
   def save_button?
-    params[:button].upcase == SAVE.upcase
+    params[:button].casecmp(SAVE).zero?
+  end
+
+  # Defines the path the wizard will go when finished
+  def finish_wizard_path
+    admin_users_path
   end
 end

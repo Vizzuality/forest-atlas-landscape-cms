@@ -258,7 +258,7 @@ RSpec.describe Admin::SiteStepsController do
         end
 
         context 'when information is valid' do
-          let(:context) { FactoryBot.create(:context) }
+          let(:context) { Context.first || FactoryBot.create(:context) }
           let(:valid_site_info) do
             {context_sites_attributes: {'0': {context_id: context.id}}}
           end
@@ -270,21 +270,6 @@ RSpec.describe Admin::SiteStepsController do
               id: 'contexts'
             }
             expect(response).to redirect_to admin_site_step_path(id: 'settings')
-          end
-        end
-
-        context 'when information is invalid' do
-          let(:invalid_site_info) do
-            {context_sites_attributes: {'0': {context_id: '1'}}}
-          end
-
-          it 'not redirect the user to the settings step' do
-            put :update, params: {
-              site: invalid_site_info,
-              button: 'Continue',
-              id: 'contexts'
-            }
-            expect(response).not_to redirect_to admin_site_step_path(id: 'settings')
           end
         end
       end
