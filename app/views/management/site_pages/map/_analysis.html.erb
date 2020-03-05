@@ -25,7 +25,7 @@
       });
       var analysisModulesValue;
       try {
-        analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.gsub("'", "\\\\'").squish.html_safe rescue {} %>');
+        analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.squish.gsub("'", "\\\\'").squish.html_safe %>');
       } catch (err) {
         analysisModulesValue = JSON.parse('{}');
       }
