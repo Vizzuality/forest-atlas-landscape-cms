@@ -158,7 +158,7 @@ class Dataset
 
   def self.find_with_metadata(id)
     properties = DatasetService.get_metadata(id)
-    return nil if properties.empty? || (data = properties['data']).empty?
+    return nil if properties.empty? || (data = properties['data'].first).empty?
     dataset = Dataset.new
     attributes = {id: id}
     data_attributes = data['attributes'] && data['attributes'].symbolize_keys
