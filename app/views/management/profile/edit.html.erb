@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<%= form_for(@user, url: management_profile_path, method: :put, html: { class: 'js-form'}) do |f| %>
+<%= form_for(@user, url: management_profile_path, method: :put, html: {class: 'js-form', id: 'submit_form'}) do |f| %>
 
   <div class="l-dataset-creation -title">
     <div class="wrapper">

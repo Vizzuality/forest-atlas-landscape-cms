@@ -12,7 +12,7 @@
 <%= Gon::Base.render_data %>
 
 
-<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+<%= form_for @dataset, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div class="l-dataset-creation -labels">
     <div class="wrapper">
 

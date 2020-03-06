@@ -15,7 +15,7 @@
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-<%= form_for(@page, url: wizard_path, method: :put, :html => {:class => 'js-form'}) do |f| %>
+<%= form_for(@page, url: wizard_path, method: :put, html: {class: 'js-form', id: 'submit_form'}) do |f| %>
   <%# TODO: Remove this and use shared errors%>
   <div class="l-page-creation -title">
     <div class="wrapper">

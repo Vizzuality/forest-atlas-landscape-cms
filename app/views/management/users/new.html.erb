@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-<%= form_for @user, url: management_site_users_path(@site.slug), method: :post do |f| %>
+<%= form_for @user, url: management_site_users_path(@site.slug), method: :post, html: {id: 'submit_form'} do |f| %>
   <div class="l-widget-creation -title">
     <div class="wrapper">
       <div class="c-inputs-container">

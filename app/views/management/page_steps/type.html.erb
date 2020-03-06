@@ -15,7 +15,7 @@
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for @page, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div class="l-page-creation -type">
     <div class="wrapper">
       <div class="c-card-list">

@@ -4,7 +4,7 @@
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
 <h1>CREATE AN INTRODUCTION</h1>
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for @page, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div>
     <h1>Title</h1>
     <%= f.text_field :name, placeholder: 'Choose the title'%>

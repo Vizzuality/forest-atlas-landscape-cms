@@ -15,7 +15,7 @@
   {form_steps: form_steps, resource: @page, current_step: step, step_names: @steps_names, \
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for @page, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div class="l-page-creation -title">
     <div class="wrapper">
       <div class="c-inputs-container">
