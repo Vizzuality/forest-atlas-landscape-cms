@@ -29,6 +29,6 @@
     </div>
   </div>
   <%= render partial: 'management/steps_shared/footer', \
-    locals: { f: f, cancel: contexts_path, always_save: true, no_continue: true } %>
+    locals: { f: f, cancel: contexts_path, always_save: true, continue: false} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @context } %>

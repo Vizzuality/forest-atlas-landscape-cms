@@ -74,5 +74,5 @@
     <%= link_to 'Cancel', {controller: 'management/site_pages', action: 'index', site_slug: @site.slug}, class: 'c-button -outline -dark-text' %>
     <a class="c-button -disabled">Continue</a>
   <% end %>
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f, no_continue: true} %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, continue: false} %>
 <% end %>

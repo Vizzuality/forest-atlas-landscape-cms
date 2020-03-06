@@ -32,6 +32,6 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_site_pages_path(@site.slug), no_continue: true, always_save: true } %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_site_pages_path(@site.slug), continue: false, always_save: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @user } %>

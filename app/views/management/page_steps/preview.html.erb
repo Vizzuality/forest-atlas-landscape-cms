@@ -30,7 +30,7 @@
     }) %>
   </div>
 
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true, publish: true, wide: true } %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, continue: false, publish: true, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page} %>
 
