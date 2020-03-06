@@ -68,7 +68,7 @@ class DatasetsPage extends React.Component {
           >
             <div className="details-modal">
               <h1>Are you sure you want to delete this dataset?</h1>
-              {selectedRow.widgets.value && (
+              {selectedRow.widgets.value.length !== 0 && (
                 <div>
                   <p>
                     The deletion {'can\'t'} be reversed and the following widgets will be
