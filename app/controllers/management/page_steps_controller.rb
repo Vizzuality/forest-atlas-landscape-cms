@@ -531,7 +531,13 @@ class Management::PageStepsController < ManagementController
         delete_session_key(:page, @page_id)
         delete_session_key(:tags_attributes, "#{@page_id}")
         @page.synchronise_page_widgets(page_params.to_h)
-        redirect_to wizard_path(save_step_name, site_page_id: @page.id), notice: 'Page was successfully ' + notice_text
+        if next_step_name == 'open_content_v2_preview'
+          redirect_to management_site_site_pages_path(site_slug: @site.slug),
+                      notice: "Page was successfully #{notice_text}"
+        else
+          redirect_to wizard_path(save_step_name, site_page_id: @page.id),
+                      notice: "Page was successfully #{notice_text}"
+        end
       else
         render_wizard
       end
