@@ -92,7 +92,8 @@ module PermissionsHelper
       name: current_user.name,
       token: session[:user_token],
       profile: edit_management_profile_path(current_user.id),
-      logout: auth_logout_url
+      logout: auth_logout_url,
+      user_site_roles: user_site_associations(current_user)
     }
   end
 
@@ -124,5 +125,16 @@ module PermissionsHelper
 
   def current_user_has_roles(roles)
     (session[:current_user][:roles] & roles).any?
+  end
+
+  def user_site_associations(user)
+    associations = UserSiteAssociation.where(user_id: user.id)
+    associations.map do |association|
+      site = association.site
+      {
+        site_slug: site.slug,
+        role: user_site_admin?(site.id) ? 'site admin' : 'publisher'
+      }
+    end
   end
 end
