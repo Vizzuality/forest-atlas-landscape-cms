@@ -10,7 +10,7 @@
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @context, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
-<%= form_for @context, url: wizard_path, method: :put do |f| %>
+<%= form_for @context, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div class="l-dataset-creation -title">
     <div class="wrapper">
       <div class="c-inputs-container">

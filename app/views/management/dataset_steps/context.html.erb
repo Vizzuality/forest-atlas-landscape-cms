@@ -9,7 +9,7 @@
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @dataset, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
-<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+<%= form_for @dataset, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div class="l-dataset-creation -context">
     <div class="wrapper">
       <div class="c-cards-list">
@@ -25,6 +25,6 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_site_datasets_path(@site.slug)} %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, continue: false, always_save: true, cancel: management_site_datasets_path(@site.slug)} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @dataset } %>

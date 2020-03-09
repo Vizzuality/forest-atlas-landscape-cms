@@ -138,7 +138,7 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def save_or_update_step
-    if params['button'].eql?('CONTINUE')
+    if !params['button'] || params['button'].eql?('CONTINUE')
       redirect_to next_wizard_path
       return
     end

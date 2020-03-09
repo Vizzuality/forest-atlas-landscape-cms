@@ -6,18 +6,21 @@
       <%= link_to 'Cancel', management_site_site_pages_path(@site.slug), class: 'c-button -outline -dark-text' %>
   <% end %>
     <div>
-      <% unless local_assigns[:no_continue] %>
+      <% if !local_assigns.key?(:continue) || local_assigns[:continue] %>
         <%= f.button Management::PageStepsController::CONTINUE,
+          id: 'testing',
           type: continue_button_type(f.object.id, local_assigns[:always_save], local_assigns[:never_save], local_assigns[:publish]),
           value: Management::PageStepsController::CONTINUE,
-          class: "c-button #{(f.object.id || local_assigns[:always_save]) ? ' -outline -dark-text' : 'js-submit'}" %>
+          class: "c-button #{(f.object.id || local_assigns[:always_save]) ? ' -outline -dark-text' : 'js-submit'}",
+          onclick: "document.getElementById('submit_form').submit()" %>
       <% end %>
 
       <% if save_button?(f.object.id, local_assigns[:always_save], local_assigns[:never_save]) %>
         <%= f.button Management::PageStepsController::SAVE,
           value: Management::PageStepsController::SAVE,
           type: local_assigns[:publish] ? 'button' : 'submit',
-          class: "c-button #{local_assigns[:publish] ? '-outline -dark-text' : 'js-submit'}" %>
+          class: "c-button #{local_assigns[:publish] ? '-outline -dark-text' : 'js-submit'}",
+          onclick: local_assigns[:publish] ? "document.getElementById('submit_form').submit()" : ""%>
       <% end %>
 
       <% if local_assigns[:publish] %>

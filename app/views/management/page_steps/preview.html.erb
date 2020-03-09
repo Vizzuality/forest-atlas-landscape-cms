@@ -17,7 +17,7 @@
 
 <%= Gon::Base.render_data %>
 
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for @page, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <input type="hidden" type="text" id="widgets-settings" name="site_page[dataset_setting][widgets]" value="" class="js-widgets-input" />
 
   <div class="l-page-creation -dashboard-preview">
@@ -30,7 +30,7 @@
     }) %>
   </div>
 
-  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, no_continue: true, publish: true, wide: true } %>
+  <%= render partial: 'management/steps_shared/footer', locals: {f: f, always_save: true, continue: false, publish: true, wide: true } %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @page} %>
 

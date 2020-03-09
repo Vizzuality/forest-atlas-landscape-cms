@@ -13,7 +13,7 @@
             class: 'c-admin-preview-button'
           }) %>
         <% end %>
-        <% unless local_assigns[:no_continue] %>
+        <% if !local_assigns.key?(:continue) || local_assigns[:continue] %>
           <%= f.button Admin::SiteStepsController::CONTINUE, value: Admin::SiteStepsController::CONTINUE, type: 'submit', method: :put, class: 'c-button -outline -dark-text' %>
         <% end %>
         <%= f.button Admin::SiteStepsController::SAVE, value: Admin::SiteStepsController::SAVE, type: 'submit', method: :put, class: 'c-button' %>

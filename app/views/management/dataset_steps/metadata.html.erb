@@ -12,7 +12,7 @@
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @dataset, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
-<%= form_for @dataset, url: wizard_path, method: :put do |f| %>
+<%= form_for @dataset, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <%= react_component('ManagementDatasetMetadata', {
     languages: @languages,
     defaultLanguage: @default_language,
