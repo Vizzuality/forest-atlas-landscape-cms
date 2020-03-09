@@ -113,15 +113,17 @@ class Site < ApplicationRecord
       contexts = self.contexts
     end
 
-    contexts.each{ |c| c.context_datasets.each{|d| datasets << d.dataset_id} }
+    contexts.each do |c|
+      c.context_datasets.each { |d| datasets << d.dataset_id }
+    end
     datasets.uniq!
     datasets
   end
 
   # Gets the datasets for this sites' contexts
-  def get_datasets(user = nil)
+  def get_datasets(user = nil, token = nil)
     ids = get_datasets_ids(user)
-    meta = DatasetService.get_metadata_list(ids)
+    meta = DatasetService.get_metadata_list(ids, token)
     datasets = []
     begin
       meta['data'].each do |ds|

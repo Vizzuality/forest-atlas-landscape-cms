@@ -54,7 +54,7 @@ class WidgetsPage extends React.Component {
       },
       description: { value: widget.description },
       dataset: { value: widget.dataset_name, sortable: true },
-      owner: { value: widget.user, sortable: true },
+      owner: { value: widget.user.name, sortable: true },
       created: { value: (new Date(widget.created_at)).toLocaleString(), sortable: true },
       edited: { value: (new Date(widget.updated_at)).toLocaleString(), sortable: true },
       ...(edit_url ? { edit: { value: edit_url } } : {}),
@@ -62,11 +62,6 @@ class WidgetsPage extends React.Component {
     }));
 
     const { deleteWarning, deleteSuccess, deleteError } = this.state;
-
-    const actions = [
-      ...(rows.length && rows[0].edit ? ['edit'] : []),
-      ...(rows.length && rows[0].delete ? ['delete'] : [])
-    ];
 
     return (
       <div className="l-page-list">
@@ -105,7 +100,7 @@ class WidgetsPage extends React.Component {
             searchable
             columns={['name', 'description', 'dataset', 'owner', 'created', 'edited']}
             data={rows}
-            actions={actions}
+            actions={['edit', 'delete']}
             onClickAction={(...params) => this.onClickAction(...params)}
           />
         </div>

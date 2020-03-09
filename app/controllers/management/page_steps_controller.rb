@@ -422,10 +422,11 @@ class Management::PageStepsController < ManagementController
       end
 
       @dataset_setting.assign_attributes(dataset_id: ds_id)
-      ds_metadata = @dataset_setting.get_metadata
-      @dataset_setting.api_table_name = ds_metadata.dig('data', 'attributes', 'tableName')
-      @dataset_setting.legend = ds_metadata.dig('data', 'attributes', 'legend')
-
+      ds_metadata = @dataset_setting.get_metadata['data'].first
+      if ds_metadata
+        @dataset_setting.api_table_name = ds_metadata.dig('attributes', 'tableName')
+        @dataset_setting.legend = ds_metadata.dig('attributes', 'legend')
+      end
     end
 
     if fields = ds_params[:filters]

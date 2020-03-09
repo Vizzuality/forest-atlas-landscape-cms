@@ -5,15 +5,20 @@ RSpec.describe Management::DatasetStepsController do
   include SpecTestHelper
   include_context :gon
 
-  let_it_be(:manager) { FactoryBot.create(:user) }
-  let_it_be(:context) do
-    context = FactoryBot.create(:context)
-    FactoryBot.create(:context_user, context: context, user: manager)
-    context
+  before :all do
+    Site.destroy_all
   end
+
+  let_it_be(:manager) { FactoryBot.create(:user) }
+  let_it_be(:admin) { FactoryBot.create(:user, admin: true) }
   let_it_be(:site) { FactoryBot.create(:site_with_contexts) }
+  let_it_be(:context) { Context.first }
+  let_it_be(:context_user) do
+    FactoryBot.create(:context_user, context: context, user: manager)
+  end
 
   before do
+    allow(ApiService).to receive(:connect).and_return(Faraday.new)
     allow(DatasetService).to receive(:get_metadata).and_return(
       JSON.parse(JSON.parse(File.read(
         "#{Rails.root}/spec/support/fixtures/requests/dataset_service_get_metadata.json"
@@ -53,12 +58,12 @@ RSpec.describe Management::DatasetStepsController do
         dataset = FactoryBot.build(:dataset)
         subject = get :edit, params: {
           site_slug: site.slug,
-          id: 'metadata',
+          id: 'title',
           dataset_id: dataset.id
         }
 
         expect(subject).to redirect_to management_site_dataset_dataset_step_path(
-          id: :metadata,
+          id: :title,
           site_slug: site.slug,
           dataset_id: dataset.id
         )
@@ -206,7 +211,8 @@ RSpec.describe Management::DatasetStepsController do
             put :update, params: {
               id: 'title',
               site_slug: site.slug,
-              dataset: valid_site_info
+              dataset: valid_site_info,
+              button: 'CONTINUE'
             }
 
             expect(response).to redirect_to(
@@ -352,7 +358,8 @@ RSpec.describe Management::DatasetStepsController do
             put :update, params: {
               id: 'labels',
               site_slug: site.slug,
-              dataset: valid_site_info
+              dataset: valid_site_info,
+              button: 'CONTINUE'
             }
 
             expect(response).to redirect_to(

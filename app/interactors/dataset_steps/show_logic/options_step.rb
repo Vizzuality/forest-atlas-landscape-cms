@@ -11,13 +11,14 @@ module DatasetSteps
       end
 
       def get_metadata_columns(site, dataset)
-        default_language = SiteSetting.default_site_language(site.id).value
-        data = DatasetService.get_metadata(dataset.id)['data']
-        metadata = data.first['attributes']['metadata'].find do |md|
+        default_language =
+          SiteSetting.default_site_language(site.id)&.value || 'fr'
+        data = DatasetService.get_metadata(dataset.id)['data'].first
+        metadata = data['attributes']['metadata'].find do |md|
           md['attributes']['language'] == default_language
         end
 
-        fields = DatasetService.get_fields dataset.id, data.first['tableName']
+        fields = DatasetService.get_fields dataset.id, data['tableName']
 
         metadata_columns = fields.map do |field|
           metadata_columns = metadata&.dig('attributes', 'columns')

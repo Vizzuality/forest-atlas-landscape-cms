@@ -27,6 +27,7 @@ RSpec.describe Management::WidgetsController do
     end
 
     before do
+      allow(ApiService).to receive(:connect).and_return(Faraday.new)
       allow(DatasetService).to receive(:get_metadata_list) {
         JSON.parse(File.read(
           "#{Rails.root}/spec/support/fixtures/requests/dataset_service_get_metadata_list.json"

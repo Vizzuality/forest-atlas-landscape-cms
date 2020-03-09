@@ -6,17 +6,16 @@ FactoryBot.define do
     sequence(:slug) { |n| "site#{n}" }
 
     trait :with_name_info do
-      routes { build_list :route, 1 }
+      routes_attributes { [FactoryBot.attributes_for(:route)] }
     end
 
     trait :with_users_info do
-      user_site_associations do
-        build_list :user_site_association, 1, selected: '1', role: '3'
+      user_site_associations_attributes do
+        [FactoryBot.attributes_for(:user_site_association, selected: '1', role: '3')]
       end
     end
 
     trait :with_contexts_info do
-      context_sites { build_list :context_site, 1 }
     end
 
     trait :with_settings_info do

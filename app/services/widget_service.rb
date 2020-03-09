@@ -27,15 +27,21 @@ class WidgetService < ApiService
     widgets
   end
 
-  def self.widget(id)
+  def self.widget(id, token = nil)
     begin
-      widgets_request = @conn.get "/v1/widget/#{id}?includes=metadata,user&_=#{Time.now.to_s}"
+      widgets_request = @conn.get do |req|
+        req.url "/v1/widget/#{id}?" \
+          'includes=metadata,user&' \
+          "_=#{Time.now.to_f}"
+        req.headers['Authorization'] = "Bearer #{token}" if token
+      end
+
       widget_json = JSON.parse widgets_request.body
 
       user_email = widget_json.dig('data', 'attributes', 'user', 'email')
       if user_email
         user = User.find_by(email: user_email)
-        widget_json['data']['attributes']['user'] = user.name
+        widget_json['data']['attributes']['user']['name'] = user.name
       end
 
       widget = Widget.new widget_json['data']
@@ -50,7 +56,7 @@ class WidgetService < ApiService
     widget = Widget.new
     widget.set_attributes widget_params
     begin
-      Rails.logger.info 'Creating Widget in the API.'
+      Rails.logger.info 'Updating Widget in the API.'
       Rails.logger.info "Widget: #{widget}"
 
       res = @conn.patch do |req|
@@ -141,14 +147,18 @@ end
   end
 
   # Returns the widgets of a list of datasets
-  def self.from_datasets(dataset_ids, status = 'saved')
-    widgets_request = @conn.get 'dataset',
-                                'ids': dataset_ids.join(','),
-                                'includes': 'widget',
-                                'page[number]': '1', 'page[size]': '10000',
-                                'status': status,
-                                'application': ENV.fetch('API_APPLICATIONS'),
-                                '_': Time.now.to_s
+  def self.from_datasets(dataset_ids, status = 'saved', token = nil)
+    widgets_request = @conn.get do |req|
+      req.url "/dataset?" \
+        "ids=#{dataset_ids.join(',')}&" \
+        'includes=widget,user&' \
+        'page[number]=1&' \
+        'page[size]=10000&' \
+        "status=#{status}&" \
+        "application=#{ENV.fetch('API_APPLICATIONS')}&" \
+        "_=#{Time.now.to_f}"
+      req.headers['Authorization'] = "Bearer #{token}" if token
+    end
 
     widgets_json = JSON.parse widgets_request.body
 

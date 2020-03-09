@@ -2,12 +2,12 @@ class Management::DatasetStepsController < ManagementController
   include Wicked::Wizard
   include NavigationHelper
 
-  before_action :ensure_management_user, only: :destroy
   before_action :set_site, only: [:new, :edit, :show, :update]
+  before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
+  before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
+  before_action :ensure_management_user, only: :destroy
   before_action :steps_names
   before_action :setup_wizard
-  prepend_before_action :build_current_dataset_state, only: [:new, :edit, :show, :update]
-  prepend_before_action :ensure_session_keys_exist, only: [:new, :edit, :show, :update]
 
   attr_accessor :steps_names
   helper_method :disable_button?
@@ -29,13 +29,15 @@ class Management::DatasetStepsController < ManagementController
     reset_session_key(:dataset_creation, @dataset_id, {})
     reset_session_key(:context_datasets, @dataset_id, {})
 
-    @dataset = Dataset.find_with_metadata(params[:dataset_id])
+    @dataset = Dataset.find_with_metadata(
+      params[:dataset_id], user_token(@site, true)
+    )
     set_current_dataset_state
 
     redirect_to management_site_dataset_dataset_step_path(
       site_slug: params[:site_slug],
       dataset_id: params[:dataset_id],
-      id: :metadata
+      id: 'title'
     )
   end
 
@@ -44,8 +46,9 @@ class Management::DatasetStepsController < ManagementController
     @breadcrumbs << {name: 'New Dataset'}
     @dataset.form_step = step
 
-    if %w[context metadata options].include? step
+    if %w[context connector metadata options].include? step
       result = DatasetSteps::ShowLogic.const_get("#{step.camelize}Step").call(
+        gon: gon,
         site: @site,
         dataset: @dataset,
         dataset_id: @dataset_id,
@@ -67,7 +70,7 @@ class Management::DatasetStepsController < ManagementController
     case step
     when 'title', 'labels'
       if @dataset.valid?
-        redirect_to next_wizard_path
+        save_or_update_step
       else
         render_wizard
       end
@@ -143,7 +146,11 @@ class Management::DatasetStepsController < ManagementController
       return
     end
 
-    if @dataset.update session[:user_token]
+    user_token = user_token(@site)
+    user_token_metadata =
+      user_token(@site, current_user.email == @dataset.user&.dig('email'))
+    if @dataset.update(user_token) &&
+        @dataset.save_metadata(user_token_metadata)
       delete_session_key(:dataset_creation, @dataset_id)
       redirect_to_finish_wizard
     else
@@ -175,8 +182,12 @@ class Management::DatasetStepsController < ManagementController
   end
 
   def steps_names
-    self.steps = @dataset.form_steps[:pages]
-    self.steps_names = @dataset.form_steps[:names]
+    form_steps = @dataset.form_steps(
+      user_site_admin?(@site&.id),
+      current_user.email == @dataset.user&.dig('email')
+    )
+    self.steps = form_steps[:pages]
+    self.steps_names = form_steps[:names]
   end
 
   def select_contexts
@@ -197,7 +208,8 @@ class Management::DatasetStepsController < ManagementController
       action_name: action_name,
       params: params,
       dataset_params: params[:dataset].blank? ? {} : dataset_params,
-      session: session
+      session: session,
+      token: user_token(@site, !current_user.admin)
     )
 
     @dataset = result.dataset

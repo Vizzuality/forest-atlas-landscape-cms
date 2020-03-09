@@ -18,7 +18,7 @@ class Management::WidgetStepsController < ManagementController
     dataset_id = widget_parameters[:dataset]
 
     begin
-      widget_id = WidgetService.update(session[:user_token],
+      widget_id = WidgetService.update(user_token(@site),
                                        dataset_id,
                                        widget_parameters, params[:id])
     rescue Exception => e
@@ -27,7 +27,7 @@ class Management::WidgetStepsController < ManagementController
 
     begin
       if widget_id && params[:metadata].present?
-        WidgetService.update_metadata(session[:user_token], params[:metadata],
+        WidgetService.update_metadata(user_token(@site), params[:metadata],
                                       dataset_id, widget_id)
       end
     rescue Exception => e

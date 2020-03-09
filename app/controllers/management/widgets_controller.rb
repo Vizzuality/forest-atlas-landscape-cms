@@ -8,7 +8,7 @@ class Management::WidgetsController < ManagementController
 
   def destroy
     response = WidgetService.delete(
-      session[:user_token],
+      user_token(@site),
       params[:dataset],
       params[:id]
     )
@@ -29,14 +29,19 @@ class Management::WidgetsController < ManagementController
   end
 
   def set_widgets
-    datasets =
-      @site.get_datasets(current_user).map { |d| {id: d.id, name: d.name} }
+    widgets_user_token = user_token(@site, true)
+    datasets = @site.get_datasets(current_user, widgets_user_token).map do |d|
+      {id: d.id, name: d.name, user: d.user}
+    end
 
     widgets = if datasets.blank?
                 []
               else
+                datasets_ids = datasets.map { |d| d[:id] }
                 # Get widgets associated to the datasets of the current user
-                WidgetService.from_datasets datasets.map { |d| d[:id] }
+                WidgetService.from_datasets(
+                  datasets_ids, 'saved', widgets_user_token
+                )
               end
 
     @widgets = process_widgets(datasets, widgets)
@@ -45,25 +50,37 @@ class Management::WidgetsController < ManagementController
   def process_widgets(datasets, widgets)
     widgets.map do |x|
       # Get widget metadata information (private_name needed on table)
-      widget = WidgetService.widget x.id
+      widget = WidgetService.widget x.id, user_token(@site, true)
 
       # Set the name of the dataseta
       dataset = datasets.find { |d| d[:id] == widget.dataset }
+      next unless dataset
       widget.dataset_name = dataset[:name]
 
-      {
-        widget: widget,
-        edit_url:
-          edit_management_site_widget_step_path(params[:site_slug], widget.id),
-        delete_url: delete_url(widget.dataset, widget.id)
-      }
-    end
+      processed_widget = {widget: widget}
+      processed_widget[:edit_url] = edit_url(widget) if edit_url(widget)
+      if delete_url(dataset[:id], widget.id)
+        processed_widget[:delete_url] = delete_url(dataset[:id], widget.id)
+      end
+      processed_widget
+    end.compact
+  end
+
+  def edit_url(widget)
+    return if !current_user_is_admin &&
+      !current_user.owned_sites.include?(@site) &&
+      current_user.email != widget.user.dig('email')
+
+    edit_management_site_widget_step_path(
+      params[:site_slug],
+      widget.id
+    )
   end
 
   # Only shows the delete url in case the user is a site admin for this site
   def delete_url(dataset_id, widget_id)
-    return unless current_user_is_admin ||
-                  current_user.owned_sites.include?(@site)
+    return if !current_user_is_admin &&
+      !current_user.owned_sites.include?(@site)
 
     management_site_widget_path(
       params[:site_slug],

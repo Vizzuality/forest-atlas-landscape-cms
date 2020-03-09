@@ -47,7 +47,7 @@ FactoryBot.define do
       description { 'Explore the map' }
       uri { 'map' }
       content_type { ContentType::MAP }
-      content { File.read(Dir.pwd + '/spec/support/fixtures/files/map.txt') }
+      content { JSON.parse(File.read(Dir.pwd + '/spec/support/fixtures/files/map.txt')) }
     end
 
     factory :page_template_terms_of_service do

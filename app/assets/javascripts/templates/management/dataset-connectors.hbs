@@ -44,7 +44,11 @@
 
   <div class="input-container{{#if_eq fileUploader 'file'}}--disabled{{/if_eq}}">
     <label for="url">URL:</label>
-    <input id="url" name="dataset[connector_url]" class="js-url" placeholder="Dataset URL" />
+    <input id="url"
+           name="dataset[connector_url]"
+           class="js-url"
+           placeholder="Dataset URL"
+           value="{{selected.connector_url}}" />
   </div>
 
   <div class="input-container{{#if dataPathDisabled}}--disabled{{/if}}">
