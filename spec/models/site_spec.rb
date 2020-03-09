@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Site, type: :model do
+  let_it_be(:map_version) { FactoryBot.create(:map_version) }
+
   template = FactoryBot.create(:site_template_fa)
   describe 'is valid' do
     subject { FactoryBot.build(:site_with_routes, site_template: template) }
@@ -36,6 +38,7 @@ RSpec.describe Site, type: :model do
     end
 
     describe 'missing context' do
+      before { FactoryBot.create(:map_version) }
       site = FactoryBot.create(:site_with_routes)
       site.context_sites = []
       it { expect(site).to have(1).errors_on(:context_sites) }

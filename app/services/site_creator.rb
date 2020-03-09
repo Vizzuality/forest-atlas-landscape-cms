@@ -19,11 +19,12 @@ class SiteCreator
                   page.content
                 end
 
-      if page.name == 'Map'
+      if page.content_type == ContentType::MAP
         content = JSON.parse page.content['settings']
 
-        default_map = MapVersion.order(:position).first.default_settings
-        default_map_hash = JSON.parse default_map['settings']
+        default_map = MapVersion.order(:position).first
+        default_settings = default_map&.default_settings || {'settings' => '{}'}
+        default_map_hash = JSON.parse(default_settings['settings'])
 
         if default_map_hash['layerPanel']
           content['layerPanel'] = default_map_hash['layerPanel'].to_json
