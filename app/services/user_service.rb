@@ -1,5 +1,4 @@
 class UserService
-
   @conn ||= Faraday.new(url: ENV.fetch('API_URL')) do |faraday|
     faraday.request :url_encoded
     faraday.response :logger
@@ -8,7 +7,7 @@ class UserService
 
   def self.get(token, email)
     res = @conn.get do |req|
-      req.url "/auth/user?email=#{email}"
+      req.url "/auth/user?email=#{email.gsub('+', '%5C%2B')}&app=all"
       req.headers['Authorization'] = "Bearer #{token}"
       req.headers['Content-Type'] = 'application/json'
     end
@@ -33,7 +32,7 @@ class UserService
     end
 
     res_json = JSON.parse res.body
-    error = res_json.dig('errors')&.first&.dig('detail')
+    error = res_json.dig('errors', 0, 'detail')
     {valid: res.success?, error: error}
   end
 
@@ -42,17 +41,16 @@ class UserService
       req.url "/auth/user/#{id}"
       req.headers['Authorization'] = "Bearer #{token}"
       req.headers['Content-Type'] = 'application/json'
-      req.body =
-        "{
-          \"extraUserData\" : {
-            \"apps\": [\"#{existing_apps.join('\", \"')}\", \"forest-atlas\"]
-          },
-          \"role\": \"MANAGER\"
-        }"
+      req.body = {
+        extraUserData: {
+          apps: existing_apps.push('forest-atlas').uniq
+        },
+        role: 'MANAGER'
+      }.to_json
     end
 
     res_json = JSON.parse res.body
-    error = res_json.dig('errors')&.first&.dig('detail')
+    error = res_json.dig('errors', 0, 'detail')
     {valid: res.success?, error: error}
   end
 
@@ -68,8 +66,7 @@ class UserService
     end
 
     res_json = JSON.parse res.body
-    error = res_json.dig('errors')&.first&.dig('detail')
+    error = res_json.dig('errors', 0, 'detail')
     {valid: res.success?, error: error}
   end
-
 end

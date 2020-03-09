@@ -52,8 +52,6 @@ class User < ApplicationRecord
     api_role = admin ? 'ADMIN' : 'MANAGER'
 
     user_info = UserService.get(token, email)
-    puts 'DAFAQ'
-    pp user_info['data']
     if user_info['data'].any?
       UserService.update(
         token,
