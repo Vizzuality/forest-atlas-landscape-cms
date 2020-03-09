@@ -23,12 +23,8 @@
           } catch (e) {}
         }
       });
-      var analysisModulesValue;
-      try {
-        analysisModulesValue = JSON.parse('<%= settings.object.analysisModules.squish.gsub("'", "\\\\'").squish.html_safe %>');
-      } catch (err) {
-        analysisModulesValue = JSON.parse('{}');
-      }
+
+      var analysisModulesValue = JSON.parse('<%= parse_map_field(settings.object.analysisModules) %>');
 
       analysisModulesContainer.editor = analysisModulesEditor;
       analysisModulesContainer.input = analysisModulesInput;

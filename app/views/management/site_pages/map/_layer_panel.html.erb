@@ -22,13 +22,8 @@
           } catch (e) {}
         }
       });
-      var layerPanelValue;
-      try {
-        layerPanelValue = JSON.parse('<%= settings.object.layerPanel.squish.gsub("'", "\\\\'").html_safe rescue {} %>');
-      } catch (err) {
-        console.log(err);
-        layerPanelValue = JSON.parse('{}');
-      }
+
+      var layerPanelValue = JSON.parse('<%= parse_map_field(settings.object.layerPanel) %>');
 
       layerPanelContainer.editor = layerPanelEditor;
       layerPanelContainer.input = layerPanelInput;
