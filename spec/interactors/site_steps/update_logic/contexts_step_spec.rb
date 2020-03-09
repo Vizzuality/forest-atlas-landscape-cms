@@ -33,11 +33,11 @@ RSpec.describe SiteSteps::UpdateLogic::ContextsStep do
 
     context 'when site information is invalid' do
       let(:site_attributes) do
-        {context_sites_attributes: {'0': {context_id: '1'}}}
+        {context_sites_attributes: {'0': {context_id: 'asdf'}}}
       end
 
       subject(:context) do
-        site.assign_attributes site_attributes
+        allow(site).to receive(:valid?).and_return(false)
 
         SiteSteps::UpdateLogic::ContextsStep.call(
           save_button: true,
@@ -97,7 +97,7 @@ RSpec.describe SiteSteps::UpdateLogic::ContextsStep do
       end
 
       subject(:context) do
-        site.assign_attributes site_attributes
+        allow(site).to receive(:valid?).and_return(false)
 
         SiteSteps::UpdateLogic::ContextsStep.call(
           save_button: false,

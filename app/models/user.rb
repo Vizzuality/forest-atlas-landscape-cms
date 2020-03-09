@@ -40,22 +40,27 @@ class User < ApplicationRecord
   validate :step_validation
 
   cattr_accessor :form_steps do
-    { pages: %w[identity role sites contexts],
-      names: %w[Identity Role Sites Contexts] }
+    {pages: %w[identity role sites contexts],
+     names: %w[Identity Role Sites Contexts]}
   end
   attr_accessor :form_step
 
-  ADMIN_ROLE_NAME = 'Admin'
-  NON_ADMIN_ROLE_NAME = 'Content contributor'
+  ADMIN_ROLE_NAME = 'Admin'.freeze
+  NON_ADMIN_ROLE_NAME = 'Content contributor'.freeze
 
   def send_to_api(token, url)
-    api_role = if self.admin
-                  'ADMIN'
-               else
-                  'MANAGER'
-               end
+    api_role = admin ? 'ADMIN' : 'MANAGER'
 
-    UserService.create(token, self.email, api_role, url)
+    user_info = UserService.get(token, email)
+    if user_info['data'].any?
+      UserService.update(
+        token,
+        user_info['data'].first['id'],
+        user_info['data'].first.dig('extraUserData', 'apps')
+      )
+    else
+      UserService.create(token, email, api_role, url)
+    end
   end
 
   def delete_from_api(token, id)
