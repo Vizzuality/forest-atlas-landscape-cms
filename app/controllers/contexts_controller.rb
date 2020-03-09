@@ -1,5 +1,5 @@
 class ContextsController < ManagementController
-  before_action :ensure_management_user
+  before_action :ensure_admin_user
   before_action :get_contexts, only: :index
 
   def index
@@ -13,6 +13,11 @@ class ContextsController < ManagementController
   end
 
   private
+
+  def ensure_admin_user
+    ensure_user_can 'access_admin_only'
+  end
+
   def context_param
     params.require(:context).permit(:id)
   end

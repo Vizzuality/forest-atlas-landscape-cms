@@ -37,26 +37,10 @@
     initialize: function (settings) {
       this.options = Object.assign({}, this.defaults, settings);
 
-      let siteSlug = window.location.href.match(/\/sites\/(\S+)\//);
-      siteSlug = siteSlug ? siteSlug[1] : '';
-      let userSiteRole = gon.global.user.user_site_roles.filter((userSite) => {
-        return userSite.site_slug === siteSlug;
-      });
-      userSiteRole = userSiteRole.length ? userSiteRole[0].role : "";
-      if (userSiteRole === 'publisher') {
-        for(var i = this.options.links.length; i--;) {
-          if (this.options.links[i]['id'] === 'admin' ||
-              this.options.links[i]['id'] === 'contexts') {
-            this.options.links.splice(i, 1);
-          }
-        }
-      }
-
-      // TODO: Clement, these rules have change, let's discuss this
       // If the user isn't an admin, we remove the admin option
-      // if (!window.gon || !gon.global || !gon.global.admin) {
-      //   this.options.links.splice(1, 1);
-      // }
+      if (!window.gon || !gon.global || !gon.global.admin) {
+        this.options.links = this.options.links.filter(link => link.id !== 'admin' && link.id !== 'contexts');
+      }
 
       this.collection.fetch()
         .done(function () {

@@ -18,7 +18,7 @@ module DatasetSteps
           md['attributes']['language'] == default_language
         end
 
-        fields = DatasetService.get_fields dataset.id, data.first['tableName']
+        fields = DatasetService.get_fields dataset.id, data['tableName']
 
         metadata_columns = fields.map do |field|
           metadata_columns = metadata&.dig('attributes', 'columns')
