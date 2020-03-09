@@ -23,12 +23,8 @@
           } catch (e) {}
         }
       });
-      var otherFieldsModulesValue;
-      try {
-        otherFieldsModulesValue = JSON.parse('<%= settings.object.otherFieldsModules.gsub("'", "\\\\'").squish.html_safe rescue {} %>');
-      } catch (err) {
-        otherFieldsModulesValue = JSON.parse('{}');
-      }
+
+      var otherFieldsModulesValue = JSON.parse('<%= parse_map_field(settings.object.otherFieldsModules) %>');
 
       otherFieldsModulesContainer.editor = otherFieldsModulesEditor;
       otherFieldsModulesContainer.input = otherFieldsModulesInput;
