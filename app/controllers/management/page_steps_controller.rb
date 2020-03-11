@@ -69,7 +69,7 @@ class Management::PageStepsController < ManagementController
         @datasets_contexts = @site.get_datasets_contexts
       when 'filters'
         build_current_dataset_setting
-        @fields = @dataset_setting.get_fields
+        @fields = @dataset_setting.fields
         @fields.each { |f| f[:type] = DatasetFieldsHelper.parse(f[:type]) }
 
         gon.fields = @fields
@@ -91,13 +91,14 @@ class Management::PageStepsController < ManagementController
 
         # Saving all the possible visible fields for this dataset so that ...
         # ... they can be used in the filtered_results
-        (@dataset_setting.set_columns_visible(
-          @fields.map { |f| f[:name] })) unless @dataset_setting.columns_visible
+        unless @dataset_setting.columns_visible
+          @dataset_setting.set_columns_visible(@fields.map { |f| f[:name] })
+        end
         set_current_dataset_setting_state
 
       when 'columns'
         build_current_dataset_setting
-        @fields = @dataset_setting.get_fields
+        @fields = @dataset_setting.fields
 
       when 'preview'
         gon.widgets = get_widgets_list
@@ -234,11 +235,12 @@ class Management::PageStepsController < ManagementController
                          columns_visible: @dataset_setting.columns_visible)
 
     filters = params[:filters]
-    temp_dataset_setting.set_filters (filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } })
+    temp_dataset_setting.filters =
+      filters.blank? ? [] : filters.values.map { |h| h.select { |k| k != 'variable' } }
 
     begin
-      count = temp_dataset_setting.get_row_count
-      preview = temp_dataset_setting.get_preview['data']
+      count = temp_dataset_setting.row_count
+      preview = temp_dataset_setting.preview['data']
     rescue
       count = 0
       preview = []
@@ -422,7 +424,7 @@ class Management::PageStepsController < ManagementController
       end
 
       @dataset_setting.assign_attributes(dataset_id: ds_id)
-      ds_metadata = @dataset_setting.get_metadata['data'].first
+      ds_metadata = @dataset_setting.metadata['data'].first
       if ds_metadata
         @dataset_setting.api_table_name = ds_metadata.dig('attributes', 'tableName')
         @dataset_setting.legend = ds_metadata.dig('attributes', 'legend')
@@ -433,10 +435,13 @@ class Management::PageStepsController < ManagementController
       fields = JSON.parse fields
 
       # Removes the "variable" param and sets the filters
-      @dataset_setting.set_filters(fields.map { |h| h.select { |k| k != 'variable' } })
+      @dataset_setting.filters =
+        fields.map { |h| h.select { |k| k != 'variable' } }
 
       # Sets the changeable fields from the params
-      @dataset_setting.set_columns_changeable(fields.map { |h| h['name'] if h['variable'] == true }.compact)
+      @dataset_setting.set_columns_changeable(
+        fields.map { |h| h['name'] if h['variable'] == true }.compact
+      )
     end
 
     if fields = ds_params[:visible_fields]

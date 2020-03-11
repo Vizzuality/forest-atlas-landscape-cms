@@ -1,27 +1,21 @@
 class Widget
-
   # The Model is a mixin for Naming, Translation, Validations and Conversions
   include ActiveModel::Model
   include ActiveModel::Serialization
   include ActiveModel::Associations
 
-  #before_destroy :prevent_destroy_if_dependent_pages_present
-
   belongs_to :dataset
   has_many :page_widgets
-  #has_many :pages, through: :page_widgets
 
-
-  DEFAULT_WIDGET = { application: 'forest-atlas',
-                     info: { caption: '' },
-                     language: 'en' }.freeze
+  DEFAULT_WIDGET = {application: 'forest-atlas',
+                    info: {caption: ''},
+                    language: 'en'}.freeze
 
   attr_accessor :id, :user, :user_id, :application, :slug, :name, :description,
                 :source, :source_url, :layer_id, :dataset, :dataset_name,
                 :authors, :query_url, :widget_config, :metadata, :template,
                 :default, :protected, :status, :published, :freeze, :verified,
                 :created_at, :updated_at
-
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -117,8 +111,6 @@ class Widget
       updatedAt: @updated_at
     }
   end
-
-
 
   # TODO check if we can save this information in metadata (widget config)
 
@@ -220,14 +212,10 @@ class Widget
   #   get_filtered_dataset false, 10
   # end
 
-
-
   # Gets the fields of this dataset
   def get_fields
-    DatasetService.get_fields self.dataset_id, self.api_table_name
+    DatasetService.get_fields dataset_id, api_table_name
   end
-
-
 
   private
   # def prevent_destroy_if_dependent_pages_present

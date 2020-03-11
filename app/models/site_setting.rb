@@ -20,8 +20,8 @@
 class SiteSetting < ApplicationRecord
   belongs_to :site, inverse_of: :site_settings
   validates_presence_of :site
-  validates :attribution_link, format: { with: URI.regexp }, if: 'attribution_link.present?'
-  after_update :update_terms_of_service_page, if: Proc.new { |ss|
+  validates :attribution_link, format: { with: URI::DEFAULT_PARSER.make_regexp }, if: 'attribution_link.present?'
+  after_update :update_terms_of_service_page, if: proc { |ss|
     ss.name == 'hosting_organization' && ss.value.present?
   }
 
@@ -46,10 +46,10 @@ class SiteSetting < ApplicationRecord
   # Makes sure the same site doesn't have a repeated setting
   validates_uniqueness_of :name, scope: :site_id, unless: Proc.new { |setting| setting.name.eql? 'main_image' }
   # All settings have mandatory values, except for images and flag
-  validates :value, presence: :true, if: :has_required_value?
+  validates :value, presence: true, if: :required_value?
   # All fields must have a name and position
-  validates :name, :position, presence: :true
-  validates :name, inclusion: { in: NAMES }
+  validates :name, :position, presence: true
+  validates :name, inclusion: {in: NAMES}
 
   has_attached_file :image,
                     styles: {thumb: '100x100#'},
@@ -60,7 +60,6 @@ class SiteSetting < ApplicationRecord
   validates_attachment :image,
                        content_type: {content_type: %w[image/jpg image/jpeg image/png]},
                        styles: {thumb: '100x100#'}
-
 
   def self.logo_background(site_id)
     SiteSetting.find_by(name: 'logo_background', site_id: site_id)
@@ -193,37 +192,36 @@ class SiteSetting < ApplicationRecord
   end
 
   # Creates the color setting for a site
-  def self.create_color_settings site
-  end
+  def self.create_color_settings site; end
 
   # Creates all the additional settings for a site
-  def self.create_additional_settings site
-    unless site.site_settings.exists?(name: 'logo_image')
-      site.site_settings.find_or_initialize_by(name: 'logo_image', value: '', position: 2)
-      site.site_settings.find_or_initialize_by(name: 'main_image', value: '', position: 32)
-      site.site_settings.find_or_initialize_by(name: 'alternative_image', value: '', position: 6)
-      site.site_settings.find_or_initialize_by(name: 'favico', value: '', position: 3)
-    end
+  def self.create_additional_settings(site)
+    return if site.site_settings.exists?(name: 'logo_image')
+
+    site.site_settings.find_or_initialize_by(name: 'logo_image', value: '', position: 2)
+    site.site_settings.find_or_initialize_by(name: 'main_image', value: '', position: 32)
+    site.site_settings.find_or_initialize_by(name: 'alternative_image', value: '', position: 6)
+    site.site_settings.find_or_initialize_by(name: 'favico', value: '', position: 3)
   end
 
   # Creates the color setting for a site
-  def self.create_site_settings site
-    unless site.site_settings.exists?(name: 'translate_english')
-      site.site_settings.find_or_initialize_by(name: 'translate_english', value: '1', position: 7)
-      site.site_settings.find_or_initialize_by(name: 'translate_spanish', value: '1', position: 8)
-      site.site_settings.find_or_initialize_by(name: 'translate_french', value: '1', position: 9)
-      site.site_settings.find_or_initialize_by(name: 'pre_footer', value: '', position: 10)
-      site.site_settings.find_or_initialize_by(name: 'analytics_key', value: '', position: 11)
-      site.site_settings.find_or_initialize_by(name: 'keywords', value: '', position: 12)
-      site.site_settings.find_or_initialize_by(name: 'contact_email_address', value: '', position: 13)
-      site.site_settings.find_or_initialize_by(name: 'hosting_organization', value: '', position: 14)
-      site.site_settings.find_or_initialize_by(name: 'default_site_language', value: 'fr', position: 15)
-      site.site_settings.find_or_initialize_by(name: 'translate_georgian', value: '1', position: 16)
-      site.site_settings.find_or_initialize_by(name: 'transifex_api_key', value: '', position: 17)
-    end
+  def self.create_site_settings(site)
+    return if site.site_settings.exists?(name: 'translate_english')
+
+    site.site_settings.find_or_initialize_by(name: 'translate_english', value: '1', position: 7)
+    site.site_settings.find_or_initialize_by(name: 'translate_spanish', value: '1', position: 8)
+    site.site_settings.find_or_initialize_by(name: 'translate_french', value: '1', position: 9)
+    site.site_settings.find_or_initialize_by(name: 'pre_footer', value: '', position: 10)
+    site.site_settings.find_or_initialize_by(name: 'analytics_key', value: '', position: 11)
+    site.site_settings.find_or_initialize_by(name: 'keywords', value: '', position: 12)
+    site.site_settings.find_or_initialize_by(name: 'contact_email_address', value: '', position: 13)
+    site.site_settings.find_or_initialize_by(name: 'hosting_organization', value: '', position: 14)
+    site.site_settings.find_or_initialize_by(name: 'default_site_language', value: 'fr', position: 15)
+    site.site_settings.find_or_initialize_by(name: 'translate_georgian', value: '1', position: 16)
+    site.site_settings.find_or_initialize_by(name: 'transifex_api_key', value: '', position: 17)
   end
 
-  def self.create_style_settings site
+  def self.create_style_settings(site)
     unless site.site_settings.exists?(name: 'content_width')
       site.site_settings.find_or_initialize_by(name: 'color') do |c|
         c.value = '#97bd3d'
@@ -246,27 +244,25 @@ class SiteSetting < ApplicationRecord
       site.site_settings.find_or_initialize_by(name: 'header_login_enabled', value: 'true', position: 32)
     end
 
-    unless site.site_settings.exists?(name: 'header-country-colours')
-      site.site_settings.find_or_initialize_by(name: 'header-country-colours', value: nil, position: 28)
-    end
+    return if site.site_settings.exists?(name: 'header-country-colours')
+
+    site.site_settings.find_or_initialize_by(name: 'header-country-colours', value: nil, position: 28)
   end
 
   private
 
   def validate_image
-    begin
-      if name == 'logo_image' && image.blank? && site.site_template.name == 'Forest Atlas'
-        errors.add :key, 'You must update an image for the ' + name
-        return false
-      else
-        return true
-      end
-    rescue # If the site has no template
-      return true
+    if name == 'logo_image' && image.blank? && site.site_template.name == 'Forest Atlas'
+      errors.add :key, 'You must update an image for the ' + name
+      false
+    else
+      true
     end
+  rescue # If the site has no template
+    true
   end
 
-  def has_required_value?
+  def required_value?
     %w[color].include?(name)
   end
 

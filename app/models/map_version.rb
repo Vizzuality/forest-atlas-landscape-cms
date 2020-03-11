@@ -21,10 +21,10 @@ class MapVersion < ApplicationRecord
   private
 
   def format_default_settings
-    return if self.default_settings.blank?
+    return if default_settings.blank?
     self.default_settings =
       {
-        'version': self.version,
+        'version': version,
         'settings': default_settings
       }
   end
