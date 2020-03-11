@@ -146,7 +146,7 @@ RSpec.describe Management::DatasetStepsController do
 
         it 'set languages and default_language' do
           expect(@controller.view_assigns['languages']).to eql(
-            dataset.get_languages
+            dataset.languages
           )
           expect(@controller.view_assigns['default_language']).to eql 'fr'
         end

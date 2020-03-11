@@ -19,7 +19,7 @@ class Route < ApplicationRecord
   after_save :update_routes
 
   # TODO potentially obsolete
-  def link(port=80)
+  def link(port = 80)
     protocol = (port == 443 ? 'https://' : 'http://')
     port = ([443, 80].include?(port) ? '' : ':' + port.to_s)
     protocol + host + port + (path.blank? ? '' : ('/' + path))
@@ -30,10 +30,6 @@ class Route < ApplicationRecord
   end
 
   def host_with_scheme
-    if host.present? && host !~ /^(http|https):\/\//
-      "http://#{host}"
-    else
-      host
-    end
+    host.present? && host !~ /^(http|https):\/\// ? "http://#{host}" : host
   end
 end

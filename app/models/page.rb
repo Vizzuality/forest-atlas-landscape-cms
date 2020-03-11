@@ -46,20 +46,19 @@ class Page < ApplicationRecord
   has_enumeration_for :content_type, with: ContentType, skip_validation: true
   before_validation :regenerate_url
 
-  def url=(value)
-  end
+  def url=(value); end
 
   def uri=(value)
-    if value
-      value = value.gsub(/^[\/]+|[\/]+$/, '')
-      write_attribute(:uri, value)
-      regenerate_url
-    end
+    return unless value
+
+    value = value.gsub(/^[\/]+|[\/]+$/, '')
+    write_attribute(:uri, value)
+    regenerate_url
   end
 
   # TODO potentially obsolete
-  def links(port=80)
-    self.routes.map { |route| route.link(port) + self.url }
+  def links(port = 80)
+    routes.map { |route| route.link(port) + url }
   end
 
   def deletable?
@@ -67,24 +66,25 @@ class Page < ApplicationRecord
      ContentType::OPEN_CONTENT_V2,
      ContentType::DASHBOARD_V2,
      ContentType::TAG_SEARCHING,
-     ContentType::MAP].include? self.content_type
+     ContentType::MAP].include? content_type
   end
 
   def disableable?
-    self.content_type != ContentType::HOMEPAGE and self.content_type != ContentType::STATIC_CONTENT
+    content_type != ContentType::HOMEPAGE &&
+      content_type != ContentType::STATIC_CONTENT
   end
 
   def visible?
-    return false if !enabled
-    return enabled if parent_id == nil
+    return false unless enabled
+    return enabled if parent_id.nil?
     Page.find(parent_id).visible?
   end
 
-  def has_visible_children?
-    self.children.each do |child|
+  def visible_children?
+    children.each do |child|
       return true if child.visible? && child.show_on_menu
     end
-    return false
+    false
   end
 
   def synchronise_page_widgets(page_params_hash)
@@ -93,10 +93,10 @@ class Page < ApplicationRecord
     content_after = JSON.parse(content['json'])
     widget_ids_after = get_widget_ids_from_object(content_after).flatten.compact
     current_widget_ids = page_widgets.pluck(:widget_id)
-    removed_widget_ids = current_widget_ids.select{ |id| !widget_ids_after.include?(id) }
+    removed_widget_ids = current_widget_ids.reject { |id| widget_ids_after.include?(id) }
     PageWidget.delete(removed_widget_ids) unless removed_widget_ids.empty?
-    added_widget_ids = widget_ids_after.select{ |id| !current_widget_ids.include?(id) }
-    added_widget_ids.each{ |id| PageWidget.create(page_id: self.id, widget_id: id)}
+    added_widget_ids = widget_ids_after.reject { |id| current_widget_ids.include?(id) }
+    added_widget_ids.each { |id| PageWidget.create(page_id: self.id, widget_id: id) }
   end
 
   private
@@ -116,5 +116,4 @@ class Page < ApplicationRecord
     current_url = parent_url + current_url
     write_attribute(:url, current_url)
   end
-
 end

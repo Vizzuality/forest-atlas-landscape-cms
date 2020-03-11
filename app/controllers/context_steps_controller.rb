@@ -36,19 +36,22 @@ class ContextStepsController < ManagementController
   end
 
   private
+
   def context_params
-    params.require(:context).permit(:id, :name, dataset_ids: [], writer_ids:[], owner_ids:[], site_ids: [] )
+    params.require(:context).permit(
+      :id, :name, dataset_ids: [], writer_ids: [], owner_ids: [], site_ids: []
+    )
   end
 
   def build_context
-    @context = params[:context_id] ? Context.find(params[:context_id]) : Context.new
-    @context_id = if @context && @context.persisted?
-      @context.id
-    else
-      :new
-    end
+    @context =
+      params[:context_id] ? Context.find(params[:context_id]) : Context.new
+    @context_id = @context&.persisted? ? @context.id : :new
+
     session[:context][@context_id] ||= {}
-    session[:context][@context_id].merge!(context_params.to_h.except('dataset_ids')) if params[:context] && context_params.to_h.except('dataset_ids')
+    if params[:context] && context_params.to_h.except('dataset_ids')
+      session[:context][@context_id].merge!(context_params.to_h.except('dataset_ids'))
+    end
 
     if params[:context] && context_params['dataset_ids']
       session[:context][@context_id]['context_datasets'] = []
@@ -58,9 +61,10 @@ class ContextStepsController < ManagementController
       end
     end
 
-    @context.assign_attributes session[:context][@context_id] if session[:context][@context_id]
+    if session[:context][@context_id]
+      @context.assign_attributes session[:context][@context_id]
+    end
     @context.form_step = step
-
   end
 
   def save_context
@@ -74,17 +78,17 @@ class ContextStepsController < ManagementController
   def check_user_permissions
     @current_user = current_user
     return if @current_user.admin
+
     if @context.id
       unless @context.context_owners.pluck(:user_id).include? @current_user.id
         redirect_to contexts_path, notice: 'You do not have permissions to edit this context'
-        return
       end
     end
   end
 
   def save_button?
     return false unless params[:button]
-    return params[:button].upcase == SAVE.upcase
+    params[:button].casecmp(SAVE).zero?
   end
 
   # Saves the current state and goes to the next step
@@ -102,12 +106,10 @@ class ContextStepsController < ManagementController
       else
         render_wizard
       end
-    else # Continue button
-      if @context.valid?
-        redirect_to wizard_path(next_step_name)
-      else
-        render_wizard
-      end
+    elsif @context.valid?
+      redirect_to wizard_path(next_step_name)
+    else
+      render_wizard
     end
   end
 
@@ -136,8 +138,10 @@ class ContextStepsController < ManagementController
 
   def permitted_writers
     permitted_users = User.where(admin: false)
-    @permitted_writers = (permitted_users.distinct.order(:name).to_a.delete_if{|user| @context.owners.include?(user)})
-
+    @permitted_writers =
+      permitted_users.distinct.order(:name).to_a.delete_if do |user|
+        @context.owners.include?(user)
+      end
   end
 
   def get_datasets
