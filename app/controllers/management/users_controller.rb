@@ -48,7 +48,8 @@ class Management::UsersController < ManagementController
   def create_and_grant_access(role)
     @user = User.new(user_params.except(:site_role))
     if @user.valid?
-      api_response = @user.send_to_api(session[:user_token], management_url)
+      api_response = @user.send_to_api(user_token(@site), management_url)
+
       if api_response[:valid]
         @user.save
         @usa = @user.user_site_associations.build(site: @site, role: role).save
