@@ -40,21 +40,21 @@ class ContextsController < ManagementController
         'datasets' => {'value' => datasets, 'searchable' => true, 'sortable' => true},
         'owners' => {'value' => context.owners.map(&:name).uniq, 'searchable' => true, 'sortable' => true},
         'writers' => {'value' => context.writers.map(&:name).uniq, 'searchable' => true, 'sortable' => true},
-        'edit' => {'value' => edit_link, 'method' => 'get'},
-        'delete' => {'value' => delete_link, 'method' => 'delete'}
+        'edit' => {'value' => edit_link(context), 'method' => 'get'},
+        'delete' => {'value' => delete_link(context), 'method' => 'delete'}
       }
 
       @gon_contexts << gon_context
     end
   end
 
-  def edit_link
+  def edit_link(context)
     return unless context.owners.include?(current_user) || current_user.admin
 
     edit_context_context_step_path(id: 'title', context_id: context.id)
   end
 
-  def delete_link
+  def delete_link(context)
     return unless context.owners.include?(current_user) || current_user.admin
 
     context_path(context.id)

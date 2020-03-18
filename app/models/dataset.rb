@@ -208,9 +208,12 @@ class Dataset
   end
 
   def update(token)
-    DatasetService.update token, attributes
-
-    DatasetService.update_connector token, id, connector_url if provider.eql? 'csv'
+    dataset_body = DatasetService.update token, attributes
+    if provider.eql? 'csv'
+      DatasetService.update_connector token, id, connector_url
+    else
+      dataset_body
+    end
   end
 
   def save_metadata(token)
