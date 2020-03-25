@@ -7,6 +7,9 @@
   <% end %>
     <div>
       <% if !local_assigns.key?(:continue) || local_assigns[:continue] %>
+        <% if local_assigns[:publish] %>
+          <input type="hidden" name="button" value=<%= Management::PageStepsController::CONTINUE %> />
+        <% end %>
         <%= f.button Management::PageStepsController::CONTINUE,
           id: 'testing',
           type: continue_button_type(f.object.id, local_assigns[:always_save], local_assigns[:never_save], local_assigns[:publish]),
@@ -16,6 +19,9 @@
       <% end %>
 
       <% if save_button?(f.object.id, local_assigns[:always_save], local_assigns[:never_save]) %>
+        <% if local_assigns[:publish] %>
+          <input type="hidden" name="button" value=<%= Management::PageStepsController::SAVE %> />
+        <% end %>
         <%= f.button Management::PageStepsController::SAVE,
           value: Management::PageStepsController::SAVE,
           type: local_assigns[:publish] ? 'button' : 'submit',
