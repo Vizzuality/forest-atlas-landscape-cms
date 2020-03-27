@@ -41,9 +41,8 @@ class WidgetService < ApiService
       user_email = widget_json.dig('data', 'attributes', 'user', 'email')
       if user_email
         user = User.find_by(email: user_email)
-        widget_json['data']['attributes']['user']['name'] = user.name
+        widget_json['data']['attributes']['user']['name'] = user&.name
       end
-
       widget = Widget.new widget_json['data']
     rescue Exception
       return nil
