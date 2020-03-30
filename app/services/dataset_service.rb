@@ -41,15 +41,19 @@ class DatasetService < ApiService
   # Params
   # +dataset_id+:: The id of the dataset
   # +api_table_name+:: The name of the database's table
-  def self.get_fields(dataset_id, api_table_name)
-    fields_request = @conn.get "/fields/#{dataset_id}"
+  def self.get_fields(dataset_id, api_table_name, token = nil)
+    fields_request = @conn.get do |req|
+      req.url "/fields/#{dataset_id}"
+      req.headers['Authorization'] = "Bearer #{token}" if token
+    end
+
     fields_json = JSON.parse fields_request.body
 
     return {} if fields_json.empty? || !fields_request.success?
 
     fields = []
 
-    fields_json['fields'].each do |data|
+    fields_json&.dig('fields')&.each do |data|
       if DatasetFieldsHelper.is_valid? data.last['type']
         fields << {name: data.first, type: data.last['type']}
       end
