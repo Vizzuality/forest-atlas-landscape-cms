@@ -282,8 +282,8 @@
       this.options.collection.comparator = function (modelA, modelB) {
         var comparator = this.options.headers.at(this.options.sortColumnIndex).attributes.name;
 
-        var cellA = _.findWhere(modelA.attributes.row, { name: comparator });
-        var cellB = _.findWhere(modelB.attributes.row, { name: comparator });
+        var cellA = _.find(modelA.attributes.row, { name: comparator });
+        var cellB = _.find(modelB.attributes.row, { name: comparator });
 
         var valA = Array.isArray(cellA.value) ? cellA.value[0] : cellA.value;
         var valB = Array.isArray(cellB.value) ? cellB.value[0] : cellB.value;
@@ -374,7 +374,7 @@
           var o = {};
           o.row = row;
           for (var i = 0, j = searchableColumns.length; i < j; i++) {
-            var value = _.findWhere(row.row, { name: searchableColumns[i] }).value;
+            var value = _.find(row.row, { name: searchableColumns[i] }).value;
             o[searchableColumns[i]] = value;
           }
           return o;

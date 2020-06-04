@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { reducers as widgetEditorReducers } from 'widget-editor';
+import { reducers as widgetEditorReducers } from '@widget-editor/widget-editor';
 
 // Page reducers
 import site from 'redactions/site';

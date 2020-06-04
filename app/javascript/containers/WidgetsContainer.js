@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import ManagementContainer from 'containers/shared/ManagementContainer';
 import EditWidgetPage from 'pages/management/widgets/EditWidgetPage';
-import NewWidgetPage from 'pages/management/widgets/NewWidgetPage';
+// import NewWidgetPage from 'pages/management/widgets/NewWidgetPage';
 import WidgetsPage from 'pages/management/widgets/WidgetsPage';
 
 function WidgetsContainer(props) {
@@ -28,16 +28,17 @@ function WidgetsContainer(props) {
     );
   }
 
-  return (
-    <ManagementContainer>
-      <NewWidgetPage
-        datasets={props.datasets}
-        queryUrl={props.queryUrl}
-        redirectUrl={props.redirectUrl}
-        defaultLanguage={props.defaultLanguage}
-      />
-    </ManagementContainer>
-  );
+  return null;
+  // return (
+  //   <ManagementContainer>
+  //     <NewWidgetPage
+  //       datasets={props.datasets}
+  //       queryUrl={props.queryUrl}
+  //       redirectUrl={props.redirectUrl}
+  //       defaultLanguage={props.defaultLanguage}
+  //     />
+  //   </ManagementContainer>
+  // );
 }
 
 WidgetsContainer.propTypes = {
