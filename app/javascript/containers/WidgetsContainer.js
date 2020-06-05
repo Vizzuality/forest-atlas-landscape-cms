@@ -3,50 +3,49 @@ import PropTypes from 'prop-types';
 
 import ManagementContainer from 'containers/shared/ManagementContainer';
 import EditWidgetPage from 'pages/management/widgets/EditWidgetPage';
-// import NewWidgetPage from 'pages/management/widgets/NewWidgetPage';
+import NewWidgetPage from 'pages/management/widgets/NewWidgetPage';
 import WidgetsPage from 'pages/management/widgets/WidgetsPage';
 
-function WidgetsContainer(props) {
-  if (props.widget) {
+function WidgetsContainer({ widgets, widget, datasets, queryUrl, redirectUrl, defaultLanguage }) {
+  if (widget) {
     return (
       <ManagementContainer>
         <EditWidgetPage
-          widget={props.widget}
-          queryUrl={props.queryUrl}
-          redirectUrl={props.redirectUrl}
-          defaultLanguage={props.defaultLanguage}
+          widget={widget}
+          queryUrl={queryUrl}
+          redirectUrl={redirectUrl}
+          defaultLanguage={defaultLanguage}
         />
       </ManagementContainer>
     );
   }
 
-  if (props.widgets) {
+  if (widgets) {
     return (
       <ManagementContainer>
-        <WidgetsPage widgets={props.widgets} />
+        <WidgetsPage widgets={widgets} />
       </ManagementContainer>
     );
   }
 
-  return null;
-  // return (
-  //   <ManagementContainer>
-  //     <NewWidgetPage
-  //       datasets={props.datasets}
-  //       queryUrl={props.queryUrl}
-  //       redirectUrl={props.redirectUrl}
-  //       defaultLanguage={props.defaultLanguage}
-  //     />
-  //   </ManagementContainer>
-  // );
+  return (
+    <ManagementContainer>
+      <NewWidgetPage
+        datasets={datasets}
+        queryUrl={queryUrl}
+        redirectUrl={redirectUrl}
+        defaultLanguage={defaultLanguage}
+      />
+    </ManagementContainer>
+  );
 }
 
 WidgetsContainer.propTypes = {
-  widget: PropTypes.any, // eslint-disable-line react/require-default-props
-  widgets: PropTypes.array, // eslint-disable-line react/require-default-props
-  datasets: PropTypes.array, // eslint-disable-line react/require-default-props
-  queryUrl: PropTypes.string, // eslint-disable-line react/require-default-props
-  redirectUrl: PropTypes.string, // eslint-disable-line react/require-default-props
+  widget: PropTypes.any,
+  widgets: PropTypes.array,
+  datasets: PropTypes.array,
+  queryUrl: PropTypes.string,
+  redirectUrl: PropTypes.string,
   defaultLanguage: PropTypes.string,
 };
 

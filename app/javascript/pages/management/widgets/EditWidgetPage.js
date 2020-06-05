@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import WidgetEditor, { getEditorState } from '@widget-editor/widget-editor';
 
-import { getFAAdapter, getWidgetSchemes } from 'helpers/widget-editor';
+import {
+  getFAAdapter,
+  getWidgetSchemes,
+  getMostAppropriateMetadataLanguage,
+} from 'helpers/widget-editor';
 import ExtendedHeader from 'components/ExtendedHeader';
 import Notification from 'components/Notification';
 
@@ -16,8 +20,6 @@ import Notification from 'components/Notification';
 // - test saving the widget
 // - save the title and description from the widget-editor
 // - remove Redux logic
-
-import { getMostAppropriateMetadataLanguage } from './helpers';
 
 let FAAdapter;
 
