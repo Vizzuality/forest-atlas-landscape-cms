@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import VizzWysiwyg from 'vizz-wysiwyg';
-import { Icons } from 'widget-editor';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 
@@ -99,7 +98,6 @@ class Wysiwyg extends React.Component {
 
     return (
       <Fragment>
-        <Icons />
         <VizzWysiwyg
           {...vizzWysiwygProps}
           blocks={blocks}

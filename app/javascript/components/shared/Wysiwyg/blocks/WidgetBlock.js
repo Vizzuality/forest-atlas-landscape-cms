@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { VegaChart } from 'widget-editor';
+import Renderer from '@widget-editor/renderer';
 import { Promise } from 'es6-promise';
 import classnames from 'classnames';
 
@@ -29,7 +29,7 @@ class WidgetBlock extends React.Component {
    * @param {object} widget
    */
   static async getDownloadUrls(widget) {
-    const widgetUrl = `${new URL(`/widget_page/${widget.id}`, window.origin)}&format=png&width=800&height=600&backgrounds=true&filename=${widget.name.replace(/\s/g, '-')}`;
+    const widgetUrl = `${new URL(`/widget_page/${widget.id}`, window.origin)}&format=png&width=800&height=600&backgrounds=true&filename=${(widget.name || '').replace(/\s/g, '-')}`;
     const res = {
       png: `${ENV.WEBSHOT_API_URL}/webshot/pdf?url=${widgetUrl}`,
     };
@@ -95,10 +95,10 @@ class WidgetBlock extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     // This fixes a bug where the widgets would reload when hovering them
     return (
-      this.state !== nextState ||
-      this.props.item.content.widgetId !== nextProps.item.content.widgetId ||
-      this.props.item.content.height !== nextProps.item.content.height ||
-      this.props.item.content.border !== nextProps.item.content.border
+      this.state !== nextState
+      || this.props.item.content.widgetId !== nextProps.item.content.widgetId
+      || this.props.item.content.height !== nextProps.item.content.height
+      || this.props.item.content.border !== nextProps.item.content.border
     );
   }
 
@@ -106,32 +106,27 @@ class WidgetBlock extends React.Component {
     return fetch(
       `${window.location.origin}/widget_data.json?widget_id=${widgetId}`
     )
-      .then(res => {
-        return res.json();
-      })
+      .then(res => res.json())
       .then(
-        w =>
-          new Promise(resolve => {
-            const widget = w;
-            if (
-              widget.visualization &&
-              widget.visualization.width !== undefined
-            )
-              delete widget.visualization.width;
-            if (
-              widget.visualization &&
-              widget.visualization.height !== undefined
-            )
-              delete widget.visualization.height;
+        w => new Promise((resolve) => {
+          const widget = w;
+          if (
+            widget.visualization
+              && widget.visualization.width !== undefined
+          ) { delete widget.visualization.width; }
+          if (
+            widget.visualization
+              && widget.visualization.height !== undefined
+          ) { delete widget.visualization.height; }
 
-            this.setState(
-              {
-                loading: false,
-                widget
-              },
-              resolve
-            );
-          })
+          this.setState(
+            {
+              loading: false,
+              widget
+            },
+            resolve
+          );
+        })
       );
   }
 
@@ -174,11 +169,10 @@ class WidgetBlock extends React.Component {
           // Anyway, we don't want widget shorter than 250px
           style={{ minHeight: `${Math.max(height, 250) || 250}px` }}
         >
-          <VegaChart
+          <Renderer
             // The key here is used to make sure the widget is rerendered when its height is changed
             key={height}
-            data={widget.visualization}
-            reloadOnResize
+            widgetConfig={widget.visualization}
           />
         </div>
         <div className="widget-footer">
@@ -221,15 +215,14 @@ class WidgetBlock extends React.Component {
                   placeholder="Height in pixels"
                   defaultValue={height || 250}
                   min={250}
-                  onChange={e =>
-                    onChange({
-                      content: {
-                        ...item.content,
-                        height: Number.isInteger(+e.target.value)
-                          ? Math.max(+e.target.value, 250) // Minimum height should stay 250px
-                          : height
-                      }
-                    })
+                  onChange={e => onChange({
+                    content: {
+                      ...item.content,
+                      height: Number.isInteger(+e.target.value)
+                        ? Math.max(+e.target.value, 250) // Minimum height should stay 250px
+                        : height
+                    }
+                  })
                   }
                 />
               </label>
@@ -243,13 +236,12 @@ class WidgetBlock extends React.Component {
                   // Widgets previously inserted in Open Content pages shouldn't display a border
                   // This explains the condition
                   defaultChecked={border === true}
-                  onChange={e =>
-                    onChange({
-                      content: {
-                        ...item.content,
-                        border: e.target.checked
-                      }
-                    })
+                  onChange={e => onChange({
+                    content: {
+                      ...item.content,
+                      border: e.target.checked
+                    }
+                  })
                   }
                 />
                 Display a border around the widget

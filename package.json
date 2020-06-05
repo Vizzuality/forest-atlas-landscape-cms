@@ -64,10 +64,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
-    "vega": "^3.1.0",
-    "vega-lib": "4.4.0",
     "vizz-wysiwyg": "^2.1.2",
-    "widget-editor": "^1.4.6",
     "wri-json-api-serializer": "^1.0.1"
   }
 }
