@@ -13,13 +13,6 @@ import Notification from 'components/Notification';
 
 // TODO:
 // - remove old editor
-// - remove code mirror
-// - remove ThemeSelector
-// - remove ToggleSwitcher?
-// - factor the themes (utils?)
-// - test saving the widget
-// - save the title and description from the widget-editor
-// - remove Redux logic
 
 let FAAdapter;
 

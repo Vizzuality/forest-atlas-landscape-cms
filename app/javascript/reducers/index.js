@@ -4,7 +4,6 @@ import { reducers as widgetEditorReducers } from '@widget-editor/widget-editor';
 // Page reducers
 import site from 'redactions/site';
 import admin from 'redactions/admin';
-import management from 'redactions/management';
 import env from 'redactions/env';
 
 // Public dashboard reducers
@@ -18,7 +17,6 @@ import DashboardBookmarksReducer from 'components/shared/DashboardBookmarks/dash
 const rootReducer = combineReducers({
   site,
   admin,
-  management,
   env,
   ...widgetEditorReducers,
   dashboard: DashboardReducer,

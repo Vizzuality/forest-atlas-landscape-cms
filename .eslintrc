@@ -15,7 +15,6 @@
     "Turbolinks": true,
     "gon": true,
     "Fuse": true,
-    "CodeMirror": true,
     "Transifex": true,
     "ENV": true
   },
