@@ -2,8 +2,7 @@
   height: calc(100vh - 20px);
   padding: 10px 0;
 
-  .c-we-chart,
-  .chart {
+  > div {
     height: 100%;
   }
 }

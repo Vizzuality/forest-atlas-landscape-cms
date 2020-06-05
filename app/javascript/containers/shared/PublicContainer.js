@@ -47,6 +47,6 @@ class PublicContainer extends Component {
   }
 }
 
-PublicContainer.propTypes = { children: PropTypes.array };
+PublicContainer.propTypes = { children: PropTypes.node };
 
 export default PublicContainer;
