@@ -1,27 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe Site, type: :model do
-  template = FactoryBot.create(:site_template_fa)
+  let_it_be(:map_version) { FactoryBot.create(:map_version) }
+
+  before do
+    @template = FactoryBot.create(:site_template_fa)
+  end
+
   describe 'is valid' do
-    subject { FactoryBot.build(:site_with_routes, site_template: template) }
+    subject { FactoryBot.build(:site_with_routes, site_template: @template) }
     it { is_expected.to be_valid }
   end
 
   describe 'has pages' do
-    subject {FactoryBot.create(:site_with_routes, site_template: template) }
+    subject {FactoryBot.create(:site_with_routes, site_template: @template) }
     it { expect(subject).to have(4).site_pages }
     it { is_expected.to be_valid }
   end
 
   describe 'has routes' do
-    subject { FactoryBot.build(:site_with_routes, site_template: template) }
+    subject { FactoryBot.build(:site_with_routes, site_template: @template) }
     it { expect(subject).to have(1).routes }
     it { is_expected.to be_valid }
   end
 
   context 'Missing fields' do
     describe 'missing routes' do
-      subject { FactoryBot.build(:site, site_template: template) }
+      subject { FactoryBot.build(:site, site_template: @template) }
       it { is_expected.to have(1).errors_on(:routes) }
     end
 
@@ -36,6 +41,7 @@ RSpec.describe Site, type: :model do
     end
 
     describe 'missing context' do
+      before { FactoryBot.create(:map_version) }
       site = FactoryBot.create(:site_with_routes)
       site.context_sites = []
       it { expect(site).to have(1).errors_on(:context_sites) }

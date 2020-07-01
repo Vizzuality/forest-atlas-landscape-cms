@@ -4,8 +4,17 @@ module DatasetSteps
       include Interactor
 
       def call
+        dataset = context.dataset
+
         gon = context.gon
-        gon.collector_selected = nil
+        gon.global.connector_selected = {
+          connector: dataset.provider,
+          connector_url: dataset.connector_url,
+          provider: dataset.provider,
+          type: dataset.type
+        }
+
+        context.set_variables = {}
       end
     end
   end

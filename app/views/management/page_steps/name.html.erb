@@ -3,7 +3,7 @@
   invalid_steps: @invalid_steps, invalid_state: @page.errors.any?} %>
 <%= render partial: 'shared/errors', locals: { resource: @page } %>
 
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for @page, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <%= render partial: 'management/steps_shared/footer', locals: {f: f} %>
 <% end %>
 

@@ -11,8 +11,8 @@
 #
 
 class Site < ApplicationRecord
-  belongs_to :site_template, optional: :true
-  has_many :routes,  dependent: :destroy
+  belongs_to :site_template, optional: true
+  has_many :routes, dependent: :destroy
   has_many :site_pages, dependent: :destroy
   has_many :user_site_associations, dependent: :destroy, autosave: true
   has_many :users, through: :user_site_associations
@@ -29,7 +29,7 @@ class Site < ApplicationRecord
   accepts_nested_attributes_for :user_site_associations, allow_destroy: true
   accepts_nested_attributes_for :admins
   accepts_nested_attributes_for :publishers
-  accepts_nested_attributes_for :routes, reject_if: proc {|r| r['host'].blank?}
+  accepts_nested_attributes_for :routes, reject_if: proc { |r| r['host'].blank? }
 
   validates_presence_of :name, if: -> { required_for_step? :name }
   validates_presence_of :routes, if: -> { required_for_step? :name }
@@ -47,10 +47,9 @@ class Site < ApplicationRecord
   after_commit :apply_settings
 
   cattr_accessor :form_steps do
-    { pages: %w[name users contexts settings template style content],
-      names: %w(Name Users Contexts Settings Template Style Content)}
+    {pages: %w[name users contexts settings template style content],
+     names: %w(Name Users Contexts Settings Template Style Content)}
   end
-
 
   attr_accessor :form_step
 
@@ -60,7 +59,9 @@ class Site < ApplicationRecord
 
     # All fields from previous steps are required if the
     # step parameter appears before or we are on the current step
-    return true if form_steps[:pages].index(step.to_s) <= form_steps[:pages].index(form_step)
+    if form_steps[:pages].index(step.to_s) <= form_steps[:pages].index(form_step)
+      return true 
+    end
   end
 
   def mark_routes_for_destruction(routes_attributes)
@@ -83,22 +84,21 @@ class Site < ApplicationRecord
   end
 
   def create_context
-    return nil unless self.contexts.empty?
+    return nil unless contexts.empty?
 
-    context = Context.new({name: self.name})
+    context = Context.new(name: name)
     context.save!(validate: false)
-    #context = Context.create!({name: self.name})
-    self.context_sites.create(context_id: context.id, is_site_default_context: true)
+    context_sites.create(context_id: context.id, is_site_default_context: true)
   end
 
   def handle_non_compliant_slugs
-    return unless self.slug.blank?
+    return unless slug.blank?
 
-    update_attribute(:slug, self.id)
+    update_attribute(:slug, id)
   end
 
   def root
-    SitePage.find_by site_id: self.id, uri: ''
+    SitePage.find_by site_id: id, uri: ''
   end
 
   # Gets the datasets available for a site
@@ -113,23 +113,25 @@ class Site < ApplicationRecord
       contexts = self.contexts
     end
 
-    contexts.each{ |c| c.context_datasets.each{|d| datasets << d.dataset_id} }
+    contexts.each do |c|
+      c.context_datasets.each { |d| datasets << d.dataset_id }
+    end
     datasets.uniq!
     datasets
   end
 
   # Gets the datasets for this sites' contexts
-  def get_datasets(user = nil)
+  def get_datasets(user = nil, token = nil)
     ids = get_datasets_ids(user)
-    meta = DatasetService.get_metadata_list(ids)
+    meta = DatasetService.get_metadata_list(ids, token)
     datasets = []
     begin
       meta['data'].each do |ds|
         datasets << Dataset.new(ds)
       end
-      return datasets
+      datasets
     rescue
-      return []
+      []
     end
   end
 
@@ -141,13 +143,13 @@ class Site < ApplicationRecord
     context_datasets_ids = {}
     context_datasets = {}
 
-    self.contexts.each do |context|
+    contexts.each do |context|
       context_datasets_ids[context.id] = []
-      context.context_datasets.each {|cd| context_datasets_ids[context.id] << cd.dataset_id}
+      context.context_datasets.each { |cd| context_datasets_ids[context.id] << cd.dataset_id }
     end
 
     context_datasets_ids.each do |k, v|
-      context_datasets[k] =all_datasets.select {|ds| v.include?(ds.id)}
+      context_datasets[k] = all_datasets.select { |ds| v.include?(ds.id) }
     end
 
     context_datasets
@@ -159,8 +161,13 @@ class Site < ApplicationRecord
               else
                 WidgetService.from_datasets(dataset_id)
               end
+
     vega_widgets = []
-    widgets.each { |w| vega_widgets << w if w.widget_config&.dig('paramsConfig', 'visualizationType') == 'chart' }
+    widgets.each do |w|
+      if w.widget_config&.dig('paramsConfig', 'visualizationType') == 'chart'
+        vega_widgets << w
+      end
+    end
     vega_widgets
   end
 
@@ -188,15 +195,15 @@ class Site < ApplicationRecord
                    end
     datasets_contexts = {}
 
-    self.contexts.each do |context|
+    contexts.each do |context|
       context.context_datasets.each do |cd|
-        dataset = all_datasets.select {|ds| ds.id == cd.dataset_id}.first
-        if dataset
-          unless datasets_contexts["#{cd.dataset_id}"]
-            datasets_contexts["#{cd.dataset_id}"] = {dataset: dataset, contexts: []}
-          end
-          datasets_contexts["#{cd.dataset_id}"][:contexts] << context.name
+        dataset = all_datasets.find { |ds| ds.id == cd.dataset_id }
+        next unless dataset
+
+        unless datasets_contexts[cd.dataset_id.to_s]
+          datasets_contexts[cd.dataset_id.to_s] = {dataset: dataset, contexts: []}
         end
+        datasets_contexts[cd.dataset_id.to_s][:contexts] << context.name
       end
     end
     datasets_contexts
@@ -297,19 +304,20 @@ class Site < ApplicationRecord
   end
 
   def pages_for_sitemap
-    root.self_and_descendants.where('content_type <> ?', ContentType::LINK).
-      reject{ |page| !page.visible? }
+    root.
+      self_and_descendants.
+      where('content_type <> ?', ContentType::LINK).
+      select(&:visible?)
   end
 
   private
 
   def generate_slug
-    write_attribute(:slug, self.name&.parameterize == '' ? self.id : self.name&.parameterize)
+    write_attribute(:slug, name&.parameterize == '' ? id : name&.parameterize)
   end
 
   def apply_settings
-    #system "rake site:apply_settings[#{self.id}] &"
-    compile_css
+    compile_css unless Rails.env.test?
   end
 
   ###################################################
@@ -317,19 +325,19 @@ class Site < ApplicationRecord
   ###################################################
 
   def variables(custom_variables = {})
-    color = self.site_settings.find_by(name: 'color')
-    content_width = self.site_settings.find_by(name: 'content_width')
-    content_font = self.site_settings.find_by(name: 'content_font')
-    heading_font = self.site_settings.find_by(name: 'heading_font')
-    cover_size = self.site_settings.find_by(name: 'cover_size')
-    cover_text_alignment = self.site_settings.find_by(name: 'cover_text_alignment')
-    header_separators = self.site_settings.find_by(name: 'header_separators')
-    header_background = self.site_settings.find_by(name: 'header_background')
-    header_transparency = self.site_settings.find_by(name: 'header_transparency')
-    header_country_colours = self.site_settings.find_by(name: 'header-country-colours')
-    footer_background = self.site_settings.find_by(name: 'footer_background')
-    footer_text_color = self.site_settings.find_by(name: 'footer_text_color')
-    footer_links_color = self.site_settings.find_by(name: 'footer-links-color')
+    color = site_settings.find_by(name: 'color')
+    content_width = site_settings.find_by(name: 'content_width')
+    content_font = site_settings.find_by(name: 'content_font')
+    heading_font = site_settings.find_by(name: 'heading_font')
+    cover_size = site_settings.find_by(name: 'cover_size')
+    cover_text_alignment = site_settings.find_by(name: 'cover_text_alignment')
+    header_separators = site_settings.find_by(name: 'header_separators')
+    header_background = site_settings.find_by(name: 'header_background')
+    header_transparency = site_settings.find_by(name: 'header_transparency')
+    header_country_colours = site_settings.find_by(name: 'header-country-colours')
+    footer_background = site_settings.find_by(name: 'footer_background')
+    footer_text_color = site_settings.find_by(name: 'footer_text_color')
+    footer_links_color = site_settings.find_by(name: 'footer-links-color')
 
     if !custom_variables.empty?
       {
@@ -385,30 +393,30 @@ class Site < ApplicationRecord
   # Validates if the template was changed
   # TODO: (Tomas) removed this validation for now, this makes it imposible to use another template ?
   def template_not_changed
-    if self.site_template_id_changed? && self.persisted?
-      self.errors << 'Cannot change the template of a site'
-    end
+    return unless site_template_id_changed? && persisted?
+
+    errors << 'Cannot change the template of a site'
   end
 
   def update_default_context
-    self.context_sites.each do |cs|
+    context_sites.each do |cs|
       if cs.changed? && cs.is_site_default_context
-        self.context_sites.update_all(is_site_default_context: :false)
+        context_sites.update_all(is_site_default_context: false)
         cs.is_site_default_context = true
       end
     end
   end
 
   def create_default_context
-    unless self.context_sites.any?
-      context = Context.create(name: "#{self.name} Context")
-      self.context_sites.build(context: context, is_site_default_context: true)
-    end
+    return if context_sites.any?
+
+    context = Context.create(name: "#{name} Context")
+    context_sites.build(context: context, is_site_default_context: true)
   end
 
   def edition_has_one_context
-    if self.persisted? && !self.context_sites.any?
-      self.errors['context_sites'] << 'You must select at least one context when editing a site'
-    end
+    return unless persisted? && context_sites.none?
+
+    errors['context_sites'] << 'You must select at least one context when editing a site'
   end
 end

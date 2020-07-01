@@ -1,6 +1,7 @@
 class ManagementController < ActionController::Base
   include ApplicationHelper
   include PermissionsHelper
+  include UserTokenHelper
   include SessionHelpers
 
   before_action :ensure_publish_user

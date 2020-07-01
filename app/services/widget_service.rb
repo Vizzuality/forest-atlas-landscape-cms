@@ -7,7 +7,6 @@ class WidgetService < ApiService
                                 'page[number]': '1', 'page[size]': '10000',
                                 'status': status,
                                 'application': ENV.fetch('API_APPLICATIONS'),
-                                'env': ENV.fetch('API_ENV'),
                                 '_': Time.now.to_s
 
     widgets_json = JSON.parse widgets_request.body
@@ -28,10 +27,22 @@ class WidgetService < ApiService
     widgets
   end
 
-  def self.widget(id)
+  def self.widget(id, token = nil)
     begin
-      widgets_request = @conn.get "/v1/widget/#{id}?includes=metadata&_=#{Time.now.to_s}"
+      widgets_request = @conn.get do |req|
+        req.url "/v1/widget/#{id}?" \
+          'includes=metadata,user&' \
+          "_=#{Time.now.to_f}"
+        req.headers['Authorization'] = "Bearer #{token}" if token
+      end
+
       widget_json = JSON.parse widgets_request.body
+
+      user_email = widget_json.dig('data', 'attributes', 'user', 'email')
+      if user_email
+        user = User.find_by(email: user_email)
+        widget_json['data']['attributes']['user']['name'] = user&.name
+      end
       widget = Widget.new widget_json['data']
     rescue Exception
       return nil
@@ -44,7 +55,7 @@ class WidgetService < ApiService
     widget = Widget.new
     widget.set_attributes widget_params
     begin
-      Rails.logger.info 'Creating Widget in the API.'
+      Rails.logger.info 'Updating Widget in the API.'
       Rails.logger.info "Widget: #{widget}"
 
       res = @conn.patch do |req|
@@ -56,10 +67,10 @@ class WidgetService < ApiService
 
       raise JSON.parse(res.body)['errors'].first['detail'] unless res.status == 200
 
-      Rails.logger.info "Response from widget creation endpoint: #{res.body}"
+      Rails.logger.info "Response from widget update endpoint: #{res.body}"
       widget_id = JSON.parse(res.body)['data']['id']
     rescue => e
-      Rails.logger.error "Error creating new widget in the API: #{e}"
+      Rails.logger.error "Error updating widget in the API: #{e}"
       return e.message
     end
     widget_id
@@ -135,15 +146,18 @@ end
   end
 
   # Returns the widgets of a list of datasets
-  def self.from_datasets(dataset_ids, status = 'saved')
-    widgets_request = @conn.get 'dataset',
-                                'ids': dataset_ids.join(','),
-                                'includes': 'widget',
-                                'page[number]': '1', 'page[size]': '10000',
-                                'status': status,
-                                'application': ENV.fetch('API_APPLICATIONS'),
-                                'env': ENV.fetch('API_ENV'),
-                                '_': Time.now.to_s
+  def self.from_datasets(dataset_ids, status = 'saved', token = nil)
+    widgets_request = @conn.get do |req|
+      req.url "/dataset?" \
+        "ids=#{dataset_ids.join(',')}&" \
+        'includes=widget,user&' \
+        'page[number]=1&' \
+        'page[size]=10000&' \
+        "status=#{status}&" \
+        "application=#{ENV.fetch('API_APPLICATIONS')}&" \
+        "_=#{Time.now.to_f}"
+      req.headers['Authorization'] = "Bearer #{token}" if token
+    end
 
     widgets_json = JSON.parse widgets_request.body
 

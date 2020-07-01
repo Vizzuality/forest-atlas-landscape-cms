@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<%= form_for(@user, url: management_profile_path, method: :put, html: { class: 'js-form'}) do |f| %>
+<%= form_for(@user, url: management_profile_path, method: :put, html: {class: 'js-form', id: 'submit_form'}) do |f| %>
 
   <div class="l-dataset-creation -title">
     <div class="wrapper">
@@ -31,6 +31,6 @@
       </div>
     </div>
   </div>
-  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_path, no_continue: true} %>
+  <%= render partial: 'management/steps_shared/footer', locals: { f: f, cancel: management_path, continue: false} %>
 <% end %>
 <%= render partial: 'shared/errors', locals: { resource: @user } %>

@@ -2,7 +2,7 @@ class Admin::SitesController < AdminController
 
   before_action :set_site, only: [:show, :edit, :update, :destroy, :display]
   before_action :acknowledge_admin
-  before_action :ensure_only_admin_user, only: :destroy
+  before_action :ensure_only_admin_user, only: %i[index destroy]
 
 
   # GET /admin/sites

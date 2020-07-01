@@ -15,7 +15,7 @@ FactoryBot.define do
     association :site_page
 
     dataset_id { FactoryBot.build(:dataset).id }
-    filters { }
+    filters { {} }
     columns_visible { }
     columns_changeable { }
     api_table_name { 'test' }

@@ -19,10 +19,28 @@ class SiteCreator
                   page.content
                 end
 
+      if page.content_type == ContentType::MAP
+        content = JSON.parse page.content['settings']
+
+        default_map = MapVersion.order(:position).first
+        default_settings = default_map&.default_settings || {'settings' => '{}'}
+        default_map_hash = JSON.parse(default_settings['settings'])
+
+        if default_map_hash['layerPanel']
+          content['layerPanel'] = default_map_hash['layerPanel'].to_json
+        end
+
+        if default_map_hash['analysisModules']
+          content['analysisModules'] = default_map_hash['analysisModules'].to_json
+        end
+
+        page.content['settings'] = content.to_json
+      end
+
       new_page = SitePage.create!(
         name: page.name,
         description: page.description,
-        content: content,
+        content: page.content,
         uri: page.uri,
         site: site,
         show_on_menu: page.show_on_menu,

@@ -5,6 +5,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'database_cleaner/active_record'
 require 'test_prof/recipes/rspec/let_it_be'
 
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -59,4 +60,18 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include_context :gon
+
+  # Database Cleaner
+  config.before :suite do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.orm = 'active_record'
+  end
+
+  config.before :all do
+    DatabaseCleaner.start
+  end
+
+  config.after :all do
+    DatabaseCleaner.clean
+  end
 end

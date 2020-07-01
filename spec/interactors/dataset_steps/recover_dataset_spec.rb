@@ -106,14 +106,10 @@ RSpec.describe DatasetSteps::RecoverDataset do
 
   describe '#build_existing_dataset_state' do
     context 'when there is dataset parameters' do
-      let(:dataset_attributes) do
-        FactoryBot.attributes_for(:dataset)
-      end
-  
       subject(:context) do
         DatasetSteps::RecoverDataset.call(
           action_name: 'show',
-          session: {dataset_creation: {new: dataset_attributes}},
+          session: {dataset_creation: {new: {}}},
           params: {dataset: {name: 'new name'}},
           dataset_params: {name: 'new name'}
         )
@@ -128,7 +124,7 @@ RSpec.describe DatasetSteps::RecoverDataset do
       let(:dataset_attributes) do
         FactoryBot.attributes_for(:dataset)
       end
-  
+
       subject(:context) do
         DatasetSteps::RecoverDataset.call(
           action_name: 'show',

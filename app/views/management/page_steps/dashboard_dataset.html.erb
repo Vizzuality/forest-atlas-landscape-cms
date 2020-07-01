@@ -18,7 +18,7 @@
 
 <%= Gon::Base.render_data %>
 
-<%= form_for @page, url: wizard_path, method: :put do |f| %>
+<%= form_for @page, url: wizard_path, method: :put, html: {id: 'submit_form'} do |f| %>
   <div class="l-page-creation -dataset">
     <div class="wrapper">
       <div class="c-action-toolbar">

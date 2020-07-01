@@ -44,6 +44,11 @@
 
       .c-we-widget-editor,
       .c-we-chart {
+        // Hack to temporarily hide the widget's caption before v2
+        input[name="widget-caption"] {
+          display: none;
+        }
+
         .c-we-vega-chart-legend {
           // Bootstrap default styles mess up with the
           // chart's legend

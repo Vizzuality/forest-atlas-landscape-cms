@@ -111,6 +111,85 @@
         }
       }
     }
+
+    &.-widget {
+      .fa-wysiwyg-configuration {
+        margin-top: 10px;
+      }
+    }
+    
+    .fa-wysiwyg-configuration {
+      width: 100%;
+      min-height: 130px; // Needed for the header
+      display: flex;
+      align-items: stretch;
+      border: 1px solid $color-6;
+
+      header {
+        position: relative;
+        flex-basis: 40px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        background-color: $color-6;
+        
+        span {
+          position: absolute;
+          bottom: 0;
+          display: block;
+          transform: rotate(-90deg) translate(10px, 100%);
+          transform-origin: bottom left;
+          color: $color-3;
+          line-height: 40px;
+          text-transform: uppercase;
+          font-weight: $font-weight-bold;
+        }
+      }
+
+      main {
+        flex-grow: 1;
+        padding: 10px 15px;
+
+        > .no-margin-bottom {
+          margin-bottom: 0;
+        }
+
+        label {
+          display: block;
+        }
+
+        label,
+        small {
+          & + label {
+            margin-top: 15px;
+          }
+        }
+
+        input {
+          display: block;
+          padding: 10px;
+          margin-top: 5px;
+          font-size: $font-size-small;
+          border: 1px solid $color-9;
+          color: $color-4;
+
+          &[type="checkbox"] {
+            display: inline-block;
+            margin-right: 10px;
+          }
+        }
+
+        textarea {
+          display: block;
+          width: 100%;
+          min-height: 30px;
+          padding: 10px;
+          margin-top: 5px;
+          font-size: $font-size-small;
+          border: 1px solid $color-9;
+          color: $color-4;
+        }
+      }
+    }
   }
 
   blockquote {
@@ -406,54 +485,6 @@
       }
     }
   }
-
-  .c-we-chart,
-  .c-we-chart .chart {
-    min-height: 250px;
-    width: 100%;
-  }
-
-  .c-we-chart-title {
-    flex-basis: 100%;
-    text-align: center;
-    font-weight: $font-weight-bold;
-  }
-
-  .c-we-chart-caption {
-    flex-basis: 100%;
-    text-align: center;
-    font-size: $font-size-small;
-  }
-
-  .c-we-chart-download {
-    display: flex;
-    justify-content: flex-end;
-    flex-basis: 100%;
-
-    .download {
-      display: inline-block;
-      min-width: 35px;
-      height: 35px;
-      margin-left: 10px;
-      padding: 0 10px;
-      border: 1px solid $accent-color;
-      border-radius: 30px;
-      background: rgba($accent-color, .1);
-      color: $color-4;
-      line-height: 35px;
-      cursor: pointer;
-
-      svg {
-        width: 16px;
-        height: 16px;
-        vertical-align: text-bottom;
-
-        use {
-          fill: $color-4;
-        }
-      }
-    }
-  }
 }
 
 .fa-wysiwyg-file {
@@ -485,31 +516,6 @@
 
       border: 1px solid transparent;
       cursor: pointer;
-    }
-  }
-
-  &__preview {
-    &--caption {
-      display: block;
-      font-size: $font-size-small;
-      padding: 5px;
-      color: $color-4;
-    }
-
-    &--captionInput {
-      display: block;
-
-      width: 100%;
-      min-height: 30px;
-
-      padding: 10px;
-      margin: 20px 0 0 0;
-
-      font-size: $font-size-small;
-      border: 1px solid $color-9;
-      color: $color-4;
-
-      resize: none;
     }
   }
 }

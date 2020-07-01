@@ -7,46 +7,46 @@ class Dataset
 
   has_many :context_datasets
 
-  CONNECTOR_TYPES = %w[document rest]
-  CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice]
+  CONNECTOR_TYPES = %w[document rest].freeze
+  CONNECTOR_PROVIDERS = %w[csv json cartodb featureservice].freeze
 
   API_PROPERTIES = [
-    :id, :language, :description, :citation, :source, :name, :application, :columns
-  ]
+    :id, :language, :description, :citation, :source, :name, :application,
+    :columns
+  ].freeze
 
   APPLICATION_PROPERTIES = [
     :agol_id, :agol_link, :amazon_link, :sql_api, :carto_link, :map_service,
     :download_data, :cautions, :date_of_content, :frequency_of_updates,
     :function, :geographic_coverage, :learn_more, :other, :resolution, :subtitle
-  ]
+  ].freeze
 
-  def form_steps
+  def form_steps(user_site_admin = false, own_user_dataset = false, validating = false)
     if id.nil?
       {
         pages: %w[title connector labels context],
         names: %w[Title Connector Labels Context]
       }
-    elsif provider.eql?('csv')
+    elsif user_site_admin || own_user_dataset || validating
       {
-        pages: %w[connector metadata options],
-        names: %w[Connector Metadata Aliases]
+        pages: %w[title connector metadata options],
+        names: %w[Title Connector Metadata Aliases]
       }
     else
       {
-        pages: %w[metadata options],
-        names: %w[Metadata Aliases]
+        pages: %w[title connector],
+        names: %w[Title Connector]
       }
     end
   end
 
-
-  attr_accessor :form_step
+  attr_accessor :id, :application, :name, :metadata, :data_path,
+                :attributes_path, :provider, :format, :layers, :connector_url,
+                :table_name, :tags, :data_overwrite, :connector,
+                :type, :legend, :status, :user_id, :user, :created_at,
+                :updated_at, :widgets, :form_step
 
   validate :step_validation
-
-  attr_accessor :id, :application, :name, :metadata, :data_path, :attributes_path,
-                :provider, :format, :layers, :connector_url, :table_name, :tags,
-                :data_overwrite, :connector, :provider, :type, :legend, :status
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -55,17 +55,22 @@ class Dataset
   def attributes=(data)
     return unless data && (data[:attributes] || data['attributes'])
     data.symbolize_keys!
-    data[:attributes].symbolize_keys!
+    data[:attributes] = data[:attributes].symbolize_keys
     @id = data[:id]
     @name = data[:attributes][:name]
     @application = data[:attributes][:application]
-    @metadata = (data[:attributes][:metadata] || {}).symbolize_keys
+    metadata = if data[:attributes][:metadata].is_a?(Array)
+                 Dataset.process_metadata(data[:attributes][:metadata])
+               else
+                 (data[:attributes][:metadata] || {}).symbolize_keys
+               end
+    @metadata = metadata
     @data_path = data[:attributes][:data_path]
     @attributes_path = data[:attributes][:attributes_path]
     @provider = data[:attributes][:provider]
     @format = data[:attributes][:format]
     @layers = data[:attributes][:layers]
-    @connector_url = data[:attributes][:connector_url]
+    @connector_url = data[:attributes][:connectorUrl]
     @table_name = data[:attributes][:table_name]
     vocabulary = data[:attributes][:vocabulary]
     legacy = vocabulary && vocabulary.find do |v|
@@ -73,10 +78,15 @@ class Dataset
     end
     @tags = legacy && legacy['attributes']['tags'] || []
     @data_overwrite = data[:attributes][:data_overwrite]
-    @connector = data[:attributes][:connector]
-    @type = data[:attributes][:type]
+    @connector = data[:attributes][:connectorType]
+    @type = data[:attributes][:connectorType]
     @legend = data[:attributes][:legend]
     @status = data[:attributes][:status]
+    @created_at = data[:attributes][:createdAt]
+    @updated_at = data[:attributes][:updatedAt]
+    @user_id = data[:attributes][:userId]
+    @user = data[:attributes][:user]
+    @widgets = data[:attributes][:widget]
   end
 
   def set_attributes(data)
@@ -84,7 +94,12 @@ class Dataset
     @id = data[:id]
     @name = data[:name]
     @application = data[:application]
-    @metadata = (data[:metadata] || {}).symbolize_keys
+    metadata = if data[:metadata].is_a?(Array)
+                 Dataset.process_metadata(data[:metadata])
+               else
+                 (data[:metadata] || {}).symbolize_keys
+               end
+    @metadata = metadata
     @data_path = data[:data_path]
     @attributes_path = data[:attributes_path]
     @provider = data[:provider]
@@ -98,6 +113,11 @@ class Dataset
     @type = data[:type]
     @legend = data[:legend]
     @status = data[:status]
+    @created_at = data[:created_at]
+    @updated_at = data[:updated_at]
+    @user_id = data[:user_id]
+    @user = data[:user]
+    @widgets = data[:widget]
   end
 
   def attributes
@@ -118,7 +138,12 @@ class Dataset
       connector: @connector,
       type: @type,
       legend: @legend,
-      status: @status
+      status: @status,
+      created_at: @created_at,
+      updated_at: @updated_at,
+      user_id: @user_id,
+      user: @user,
+      widgets: @widgets
     }
   end
 
@@ -129,62 +154,69 @@ class Dataset
 
     return unless value
 
-    if value.include? '?'
-      @connector_url = value+'&f=pjson'
-    else
-      @connector_url = value+'?f=pjson'
-    end
+    @connector_url = "#{value}#{value.include?('?') ? '&f=pjson' : '?f=pjson'}"
   end
 
   def get_metadata
-    DatasetService.get_metadata self.id
+    DatasetService.get_metadata id
   end
 
-  def self.find_with_metadata(id)
-    properties = DatasetService.get_metadata(id)
-    return nil if properties.empty? || (data = properties['data']).empty?
+  def self.find_with_metadata(id, token = nil)
+    properties = DatasetService.get_metadata(id, token)
+    return nil if properties.empty? || (data = properties['data'].first).empty?
     dataset = Dataset.new
-    attributes = {id: id}
-    data_attributes = data['attributes'] && data['attributes'].symbolize_keys
+    data_attributes = data['attributes']&.symbolize_keys
     if data_attributes
-      attributes = attributes.merge(data_attributes.except(:metadata))
-      if data_attributes[:metadata] && data_attributes[:metadata].any?
-        # select metadata by current locale, and app
-        metadata = data_attributes[:metadata].select do |md|
-          md['attributes']['application'] == ENV['API_APPLICATIONS'] || 'forest-atlas'
-        end
-        metadata_attributes = {}
-        metadata.each do |md|
-          next unless md['attributes']
-          md_attributes = md['attributes'].symbolize_keys
-          md_attributes[:id] = md['id']
-          if md_attributes[:applicationProperties]
-            md_attributes = md_attributes.merge(
-              md_attributes[:applicationProperties].symbolize_keys
-            )
-          end
-          metadata_attributes[md_attributes[:language]] = md_attributes
-        end
-        attributes = attributes.merge({metadata: metadata_attributes})
+      dataset.attributes = {'attributes': data_attributes.except(:metadata)}
+      if data_attributes[:metadata]&.any?
+        dataset.metadata = Dataset.process_metadata(data_attributes[:metadata])
       end
     end
-    dataset.set_attributes(attributes)
     dataset
+  end
+
+  def self.process_metadata(metadata)
+    return metadata if metadata.is_a? Hash
+
+    metadata = metadata.select do |md|
+      md['attributes']['application'] == ENV['API_APPLICATIONS'] || 'forest-atlas'
+    end
+
+    metadata_attributes = {}
+    metadata.each do |md|
+      next unless md['attributes']
+      md_attributes = md['attributes'].symbolize_keys
+      md_attributes[:id] = md['id']
+      if md_attributes[:applicationProperties]
+        md_attributes = md_attributes.merge(
+          md_attributes[:applicationProperties].symbolize_keys
+        )
+      end
+      metadata_attributes[md_attributes[:language]] = md_attributes
+    end
+    metadata_attributes
   end
 
   # Uploads the dataset to the API
   # Params:
   # +token+:: The authentication for the API
   def upload(token)
-    tags_array = tags && tags.split(',') || []
+    tags_array = tags&.split(',') || []
     build_arcgis_metadata if provider.eql? 'featureservice'
     DatasetService.upload token, type, provider, connector_url, data_path,
                           application, name, tags_array, legend, metadata
   end
 
   def update(token)
-    DatasetService.update token, id, connector_url if provider.eql? 'csv'
+    dataset_body = DatasetService.update token, attributes
+    if provider.eql? 'csv'
+      DatasetService.update_connector token, id, connector_url
+    else
+      dataset_body
+    end
+  end
 
+  def save_metadata(token)
     metadata.each do |language, metadata_info|
       metadata_info['language'] = language
       metadata_info.symbolize_keys!
@@ -197,14 +229,14 @@ class Dataset
   end
 
   def update_metadata(token, metadata = metadata)
-    tags_array = tags && tags.split(',') || []
+    tags_array = tags&.split(',') || []
     DatasetService.update_metadata(
       token, id, ENV['API_APPLICATIONS'] || 'forest-atlas', name, tags_array, metadata
     )
   end
 
   def create_metadata(token, metadata = metadata)
-    tags_array = tags && tags.split(',') || []
+    tags_array = tags&.split(',') || []
     DatasetService.create_metadata(
       token, id, ENV['API_APPLICATIONS'] || 'forest-atlas', name, tags_array, metadata
     )
@@ -215,9 +247,9 @@ class Dataset
   # name, and fields
   def build_arcgis_metadata
     @metadata = []
-    get_languages.each do |language, _value|
+    languages.each do |language, _value|
       lang_metadata = {}
-      arcgis_metadata = ArcgisService.build_metadata(self.connector_url)
+      arcgis_metadata = ArcgisService.build_metadata(connector_url)
       lang_metadata[:description] = arcgis_metadata['description']
       lang_metadata[:source] = arcgis_metadata['copyrightText']
 
@@ -254,11 +286,11 @@ class Dataset
     metadata_list[dataset_id]
   end
 
-  def get_languages
+  def languages
     context_datasets = ContextDataset.
       where(dataset_id: @id).
-      joins("INNER JOIN context_sites ON context_sites.context_id = context_datasets.context_id").
-      select("context_sites.site_id")
+      joins('INNER JOIN context_sites ON context_sites.context_id = context_datasets.context_id').
+      select('context_sites.site_id')
 
     if context_datasets.none?
       return {
@@ -274,41 +306,53 @@ class Dataset
   end
 
   private
+
   # Validates the dataset according to the current step
   def step_validation
+    form_steps = form_steps(false, false, true)
     step_index = form_steps[:pages].index(form_step)
 
     title_step = form_steps[:pages].index('title')
     if title_step && title_step <= step_index
-      self.errors['name'] << 'You must enter a name for the dataset' if self.name.blank? || self.name.strip.blank?
+      errors['name'] << 'You must enter a name for the dataset' if name.blank? || name.strip.blank?
     end
 
     connector_step = form_steps[:pages].index('connector')
     if connector_step && connector_step == step_index
-      self.errors['type'] << 'You must enter a connector type' unless CONNECTOR_TYPES.include? self.type
-      self.errors['provider'] << 'You must enter a connector provider' unless CONNECTOR_PROVIDERS.include? self.provider
-      self.errors['connector_url'] << 'You must enter a valid url' \
-        unless self.connector_url && !self.connector_url.blank? && valid_url?(self.connector_url)
-      if self.connector_url.present? && self.data_path.present? && !valid_xpath?(self.data_path)
-        self.errors['data_path'] << 'If the JSON file is not structured as an array of objects in document root, please provide the path to data in Xpath format. Otherwise leave blank.'
+      unless CONNECTOR_TYPES.include? type
+        errors['type'] << 'You must enter a connector type'
+      end
+      unless CONNECTOR_PROVIDERS.include? provider
+        errors['provider'] << 'You must enter a connector provider'
+      end
+      unless connector_url && !connector_url.blank? && valid_url?(connector_url)
+        errors['connector_url'] << 'You must enter a valid url'
+      end
+      if connector_url.present? && data_path.present? && !valid_xpath?(data_path)
+        errors['data_path'] << 'If the JSON file is not structured as an array of objects in document root, please provide the path to data in Xpath format. Otherwise leave blank.'
       end
     end
 
     pages_step = form_steps[:pages].index('labels')
-    if pages_step && pages_step <= step_index
-      unless self.legend && self.legend.is_a?(Hash)
-        self.errors['legend'] << 'Labels not correctly defined'
-        return
-      end
-      self.errors['legend'] << 'Latitude and Longitude have to be filled together' if self.legend[:lat].blank? ^ self.legend[:long].blank?
-      self.errors['legend'] << 'Country and Region have to be filled together' if self.legend[:country].blank? ^ self.legend[:region].blank?
+
+    return unless pages_step && pages_step <= step_index
+
+    unless legend&.is_a?(Hash)
+      errors['legend'] << 'Labels not correctly defined'
+      return
+    end
+    if legend[:lat].blank? ^ legend[:long].blank?
+      errors['legend'] << 'Latitude and Longitude have to be filled together'
+    end
+    if legend[:country].blank? ^ legend[:region].blank?
+      errors['legend'] << 'Country and Region have to be filled together'
     end
   end
 
   # Returns the validity of a URL
   def valid_url?(url)
     uri = URI.parse(url)
-    uri.kind_of?(URI::HTTP)
+    uri.is_a?(URI::HTTP)
   rescue URI::InvalidURIError
     false
   end
@@ -322,5 +366,4 @@ class Dataset
     end
     true
   end
-
 end

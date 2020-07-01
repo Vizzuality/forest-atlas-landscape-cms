@@ -1,26 +1,21 @@
 class Widget
-
   # The Model is a mixin for Naming, Translation, Validations and Conversions
   include ActiveModel::Model
   include ActiveModel::Serialization
   include ActiveModel::Associations
 
-  #before_destroy :prevent_destroy_if_dependent_pages_present
-
   belongs_to :dataset
   has_many :page_widgets
-  #has_many :pages, through: :page_widgets
 
+  DEFAULT_WIDGET = {application: 'forest-atlas',
+                    info: {caption: ''},
+                    language: 'en'}.freeze
 
-  DEFAULT_WIDGET = { application: 'forest-atlas',
-                     info: { caption: '' },
-                     language: 'en' }.freeze
-
-  attr_accessor :id, :user_id, :application, :slug, :name, :description,
-                :source, :source_url, :layer_id, :dataset, :authors, :query_url,
-                :widget_config, :metadata, :template, :default, :protected, :status,
-                :published, :freeze, :verified
-
+  attr_accessor :id, :user, :user_id, :application, :slug, :name, :description,
+                :source, :source_url, :layer_id, :dataset, :dataset_name,
+                :authors, :query_url, :widget_config, :metadata, :template,
+                :default, :protected, :status, :published, :freeze, :verified,
+                :created_at, :updated_at
 
   def initialize(data = {})
     self.attributes = data unless data == {}
@@ -31,7 +26,8 @@ class Widget
     data.symbolize_keys!
     data[:attributes].symbolize_keys!
     @id = data[:id]
-    @user_id = data[:attributes][:user_id]
+    @user = data[:attributes][:user]
+    @user_id = data[:attributes][:userId]
     @application = data[:attributes][:application]
     @slug = data[:attributes][:slug]
     @name = data[:attributes][:name]
@@ -40,6 +36,7 @@ class Widget
     @source_url = data[:attributes][:source_url]
     @layer_id = data[:attributes][:layer_id]
     @dataset = data[:attributes][:dataset]
+    @dataset_name = data[:attributes][:dataset_name]
     @authors = data[:attributes][:authors]
     @query_sql = data[:attributes][:query_sql]
     @widget_config = data[:attributes][:widgetConfig]
@@ -51,12 +48,15 @@ class Widget
     @published = data[:attributes][:published]
     @freeze = data[:attributes][:freeze]
     @verified = data[:attributes][:verified]
+    @created_at = data[:attributes][:createdAt]
+    @updated_at = data[:attributes][:updatedAt]
   end
 
   def set_attributes(data)
     return if data.try(:keys).nil?
     @id = data[:id]
-    @user_id = data[:user_id]
+    @user = data[:user]
+    @user_id = data[:userId]
     @application = data[:application]
     @slug = data[:slug]
     @name = data[:name]
@@ -65,6 +65,7 @@ class Widget
     @source_url = data[:source_url]
     @layer_id = data[:layer_id]
     @dataset = data[:dataset]
+    @dataset_name = data[:dataset_name]
     @authors = data[:authors]
     @query_sql = data[:query_sql]
     @widget_config = data[:widgetConfig]
@@ -76,12 +77,15 @@ class Widget
     @published = data[:published]
     @freeze = data[:freeze]
     @verified = data[:verified]
+    @created_at = data[:createdAt]
+    @updated_at = data[:updatedAt]
   end
 
 
   def attributes
     {
       id: @id,
+      user: @user,
       user_id: @user_id,
       application: @application,
       slug: @slug,
@@ -91,6 +95,7 @@ class Widget
       source_url: @source_url,
       layer_id: @layer_id,
       dataset: @dataset,
+      datasetName: @dataset_name,
       authors: @authors,
       query_sql: @query_sql,
       widgetConfig: @widget_config,
@@ -101,11 +106,11 @@ class Widget
       status: @status,
       published: @published,
       freeze: @freeze,
-      verified: @verified
+      verified: @verified,
+      createdAt: @created_at,
+      updatedAt: @updated_at
     }
   end
-
-
 
   # TODO check if we can save this information in metadata (widget config)
 
@@ -207,14 +212,10 @@ class Widget
   #   get_filtered_dataset false, 10
   # end
 
-
-
   # Gets the fields of this dataset
   def get_fields
-    DatasetService.get_fields self.dataset_id, self.api_table_name
+    DatasetService.get_fields dataset_id, api_table_name
   end
-
-
 
   private
   # def prevent_destroy_if_dependent_pages_present

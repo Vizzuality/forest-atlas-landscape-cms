@@ -40,22 +40,27 @@ class User < ApplicationRecord
   validate :step_validation
 
   cattr_accessor :form_steps do
-    { pages: %w[identity role sites contexts],
-      names: %w[Identity Role Sites Contexts] }
+    {pages: %w[identity role sites contexts],
+     names: %w[Identity Role Sites Contexts]}
   end
   attr_accessor :form_step
 
-  ADMIN_ROLE_NAME = 'Admin'
-  NON_ADMIN_ROLE_NAME = 'Content contributor'
+  ADMIN_ROLE_NAME = 'Admin'.freeze
+  NON_ADMIN_ROLE_NAME = 'Content contributor'.freeze
 
   def send_to_api(token, url)
-    api_role = if self.admin
-                  'ADMIN'
-               else
-                  'MANAGER'
-               end
+    api_role = admin ? 'ADMIN' : 'MANAGER'
 
-    UserService.create(token, self.email, api_role, url)
+    user_info = UserService.get(token, email)
+    if user_info['data'].any?
+      UserService.update(
+        token,
+        user_info['data'].first['id'],
+        user_info['data'].first.dig('extraUserData', 'apps')
+      )
+    else
+      UserService.create(token, email, api_role, url)
+    end
   end
 
   def delete_from_api(token, id)
@@ -70,12 +75,12 @@ class User < ApplicationRecord
     dataset_ids = []
 
     # TODO: This should use user.get_contexts
-    self.contexts.each do |context|
-      context.context_datasets.each {|cd| dataset_ids << cd.dataset_id}
+    contexts.each do |context|
+      context.context_datasets.each { |cd| dataset_ids << cd.dataset_id }
     end
     dataset_ids.uniq!
 
-    all_datasets.select {|ds| dataset_ids.include?(ds.id)}
+    all_datasets.select { |ds| dataset_ids.include?(ds.id) }
   end
 
   # Returns the contexts of a user
@@ -83,12 +88,10 @@ class User < ApplicationRecord
   # If he's ab admin, the contexts he owns/writes are sent
   # If readable is true, the contexts he can read are also sent
   def get_contexts(readable = false)
-    if self.admin
-      return Context.all
-    end
+    return Context.all if admin
 
     contexts = self.contexts
-    self.sites.each{|s| s.contexts.each{|c| contexts << c}} if readable
+    sites.each { |s| s.contexts.each { |c| contexts << c } } if readable
     contexts = contexts.uniq
     contexts
   end
@@ -110,27 +113,25 @@ class User < ApplicationRecord
   end
 
   private
+
   def step_validation
     # Added to insure all validations are run if there's no step
-    form_step = 'contexts' unless form_step
+    form_step ||= 'contexts'
     step_index = form_steps[:pages].index(form_step)
 
-    if self.form_steps[:pages].index('identity') <= step_index
-      if self.name.blank?
-        self.errors['name'] << 'You must choose a name for the user'
-      elsif !/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u.match(self.name)
-        self.errors['name'] << 'The name you chose is not valid'
-      elsif self.name.length > 60
-        self.errors['name'] << 'Please selected a shorter name'
+    if form_steps[:pages].index('identity') <= step_index
+      if name.blank?
+        errors['name'] << 'You must choose a name for the user'
+      elsif !/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u.match(name)
+        errors['name'] << 'The name you chose is not valid'
+      elsif name.length > 60
+        errors['name'] << 'Please selected a shorter name'
       end
-      if self.email.blank?
-        self.errors['email'] << 'Email can\'t be blank'
-      elsif !/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.match(self.email)
-        self.errors['email'] << 'Email is not valid'
+      if email.blank?
+        errors['email'] << 'Email can\'t be blank'
+      elsif !/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.match(email)
+        errors['email'] << 'Email is not valid'
       end
     end
-    #if self.form_steps[:pages].index('role') <= step_index
-    #  self.errors['admin'] << 'You must select a user role' unless [true, false].include?(self.admin)
-    #end
   end
 end

@@ -26,7 +26,7 @@
       var datasetConnectorsView = new App.View.DatasetConnectorsView({
         el: '.js-connector',
         connectors: this._getConnectors(),
-        connectorSelected: (window.gon && gon.connector_selected) || null
+        selectedConnector: (window.gon && window.gon.global.connector_selected) || null
       });
 
       $('.js-form').on('submit', function () {

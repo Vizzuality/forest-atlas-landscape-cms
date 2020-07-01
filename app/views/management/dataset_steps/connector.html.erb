@@ -9,7 +9,7 @@
 <%= render partial: 'shared/navigation_header', locals: {form_steps: wizard_steps, resource: @dataset, current_step: step, step_names: @steps_names} %>
 <%= Gon::Base.render_data %>
 
-<%= form_for @dataset, url: wizard_path, method: :put, html: { multipart: true } do |f| %>
+<%= form_for @dataset, url: wizard_path, method: :put, html: { multipart: true, id: 'submit_form' } do |f| %>
    <div class="l-dataset-creation -connector">
      <div class="wrapper">
        <div class="js-connector"></div>

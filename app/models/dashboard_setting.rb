@@ -15,7 +15,6 @@
 
 class DashboardSetting < ApplicationRecord
   belongs_to :site_page, foreign_key: 'page_id',
-             inverse_of: :dashboard_setting, autosave: true
-
-
+                         inverse_of: :dashboard_setting,
+                         autosave: true
 end

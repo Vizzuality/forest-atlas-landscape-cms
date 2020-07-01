@@ -128,16 +128,17 @@
 
       if (!this.options.fixedOption) {
         var activeOption = this.el.querySelector('.js-option.-active');
+        if (activeOption) {
+          activeOption.classList.remove('-active');
+          activeOption.setAttribute('tabindex', -1);
+          option.classList.add('-active');
 
-        activeOption.classList.remove('-active');
-        activeOption.setAttribute('tabindex', -1);
-        option.classList.add('-active');
+          this.options.activeOption = _.findWhere(this.options.options, { id: id });
 
-        this.options.activeOption = _.findWhere(this.options.options, { id: id });
-
-        // We update the UI with the name of the new active option
-        var activeOptionName = this.options.activeOption[this.options.useShortName ? 'shortName' : 'name'];
-        this.el.querySelector('.js-list-btn').textContent = activeOptionName;
+          // We update the UI with the name of the new active option
+          var activeOptionName = this.options.activeOption[this.options.useShortName ? 'shortName' : 'name'];
+          this.el.querySelector('.js-list-btn').textContent = activeOptionName;
+        }
       }
 
       this.options.onChangeCallback(id);
@@ -203,7 +204,7 @@
         activeOption = this.el.querySelector('.js-option.-active');
       }
 
-      if (isOpened) {
+      if (isOpened && activeOption) {
         this._setOptionFocus(activeOption);
       } else {
         this._removeOptionsFocus();

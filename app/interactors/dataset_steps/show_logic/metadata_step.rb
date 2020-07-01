@@ -14,8 +14,9 @@ module DatasetSteps
 
       def get_languages(site, dataset)
         context.set_variables = {
-          languages: dataset.get_languages,
-          default_language: SiteSetting.default_site_language(site.id).value
+          languages: dataset.languages,
+          default_language:
+            SiteSetting.default_site_language(site.id)&.value || 'fr'
         }
       end
 

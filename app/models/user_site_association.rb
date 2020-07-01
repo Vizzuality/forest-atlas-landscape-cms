@@ -21,10 +21,10 @@ class UserSiteAssociation < ApplicationRecord
 
   attr_accessor :selected # virtual attribute used for processing the form
 
-  def <=> another
-    if user.try(:name) < another.user.try(:name)
+  def <=>(other)
+    if user.try(:name) < other.user.try(:name)
       -1
-    elsif user.try(:name) > another.user.try(:name)
+    elsif user.try(:name) > other.user.try(:name)
       1
     else
       0

@@ -1,35 +1,44 @@
 require 'rails_helper'
 
 RSpec.describe SitePage, type: :model do
+  let(:site) { FactoryBot.create(:site_with_routes) }
+
   context 'validation errors' do
-    s = FactoryBot.create(:site_with_routes)
-
     describe 'duplicated url' do
-      FactoryBot.create(:site_page, site: s, uri: 'test', url: '/test')
-      subject { FactoryBot.build(:site_page, site: s, uri: 'test', url: '/test')}
-      it { is_expected.to have(1).errors_on(:uri)}
-      it { is_expected.to have(1).errors_on(:url)}
-    end
+      before do
+        FactoryBot.create(:site_page, site: site, uri: 'test', url: '/test')
+      end
 
-    describe 'empty site id' do
-      subject { FactoryBot.build(:site_page, site: nil) }
-      it { is_expected.to have(1).errors_on(:site) }
+      subject do
+        site_page =
+          FactoryBot.build(:site_page, site: site, uri: 'test', url: '/test')
+        site_page.valid?
+        site_page
+      end
+
+      it { is_expected.to have(1).errors_on(:uri) }
+      it { is_expected.to have(1).errors_on(:url) }
     end
 
     describe 'cheat with position on create' do
-      parent = FactoryBot.create(:site_page, site: s, parent_id: nil)
-      p1 = FactoryBot.create(:site_page, site: s, position: 1, parent_id: parent.id)
-      FactoryBot.create(:site_page, site: s, position: 1, parent_id: parent.id)
+      before do
+        parent = FactoryBot.create(:site_page, site: site, parent_id: nil)
+        @p1 = FactoryBot.create(:site_page, site: site, position: 1, parent_id: parent.id)
+        FactoryBot.create(:site_page, site: site, position: 1, parent_id: parent.id)
+      end
 
-      it { expect(p1.reload.position).to eql(2)}
+      it { expect(@p1.reload.position).to eql(2) }
     end
 
     describe 'cheat with position on edit' do
-      parent = FactoryBot.create(:site_page, site: s, parent_id: nil)
-      p2 = FactoryBot.create(:site_page, site: s, position: 1, parent_id: parent.id)
-      p1 = FactoryBot.create(:site_page, site:s, position: 2, parent_id: parent.id)
-      p2.update(position: 2)
-      it { expect(p1.reload.position).to eql(1)}
+      before do
+        parent = FactoryBot.create(:site_page, site: site, parent_id: nil)
+        p2 = FactoryBot.create(:site_page, site: site, position: 1, parent_id: parent.id)
+        @p1 = FactoryBot.create(:site_page, site: site, position: 2, parent_id: parent.id)
+        p2.update(position: 2)
+      end
+
+      it { expect(@p1.reload.position).to eql(1) }
     end
   end
 

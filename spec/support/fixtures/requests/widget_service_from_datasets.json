@@ -1,0 +1,346 @@
+{
+  "data": [
+    {
+      "id": "e22ba068-d137-4b60-9f5e-8fdf9369fae0",
+      "type": "dataset",
+      "attributes": {
+        "name": "Testing height staging",
+        "slug": "Testing-height-staging",
+        "type": null,
+        "subtitle": null,
+        "application": [
+          "forest-atlas"
+        ],
+        "dataPath": null,
+        "attributesPath": null,
+        "connectorType": "document",
+        "provider": "csv",
+        "userId": "5dc9394df0160500102afcfc",
+        "connectorUrl": "https://docs.google.com/spreadsheets/d/1TdxcaLfrFs7Jdo8j5aUhKB1wVDb7SpZWhBSHx02VOKw/gviz/tq?tqx=out:csv",
+        "sources": [
+          "https://docs.google.com/spreadsheets/d/1TdxcaLfrFs7Jdo8j5aUhKB1wVDb7SpZWhBSHx02VOKw/gviz/tq?tqx=out:csv"
+        ],
+        "tableName": "index_e22ba068d1374b609f5e8fdf9369fae0_1579528234568",
+        "status": "saved",
+        "published": true,
+        "overwrite": false,
+        "verified": false,
+        "blockchain": {},
+        "mainDateField": null,
+        "env": "production",
+        "geoInfo": false,
+        "protected": false,
+        "legend": {
+          "date": [],
+          "region": [],
+          "country": [],
+          "nested": [],
+          "integer": [],
+          "short": [],
+          "byte": [],
+          "double": [],
+          "float": [],
+          "half_float": [],
+          "scaled_float": [],
+          "boolean": [],
+          "binary": [],
+          "text": [],
+          "keyword": [],
+          "lat": "",
+          "long": ""
+        },
+        "clonedHost": {},
+        "errorMessage": "",
+        "taskId": "/v1/doc-importer/task/7943968e-3d22-4831-a576-87ed11a77a9d",
+        "createdAt": "2020-01-20T13:50:34.398Z",
+        "updatedAt": "2020-01-20T13:50:46.335Z",
+        "dataLastUpdated": null,
+        "widget": [
+          {
+            "id": "3928a9ea-32e2-4120-b1f6-331532bf7e82",
+            "type": "widget",
+            "attributes": {
+              "name": "Testing height staging",
+              "dataset": "e22ba068-d137-4b60-9f5e-8fdf9369fae0",
+              "slug": "Testing-height-staging",
+              "userId": "5dc9394df0160500102afcfc",
+              "description": "Testing height staging",
+              "application": [
+                "forest-atlas"
+              ],
+              "verified": false,
+              "default": false,
+              "protected": false,
+              "defaultEditableWidget": false,
+              "published": false,
+              "thumbnailUrl": "http://wri-api-backups.s3.amazonaws.com/resourcewatch/staging/thumbnails/3928a9ea-32e2-4120-b1f6-331532bf7e82-1579528276373.png",
+              "freeze": false,
+              "env": "staging",
+              "widgetConfig": {
+                "paramsConfig": {
+                  "visualizationType": "chart",
+                  "limit": 50,
+                  "value": {
+                    "name": "number",
+                    "type": "number"
+                  },
+                  "category": {
+                    "name": "category",
+                    "type": "string"
+                  },
+                  "color": null,
+                  "size": null,
+                  "orderBy": null,
+                  "aggregateFunction": null,
+                  "chartType": "bar",
+                  "filters": [],
+                  "areaIntersection": null,
+                  "band": null,
+                  "layer": null
+                },
+                "data": [
+                  {
+                    "name": "table",
+                    "transform": [
+                      {
+                        "type": "identifier",
+                        "as": "id"
+                      },
+                      {
+                        "type": "joinaggregate",
+                        "as": [
+                          "count"
+                        ]
+                      }
+                    ],
+                    "url": "https://staging-api.globalforestwatch.org/v1/query/e22ba068-d137-4b60-9f5e-8fdf9369fae0?sql=SELECT%20category%20as%20x%2C%20number%20as%20y%20FROM%20index_e22ba068d1374b609f5e8fdf9369fae0_1579528234568%20%20%20ORDER%20BY%20number%20desc LIMIT 50",
+                    "format": {
+                      "type": "json",
+                      "property": "data"
+                    }
+                  }
+                ],
+                "scales": [
+                  {
+                    "name": "x",
+                    "type": "band",
+                    "range": "width",
+                    "padding": 0.05,
+                    "domain": {
+                      "data": "table",
+                      "field": "id"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "type": "linear",
+                    "range": "height",
+                    "nice": true,
+                    "zero": true,
+                    "domain": {
+                      "data": "table",
+                      "field": "y"
+                    }
+                  }
+                ],
+                "axes": [
+                  {
+                    "orient": "bottom",
+                    "scale": "x",
+                    "labelOverlap": "parity",
+                    "ticks": false,
+                    "encode": {
+                      "labels": {
+                        "update": {
+                          "text": {
+                            "signal": "width < 300 || data('table')[0].count > 10 ? truncate(data('table')[datum.value - 1].x, 12) : data('table')[datum.value - 1].x"
+                          },
+                          "align": {
+                            "signal": "width < 300 || data('table')[0].count > 10 ? 'right' : 'center'"
+                          },
+                          "baseline": {
+                            "signal": "width < 300 || data('table')[0].count > 10 ? 'middle' : 'top'"
+                          },
+                          "angle": {
+                            "signal": "width < 300 || data('table')[0].count > 10 ? -90 : 0"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "orient": "left",
+                    "scale": "y",
+                    "labelOverlap": "parity",
+                    "format": "s",
+                    "encode": {
+                      "labels": {
+                        "update": {
+                          "align": {
+                            "value": "right"
+                          },
+                          "baseline": {
+                            "value": "bottom"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "marks": [
+                  {
+                    "type": "rect",
+                    "from": {
+                      "data": "table"
+                    },
+                    "encode": {
+                      "update": {
+                        "opacity": {
+                          "value": 1
+                        },
+                        "x": {
+                          "scale": "x",
+                          "field": "id"
+                        },
+                        "width": {
+                          "scale": "x",
+                          "band": 1
+                        },
+                        "y": {
+                          "scale": "y",
+                          "field": "y"
+                        },
+                        "y2": {
+                          "scale": "y",
+                          "value": 0
+                        }
+                      },
+                      "hover": {
+                        "opacity": {
+                          "value": 0.8
+                        }
+                      }
+                    }
+                  }
+                ],
+                "interaction_config": [
+                  {
+                    "name": "tooltip",
+                    "config": {
+                      "fields": [
+                        {
+                          "column": "y",
+                          "property": "Number",
+                          "type": "number",
+                          "format": ".2s"
+                        },
+                        {
+                          "column": "x",
+                          "property": "Category",
+                          "type": "string",
+                          "format": ".2f"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "config": {
+                  "range": {
+                    "dotSize": [
+                      20,
+                      250
+                    ],
+                    "category20": [
+                      "#97bd3d",
+                      "#2C75B0",
+                      "#FAB72E",
+                      "#EF4848",
+                      "#3BB2D0",
+                      "#C32D7B",
+                      "#F577B9",
+                      "#5FD2B8",
+                      "#F1800F",
+                      "#9F1C00",
+                      "#A5E9E3",
+                      "#B9D765",
+                      "#393F44",
+                      "#CACCD0",
+                      "#717171"
+                    ],
+                    "ordinal": {
+                      "scheme": "greens"
+                    },
+                    "ramp": {
+                      "scheme": "purples"
+                    }
+                  },
+                  "axis": {
+                    "labelFontSize": 13,
+                    "labelFont": "Lato",
+                    "labelColor": "#717171",
+                    "labelPadding": 10,
+                    "ticks": true,
+                    "tickSize": 8,
+                    "tickColor": "#A9ABAD",
+                    "tickOpacity": 0.5,
+                    "tickExtra": false
+                  },
+                  "axisX": {
+                    "bandPosition": 0.5,
+                    "domainWidth": 1.2,
+                    "domainColor": "#A9ABAD",
+                    "labelAlign": "center",
+                    "labelBaseline": "top"
+                  },
+                  "axisY": {
+                    "domain": false,
+                    "labelAlign": "left",
+                    "labelBaseline": "bottom",
+                    "tickOpacity": 0.5,
+                    "grid": true,
+                    "ticks": false,
+                    "gridColor": "#A9ABAD",
+                    "gridOpacity": 0.5
+                  },
+                  "mark": {
+                    "fill": "#97bd3d"
+                  },
+                  "symbol": {
+                    "fill": "#97bd3d",
+                    "stroke": "#fff"
+                  },
+                  "rect": {
+                    "fill": "#97bd3d"
+                  },
+                  "line": {
+                    "interpolate": "linear",
+                    "stroke": "#97bd3d",
+                    "fillOpacity": 0
+                  },
+                  "name": "default"
+                }
+              },
+              "template": false,
+              "createdAt": "2020-01-20T13:51:16.330Z",
+              "updatedAt": "2020-01-20T13:51:16.330Z"
+            }
+          }
+        ],
+        "widgetRelevantProps": [],
+        "layerRelevantProps": []
+      }
+    }
+  ],
+  "links": {
+    "self": "http://staging-api.globalforestwatch.org/v1/dataset?_=2020-01-21%2011%3A25%3A46%20%2B0100&application=forest-atlas&includes=widget&status=saved&page[number]=1&page[size]=10000",
+    "first": "http://staging-api.globalforestwatch.org/v1/dataset?_=2020-01-21%2011%3A25%3A46%20%2B0100&application=forest-atlas&includes=widget&status=saved&page[number]=1&page[size]=10000",
+    "last": "http://staging-api.globalforestwatch.org/v1/dataset?_=2020-01-21%2011%3A25%3A46%20%2B0100&application=forest-atlas&includes=widget&status=saved&page[number]=1&page[size]=10000",
+    "prev": "http://staging-api.globalforestwatch.org/v1/dataset?_=2020-01-21%2011%3A25%3A46%20%2B0100&application=forest-atlas&includes=widget&status=saved&page[number]=1&page[size]=10000",
+    "next": "http://staging-api.globalforestwatch.org/v1/dataset?_=2020-01-21%2011%3A25%3A46%20%2B0100&application=forest-atlas&includes=widget&status=saved&page[number]=1&page[size]=10000"
+  },
+  "meta": {
+    "total-pages": 1,
+    "total-items": 1,
+    "size": 10000
+  }
+}
