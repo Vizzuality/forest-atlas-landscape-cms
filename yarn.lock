@@ -821,6 +821,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.2.0":
+  version "7.11.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
+  integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
@@ -1951,6 +1958,11 @@ array-includes@^3.0.3:
   dependencies:
     define-properties "^1.1.2"
     es-abstract "^1.7.0"
+
+array-move@^2.1.0:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/array-move/-/array-move-2.2.2.tgz#c125f84d64e2f4bc09147f91f900a1bf58bb25d1"
+  integrity sha512-lKc6C+nsOSA1o7eHSP/HshlGDYUI7QKyaus5kPDm2zEEPQID9xlspnraLR8l+rDlqg9mGo8ziE7F8TEnF6D3Tw==
 
 array-slice@^0.2.3:
   version "0.2.3"
@@ -7683,6 +7695,17 @@ last-call-webpack-plugin@^3.0.0:
     lodash "^4.17.5"
     webpack-sources "^1.1.0"
 
+layer-manager@^1.10.0:
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/layer-manager/-/layer-manager-1.15.3.tgz#0ea11a46f5cf2250b1b69558ca5e9c886bc71fc9"
+  integrity sha512-9JoTKElXisKck9BgZ/H7uzccNmWfiU45NRWCCYK93MuQR9suFCp2udfL9E4SlpM5pw1rE+hKp+kMv6KyzL8fkA==
+  dependencies:
+    axios "^0.18.0"
+    lodash "^4.17.11"
+    prop-types "^15.6.2"
+    supercluster "^4.1.1"
+    wri-json-api-serializer "^1.0.1"
+
 layer-manager@^2.0.9:
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/layer-manager/-/layer-manager-2.0.9.tgz#a7ef5def99b2a7137e0e6586b0764357016d6c6d"
@@ -8476,6 +8499,11 @@ modify-values@^1.0.0:
 moment@^2.11.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
+moment@^2.22.2:
+  version "2.27.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
+  integrity sha512-al0MUK7cpIcglMv3YF13qSgdAIqxHTO7brRtaz3DlSULbqfazqkc5kEjNrLDOM7fsjshoFIihnU8snrP7zUvhQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -10817,6 +10845,20 @@ rc-slider@^8.6.1:
     shallowequal "^1.0.1"
     warning "^3.0.0"
 
+rc-slider@^8.6.3:
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.7.1.tgz#9ed07362dc93489a38e654b21b8122ad70fd3c42"
+  integrity sha512-WMT5mRFUEcrLWwTxsyS8jYmlaMsTVCZIGENLikHsNv+tE8ThU2lCoPfi/xFNUfJFNFSBFP3MwPez9ZsJmNp13g==
+  dependencies:
+    babel-runtime "6.x"
+    classnames "^2.2.5"
+    prop-types "^15.5.4"
+    rc-tooltip "^3.7.0"
+    rc-util "^4.0.4"
+    react-lifecycles-compat "^3.0.4"
+    shallowequal "^1.1.0"
+    warning "^4.0.3"
+
 rc-slider@^9.2.4:
   version "9.2.4"
   resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-9.2.4.tgz#92e2b58c53def9921ae0fc2822727ab5785b9ed0"
@@ -10828,6 +10870,15 @@ rc-slider@^9.2.4:
     rc-util "^4.0.4"
     shallowequal "^1.1.0"
     warning "^4.0.3"
+
+rc-tooltip@3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/rc-tooltip/-/rc-tooltip-3.7.0.tgz#3afbf109865f7cdcfe43752f3f3f501f7be37aaa"
+  integrity sha512-xEoUMatXp8OEL61UFH0+NrC39nkKzpOBhLrJCnnRpDRduU8L3DOhF6CNlIMkvg68hxlGGdquFtFw2t+1xNLX5A==
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.5.8"
+    rc-trigger "^2.2.2"
 
 rc-tooltip@^3.7.0:
   version "3.7.2"
@@ -11122,6 +11173,15 @@ react-sortable-hoc@^0.6.8:
     babel-runtime "^6.11.6"
     invariant "^2.2.1"
     lodash "^4.12.0"
+    prop-types "^15.5.7"
+
+react-sortable-hoc@^1.9.1:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/react-sortable-hoc/-/react-sortable-hoc-1.11.0.tgz#fe4022362bbafc4b836f5104b9676608a40a278f"
+  integrity sha512-v1CDCvdfoR3zLGNp6qsBa4J1BWMEVH25+UKxF/RvQRh+mrB+emqtVHMgZ+WreUiKJoEaiwYoScaueIKhMVBHUg==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    invariant "^2.2.4"
     prop-types "^15.5.7"
 
 react-transition-group@^2.2.0:
@@ -13918,6 +13978,23 @@ vizz-wysiwyg@^2.1.2:
     tmp "0.0.33"
     uuid "3.0.1"
     validate.js "^0.12.0"
+
+vizzuality-components@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/vizzuality-components/-/vizzuality-components-3.0.3.tgz#ca93c266a3f8548edeef3c1060ea78232760b798"
+  integrity sha512-0Ee1p9nnX8MpH4GXpbkMba7RUZ7bs1C+B7yvipUf2a1WiyhmjHzEipBjphdRmirA6+ShFxIyR5017F0zwYm2WA==
+  dependencies:
+    array-move "^2.1.0"
+    axios "^0.19.0"
+    classnames "^2.2.6"
+    layer-manager "^1.10.0"
+    lodash "^4.17.10"
+    moment "^2.22.2"
+    prop-types "^15.6.2"
+    rc-slider "^8.6.3"
+    rc-tooltip "3.7.0"
+    react-sortable-hoc "^1.9.1"
+    wri-json-api-serializer "^1.0.1"
 
 vizzuality-redux-tools@^4.1.1:
   version "4.1.1"
