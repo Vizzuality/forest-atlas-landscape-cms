@@ -96,7 +96,7 @@
       Transifex.live.translateTo(languageCode, true);
       this._setMapLanguage(languageCode);
       this.trigger('state:change', {
-        currentLanguage: _.findWhere(this.options.languages, { code: languageCode })
+        currentLanguage: _.find(this.options.languages, { code: languageCode })
       });
 
       // We update the URL with the new choice

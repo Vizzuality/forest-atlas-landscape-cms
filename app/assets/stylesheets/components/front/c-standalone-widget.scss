@@ -2,8 +2,15 @@
   height: calc(100vh - 20px);
   padding: 10px 0;
 
-  .c-we-chart,
-  .chart {
+  > div:not([class*="legend"]) {
     height: 100%;
+  }
+
+  ul {
+    display: revert;
+
+    > li {
+      display: revert;
+    }
   }
 }

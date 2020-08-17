@@ -37,7 +37,7 @@
      * @param {string} id - active option's id
      */
     _onChangeDropdown: function (id) {
-      var link = _.findWhere(this.options.links, { id: id });
+      var link = _.find(this.options.links, { id: id });
       window.location.href = link.url;
     },
 
@@ -55,7 +55,7 @@
         new App.View.DropdownSelectorView({
           el: '.js-user-links',
           options: this.options.links,
-          activeOption: _.findWhere(this.options.links, { id: this.options.activeLink }),
+          activeOption: _.find(this.options.links, { id: this.options.activeLink }),
           fixedOption: true,
           onChangeCallback: this._onChangeDropdown.bind(this),
           align: 'right',

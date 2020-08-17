@@ -34,17 +34,25 @@
     min-height: 250px;
     margin-bottom: 10px;
 
-    .c-we-chart {
+    > div:not([class*="legend"]) {
       display: flex;
       flex-direction: column;
       width: 100%;
       flex-basis: 100%;
       flex-grow: 1;
 
-      .chart {
+      > div {
         width: 100%;
         flex-basis: 100%;
         flex-grow: 1;
+      }
+    }
+
+    ul {
+      display: revert;
+
+      > li {
+        display: revert;
       }
     }
   }

@@ -3,6 +3,22 @@
   // screen has a small height
   padding-bottom: 75px;
 
+  // Fix style issues the editor inherits from the app
+  .widget-container {
+    .container {
+      width: auto;
+    }
+
+    legend {
+      border: none;
+    }
+
+    h3 {
+      margin-top: inherit;
+      margin-bottom: inherit;
+    }
+  }
+
   &.-dataset {
     display: flex;
     align-items: center;
@@ -13,6 +29,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      > .widget-container {
+        width: 100%;
+        max-width: 1200px;
+      }
     }
   }
 
@@ -91,10 +112,6 @@
               padding-bottom: 15px;
             }
           }
-        }
-
-        .CodeMirror {
-          flex-grow: 1;
         }
 
         .c-we-chart {

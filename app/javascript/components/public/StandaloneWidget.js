@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { VegaChart } from 'widget-editor';
+import Renderer from '@widget-editor/renderer';
 
 const StandaloneWidget = ({ widget }) => (
   <div className="c-standalone-widget">
-    <VegaChart data={widget.widget_config} reloadOnResize />
+    <Renderer widgetConfig={widget.widget_config} />
   </div>
 );
 

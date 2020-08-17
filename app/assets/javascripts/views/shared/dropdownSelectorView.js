@@ -133,7 +133,7 @@
           activeOption.setAttribute('tabindex', -1);
           option.classList.add('-active');
 
-          this.options.activeOption = _.findWhere(this.options.options, { id: id });
+          this.options.activeOption = _.find(this.options.options, { id: id });
 
           // We update the UI with the name of the new active option
           var activeOptionName = this.options.activeOption[this.options.useShortName ? 'shortName' : 'name'];
