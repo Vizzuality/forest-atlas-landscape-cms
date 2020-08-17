@@ -11,9 +11,6 @@ import {
 import ExtendedHeader from 'components/ExtendedHeader';
 import Notification from 'components/Notification';
 
-// TODO:
-// - remove old editor
-
 let FAAdapter;
 
 const EditWidgetPage = ({ widget, env, defaultLanguage, queryUrl, redirectUrl }) => {
@@ -46,9 +43,9 @@ const EditWidgetPage = ({ widget, env, defaultLanguage, queryUrl, redirectUrl })
         const editorPayload = getEditorState().payload;
 
         const newWidget = {
-          name: editorPayload.attributes.name || null,
-          description: editorPayload.attributes.description || null,
-          widgetConfig: editorPayload.attributes.widgetConfig,
+          name: editorPayload.name || null,
+          description: editorPayload.description || null,
+          widgetConfig: editorPayload.widgetConfig,
           application: [env.apiApplications],
           published: false,
           default: false,
@@ -60,6 +57,7 @@ const EditWidgetPage = ({ widget, env, defaultLanguage, queryUrl, redirectUrl })
             privateName,
             citation,
             allowDownload,
+            caption: editorPayload.metadata.caption || null,
           },
           id: widget.id,
           language: 'en', // Widgets metadata doesn't change depending of language

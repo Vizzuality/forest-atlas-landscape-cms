@@ -49,10 +49,14 @@ const NewWidgetPage = ({ datasets, env, defaultLanguage, queryUrl, redirectUrl }
       try {
         const editorPayload = getEditorState().payload;
 
+        if (!editorPayload.name) {
+          throw new Error('Widget name is mandatory');
+        }
+
         const newWidget = {
-          name: editorPayload.attributes.name || null,
-          description: editorPayload.attributes.description || null,
-          widgetConfig: editorPayload.attributes.widgetConfig,
+          name: editorPayload.name || null,
+          description: editorPayload.description || null,
+          widgetConfig: editorPayload.widgetConfig,
           application: [env.apiApplications],
           published: false,
           default: false,
@@ -64,6 +68,7 @@ const NewWidgetPage = ({ datasets, env, defaultLanguage, queryUrl, redirectUrl }
             privateName,
             citation,
             allowDownload,
+            caption: editorPayload.metadata.caption,
           },
           language: 'en', // Widgets metadata doesn't change depending of language
           application: env.apiApplications
@@ -73,7 +78,8 @@ const NewWidgetPage = ({ datasets, env, defaultLanguage, queryUrl, redirectUrl }
           method: 'POST',
           body: JSON.stringify({
             widget: newWidget,
-            metadata: newMetadata
+            metadata: newMetadata,
+            dataset,
           }),
           credentials: 'include',
           headers: new Headers({
@@ -101,6 +107,7 @@ const NewWidgetPage = ({ datasets, env, defaultLanguage, queryUrl, redirectUrl }
       env,
       queryUrl,
       redirectUrl,
+      dataset,
       privateName,
       citation,
       allowDownload,
@@ -141,12 +148,12 @@ const NewWidgetPage = ({ datasets, env, defaultLanguage, queryUrl, redirectUrl }
       />
 
       {widgetConfigError && (
-      <Notification
-        type="warning"
-        content="Unable to create the widget"
-        additionalContent="Make sure the visualization is correctly previewed before submitting the widget."
-        onClose={() => setWidgetConfigError(false)}
-      />
+        <Notification
+          type="warning"
+          content="Unable to create the widget"
+          additionalContent="Make sure the visualization is correctly previewed and that the widget has a title, before submitting the widget."
+          onClose={() => setWidgetConfigError(false)}
+        />
       )}
 
       {saveError && (

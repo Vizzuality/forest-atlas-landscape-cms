@@ -34,7 +34,7 @@
     min-height: 250px;
     margin-bottom: 10px;
 
-    > div {
+    > div:not([class*="legend"]) {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -45,6 +45,14 @@
         width: 100%;
         flex-basis: 100%;
         flex-grow: 1;
+      }
+    }
+
+    ul {
+      display: revert;
+
+      > li {
+        display: revert;
       }
     }
   }

@@ -109,8 +109,7 @@ class Table extends React.Component {
     return (
       <tr role="row" key={Math.random()}>
         {this.formatCols(d)}
-        {actions.map((a, k) =>
-          <TableActions key={k} data={d} action={a} onClickAction={this.props.onClickAction} />)}
+        {actions.map((a, k) => <TableActions key={k} data={d} action={a} onClickAction={this.props.onClickAction} />)}
       </tr>
     );
   }
@@ -196,9 +195,9 @@ class Table extends React.Component {
 
       if ((valA === undefined || valA === null) && (valB === undefined || valB === null)) {
         return 0;
-      } else if ((valA === undefined || valB === null) && valB) {
+      } if ((valA === undefined || valB === null) && valB) {
         return -1 * this.state.sort.order;
-      } else if (valA && (valB === undefined || valB === null)) {
+      } if (valA && (valB === undefined || valB === null)) {
         return this.state.sort.order;
       }
 
@@ -206,9 +205,9 @@ class Table extends React.Component {
         if (valA < valB) return -1 * this.state.sort.order;
         if (valA > valB) return this.state.sort.order;
         return 0;
-      } else if (typeof valA === 'number' && typeof valB !== 'number') {
+      } if (typeof valA === 'number' && typeof valB !== 'number') {
         return -1 * this.state.sort.order;
-      } else if (typeof valA !== 'number' && typeof valB === 'number') {
+      } if (typeof valA !== 'number' && typeof valB === 'number') {
         return this.state.sort.order;
       }
 
@@ -241,32 +240,36 @@ class Table extends React.Component {
             {this.props.name}, sorted by {columns[sort.columnIndex]}: {sortName}
           </caption>
           <thead>
-            {filteredResults.length > 0 &&
+            {filteredResults.length > 0
+            && (
             <tr className="header" role="row">
-                {columns.map((col, k) => (
-                  <th
-                    key={col + k}
-                    aria-sort={k === sort.columnIndex ? sortName : 'none'}
-                    tabIndex={k === sort.columnIndex ? '0' : '-1'}
-                    className={k === sort.columnIndex ? `-order-${sortName}` : ''}
-                    role="columnheader"
-                    onClick={() => isSortable(col) && this.onSort(col)}
-                  >{col}
-                  </th>))}
-                {/* Render empty rows for each action */}
-                {actions && actions.map((a, k) => (<th key={a + k} aria-sort="none" role="columnheader" />))}
+              {columns.map((col, k) => (
+                <th
+                  key={col + k}
+                  aria-sort={k === sort.columnIndex ? sortName : 'none'}
+                  tabIndex={k === sort.columnIndex ? '0' : '-1'}
+                  className={k === sort.columnIndex ? `-order-${sortName}` : ''}
+                  role="columnheader"
+                  onClick={() => isSortable(col) && this.onSort(col)}
+                >{col}
+                </th>))}
+              {/* Render empty rows for each action */}
+              {actions && actions.map((a, k) => (<th key={a + k} aria-sort="none" role="columnheader" />))}
             </tr>
+            )
             }
           </thead>
           <tbody>
-            {filteredResults &&
-              filteredResults.map((d, k) => (this.verifyPagination(k) ? this.formatRow(d) : null))}
+            {filteredResults
+              && filteredResults.map((d, k) => (this.verifyPagination(k) ? this.formatRow(d) : null))}
 
-            {filteredResults.length === 0 &&
+            {filteredResults.length === 0
+            && (
             <tr role="row">
-              {q.length > 0 ? <td style={{ textAlign: 'center' }}>No results found for {q}</td> :
-              <td style={{ textAlign: 'center' }}>No items to display</td>}
-            </tr>}
+              {q.length > 0 ? <td style={{ textAlign: 'center' }}>No results found for {q}</td>
+                : <td style={{ textAlign: 'center' }}>No items to display</td>}
+            </tr>
+            )}
 
           </tbody>
         </table>

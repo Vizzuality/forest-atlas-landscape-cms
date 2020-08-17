@@ -8,3 +8,5 @@ const ManagementDashboardColumnsPage = props => (
     <DashboardColumnsPage {...props} />
   </AdminContainer>
 );
+
+export default ManagementDashboardColumnsPage;
