@@ -255,6 +255,7 @@ const NewWidgetPage = ({ datasets, env, defaultLanguage, queryUrl, redirectUrl }
                   datasetId={dataset}
                   enableSave={false}
                   schemes={getWidgetSchemes()}
+                  disable={['typography']}
                 />
               </div>
             )}

@@ -214,6 +214,7 @@ const EditWidgetPage = ({ widget, env, defaultLanguage, queryUrl, redirectUrl })
                 {...(widget ? { widgetId: widget.id } : {})}
                 enableSave={false}
                 schemes={getWidgetSchemes()}
+                disable={['typography']}
               />
             </div>
           </div>
