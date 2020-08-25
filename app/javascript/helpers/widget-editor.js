@@ -11,24 +11,24 @@ export const getFAAdapter = env => AdapterModifier(RWAdapter, {
 
 export const getWidgetSchemes = () => [
   {
-    name: 'default',
-    mainColor: '#97bd3d',
+    name: 'WRI',
+    mainColor: '#F0AB00',
     category: [
-      '#97bd3d',
-      '#2C75B0',
-      '#FAB72E',
-      '#EF4848',
-      '#3BB2D0',
-      '#C32D7B',
-      '#F577B9',
-      '#5FD2B8',
-      '#F1800F',
-      '#9F1C00',
-      '#A5E9E3',
-      '#B9D765',
-      '#393F44',
-      '#CACCD0',
-      '#717171'
+      '#F0AB00',
+      '#000000',
+      '#9B9B9B',
+      '#FCD900',
+      '#0099CC',
+      '#C51F24',
+      '#97BD3D',
+      '#7D0063',
+      '#5B80A0',
+      '#EDA137',
+      '#007A4D',
+      '#F26798',
+      '#003F6A',
+      '#E98300',
+      '#6D6DE5',
     ]
   },
   {
