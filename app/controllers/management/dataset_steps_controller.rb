@@ -166,7 +166,7 @@ class Management::DatasetStepsController < ManagementController
     dir = Rails.root.join('public', 'uploads')
     Dir.mkdir(dir) unless Dir.exist?(dir)
 
-    filename = Time.now.to_i.to_s + csv.original_filename
+    filename = CGI.escape(Time.now.to_i.to_s + csv.original_filename)
 
     File.open(dir.join(filename), 'wb') do |file|
       file.write(csv.read)
