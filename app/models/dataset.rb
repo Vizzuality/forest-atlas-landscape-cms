@@ -254,7 +254,7 @@ class Dataset
       lang_metadata[:source] = arcgis_metadata['copyrightText']
 
       columns = {}
-      arcgis_metadata['fields'].each { |f| columns[f['name']] = {'alias': f['alias']} }
+      arcgis_metadata['fields']&.each { |f| columns[f['name']] = {'alias': f['alias']} }
       lang_metadata[:columns] = columns
       lang_metadata[:language] = language
 
