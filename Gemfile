@@ -92,8 +92,6 @@ group :development do
   gem 'capistrano-sidekiq'
 end
 
-gem 'appsignal'
-
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rack-cors'

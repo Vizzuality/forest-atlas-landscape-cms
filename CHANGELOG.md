@@ -1,5 +1,7 @@
 # Forest Atlas: CHANGELOG
 
+## Disable Appsignal integration
+
 ## Bug fixes and improvements
 * Select theme within widget editor
 * Fixed issue with mobile menu not opening
