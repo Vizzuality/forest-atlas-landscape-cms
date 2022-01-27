@@ -27,7 +27,7 @@ gem 'sendgrid-ruby'
 gem 'webpacker', '~> 3.3.1'
 gem 'wicked' # Multi-steps form
 gem 'will_paginate', '~> 3.1.0'
-gem 'sidekiq', '~> 4.1.2'
+gem 'sidekiq', '~> 5.2.9'
 gem 'interactor', '~> 3.0'
 
 # Session management
